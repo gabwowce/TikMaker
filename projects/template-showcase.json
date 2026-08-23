@@ -1,0 +1,204 @@
+{
+  "id": "template-showcase",
+  "title": "Template Showcase",
+  "fps": 30,
+  "width": 1080,
+  "height": 1920,
+
+  "scenes": [
+    {
+      "id": "showcase-hook-centered",
+      "type": "hook-centered",
+      "durationSeconds": 3.2,
+      "background": "orange-glow",
+      "content": {
+        "badge": "IDEA",
+        "eyebrow": "A THOUGHT EXPERIMENT",
+        "headline": "SOFTWARE FOR ONE",
+        "highlights": ["ONE"],
+        "blocks": [
+          {
+            "id": "showcase-block-not-everyone",
+            "type": "text",
+            "text": "not built for everyone",
+            "x": 50,
+            "y": 62,
+            "size": 56,
+            "color": "#FFFFFF",
+            "font": "clash",
+            "animation": "fade",
+            "splitBy": "line",
+            "delay": 20
+          },
+          {
+            "id": "showcase-block-just-you",
+            "type": "badge",
+            "text": "just for you",
+            "x": 50,
+            "y": 70,
+            "size": 44,
+            "color": "#FF7024",
+            "font": "clash",
+            "animation": "scaleIn",
+            "splitBy": "word",
+            "delay": 28
+          }
+        ]
+      },
+      "visual": {
+        "type": "pricing-card",
+        "title": "CURRENT PLAN",
+        "price": "€12",
+        "period": "/ month",
+        "features": ["Built for everyone", "Features you don't use", "Price that never drops"]
+      },
+      "motion": { "entrance": "slideUp", "transition": "cut" }
+    },
+    {
+      "id": "showcase-hook-visual",
+      "type": "hook-visual",
+      "durationSeconds": 3,
+      "background": "soft-grid",
+      "content": {
+        "badge": "PATTERN: SYSTEM FLOW",
+        "headline": "1 USER. 1 TOOL.",
+        "blocks": [
+          {
+            "id": "demo-block-corner",
+            "type": "badge",
+            "text": "NEW",
+            "x": 82,
+            "y": 18,
+            "size": 34,
+            "color": "#FF7024",
+            "letterSpacing": 3,
+            "font": "clash",
+            "animation": "pop",
+            "splitBy": "word",
+            "delay": 20
+          },
+          {
+            "id": "demo-block-bottom",
+            "type": "text",
+            "text": "PATTERN: BLOCKS",
+            "x": 50,
+            "y": 88,
+            "size": 30,
+            "color": "#B8B8B8",
+            "letterSpacing": 4,
+            "font": "clash",
+            "animation": "fade",
+            "splitBy": "letter",
+            "delay": 30
+          }
+        ]
+      },
+      "visual": {
+        "type": "flow",
+        "nodes": [{ "label": "USER" }, { "label": "TOOL" }],
+        "direction": "horizontal",
+        "animated": true
+      },
+      "motion": { "entrance": "fade", "transition": "cut" }
+    },
+    {
+      "id": "showcase-visual-explainer",
+      "type": "visual-explainer",
+      "durationSeconds": 4,
+      "background": "solid-dark",
+      "content": {
+        "badge": "PATTERN: COUNTER",
+        "headline": "10,000 → 1",
+        "body": "One generic tool used by thousands becomes one tool built for you."
+      },
+      "visual": {
+        "type": "stat-counter",
+        "from": 10000,
+        "to": 1,
+        "label": "USERS",
+        "decimals": 0
+      },
+      "motion": { "entrance": "fade", "transition": "cut" }
+    },
+    {
+      "id": "showcase-screen-demo",
+      "type": "screen-demo",
+      "durationSeconds": 3.6,
+      "background": "spotlight",
+      "content": {
+        "badge": "PATTERN: APP MOCKUP",
+        "headline": "EXPENSE TRACKER"
+      },
+      "visual": {
+        "type": "app-mockup",
+        "appTitle": "EXPENSE TRACKER",
+        "kind": "stat",
+        "stat": { "value": "€482", "label": "This month" }
+      },
+      "motion": { "entrance": "fade", "transition": "cut" }
+    },
+    {
+      "id": "showcase-comparison",
+      "type": "comparison",
+      "durationSeconds": 4.5,
+      "background": "soft-grid",
+      "content": {
+        "badge": "PATTERN: COMPARISON",
+        "headline": "THE END OF SUBSCRIPTIONS?",
+        "highlights": ["SUBSCRIPTIONS?"],
+        "left": {
+          "label": "TODAY",
+          "headline": "SAAS PRODUCT",
+          "body": "Built for thousands of strangers.",
+          "visual": { "type": "prop", "asset": "shop" }
+        },
+        "right": {
+          "label": "TOMORROW",
+          "headline": "PERSONAL SOFTWARE",
+          "body": "Built for exactly one person.",
+          "visual": { "type": "prop", "asset": "idea" }
+        }
+      },
+      "motion": { "entrance": "slideUp", "transition": "cut" }
+    },
+    {
+      "id": "showcase-steps",
+      "type": "steps",
+      "durationSeconds": 4.5,
+      "background": "solid-dark",
+      "content": {
+        "badge": "PATTERN: STEPS / STACK",
+        "headline": "HOW IT GETS BUILT",
+        "items": [
+          { "label": "DEFINE", "value": "1 problem" },
+          { "label": "BUILD", "value": "A few hours" },
+          { "label": "USE", "value": "Every day" }
+        ]
+      },
+      "motion": { "entrance": "slideUp", "transition": "cut", "stagger": 8 }
+    },
+    {
+      "id": "showcase-takeaway",
+      "type": "takeaway",
+      "durationSeconds": 3.6,
+      "background": "spotlight",
+      "content": {
+        "badge": "PATTERN: ORBIT",
+        "headline": "BUILT FOR ONE PERSON",
+        "highlights": ["ONE"]
+      },
+      "visual": {
+        "type": "node-group",
+        "center": { "type": "prop", "asset": "idea" },
+        "nodes": [
+          { "type": "prop", "asset": "puzzle-piece" },
+          { "type": "prop", "asset": "link" },
+          { "type": "prop", "asset": "sync-arrows" },
+          { "type": "prop", "asset": "database" }
+        ],
+        "layout": "orbit"
+      },
+      "motion": { "entrance": "slideUp", "transition": "cut" }
+    }
+  ]
+}
