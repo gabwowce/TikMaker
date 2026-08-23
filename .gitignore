@@ -2,7 +2,9 @@ node_modules
 dist
 out
 .env.local
-public/assets
+public/assets/logos
+public/assets/props
+public/assets/sfx
 public/fonts
 *.log
 .render-props.tmp.json
