@@ -1,0 +1,8 @@
+node_modules
+dist
+out
+.env.local
+public/assets
+public/fonts
+*.log
+.render-props.tmp.json

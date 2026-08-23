@@ -1,0 +1,71 @@
+{
+  "id": "claude-connectors",
+  "title": "Claude Code Can Use Other Apps",
+  "fps": 30,
+  "width": 1080,
+  "height": 1920,
+
+  "scenes": [
+    {
+      "id": "hook",
+      "type": "hook-visual",
+      "durationSeconds": 3,
+      "background": "orange-glow",
+      "content": {
+        "headline": "CLAUDE CODE CAN USE OTHER APPS."
+      },
+      "visual": {
+        "type": "tool-logo",
+        "tool": "claude"
+      },
+      "motion": {
+        "entrance": "slideUp"
+      }
+    },
+    {
+      "id": "flow",
+      "type": "visual-explainer",
+      "durationSeconds": 4.5,
+      "background": "soft-grid",
+      "content": {
+        "headline": "CONNECT YOUR TOOLS",
+        "body": "Claude works alongside the tools you already use."
+      },
+      "visual": {
+        "type": "tool-flow",
+        "tools": ["github", "claude", "supabase"]
+      },
+      "motion": {
+        "entrance": "fade"
+      }
+    },
+    {
+      "id": "demo",
+      "type": "screen-demo",
+      "durationSeconds": 5,
+      "background": "solid-dark",
+      "content": {
+        "headline": "THEN CLAUDE CAN WORK WITH THEM."
+      },
+      "visual": {
+        "type": "prop",
+        "asset": "browser-window"
+      },
+      "motion": {
+        "entrance": "fade"
+      }
+    },
+    {
+      "id": "takeaway",
+      "type": "takeaway",
+      "durationSeconds": 3,
+      "background": "spotlight",
+      "content": {
+        "headline": "CLAUDE IS BECOMING MORE THAN A CODE GENERATOR."
+      },
+      "motion": {
+        "entrance": "slideUp"
+      }
+    }
+  ]
+}
