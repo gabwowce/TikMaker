@@ -1,4 +1,5 @@
 import { fontFamilies } from "./tokens";
+import { assetUrl } from "../../utils/assetUrl";
 
 const fontFiles: Record<string, { file: string; weight: string }> = {
   [fontFamilies.clashBold]: { file: "ClashDisplay-Bold.woff2", weight: "700" },
@@ -21,7 +22,7 @@ export function ensureFontsLoaded() {
       ([family, { file, weight }]) => `
         @font-face {
           font-family: "${family}";
-          src: url("/fonts/${file}") format("${file.endsWith(".otf") ? "opentype" : "woff2"}");
+          src: url("${assetUrl(`/fonts/${file}`)}") format("${file.endsWith(".otf") ? "opentype" : "woff2"}");
           font-weight: ${weight};
           font-style: normal;
           font-display: block;

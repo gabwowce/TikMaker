@@ -1,0 +1,202 @@
+{
+  "id": "claude-code-workflow",
+  "title": "Stop Writing Better Prompts",
+  "fps": 30,
+  "width": 1080,
+  "height": 1920,
+  "scenes": [
+    {
+      "id": "hook",
+      "type": "hook-centered",
+      "background": "solid-dark",
+      "layout": "visual-bottom",
+      "vo": "Claude Code keeps changing files you never asked it to touch.",
+      "content": {
+        "richHeadline": [
+          { "text": "you asked for", "size": "title", "animation": "fade" },
+          { "text": "ONE FIX", "size": "hero", "pill": true, "animation": "pop" }
+        ]
+      },
+      "visual": {
+        "type": "code-diff",
+        "filename": "3 files changed",
+        "lines": [
+          { "text": "the button colour", "kind": "context" },
+          { "text": "renamed your API client", "kind": "removed" },
+          { "text": "rewrote the auth flow", "kind": "removed" },
+          { "text": "\"refactored\" your router", "kind": "removed" }
+        ]
+      },
+      "motion": { "entrance": "none", "transition": "cut", "stagger": 6 }
+    },
+    {
+      "id": "reframe",
+      "type": "visual-explainer",
+      "background": "solid-dark",
+      "layout": "visual-bottom",
+      "vo": "A longer prompt will not fix that. Give it three things instead.",
+      "content": {
+        "headline": "Stop prompting. Build a WORKFLOW.",
+        "highlights": ["WORKFLOW"]
+      },
+      "visual": {
+        "type": "flow",
+        "direction": "horizontal",
+        "animated": true,
+        "nodes": [
+          { "label": "Rules", "visual": { "type": "prop", "asset": "document" } },
+          { "label": "Plan", "visual": { "type": "prop", "asset": "target" } },
+          { "label": "Recover", "visual": { "type": "prop", "asset": "uturn" } }
+        ]
+      },
+      "motion": { "entrance": "none", "transition": "slideLeft", "stagger": 6, "sfx": "none" }
+    },
+
+    {
+      "id": "step1-title",
+      "type": "hook-centered",
+      "background": "solid-dark",
+      "layout": "visual-top",
+      "vo": "One. Give it rules.",
+      "content": {
+        "eyebrow": "STEP 01",
+        "richHeadline": [
+          { "text": "Give it rules", "size": "hero", "pill": true, "animation": "pop" }
+        ]
+      },
+      "visual": { "type": "prop", "asset": "document" },
+      "motion": { "entrance": "none", "transition": "slideLeft", "stagger": 4, "sfx": "none" }
+    },
+    {
+      "id": "step1-explain",
+      "type": "visual-explainer",
+      "background": "solid-dark",
+      "layout": "visual-bottom",
+      "vo": "Put your stack and your rules in CLAUDE dot M D, so you never explain the project from zero again.",
+      "content": {
+        "eyebrow": "STEP 01",
+        "headline": "Write it ONCE, in CLAUDE.md",
+        "highlights": ["ONCE"]
+      },
+      "visual": {
+        "type": "code-diff",
+        "filename": "CLAUDE.md",
+        "lines": [
+          { "text": "Stack: Next.js, Postgres, Tailwind", "kind": "added" },
+          { "text": "Never edit files outside /src", "kind": "added" },
+          { "text": "Always run tests before finishing", "kind": "added" }
+        ]
+      },
+      "motion": { "entrance": "none", "transition": "slideLeft", "stagger": 6, "sfx": "none" }
+    },
+
+    {
+      "id": "step2-title",
+      "type": "hook-centered",
+      "background": "solid-dark",
+      "layout": "visual-top",
+      "vo": "Two. Make it plan first.",
+      "content": {
+        "eyebrow": "STEP 02",
+        "richHeadline": [
+          { "text": "Make it plan first", "size": "hero", "pill": true, "animation": "pop" }
+        ]
+      },
+      "visual": { "type": "prop", "asset": "target" },
+      "motion": { "entrance": "none", "transition": "slideLeft", "stagger": 4, "sfx": "none" }
+    },
+    {
+      "id": "step2-explain",
+      "type": "visual-explainer",
+      "background": "solid-dark",
+      "layout": "visual-bottom",
+      "vo": "Make it show you the plan first. A bad plan is much cheaper to fix than bad code.",
+      "content": {
+        "eyebrow": "STEP 02",
+        "headline": "You APPROVE the plan, then it codes",
+        "highlights": ["APPROVE"]
+      },
+      "visual": {
+        "type": "flow",
+        "direction": "horizontal",
+        "animated": true,
+        "nodes": [
+          { "label": "Plan", "visual": { "type": "prop", "asset": "document" } },
+          { "label": "You approve", "visual": { "type": "prop", "asset": "eye" } },
+          { "label": "Code", "visual": { "type": "prop", "asset": "screen-panel" } }
+        ]
+      },
+      "motion": { "entrance": "none", "transition": "slideLeft", "stagger": 6, "sfx": "none" }
+    },
+
+    {
+      "id": "step3-title",
+      "type": "hook-centered",
+      "background": "solid-dark",
+      "layout": "visual-top",
+      "vo": "Three. Know how to go back.",
+      "content": {
+        "eyebrow": "STEP 03",
+        "richHeadline": [
+          { "text": "Know how to go back", "size": "hero", "pill": true, "animation": "pop" }
+        ]
+      },
+      "visual": { "type": "prop", "asset": "uturn" },
+      "motion": { "entrance": "none", "transition": "slideLeft", "stagger": 4, "sfx": "none" }
+    },
+    {
+      "id": "step3-keys",
+      "type": "visual-explainer",
+      "background": "solid-dark",
+      "layout": "visual-bottom",
+      "vo": "Going the wrong way? Hit escape and stop it mid-run.",
+      "content": {
+        "eyebrow": "STEP 03",
+        "headline": "Wrong direction? STOP it."
+      },
+      "visual": { "type": "keycap", "keys": ["ESC"], "caption": "stops it mid-run" },
+      "motion": { "entrance": "none", "transition": "slideLeft", "stagger": 6, "sfx": "none" }
+    },
+    {
+      "id": "step3-rewind",
+      "type": "visual-explainer",
+      "background": "solid-dark",
+      "layout": "visual-bottom",
+      "vo": "Already broken? Rewind to a checkpoint and start that part again.",
+      "content": {
+        "eyebrow": "STEP 03",
+        "headline": "Already broken? REWIND it.",
+        "highlights": ["REWIND"]
+      },
+      "visual": {
+        "type": "terminal",
+        "title": "claude",
+        "lines": [
+          { "text": "/rewind", "kind": "prompt" },
+          { "text": "restored to checkpoint 3", "kind": "accent" },
+          { "text": "your files are back", "kind": "dim" }
+        ],
+        "cursor": true
+      },
+      "motion": { "entrance": "none", "transition": "slideLeft", "stagger": 6, "sfx": "none" }
+    },
+
+    {
+      "id": "payoff",
+      "type": "takeaway",
+      "background": "solid-dark",
+      "layout": "text-only",
+      "vo": "Don't chase one perfect prompt. Build a workflow that keeps it under control.",
+      "content": {
+        "richHeadline": [
+          { "text": "not one perfect prompt", "size": "title", "animation": "fade" },
+          { "text": "RULES", "size": "headline", "pill": true, "animation": "pop" },
+          { "text": "PLAN", "size": "headline", "pill": true, "animation": "pop" },
+          { "text": "RECOVER", "size": "headline", "pill": true, "animation": "pop" },
+          { "text": "follow for AI coding workflows", "size": "body", "animation": "fade" }
+        ]
+      },
+      "motion": { "entrance": "none", "transition": "slideLeft", "stagger": 6 }
+    }
+  ]
+}

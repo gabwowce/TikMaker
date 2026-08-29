@@ -1,0 +1,70 @@
+{
+  "id": "template-mythbust",
+  "title": "Šablonas: Myth-bust / Pattern Interrupt",
+  "fps": 30,
+  "width": 1080,
+  "height": 1920,
+  "scenes": [
+    {
+      "id": "hook",
+      "type": "hook-centered",
+      "durationSeconds": 2.8,
+      "background": "solid-dark",
+      "content": {
+        "richHeadline": [
+          { "text": "dauguma mano, kad", "size": "title", "animation": "fade" },
+          { "text": "REIKIA MOKĖTI KODUOTI", "size": "headline", "animation": "slideUp" },
+          { "text": "tai netiesa", "size": "hero", "pill": true, "animation": "pop" }
+        ]
+      },
+      "motion": { "entrance": "fade", "exit": "fade", "exitDuration": 18, "transition": "cut", "stagger": 6 }
+    },
+    {
+      "id": "myth-vs-reality",
+      "type": "comparison",
+      "durationSeconds": 4.2,
+      "background": "solid-dark",
+      "content": {
+        "left": {
+          "label": "MITAS",
+          "headline": "Reikia metų mokymosi",
+          "visual": { "type": "prop", "asset": "clock" }
+        },
+        "right": {
+          "label": "REALYBĖ",
+          "headline": "Užtenka savaitės su AI",
+          "visual": { "type": "prop", "asset": "idea" }
+        }
+      },
+      "motion": { "entrance": "fade", "exit": "fade", "exitDuration": 18, "transition": "cut", "stagger": 6 }
+    },
+    {
+      "id": "why",
+      "type": "visual-explainer",
+      "durationSeconds": 4.0,
+      "background": "solid-dark",
+      "content": {
+        "headline": "Kodėl realybė pasikeitė",
+        "highlights": ["pasikeitė"]
+      },
+      "visual": {
+        "type": "tool-flow",
+        "tools": ["chatgpt", "claude", "github"]
+      },
+      "visualEntrance": "pop",
+      "visualKenBurns": "zoomIn",
+      "motion": { "entrance": "fade", "exit": "fade", "exitDuration": 18, "transition": "cut", "stagger": 6 }
+    },
+    {
+      "id": "cta",
+      "type": "takeaway",
+      "durationSeconds": 3.0,
+      "background": "solid-dark",
+      "content": {
+        "headline": "Nustok tikėti mitais. Pradėk daryti.",
+        "highlights": ["Pradėk", "daryti"]
+      },
+      "motion": { "entrance": "pop", "exit": "fade", "exitDuration": 16, "transition": "cut" }
+    }
+  ]
+}

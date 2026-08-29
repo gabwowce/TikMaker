@@ -1,4 +1,5 @@
 import { generatedLogos } from "./assets.generated";
+import { assetUrl } from "../utils/assetUrl";
 
 export type ToolDefinition = {
   id: string;
@@ -39,7 +40,7 @@ export const toolRegistry: Record<string, ToolDefinition> = Object.fromEntries(
     {
       id: entry.id,
       name: displayNameOverrides[entry.id] ?? entry.label,
-      src: `/assets/logos/${entry.file}`,
+      src: assetUrl(`/assets/logos/${entry.file}`),
     },
   ])
 );

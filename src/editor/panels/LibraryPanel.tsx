@@ -1,25 +1,33 @@
 import React, { useState } from "react";
 import { editorColors } from "../theme";
+import { TemplateLibrary } from "../library/TemplateLibrary";
 import { SceneLibrary } from "../library/SceneLibrary";
 import { VisualLibrary } from "../library/VisualLibrary";
 import { BackgroundLibrary } from "../library/BackgroundLibrary";
 import { AssetLibrary } from "../library/AssetLibrary";
+import { SoundLibrary } from "../library/SoundLibrary";
 
 const tabs = [
+  { id: "templates", label: "Templates", Component: TemplateLibrary },
   { id: "scenes", label: "Scenes", Component: SceneLibrary },
   { id: "visuals", label: "Visuals", Component: VisualLibrary },
   { id: "backgrounds", label: "BG", Component: BackgroundLibrary },
   { id: "assets", label: "Assets", Component: AssetLibrary },
+  { id: "sound", label: "Sound", Component: SoundLibrary },
 ] as const;
 
 export const LibraryPanel: React.FC = () => {
-  const [active, setActive] = useState<(typeof tabs)[number]["id"]>("scenes");
+  const [active, setActive] = useState<(typeof tabs)[number]["id"]>("templates");
   const ActiveComponent = tabs.find((t) => t.id === active)!.Component;
 
   return (
     <div
       style={{
-        width: 260,
+        // Grows with the window instead of squeezing a 3-up asset grid into a
+        // fixed 260px: the 9:16 preview is narrow by definition, so the space
+        // either side is better spent on the panels than left empty.
+        width: "clamp(260px, 19vw, 420px)",
+        flexShrink: 0,
         borderRight: `1px solid ${editorColors.border}`,
         background: editorColors.panel,
         display: "flex",
@@ -27,16 +35,24 @@ export const LibraryPanel: React.FC = () => {
         overflow: "hidden",
       }}
     >
-      <div style={{ display: "flex", borderBottom: `1px solid ${editorColors.border}` }}>
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(3, 1fr)",
+          borderBottom: `1px solid ${editorColors.border}`,
+        }}
+      >
         {tabs.map((tab) => (
           <button
             key={tab.id}
             onClick={() => setActive(tab.id)}
             style={{
-              flex: 1,
-              padding: "10px 0",
-              fontSize: 12,
+              padding: "9px 2px",
+              fontSize: 11,
               fontWeight: 600,
+              whiteSpace: "nowrap",
+              overflow: "hidden",
+              textOverflow: "ellipsis",
               background: active === tab.id ? editorColors.panelElevated : "transparent",
               color: active === tab.id ? editorColors.accent : editorColors.textDim,
               border: "none",

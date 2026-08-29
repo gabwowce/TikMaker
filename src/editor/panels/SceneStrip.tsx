@@ -2,6 +2,7 @@ import React from "react";
 import { useProjectStore } from "../state/projectStore";
 import { editorColors } from "../theme";
 import { getSceneDefinition } from "../../registries/sceneRegistry";
+import { resolveSceneDuration, pacingWarning } from "../../utils/pacing";
 
 export const SceneStrip: React.FC = () => {
   const scenes = useProjectStore((s) => s.project.scenes);
@@ -33,6 +34,9 @@ export const SceneStrip: React.FC = () => {
       {scenes.map((scene, index) => {
         const def = getSceneDefinition(scene.type);
         const isSelected = scene.id === selectedSceneId;
+        const seconds = resolveSceneDuration(scene);
+        const isAuto = typeof scene.durationSeconds !== "number";
+        const warning = pacingWarning(scene);
         return (
           <div
             key={scene.id}
@@ -50,8 +54,22 @@ export const SceneStrip: React.FC = () => {
             <div style={{ fontSize: 11, color: editorColors.textDim }}>
               {String(index + 1).padStart(2, "0")} {def.name.toUpperCase()}
             </div>
-            <div style={{ fontSize: 12, color: editorColors.text, marginTop: 2 }}>
-              {scene.durationSeconds.toFixed(1)}s
+            <div
+              style={{
+                fontSize: 12,
+                color: warning ? "#ff8a65" : editorColors.text,
+                marginTop: 2,
+                display: "flex",
+                alignItems: "baseline",
+                gap: 5,
+              }}
+              title={warning ?? (isAuto ? "Length comes from the voiceover / on-screen text" : undefined)}
+            >
+              {warning ? "⚠ " : null}
+              {seconds.toFixed(1)}s
+              {isAuto ? (
+                <span style={{ fontSize: 9, color: editorColors.textDim, letterSpacing: 0.4 }}>AUTO</span>
+              ) : null}
             </div>
             <div style={{ display: "flex", gap: 4, marginTop: 6 }}>
               <button

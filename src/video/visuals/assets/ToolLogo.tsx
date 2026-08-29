@@ -9,45 +9,25 @@ type ToolLogoProps = {
   showName?: boolean;
 };
 
+/**
+ * Just the logo artwork, at the requested size — same as `PropAsset`. These
+ * files already carry their own shape and padding, so the rounded plate this
+ * used to draw behind them read as a second, unwanted container around a mark
+ * that was already a tile.
+ */
 export const ToolLogo: React.FC<ToolLogoProps> = ({ tool, size = 220, showName }) => {
   const definition = getTool(tool);
+  if (!definition) return null;
 
-  if (!definition) {
-    return (
-      <div
-        style={{
-          width: size,
-          height: size,
-          borderRadius: 32,
-          backgroundColor: colors.surface,
-          border: `1px solid ${colors.border}`,
-        }}
-      />
-    );
-  }
+  const image = <Img src={definition.src} style={{ width: size, height: size, objectFit: "contain" }} />;
+  if (!showName) return image;
 
   return (
     <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 16 }}>
-      <div
-        style={{
-          width: size,
-          height: size,
-          borderRadius: 32,
-          backgroundColor: colors.surface,
-          border: `1px solid ${colors.border}`,
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          padding: size * 0.22,
-        }}
-      >
-        <Img src={definition.src} style={{ width: "100%", height: "100%", objectFit: "contain" }} />
+      {image}
+      <div style={{ fontFamily: fontFamilies.clashMedium, fontSize: fontSizes.label, color: colors.textSecondary }}>
+        {definition.name}
       </div>
-      {showName ? (
-        <div style={{ fontFamily: fontFamilies.clashMedium, fontSize: fontSizes.label, color: colors.textSecondary }}>
-          {definition.name}
-        </div>
-      ) : null}
     </div>
   );
 };

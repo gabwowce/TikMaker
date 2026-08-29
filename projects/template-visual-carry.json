@@ -1,0 +1,170 @@
+{
+  "id": "template-visual-carry",
+  "title": "Patikra: Vizualo perkėlimas",
+  "fps": 30,
+  "width": 1080,
+  "height": 1920,
+  "scenes": [
+    {
+      "id": "carry-intro",
+      "type": "hook-centered",
+      "background": "soft-grid",
+      "vo": "Vienas vizualas gali keliauti per kelis kadrus — nekeisdamas savęs, tik pozicija ir dydį.",
+      "content": {
+        "eyebrow": "PATIKRA",
+        "richHeadline": [
+          {
+            "text": "vienas vizualas",
+            "size": "title",
+            "animation": "fade"
+          },
+          {
+            "text": "KELIAUJA",
+            "size": "hero",
+            "pill": true,
+            "animation": "pop"
+          },
+          {
+            "text": "per kadrus",
+            "size": "body",
+            "animation": "fade"
+          }
+        ]
+      },
+      "motion": {
+        "entrance": "fade",
+        "stagger": 4,
+        "transition": "cut"
+      }
+    },
+    {
+      "id": "carry-a",
+      "type": "hook-visual",
+      "background": "soft-grid",
+      "vo": "Pirmajame kadre jis didelis ir centre. Čia jis nieko neanimuoja išeidamas — tiesiog laiko savo vietą.",
+      "content": {
+        "eyebrow": "01 DIDELIS",
+        "headline": "Čia jis laiko poziciją.",
+        "highlights": [
+          "laiko"
+        ]
+      },
+      "visual": {
+        "type": "browser",
+        "url": "yourapp.com",
+        "content": {
+          "type": "app-mockup",
+          "appTitle": "YOUR APP",
+          "kind": "list",
+          "items": [
+            "Row one",
+            "Row two",
+            "Row three"
+          ]
+        }
+      },
+      "visualPosition": {
+        "x": 50,
+        "y": 62
+      },
+      "visualScale": 0.9,
+      "visualLink": {
+        "groupId": "carry-browser"
+      },
+      "motion": {
+        "entrance": "fade",
+        "stagger": 6,
+        "transition": "cut"
+      }
+    },
+    {
+      "id": "carry-b",
+      "type": "visual-explainer",
+      "background": "soft-grid",
+      "vo": "Antrajame kadre jis nuslysta į viršų ir sumažėja. Visas judesys vyksta čia.",
+      "content": {
+        "eyebrow": "02 MAŽAS",
+        "headline": "Judesys priklauso šitam kadrui.",
+        "highlights": [
+          "šitam"
+        ]
+      },
+      "visual": {
+        "type": "browser",
+        "url": "yourapp.com",
+        "content": {
+          "type": "app-mockup",
+          "appTitle": "YOUR APP",
+          "kind": "list",
+          "items": [
+            "Row one",
+            "Row two",
+            "Row three"
+          ]
+        }
+      },
+      "visualPosition": {
+        "x": 50,
+        "y": 36
+      },
+      "visualScale": 0.45,
+      "visualLink": {
+        "groupId": "carry-browser"
+      },
+      "motion": {
+        "entrance": "fade",
+        "stagger": 6,
+        "transition": "cut"
+      }
+    },
+    {
+      "id": "carry-c",
+      "type": "takeaway",
+      "background": "soft-grid",
+      "vo": "Trečiajame kadre jis nukeliauja žemyn. Tas pats groupId gretimose scenose sujungia visą grandinę.",
+      "content": {
+        "eyebrow": "03 KAMPE",
+        "richHeadline": [
+          {
+            "text": "tas pats groupId",
+            "size": "body",
+            "animation": "fade"
+          },
+          {
+            "text": "VEDA GRANDINĘ",
+            "size": "headline",
+            "pill": true,
+            "animation": "pop"
+          }
+        ]
+      },
+      "visual": {
+        "type": "browser",
+        "url": "yourapp.com",
+        "content": {
+          "type": "app-mockup",
+          "appTitle": "YOUR APP",
+          "kind": "list",
+          "items": [
+            "Row one",
+            "Row two",
+            "Row three"
+          ]
+        }
+      },
+      "visualPosition": {
+        "x": 50,
+        "y": 80
+      },
+      "visualScale": 0.3,
+      "visualLink": {
+        "groupId": "carry-browser"
+      },
+      "motion": {
+        "entrance": "fade",
+        "stagger": 6,
+        "transition": "cut"
+      }
+    }
+  ]
+}

@@ -1,0 +1,469 @@
+{
+"id": "claude-code-shortcuts-structured",
+"title": "4 Claude Code Shortcuts Worth Learning",
+"fps": 30,
+"width": 1080,
+"height": 1920,
+"scenes": [
+{
+"id": "hook",
+"type": "hook-centered",
+"background": "solid-dark",
+"layout": "text-only",
+"vo": "If you use Claude Code, memorize these four shortcuts.",
+"content": {
+"richHeadline": [
+{
+"text": "USING",
+"size": "title",
+"animation": "slideDown"
+},
+{
+"text": "CLAUDE CODE?",
+"size": "hero",
+"pill": true,
+"animation": "pop",
+"sfx": "d-pop"
+},
+{
+"text": "MEMORIZE THESE 4",
+"size": "headline",
+"animation": "slideUp"
+}
+]
+},
+"visual": {
+"type": "corner-props",
+"assets": [
+{
+"type": "tool-logo",
+"tool": "claude"
+}
+],
+"diagonal": "tlbr",
+"size": 460,
+"speed": 0.8
+},
+"motion": {
+"entrance": "slideUp",
+"transition": "cut",
+"stagger": 5,
+"sfx": "none"
+}
+},
+{
+"id": "shortcut-one",
+"type": "hook-centered",
+"background": "solid-dark",
+"layout": "visual-bottom",
+"vo": "Number one. Escape, Escape.",
+"content": {
+"richHeadline": [
+{
+"text": "01",
+"size": "hero",
+"pill": true,
+"animation": "pop"
+},
+{
+"text": "ESC + ESC",
+"size": "headline",
+"animation": "slideUp"
+},
+{
+"text": "REWIND",
+"size": "label",
+"animation": "slideUp"
+}
+]
+},
+"visual": {
+"type": "keycap",
+"keys": [
+"ESC",
+"ESC"
+],
+"caption": "open checkpoint menu"
+},
+"visualSfx": "d-tick",
+"motion": {
+"entrance": "slideUp",
+"transition": "slideLeft",
+"stagger": 6,
+"sfx": "none"
+}
+},
+{
+"id": "shortcut-one-explained",
+"type": "visual-explainer",
+"background": "solid-dark",
+"layout": "visual-bottom",
+"vo": "Claude took your code in the wrong direction? Escape twice opens your checkpoints so you can jump back.",
+"content": {
+"eyebrow": "WHY IT MATTERS",
+"headline": "CLAUDE MESSED SOMETHING UP?",
+"highlights": [
+"MESSED"
+]
+},
+"visual": {
+"type": "transform",
+"from": {
+"type": "claude-cli",
+"transcript": [
+{
+"text": "fix the login redirect",
+"kind": "user"
+},
+{
+"text": "editing auth.ts...",
+"kind": "tool"
+},
+{
+"text": "editing router.ts...",
+"kind": "dim"
+}
+]
+},
+"to": {
+"type": "claude-cli",
+"overlay": {
+"title": "rewind to a checkpoint",
+"items": [
+{
+"text": "before login changes",
+"selected": true
+},
+{
+"text": "after auth update"
+},
+{
+"text": "session start"
+}
+]
+}
+},
+"holdFrames": 34
+},
+"visualSfx": "d-select",
+"motion": {
+"entrance": "slideUp",
+"transition": "slideLeft",
+"stagger": 6,
+"sfx": "none"
+}
+},
+{
+"id": "shortcut-two",
+"type": "hook-centered",
+"background": "solid-dark",
+"layout": "visual-bottom",
+"vo": "Number two. Shift Tab.",
+"content": {
+"richHeadline": [
+{
+"text": "02",
+"size": "hero",
+"pill": true,
+"animation": "pop"
+},
+{
+"text": "SHIFT + TAB",
+"size": "headline",
+"animation": "slideUp"
+},
+{
+"text": "CHANGE MODE",
+"size": "label",
+"animation": "slideUp"
+}
+]
+},
+"visual": {
+"type": "keycap",
+"keys": [
+"SHIFT",
+"TAB"
+],
+"caption": "cycle permission modes"
+},
+"visualSfx": "d-tick",
+"motion": {
+"entrance": "slideUp",
+"transition": "slideLeft",
+"stagger": 6,
+"sfx": "none"
+}
+},
+{
+"id": "shortcut-two-explained",
+"type": "visual-explainer",
+"background": "solid-dark",
+"layout": "visual-bottom",
+"vo": "For bigger changes, cycle into Plan mode. Claude can inspect the problem and propose the approach before editing your code.",
+"content": {
+"eyebrow": "WHY IT MATTERS",
+"headline": "PLAN BEFORE YOU LET IT EDIT",
+"highlights": [
+"PLAN"
+]
+},
+"visual": {
+"type": "transform",
+"from": {
+"type": "claude-cli",
+"transcript": [
+{
+"text": "refactor authentication",
+"kind": "user"
+},
+{
+"text": "ready to edit files",
+"kind": "tool"
+}
+],
+"mode": "accept edits",
+"modeActive": true
+},
+"to": {
+"type": "claude-cli",
+"transcript": [
+{
+"text": "1. inspect auth flow",
+"kind": "result"
+},
+{
+"text": "2. find affected files",
+"kind": "result"
+},
+{
+"text": "3. propose minimal change",
+"kind": "result"
+}
+],
+"mode": "plan mode",
+"modeActive": true
+},
+"holdFrames": 34
+},
+"visualSfx": "d-select",
+"motion": {
+"entrance": "slideUp",
+"transition": "slideLeft",
+"stagger": 6,
+"sfx": "none"
+}
+},
+{
+"id": "shortcut-three",
+"type": "hook-centered",
+"background": "solid-dark",
+"layout": "visual-bottom",
+"vo": "Number three. Control R.",
+"content": {
+"richHeadline": [
+{
+"text": "03",
+"size": "hero",
+"pill": true,
+"animation": "pop"
+},
+{
+"text": "CTRL + R",
+"size": "headline",
+"animation": "slideUp"
+},
+{
+"text": "FIND OLD PROMPTS",
+"size": "label",
+"animation": "slideUp"
+}
+]
+},
+"visual": {
+"type": "keycap",
+"keys": [
+"CTRL",
+"R"
+],
+"caption": "reverse search history"
+},
+"visualSfx": "d-tick",
+"motion": {
+"entrance": "slideUp",
+"transition": "slideLeft",
+"stagger": 6,
+"sfx": "none"
+}
+},
+{
+"id": "shortcut-three-explained",
+"type": "visual-explainer",
+"background": "solid-dark",
+"layout": "visual-bottom",
+"vo": "Remember that perfect prompt from earlier? Control R searches backwards through your prompt history instead of making you type it again.",
+"content": {
+"eyebrow": "WHY IT MATTERS",
+"headline": "STOP REWRITING OLD PROMPTS",
+"highlights": [
+"STOP"
+]
+},
+"visual": {
+"type": "claude-cli",
+"overlay": {
+"title": "search history: deploy",
+"items": [
+{
+"text": "deploy app to staging",
+"selected": true
+},
+{
+"text": "fix deploy script"
+},
+{
+"text": "inspect deploy logs"
+}
+]
+}
+},
+"visualSfx": "d-select",
+"motion": {
+"entrance": "slideUp",
+"transition": "slideLeft",
+"stagger": 6,
+"sfx": "none"
+}
+},
+{
+"id": "shortcut-four",
+"type": "hook-centered",
+"background": "solid-dark",
+"layout": "visual-bottom",
+"vo": "Number four. At plus a path.",
+"content": {
+"richHeadline": [
+{
+"text": "04",
+"size": "hero",
+"pill": true,
+"animation": "pop"
+},
+{
+"text": "@ + PATH",
+"size": "headline",
+"animation": "slideUp"
+},
+{
+"text": "GIVE CONTEXT",
+"size": "label",
+"animation": "slideUp"
+}
+]
+},
+"visual": {
+"type": "keycap",
+"keys": [
+"@"
+],
+"caption": "reference a file or folder"
+},
+"visualSfx": "d-tick",
+"motion": {
+"entrance": "slideUp",
+"transition": "slideLeft",
+"stagger": 6,
+"sfx": "none"
+}
+},
+{
+"id": "shortcut-four-explained",
+"type": "visual-explainer",
+"background": "solid-dark",
+"layout": "visual-bottom",
+"vo": "Instead of explaining your code in a giant prompt, reference the actual file or folder and let Claude read the context.",
+"content": {
+"eyebrow": "WHY IT MATTERS",
+"headline": "STOP EXPLAINING YOUR OWN CODE",
+"highlights": [
+"STOP"
+]
+},
+"visual": {
+"type": "transform",
+"from": {
+"type": "claude-cli",
+"input": "the login file has a bug..."
+},
+"to": {
+"type": "claude-cli",
+"transcript": [
+{
+"text": "@src/auth/login.ts",
+"kind": "user"
+},
+{
+"text": "reading login.ts",
+"kind": "tool"
+},
+{
+"text": "context loaded",
+"kind": "result"
+}
+],
+"input": "fix the redirect bug"
+},
+"holdFrames": 34
+},
+"visualSfx": "d-done",
+"motion": {
+"entrance": "slideUp",
+"transition": "slideLeft",
+"stagger": 6,
+"sfx": "none"
+}
+},
+{
+"id": "bonus",
+"type": "takeaway",
+"background": "solid-dark",
+"layout": "visual-bottom",
+"vo": "And if you forget any of these, press question mark. Claude shows the shortcuts available in your setup.",
+"content": {
+"richHeadline": [
+{
+"text": "BONUS",
+"size": "label",
+"animation": "slideDown"
+},
+{
+"text": "FORGOT THEM?",
+"size": "headline",
+"animation": "slideDown"
+},
+{
+"text": "PRESS ?",
+"size": "hero",
+"pill": true,
+"animation": "pop",
+"sfx": "d-pop"
+}
+]
+},
+"visual": {
+"type": "keycap",
+"keys": [
+"?"
+],
+"caption": "show shortcuts"
+},
+"visualSfx": "d-select",
+"motion": {
+"entrance": "slideUp",
+"transition": "slideLeft",
+"stagger": 6,
+"sfx": "none"
+}
+}
+]
+}

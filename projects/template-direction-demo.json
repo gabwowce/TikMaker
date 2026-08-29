@@ -1,0 +1,178 @@
+{
+  "id": "template-direction-demo",
+  "title": "Patikra: Kryptys ir glaistymas",
+  "fps": 30,
+  "width": 1080,
+  "height": 1920,
+  "scenes": [
+    {
+      "id": "intro",
+      "type": "hook-centered",
+      "durationSeconds": 1.6,
+      "background": "solid-dark",
+      "content": {
+        "eyebrow": "PATIKRA",
+        "richHeadline": [
+          {
+            "text": "kiekvienas kadras",
+            "size": "title",
+            "animation": "fade"
+          },
+          {
+            "text": "PASAKO",
+            "size": "hero",
+            "pill": true,
+            "animation": "pop"
+          },
+          {
+            "text": "iš kur jis atėjo",
+            "size": "body",
+            "animation": "fade"
+          }
+        ]
+      },
+      "motion": {
+        "transition": "cut",
+        "stagger": 6
+      }
+    },
+    {
+      "id": "dir-right",
+      "type": "visual-explainer",
+      "durationSeconds": 2.6,
+      "background": "solid-dark",
+      "content": {
+        "eyebrow": "SLIDELEFT",
+        "headline": "ATĖJAU IŠ DEŠINĖS"
+      },
+      "motion": {
+        "transition": "slideLeft",
+        "stagger": 6,
+        "entrance": "none"
+      }
+    },
+    {
+      "id": "dir-top",
+      "type": "visual-explainer",
+      "durationSeconds": 2.6,
+      "background": "solid-dark",
+      "content": {
+        "eyebrow": "SLIDEDOWN",
+        "headline": "ATĖJAU IŠ VIRŠAUS"
+      },
+      "motion": {
+        "transition": "slideDown",
+        "stagger": 6,
+        "entrance": "none"
+      }
+    },
+    {
+      "id": "dir-left",
+      "type": "visual-explainer",
+      "durationSeconds": 2.6,
+      "background": "solid-dark",
+      "content": {
+        "eyebrow": "SLIDERIGHT",
+        "headline": "ATĖJAU IŠ KAIRĖS"
+      },
+      "motion": {
+        "transition": "slideRight",
+        "stagger": 6,
+        "entrance": "none"
+      }
+    },
+    {
+      "id": "dir-bottom",
+      "type": "visual-explainer",
+      "durationSeconds": 2.6,
+      "background": "solid-dark",
+      "content": {
+        "eyebrow": "SLIDEUP",
+        "headline": "ATĖJAU IŠ APAČIOS"
+      },
+      "motion": {
+        "transition": "slideUp",
+        "stagger": 6,
+        "entrance": "none"
+      }
+    },
+    {
+      "id": "glide-big",
+      "type": "hook-centered",
+      "durationSeconds": 2.0,
+      "background": "solid-dark",
+      "content": {
+        "eyebrow": "DABAR ŽIŪRĖK Į IKONĄ",
+        "richHeadline": [
+          {
+            "text": "DIDELĖ",
+            "size": "hero",
+            "pill": true,
+            "animation": "fade"
+          }
+        ]
+      },
+      "visual": {
+        "type": "prop",
+        "asset": "idea"
+      },
+      "visualPosition": {
+        "x": 50,
+        "y": 26
+      },
+      "visualScale": 1.9,
+      "visualLink": {
+        "groupId": "demo-glide"
+      },
+      "motion": {
+        "transition": "slideLeft",
+        "stagger": 6,
+        "entrance": "none"
+      }
+    },
+    {
+      "id": "glide-small",
+      "type": "visual-explainer",
+      "durationSeconds": 2.8,
+      "background": "solid-dark",
+      "content": {
+        "eyebrow": "TA PATI IKONA",
+        "headline": "DABAR MAŽA IR KAMPE"
+      },
+      "visual": {
+        "type": "prop",
+        "asset": "idea"
+      },
+      "visualPosition": {
+        "x": 85,
+        "y": 15
+      },
+      "visualScale": 0.4,
+      "visualLink": {
+        "groupId": "demo-glide"
+      },
+      "motion": {
+        "transition": "slideLeft",
+        "stagger": 6,
+        "entrance": "none"
+      }
+    },
+    {
+      "id": "outro",
+      "type": "takeaway",
+      "durationSeconds": 2.0,
+      "background": "solid-dark",
+      "content": {
+        "headline": "VISKAS VEIKIA",
+        "highlights": [
+          "VEIKIA"
+        ]
+      },
+      "motion": {
+        "transition": "slideDown",
+        "stagger": 6,
+        "entrance": "none"
+      }
+    }
+  ]
+}

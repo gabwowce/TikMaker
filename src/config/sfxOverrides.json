@@ -1,0 +1,40 @@
+{
+  "content": {
+    "entrance": {
+      "slideUp": "d-word",
+      "slideDown": "d-word",
+      "slideLeft": "d-word",
+      "slideRight": "d-word",
+      "scaleIn": "d-word",
+      "pop": "d-word",
+      "fade": "soft-whoosh"
+    },
+    "exit": {
+      "slideUp": "none",
+      "slideDown": "none",
+      "slideLeft": "none",
+      "slideRight": "none",
+      "scaleOut": "none",
+      "fade": "none"
+    }
+  },
+  "visual": {
+    "entrance": {
+      "slideUp": "none",
+      "slideLeft": "none",
+      "slideDown": "none",
+      "slideRight": "none",
+      "scaleIn": "none",
+      "pop": "none",
+      "fade": "none"
+    },
+    "exit": {
+      "slideUp": "none",
+      "slideDown": "none",
+      "slideLeft": "none",
+      "slideRight": "none",
+      "scaleOut": "none",
+      "fade": "none"
+    }
+  }
+}

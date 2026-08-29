@@ -22,6 +22,18 @@ const PAIRS: Record<Diagonal, [Corner, Corner]> = {
   trbl: ["tr", "bl"],
 };
 
+/** Default corner slots expressed as percent of frame width/height, so the
+ * Inspector can pre-fill per-asset X/Y sliders at the current visual
+ * position instead of snapping to 0 the first time a user touches them. */
+export const CORNER_SLOT_PERCENT: Record<Corner, { x: number; y: number }> = {
+  tl: { x: (SLOTS.tl.x / W) * 100, y: (SLOTS.tl.y / H) * 100 },
+  tr: { x: (SLOTS.tr.x / W) * 100, y: (SLOTS.tr.y / H) * 100 },
+  bl: { x: (SLOTS.bl.x / W) * 100, y: (SLOTS.bl.y / H) * 100 },
+  br: { x: (SLOTS.br.x / W) * 100, y: (SLOTS.br.y / H) * 100 },
+};
+
+export const CORNER_PAIRS = PAIRS;
+
 const DEFAULT_SIZE = 480;
 const DEFAULT_SPEED = 1;
 const ENTER_FRAMES = 20;
@@ -38,7 +50,11 @@ export const CornerFloat: React.FC<{
   diagonal?: Diagonal;
   size?: number;
   speed?: number;
-}> = ({ assets, diagonal = "tlbr", size = DEFAULT_SIZE, speed = DEFAULT_SPEED }) => {
+  /** Per-asset position override, in percent of frame width/height —
+   * index-matched to `assets`. Falls back to the diagonal's default corner
+   * slot when an entry is missing. */
+  offsets?: { x: number; y: number }[];
+}> = ({ assets, diagonal = "tlbr", size = DEFAULT_SIZE, speed = DEFAULT_SPEED, offsets }) => {
   const frame = useCurrentFrame();
   const items = assets.length === 1 ? [assets[0], assets[0]] : assets.slice(0, 2);
   const corners = PAIRS[diagonal];
@@ -57,7 +73,10 @@ export const CornerFloat: React.FC<{
   return (
     <AbsoluteFill style={{ pointerEvents: "none" }}>
       {items.map((asset, index) => {
-        const slot = SLOTS[corners[index]];
+        const override = offsets?.[index];
+        const slot = override
+          ? { x: (override.x / 100) * W, y: (override.y / 100) * H }
+          : SLOTS[corners[index]];
         const t = frame * 0.011 * speed + index * 2.3;
 
         const dx = Math.cos(t) * 30;

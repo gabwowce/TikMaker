@@ -3,12 +3,13 @@ import { Composition } from "remotion";
 import { TikTokVideo } from "./video/TikTokVideo";
 import { videoDefaults } from "./video/typography/tokens";
 import { projectDurationInFrames } from "./utils/duration";
-import { videoProjectSchema, createEmptyProject } from "./schema/project";
+import { createEmptyProject } from "./schema/project";
+import { parseProject } from "./utils/normalizeProject";
 import showcaseProjectJson from "../projects/template-showcase.json";
 import claudeConnectorsJson from "../projects/claude-connectors.json";
 
-const showcaseProject = videoProjectSchema.parse(showcaseProjectJson);
-const claudeConnectorsProject = videoProjectSchema.parse(claudeConnectorsJson);
+const showcaseProject = parseProject(showcaseProjectJson);
+const claudeConnectorsProject = parseProject(claudeConnectorsJson);
 const fallbackProject = createEmptyProject("empty", "Empty Project");
 
 export const RemotionRoot: React.FC = () => {

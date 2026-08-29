@@ -3,9 +3,10 @@ import type { VideoProject } from "../../schema/project";
 import type {
   Scene,
   SceneType,
-  BackgroundId,
+  SceneBackground,
   EntrancePreset,
   ExitPreset,
+  KenBurnsPreset,
   TransitionPreset,
   SideContent,
   StepItem,
@@ -14,9 +15,12 @@ import type {
   PositionedVisualEntry,
 } from "../../schema/scene";
 import type { VisualConfig } from "../../schema/visual";
-import { videoProjectSchema, createEmptyProject } from "../../schema/project";
+import { createEmptyProject } from "../../schema/project";
+import { parseProject } from "../../utils/normalizeProject";
 import { getSceneDefinition } from "../../registries/sceneRegistry";
+import { getScriptTemplate } from "../../registries/scriptTemplates";
 import exampleProjectJson from "../../../projects/template-showcase.json";
+import { naturalVisualSize } from "../../video/layout/visualMetrics";
 
 const LEGACY_STORAGE_KEY = "tikmaker.project";
 const LIBRARY_KEY = "tikmaker.library";
@@ -33,7 +37,7 @@ function readLibrary(): Library {
     const library: Library = {};
     for (const [id, value] of Object.entries(parsed)) {
       try {
-        library[id] = videoProjectSchema.parse(value);
+        library[id] = parseProject(value);
       } catch {
         // skip corrupt entry
       }
@@ -68,7 +72,7 @@ function loadInitialState(): { project: VideoProject; library: Library } {
     const legacy = window.localStorage.getItem(LEGACY_STORAGE_KEY);
     if (legacy) {
       try {
-        const project = videoProjectSchema.parse(JSON.parse(legacy));
+        const project = parseProject(JSON.parse(legacy));
         library[project.id] = project;
         writeLibrary(library);
         window.localStorage.setItem(LAST_OPENED_KEY, project.id);
@@ -80,7 +84,7 @@ function loadInitialState(): { project: VideoProject; library: Library } {
     }
   }
 
-  const fallback = videoProjectSchema.parse(exampleProjectJson);
+  const fallback = parseProject(exampleProjectJson);
   return { project: fallback, library };
 }
 
@@ -100,6 +104,7 @@ type ProjectStore = {
 
   createProject: (title: string) => void;
   loadProject: (project: VideoProject) => void;
+  useScriptTemplate: (templateId: string) => void;
   saveProject: () => void;
   exportProjectJson: () => string;
   updateProjectTitle: (title: string) => void;
@@ -107,6 +112,10 @@ type ProjectStore = {
   deleteProject: (id: string) => void;
 
   addScene: (type: SceneType) => void;
+  /** Appends a fully-formed scene (from the saved-scene library) after the
+   * selected one, so a reused layout lands where you're working rather than at
+   * the end of the video. */
+  insertScene: (scene: Scene) => void;
   removeScene: (id: string) => void;
   duplicateScene: (id: string) => void;
   moveScene: (id: string, direction: "up" | "down") => void;
@@ -117,19 +126,43 @@ type ProjectStore = {
   updateSceneVisualEntrance: (id: string, entrance: EntrancePreset | undefined) => void;
   updateSceneVisualExit: (id: string, exit: ExitPreset | undefined) => void;
   updateSceneVisualExitDuration: (id: string, exitDuration: number) => void;
-  updateSceneBackground: (id: string, background: BackgroundId) => void;
+  updateSceneVisualKenBurns: (id: string, kenBurns: KenBurnsPreset | undefined) => void;
+  updateSceneVisualSfx: (id: string, sfx: string | undefined) => void;
+  updateSceneVisualExitSfx: (id: string, sfx: string | undefined) => void;
+  updateSceneBackground: (id: string, background: SceneBackground) => void;
+  /** Sets the SAME background on every scene — this app deliberately keeps one
+   * background for the whole video (see CLAUDE.md), so background is edited
+   * project-wide rather than per scene. */
+  updateAllScenesBackground: (background: SceneBackground) => void;
   updateSceneEntrance: (id: string, entrance: EntrancePreset) => void;
   updateSceneExit: (id: string, exit: ExitPreset | undefined) => void;
   updateSceneExitDuration: (id: string, exitDuration: number) => void;
+  /** Generic patch for the scene's `motion` object — use for the fields that
+   * don't have (and don't need) a dedicated setter, e.g. slide distances. */
+  updateSceneMotion: (id: string, patch: Partial<NonNullable<Scene["motion"]>>) => void;
+  updateSceneSfx: (id: string, sfx: string | undefined) => void;
+  updateSceneExitSfx: (id: string, sfx: string | undefined) => void;
   updateSceneTransition: (id: string, transition: TransitionPreset) => void;
   updateSceneStagger: (id: string, stagger: number) => void;
-  updateSceneBadge: (id: string, badge: string) => void;
   updateSceneHighlights: (id: string, highlights: string[]) => void;
   updateSceneLeftRight: (id: string, side: "left" | "right", patch: Partial<SideContent>) => void;
   updateSceneItems: (id: string, items: StepItem[]) => void;
   updateSceneRichHeadline: (id: string, lines: RichHeadlineLine[]) => void;
   updateSceneBlocks: (id: string, blocks: Block[]) => void;
   updateSceneVisuals: (id: string, visuals: PositionedVisualEntry[]) => void;
+  /** Copies this scene's primary visual onto the NEXT scene and wires both
+   * sides of a `visualLink` group, so the same asset glides between the two
+   * poses across the cut. Doing it by hand means getting four things right at
+   * once (same asset, same groupId, explicit position on both, adjacency) —
+   * this is the one-click version. No-op if there's no next scene or no visual. */
+  linkVisualToNextScene: (id: string) => void;
+  /** Same carry, for one freeform `content.visuals[]` layer: copies the entry
+   * onto the next scene and links both, so the layer stays one continuous
+   * element across the cut just like a primary visual. */
+  linkLayerToNextScene: (sceneId: string, entryId: string) => void;
+  /** Replaces a `corner-props` visual with one freeform layer per asset, so
+   * each one gets its own position, scale, animation and carry — the composite
+   * has no per-asset controls and can't be linked. */
 
   selectScene: (id: string | null) => void;
   setActiveVisualSlot: (slot: VisualSlot) => void;
@@ -159,6 +192,20 @@ export const useProjectStore = create<ProjectStore>((set, get) => ({
   },
 
   loadProject: (project) => {
+    const library = persist(project, readLibrary());
+    set({ project, selectedSceneId: project.scenes[0]?.id ?? null, libraryIndex: libraryIndexFrom(library) });
+  },
+
+  useScriptTemplate: (templateId) => {
+    const template = getScriptTemplate(templateId);
+    if (!template) return;
+    // Clone with a fresh id so re-using the same template (or opening it twice)
+    // starts a new project instead of overwriting a previous one built from it.
+    const project: VideoProject = {
+      ...template.project,
+      id: `${template.id}-${Date.now().toString(36)}`,
+      title: template.name,
+    };
     const library = persist(project, readLibrary());
     set({ project, selectedSceneId: project.scenes[0]?.id ?? null, libraryIndex: libraryIndexFrom(library) });
   },
@@ -200,18 +247,36 @@ export const useProjectStore = create<ProjectStore>((set, get) => ({
 
   addScene: (type) => {
     const def = getSceneDefinition(type);
-    const newScene: Scene = {
-      id: makeSceneId(),
-      type,
-      durationSeconds: def.defaultDurationSeconds,
-      background: "solid-dark",
-      content: { headline: "New headline" },
-      motion: { entrance: "fade", transition: "cut" },
-    };
-    set((state) => ({
-      project: { ...state.project, scenes: [...state.project.scenes, newScene] },
-      selectedSceneId: newScene.id,
-    }));
+    set((state) => {
+      // Keep the whole video on one background — a new scene inherits whatever
+      // the rest of the project is already using instead of resetting to a
+      // hardcoded default.
+      const background = state.project.scenes[0]?.background ?? "solid-dark";
+      const newScene: Scene = {
+        id: makeSceneId(),
+        type,
+        // Left unset on purpose — a new scene is auto-paced from its VO/text
+        // (see `resolveSceneDuration`) until someone pins an explicit length.
+        durationSeconds: undefined,
+        background,
+        content: { headline: "New headline" },
+        motion: { entrance: "fade", transition: "cut" },
+      };
+      return {
+        project: { ...state.project, scenes: [...state.project.scenes, newScene] },
+        selectedSceneId: newScene.id,
+      };
+    });
+  },
+
+  insertScene: (scene) => {
+    set((state) => {
+      const scenes = [...state.project.scenes];
+      const at = scenes.findIndex((s) => s.id === state.selectedSceneId);
+      const index = at === -1 ? scenes.length : at + 1;
+      scenes.splice(index, 0, scene);
+      return { project: { ...state.project, scenes }, selectedSceneId: scene.id };
+    });
   },
 
   removeScene: (id) => {
@@ -314,11 +379,47 @@ export const useProjectStore = create<ProjectStore>((set, get) => ({
     }));
   },
 
+  updateSceneVisualKenBurns: (id, kenBurns) => {
+    set((state) => ({
+      project: {
+        ...state.project,
+        scenes: state.project.scenes.map((s) => (s.id === id ? { ...s, visualKenBurns: kenBurns } : s)),
+      },
+    }));
+  },
+
+  updateSceneVisualSfx: (id, sfx) => {
+    set((state) => ({
+      project: {
+        ...state.project,
+        scenes: state.project.scenes.map((s) => (s.id === id ? { ...s, visualSfx: sfx } : s)),
+      },
+    }));
+  },
+
+  updateSceneVisualExitSfx: (id, sfx) => {
+    set((state) => ({
+      project: {
+        ...state.project,
+        scenes: state.project.scenes.map((s) => (s.id === id ? { ...s, visualExitSfx: sfx } : s)),
+      },
+    }));
+  },
+
   updateSceneBackground: (id, background) => {
     set((state) => ({
       project: {
         ...state.project,
         scenes: state.project.scenes.map((s) => (s.id === id ? { ...s, background } : s)),
+      },
+    }));
+  },
+
+  updateAllScenesBackground: (background) => {
+    set((state) => ({
+      project: {
+        ...state.project,
+        scenes: state.project.scenes.map((s) => ({ ...s, background })),
       },
     }));
   },
@@ -365,23 +466,39 @@ export const useProjectStore = create<ProjectStore>((set, get) => ({
     }));
   },
 
+  updateSceneMotion: (id, patch) => {
+    set((state) => ({
+      project: {
+        ...state.project,
+        scenes: state.project.scenes.map((s) => (s.id === id ? { ...s, motion: { ...s.motion, ...patch } } : s)),
+      },
+    }));
+  },
+
+  updateSceneSfx: (id, sfx) => {
+    set((state) => ({
+      project: {
+        ...state.project,
+        scenes: state.project.scenes.map((s) => (s.id === id ? { ...s, motion: { ...s.motion, sfx } } : s)),
+      },
+    }));
+  },
+
+  updateSceneExitSfx: (id, sfx) => {
+    set((state) => ({
+      project: {
+        ...state.project,
+        scenes: state.project.scenes.map((s) => (s.id === id ? { ...s, motion: { ...s.motion, exitSfx: sfx } } : s)),
+      },
+    }));
+  },
+
   updateSceneStagger: (id, stagger) => {
     set((state) => ({
       project: {
         ...state.project,
         scenes: state.project.scenes.map((s) =>
           s.id === id ? { ...s, motion: { ...s.motion, stagger } } : s
-        ),
-      },
-    }));
-  },
-
-  updateSceneBadge: (id, badge) => {
-    set((state) => ({
-      project: {
-        ...state.project,
-        scenes: state.project.scenes.map((s) =>
-          s.id === id ? { ...s, content: { ...s.content, badge } } : s
         ),
       },
     }));
@@ -438,6 +555,133 @@ export const useProjectStore = create<ProjectStore>((set, get) => ({
         ),
       },
     }));
+  },
+
+  linkVisualToNextScene: (id) => {
+    set((state) => {
+      const index = state.project.scenes.findIndex((s) => s.id === id);
+      const scene = state.project.scenes[index];
+      const next = state.project.scenes[index + 1];
+      if (!scene?.visual || !next) return state;
+
+      // EXTEND the chain this scene is already part of rather than starting a
+      // fresh group. Minting a new groupId here silently kicked the previous
+      // scene out of the chain — pressing the button down a run of scenes left
+      // scene 1 orphaned while 2+3 carried, so a recording restarted at the
+      // second cut instead of playing straight through.
+      const groupId = scene.visualLink?.groupId ?? `${scene.id}-glide`;
+
+      const fromPosition = scene.visualPosition ?? { x: 50, y: 55 };
+      const fromScale = scene.visualScale ?? 1;
+
+      // The pose has to CHANGE across the cut or the carry is invisible. Move to
+      // the opposite band from wherever it currently sits, and keep shrinking —
+      // that reads as one element settling out of the way as the video goes on.
+      // Centered horizontally on purpose: an off-center default pushes a wide
+      // visual past the side-safe margin and greets the user with an overflow
+      // warning they didn't ask for. Drag it sideways from here for a corner.
+      const toPosition = { x: 50, y: fromPosition.y > 40 ? 20 : 80 };
+      const toScale = Math.max(0.2, Number((fromScale * 0.5).toFixed(2)));
+
+      const scenes = [...state.project.scenes];
+      scenes[index] = {
+        ...scene,
+        visualPosition: fromPosition,
+        visualScale: fromScale,
+        visualLink: { groupId },
+        // The visual must simply hold its pose until the cut — the whole move
+        // is played by the next scene's glide-in. Any exit here would animate
+        // the thing that's supposed to be carried across.
+        visualExit: undefined,
+        visualExitDuration: undefined,
+        visualExitDistance: undefined,
+      };
+      scenes[index + 1] = {
+        ...next,
+        visual: scene.visual,
+        visualPosition: toPosition,
+        visualScale: toScale,
+        visualLink: { groupId },
+        // Same reasoning on the incoming side: the glide replaces the entrance.
+        visualEntrance: undefined,
+        visualEntranceDistance: undefined,
+        motion: {
+          ...next.motion,
+          // A slide transition translates the WHOLE incoming frame, so the
+          // glide would be riding a frame that's itself moving — two motions
+          // at once and the carry stops reading as one continuous element.
+          transition: "cut",
+        },
+      };
+      return { project: { ...state.project, scenes } };
+    });
+  },
+
+  linkLayerToNextScene: (sceneId, entryId) => {
+    set((state) => {
+      const index = state.project.scenes.findIndex((s) => s.id === sceneId);
+      const scene = state.project.scenes[index];
+      const next = state.project.scenes[index + 1];
+      const entry = scene?.content.visuals?.find((v) => v.id === entryId);
+      if (!scene || !next || !entry) return state;
+
+      // Extend the chain this layer already belongs to — minting a fresh id
+      // here would drop the earlier scenes out of it (see linkVisualToNextScene).
+      const groupId = entry.link?.groupId ?? `${scene.id}-${entry.id}-glide`;
+      const toScale = Math.max(0.2, Number(((entry.scale ?? 1) * 0.6).toFixed(2)));
+
+      const carriedOver = (next.content.visuals ?? []).filter((v) => v.link?.groupId !== groupId);
+      // `content.visuals` is capped at 6 by the schema — silently pushing a 7th
+      // would only surface as a validation error on export.
+      if (carriedOver.length >= 6) return state;
+
+      const scenes = [...state.project.scenes];
+      scenes[index] = {
+        ...scene,
+        content: {
+          ...scene.content,
+          visuals: scene.content.visuals?.map((v) =>
+            v.id === entry.id
+              ? { ...v, link: { groupId }, exit: undefined, exitDuration: undefined, exitDistance: undefined, exitSfx: undefined }
+              : v
+          ),
+        },
+      };
+      scenes[index + 1] = {
+        ...next,
+        content: {
+          ...next.content,
+          visuals: [
+            ...carriedOver,
+            {
+              ...entry,
+              id: `${entry.id}-${next.id}`,
+              // The pose has to change or the carry is invisible.
+              x: entry.x,
+              y: entry.y > 50 ? 20 : 80,
+              scale: toScale,
+              link: { groupId },
+              entrance: undefined,
+              // This scene becomes the chain's LAST member (until extended
+              // further), so it's the one whose exit will actually play. The
+              // source entry's own exit (if any) meant "fade out at the end of
+              // THAT scene" — a different, now-meaningless thing — so carrying
+              // it forward unedited would either silently do nothing (if this
+              // stops being last) or fire from a value the author never chose
+              // for this spot. Start clean; the Inspector only shows Out
+              // controls on the actual last member, so this is where they'd
+              // set it anyway.
+              exit: undefined,
+              exitDuration: undefined,
+              exitDistance: undefined,
+              exitSfx: undefined,
+            },
+          ],
+        },
+        motion: { ...next.motion, transition: "cut" },
+      };
+      return { project: { ...state.project, scenes } };
+    });
   },
 
   updateSceneVisuals: (id, visuals) => {

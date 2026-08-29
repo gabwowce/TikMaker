@@ -3,6 +3,31 @@ export type AssetManifestEntry = { id: string; file: string; label: string };
 
 export const generatedLogos: AssetManifestEntry[] = [
   {
+    "id": "claude-ai-symbol",
+    "file": "Claude_AI_symbol.svg.webp",
+    "label": "Claude AI symbol"
+  },
+  {
+    "id": "cloudflare",
+    "file": "Cloudflare.png",
+    "label": "Cloudflare"
+  },
+  {
+    "id": "netlify",
+    "file": "Netlify.png",
+    "label": "Netlify"
+  },
+  {
+    "id": "vs-code",
+    "file": "VS-Code.png",
+    "label": "VS Code"
+  },
+  {
+    "id": "vercel",
+    "file": "Vercel.png",
+    "label": "Vercel"
+  },
+  {
     "id": "bolt",
     "file": "bolt.png",
     "label": "bolt"
@@ -21,16 +46,6 @@ export const generatedLogos: AssetManifestEntry[] = [
     "id": "claude",
     "file": "claude.png",
     "label": "claude"
-  },
-  {
-    "id": "claude-ai-symbol",
-    "file": "Claude_AI_symbol.svg.webp",
-    "label": "Claude AI symbol"
-  },
-  {
-    "id": "cloudflare",
-    "file": "Cloudflare.png",
-    "label": "Cloudflare"
   },
   {
     "id": "discord",
@@ -83,11 +98,6 @@ export const generatedLogos: AssetManifestEntry[] = [
     "label": "midjourney"
   },
   {
-    "id": "netlify",
-    "file": "Netlify.png",
-    "label": "Netlify"
-  },
-  {
     "id": "reddit",
     "file": "reddit.png",
     "label": "reddit"
@@ -111,16 +121,6 @@ export const generatedLogos: AssetManifestEntry[] = [
     "id": "supabase",
     "file": "supabase.png",
     "label": "supabase"
-  },
-  {
-    "id": "vercel",
-    "file": "Vercel.png",
-    "label": "Vercel"
-  },
-  {
-    "id": "vs-code",
-    "file": "VS-Code.png",
-    "label": "VS Code"
   },
   {
     "id": "x",

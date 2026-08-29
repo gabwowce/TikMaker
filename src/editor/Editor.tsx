@@ -8,13 +8,43 @@ import { SceneStrip } from "./panels/SceneStrip";
 import { TikTokVideo } from "../video/TikTokVideo";
 import { videoDefaults } from "../video/typography/tokens";
 import { projectDurationInFrames } from "../utils/duration";
-import { videoProjectSchema } from "../schema/project";
+import { parseProject } from "../utils/normalizeProject";
 import { BlockPositionOverlay } from "./BlockPositionOverlay";
+import { RenderButton } from "./RenderButton";
 
-const PREVIEW_WIDTH = 380;
-const PREVIEW_HEIGHT = Math.round(PREVIEW_WIDTH * (videoDefaults.height / videoDefaults.width));
+/** The preview sizes itself to whatever room the middle column has, instead of
+ * sitting at a fixed 380px while the space around it goes unused. Capped so it
+ * doesn't turn into a wall on a very tall window. */
+const PREVIEW_MIN_WIDTH = 300;
+const PREVIEW_MAX_WIDTH = 620;
+const STAGE_PADDING = 24;
+
+const VIDEO_RATIO = videoDefaults.height / videoDefaults.width;
 
 export const Editor: React.FC = () => {
+  const stageRef = React.useRef<HTMLDivElement>(null);
+  const [preview, setPreview] = React.useState({
+    width: PREVIEW_MIN_WIDTH,
+    height: Math.round(PREVIEW_MIN_WIDTH * VIDEO_RATIO),
+  });
+
+  React.useEffect(() => {
+    const stage = stageRef.current;
+    if (!stage) return;
+    const measure = () => {
+      const availableWidth = stage.clientWidth - STAGE_PADDING * 2;
+      const availableHeight = stage.clientHeight - STAGE_PADDING * 2;
+      const width = Math.round(
+        Math.max(PREVIEW_MIN_WIDTH, Math.min(PREVIEW_MAX_WIDTH, availableWidth, availableHeight / VIDEO_RATIO))
+      );
+      setPreview({ width, height: Math.round(width * VIDEO_RATIO) });
+    };
+    measure();
+    const observer = new ResizeObserver(measure);
+    observer.observe(stage);
+    return () => observer.disconnect();
+  }, []);
+
   const project = useProjectStore((s) => s.project);
   const saveProject = useProjectStore((s) => s.saveProject);
   const exportProjectJson = useProjectStore((s) => s.exportProjectJson);
@@ -33,10 +63,7 @@ export const Editor: React.FC = () => {
   const selectedSceneVisuals = selectedScene?.content.visuals ?? [];
 
   const durationInFrames = useMemo(() => projectDurationInFrames(project), [project]);
-  const totalSeconds = useMemo(
-    () => project.scenes.reduce((sum, s) => sum + s.durationSeconds, 0),
-    [project.scenes]
-  );
+  const totalSeconds = useMemo(() => durationInFrames / videoDefaults.fps, [durationInFrames]);
 
   function handleExport() {
     const json = exportProjectJson();
@@ -53,7 +80,7 @@ export const Editor: React.FC = () => {
     setImportError(null);
     try {
       const text = await file.text();
-      const parsed = videoProjectSchema.parse(JSON.parse(text));
+      const parsed = parseProject(JSON.parse(text));
       loadProject(parsed);
     } catch (err) {
       setImportError(err instanceof Error ? err.message : "Invalid project JSON.");
@@ -150,29 +177,33 @@ export const Editor: React.FC = () => {
         <button onClick={handleExport} style={topButtonStyle}>
           Export JSON
         </button>
+        <RenderButton style={topButtonStyle} />
       </div>
 
       <div style={{ flex: 1, display: "flex", overflow: "hidden" }}>
         <LibraryPanel />
 
         <div
+          ref={stageRef}
           style={{
             flex: 1,
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
             background: "#0a0a0a",
-            padding: 24,
+            padding: STAGE_PADDING,
+            overflow: "hidden",
           }}
         >
           {project.scenes.length > 0 ? (
-            <div style={{ position: "relative", width: PREVIEW_WIDTH, height: PREVIEW_HEIGHT, flexShrink: 0 }}>
+            <div style={{ position: "relative", width: preview.width, height: preview.height, flexShrink: 0 }}>
               <div
                 style={{
-                  width: PREVIEW_WIDTH,
-                  height: PREVIEW_HEIGHT,
-                  border: `1px solid ${editorColors.border}`,
-                  boxShadow: "0 0 0 1px rgba(255,255,255,0.04), 0 20px 60px rgba(0,0,0,0.6)",
+                  width: preview.width,
+                  height: preview.height,
+                  // No border/inner ring: a light outline on all four sides read
+                  // as part of the video rather than as editor chrome.
+                  boxShadow: "0 20px 60px rgba(0,0,0,0.6)",
                   borderRadius: 4,
                   overflow: "hidden",
                 }}
@@ -184,19 +215,25 @@ export const Editor: React.FC = () => {
                   fps={videoDefaults.fps}
                   compositionWidth={videoDefaults.width}
                   compositionHeight={videoDefaults.height}
-                  style={{ width: PREVIEW_WIDTH, height: PREVIEW_HEIGHT, display: "block" }}
+                  style={{ width: preview.width, height: preview.height, display: "block" }}
                   controls
                   initiallyShowControls
                   loop
                   acknowledgeRemotionLicense
+                  // Rich Headlines fire one SFX per word, and push-transition scenes now
+                  // briefly overlap (see SCENE_OVERLAP_FRAMES in utils/duration.ts) — both
+                  // can stack past the Player's default shared-audio-tag limit and crash
+                  // the preview. Raised well above worst case; doesn't affect real
+                  // exports, which don't go through this browser-audio-tag limit at all.
+                  numberOfSharedAudioTags={40}
                 />
               </div>
               <BlockPositionOverlay
                 blocks={selectedSceneBlocks}
                 visuals={selectedSceneVisuals}
                 visualPosition={selectedScene?.visualPosition}
-                width={PREVIEW_WIDTH}
-                height={PREVIEW_HEIGHT}
+                width={preview.width}
+                height={preview.height}
               />
             </div>
           ) : (

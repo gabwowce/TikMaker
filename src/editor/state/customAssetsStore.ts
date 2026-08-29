@@ -1,6 +1,21 @@
 import { create } from "zustand";
 
-export type CustomAsset = { id: string; label: string; file: string; src: string };
+export type CustomAsset = {
+  id: string;
+  label: string;
+  file: string;
+  src: string;
+  /** Missing on assets imported before videos were supported — treat as an image. */
+  kind?: "image" | "video";
+};
+
+/** A clip has to become a `recording` visual (and preview in a <video>), a still
+ * becomes an `image`. Falls back on the file extension so an older manifest
+ * entry without `kind` still resolves correctly. */
+export function assetKind(asset: CustomAsset): "image" | "video" {
+  if (asset.kind) return asset.kind;
+  return /\.(mp4|mov|webm|m4v)$/i.test(asset.file) ? "video" : "image";
+}
 
 type CustomAssetsState = {
   assets: CustomAsset[];

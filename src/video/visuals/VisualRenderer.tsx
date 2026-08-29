@@ -17,6 +17,29 @@ import { NodeGroup } from "./diagrams/NodeGroup";
 import { Stack } from "./diagrams/Stack";
 import { Transform } from "./diagrams/Transform";
 import { CornerFloat } from "./diagrams/CornerFloat";
+import { Keycap } from "./dev/Keycap";
+import { Terminal } from "./dev/Terminal";
+import { CodeDiff } from "./dev/CodeDiff";
+import { ClaudeCli } from "./dev/ClaudeCli";
+import { assetUrl } from "../../utils/assetUrl";
+
+/** Centers whatever visual is dropped inside a browser/phone frame and lets it
+ * fill the screen area — an `image` or `recording` put in a frame should read as
+ * the screen's content, not as a graphic floating at the top-left of it. */
+const FrameContent: React.FC<{ visual: VisualConfig }> = ({ visual }) => (
+  <div
+    style={{
+      position: "absolute",
+      inset: 0,
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      overflow: "hidden",
+    }}
+  >
+    <VisualRenderer visual={visual} />
+  </div>
+);
 
 export const VisualRenderer: React.FC<{ visual: VisualConfig }> = ({ visual }) => {
   switch (visual.type) {
@@ -30,7 +53,7 @@ export const VisualRenderer: React.FC<{ visual: VisualConfig }> = ({ visual }) =
       return <PropAsset name={visual.asset} />;
 
     case "image":
-      return <Img src={visual.src} style={{ maxWidth: "100%", maxHeight: "100%", objectFit: "contain" }} />;
+      return <Img src={assetUrl(visual.src)} style={{ maxWidth: "100%", maxHeight: "100%", objectFit: "contain" }} />;
 
     case "recording": {
       const recording = (
@@ -43,16 +66,29 @@ export const VisualRenderer: React.FC<{ visual: VisualConfig }> = ({ visual }) =
           crop={visual.crop}
         />
       );
-      if (visual.frame === "browser") return <BrowserMockup>{recording}</BrowserMockup>;
+      if (visual.frame === "browser")
+        return (
+          <BrowserMockup url={visual.url} title={visual.title} tabs={visual.tabs}>
+            {recording}
+          </BrowserMockup>
+        );
       if (visual.frame === "phone") return <PhoneMockup>{recording}</PhoneMockup>;
       return <div style={{ width: 860, aspectRatio: "16 / 10" }}>{recording}</div>;
     }
 
     case "browser":
-      return <BrowserMockup url={visual.url} title={visual.title}><VisualRenderer visual={visual.content} /></BrowserMockup>;
+      return (
+        <BrowserMockup url={visual.url} title={visual.title} tabs={visual.tabs}>
+          <FrameContent visual={visual.content} />
+        </BrowserMockup>
+      );
 
     case "phone":
-      return <PhoneMockup><VisualRenderer visual={visual.content} /></PhoneMockup>;
+      return (
+        <PhoneMockup>
+          <FrameContent visual={visual.content} />
+        </PhoneMockup>
+      );
 
     case "stat-counter":
       return (
@@ -63,11 +99,20 @@ export const VisualRenderer: React.FC<{ visual: VisualConfig }> = ({ visual }) =
           prefix={visual.prefix}
           suffix={visual.suffix}
           decimals={visual.decimals}
+          sfx={visual.sfx}
         />
       );
 
     case "checklist":
-      return <Checklist items={visual.items} font={visual.font} size={visual.size} stagger={visual.stagger} />;
+      return (
+        <Checklist
+          items={visual.items}
+          font={visual.font}
+          size={visual.size}
+          stagger={visual.stagger}
+          sfx={visual.sfx}
+        />
+      );
 
     case "pricing-card":
       return (
@@ -114,9 +159,35 @@ export const VisualRenderer: React.FC<{ visual: VisualConfig }> = ({ visual }) =
     case "transform":
       return <Transform from={visual.from} to={visual.to} holdFrames={visual.holdFrames} />;
 
+    case "keycap":
+      return <Keycap keys={visual.keys} caption={visual.caption} />;
+
+    case "terminal":
+      return <Terminal title={visual.title} lines={visual.lines} cursor={visual.cursor} />;
+
+    case "code-diff":
+      return <CodeDiff filename={visual.filename} lines={visual.lines} />;
+
+    case "claude-cli":
+      return (
+        <ClaudeCli
+          transcript={visual.transcript}
+          input={visual.input}
+          mode={visual.mode}
+          modeActive={visual.modeActive}
+          overlay={visual.overlay}
+        />
+      );
+
     case "corner-props":
       return (
-        <CornerFloat assets={visual.assets} diagonal={visual.diagonal} size={visual.size} speed={visual.speed} />
+        <CornerFloat
+          assets={visual.assets}
+          diagonal={visual.diagonal}
+          size={visual.size}
+          speed={visual.speed}
+          offsets={visual.offsets}
+        />
       );
 
     default:

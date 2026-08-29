@@ -8,3 +8,4 @@ public/assets/sfx
 public/fonts
 *.log
 .render-props.tmp.json
+.DS_Store

@@ -1,0 +1,264 @@
+{
+  "id": "template-curiosity-loop",
+  "title": "Šablonas: Curiosity Loop (skaičius kaip kablys)",
+  "fps": 30,
+  "width": 1080,
+  "height": 1920,
+  "scenes": [
+    {
+      "id": "hook",
+      "type": "hook-centered",
+      "durationSeconds": 3.0,
+      "background": "solid-dark",
+      "content": {
+        "eyebrow": "TIKRAS SKAIČIUS"
+      },
+      "visual": {
+        "type": "stat-counter",
+        "from": 0,
+        "to": 87,
+        "label": "% greičiau",
+        "suffix": "%"
+      },
+      "visualEntrance": "none",
+      "motion": {
+        "transition": "slideLeft",
+        "stagger": 6,
+        "entrance": "none"
+      }
+    },
+    {
+      "id": "context",
+      "type": "visual-explainer",
+      "durationSeconds": 4.0,
+      "background": "solid-dark",
+      "content": {
+        "headline": "Štai iš kur šis skaičius",
+        "highlights": [
+          "skaičius"
+        ]
+      },
+      "visual": {
+        "type": "app-mockup",
+        "appTitle": "Rezultatai",
+        "kind": "chart",
+        "chartValues": [
+          10,
+          25,
+          40,
+          65,
+          87
+        ]
+      },
+      "visualEntrance": "none",
+      "visualKenBurns": "zoomIn",
+      "motion": {
+        "transition": "slideDown",
+        "stagger": 6,
+        "entrance": "none"
+      }
+    },
+    {
+      "id": "step1-title",
+      "type": "hook-centered",
+      "durationSeconds": 1.7,
+      "background": "solid-dark",
+      "content": {
+        "eyebrow": "ŽINGSNIS 01",
+        "richHeadline": [
+          {
+            "text": "Pirmas žingsnis",
+            "size": "hero",
+            "pill": true,
+            "animation": "zoomSettleRight"
+          }
+        ]
+      },
+      "visual": {
+        "type": "prop",
+        "asset": "idea"
+      },
+      "visualPosition": {
+        "x": 66,
+        "y": 24
+      },
+      "visualScale": 1.55,
+      "visualLink": {
+        "groupId": "step1-icon"
+      },
+      "visualEntrance": "none",
+      "motion": {
+        "transition": "slideRight",
+        "stagger": 4,
+        "entrance": "none"
+      }
+    },
+    {
+      "id": "step1-explain",
+      "type": "visual-explainer",
+      "durationSeconds": 3.2,
+      "background": "solid-dark",
+      "content": {
+        "eyebrow": "ŽINGSNIS 01",
+        "headline": "Trumpas paaiškinimas"
+      },
+      "visual": {
+        "type": "prop",
+        "asset": "idea"
+      },
+      "visualPosition": {
+        "x": 86,
+        "y": 14
+      },
+      "visualScale": 0.5,
+      "visualLink": {
+        "groupId": "step1-icon"
+      },
+      "motion": {
+        "transition": "slideUp",
+        "stagger": 6,
+        "entrance": "none"
+      }
+    },
+    {
+      "id": "step2-title",
+      "type": "hook-centered",
+      "durationSeconds": 1.7,
+      "background": "solid-dark",
+      "content": {
+        "eyebrow": "ŽINGSNIS 02",
+        "richHeadline": [
+          {
+            "text": "Antras žingsnis",
+            "size": "hero",
+            "pill": true,
+            "animation": "zoomSettleTop"
+          }
+        ]
+      },
+      "visual": {
+        "type": "prop",
+        "asset": "target"
+      },
+      "visualPosition": {
+        "x": 34,
+        "y": 24
+      },
+      "visualScale": 1.55,
+      "visualLink": {
+        "groupId": "step2-icon"
+      },
+      "visualEntrance": "none",
+      "motion": {
+        "transition": "slideLeft",
+        "stagger": 4,
+        "entrance": "none"
+      }
+    },
+    {
+      "id": "step2-explain",
+      "type": "visual-explainer",
+      "durationSeconds": 3.2,
+      "background": "solid-dark",
+      "content": {
+        "eyebrow": "ŽINGSNIS 02",
+        "headline": "Trumpas paaiškinimas"
+      },
+      "visual": {
+        "type": "prop",
+        "asset": "target"
+      },
+      "visualPosition": {
+        "x": 14,
+        "y": 14
+      },
+      "visualScale": 0.5,
+      "visualLink": {
+        "groupId": "step2-icon"
+      },
+      "motion": {
+        "transition": "slideDown",
+        "stagger": 6,
+        "entrance": "none"
+      }
+    },
+    {
+      "id": "step3-title",
+      "type": "hook-centered",
+      "durationSeconds": 1.7,
+      "background": "solid-dark",
+      "content": {
+        "eyebrow": "ŽINGSNIS 03",
+        "richHeadline": [
+          {
+            "text": "Trečias žingsnis",
+            "size": "hero",
+            "pill": true,
+            "animation": "zoomSettleLeft"
+          }
+        ]
+      },
+      "visual": {
+        "type": "prop",
+        "asset": "puzzle-joined"
+      },
+      "visualPosition": {
+        "x": 66,
+        "y": 24
+      },
+      "visualScale": 1.55,
+      "visualLink": {
+        "groupId": "step3-icon"
+      },
+      "visualEntrance": "none",
+      "motion": {
+        "transition": "slideRight",
+        "stagger": 4,
+        "entrance": "none"
+      }
+    },
+    {
+      "id": "step3-explain",
+      "type": "visual-explainer",
+      "durationSeconds": 3.2,
+      "background": "solid-dark",
+      "content": {
+        "eyebrow": "ŽINGSNIS 03",
+        "headline": "Trumpas paaiškinimas"
+      },
+      "visual": {
+        "type": "prop",
+        "asset": "puzzle-joined"
+      },
+      "visualPosition": {
+        "x": 86,
+        "y": 82
+      },
+      "visualScale": 0.5,
+      "visualLink": {
+        "groupId": "step3-icon"
+      },
+      "motion": {
+        "transition": "slideUp",
+        "stagger": 6,
+        "entrance": "none"
+      }
+    },
+    {
+      "id": "cta",
+      "type": "takeaway",
+      "durationSeconds": 3.0,
+      "background": "solid-dark",
+      "content": {
+        "headline": "Pabandyk ir parašyk savo rezultatą",
+        "highlights": [
+          "Pabandyk"
+        ]
+      },
+      "motion": {
+        "transition": "slideLeft",
+        "entrance": "none"
+      }
+    }
+  ]
+}

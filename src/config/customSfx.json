@@ -1,0 +1,44 @@
+[
+  {
+    "id": "snap-finger-mt7egg0q",
+    "label": "snap-finger",
+    "file": "snap-finger-mt7egg0q.mp3",
+    "src": "/assets/custom-sfx/snap-finger-mt7egg0q.mp3",
+    "group": "ui"
+  },
+  {
+    "id": "electric-select-mt7ejky4",
+    "label": "electric-select",
+    "file": "electric-select-mt7ejky4.mp3",
+    "src": "/assets/custom-sfx/electric-select-mt7ejky4.mp3",
+    "group": "ui"
+  },
+  {
+    "id": "pop-select-mt7eksjh",
+    "label": "pop-select",
+    "file": "pop-select-mt7eksjh.mp3",
+    "src": "/assets/custom-sfx/pop-select-mt7eksjh.mp3",
+    "group": "ui"
+  },
+  {
+    "id": "minimal-click-mt7emooq",
+    "label": "minimal-click",
+    "file": "minimal-click-mt7emooq.mp3",
+    "src": "/assets/custom-sfx/minimal-click-mt7emooq.mp3",
+    "group": "ui"
+  },
+  {
+    "id": "swoosh-mt7et8uk",
+    "label": "swoosh",
+    "file": "swoosh-mt7et8uk.mp3",
+    "src": "/assets/custom-sfx/swoosh-mt7et8uk.mp3",
+    "group": "reveal"
+  },
+  {
+    "id": "drop-deep-mt7exj07",
+    "label": "drop-deep",
+    "file": "drop-deep-mt7exj07.mp3",
+    "src": "/assets/custom-sfx/drop-deep-mt7exj07.mp3",
+    "group": "ui"
+  }
+]

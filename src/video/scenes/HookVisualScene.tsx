@@ -1,87 +1,41 @@
 import React from "react";
-import { AbsoluteFill } from "remotion";
-import { Background } from "../backgrounds";
-import { safeAreaPadding } from "../typography/SafeArea";
-import { Headline, Badge, renderHighlighted } from "../typography/Text";
+import { Headline, renderHighlighted } from "../typography/Text";
 import { RichHeadline } from "../typography/RichHeadline";
-import { AnimatedVisual } from "../typography/AnimatedVisual";
-import { PositionedVisual } from "../typography/PositionedVisual";
-import { EnterOnCue, staggerDelay, useSceneExitStyle } from "./EnterOnCue";
-import { VisualsLayer } from "../typography/VisualsLayer";
-import { BlockLayer } from "../typography/BlockLayer";
-import { OrbitBackdrop, isOrbitBackdrop } from "./OrbitBackdrop";
+import { SceneFrame, SceneCue, useSceneCues } from "./SceneFrame";
 import type { SceneComponentProps } from "./types";
 
 export const HookVisualScene: React.FC<SceneComponentProps> = ({
   background,
   content,
-  visual,
-  visualPosition,
-  visualEntrance,
-  visualExit,
-  visualExitDuration,
+  layout,
   motion,
   durationSeconds,
 }) => {
-  const exitStyle = useSceneExitStyle(durationSeconds, motion);
-  const showInlineVisual = visual && !isOrbitBackdrop(visual) && !visualPosition;
-  const showPositionedVisual = visual && !isOrbitBackdrop(visual) && visualPosition;
+  const { baseDelay, cue } = useSceneCues(motion);
 
   return (
-    <AbsoluteFill>
-      <Background id={background} />
-      <OrbitBackdrop visual={visual} exitOpacity={typeof exitStyle.opacity === "number" ? exitStyle.opacity : 1} />
-      <AbsoluteFill
-        style={{
-          ...safeAreaPadding,
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          justifyContent: "center",
-          gap: 48,
-          ...exitStyle,
-        }}
-      >
-        {content.badge ? (
-          <EnterOnCue preset={motion?.entrance ?? "fade"} delay={staggerDelay(0, motion?.stagger)}>
-            <Badge>{content.badge}</Badge>
-          </EnterOnCue>
-        ) : null}
-
-        {content.richHeadline?.length ? (
-          <RichHeadline lines={content.richHeadline} stagger={motion?.stagger} />
-        ) : (
-          <EnterOnCue preset={motion?.entrance ?? "slideUp"} delay={staggerDelay(1, motion?.stagger)}>
-            <Headline>{renderHighlighted(content.headline, content.highlights)}</Headline>
-          </EnterOnCue>
-        )}
-
-        {showInlineVisual ? (
-          <AnimatedVisual
-            visual={visual}
-            entrance={visualEntrance ?? motion?.entrance ?? "scaleIn"}
-            entranceDelay={staggerDelay(2, motion?.stagger)}
-            exit={visualExit}
-            exitDuration={visualExitDuration}
-            durationSeconds={durationSeconds}
-          />
-        ) : null}
-      </AbsoluteFill>
-
-      {showPositionedVisual ? (
-        <PositionedVisual
-          visual={visual}
-          position={visualPosition}
-          entrance={visualEntrance ?? motion?.entrance}
-          entranceDelay={staggerDelay(2, motion?.stagger)}
-          exit={visualExit}
-          exitDuration={visualExitDuration}
+    <SceneFrame
+      background={background}
+      content={content}
+      motion={motion}
+      durationSeconds={durationSeconds}
+      layout={layout}
+      textZone="center"
+      gap={48}
+    >
+      {content.richHeadline?.length ? (
+        <RichHeadline
+          lines={content.richHeadline}
+          stagger={motion?.stagger}
+          baseDelay={baseDelay}
+          motion={motion}
           durationSeconds={durationSeconds}
         />
-      ) : null}
-
-      <BlockLayer blocks={content.blocks} />
-      <VisualsLayer visuals={content.visuals} durationSeconds={durationSeconds} />
-    </AbsoluteFill>
+      ) : (
+        <SceneCue motion={motion} delay={cue(0)} fallback="slideUp">
+          <Headline>{renderHighlighted(content.headline, content.highlights)}</Headline>
+        </SceneCue>
+      )}
+    </SceneFrame>
   );
 };

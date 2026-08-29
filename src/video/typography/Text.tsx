@@ -17,17 +17,20 @@ type BaseTextProps = {
   style?: CSSProperties;
 };
 
-function makeTextComponent(size: number, family: string, lineHeight: number) {
+/** Every text scale uses Tanker, uppercase — only the size token differs
+ * between hero/headline/title/etc. See the Sound/Design rules in CLAUDE.md. */
+function makeTextComponent(size: number, lineHeight: number) {
   return function TextComponent({ children, tone = "primary", align = "center", style }: BaseTextProps) {
     return (
       <div
         style={{
-          fontFamily: family,
+          fontFamily: fontFamilies.tanker,
           fontSize: size,
           lineHeight,
           color: toneColor[tone],
           textAlign: align,
           textWrap: "balance",
+          textTransform: "uppercase",
           ...style,
         }}
       >
@@ -37,12 +40,12 @@ function makeTextComponent(size: number, family: string, lineHeight: number) {
   };
 }
 
-export const HeroText = makeTextComponent(fontSizes.hero, fontFamilies.clashBold, 0.95);
-export const Headline = makeTextComponent(fontSizes.headline, fontFamilies.clashBold, 0.95);
-export const Title = makeTextComponent(fontSizes.title, fontFamilies.clashSemibold, 1.02);
-export const BodyLargeText = makeTextComponent(fontSizes.bodyLarge, fontFamilies.clashMedium, 1.15);
-export const BodyText = makeTextComponent(fontSizes.body, fontFamilies.clashMedium, 1.2);
-export const LabelText = makeTextComponent(fontSizes.label, fontFamilies.clashMedium, 1.2);
+export const HeroText = makeTextComponent(fontSizes.hero, 0.95);
+export const Headline = makeTextComponent(fontSizes.headline, 0.95);
+export const Title = makeTextComponent(fontSizes.title, 1.02);
+export const BodyLargeText = makeTextComponent(fontSizes.bodyLarge, 1.15);
+export const BodyText = makeTextComponent(fontSizes.body, 1.2);
+export const LabelText = makeTextComponent(fontSizes.label, 1.2);
 
 export const ImpactText: React.FC<BaseTextProps> = ({ children, tone = "accent", align = "center", style }) => (
   <div
@@ -99,23 +102,3 @@ export function renderHighlighted(text: string | undefined, highlights?: string[
     )
   );
 }
-
-export const Badge: React.FC<{ children: React.ReactNode }> = ({ children }) => (
-  <div
-    style={{
-      display: "inline-flex",
-      alignItems: "center",
-      padding: "10px 24px",
-      borderRadius: 999,
-      backgroundColor: colors.accentSoft,
-      border: `1px solid ${colors.accent}`,
-      color: colors.accent,
-      fontFamily: fontFamilies.clashMedium,
-      fontSize: fontSizes.label,
-      letterSpacing: 1,
-      textTransform: "uppercase",
-    }}
-  >
-    {children}
-  </div>
-);
