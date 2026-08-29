@@ -1,8 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { toolList } from "../../registries/toolRegistry";
 import { propList } from "../../registries/propRegistry";
-import { sfxList } from "../../registries/sfxRegistry";
-import { useCustomAssetsStore } from "../state/customAssetsStore";
+import { useCustomAssetsStore, assetKind } from "../state/customAssetsStore";
 import { editorColors } from "../theme";
 
 const sectionTitleStyle: React.CSSProperties = {
@@ -63,7 +62,7 @@ const UploadForm: React.FC = () => {
       <input
         ref={fileInputRef}
         type="file"
-        accept="image/*"
+        accept="image/*,video/*"
         onChange={(e) => setFile(e.target.files?.[0] ?? null)}
         style={{ fontSize: 11, color: editorColors.textDim }}
       />
@@ -71,7 +70,7 @@ const UploadForm: React.FC = () => {
         style={inputStyle}
         value={label}
         onChange={(e) => setLabel(e.target.value)}
-        placeholder="Name this asset (e.g. 'founder headshot') — tells the JSON author what it is"
+        placeholder="Name this asset (e.g. 'onboarding screen recording') — tells the JSON author what it is"
       />
       <button
         style={{
@@ -84,6 +83,15 @@ const UploadForm: React.FC = () => {
       >
         {busy ? "Uploading…" : "Import asset"}
       </button>
+      <div style={{ fontSize: 10, color: editorColors.textDim, lineHeight: 1.4 }}>
+        Images and screen recordings (.mp4 / .mov / .webm). A clip is imported as a <b>recording</b> visual, a still as
+        an <b>image</b>. Uploads go through the dev server in one request, so keep clips reasonably short.
+      </div>
+      {file && file.size > 40 * 1024 * 1024 ? (
+        <div style={{ fontSize: 11, color: "#ff8a65" }}>
+          {(file.size / (1024 * 1024)).toFixed(0)} MB — trim the clip first, this is large for a single upload.
+        </div>
+      ) : null}
       {error ? <div style={{ fontSize: 11, color: "#ff8a65" }}>{error}</div> : null}
     </div>
   );
@@ -112,18 +120,40 @@ export const AssetLibrary: React.FC = () => {
         <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 6, marginBottom: 8 }}>
           {customAssets.map((asset) => (
             <div key={asset.id} style={{ position: "relative" }}>
-              <img
-                src={asset.src}
-                title={asset.label}
-                style={{
-                  width: "100%",
-                  aspectRatio: "1/1",
-                  objectFit: "contain",
-                  background: editorColors.panelElevated,
-                  borderRadius: 6,
-                  padding: 4,
-                }}
-              />
+              {assetKind(asset) === "video" ? (
+                <video
+                  src={asset.src}
+                  title={asset.label}
+                  muted
+                  playsInline
+                  preload="metadata"
+                  onMouseEnter={(e) => void e.currentTarget.play().catch(() => {})}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.pause();
+                    e.currentTarget.currentTime = 0;
+                  }}
+                  style={{
+                    width: "100%",
+                    aspectRatio: "1/1",
+                    objectFit: "cover",
+                    background: editorColors.panelElevated,
+                    borderRadius: 6,
+                  }}
+                />
+              ) : (
+                <img
+                  src={asset.src}
+                  title={asset.label}
+                  style={{
+                    width: "100%",
+                    aspectRatio: "1/1",
+                    objectFit: "contain",
+                    background: editorColors.panelElevated,
+                    borderRadius: 6,
+                    padding: 4,
+                  }}
+                />
+              )}
               <button
                 title={`Remove "${asset.label}"`}
                 onClick={() => removeCustomAsset(asset.id)}
@@ -184,27 +214,6 @@ export const AssetLibrary: React.FC = () => {
             title={prop.name}
             style={{ width: "100%", aspectRatio: "1/1", objectFit: "contain", background: editorColors.panelElevated, borderRadius: 6, padding: 4 }}
           />
-        ))}
-      </div>
-
-      <div style={sectionTitleStyle}>SFX ({sfxList.length})</div>
-      <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
-        {sfxList.map((sfx) => (
-          <div
-            key={sfx.id}
-            style={{
-              fontSize: 11,
-              color: editorColors.textDim,
-              display: "flex",
-              justifyContent: "space-between",
-              padding: "4px 8px",
-              background: editorColors.panelElevated,
-              borderRadius: 6,
-            }}
-          >
-            <span>{sfx.id}</span>
-            <span>{sfx.group}</span>
-          </div>
         ))}
       </div>
     </div>

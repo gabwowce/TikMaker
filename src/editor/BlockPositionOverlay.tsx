@@ -1,6 +1,7 @@
 import React, { useRef, useState } from "react";
 import { useProjectStore } from "./state/projectStore";
 import { editorColors } from "./theme";
+import { safeAreaPercent } from "../video/typography/tokens";
 import type { Block, PositionedVisualEntry } from "../schema/scene";
 
 const VISUAL_MARKER_ID = "__visual__";
@@ -27,28 +28,34 @@ export const BlockPositionOverlay: React.FC<BlockPositionOverlayProps> = ({
   const containerRef = useRef<HTMLDivElement>(null);
   const [draggingId, setDraggingId] = useState<string | null>(null);
 
-  function clampPercent(value: number): number {
-    return Math.max(0, Math.min(100, value));
+  function clampPercent(value: number, min = 0, max = 100): number {
+    return Math.max(min, Math.min(max, value));
   }
 
   function moveMarkerTo(markerId: string, clientX: number, clientY: number) {
     const rect = containerRef.current?.getBoundingClientRect();
     if (!rect || !selectedSceneId) return;
 
-    const x = clampPercent(((clientX - rect.left) / rect.width) * 100);
-    const y = clampPercent(((clientY - rect.top) / rect.height) * 100);
+    const rawX = ((clientX - rect.left) / rect.width) * 100;
+    const rawY = ((clientY - rect.top) / rect.height) * 100;
 
     if (markerId === VISUAL_MARKER_ID) {
-      updateSceneVisualPosition(selectedSceneId, { x, y });
+      updateSceneVisualPosition(selectedSceneId, { x: clampPercent(rawX), y: clampPercent(rawY) });
       return;
     }
 
     if (visuals.some((v) => v.id === markerId)) {
+      const x = clampPercent(rawX);
+      const y = clampPercent(rawY);
       const next = visuals.map((v) => (v.id === markerId ? { ...v, x, y } : v));
       updateSceneVisuals(selectedSceneId, next);
       return;
     }
 
+    // Text blocks are clamped to the TikTok-safe zone — they can never be
+    // dragged into the area a UI overlay / captions would cover.
+    const x = clampPercent(rawX, safeAreaPercent.left, safeAreaPercent.right);
+    const y = clampPercent(rawY, safeAreaPercent.top, safeAreaPercent.bottom);
     const next = blocks.map((b) => (b.id === markerId ? { ...b, x, y } : b));
     updateSceneBlocks(selectedSceneId, next);
   }

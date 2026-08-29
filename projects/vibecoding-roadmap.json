@@ -1,0 +1,145 @@
+{
+  "id": "vibecoding-roadmap",
+  "title": "Vibe Coding Roadmap",
+  "fps": 30,
+  "width": 1080,
+  "height": 1920,
+  "scenes": [
+    {
+      "id": "vc-1-hook",
+      "type": "hook-centered",
+      "durationSeconds": 2.8,
+      "background": "solid-dark",
+      "content": {
+        "eyebrow": "VIBE CODING 2026",
+        "richHeadline": [
+          { "text": "kiekvienas gali", "size": "title", "animation": "fade" },
+          { "text": "pasidaryti app", "size": "hero", "animation": "slideUp" },
+          { "text": "su AI", "size": "headline", "pill": true, "animation": "pop" }
+        ]
+      },
+      "motion": { "entrance": "fade", "exit": "fade", "exitDuration": 18, "transition": "cut", "stagger": 6 }
+    },
+    {
+      "id": "vc-2-pain",
+      "type": "hook-visual",
+      "durationSeconds": 3.4,
+      "background": "solid-dark",
+      "content": {
+        "headline": "Dauguma pasiduoda per pirmą savaitę",
+        "highlights": ["pasiduoda"]
+      },
+      "visual": {
+        "type": "checklist",
+        "items": [
+          { "label": "nežino nuo ko pradėti" },
+          { "label": "bijo kodo" },
+          { "label": "pasiklysta 100 tutorialų" }
+        ],
+        "size": "body",
+        "stagger": 8
+      },
+      "visualEntrance": "slideUp",
+      "visualKenBurns": "zoomIn",
+      "motion": { "entrance": "fade", "exit": "fade", "exitDuration": 18, "transition": "cut", "stagger": 6 }
+    },
+    {
+      "id": "vc-3-solution",
+      "type": "visual-explainer",
+      "durationSeconds": 4.0,
+      "background": "solid-dark",
+      "content": {
+        "headline": "Tai vadinasi vibe coding",
+        "highlights": ["vibe coding"]
+      },
+      "visual": {
+        "type": "node-group",
+        "layout": "radial",
+        "radius": 220,
+        "center": { "type": "tool-logo", "tool": "claude" },
+        "nodes": [
+          { "type": "tool-logo", "tool": "chatgpt" },
+          { "type": "tool-logo", "tool": "github" },
+          { "type": "tool-logo", "tool": "vs-code" }
+        ]
+      },
+      "visualEntrance": "pop",
+      "visualKenBurns": "zoomIn",
+      "motion": { "entrance": "fade", "exit": "fade", "exitDuration": 18, "transition": "cut", "stagger": 6 }
+    },
+    {
+      "id": "vc-4-roadmap",
+      "type": "steps",
+      "durationSeconds": 5.2,
+      "background": "solid-dark",
+      "content": {
+        "headline": "Tavo roadmap'as",
+        "items": [
+          { "label": "Pasirink AI įrankį", "value": "Claude, ChatGPT ar panašiai" },
+          { "label": "Išmok promptinti", "value": "aiškiai apibūdink ką nori" },
+          { "label": "Padaryk mini projektą", "value": "viena funkcija, ne visas app'as" },
+          { "label": "Deploy ir rodyk", "value": "per kelias minutes, ne savaites" }
+        ]
+      },
+      "motion": { "entrance": "fade", "exit": "fade", "exitDuration": 18, "transition": "cut", "stagger": 8 }
+    },
+    {
+      "id": "vc-5-knowledge",
+      "type": "visual-explainer",
+      "durationSeconds": 4.4,
+      "background": "solid-dark",
+      "content": {
+        "headline": "Ką reikia žinoti prieš pradedant",
+        "highlights": ["reikia"]
+      },
+      "visual": {
+        "type": "checklist",
+        "items": [
+          { "label": "kaip skaityti klaidą" },
+          { "label": "kas yra git commit" },
+          { "label": "kaip veikia terminal" },
+          { "label": "kantrybė debug'inti" }
+        ],
+        "stagger": 8
+      },
+      "visualEntrance": "slideUp",
+      "visualKenBurns": "panUp",
+      "motion": { "entrance": "fade", "exit": "fade", "exitDuration": 18, "transition": "cut", "stagger": 6 }
+    },
+    {
+      "id": "vc-6-value",
+      "type": "visual-explainer",
+      "durationSeconds": 3.8,
+      "background": "solid-dark",
+      "content": {
+        "headline": "Pradžiai tau nereikia nieko mokėti",
+        "highlights": ["nereikia"]
+      },
+      "visual": {
+        "type": "pricing-card",
+        "title": "Vibe Coding Starter",
+        "price": "$0",
+        "period": "pradžiai",
+        "features": ["AI įrankis (free tier)", "Kodo redaktorius", "Nemokamas hosting"],
+        "highlight": true
+      },
+      "visualEntrance": "scaleIn",
+      "visualKenBurns": "zoomIn",
+      "motion": { "entrance": "fade", "exit": "fade", "exitDuration": 18, "transition": "cut", "stagger": 6 }
+    },
+    {
+      "id": "vc-7-cta",
+      "type": "takeaway",
+      "durationSeconds": 3.2,
+      "background": "solid-dark",
+      "content": {
+        "richHeadline": [
+          { "text": "nebijok", "size": "title", "animation": "fade" },
+          { "text": "pradėti", "size": "hero", "pill": true, "animation": "pop" },
+          { "text": "šiandien, ne rytoj", "size": "body", "animation": "slideUp" }
+        ]
+      },
+      "motion": { "entrance": "fade", "exit": "fade", "exitDuration": 18, "transition": "cut", "stagger": 6 }
+    }
+  ]
+}

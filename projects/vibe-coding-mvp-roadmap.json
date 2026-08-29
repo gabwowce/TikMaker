@@ -1,0 +1,604 @@
+{
+  "id": "vibe-coding-mvp-roadmap",
+  "title": "Pavyzdys: Vibe Coding MVP Roadmap",
+  "fps": 30,
+  "width": 1080,
+  "height": 1920,
+  "scenes": [
+    {
+      "id": "hook",
+      "type": "hook-centered",
+      "durationSeconds": 3.0,
+      "background": "solid-dark",
+      "content": {
+        "eyebrow": "MVP ROADMAP 2026",
+        "richHeadline": [
+          {
+            "text": "tu gali padaryti",
+            "size": "title",
+            "animation": "fade"
+          },
+          {
+            "text": "SAVO APP'Ą",
+            "size": "hero",
+            "pill": true,
+            "animation": "slideUp"
+          },
+          {
+            "text": "be jokios programavimo patirties",
+            "size": "body",
+            "animation": "fade"
+          }
+        ]
+      },
+      "motion": {
+        "transition": "slideLeft",
+        "stagger": 6,
+        "entrance": "none"
+      }
+    },
+    {
+      "id": "problem",
+      "type": "hook-visual",
+      "durationSeconds": 3.4,
+      "background": "solid-dark",
+      "content": {
+        "headline": "Bet niekas nepasako TIKSLIAI ką daryti",
+        "highlights": [
+          "TIKSLIAI"
+        ]
+      },
+      "visual": {
+        "type": "checklist",
+        "items": [
+          {
+            "label": "per daug tutorialų"
+          },
+          {
+            "label": "nežinai nuo ko pradėti"
+          },
+          {
+            "label": "bijai API ir raktų"
+          }
+        ],
+        "size": "body",
+        "stagger": 8
+      },
+      "visualEntrance": "none",
+      "visualKenBurns": "panUp",
+      "motion": {
+        "transition": "slideDown",
+        "stagger": 6,
+        "entrance": "none"
+      }
+    },
+    {
+      "id": "agenda",
+      "type": "visual-explainer",
+      "durationSeconds": 3.6,
+      "background": "solid-dark",
+      "content": {
+        "headline": "5 žingsniai iki tavo pirmo app'o",
+        "highlights": [
+          "5",
+          "žingsniai"
+        ]
+      },
+      "visual": {
+        "type": "node-group",
+        "layout": "radial",
+        "radius": 240,
+        "center": {
+          "type": "prop",
+          "asset": "target"
+        },
+        "nodes": [
+          {
+            "type": "tool-logo",
+            "tool": "claude"
+          },
+          {
+            "type": "prop",
+            "asset": "pen"
+          },
+          {
+            "type": "prop",
+            "asset": "link"
+          },
+          {
+            "type": "prop",
+            "asset": "key"
+          },
+          {
+            "type": "prop",
+            "asset": "plane"
+          }
+        ]
+      },
+      "visualEntrance": "none",
+      "visualKenBurns": "zoomIn",
+      "motion": {
+        "transition": "slideRight",
+        "stagger": 6,
+        "entrance": "none"
+      }
+    },
+    {
+      "id": "step1-title",
+      "type": "hook-centered",
+      "durationSeconds": 1.7,
+      "background": "solid-dark",
+      "content": {
+        "eyebrow": "ŽINGSNIS 01",
+        "richHeadline": [
+          {
+            "text": "Pasirink įrankį",
+            "size": "hero",
+            "pill": true,
+            "animation": "zoomSettleRight"
+          }
+        ]
+      },
+      "visual": {
+        "type": "prop",
+        "asset": "screen-panel"
+      },
+      "visualPosition": {
+        "x": 66,
+        "y": 24
+      },
+      "visualScale": 1.55,
+      "visualLink": {
+        "groupId": "step1-icon"
+      },
+      "visualEntrance": "none",
+      "motion": {
+        "transition": "slideUp",
+        "stagger": 4,
+        "entrance": "none"
+      }
+    },
+    {
+      "id": "step1-explain",
+      "type": "visual-explainer",
+      "durationSeconds": 3.6,
+      "background": "solid-dark",
+      "content": {
+        "eyebrow": "ŽINGSNIS 01",
+        "headline": "Claude, Cursor ar Bolt — pradėk nuo VIENO",
+        "highlights": [
+          "VIENO"
+        ],
+        "visuals": [
+          {
+            "id": "v1",
+            "visual": {
+              "type": "tool-flow",
+              "tools": [
+                "claude",
+                "chatgpt",
+                "github"
+              ]
+            },
+            "x": 50,
+            "y": 58,
+            "scale": 1.05,
+            "delay": 10,
+            "entrance": "none",
+            "exit": "none",
+            "exitDuration": 16,
+            "kenBurns": "zoomIn"
+          }
+        ]
+      },
+      "visual": {
+        "type": "prop",
+        "asset": "screen-panel"
+      },
+      "visualPosition": {
+        "x": 86,
+        "y": 14
+      },
+      "visualScale": 0.5,
+      "visualLink": {
+        "groupId": "step1-icon"
+      },
+      "motion": {
+        "transition": "slideLeft",
+        "stagger": 6,
+        "entrance": "none"
+      }
+    },
+    {
+      "id": "step2-title",
+      "type": "hook-centered",
+      "durationSeconds": 1.7,
+      "background": "solid-dark",
+      "content": {
+        "eyebrow": "ŽINGSNIS 02",
+        "richHeadline": [
+          {
+            "text": "Aprašyk idėją",
+            "size": "hero",
+            "pill": true,
+            "animation": "zoomSettleTop"
+          }
+        ]
+      },
+      "visual": {
+        "type": "prop",
+        "asset": "pen"
+      },
+      "visualPosition": {
+        "x": 34,
+        "y": 24
+      },
+      "visualScale": 1.55,
+      "visualLink": {
+        "groupId": "step2-icon"
+      },
+      "visualEntrance": "none",
+      "motion": {
+        "transition": "slideDown",
+        "stagger": 4,
+        "entrance": "none"
+      }
+    },
+    {
+      "id": "step2-explain",
+      "type": "visual-explainer",
+      "durationSeconds": 3.6,
+      "background": "solid-dark",
+      "content": {
+        "eyebrow": "ŽINGSNIS 02",
+        "headline": "Kuo AIŠKIAU paaiškini, tuo geriau AI supranta",
+        "highlights": [
+          "AIŠKIAU"
+        ],
+        "visuals": [
+          {
+            "id": "v1",
+            "visual": {
+              "type": "checklist",
+              "items": [
+                {
+                  "label": "kokia problema"
+                },
+                {
+                  "label": "kas naudotojas"
+                },
+                {
+                  "label": "kokie ekranai"
+                }
+              ],
+              "size": "body",
+              "stagger": 6
+            },
+            "x": 50,
+            "y": 58,
+            "scale": 1.05,
+            "delay": 10,
+            "entrance": "none",
+            "exit": "none",
+            "exitDuration": 16,
+            "kenBurns": "zoomIn"
+          }
+        ]
+      },
+      "visual": {
+        "type": "prop",
+        "asset": "pen"
+      },
+      "visualPosition": {
+        "x": 14,
+        "y": 14
+      },
+      "visualScale": 0.5,
+      "visualLink": {
+        "groupId": "step2-icon"
+      },
+      "motion": {
+        "transition": "slideRight",
+        "stagger": 6,
+        "entrance": "none"
+      }
+    },
+    {
+      "id": "step3-title",
+      "type": "hook-centered",
+      "durationSeconds": 1.7,
+      "background": "solid-dark",
+      "content": {
+        "eyebrow": "ŽINGSNIS 03",
+        "richHeadline": [
+          {
+            "text": "Kas yra API?",
+            "size": "hero",
+            "pill": true,
+            "animation": "zoomSettleLeft"
+          }
+        ]
+      },
+      "visual": {
+        "type": "prop",
+        "asset": "link"
+      },
+      "visualPosition": {
+        "x": 66,
+        "y": 24
+      },
+      "visualScale": 1.55,
+      "visualLink": {
+        "groupId": "step3-icon"
+      },
+      "visualEntrance": "none",
+      "motion": {
+        "transition": "slideUp",
+        "stagger": 4,
+        "entrance": "none"
+      }
+    },
+    {
+      "id": "step3-explain",
+      "type": "visual-explainer",
+      "durationSeconds": 3.8,
+      "background": "solid-dark",
+      "content": {
+        "eyebrow": "ŽINGSNIS 03",
+        "headline": "API — būdas, kaip tavo app'as KALBASI su kitais įrankiais",
+        "highlights": [
+          "KALBASI"
+        ],
+        "visuals": [
+          {
+            "id": "v1",
+            "visual": {
+              "type": "flow",
+              "direction": "horizontal",
+              "animated": true,
+              "nodes": [
+                {
+                  "label": "Tavo app",
+                  "visual": {
+                    "type": "prop",
+                    "asset": "screen-panel"
+                  }
+                },
+                {
+                  "label": "API raktas",
+                  "visual": {
+                    "type": "prop",
+                    "asset": "key"
+                  }
+                },
+                {
+                  "label": "AI / duomenys",
+                  "visual": {
+                    "type": "prop",
+                    "asset": "database"
+                  }
+                }
+              ]
+            },
+            "x": 50,
+            "y": 58,
+            "scale": 1.05,
+            "delay": 10,
+            "entrance": "none",
+            "exit": "none",
+            "exitDuration": 16,
+            "kenBurns": "zoomIn"
+          }
+        ]
+      },
+      "visual": {
+        "type": "prop",
+        "asset": "link"
+      },
+      "visualPosition": {
+        "x": 86,
+        "y": 82
+      },
+      "visualScale": 0.5,
+      "visualLink": {
+        "groupId": "step3-icon"
+      },
+      "motion": {
+        "transition": "slideLeft",
+        "stagger": 6,
+        "entrance": "none"
+      }
+    },
+    {
+      "id": "step4-title",
+      "type": "hook-centered",
+      "durationSeconds": 1.7,
+      "background": "solid-dark",
+      "content": {
+        "eyebrow": "ŽINGSNIS 04",
+        "richHeadline": [
+          {
+            "text": "Saugok savo raktus",
+            "size": "hero",
+            "pill": true,
+            "animation": "zoomSettleBottom"
+          }
+        ]
+      },
+      "visual": {
+        "type": "prop",
+        "asset": "padlock"
+      },
+      "visualPosition": {
+        "x": 50,
+        "y": 30
+      },
+      "visualScale": 1.7,
+      "visualLink": {
+        "groupId": "step4-icon"
+      },
+      "visualEntrance": "none",
+      "motion": {
+        "transition": "slideDown",
+        "stagger": 4,
+        "entrance": "none"
+      }
+    },
+    {
+      "id": "step4-explain",
+      "type": "visual-explainer",
+      "durationSeconds": 3.8,
+      "background": "solid-dark",
+      "content": {
+        "eyebrow": "ŽINGSNIS 04",
+        "headline": "API raktus laikyk .env faile — niekada VIEŠAME kode",
+        "highlights": [
+          "VIEŠAME"
+        ],
+        "blocks": [
+          {
+            "id": "b1",
+            "type": "badge",
+            "text": "NIEKADA COMMIT'INK Į GITHUB",
+            "x": 50,
+            "y": 66,
+            "delay": 45,
+            "animation": "pop"
+          }
+        ]
+      },
+      "visual": {
+        "type": "prop",
+        "asset": "padlock"
+      },
+      "visualPosition": {
+        "x": 82,
+        "y": 45
+      },
+      "visualScale": 0.6,
+      "visualLink": {
+        "groupId": "step4-icon"
+      },
+      "motion": {
+        "transition": "slideRight",
+        "stagger": 6,
+        "entrance": "none"
+      }
+    },
+    {
+      "id": "step5-title",
+      "type": "hook-centered",
+      "durationSeconds": 1.7,
+      "background": "solid-dark",
+      "content": {
+        "eyebrow": "ŽINGSNIS 05",
+        "richHeadline": [
+          {
+            "text": "Testuok ir paleisk",
+            "size": "hero",
+            "pill": true,
+            "animation": "zoomSettleRight"
+          }
+        ]
+      },
+      "visual": {
+        "type": "prop",
+        "asset": "plane"
+      },
+      "visualPosition": {
+        "x": 66,
+        "y": 24
+      },
+      "visualScale": 1.55,
+      "visualLink": {
+        "groupId": "step5-icon"
+      },
+      "visualEntrance": "none",
+      "motion": {
+        "transition": "slideUp",
+        "stagger": 4,
+        "entrance": "none"
+      }
+    },
+    {
+      "id": "step5-explain",
+      "type": "visual-explainer",
+      "durationSeconds": 3.6,
+      "background": "solid-dark",
+      "content": {
+        "eyebrow": "ŽINGSNIS 05",
+        "headline": "Patikrink, pataisyk, ir PUBLIKUOK pirmą versiją",
+        "highlights": [
+          "PUBLIKUOK"
+        ],
+        "visuals": [
+          {
+            "id": "v1",
+            "visual": {
+              "type": "progress",
+              "value": 9,
+              "max": 10,
+              "label": "MVP paruoštas"
+            },
+            "x": 50,
+            "y": 58,
+            "scale": 1.05,
+            "delay": 10,
+            "entrance": "none",
+            "exit": "none",
+            "exitDuration": 16,
+            "kenBurns": "zoomIn"
+          }
+        ]
+      },
+      "visual": {
+        "type": "prop",
+        "asset": "plane"
+      },
+      "visualPosition": {
+        "x": 86,
+        "y": 14
+      },
+      "visualScale": 0.5,
+      "visualLink": {
+        "groupId": "step5-icon"
+      },
+      "motion": {
+        "transition": "slideLeft",
+        "stagger": 6,
+        "entrance": "none"
+      }
+    },
+    {
+      "id": "cta",
+      "type": "takeaway",
+      "durationSeconds": 3.4,
+      "background": "solid-dark",
+      "content": {
+        "richHeadline": [
+          {
+            "text": "tavo pirmas app'as",
+            "size": "title",
+            "animation": "fade"
+          },
+          {
+            "text": "ŠIANDIEN",
+            "size": "hero",
+            "pill": true,
+            "animation": "pop"
+          },
+          {
+            "text": "klausk komentaruose, jei reikia pagalbos su API raktais",
+            "size": "body",
+            "animation": "slideUp"
+          }
+        ]
+      },
+      "motion": {
+        "transition": "slideDown",
+        "stagger": 6,
+        "entrance": "none"
+      }
+    }
+  ]
+}

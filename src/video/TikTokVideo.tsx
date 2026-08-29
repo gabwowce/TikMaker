@@ -10,7 +10,7 @@ export const TikTokVideo: React.FC<{ project: VideoProject }> = ({ project }) =>
 
   return (
     <AbsoluteFill style={{ backgroundColor: colors.background }}>
-      <SceneRenderer scenes={project.scenes} fps={project.fps} />
+      <SceneRenderer project={project} />
     </AbsoluteFill>
   );
 };

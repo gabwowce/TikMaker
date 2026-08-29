@@ -1,0 +1,67 @@
+{
+  "id": "template-dev-visuals",
+  "title": "Patikra: Dev vizualai",
+  "fps": 30,
+  "width": 1080,
+  "height": 1920,
+  "scenes": [
+    {
+      "id": "diff",
+      "type": "visual-explainer",
+      "durationSeconds": 4,
+      "background": "solid-dark",
+      "layout": "visual-bottom",
+      "content": { "headline": "CODE DIFF" },
+      "visual": {
+        "type": "code-diff",
+        "filename": "src/very/long/path/file.tsx",
+        "lines": [
+          { "text": "Stack: Next.js, Postgres, Tailwind", "kind": "added" },
+          { "text": "Never edit files outside /src", "kind": "added" },
+          { "text": "this line was removed by the AI", "kind": "removed" },
+          { "text": "untouched context line here", "kind": "context" }
+        ]
+      },
+      "motion": { "entrance": "none", "transition": "cut" }
+    },
+    {
+      "id": "terminal",
+      "type": "visual-explainer",
+      "durationSeconds": 4,
+      "background": "solid-dark",
+      "layout": "visual-bottom",
+      "content": { "headline": "TERMINAL" },
+      "visual": {
+        "type": "terminal",
+        "title": "claude",
+        "lines": [
+          { "text": "/rewind", "kind": "prompt" },
+          { "text": "restored to checkpoint 3", "kind": "accent" },
+          { "text": "your files are back", "kind": "dim" }
+        ],
+        "cursor": true
+      },
+      "motion": { "entrance": "none", "transition": "cut" }
+    },
+    {
+      "id": "keys",
+      "type": "visual-explainer",
+      "durationSeconds": 4,
+      "background": "solid-dark",
+      "layout": "visual-bottom",
+      "content": { "headline": "KEYCAPS" },
+      "visual": { "type": "keycap", "keys": ["ESC"], "caption": "stops it mid-run" },
+      "motion": { "entrance": "none", "transition": "cut" }
+    },
+    {
+      "id": "keys-combo",
+      "type": "visual-explainer",
+      "durationSeconds": 4,
+      "background": "solid-dark",
+      "layout": "visual-bottom",
+      "content": { "headline": "KEY COMBO" },
+      "visual": { "type": "keycap", "keys": ["CTRL", "C"], "caption": "cancel" },
+      "motion": { "entrance": "none", "transition": "cut" }
+    }
+  ]
+}

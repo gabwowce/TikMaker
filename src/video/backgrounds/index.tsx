@@ -1,5 +1,5 @@
 import React from "react";
-import type { BackgroundId } from "../../schema/scene";
+import type { BackgroundId, SceneBackground } from "../../schema/scene";
 import { SolidDark } from "./SolidDark";
 import { SoftGrid } from "./SoftGrid";
 import { OrangeGlow } from "./OrangeGlow";
@@ -7,6 +7,7 @@ import { Spotlight } from "./Spotlight";
 import { PerspectiveDataGrid } from "./PerspectiveDataGrid";
 import { FloatingGlassLayers } from "./FloatingGlassLayers";
 import { DotGrid } from "./DotGrid";
+import { CustomBackground } from "./CustomBackground";
 
 const backgroundComponents: Record<BackgroundId, React.FC> = {
   "solid-dark": SolidDark,
@@ -18,7 +19,10 @@ const backgroundComponents: Record<BackgroundId, React.FC> = {
   "dot-grid": DotGrid,
 };
 
-export const Background: React.FC<{ id: BackgroundId }> = ({ id }) => {
+/** A scene's background is either a named preset (string id) or a hand-built
+ * `{ type: "custom", fill, grid }` — see `schema/scene.ts#sceneBackgroundSchema`. */
+export const Background: React.FC<{ id: SceneBackground }> = ({ id }) => {
+  if (typeof id === "object") return <CustomBackground config={id} />;
   const Component = backgroundComponents[id] ?? SolidDark;
   return <Component />;
 };

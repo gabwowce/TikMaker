@@ -1,0 +1,109 @@
+{
+  "id": "sound-showcase",
+  "title": "Sound System Showcase",
+  "fps": 30,
+  "width": 1080,
+  "height": 1920,
+
+  "scenes": [
+    {
+      "id": "hook",
+      "type": "hook-centered",
+      "durationSeconds": 3,
+      "background": "orange-glow",
+      "content": {
+        "badge": "NEW",
+        "headline": "SOUND THAT JUST WORKS",
+        "highlights": ["JUST", "WORKS"]
+      },
+      "visual": {
+        "type": "prop",
+        "asset": "idea"
+      },
+      "visualEntrance": "scaleIn",
+      "motion": {
+        "entrance": "pop",
+        "exit": "scaleOut",
+        "exitDuration": 14,
+        "transition": "push",
+        "stagger": 6
+      }
+    },
+    {
+      "id": "flow",
+      "type": "visual-explainer",
+      "durationSeconds": 4.5,
+      "background": "soft-grid",
+      "content": {
+        "headline": "AUTOMATIC CUES FOR EVERY ANIMATION",
+        "body": "Pick an entrance preset — the matching sound follows on its own.",
+        "blocks": [
+          {
+            "id": "b1",
+            "type": "badge",
+            "text": "TICK",
+            "x": 22,
+            "y": 18,
+            "delay": 40,
+            "animation": "pop",
+            "sfx": "d-tick"
+          }
+        ],
+        "visuals": [
+          {
+            "id": "v1",
+            "visual": { "type": "prop", "asset": "puzzle-joined" },
+            "x": 80,
+            "y": 22,
+            "scale": 0.8,
+            "delay": 55,
+            "entrance": "pop",
+            "sfx": "d-ping"
+          }
+        ]
+      },
+      "visual": {
+        "type": "tool-flow",
+        "tools": ["github", "claude", "supabase"]
+      },
+      "motion": {
+        "entrance": "fade",
+        "transition": "cut"
+      }
+    },
+    {
+      "id": "demo",
+      "type": "screen-demo",
+      "durationSeconds": 4,
+      "background": "solid-dark",
+      "content": {
+        "headline": "OR SILENCE IT ON PURPOSE"
+      },
+      "visual": {
+        "type": "prop",
+        "asset": "browser-window"
+      },
+      "visualEntrance": "slideUp",
+      "visualSfx": "none",
+      "motion": {
+        "entrance": "slideUp",
+        "exit": "fade",
+        "exitDuration": 16,
+        "sfx": "riser",
+        "exitSfx": "none"
+      }
+    },
+    {
+      "id": "takeaway",
+      "type": "takeaway",
+      "durationSeconds": 3,
+      "background": "spotlight",
+      "content": {
+        "headline": "PICK A PRESET. HEAR THE RESULT."
+      },
+      "motion": {
+        "entrance": "pop"
+      }
+    }
+  ]
+}

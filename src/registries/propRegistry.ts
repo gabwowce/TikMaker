@@ -1,4 +1,5 @@
 import { generatedProps } from "./assets.generated";
+import { assetUrl } from "../utils/assetUrl";
 
 export type PropDefinition = {
   id: string;
@@ -12,7 +13,7 @@ export const propRegistry: Record<string, PropDefinition> = Object.fromEntries(
     {
       id: entry.id,
       name: entry.label.replace(/\b\w/g, (c) => c.toUpperCase()),
-      src: `/assets/props/${entry.file}`,
+      src: assetUrl(`/assets/props/${entry.file}`),
     },
   ])
 );

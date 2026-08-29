@@ -17,8 +17,13 @@ export type VisualConfig =
       endAt?: number;
       fit?: "cover" | "contain";
       crop?: { x: number; y: number; width: number; height: number };
+      /** Chrome for `frame: "browser"` — the address bar and tab strip make a
+       * recording read as a real session instead of a floating rectangle. */
+      url?: string;
+      title?: string;
+      tabs?: string[];
     }
-  | { type: "browser"; url?: string; title?: string; content: VisualConfig }
+  | { type: "browser"; url?: string; title?: string; tabs?: string[]; content: VisualConfig }
   | { type: "phone"; content: VisualConfig }
   | {
       type: "stat-counter";
@@ -28,6 +33,9 @@ export type VisualConfig =
       prefix?: string;
       suffix?: string;
       decimals?: number;
+      /** Sound effect id (see `sfxRegistry`) ticking as the number counts up —
+       * defaults to "counter-short"; "none" silences it. */
+      sfx?: string;
     }
   | {
       type: "checklist";
@@ -35,6 +43,9 @@ export type VisualConfig =
       font?: "tanker" | "clash";
       size?: "hero" | "headline" | "title" | "bodyLarge" | "body" | "label";
       stagger?: number;
+      /** Sound effect id (see `sfxRegistry`) played as each item reveals —
+       * defaults to "check"; "none" silences it. */
+      sfx?: string;
     }
   | {
       type: "pricing-card";
@@ -53,6 +64,27 @@ export type VisualConfig =
       chartValues?: number[];
     }
   | { type: "progress"; value: number; max: number; label?: string }
+  | { type: "keycap"; keys: string[]; caption?: string }
+  | {
+      type: "claude-cli";
+      transcript?: { text: string; kind?: "user" | "tool" | "result" | "dim" }[];
+      input?: string;
+      mode?: string;
+      modeActive?: boolean;
+      overlay?: { title: string; items: { text: string; selected?: boolean }[] };
+    }
+  | {
+      type: "terminal";
+      title?: string;
+      lines: { text: string; kind?: "prompt" | "output" | "accent" | "dim" }[];
+      /** Blinking block cursor after the last line. */
+      cursor?: boolean;
+    }
+  | {
+      type: "code-diff";
+      filename?: string;
+      lines: { text: string; kind?: "added" | "removed" | "context" }[];
+    }
   | {
       type: "flow";
       nodes: { label?: string; visual?: VisualConfig }[];
@@ -75,6 +107,10 @@ export type VisualConfig =
       diagonal?: "tlbr" | "trbl";
       size?: number;
       speed?: number;
+      /** Per-asset position override, in percent of frame width/height —
+       * index-matched to `assets`. Falls back to the diagonal's default
+       * corner slot when an entry is missing. */
+      offsets?: { x: number; y: number }[];
     };
 
 const cropSchema = z.object({
@@ -111,11 +147,15 @@ export const visualConfigSchema: z.ZodType<VisualConfig> = z.discriminatedUnion(
     endAt: z.number().min(0).optional(),
     fit: z.enum(["cover", "contain"]).optional(),
     crop: cropSchema.optional(),
+    url: z.string().optional(),
+    title: z.string().optional(),
+    tabs: z.array(z.string()).max(3).optional(),
   }),
   z.object({
     type: z.literal("browser"),
     url: z.string().optional(),
     title: z.string().optional(),
+    tabs: z.array(z.string()).max(3).optional(),
     content: z.lazy(() => visualConfigSchema),
   }),
   z.object({
@@ -130,6 +170,7 @@ export const visualConfigSchema: z.ZodType<VisualConfig> = z.discriminatedUnion(
     prefix: z.string().optional(),
     suffix: z.string().optional(),
     decimals: z.number().min(0).max(4).optional(),
+    sfx: z.string().optional(),
   }),
   z.object({
     type: z.literal("checklist"),
@@ -137,6 +178,7 @@ export const visualConfigSchema: z.ZodType<VisualConfig> = z.discriminatedUnion(
     font: z.enum(["tanker", "clash"]).optional(),
     size: z.enum(["hero", "headline", "title", "bodyLarge", "body", "label"]).optional(),
     stagger: z.number().min(0).max(60).optional(),
+    sfx: z.string().optional(),
   }),
   z.object({
     type: z.literal("pricing-card"),
@@ -159,6 +201,59 @@ export const visualConfigSchema: z.ZodType<VisualConfig> = z.discriminatedUnion(
     value: z.number(),
     max: z.number(),
     label: z.string().optional(),
+  }),
+  z.object({
+    type: z.literal("keycap"),
+    keys: z.array(z.string()).min(1).max(4),
+    caption: z.string().optional(),
+  }),
+  z.object({
+    type: z.literal("claude-cli"),
+    transcript: z
+      .array(
+        z.object({
+          text: z.string(),
+          kind: z.enum(["user", "tool", "result", "dim"]).optional(),
+        })
+      )
+      .max(6)
+      .optional(),
+    input: z.string().optional(),
+    mode: z.string().optional(),
+    modeActive: z.boolean().optional(),
+    overlay: z
+      .object({
+        title: z.string(),
+        items: z.array(z.object({ text: z.string(), selected: z.boolean().optional() })).min(1).max(5),
+      })
+      .optional(),
+  }),
+  z.object({
+    type: z.literal("terminal"),
+    title: z.string().optional(),
+    lines: z
+      .array(
+        z.object({
+          text: z.string(),
+          kind: z.enum(["prompt", "output", "accent", "dim"]).optional(),
+        })
+      )
+      .min(1)
+      .max(8),
+    cursor: z.boolean().optional(),
+  }),
+  z.object({
+    type: z.literal("code-diff"),
+    filename: z.string().optional(),
+    lines: z
+      .array(
+        z.object({
+          text: z.string(),
+          kind: z.enum(["added", "removed", "context"]).optional(),
+        })
+      )
+      .min(1)
+      .max(8),
   }),
   z.object({
     type: z.literal("flow"),
@@ -199,5 +294,9 @@ export const visualConfigSchema: z.ZodType<VisualConfig> = z.discriminatedUnion(
     diagonal: z.enum(["tlbr", "trbl"]).optional(),
     size: z.number().min(200).max(900).optional(),
     speed: z.number().min(0).max(3).optional(),
+    offsets: z
+      .array(z.object({ x: z.number().min(0).max(100), y: z.number().min(0).max(100) }))
+      .max(2)
+      .optional(),
   }),
 ]) as z.ZodType<VisualConfig>;
