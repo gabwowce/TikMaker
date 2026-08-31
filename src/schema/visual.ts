@@ -1,7 +1,12 @@
 import { z } from "zod";
+import type { ScreenAspect } from "../video/visuals/devices/screenFrameSize";
 
 export const toolIdSchema = z.string();
 export const propIdSchema = z.string();
+
+/** Shapes a chrome-less `ScreenFrame` can take — see
+ * `src/video/visuals/devices/screenFrameSize.ts`, which owns the pixel sizes. */
+export const screenAspectSchema = z.enum(["16:9", "16:10", "4:3", "1:1", "9:16"]);
 
 export type VisualConfig =
   | { type: "tool-logo"; tool: string; showName?: boolean }
@@ -11,12 +16,17 @@ export type VisualConfig =
   | {
       type: "recording";
       src: string;
-      frame: "none" | "browser" | "phone";
+      /** `"plain"` is the browser frame minus the claim that this is a browser:
+       * same rounded, shadowed card, no tab strip or address bar. Reach for it
+       * on footage of an app, a terminal, or anything that isn't a website —
+       * `"none"` is the raw rectangle with no card at all. */
+      frame: "none" | "plain" | "browser" | "phone";
       playbackRate?: number;
       startFrom?: number;
       endAt?: number;
       fit?: "cover" | "contain";
       crop?: { x: number; y: number; width: number; height: number };
+      aspect?: ScreenAspect;
       /** Chrome for `frame: "browser"` — the address bar and tab strip make a
        * recording read as a real session instead of a floating rectangle. */
       url?: string;
@@ -24,6 +34,10 @@ export type VisualConfig =
       tabs?: string[];
     }
   | { type: "browser"; url?: string; title?: string; tabs?: string[]; content: VisualConfig }
+  /** `browser`'s chrome-less twin — any visual on a rounded, shadowed card.
+   * This is how an IMAGE gets the same treatment `recording`'s `frame: "plain"`
+   * gives footage. */
+  | { type: "screen"; aspect?: ScreenAspect; content: VisualConfig }
   | { type: "phone"; content: VisualConfig }
   | {
       type: "stat-counter";
@@ -39,13 +53,22 @@ export type VisualConfig =
     }
   | {
       type: "checklist";
-      items: { label: string; done?: boolean }[];
+      items: { label: string; done?: boolean; delay?: number; exitAt?: number; lane?: number }[];
       font?: "tanker" | "clash";
       size?: "hero" | "headline" | "title" | "bodyLarge" | "body" | "label";
       stagger?: number;
       /** Sound effect id (see `sfxRegistry`) played as each item reveals —
        * defaults to "check"; "none" silences it. */
       sfx?: string;
+    }
+  | {
+      /** One independently positionable checklist/checkpoint card. Add several
+       * as separate visual layers when every point needs its own pose/timing. */
+      type: "checkpoint";
+      label: string;
+      detail?: string;
+      state?: "done" | "pending" | "warning";
+      variant?: "card" | "compact" | "pill" | "outline";
     }
   | {
       type: "pricing-card";
@@ -141,12 +164,15 @@ export const visualConfigSchema: z.ZodType<VisualConfig> = z.discriminatedUnion(
   z.object({
     type: z.literal("recording"),
     src: z.string(),
-    frame: z.enum(["none", "browser", "phone"]).default("none"),
+    frame: z.enum(["none", "plain", "browser", "phone"]).default("none"),
     playbackRate: z.number().positive().optional(),
     startFrom: z.number().min(0).optional(),
     endAt: z.number().min(0).optional(),
     fit: z.enum(["cover", "contain"]).optional(),
     crop: cropSchema.optional(),
+    /** Shape of the `frame: "plain"` card. Ignored by the other frames, which
+     * are the shape of the device they draw. */
+    aspect: screenAspectSchema.optional(),
     url: z.string().optional(),
     title: z.string().optional(),
     tabs: z.array(z.string()).max(3).optional(),
@@ -156,6 +182,11 @@ export const visualConfigSchema: z.ZodType<VisualConfig> = z.discriminatedUnion(
     url: z.string().optional(),
     title: z.string().optional(),
     tabs: z.array(z.string()).max(3).optional(),
+    content: z.lazy(() => visualConfigSchema),
+  }),
+  z.object({
+    type: z.literal("screen"),
+    aspect: screenAspectSchema.optional(),
     content: z.lazy(() => visualConfigSchema),
   }),
   z.object({
@@ -174,11 +205,25 @@ export const visualConfigSchema: z.ZodType<VisualConfig> = z.discriminatedUnion(
   }),
   z.object({
     type: z.literal("checklist"),
-    items: z.array(z.object({ label: z.string(), done: z.boolean().optional() })).min(1),
+    items: z.array(z.object({
+      label: z.string(),
+      done: z.boolean().optional(),
+      delay: z.number().min(0).optional(),
+      exitAt: z.number().min(0).optional(),
+      /** Timeline lane — presentation only, see `lane` in `schema/scene.ts`. */
+      lane: z.number().int().min(0).max(24).optional(),
+    })).min(1),
     font: z.enum(["tanker", "clash"]).optional(),
     size: z.enum(["hero", "headline", "title", "bodyLarge", "body", "label"]).optional(),
     stagger: z.number().min(0).max(60).optional(),
     sfx: z.string().optional(),
+  }),
+  z.object({
+    type: z.literal("checkpoint"),
+    label: z.string(),
+    detail: z.string().optional(),
+    state: z.enum(["done", "pending", "warning"]).optional(),
+    variant: z.enum(["card", "compact", "pill", "outline"]).optional(),
   }),
   z.object({
     type: z.literal("pricing-card"),

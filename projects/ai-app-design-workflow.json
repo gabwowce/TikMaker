@@ -1,0 +1,601 @@
+{
+  "id": "ai-app-design-workflow",
+  "title": "How to get better AI app design",
+  "fps": 30,
+  "width": 1080,
+  "height": 1920,
+  "scenes": [
+    {
+      "id": "hook",
+      "durationSeconds": 3,
+      "background": {
+        "type": "custom",
+        "fill": {
+          "kind": "solid",
+          "color": "#2c2b2b"
+        },
+        "grid": "lines"
+      },
+      "content": {
+        "headline": "",
+        "richHeadline": [
+          {
+            "text": "This is why",
+            "size": "hero",
+            "splitBy": "word",
+            "lane": 0
+          },
+          {
+            "text": "AI-generated apps",
+            "size": "hero",
+            "pill": true,
+            "splitBy": "word",
+            "lane": 1
+          },
+          {
+            "text": "all look the same.",
+            "size": "hero",
+            "splitBy": "word",
+            "lane": 2
+          }
+        ],
+        "visuals": []
+      },
+      "motion": {
+        "entrance": "fade",
+        "transition": "cut"
+      },
+      "type": "hook-centered"
+    },
+    {
+      "id": "bad-prompt",
+      "durationSeconds": 2.8,
+      "background": {
+        "type": "custom",
+        "fill": {
+          "kind": "solid",
+          "color": "#2c2b2b"
+        },
+        "grid": "lines"
+      },
+      "content": {
+        "headline": "",
+        "richHeadline": [
+          {
+            "text": "Most people just say:",
+            "size": "headline",
+            "splitBy": "word"
+          },
+          {
+            "text": "\"Make it look modern.\"",
+            "size": "title",
+            "pill": true,
+            "splitBy": "word"
+          },
+          {
+            "text": "That is too vague.",
+            "size": "title",
+            "splitBy": "word"
+          }
+        ],
+        "visuals": []
+      },
+      "motion": {
+        "entrance": "fade",
+        "transition": "cut"
+      },
+      "type": "hook-centered"
+    },
+    {
+      "id": "step1-title",
+      "durationSeconds": 2.5,
+      "background": {
+        "type": "custom",
+        "fill": {
+          "kind": "solid",
+          "color": "#2c2b2b"
+        },
+        "grid": "lines"
+      },
+      "content": {
+        "headline": "",
+        "richHeadline": [
+          {
+            "text": "Step 1",
+            "size": "hero",
+            "pill": true,
+            "splitBy": "word"
+          },
+          {
+            "text": "Send your screen",
+            "size": "headline",
+            "splitBy": "word"
+          },
+          {
+            "text": "to ChatGPT.",
+            "size": "headline",
+            "splitBy": "word"
+          }
+        ],
+        "visuals": []
+      },
+      "motion": {
+        "entrance": "fade",
+        "transition": "cut"
+      },
+      "type": "hook-centered"
+    },
+    {
+      "id": "step1-recording",
+      "durationSeconds": 3,
+      "background": {
+        "type": "custom",
+        "fill": {
+          "kind": "solid",
+          "color": "#2c2b2b"
+        },
+        "grid": "lines"
+      },
+      "content": {
+        "headline": "",
+        "richHeadline": [
+          {
+            "text": "Prompt:",
+            "size": "title",
+            "pill": true,
+            "x": 50,
+            "y": 11.4583333333333,
+            "splitBy": "word"
+          },
+          {
+            "text": "Redesign this screen.",
+            "size": "headline",
+            "x": 50.40783034257748,
+            "y": 20.229357798165136,
+            "splitBy": "word"
+          },
+          {
+            "text": "Keep the functionality.",
+            "size": "title",
+            "x": 50,
+            "y": 73.4583333333333,
+            "splitBy": "word"
+          },
+          {
+            "text": "Rethink hierarchy and layout.",
+            "size": "title",
+            "splitBy": "word"
+          }
+        ],
+        "visuals": [
+          {
+            "id": "recording-step1",
+            "visual": {
+              "type": "recording",
+              "src": "/assets/custom/0829-mtdwilsu.mp4",
+              "frame": "plain",
+              "playbackRate": 1,
+              "fit": "cover",
+              "aspect": "16:10"
+            },
+            "x": 66.721044045677,
+            "y": 46.65137614678899,
+            "scale": 1.45,
+            "entrance": "zoomSettleRight",
+            "exit": "slideLeft",
+            "exitDuration": 18,
+            "entranceDistance": 380,
+            "exitDistance": 920
+          }
+        ]
+      },
+      "motion": {
+        "entrance": "fade",
+        "transition": "cut"
+      },
+      "type": "hook-centered"
+    },
+    {
+      "id": "step2-title",
+      "durationSeconds": 2.5,
+      "background": {
+        "type": "custom",
+        "fill": {
+          "kind": "solid",
+          "color": "#2c2b2b"
+        },
+        "grid": "lines"
+      },
+      "content": {
+        "headline": "",
+        "richHeadline": [
+          {
+            "text": "Step 2",
+            "size": "hero",
+            "pill": true,
+            "splitBy": "word"
+          },
+          {
+            "text": "Get a visual",
+            "size": "headline",
+            "splitBy": "word"
+          },
+          {
+            "text": "mockup first.",
+            "size": "headline",
+            "splitBy": "word"
+          }
+        ],
+        "visuals": []
+      },
+      "motion": {
+        "entrance": "fade",
+        "transition": "cut"
+      },
+      "type": "hook-centered"
+    },
+    {
+      "id": "step2-recording",
+      "durationSeconds": 3,
+      "background": {
+        "type": "custom",
+        "fill": {
+          "kind": "solid",
+          "color": "#2c2b2b"
+        },
+        "grid": "lines"
+      },
+      "content": {
+        "headline": "",
+        "richHeadline": [
+          {
+            "text": "Now AI can show",
+            "size": "headline",
+            "splitBy": "word"
+          },
+          {
+            "text": "a better layout,",
+            "size": "title",
+            "splitBy": "word"
+          },
+          {
+            "text": "spacing and hierarchy.",
+            "size": "title",
+            "pill": true,
+            "splitBy": "word"
+          }
+        ],
+        "visuals": [
+          {
+            "id": "recording-step2",
+            "visual": {
+              "type": "recording",
+              "src": "/assets/custom/0829-mtdwilsu.mp4",
+              "frame": "plain",
+              "playbackRate": 1,
+              "fit": "cover",
+              "aspect": "16:10"
+            },
+            "x": 66.394779771615,
+            "y": 50.412844036697244,
+            "scale": 1.5,
+            "entrance": "zoomSettleRight",
+            "exit": "slideLeft",
+            "exitDuration": 18,
+            "entranceDistance": 380,
+            "exitDistance": 920
+          }
+        ]
+      },
+      "motion": {
+        "entrance": "fade",
+        "transition": "cut"
+      },
+      "type": "hook-centered"
+    },
+    {
+      "id": "step3-title",
+      "durationSeconds": 2.5,
+      "background": {
+        "type": "custom",
+        "fill": {
+          "kind": "solid",
+          "color": "#2c2b2b"
+        },
+        "grid": "lines"
+      },
+      "content": {
+        "headline": "",
+        "richHeadline": [
+          {
+            "text": "Step 3",
+            "size": "hero",
+            "pill": true,
+            "splitBy": "word"
+          },
+          {
+            "text": "Turn the design",
+            "size": "headline",
+            "splitBy": "word"
+          },
+          {
+            "text": "into a build prompt.",
+            "size": "headline",
+            "splitBy": "word"
+          }
+        ],
+        "visuals": []
+      },
+      "motion": {
+        "entrance": "fade",
+        "transition": "cut"
+      },
+      "type": "hook-centered"
+    },
+    {
+      "id": "step3-recording",
+      "durationSeconds": 3,
+      "background": {
+        "type": "custom",
+        "fill": {
+          "kind": "solid",
+          "color": "#2c2b2b"
+        },
+        "grid": "lines"
+      },
+      "content": {
+        "headline": "",
+        "richHeadline": [
+          {
+            "text": "Ask:",
+            "size": "title",
+            "splitBy": "word"
+          },
+          {
+            "text": "\"Describe this design",
+            "size": "headline",
+            "splitBy": "word"
+          },
+          {
+            "text": "as an implementation prompt",
+            "size": "title",
+            "splitBy": "word"
+          },
+          {
+            "text": "for my coding agent.\"",
+            "size": "title",
+            "pill": true,
+            "splitBy": "word"
+          }
+        ],
+        "visuals": [
+          {
+            "id": "recording-step3",
+            "visual": {
+              "type": "recording",
+              "src": "/assets/custom/0829-mtdwilsu.mp4",
+              "frame": "plain",
+              "playbackRate": 1,
+              "fit": "cover",
+              "aspect": "16:10"
+            },
+            "x": 66.394779771615,
+            "y": 50.412844036697244,
+            "scale": 1.5,
+            "entrance": "zoomSettleRight",
+            "exit": "slideLeft",
+            "exitDuration": 18,
+            "entranceDistance": 380,
+            "exitDistance": 920
+          }
+        ]
+      },
+      "motion": {
+        "entrance": "fade",
+        "transition": "cut"
+      },
+      "type": "hook-centered"
+    },
+    {
+      "id": "step4-title",
+      "durationSeconds": 2.5,
+      "background": {
+        "type": "custom",
+        "fill": {
+          "kind": "solid",
+          "color": "#2c2b2b"
+        },
+        "grid": "lines"
+      },
+      "content": {
+        "headline": "",
+        "richHeadline": [
+          {
+            "text": "Step 4",
+            "size": "hero",
+            "pill": true,
+            "splitBy": "word"
+          },
+          {
+            "text": "Give that prompt",
+            "size": "headline",
+            "splitBy": "word"
+          },
+          {
+            "text": "to Claude.",
+            "size": "headline",
+            "splitBy": "word"
+          }
+        ],
+        "visuals": []
+      },
+      "motion": {
+        "entrance": "fade",
+        "transition": "cut"
+      },
+      "type": "hook-centered"
+    },
+    {
+      "id": "step4-recording",
+      "durationSeconds": 3,
+      "background": {
+        "type": "custom",
+        "fill": {
+          "kind": "solid",
+          "color": "#2c2b2b"
+        },
+        "grid": "lines"
+      },
+      "content": {
+        "headline": "",
+        "richHeadline": [
+          {
+            "text": "Now Claude has",
+            "size": "headline",
+            "splitBy": "word"
+          },
+          {
+            "text": "clear design direction.",
+            "size": "title",
+            "pill": true,
+            "splitBy": "word"
+          },
+          {
+            "text": "Not just \"make it modern\".",
+            "size": "title",
+            "splitBy": "word"
+          }
+        ],
+        "visuals": [
+          {
+            "id": "recording-step4",
+            "visual": {
+              "type": "recording",
+              "src": "/assets/custom/0829-mtdwilsu.mp4",
+              "frame": "plain",
+              "playbackRate": 1,
+              "fit": "cover",
+              "aspect": "16:10"
+            },
+            "x": 66.394779771615,
+            "y": 50.412844036697244,
+            "scale": 1.5,
+            "entrance": "zoomSettleRight",
+            "exit": "slideLeft",
+            "exitDuration": 18,
+            "entranceDistance": 380,
+            "exitDistance": 920
+          }
+        ]
+      },
+      "motion": {
+        "entrance": "fade",
+        "transition": "cut"
+      },
+      "type": "hook-centered"
+    },
+    {
+      "id": "before-after",
+      "durationSeconds": 3.5,
+      "background": {
+        "type": "custom",
+        "fill": {
+          "kind": "solid",
+          "color": "#2c2b2b"
+        },
+        "grid": "lines"
+      },
+      "content": {
+        "headline": "",
+        "richHeadline": [
+          {
+            "text": "Before",
+            "size": "title",
+            "splitBy": "word"
+          },
+          {
+            "text": "vs",
+            "size": "title",
+            "splitBy": "word"
+          },
+          {
+            "text": "After",
+            "size": "title",
+            "pill": true,
+            "splitBy": "word"
+          }
+        ],
+        "visuals": [
+          {
+            "id": "recording-before-after",
+            "visual": {
+              "type": "recording",
+              "src": "/assets/custom/0829-mtdwilsu.mp4",
+              "frame": "plain",
+              "playbackRate": 1,
+              "fit": "cover",
+              "aspect": "16:10"
+            },
+            "x": 66.394779771615,
+            "y": 50.412844036697244,
+            "scale": 1.5,
+            "entrance": "zoomSettleRight",
+            "exit": "slideLeft",
+            "exitDuration": 18,
+            "entranceDistance": 380,
+            "exitDistance": 920
+          }
+        ]
+      },
+      "motion": {
+        "entrance": "fade",
+        "transition": "cut"
+      },
+      "type": "hook-centered"
+    },
+    {
+      "id": "takeaway",
+      "durationSeconds": 3,
+      "background": {
+        "type": "custom",
+        "fill": {
+          "kind": "solid",
+          "color": "#2c2b2b"
+        },
+        "grid": "lines"
+      },
+      "content": {
+        "headline": "",
+        "richHeadline": [
+          {
+            "text": "Don't ask for",
+            "size": "headline",
+            "splitBy": "word"
+          },
+          {
+            "text": "\"modern\".",
+            "size": "headline",
+            "pill": true,
+            "splitBy": "word"
+          },
+          {
+            "text": "Ask for a redesign,",
+            "size": "title",
+            "splitBy": "word"
+          },
+          {
+            "text": "then turn it into a build prompt.",
+            "size": "title",
+            "splitBy": "word"
+          }
+        ],
+        "visuals": []
+      },
+      "motion": {
+        "entrance": "fade",
+        "transition": "cut"
+      },
+      "type": "takeaway"
+    }
+  ]
+}

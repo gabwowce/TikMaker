@@ -46,6 +46,7 @@ const Column: React.FC<{ side?: SideContent; delay: number; durationSeconds: num
         entrance={side.visualEntrance ?? "none"}
         entranceDelay={delay}
         exit={side.visualExit}
+        entranceDuration={side.visualEntranceDuration}
         exitDuration={side.visualExitDuration}
         entranceDistance={side.visualEntranceDistance}
         exitDistance={side.visualExitDistance}
@@ -61,23 +62,11 @@ const Column: React.FC<{ side?: SideContent; delay: number; durationSeconds: num
   </EnterOnCue>
 );
 
-export const ComparisonScene: React.FC<SceneComponentProps> = ({
-  background,
-  content,
-  motion,
-  durationSeconds,
-}) => {
+export const ComparisonScene: React.FC<SceneComponentProps> = ({ content, motion, durationSeconds }) => {
   const { cue } = useSceneCues(motion);
 
   return (
-    <SceneFrame
-      background={background}
-      content={content}
-      motion={motion}
-      durationSeconds={durationSeconds}
-      textZone="center"
-      gap={40}
-    >
+    <SceneFrame content={content} motion={motion} durationSeconds={durationSeconds} textZone="center" gap={40}>
       {content.headline ? (
         <SceneCue motion={motion} delay={cue(0)}>
           <Title>{renderHighlighted(content.headline, content.highlights)}</Title>

@@ -6,18 +6,20 @@ import { VisualLibrary } from "../library/VisualLibrary";
 import { BackgroundLibrary } from "../library/BackgroundLibrary";
 import { AssetLibrary } from "../library/AssetLibrary";
 import { SoundLibrary } from "../library/SoundLibrary";
+import { TextLibrary } from "../library/TextLibrary";
 
 const tabs = [
-  { id: "templates", label: "Templates", Component: TemplateLibrary },
-  { id: "scenes", label: "Scenes", Component: SceneLibrary },
+  { id: "text", label: "Text", Component: TextLibrary },
   { id: "visuals", label: "Visuals", Component: VisualLibrary },
+  { id: "sound", label: "Sound", Component: SoundLibrary },
+  { id: "scenes", label: "Scenes", Component: SceneLibrary },
+  { id: "templates", label: "Templates", Component: TemplateLibrary },
   { id: "backgrounds", label: "BG", Component: BackgroundLibrary },
   { id: "assets", label: "Assets", Component: AssetLibrary },
-  { id: "sound", label: "Sound", Component: SoundLibrary },
 ] as const;
 
 export const LibraryPanel: React.FC = () => {
-  const [active, setActive] = useState<(typeof tabs)[number]["id"]>("templates");
+  const [active, setActive] = useState<(typeof tabs)[number]["id"]>("text");
   const ActiveComponent = tabs.find((t) => t.id === active)!.Component;
 
   return (

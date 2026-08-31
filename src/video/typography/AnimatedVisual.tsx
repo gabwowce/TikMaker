@@ -15,8 +15,14 @@ type AnimatedVisualProps = {
   visual: VisualConfig;
   entrance?: EntrancePreset;
   entranceDelay?: number;
+  /** How long the entrance takes, in frames — mirror of `exitDuration`. Unset
+   * = the preset's natural pace. Ignored while a link glide is active, which
+   * runs on `LINK_BLEND_FRAMES` instead. */
+  entranceDuration?: number;
   exit?: ExitPreset;
   exitDuration?: number;
+  /** Absolute scene frame at which the exit completes. */
+  exitAt?: number;
   /** Travel distance (px) for a slide/zoomSettle entrance or exit — see
    * `enter`/`exitStyle` in `motion/`. Ignored while a link glide is active. */
   entranceDistance?: number;
@@ -51,6 +57,12 @@ type AnimatedVisualProps = {
    * Callers decide auto-default vs explicit vs silent (see `sfxDefaults.ts`). */
   sfx?: string;
   exitSfx?: string;
+  sfxAt?: number;
+  exitSfxAt?: number;
+  sfxStartFrom?: number;
+  sfxDuration?: number;
+  exitSfxStartFrom?: number;
+  exitSfxDuration?: number;
   /** Phase offset for the cyclic "float" Ken Burns preset, so two visuals using
    * it don't drift in perfect unison. Ignored by the other presets. */
   driftSeed?: number;
@@ -80,12 +92,13 @@ function resolveEntrance(args: {
   fps: number;
   delay: number;
   entrance?: EntrancePreset;
+  entranceDuration?: number;
   distance?: number;
   linkFrom?: VisualPose;
   ownPosition: Pose2D;
   ownScale: number;
 }): { transform: string; opacity: number } {
-  const { frame, fps, delay, entrance, distance, linkFrom, ownPosition, ownScale } = args;
+  const { frame, fps, delay, entrance, entranceDuration, distance, linkFrom, ownPosition, ownScale } = args;
 
   if (linkFrom) {
     const localFrame = frame - delay;
@@ -103,7 +116,13 @@ function resolveEntrance(args: {
     return { transform: `translate(${x}px, ${y}px) scale(${relativeScale})`, opacity: 1 };
   }
 
-  const enterStyle = enter(entrance ?? "scaleIn", { frame, fps, delay, distance });
+  const enterStyle = enter(entrance ?? "scaleIn", {
+    frame,
+    fps,
+    delay,
+    distance,
+    durationInFrames: entranceDuration,
+  });
   return {
     transform: enterStyle.transform ?? "",
     opacity: typeof enterStyle.opacity === "number" ? enterStyle.opacity : 1,
@@ -150,8 +169,10 @@ export const AnimatedVisual: React.FC<AnimatedVisualProps> = ({
   visual,
   entrance,
   entranceDelay = 0,
+  entranceDuration,
   exit,
   exitDuration,
+  exitAt,
   entranceDistance,
   exitDistance,
   kenBurns,
@@ -164,17 +185,25 @@ export const AnimatedVisual: React.FC<AnimatedVisualProps> = ({
   linkTo,
   sfx,
   exitSfx,
+  sfxAt,
+  exitSfxAt,
+  sfxStartFrom,
+  sfxDuration,
+  exitSfxStartFrom,
+  exitSfxDuration,
   driftSeed,
 }) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
-  const durationInFrames = durationSeconds * fps;
+  const sceneDurationInFrames = durationSeconds * fps;
+  const durationInFrames = Math.min(sceneDurationInFrames, exitAt ?? sceneDurationInFrames);
 
   const enterResult = resolveEntrance({
     frame,
     fps,
     delay: entranceDelay,
     entrance,
+    entranceDuration,
     distance: entranceDistance,
     linkFrom,
     ownPosition,
@@ -195,27 +224,30 @@ export const AnimatedVisual: React.FC<AnimatedVisualProps> = ({
 
   const sfxSrc = sfx ? getSfx(sfx)?.src : undefined;
   const exitSfxSrc = exit && exitSfx ? getSfx(exitSfx)?.src : undefined;
-  const exitFrame = Math.max(0, durationInFrames - (exitDuration ?? 18));
+  const entranceSfxFrame = Math.max(0, sfxAt ?? entranceDelay);
+  const exitFrame = Math.max(0, exitSfxAt ?? (durationInFrames - (exitDuration ?? 18)));
+  const entranceAudioDuration = Math.min(sfxDuration ?? CUE_WINDOW_FRAMES, Math.max(1, sceneDurationInFrames - entranceSfxFrame));
+  const exitAudioDuration = Math.min(exitSfxDuration ?? CUE_WINDOW_FRAMES, Math.max(1, sceneDurationInFrames - exitFrame));
 
   return (
     <div style={{ ...style, opacity: enterResult.opacity * exitResult.opacity, transform: transform || undefined }}>
       <VisualRenderer visual={visual} />
       {sfxSrc ? (
         <Sequence
-          from={Math.max(0, entranceDelay)}
-          durationInFrames={Math.min(CUE_WINDOW_FRAMES, durationInFrames)}
+          from={entranceSfxFrame}
+          durationInFrames={entranceAudioDuration}
           layout="none"
         >
-          <Audio src={sfxSrc} volume={SFX_VOLUME} />
+          <Audio src={sfxSrc} volume={SFX_VOLUME} startFrom={sfxStartFrom ?? 0} endAt={(sfxStartFrom ?? 0) + entranceAudioDuration} />
         </Sequence>
       ) : null}
       {exitSfxSrc ? (
         <Sequence
           from={exitFrame}
-          durationInFrames={Math.min(CUE_WINDOW_FRAMES, Math.max(1, durationInFrames - exitFrame))}
+          durationInFrames={exitAudioDuration}
           layout="none"
         >
-          <Audio src={exitSfxSrc} volume={SFX_VOLUME} />
+          <Audio src={exitSfxSrc} volume={SFX_VOLUME} startFrom={exitSfxStartFrom ?? 0} endAt={(exitSfxStartFrom ?? 0) + exitAudioDuration} />
         </Sequence>
       ) : null}
     </div>

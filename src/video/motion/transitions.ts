@@ -9,11 +9,7 @@ type TransitionArgs = {
   fps: number;
 };
 
-/** Frames the slide takes at the start/end of a scene. Also the window
- * `computeSceneTimings` (see `utils/duration.ts`) overlaps consecutive scenes
- * by, so the outgoing scene's slide-out and the incoming scene's slide-in
- * play during the SAME absolute frames instead of either running past an
- * empty gap. */
+/** Frames used by the visual slide. This never changes global scene timing. */
 export const PUSH_FRAMES = 12;
 
 type Axis = "x" | "y";
@@ -43,7 +39,7 @@ export function isOverlappingTransition(preset: TransitionPreset | undefined): b
 export function transitionStyle(preset: TransitionPreset | undefined, args: TransitionArgs): CSSProperties {
   if (!preset || preset === "cut") return {};
 
-  const { frameInScene, durationInFrames } = args;
+  const { frameInScene } = args;
   const { axis, sign } = DIRECTIONS[preset];
 
   const inProgress = interpolate(frameInScene, [0, PUSH_FRAMES], [1, 0], {
@@ -51,13 +47,10 @@ export function transitionStyle(preset: TransitionPreset | undefined, args: Tran
     extrapolateRight: "clamp",
     easing: standardEasing,
   });
-  const outStart = durationInFrames - PUSH_FRAMES;
-  const outProgress = interpolate(frameInScene, [outStart, durationInFrames], [0, -1], {
-    extrapolateLeft: "clamp",
-    extrapolateRight: "clamp",
-    easing: standardEasing,
-  });
-  const translate = (inProgress + outProgress) * 100 * sign;
+  // A scene transition is entrance-only. Making it also push the outgoing
+  // scene requires temporal overlap, which made scene ranges alter the global
+  // edit. OUT motion belongs to the objects' own explicit exit effects.
+  const translate = inProgress * 100 * sign;
 
   return { transform: axis === "x" ? `translateX(${translate}%)` : `translateY(${translate}%)` };
 }

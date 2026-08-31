@@ -4,7 +4,6 @@ import { SceneFrame, SceneCue, useSceneCues } from "./SceneFrame";
 import type { SceneComponentProps } from "./types";
 
 export const VisualExplainerScene: React.FC<SceneComponentProps> = ({
-  background,
   content,
   layout,
   motion,
@@ -14,7 +13,6 @@ export const VisualExplainerScene: React.FC<SceneComponentProps> = ({
 
   return (
     <SceneFrame
-      background={background}
       content={content}
       motion={motion}
       durationSeconds={durationSeconds}

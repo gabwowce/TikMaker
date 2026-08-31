@@ -5,7 +5,7 @@ import { getSfx } from "../../../registries/sfxRegistry";
 import { resolveDefaultSfx, SFX_VOLUME } from "../../motion/sfxDefaults";
 
 type ChecklistProps = {
-  items: { label: string; done?: boolean }[];
+  items: { label: string; done?: boolean; delay?: number; exitAt?: number }[];
   font?: "tanker" | "clash";
   size?: "hero" | "headline" | "title" | "bodyLarge" | "body" | "label";
   /** frames between one item revealing and the next — matches the pace of a
@@ -28,7 +28,7 @@ export const Checklist: React.FC<ChecklistProps> = ({ items, font, size = "bodyL
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: 20, minWidth: 640 }}>
       {items.map((item, index) => {
-        const delay = index * stagger;
+        const delay = item.delay ?? index * stagger;
         const opacity = interpolate(frame - delay, [0, 12], [0, 1], {
           extrapolateLeft: "clamp",
           extrapolateRight: "clamp",
@@ -37,6 +37,12 @@ export const Checklist: React.FC<ChecklistProps> = ({ items, font, size = "bodyL
           extrapolateLeft: "clamp",
           extrapolateRight: "clamp",
         });
+        const exitOpacity = item.exitAt === undefined
+          ? 1
+          : interpolate(frame, [Math.max(delay, item.exitAt - 8), item.exitAt], [1, 0], {
+              extrapolateLeft: "clamp",
+              extrapolateRight: "clamp",
+            });
 
         return (
           <div
@@ -45,7 +51,7 @@ export const Checklist: React.FC<ChecklistProps> = ({ items, font, size = "bodyL
               display: "flex",
               alignItems: "center",
               gap: 20,
-              opacity,
+              opacity: opacity * exitOpacity,
               transform: `translateX(${translateX}px)`,
               padding: "18px 24px",
               borderRadius: 16,

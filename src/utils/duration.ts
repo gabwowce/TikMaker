@@ -1,6 +1,5 @@
 import type { VideoProject } from "../schema/project";
 import type { Scene } from "../schema/scene";
-import { PUSH_FRAMES, isOverlappingTransition } from "../video/motion/transitions";
 import { resolveSceneDuration } from "./pacing";
 
 /** Frames a scene overlaps with the one before it when its own `motion.transition`
@@ -9,7 +8,8 @@ import { resolveSceneDuration } from "./pacing";
  * outgoing scene's slide-out and the incoming scene's slide-in play during the
  * SAME absolute frames instead of each sliding through an empty gap where
  * neither scene has content on screen. */
-export const SCENE_OVERLAP_FRAMES = PUSH_FRAMES;
+/** Scene ranges are contiguous. Visual transitions never alter global time. */
+export const SCENE_OVERLAP_FRAMES = 0;
 
 export type SceneTiming = {
   scene: Scene;
@@ -27,11 +27,10 @@ export type SceneTiming = {
  * composition's declared length (or leave trailing dead frames). */
 export function computeSceneTimings(project: VideoProject): SceneTiming[] {
   let cursor = 0;
-  return project.scenes.map((scene, index) => {
+  return project.scenes.map((scene) => {
     const durationSeconds = resolveSceneDuration(scene);
     const durationInFrames = Math.round(durationSeconds * project.fps);
-    const overlap = index > 0 && isOverlappingTransition(scene.motion?.transition) ? SCENE_OVERLAP_FRAMES : 0;
-    const from = Math.max(0, cursor - overlap);
+    const from = cursor;
     cursor = from + durationInFrames;
     return { scene, from, durationInFrames, durationSeconds };
   });
@@ -41,5 +40,21 @@ export function projectDurationInFrames(project: VideoProject): number {
   const timings = computeSceneTimings(project);
   if (timings.length === 0) return 1;
   const last = timings[timings.length - 1];
-  return Math.max(1, last.from + last.durationInFrames);
+  let end = last.from + last.durationInFrames;
+  for (const timing of timings) {
+    const content = timing.scene.content;
+    for (const line of content.richHeadline ?? []) end = Math.max(end, timing.from + (line.exitAt ?? timing.durationInFrames));
+    for (const block of content.blocks ?? []) end = Math.max(end, timing.from + (block.exitAt ?? timing.durationInFrames));
+    for (const visual of content.visuals ?? []) {
+      end = Math.max(end, timing.from + (visual.exitAt ?? timing.durationInFrames));
+      if (visual.visual.type === "checklist") {
+        for (const item of visual.visual.items) {
+          end = Math.max(end, timing.from + (item.exitAt ?? visual.exitAt ?? timing.durationInFrames));
+        }
+      }
+    }
+    for (const item of content.items ?? []) end = Math.max(end, timing.from + (item.exitAt ?? timing.durationInFrames));
+  }
+  for (const clip of project.audioClips ?? []) end = Math.max(end, clip.from + (clip.durationInFrames ?? 1));
+  return Math.max(1, Math.ceil(end));
 }

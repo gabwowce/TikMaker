@@ -9,6 +9,12 @@ export type LinkKeyframe = {
   /** Frames from the START of the group's sequence. */
   at: number;
   pose: VisualPose;
+  /** Frames before `at` the move toward this pose begins — see
+   * `link.glideLead`. Taken from the ARRIVING member, so each hop can be
+   * timed on its own. */
+  lead?: number;
+  /** Frames the move toward this pose takes — see `link.glideDuration`. */
+  duration?: number;
 };
 
 /** How the carried element animates in, drifts, and animates out. Taken from
@@ -46,6 +52,9 @@ type PoseSource = {
   motionIn: LinkMotion;
   motionOut: LinkMotion;
   entryId: string;
+  /** This member's own glide timing — used when IT is the one being arrived at. */
+  glideLead?: number;
+  glideDuration?: number;
 };
 
 function layerSources(scene: Scene): PoseSource[] {
@@ -69,6 +78,8 @@ function layerSources(scene: Scene): PoseSource[] {
         exitSfx: entry.exitSfx,
       },
       entryId: entry.id,
+      glideLead: entry.link!.glideLead,
+      glideDuration: entry.link!.glideDuration,
     }));
 }
 
@@ -142,7 +153,12 @@ function buildGroup(
     from,
     durationInFrames: lastTiming.from + lastTiming.durationInFrames - from,
     visual: first.source.visual,
-    keyframes: run.map((entry) => ({ at: timings[entry.index].from - from, pose: entry.source.pose })),
+    keyframes: run.map((entry) => ({
+      at: timings[entry.index].from - from,
+      pose: entry.source.pose,
+      lead: entry.source.glideLead,
+      duration: entry.source.glideDuration,
+    })),
     motion: { ...first.source.motionIn, ...lastEntry.source.motionOut },
     members: run.map((entry) => ({ sceneId: timings[entry.index].scene.id, entryId: entry.source.entryId })),
   };

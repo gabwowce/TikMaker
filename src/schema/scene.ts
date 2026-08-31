@@ -63,6 +63,26 @@ export const entrancePresetSchema = z.enum([
   "zoomSettleLeft",
   "zoomSettleTop",
   "zoomSettleBottom",
+  /** The CapCut-style set. Each is a single readable gesture rather than a
+   * combination — the picker shows every one of them, so a preset that only
+   * differs from its neighbour by a few degrees is a worse choice than no
+   * preset at all. All implemented in `motion/entrances.ts`. */
+  /** Starts oversized and settles to its resting size — the "push in" look. */
+  "zoomIn",
+  /** Out of focus into focus. Reads as the element resolving rather than
+   * arriving, so it suits a title over footage better than a prop does. */
+  "blurIn",
+  /** Spins into place while growing. */
+  "spinIn",
+  /** Rotates in on its Y axis, like a card being turned face-up. */
+  "flipIn",
+  /** Overshoots its resting size and wobbles back — the only preset here that
+   * is deliberately springy rather than eased. */
+  "bounceIn",
+  /** Falls in from above and lands with a bounce. */
+  "dropIn",
+  /** Rolls in from the left, rotating as it travels. */
+  "rollIn",
 ]);
 export const exitPresetSchema = z.enum([
   /** No independent animation — the element just stays as-is and leaves only
@@ -80,6 +100,17 @@ export const exitPresetSchema = z.enum([
    * element breaking apart/blasting away, the counterpart to
    * `zoomSettleRight`/`zoomSettleLeft`. See `motion/exits.ts`. */
   "burstOut",
+  /** Mirrors of the entrance set above, same one-gesture rule — see
+   * `motion/exits.ts`. `scaleOut` already covers shrinking away, so `zoomOut`
+   * here is the opposite move: it grows past the frame as it leaves. */
+  "zoomOut",
+  "blurOut",
+  "spinOut",
+  "flipOut",
+  /** Drops out of the bottom of the frame, tipping as it falls. */
+  "dropOut",
+  /** Rolls out to the right, rotating as it travels. */
+  "rollOut",
 ]);
 export const kenBurnsPresetSchema = z.enum([
   "zoomIn",
@@ -150,6 +181,8 @@ const sideContentSchema = z.object({
    * this one" gap. All optional; unset = the column's own timing, no exit. */
   visualEntrance: entrancePresetSchema.optional(),
   visualExit: exitPresetSchema.optional(),
+  /** Mirror of `visualExitDuration` — see `entranceDuration` on a layer. */
+  visualEntranceDuration: z.number().min(1).max(60).optional(),
   visualExitDuration: z.number().min(1).max(60).optional(),
   visualEntranceDistance: z.number().min(0).max(2400).optional(),
   visualExitDistance: z.number().min(0).max(2400).optional(),
@@ -165,13 +198,41 @@ const sideContentSchema = z.object({
 const stepItemSchema = z.object({
   label: z.string(),
   value: z.string().optional(),
+  /** Which timeline lane this object is parked in. PRESENTATION ONLY — it has
+   * no effect on the render, and for a visual it is NOT z-order (that stays the
+   * `content.visuals[]` array index, edited with the Layers arrows). Unset means
+   * "wherever the automatic packing puts me"; dragging a clip up or down pins
+   * it. See `SceneTimeline`. */
+  lane: z.number().int().min(0).max(24).optional(),
+  /** Absolute scene-frame cues used by the editor timeline. */
+  delay: z.number().min(0).optional(),
+  exitAt: z.number().min(0).optional(),
 });
 
 const richHeadlineLineSchema = z.object({
   text: z.string(),
   size: richTextSizeSchema,
+  /** Manual font size in px, overriding the `size` token for THIS line — the
+   * same raw-number escape hatch `Block.size` already is, and the same reason:
+   * a hook caption is a typographic composition, and the six tokens are rungs
+   * on a ladder rather than every size a line might want to be.
+   *
+   * The tokens stay the default and the starting point; this is authored
+   * project data, NOT a licence for scene components to hardcode sizes — those
+   * still read `fontSizes` (see the design rules in CLAUDE.md). */
+  sizePx: z.number().min(8).max(400).optional(),
   font: richTextFontSchema.optional(),
   pill: z.boolean().optional(),
+  /** Hex color for THIS line's text, same field and same `#RRGGBB` form as
+   * `Block.color`. Unset = the token default this line would otherwise get
+   * (`colors.background` inside a pill, `colors.textPrimary` outside one), so
+   * a pill stays legible without anyone having to think about it.
+   *
+   * This is line-level styling, NOT highlighting: per the design rule, calling
+   * a WORD out is always a pill box and never a color change. Recoloring a
+   * whole line for a deliberate look is fine; recoloring one to emphasize it
+   * is the thing `pill` exists for. */
+  color: z.string().optional(),
   /** Freeform position (percent of the full 1080x1920 canvas — same
    * convention as `Block.x`/`y` and a layer's `x`/`y`), for a line that should
    * sit somewhere OTHER than stacked in the centered headline column. Both
@@ -181,6 +242,11 @@ const richHeadlineLineSchema = z.object({
   x: z.number().min(0).max(100).optional(),
   y: z.number().min(0).max(100).optional(),
   animation: entrancePresetSchema.optional(),
+  entranceDuration: z.number().min(1).max(90).optional(),
+  /** Absolute scene frame override used by the visual timeline. */
+  delay: z.number().min(0).optional(),
+  /** Absolute scene frame at which this line has fully left. */
+  exitAt: z.number().min(0).optional(),
   /** How far (px) a slide/zoomSettle entrance travels — same field, same
    * default, same "Far"/"Off-frame" presets as every other entrance in the
    * system (`entranceDistance` on a layer, `motion.entranceDistance` on the
@@ -196,12 +262,40 @@ const richHeadlineLineSchema = z.object({
    * same "unset = subtle default, >=400 drops the fade" rule as everywhere
    * else distance appears. */
   exitDistance: z.number().min(0).max(2400).optional(),
+  /** How long (frames) THIS line's own `exit` takes. Unset falls back to
+   * `motion.exitDuration`, then to the shared 18-frame default. Only
+   * meaningful when `exit` is set — a line with no preset of its own leaves
+   * with the whole scene column and has no separate window to size. */
+  exitDuration: z.number().min(1).max(60).optional(),
+  /** Shifts WHEN this line's exit happens, in frames, relative to the default
+   * (which ends exactly on the cut). Positive = start later, so the line is
+   * still mid-exit when the cut lands — that's how you sync text leaving with
+   * a carried visual's glide, since `link.glideLead` moves the visual earlier
+   * and this moves the text later until the two windows overlap. Negative =
+   * leave sooner. Only meaningful when `exit` is set. */
+  exitDelay: z.number().min(-60).max(60).optional(),
   splitBy: richTextSplitBySchema.optional(),
+  /** How long (frames) the whole split animation takes, START TO FINISH — set
+   * 1s and the last word has finished arriving at 1s, not started. The per-unit
+   * gap is derived from it, the unit count and the unit's own entrance length
+   * (`splitTiming` in `splitAnimate.tsx`), so a four-word line and a twelve-word
+   * line finish in the same time instead of the long one dragging on.
+   *
+   * Unset keeps the fixed per-unit stagger this has always used (see
+   * `unitStaggerFor`), so nothing already authored changes. */
+  splitDuration: z.number().min(0).max(300).optional(),
+  /** Which timeline lane this object is parked in. PRESENTATION ONLY — it has
+   * no effect on the render, and for a visual it is NOT z-order (that stays the
+   * `content.visuals[]` array index, edited with the Layers arrows). Unset means
+   * "wherever the automatic packing puts me"; dragging a clip up or down pins
+   * it. See `SceneTimeline`. */
+  lane: z.number().int().min(0).max(24).optional(),
   /** Sound effect id (see `sfxRegistry`) for this line's entrance — same
    * auto/explicit/"none" resolution as `Block.sfx` (see
    * `sfxDefaults.ts#resolveTextEntranceSfx`). Word/letter splits fire it once
    * per unit; a line split fires it once for the whole line. */
   sfx: z.string().optional(),
+  sfxAt: z.number().min(0).optional(),
 });
 
 const positionedVisualSchema = z.object({
@@ -211,6 +305,11 @@ const positionedVisualSchema = z.object({
   y: z.number().min(0).max(100),
   scale: z.number().positive().optional(),
   entrance: entrancePresetSchema.optional(),
+  /** How long (frames) this visual's entrance takes — the mirror of
+   * `exitDuration`. Unset = the preset's natural pace (an 18-frame `fade`, or a
+   * spring left to settle on its own); see `enter` in `motion/entrances.ts` for
+   * why springs needed an explicit pass-through before this could exist. */
+  entranceDuration: z.number().min(1).max(60).optional(),
   exit: exitPresetSchema.optional(),
   exitDuration: z.number().min(1).max(60).optional(),
   /** How far (px) a slide/zoomSettle entrance or exit travels. Unset = the
@@ -219,19 +318,42 @@ const positionedVisualSchema = z.object({
   entranceDistance: z.number().min(0).max(2400).optional(),
   exitDistance: z.number().min(0).max(2400).optional(),
   delay: z.number().min(0).optional(),
+  /** Frame at which this layer has fully left. Unset = the scene cut. */
+  exitAt: z.number().min(0).optional(),
   /** Sound effect id (see `sfxRegistry`) to play when this visual enters.
    * Unlike `motion.sfx`, there's no automatic default here — freeform
    * positioned visuals stay silent unless a sound is explicitly picked, so a
    * scene with several of them doesn't turn into a wall of overlapping SFX. */
   sfx: z.string().optional(),
+  sfxAt: z.number().min(0).optional(),
+  sfxStartFrom: z.number().min(0).optional(),
+  sfxDuration: z.number().min(1).optional(),
   /** Sound effect id for this visual's EXIT — same explicit-only rule as
    * `sfx` above; only meaningful when `exit` is set. */
   exitSfx: z.string().optional(),
+  exitSfxAt: z.number().min(0).optional(),
+  exitSfxStartFrom: z.number().min(0).optional(),
+  exitSfxDuration: z.number().min(1).optional(),
   /** Carries THIS layer across the cut into the adjacent scene(s) whose own
    * layer array contains an entry with the same `groupId` — the same mechanism
    * as the scene-level `visualLink`, so a freeform layer is just as capable of
    * staying continuous as the primary visual. See `src/utils/visualLinks.ts`. */
-  link: z.object({ groupId: z.string() }).optional(),
+  link: z
+    .object({
+      groupId: z.string(),
+      /** How many frames BEFORE this scene's cut the carried element starts
+       * gliding toward the pose declared here. 0 (the default) means the move
+       * begins exactly on the cut, which reads as a beat of dead air after the
+       * outgoing scene's text has already left. Raise it so the visual is
+       * already travelling while that text exits — the companion knob to
+       * `richHeadline[].exitDelay`, which pushes the text the other way. Read
+       * from the ARRIVING member, so every hop of a chain can differ. */
+      glideLead: z.number().min(0).max(60).optional(),
+      /** How long (frames) this one pose-to-pose move takes. Unset = the
+       * shared 18-frame default in `LinkedVisual`. */
+      glideDuration: z.number().min(1).max(90).optional(),
+    })
+    .optional(),
   /** Continuous slow zoom/pan for the FULL time this visual is on screen —
    * independent of (and layered on top of) `entrance`/`exit`, which only
    * animate the first/last ~18 frames. This is what gives a mockup/image the
@@ -242,6 +364,36 @@ const positionedVisualSchema = z.object({
    * `panLeft`/etc, which are one-way ramps sized to the visual's own duration
    * rather than a rate. See `motion/kenBurns.ts`. */
   kenBurnsSpeed: z.number().min(0.1).max(5).optional(),
+  /**
+   * A path through the scene instead of one resting pose: "be here at frame N,
+   * there at frame M". Frames are SCENE-relative, the same clock as `delay`
+   * and `exitAt`.
+   *
+   * This is a superset of the single pose above, not a replacement — any field
+   * a keyframe leaves out falls back to the layer's own `x`/`y`/`scale`, so
+   * adding one keyframe to an existing layer changes nothing until a second one
+   * gives it somewhere to go. Entrance, exit and Ken Burns still apply ON TOP:
+   * they are relative transforms, and what keyframes move is the resting pose
+   * they animate around. See `src/video/layout/visualKeyframes.ts`.
+   */
+  /** Which timeline lane this object is parked in. PRESENTATION ONLY — it has
+   * no effect on the render, and for a visual it is NOT z-order (that stays the
+   * `content.visuals[]` array index, edited with the Layers arrows). Unset means
+   * "wherever the automatic packing puts me"; dragging a clip up or down pins
+   * it. See `SceneTimeline`. */
+  lane: z.number().int().min(0).max(24).optional(),
+  keyframes: z
+    .array(
+      z.object({
+        id: z.string(),
+        frame: z.number().min(0),
+        x: z.number().min(0).max(100).optional(),
+        y: z.number().min(0).max(100).optional(),
+        scale: z.number().positive().optional(),
+      })
+    )
+    .max(20)
+    .optional(),
 });
 
 export const blockTypeSchema = z.enum(["text", "badge"]);
@@ -257,8 +409,27 @@ const blockSchema = z.object({
   font: richTextFontSchema.optional(),
   letterSpacing: z.number().optional(),
   animation: entrancePresetSchema.optional(),
+  entranceDuration: z.number().min(1).max(90).optional(),
+  exit: exitPresetSchema.optional(),
+  exitDuration: z.number().min(1).max(90).optional(),
   splitBy: richTextSplitBySchema.optional(),
+  /** How long (frames) the whole split animation takes, START TO FINISH — set
+   * 1s and the last word has finished arriving at 1s, not started. The per-unit
+   * gap is derived from it, the unit count and the unit's own entrance length
+   * (`splitTiming` in `splitAnimate.tsx`), so a four-word line and a twelve-word
+   * line finish in the same time instead of the long one dragging on.
+   *
+   * Unset keeps the fixed per-unit stagger this has always used (see
+   * `unitStaggerFor`), so nothing already authored changes. */
+  splitDuration: z.number().min(0).max(300).optional(),
+  /** Which timeline lane this object is parked in. PRESENTATION ONLY — it has
+   * no effect on the render, and for a visual it is NOT z-order (that stays the
+   * `content.visuals[]` array index, edited with the Layers arrows). Unset means
+   * "wherever the automatic packing puts me"; dragging a clip up or down pins
+   * it. See `SceneTimeline`. */
+  lane: z.number().int().min(0).max(24).optional(),
   delay: z.number().min(0).optional(),
+  exitAt: z.number().min(0).optional(),
   /** Sound effect id (see `sfxRegistry`) to play when this block enters — explicit
    * opt-in only, same reasoning as `positionedVisualSchema.sfx`. */
   sfx: z.string().optional(),
@@ -271,10 +442,21 @@ const baseSceneFields = {
    * before the voiceover finishes or the text can be read. Set it explicitly
    * only for a deliberate flash frame or a hard timing constraint. */
   durationSeconds: z.number().positive().optional(),
+  /** Editor-only organizational band shown above the full timeline. Moving or
+   * trimming it never changes render timing or the scene-owned objects. */
+  timelineRange: z.object({
+    from: z.number().min(0),
+    durationInFrames: z.number().min(1),
+  }).optional(),
   /** The voiceover line for this scene. Drives the scene's length (see
    * `durationSeconds`) and is what the script/teleprompter reads from — the
    * app does not synthesize or play audio for it. */
   vo: z.string().optional(),
+  /** Free note to the author, never rendered. Carries a storyboard beat's
+   * `visualPlaceholder`/`notes` onto the scene it generated, so "Chrome
+   * integration recording" is still sitting on the frame that needs it once
+   * the script layer is behind you. */
+  notes: z.string().optional(),
   background: sceneBackgroundSchema,
   content: z.object({
     eyebrow: z.string().optional(),
@@ -284,11 +466,27 @@ const baseSceneFields = {
     right: sideContentSchema.optional(),
     items: z.array(stepItemSchema).optional(),
     richHeadline: z.array(richHeadlineLineSchema).max(6).optional(),
+    /** Vertical position of the WHOLE rich-headline stack, as a percent of the
+     * 1080x1920 canvas addressing its CENTRE — the same convention as a
+     * `Block`'s or a visual layer's `y`, so it reads the same on the preview
+     * overlay. Unset keeps the stack in the scene's normal flow, centred in
+     * whatever band the `layout` preset's `textZone` puts it in; setting it
+     * lifts the stack out of that flow so consecutive scenes can alternate high
+     * and low instead of every headline sitting on the same line.
+     *
+     * Distinct from a LINE's own `x`/`y`, which pulls that single line away
+     * from its neighbours — this moves the stack while keeping it a stack. */
+    richHeadlineY: z.number().min(0).max(100).optional(),
+    /** Horizontal position of the WHOLE stack, percent of the canvas, its
+     * CENTRE. Unset keeps the stack spanning the safe-area column and centred
+     * in it — which is the right default for a headline, so reach for this only
+     * when the composition genuinely wants the text off-axis. */
+    richHeadlineX: z.number().min(0).max(100).optional(),
     blocks: z.array(blockSchema).max(8).optional(),
     /** Every visual in the scene, ordered bottom-to-top — the array index IS
      * the z-index. Includes what used to be the scene's separate primary
      * `visual`, folded in at load time (see `utils/normalizeProject.ts`). */
-    visuals: z.array(positionedVisualSchema).max(10).optional(),
+    visuals: z.array(positionedVisualSchema).optional(),
   }),
   /** Named composition (see `src/video/layout/layoutPresets.ts`) — decides
    * where the primary visual sits, auto-scales it to fit that spot so it can't
@@ -308,6 +506,8 @@ const baseSceneFields = {
    * when unset; `visualExit` defaults to no exit (stays until the scene cuts). */
   visualEntrance: entrancePresetSchema.optional(),
   visualExit: exitPresetSchema.optional(),
+  /** Mirror of `visualExitDuration` — see `entranceDuration` on a layer. */
+  visualEntranceDuration: z.number().min(1).max(60).optional(),
   visualExitDuration: z.number().min(1).max(60).optional(),
   /** Travel distance (px) for the main visual's own slide/zoomSettle in/out.
    * See `entranceDistance` on a positioned visual for the fade rule. */
@@ -342,6 +542,9 @@ const baseSceneFields = {
   motion: z
     .object({
       entrance: entrancePresetSchema.optional(),
+      /** How long (frames) the scene's content group takes to come in — mirror
+       * of `exitDuration`. Unset = the preset's natural pace. */
+      entranceDuration: z.number().min(1).max(60).optional(),
       exit: exitPresetSchema.optional(),
       exitDuration: z.number().min(1).max(60).optional(),
       /** Travel distance (px) for the scene content group's own slide
@@ -350,6 +553,10 @@ const baseSceneFields = {
       exitDistance: z.number().min(0).max(2400).optional(),
       transition: transitionPresetSchema.optional(),
       stagger: z.number().min(0).optional(),
+      /** Timeline offset for the scene's text/content group. */
+      startDelay: z.number().min(0).optional(),
+      /** Frame at which the text/content group has fully left. */
+      exitAt: z.number().min(0).optional(),
       /** Sound effect id for the whole scene's entrance/exit cue (see
        * `src/video/motion/sfxDefaults.ts`). Unset = auto-pick a default from
        * `entrance`/`exit` (or `transition` for a push-cut whoosh); `"none"` silences it.
@@ -357,6 +564,13 @@ const baseSceneFields = {
        * animate in, so it doesn't stack into overlapping noise. */
       sfx: z.string().optional(),
       exitSfx: z.string().optional(),
+      /** Absolute scene-frame sound cues, editable on the timeline. */
+      sfxAt: z.number().min(0).optional(),
+      exitSfxAt: z.number().min(0).optional(),
+      sfxStartFrom: z.number().min(0).optional(),
+      sfxDuration: z.number().min(1).optional(),
+      exitSfxStartFrom: z.number().min(0).optional(),
+      exitSfxDuration: z.number().min(1).optional(),
     })
     .optional(),
 };

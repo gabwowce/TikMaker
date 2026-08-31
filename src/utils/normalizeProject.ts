@@ -167,9 +167,49 @@ export function normalizeProject(project: VideoProject): VideoProject {
   return { ...project, scenes: project.scenes.map(normalizeScene) };
 }
 
+/**
+ * Drags positions back onto the canvas BEFORE the schema sees them.
+ *
+ * `x`/`y` are percentages with a 0-100 range, and a single value outside it
+ * failed the whole `videoProjectSchema.parse` — which the project library reads
+ * as "corrupt entry", silently dropping the ENTIRE video. One layer nudged off
+ * the top edge should cost you that layer's position, not the project. (It
+ * happened for real: the new-layer fan in `VisualLibrary` marched each addition
+ * 12% higher until the sixth landed at y: -10.)
+ *
+ * Clamping rather than discarding also puts the element back where you can see
+ * and move it, instead of leaving it invisible off-frame.
+ */
+function clampPositions(json: unknown): unknown {
+  if (!json || typeof json !== "object") return json;
+  const project = json as { scenes?: unknown[] };
+  if (!Array.isArray(project.scenes)) return json;
+
+  const clamp = (value: unknown) =>
+    typeof value === "number" && Number.isFinite(value) ? Math.min(100, Math.max(0, value)) : value;
+
+  const clampEntry = (entry: unknown) => {
+    if (!entry || typeof entry !== "object") return entry;
+    const positioned = entry as { x?: unknown; y?: unknown };
+    if (typeof positioned.x === "number") positioned.x = clamp(positioned.x);
+    if (typeof positioned.y === "number") positioned.y = clamp(positioned.y);
+    return entry;
+  };
+
+  for (const scene of project.scenes) {
+    const content = (scene as { content?: { visuals?: unknown[]; blocks?: unknown[]; richHeadline?: unknown[] } })
+      ?.content;
+    if (!content) continue;
+    for (const list of [content.visuals, content.blocks, content.richHeadline]) {
+      if (Array.isArray(list)) list.forEach(clampEntry);
+    }
+  }
+  return json;
+}
+
 /** Parse + normalize. Use this everywhere a project enters the app (bundled
  * templates, the store, JSON import) so no code downstream has to handle the
  * pre-layer shape. */
 export function parseProject(json: unknown): VideoProject {
-  return normalizeProject(videoProjectSchema.parse(json));
+  return normalizeProject(videoProjectSchema.parse(clampPositions(json)));
 }

@@ -4,6 +4,7 @@ import { useCustomSfxStore } from "../state/customSfxStore";
 import { useSfxOverridesStore } from "../state/sfxOverridesStore";
 import type { SfxDefaultKind } from "../../video/motion/sfxDefaults";
 import { editorColors } from "../theme";
+import { useProjectStore } from "../state/projectStore";
 
 const sectionTitleStyle: React.CSSProperties = {
   fontSize: 11,
@@ -236,7 +237,8 @@ const SfxRow: React.FC<{
   playing: boolean;
   onPlay: () => void;
   onDelete?: () => void;
-}> = ({ sfx, playing, onPlay, onDelete }) => (
+  onAdd?: () => void;
+}> = ({ sfx, playing, onPlay, onDelete, onAdd }) => (
   <div
     style={{
       display: "flex",
@@ -270,6 +272,7 @@ const SfxRow: React.FC<{
       {sfx.label}
     </span>
     <span style={{ fontSize: 10, color: editorColors.textDim }}>{sfx.group}</span>
+    {onAdd ? <button title="Pridėti į bendrą timeline ties playhead" onClick={onAdd} style={{ width: 22, height: 20, borderRadius: 4, border: `1px solid ${editorColors.accent}`, background: editorColors.panel, color: editorColors.accent, cursor: "pointer" }}>+</button> : null}
     {onDelete ? (
       <button
         title={`Remove "${sfx.label}"`}
@@ -299,6 +302,7 @@ export const SoundLibrary: React.FC = () => {
   const loadCustomSfx = useCustomSfxStore((s) => s.load);
   const removeCustomSfx = useCustomSfxStore((s) => s.remove);
   const { play, playingId } = usePlayer();
+  const addAudioClip = useProjectStore((s) => s.addAudioClip);
 
   useEffect(() => {
     loadCustomSfx();
@@ -327,6 +331,7 @@ export const SoundLibrary: React.FC = () => {
               sfx={sfx}
               playing={playingId === sfx.id}
               onPlay={() => play(sfx)}
+              onAdd={() => addAudioClip(sfx.id)}
               onDelete={() => removeCustomSfx(sfx.id)}
             />
           ))}
@@ -336,7 +341,7 @@ export const SoundLibrary: React.FC = () => {
       <div style={sectionTitleStyle}>Built-in ({builtIn.length})</div>
       <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
         {builtIn.map((sfx) => (
-          <SfxRow key={sfx.id} sfx={sfx} playing={playingId === sfx.id} onPlay={() => play(sfx)} />
+          <SfxRow key={sfx.id} sfx={sfx} playing={playingId === sfx.id} onPlay={() => play(sfx)} onAdd={() => addAudioClip(sfx.id)} />
         ))}
       </div>
     </div>

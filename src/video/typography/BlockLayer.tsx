@@ -1,7 +1,7 @@
 import React from "react";
-import { AbsoluteFill, Audio, Sequence } from "remotion";
+import { AbsoluteFill, Audio, Sequence, useCurrentFrame } from "remotion";
 import { colors, fontFamilies, fontSizes } from "./tokens";
-import { AnimatedSplitText, AnimatedBox, splitText, unitStaggerFor } from "./splitAnimate";
+import { AnimatedSplitText, AnimatedBox, splitText, splitTiming } from "./splitAnimate";
 import { getSfx } from "../../registries/sfxRegistry";
 import { resolveTextEntranceSfx, SFX_VOLUME } from "../motion/sfxDefaults";
 import type { Block } from "../../schema/scene";
@@ -10,8 +10,8 @@ const CUE_WINDOW_FRAMES = 30;
 
 const fontFor = (block: Block): string => (block.font === "clash" ? fontFamilies.clashMedium : fontFamilies.tanker);
 
-const BlockUnit: React.FC<{ block: Block; baseDelay: number }> = ({ block, baseDelay }) => {
-  const delay = baseDelay + (block.delay ?? 0);
+const BlockUnit: React.FC<{ block: Block; baseDelay: number; durationInFrames: number }> = ({ block, baseDelay, durationInFrames }) => {
+  const delay = block.delay ?? baseDelay;
   const font = fontFor(block);
   const textStyle: React.CSSProperties = {
     fontFamily: font,
@@ -30,6 +30,9 @@ const BlockUnit: React.FC<{ block: Block; baseDelay: number }> = ({ block, baseD
         splitBy={block.splitBy ?? "word"}
         baseDelay={delay}
         preset={block.animation}
+        entranceDuration={block.entranceDuration}
+        splitDuration={block.splitDuration}
+        exit={block.exit ? { preset: block.exit, durationInFrames: block.exitAt ?? durationInFrames, exitDuration: block.exitDuration } : undefined}
       />
     </div>
   );
@@ -39,6 +42,8 @@ const BlockUnit: React.FC<{ block: Block; baseDelay: number }> = ({ block, baseD
       <AnimatedBox
         delay={delay}
         preset={block.animation}
+        entranceDuration={block.splitDuration ?? block.entranceDuration}
+        exit={block.exit ? { preset: block.exit, durationInFrames: block.exitAt ?? durationInFrames, exitDuration: block.exitDuration } : undefined}
         style={{
           display: "inline-flex",
           padding: "10px 24px",
@@ -63,7 +68,7 @@ const BlockUnit: React.FC<{ block: Block; baseDelay: number }> = ({ block, baseD
  * own delay, since there's only ever one visible unit in that case. */
 const BlockSfxCues: React.FC<{ block: Block; sfxSrc: string; baseDelay: number }> = ({ block, sfxSrc, baseDelay }) => {
   const splitBy = block.splitBy ?? "word";
-  const start = Math.max(0, baseDelay + (block.delay ?? 0));
+  const start = Math.max(0, block.delay ?? baseDelay);
 
   if (splitBy === "line") {
     return (
@@ -74,7 +79,7 @@ const BlockSfxCues: React.FC<{ block: Block; sfxSrc: string; baseDelay: number }
   }
 
   const units = splitText(block.text, splitBy);
-  const stagger = unitStaggerFor(splitBy);
+  const stagger = splitTiming(splitBy, splitText(block.text, splitBy).length, block.splitDuration, block.entranceDuration).stagger;
 
   return (
     <>
@@ -94,7 +99,8 @@ const BlockSfxCues: React.FC<{ block: Block; sfxSrc: string; baseDelay: number }
   );
 };
 
-export const BlockLayer: React.FC<{ blocks?: Block[]; baseDelay?: number }> = ({ blocks, baseDelay = 0 }) => {
+export const BlockLayer: React.FC<{ blocks?: Block[]; baseDelay?: number; durationInFrames: number }> = ({ blocks, baseDelay = 0, durationInFrames }) => {
+  const frame = useCurrentFrame();
   if (!blocks || blocks.length === 0) return null;
 
   return (
@@ -115,9 +121,12 @@ export const BlockLayer: React.FC<{ blocks?: Block[]; baseDelay?: number }> = ({
               left: `${block.x}%`,
               top: `${block.y}%`,
               transform: "translate(-50%, -50%)",
+              // The chosen OUT preset owns the animation. This wrapper only
+              // enforces the clip edge, avoiding an extra hard-coded fade.
+              visibility: block.exitAt === undefined || frame < block.exitAt ? "visible" : "hidden",
             }}
           >
-            <BlockUnit block={block} baseDelay={baseDelay} />
+            <BlockUnit block={block} baseDelay={baseDelay} durationInFrames={durationInFrames} />
             {sfxSrc ? <BlockSfxCues block={block} sfxSrc={sfxSrc} baseDelay={baseDelay} /> : null}
           </div>
         );
