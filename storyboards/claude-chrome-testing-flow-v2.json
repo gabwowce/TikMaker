@@ -1,0 +1,98 @@
+{
+  "id": "claude-chrome-testing-flow-v2",
+  "title": "Claude can now test your app like a real user",
+  "status": "draft",
+  "targetDuration": 35,
+  "beats": [
+    {
+      "id": "beat-hook",
+      "role": "hook",
+      "purpose": "Open with the main result in one strong line.",
+      "voiceover": "Claude can now test your app like a real user.",
+      "onScreenText": "Claude can now test your app like a real user.",
+      "visualPlaceholder": "Strong opening frame. Show Claude Code and a web app open in Chrome. Make it obvious that Claude is interacting with the app in the browser.",
+      "notes": "Keep it bold and clean. This is the promise."
+    },
+    {
+      "id": "beat-problem",
+      "role": "problem",
+      "purpose": "Show why manual testing is annoying and inefficient.",
+      "voiceover": "Manually clicking through your app after every change takes time, you still miss bugs, and honestly it gets annoying fast.",
+      "onScreenText": "Manual testing takes time. And you still miss things.",
+      "visualPlaceholder": "Show the painful workflow: code change, open app, click through pages, fill inputs, miss something, go back, test again.",
+      "notes": "This should feel repetitive and frustrating."
+    },
+    {
+      "id": "beat-reveal",
+      "role": "reveal",
+      "purpose": "Introduce the solution clearly.",
+      "voiceover": "Now Claude Code can connect directly to Chrome and do that testing for you.",
+      "onScreenText": "Claude Code + Chrome",
+      "visualPlaceholder": "Show Claude Code connected to Chrome. Browser is open with a local app ready to be tested.",
+      "notes": "Simple reveal frame. Don't overload it."
+    },
+    {
+      "id": "beat-capabilities-intro",
+      "role": "solution",
+      "purpose": "Introduce what Claude can do once Chrome is connected.",
+      "voiceover": "And that means Claude can actually use your app, not just write code for it.",
+      "onScreenText": "What can it do?",
+      "visualPlaceholder": "Intro card for the capabilities section. Could show a small browser visual with multiple action markers or icons around it.",
+      "notes": "Acts like a mini chapter break before the list."
+    },
+    {
+      "id": "beat-capabilities-1",
+      "role": "step",
+      "purpose": "Show the first group of practical actions.",
+      "voiceover": "It can click buttons, move through pages, and fill out forms for you.",
+      "onScreenText": "Click buttons\nOpen pages\nFill forms",
+      "visualPlaceholder": "Show 3 quick action examples: button click, page navigation, form filling.",
+      "notes": "These should be very concrete. Good place for more energetic animation."
+    },
+    {
+      "id": "beat-capabilities-2",
+      "role": "step",
+      "purpose": "Show the second group of practical actions.",
+      "voiceover": "It can also check validation, inspect browser errors, and show you exactly what happened on screen.",
+      "onScreenText": "Check validation\nRead errors\nShow what happened",
+      "visualPlaceholder": "Show validation message, browser console error, and a visible test flow happening on screen.",
+      "notes": "This is the more technical half of the benefits."
+    },
+    {
+      "id": "beat-setup",
+      "role": "step",
+      "purpose": "Quickly show how to connect Claude Code to Chrome.",
+      "voiceover": "To connect it, install the Claude Chrome extension, then start Claude Code with chrome enabled.",
+      "onScreenText": "Install extension\nStart with Chrome",
+      "visualPlaceholder": "Quick setup sequence. Show the extension in Chrome and then terminal / Claude Code setup step.",
+      "notes": "Keep this fast. Enough to show the idea, not a full tutorial."
+    },
+    {
+      "id": "beat-demo",
+      "role": "demo",
+      "purpose": "Show the exact kind of prompt the viewer can use.",
+      "voiceover": "Then you can simply ask Claude to test your app, for example: test the signup flow and tell me what breaks.",
+      "onScreenText": "Test the signup flow\nand tell me what breaks.",
+      "visualPlaceholder": "Screen recording of Claude Code receiving a prompt to test the signup flow on the local app.",
+      "notes": "Make the prompt readable. This is the 'I can try this too' moment."
+    },
+    {
+      "id": "beat-proof",
+      "role": "proof",
+      "purpose": "Prove that the testing is happening live on screen.",
+      "voiceover": "Now you can watch Claude click through the app, test the flow, and inspect the result live on screen.",
+      "onScreenText": "Watch it test live.",
+      "visualPlaceholder": "Show Claude actively using the app in Chrome: clicking, typing, submitting, and checking the result.",
+      "notes": "This should feel like the strongest visual proof moment."
+    },
+    {
+      "id": "beat-cta",
+      "role": "cta",
+      "purpose": "End with a clear next action for the viewer.",
+      "voiceover": "Follow for more AI app building tips.",
+      "onScreenText": "Follow for more AI app building tips.",
+      "visualPlaceholder": "Clean ending frame. Keep Claude Code and Chrome theme, with simple follow CTA.",
+      "notes": "Short, clear, no extra explanation."
+    }
+  ]
+}

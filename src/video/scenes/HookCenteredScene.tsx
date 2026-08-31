@@ -4,18 +4,11 @@ import { RichHeadline } from "../typography/RichHeadline";
 import { SceneFrame, SceneCue, useSceneCues } from "./SceneFrame";
 import type { SceneComponentProps } from "./types";
 
-export const HookCenteredScene: React.FC<SceneComponentProps> = ({
-  background,
-  content,
-  layout,
-  motion,
-  durationSeconds,
-}) => {
+export const HookCenteredScene: React.FC<SceneComponentProps> = ({ content, layout, motion, durationSeconds }) => {
   const { baseDelay, cue } = useSceneCues(motion);
 
   return (
     <SceneFrame
-      background={background}
       content={content}
       motion={motion}
       durationSeconds={durationSeconds}
@@ -38,6 +31,8 @@ export const HookCenteredScene: React.FC<SceneComponentProps> = ({
           baseDelay={baseDelay}
           motion={motion}
           durationSeconds={durationSeconds}
+          x={content.richHeadlineX}
+          y={content.richHeadlineY}
         />
       ) : (
         <SceneCue motion={motion} delay={cue(1)} fallback="slideUp">

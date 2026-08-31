@@ -44,6 +44,20 @@ export const visualTemplateRegistry: VisualTemplateDefinition[] = [
     }),
   },
   {
+    id: "recording-plain",
+    category: "media",
+    label: "Screen Recording (Plain)",
+    description: "A screen recording on a rounded card — no browser chrome, for footage that isn't a website.",
+    build: () => ({
+      type: "recording",
+      src: "assets/recordings/placeholder.mp4",
+      frame: "plain",
+      fit: "cover",
+      playbackRate: 1,
+      startFrom: 0,
+    }),
+  },
+  {
     id: "recording-phone",
     category: "media",
     label: "Screen Recording (Phone)",
@@ -76,6 +90,34 @@ export const visualTemplateRegistry: VisualTemplateDefinition[] = [
         { label: "SEE PROGRESS", done: false },
       ],
     }),
+  },
+  {
+    id: "checkpoint-card",
+    category: "data",
+    label: "Checkpoint Card",
+    description: "One independent checkpoint card — add as many layers as needed.",
+    build: () => ({ type: "checkpoint", label: "TAKES TIME", state: "done", variant: "card" }),
+  },
+  {
+    id: "checkpoint-compact",
+    category: "data",
+    label: "Checkpoint Compact",
+    description: "A smaller independent checkpoint row.",
+    build: () => ({ type: "checkpoint", label: "MISSES BUGS", state: "warning", variant: "compact" }),
+  },
+  {
+    id: "checkpoint-pill",
+    category: "data",
+    label: "Checkpoint Pill",
+    description: "A short pill-shaped checkpoint for compact compositions.",
+    build: () => ({ type: "checkpoint", label: "DONE", state: "done", variant: "pill" }),
+  },
+  {
+    id: "checkpoint-outline",
+    category: "data",
+    label: "Checkpoint Outline",
+    description: "Transparent checkpoint with a colored outline.",
+    build: () => ({ type: "checkpoint", label: "NEXT STEP", state: "pending", variant: "outline" }),
   },
   {
     id: "pricing-card",
@@ -293,6 +335,17 @@ export const visualTemplateRegistry: VisualTemplateDefinition[] = [
       fit: "cover",
       playbackRate: 1,
       startFrom: 0,
+    }),
+  },
+  {
+    id: "screen-image",
+    label: "Plain Screen + Image",
+    description: "A screenshot or photo on a rounded card — the browser frame minus the chrome. Swap the image in the Inspector's Content picker.",
+    category: "media",
+    build: () => ({
+      type: "screen",
+      aspect: "16:10",
+      content: { type: "app-mockup", appTitle: "YOUR APP", kind: "list", items: ["Row one", "Row two", "Row three"] },
     }),
   },
   {

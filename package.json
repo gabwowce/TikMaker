@@ -9,7 +9,7 @@
     "studio": "remotion studio",
     "render": "remotion render",
     "render:project": "tsx scripts/render-project.ts",
-    "assets:sync": "tsx scripts/sync-assets.ts",
+    "assets:sync": "tsx scripts/syncAssets.ts",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {

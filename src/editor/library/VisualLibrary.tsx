@@ -51,6 +51,12 @@ const targetOptions: { id: Target; label: string; hint: string }[] = [
   { id: "column", label: "Comparison column", hint: "Puts the visual inside the left/right column so it moves with that column." },
 ];
 
+/** How far apart new layers are fanned, and how many distinct spots the fan
+ * cycles through before starting over. Four positions from y: 50 down to
+ * y: 14 — all of them comfortably inside the frame. */
+const STACK_STEP = 12;
+const STACK_POSITIONS = 4;
+
 export const VisualLibrary: React.FC = () => {
   const selectedSceneId = useProjectStore((s) => s.selectedSceneId);
   const scene = useProjectStore((s) => s.project.scenes.find((sc) => sc.id === s.selectedSceneId));
@@ -71,7 +77,7 @@ export const VisualLibrary: React.FC = () => {
   const disabled = !selectedSceneId;
   const isComparison = scene?.type === "comparison";
   const layerCount = scene?.content.visuals?.length ?? 0;
-  const layersFull = layerCount >= 10;
+  const layersFull = false;
   // The column target only exists on comparison scenes; everywhere else the
   // stack is the only destination, so the picker isn't worth showing.
   const showTargets = isComparison;
@@ -94,12 +100,16 @@ export const VisualLibrary: React.FC = () => {
     const added = splitCornerProps({
       id: `visual-${Date.now().toString(36)}`,
       visual,
-      // Offset each new layer so a second one doesn't land exactly on top
-      // of the first and read as nothing having happened.
+      // Offset each new layer so a second one doesn't land exactly on top of
+      // the first and read as nothing having happened — but WRAP the fan. An
+      // unbounded `50 - n * 12` put the sixth layer at y: -10, centred above
+      // the top edge where it cannot be seen, which reads as "the visual I
+      // added never appeared". It was also outside the schema's 0-100 range,
+      // so the project stopped loading entirely on the next reload.
       x: 50,
-      y: 50 - existing.length * 12,
+      y: 50 - (existing.length % STACK_POSITIONS) * STACK_STEP,
     });
-    updateSceneVisuals(selectedSceneId, [...existing, ...added].slice(0, 10));
+    updateSceneVisuals(selectedSceneId, [...existing, ...added]);
   }
 
   return (

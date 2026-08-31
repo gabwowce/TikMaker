@@ -21,6 +21,7 @@ import { getSceneDefinition } from "../../registries/sceneRegistry";
 import { getScriptTemplate } from "../../registries/scriptTemplates";
 import exampleProjectJson from "../../../projects/template-showcase.json";
 import { naturalVisualSize } from "../../video/layout/visualMetrics";
+import { poseAtFrame } from "../../video/layout/visualKeyframes";
 
 const LEGACY_STORAGE_KEY = "tikmaker.project";
 const LIBRARY_KEY = "tikmaker.library";
@@ -51,6 +52,15 @@ function readLibrary(): Library {
 function writeLibrary(library: Library) {
   if (typeof window === "undefined") return;
   window.localStorage.setItem(LIBRARY_KEY, JSON.stringify(library));
+}
+
+function writeProjectFile(project: VideoProject) {
+  if (typeof window === "undefined") return;
+  void fetch("/api/save-json", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ kind: "project", data: project }),
+  }).catch(() => undefined);
 }
 
 function libraryIndexFrom(library: Library): { id: string; title: string }[] {
@@ -101,11 +111,27 @@ type ProjectStore = {
   selectedSceneId: string | null;
   activeVisualSlot: VisualSlot;
   libraryIndex: LibraryEntry[];
+  canUndo: boolean;
+  canRedo: boolean;
+  playheadFrame: number;
+  undo: () => void;
+  redo: () => void;
+  beginHistoryTransaction: () => void;
+  endHistoryTransaction: () => void;
+  setPlayheadFrame: (frame: number) => void;
+  addAudioClip: (sfxId: string, from?: number) => void;
+  updateAudioClip: (id: string, patch: Partial<NonNullable<VideoProject["audioClips"]>[number]>) => void;
+  splitAudioClip: (id: string, at: number, resolvedDuration: number) => string | null;
+  removeAudioClip: (id: string) => void;
 
   createProject: (title: string) => void;
   loadProject: (project: VideoProject) => void;
   useScriptTemplate: (templateId: string) => void;
   saveProject: () => void;
+  /** Saves the CURRENT project under a new name as a separate entry, and keeps
+   * editing that copy — "Save As". `saveProject` writes back to the same id, so
+   * without this the only way to keep a variant was to hand-duplicate it. */
+  saveProjectAs: (title: string) => void;
   exportProjectJson: () => string;
   updateProjectTitle: (title: string) => void;
   openProject: (id: string) => void;
@@ -150,6 +176,13 @@ type ProjectStore = {
   updateSceneRichHeadline: (id: string, lines: RichHeadlineLine[]) => void;
   updateSceneBlocks: (id: string, blocks: Block[]) => void;
   updateSceneVisuals: (id: string, visuals: PositionedVisualEntry[]) => void;
+  /** Pins the layer's CURRENT pose at `frame` as a keyframe (scene-relative),
+   * or moves an existing keyframe on that frame to the pose given. Both the
+   * panel's "+ Keyframe" button and a drag on the preview go through here, so
+   * "what does adding a keyframe capture" has one answer. */
+  addVisualKeyframe: (sceneId: string, entryId: string, frame: number, pose?: { x?: number; y?: number; scale?: number }) => void;
+  updateVisualKeyframe: (sceneId: string, entryId: string, keyframeId: string, patch: { frame?: number; x?: number; y?: number; scale?: number }) => void;
+  removeVisualKeyframe: (sceneId: string, entryId: string, keyframeId: string) => void;
   /** Copies this scene's primary visual onto the NEXT scene and wires both
    * sides of a `visualLink` group, so the same asset glides between the two
    * poses across the cut. Doing it by hand means getting four things right at
@@ -164,15 +197,29 @@ type ProjectStore = {
    * each one gets its own position, scale, animation and carry — the composite
    * has no per-asset controls and can't be linked. */
 
+  /** Which timeline object the object panel is editing. Editor state, kept
+   * here beside `selectedSceneId` and `playheadFrame` so the timeline can draw
+   * the selection and the panel can read it without a window event carrying the
+   * id between them. */
+  selectedObjectId: string | null;
+  selectObject: (id: string | null) => void;
   selectScene: (id: string | null) => void;
   setActiveVisualSlot: (slot: VisualSlot) => void;
 };
 
 const initialState = loadInitialState();
 
+type HistorySnapshot = { project: VideoProject; selectedSceneId: string | null };
+const HISTORY_LIMIT = 100;
+const undoStack: HistorySnapshot[] = [];
+const redoStack: HistorySnapshot[] = [];
+let applyingHistory = false;
+let historyTransaction: HistorySnapshot | null = null;
+
 function persist(project: VideoProject, library: Library): Library {
   const next = { ...library, [project.id]: project };
   writeLibrary(next);
+  writeProjectFile(project);
   if (typeof window !== "undefined") {
     window.localStorage.setItem(LAST_OPENED_KEY, project.id);
   }
@@ -181,9 +228,99 @@ function persist(project: VideoProject, library: Library): Library {
 
 export const useProjectStore = create<ProjectStore>((set, get) => ({
   project: initialState.project,
-  selectedSceneId: null,
+  // A loaded video must immediately have an editable scene. Leaving this null
+  // made both the inspector and the scene timeline disappear after refresh.
+  selectedSceneId: initialState.project.scenes[0]?.id ?? null,
   activeVisualSlot: "main",
   libraryIndex: libraryIndexFrom(persist(initialState.project, initialState.library)),
+  canUndo: false,
+  canRedo: false,
+  playheadFrame: 0,
+  selectedObjectId: null,
+  undo: () => {
+    const previous = undoStack.pop();
+    if (!previous) return;
+    const current = get();
+    redoStack.push({ project: current.project, selectedSceneId: current.selectedSceneId });
+    applyingHistory = true;
+    set({
+      project: previous.project,
+      selectedSceneId: previous.selectedSceneId,
+      canUndo: undoStack.length > 0,
+      canRedo: true,
+    });
+    applyingHistory = false;
+  },
+  redo: () => {
+    const next = redoStack.pop();
+    if (!next) return;
+    const current = get();
+    undoStack.push({ project: current.project, selectedSceneId: current.selectedSceneId });
+    applyingHistory = true;
+    set({
+      project: next.project,
+      selectedSceneId: next.selectedSceneId,
+      canUndo: true,
+      canRedo: redoStack.length > 0,
+    });
+    applyingHistory = false;
+  },
+  beginHistoryTransaction: () => {
+    if (historyTransaction) return;
+    const state = get();
+    historyTransaction = { project: state.project, selectedSceneId: state.selectedSceneId };
+  },
+  endHistoryTransaction: () => {
+    if (!historyTransaction) return;
+    const before = historyTransaction;
+    historyTransaction = null;
+    const project = get().project;
+    if (before.project === project) return;
+    undoStack.push(before);
+    if (undoStack.length > HISTORY_LIMIT) undoStack.shift();
+    redoStack.length = 0;
+    // Dragging updates the live preview continuously, but persistence happens
+    // once here, after pointer-up, with only the final coordinates/timing.
+    const library = persist(project, readLibrary());
+    set({ canUndo: true, canRedo: false, libraryIndex: libraryIndexFrom(library) });
+  },
+  setPlayheadFrame: (playheadFrame) => set({ playheadFrame: Math.max(0, Math.round(playheadFrame)) }),
+  addAudioClip: (sfxId, from) => set((state) => ({
+    project: {
+      ...state.project,
+      audioClips: [
+        ...(state.project.audioClips ?? []),
+        { id: `audio-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 6)}`, sfxId, from: Math.max(0, Math.round(from ?? state.playheadFrame)), volume: 1 },
+      ],
+    },
+  })),
+  updateAudioClip: (id, patch) => set((state) => ({
+    project: { ...state.project, audioClips: (state.project.audioClips ?? []).map((clip) => clip.id === id ? { ...clip, ...patch } : clip) },
+  })),
+  splitAudioClip: (id, at, resolvedDuration) => {
+    const state = get();
+    const clip = (state.project.audioClips ?? []).find((entry) => entry.id === id);
+    if (!clip) return null;
+    const offset = Math.round(at - clip.from);
+    const duration = Math.max(1, Math.round(clip.durationInFrames ?? resolvedDuration));
+    if (offset <= 0 || offset >= duration) return null;
+    const nextId = `audio-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 6)}`;
+    set({
+      project: {
+        ...state.project,
+        audioClips: (state.project.audioClips ?? []).flatMap((entry) => entry.id === id
+          ? [
+              { ...entry, durationInFrames: offset },
+              { ...entry, id: nextId, from: Math.round(at), startFrom: (entry.startFrom ?? 0) + offset, durationInFrames: duration - offset },
+            ]
+          : [entry]),
+      },
+    });
+    return nextId;
+  },
+  removeAudioClip: (id) => set((state) => ({
+    project: { ...state.project, audioClips: (state.project.audioClips ?? []).filter((clip) => clip.id !== id) },
+  })),
 
   createProject: (title) => {
     const project = createEmptyProject(`project-${Date.now()}`, title);
@@ -213,6 +350,15 @@ export const useProjectStore = create<ProjectStore>((set, get) => ({
   saveProject: () => {
     const library = persist(get().project, readLibrary());
     set({ libraryIndex: libraryIndexFrom(library) });
+  },
+
+  saveProjectAs: (title) => {
+    // A fresh id is what makes this a copy rather than a rename — `persist`
+    // keys the library by project id, so reusing the old one would overwrite
+    // the video this was branched from.
+    const project: VideoProject = { ...get().project, id: `project-${Date.now().toString(36)}`, title };
+    const library = persist(project, readLibrary());
+    set({ project, libraryIndex: libraryIndexFrom(library) });
   },
 
   exportProjectJson: () => JSON.stringify(get().project, null, 2),
@@ -684,6 +830,93 @@ export const useProjectStore = create<ProjectStore>((set, get) => ({
     });
   },
 
+  addVisualKeyframe: (sceneId, entryId, frame, pose) => {
+    set((state) => ({
+      project: {
+        ...state.project,
+        scenes: state.project.scenes.map((scene) => {
+          if (scene.id !== sceneId) return scene;
+          const visuals = (scene.content.visuals ?? []).map((entry) => {
+            if (entry.id !== entryId) return entry;
+            // The pose it holds RIGHT NOW is the honest thing to capture: the
+            // author positioned it, hit the button, and expects the layer not to
+            // jump. `poseAtFrame` already answers that for a keyframed layer,
+            // and falls back to the base pose for one with no path yet.
+            const current = poseAtFrame(entry, frame);
+            const next = {
+              id: `kf-${Math.random().toString(36).slice(2, 9)}`,
+              frame,
+              x: pose?.x ?? current.x,
+              y: pose?.y ?? current.y,
+              scale: pose?.scale ?? current.scale ?? entry.scale,
+            };
+            const existing = entry.keyframes ?? [];
+            const at = existing.findIndex((keyframe) => keyframe.frame === frame);
+            const keyframes =
+              at === -1
+                ? [...existing, next].sort((a, b) => a.frame - b.frame)
+                : existing.map((keyframe, index) => (index === at ? { ...keyframe, ...next, id: keyframe.id } : keyframe));
+            return { ...entry, keyframes };
+          });
+          return { ...scene, content: { ...scene.content, visuals } };
+        }),
+      },
+    }));
+  },
+
+  updateVisualKeyframe: (sceneId, entryId, keyframeId, patch) => {
+    set((state) => ({
+      project: {
+        ...state.project,
+        scenes: state.project.scenes.map((scene) =>
+          scene.id === sceneId
+            ? {
+                ...scene,
+                content: {
+                  ...scene.content,
+                  visuals: (scene.content.visuals ?? []).map((entry) =>
+                    entry.id === entryId
+                      ? {
+                          ...entry,
+                          keyframes: (entry.keyframes ?? [])
+                            .map((keyframe) => (keyframe.id === keyframeId ? { ...keyframe, ...patch } : keyframe))
+                            .sort((a, b) => a.frame - b.frame),
+                        }
+                      : entry
+                  ),
+                },
+              }
+            : scene
+        ),
+      },
+    }));
+  },
+
+  removeVisualKeyframe: (sceneId, entryId, keyframeId) => {
+    set((state) => ({
+      project: {
+        ...state.project,
+        scenes: state.project.scenes.map((scene) =>
+          scene.id === sceneId
+            ? {
+                ...scene,
+                content: {
+                  ...scene.content,
+                  visuals: (scene.content.visuals ?? []).map((entry) => {
+                    if (entry.id !== entryId) return entry;
+                    const keyframes = (entry.keyframes ?? []).filter((keyframe) => keyframe.id !== keyframeId);
+                    // An empty array would keep re-serialising as `[]` in every
+                    // saved project; unset is what "this layer has no path" is.
+                    return { ...entry, keyframes: keyframes.length ? keyframes : undefined };
+                  }),
+                },
+              }
+            : scene
+        ),
+      },
+    }));
+  },
+
   updateSceneVisuals: (id, visuals) => {
     set((state) => ({
       project: {
@@ -695,9 +928,44 @@ export const useProjectStore = create<ProjectStore>((set, get) => ({
     }));
   },
 
-  selectScene: (id) => set({ selectedSceneId: id }),
+  selectObject: (id) => set({ selectedObjectId: id }),
+  // Changing scene drops the object selection: the id addresses an element
+  // inside the scene that was open, and it means nothing in the next one.
+  selectScene: (id) => set({ selectedSceneId: id, selectedObjectId: null }),
   setActiveVisualSlot: (slot) => set({ activeVisualSlot: slot }),
 }));
+
+// Record every edit within a project. Opening/creating another project starts a
+// fresh history so Ctrl+Z can never unexpectedly jump to a different video.
+useProjectStore.subscribe((state, previous) => {
+  if (applyingHistory || state.project === previous.project) return;
+  if (historyTransaction) return;
+  if (state.project.id !== previous.project.id) {
+    undoStack.length = 0;
+    redoStack.length = 0;
+    useProjectStore.setState({ canUndo: false, canRedo: false });
+    return;
+  }
+  undoStack.push({ project: previous.project, selectedSceneId: previous.selectedSceneId });
+  if (undoStack.length > HISTORY_LIMIT) undoStack.shift();
+  redoStack.length = 0;
+  useProjectStore.setState({ canUndo: true, canRedo: false });
+});
+
+if (typeof window !== "undefined") {
+  window.addEventListener("keydown", (event) => {
+    if (!(event.ctrlKey || event.metaKey) || event.altKey) return;
+    const key = event.key.toLowerCase();
+    if (key === "z") {
+      event.preventDefault();
+      if (event.shiftKey) useProjectStore.getState().redo();
+      else useProjectStore.getState().undo();
+    } else if (key === "y") {
+      event.preventDefault();
+      useProjectStore.getState().redo();
+    }
+  });
+}
 
 // Debounced auto-save: every change to `project` gets written to the local library
 // so a reload (or crash) never silently loses work, without needing an explicit Save click.
@@ -705,10 +973,23 @@ if (typeof window !== "undefined") {
   let autoSaveTimer: ReturnType<typeof setTimeout> | undefined;
   useProjectStore.subscribe((state, prevState) => {
     if (state.project === prevState.project) return;
+    // Pointer drags are persisted by endHistoryTransaction, once the pointer is
+    // released. Skipping intermediate positions also keeps disk JSON clean.
+    if (historyTransaction) return;
+    // localStorage is synchronous: protect every keystroke immediately. Disk
+    // writes remain debounced below so typing does not hammer the filesystem.
+    const immediateLibrary = { ...readLibrary(), [state.project.id]: state.project };
+    writeLibrary(immediateLibrary);
+    window.localStorage.setItem(LAST_OPENED_KEY, state.project.id);
     if (autoSaveTimer) clearTimeout(autoSaveTimer);
     autoSaveTimer = setTimeout(() => {
-      const library = persist(useProjectStore.getState().project, readLibrary());
-      useProjectStore.setState({ libraryIndex: libraryIndexFrom(library) });
+      const project = useProjectStore.getState().project;
+      writeProjectFile(project);
+      useProjectStore.setState({ libraryIndex: libraryIndexFrom(readLibrary()) });
     }, 800);
+  });
+  window.addEventListener("pagehide", () => {
+    const project = useProjectStore.getState().project;
+    navigator.sendBeacon?.("/api/save-json", JSON.stringify({ kind: "project", data: project }));
   });
 }

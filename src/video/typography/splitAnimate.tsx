@@ -19,6 +19,77 @@ export function unitStaggerFor(splitBy: SplitBy): number {
   return splitBy === "letter" ? LETTER_STAGGER_FRAMES : WORD_STAGGER_FRAMES;
 }
 
+/**
+ * Share of the total that ONE unit's own entrance gets.
+ *
+ * The rest is spread between units as stagger. Making the entrance a fraction
+ * of the total rather than a fixed number of frames is what keeps the cascade
+ * alive when the total is short: budget a flat 18 frames and a 0.3s request has
+ * nothing left to stagger with, so every word lands at once and the effect you
+ * were speeding up disappears. At 0.45 the words still arrive one after another
+ * at any speed — they just arrive faster.
+ */
+const UNIT_ENTRANCE_SHARE = 0.45;
+
+export type SplitTiming = {
+  /** Frames between one unit starting and the next. */
+  stagger: number;
+  /** Duration to give each unit's own entrance. Undefined = leave the preset's
+   * own pace alone (the automatic case). */
+  unitEntrance?: number;
+  /** Frames from the first unit STARTING to the last one FINISHING. */
+  total: number;
+};
+
+/**
+ * Resolves a split's timing from an author-set total.
+ *
+ * `splitDuration` is the whole animation, start to finish: set 0.3s and the
+ * sentence goes from nothing to fully on screen in 0.3s. Both halves of the
+ * effect scale with it — the gap between words AND each word's own entrance —
+ * because speeding up only the gaps just makes the words overlap while each one
+ * still takes as long as it did.
+ *
+ *     total = stagger x (units - 1) + unitEntrance
+ *
+ * An explicit `entranceDuration` wins where it fits, so a line that was tuned by
+ * hand keeps its own pace and only the stagger absorbs the difference.
+ *
+ * Everything that needs to know when a split finishes — the renderer, the
+ * per-unit sfx cues, the next line's delay, the timelines' automatic positions
+ * — reads this, which is why it is one function and not a constant multiplied
+ * at four call sites.
+ */
+export function splitTiming(
+  splitBy: SplitBy,
+  unitCount: number,
+  splitDuration?: number,
+  entranceDuration?: number
+): SplitTiming {
+  if (splitDuration === undefined) {
+    const stagger = unitStaggerFor(splitBy);
+    const gaps = Math.max(0, unitCount - 1);
+    return { stagger, unitEntrance: entranceDuration, total: gaps * stagger + (entranceDuration ?? 18) };
+  }
+
+  const gaps = Math.max(0, unitCount - 1);
+  const unitEntrance = gaps === 0
+    ? splitDuration
+    : Math.max(1, Math.min(entranceDuration ?? splitDuration * UNIT_ENTRANCE_SHARE, splitDuration));
+  return {
+    stagger: gaps === 0 ? 0 : (splitDuration - unitEntrance) / gaps,
+    unitEntrance,
+    total: splitDuration,
+  };
+}
+
+/** Frames from a split's start until it has fully finished — what the next
+ * element in the stack has to wait for. */
+export function splitSpan(text: string, splitBy: SplitBy, splitDuration?: number, entranceDuration?: number): number {
+  const units = splitText(text, splitBy).length;
+  return splitTiming(splitBy, units, splitDuration, entranceDuration).total;
+}
+
 /** Exit timing for a split/box — resolved once by the caller (e.g.
  * `RichHeadline`, falling back to `motion.exit`/`exitDuration`/`exitDistance`
  * when a line has no override of its own) and threaded down here rather than
@@ -28,6 +99,15 @@ export type ExitConfig = {
   durationInFrames: number;
   exitDuration?: number;
   exitDistance?: number;
+  /** Frames to shift the exit window later (negative = earlier). Implemented
+   * by moving the END of the window rather than by a separate start offset:
+   * `exitStyle` always anchors the exit to `durationInFrames`, so pretending
+   * the scene is `exitDelay` frames longer slides the whole window without
+   * teaching that function a second timing concept. A positive delay therefore
+   * means the cut lands while the element is still mid-exit — deliberate, and
+   * the whole point when syncing to a carried visual that keeps moving after
+   * the cut. */
+  exitDelay?: number;
 };
 
 /** Merges an entrance and an exit style the same way `AnimatedVisual` does:
@@ -39,6 +119,7 @@ function useEnterExitStyle(args: {
   /** Travel distance (px) for a slide/zoomSettle entrance — same field every
    * other entrance in the system takes. */
   entranceDistance?: number;
+  entranceDuration?: number;
   exit?: ExitConfig;
 }): React.CSSProperties {
   const frame = useCurrentFrame();
@@ -48,13 +129,14 @@ function useEnterExitStyle(args: {
     fps,
     delay: args.delay,
     distance: args.entranceDistance,
+    durationInFrames: args.entranceDuration,
   });
 
   if (!args.exit?.preset) return enterStyle;
 
   const exitResult = computeExitStyle(args.exit.preset, {
     frame,
-    durationInFrames: args.exit.durationInFrames,
+    durationInFrames: args.exit.durationInFrames + (args.exit.exitDelay ?? 0),
     exitDuration: args.exit.exitDuration,
     distance: args.exit.exitDistance,
   });
@@ -74,9 +156,10 @@ export const AnimatedUnit: React.FC<{
   delay: number;
   preset?: EntrancePreset;
   entranceDistance?: number;
+  entranceDuration?: number;
   exit?: ExitConfig;
-}> = ({ text, delay, preset, entranceDistance, exit }) => {
-  const style = useEnterExitStyle({ entrancePreset: preset, delay, entranceDistance, exit });
+}> = ({ text, delay, preset, entranceDistance, entranceDuration, exit }) => {
+  const style = useEnterExitStyle({ entrancePreset: preset, delay, entranceDistance, entranceDuration, exit });
 
   return (
     <span style={{ display: "inline-block", whiteSpace: "pre", ...style }}>
@@ -93,10 +176,12 @@ export const AnimatedSplitText: React.FC<{
   baseDelay: number;
   preset?: EntrancePreset;
   entranceDistance?: number;
+  entranceDuration?: number;
+  splitDuration?: number;
   exit?: ExitConfig;
-}> = ({ text, splitBy, baseDelay, preset, entranceDistance, exit }) => {
+}> = ({ text, splitBy, baseDelay, preset, entranceDistance, entranceDuration, splitDuration, exit }) => {
   const units = splitText(text, splitBy);
-  const stagger = unitStaggerFor(splitBy);
+  const timing = splitTiming(splitBy, units.length, splitDuration, entranceDuration);
 
   return (
     <>
@@ -104,9 +189,10 @@ export const AnimatedSplitText: React.FC<{
         <AnimatedUnit
           key={index}
           text={unit}
-          delay={baseDelay + index * stagger}
+          delay={baseDelay + index * timing.stagger}
           preset={preset}
           entranceDistance={entranceDistance}
+          entranceDuration={timing.unitEntrance}
           exit={exit}
         />
       ))}
@@ -120,11 +206,12 @@ export const AnimatedBox: React.FC<{
   delay: number;
   preset?: EntrancePreset;
   entranceDistance?: number;
+  entranceDuration?: number;
   exit?: ExitConfig;
   style?: React.CSSProperties;
   children: React.ReactNode;
-}> = ({ delay, preset, entranceDistance, exit, style, children }) => {
-  const motionStyle = useEnterExitStyle({ entrancePreset: preset, delay, entranceDistance, exit });
+}> = ({ delay, preset, entranceDistance, entranceDuration, exit, style, children }) => {
+  const motionStyle = useEnterExitStyle({ entrancePreset: preset, delay, entranceDistance, entranceDuration, exit });
 
   return <div style={{ ...style, ...motionStyle }}>{children}</div>;
 };

@@ -1,5 +1,6 @@
 import { fontSizes } from "../typography/tokens";
 import { MONO_SIZE } from "../visuals/dev/devText";
+import { screenFrameSize } from "../visuals/devices/screenFrameSize";
 import type { VisualConfig } from "../../schema/visual";
 
 /** How far a `transform` visual's "to" state zooms past its resting size
@@ -43,12 +44,16 @@ export function naturalVisualSize(visual: VisualConfig): Size {
 
     case "recording":
       if (visual.frame === "phone") return { width: 460, height: 940 };
+      if (visual.frame === "plain") return screenFrameSize(visual.aspect);
       // Browser frame now carries a tab strip + address bar; a bare clip has none.
       return visual.frame === "browser" ? { width: 860, height: 690 } : { width: 860, height: 540 };
 
     case "browser":
       // 860 wide, 16:10 content (537) plus the tab strip + address bar chrome.
       return { width: 860, height: 690 };
+
+    case "screen":
+      return screenFrameSize(visual.aspect);
 
     case "phone":
       return { width: 460, height: 940 };
@@ -62,6 +67,11 @@ export function naturalVisualSize(visual: VisualConfig): Size {
       const count = visual.items.length;
       return { width: 700, height: count * rowHeight + (count - 1) * 20 };
     }
+
+    case "checkpoint":
+      if (visual.variant === "pill") return { width: 460, height: 70 };
+      if (visual.variant === "compact") return { width: 520, height: 74 };
+      return { width: 680, height: visual.detail ? 116 : 88 };
 
     case "pricing-card":
       return { width: 640, height: 420 + (visual.features?.length ?? 0) * 56 };

@@ -23,12 +23,17 @@ function lerpPose(from: VisualPose, to: VisualPose, t: number): VisualPose {
 
 /** Walks the chain's keyframes and blends toward each one as its cut arrives.
  * Keyframes later than the current frame contribute nothing (their `t` is 0),
- * so a single accumulating pass handles a chain of any length. */
+ * so a single accumulating pass handles a chain of any length.
+ *
+ * A keyframe's `lead` starts its move BEFORE the cut it belongs to, which is
+ * how a carry can travel while the outgoing scene's text is still exiting
+ * instead of waiting for a beat of dead air after it. */
 function poseAt(group: HoistedLinkGroup, frame: number): VisualPose {
   let pose = group.keyframes[0].pose;
   for (let i = 1; i < group.keyframes.length; i += 1) {
     const key = group.keyframes[i];
-    const t = interpolate(frame, [key.at, key.at + GLIDE_FRAMES], [0, 1], {
+    const start = key.at - (key.lead ?? 0);
+    const t = interpolate(frame, [start, start + (key.duration ?? GLIDE_FRAMES)], [0, 1], {
       extrapolateLeft: "clamp",
       extrapolateRight: "clamp",
       easing: standardEasing,

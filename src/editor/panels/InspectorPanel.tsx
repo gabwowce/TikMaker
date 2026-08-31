@@ -17,7 +17,7 @@ import { BackgroundSwatch } from "../library/BackgroundLibrary";
 import { propList } from "../../registries/propRegistry";
 import { toolList } from "../../registries/toolRegistry";
 import { sfxList, type SfxGroup } from "../../registries/sfxRegistry";
-import { safeAreaPercent } from "../../video/typography/tokens";
+import { fontSizes, safeAreaPercent, videoDefaults } from "../../video/typography/tokens";
 import { resolveSceneDuration, pacingWarning, voDurationSeconds } from "../../utils/pacing";
 import { computeSceneTimings } from "../../utils/duration";
 import { resolveHoistedLinkGroups, chainRoleFor, type ChainRole } from "../../utils/visualLinks";
@@ -27,7 +27,7 @@ import { isFullBleedVisual } from "../../video/visuals/isFullBleed";
 import { OFF_FRAME_DISTANCE } from "../../video/motion/entrances";
 import { VisualThumb } from "../library/VisualThumb";
 import { useCustomAssetsStore, assetKind, type CustomAsset } from "../state/customAssetsStore";
-import type { VisualConfig } from "../../schema/visual";
+import { screenAspectSchema, type VisualConfig } from "../../schema/visual";
 import type {
   StepItem,
   Block,
@@ -55,6 +55,14 @@ const inputStyle: React.CSSProperties = {
   color: editorColors.text,
   fontSize: 13,
   boxSizing: "border-box",
+};
+
+const animationSeconds = (frames: number) => Number((frames / videoDefaults.fps).toFixed(2));
+const SecondsSlider: React.FC<{ label: string; frames: number; minFrames?: number; maxFrames?: number; onChange: (frames: number) => void }> = ({ label, frames, minFrames = 0, maxFrames = 300, onChange }) => {
+  const seconds = animationSeconds(frames);
+  const begin = useProjectStore((state) => state.beginHistoryTransaction);
+  const end = useProjectStore((state) => state.endHistoryTransaction);
+  return <div style={{ marginBottom: 8 }}><div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 4 }}><span style={miniLabelStyle}>{label}</span><span style={{ fontSize: 10, color: editorColors.text }}>{seconds.toFixed(2)} s</span></div><input type="range" min={minFrames / videoDefaults.fps} max={maxFrames / videoDefaults.fps} step={0.1} value={seconds} onPointerDown={begin} onPointerUp={end} onPointerCancel={end} onKeyDown={begin} onKeyUp={end} onChange={(event) => onChange(Math.max(minFrames, Math.min(maxFrames, Math.round(Number(event.target.value) * videoDefaults.fps))))} style={{ width: "100%", accentColor: editorColors.accent }} /></div>;
 };
 
 const smallButtonStyle: React.CSSProperties = {
@@ -114,7 +122,7 @@ const Section: React.FC<{
  * (including browser/phone, which now get a Content picker) edits inline. */
 const COMPOUND_VISUAL_TYPES = new Set(["flow", "stack", "transform"]);
 
-type AssetOption = { key: string; label: string; src: string; toVisual: () => VisualConfig };
+export type AssetOption = { key: string; label: string; src: string; toVisual: () => VisualConfig };
 
 const staticAssetOptions: AssetOption[] = [
   ...propList.map((prop) => ({
@@ -145,7 +153,7 @@ export function customAssetToVisual(asset: CustomAsset): VisualConfig {
     : { type: "image", src: asset.src };
 }
 
-function buildAssetOptions(custom: CustomAsset[]): AssetOption[] {
+export function buildAssetOptions(custom: CustomAsset[]): AssetOption[] {
   return [
     ...staticAssetOptions,
     ...custom.map((asset) => ({
@@ -172,7 +180,7 @@ function assetKeyOf(visual: VisualConfig | undefined, custom: CustomAsset[]): st
  * layer switches to it. The Assets tab still exists for managing the library,
  * but needing a round trip through it just to drop one PNG into one layer was
  * the long way round. */
-const AssetImportButton: React.FC<{ onImported: (visual: VisualConfig) => void }> = ({ onImported }) => {
+export const AssetImportButton: React.FC<{ onImported: (visual: VisualConfig) => void }> = ({ onImported }) => {
   const upload = useCustomAssetsStore((s) => s.upload);
   const inputRef = React.useRef<HTMLInputElement>(null);
   const [busy, setBusy] = React.useState(false);
@@ -286,7 +294,7 @@ const sfxByGroupSorted: [SfxGroup, typeof sfxList][] = sfxGroupOrder
  * "pick a sensible default from the animation preset" (see `sfxDefaults.ts`)
  * on top of "No sound"; `mode="explicit"` is silent unless a sound is chosen,
  * for freeform items where a default would get noisy — see CLAUDE.md Sound section. */
-const SfxSelect: React.FC<{ value: string | undefined; mode: "auto" | "explicit"; onChange: (v: string | undefined) => void }> = ({
+export const SfxSelect: React.FC<{ value: string | undefined; mode: "auto" | "explicit"; onChange: (v: string | undefined) => void }> = ({
   value,
   mode,
   onChange,
@@ -322,6 +330,8 @@ function summarizeVisual(visual: VisualConfig): string {
       return `transform: ${visual.from.type} → ${visual.to.type}`;
     case "browser":
       return `browser: ${visual.content.type}`;
+    case "screen":
+      return `screen (${visual.aspect ?? "16:10"}): ${visual.content.type}`;
     case "phone":
       return `phone: ${visual.content.type}`;
     default:
@@ -387,8 +397,10 @@ const DISTANCE_ENTRANCES = new Set([
   "zoomSettleLeft",
   "zoomSettleTop",
   "zoomSettleBottom",
+  "dropIn",
+  "rollIn",
 ]);
-const DISTANCE_EXITS = new Set(["slideUp", "slideDown", "slideLeft", "slideRight"]);
+const DISTANCE_EXITS = new Set(["slideUp", "slideDown", "slideLeft", "slideRight", "dropOut", "rollOut"]);
 /** Ken Burns presets with a rate to tune — the duration-sized ramps
  * (zoomIn/panLeft/etc) have no equivalent knob, see `kenBurnsSpeed`'s doc
  * comment in the schema. */
@@ -410,6 +422,7 @@ function kenBurnsPresetLabel(preset: KenBurnsPreset): string {
 
 type VisualMotionValue = {
   entrance?: EntrancePreset;
+  entranceDuration?: number;
   exit?: ExitPreset;
   exitDuration?: number;
   entranceDistance?: number;
@@ -504,25 +517,26 @@ const VisualMotionEditor: React.FC<{
       </div>
     </div>
 
-    {entranceApplies && value.entrance && DISTANCE_ENTRANCES.has(value.entrance) ? (
-      <DistanceControl
-        label="In distance"
-        value={value.entranceDistance}
-        onChange={(entranceDistance) => onChange({ entranceDistance })}
-      />
+    {entranceApplies && value.entrance && value.entrance !== "none" ? (
+      <>
+        <SecondsSlider label="Entrance duration" frames={value.entranceDuration ?? 18} minFrames={1} maxFrames={60} onChange={(entranceDuration) => onChange({ entranceDuration })} />
+        <div style={{ fontSize: 10, color: editorColors.textDim, marginBottom: 6 }}>
+          Leave empty to let the preset run at its own pace — every preset but fade is a spring, which settles on
+          its own. A number stretches or squashes it to exactly that many seconds.
+        </div>
+        {DISTANCE_ENTRANCES.has(value.entrance) ? (
+          <DistanceControl
+            label="In distance"
+            value={value.entranceDistance}
+            onChange={(entranceDistance) => onChange({ entranceDistance })}
+          />
+        ) : null}
+      </>
     ) : null}
 
     {exitApplies && value.exit ? (
       <>
-        <div style={miniLabelStyle}>Exit duration (frames)</div>
-        <input
-          type="number"
-          min={1}
-          max={60}
-          style={{ ...inputStyle, marginBottom: 6 }}
-          value={value.exitDuration ?? 18}
-          onChange={(e) => onChange({ exitDuration: Number(e.target.value) })}
-        />
+        <SecondsSlider label="Exit duration" frames={value.exitDuration ?? 18} minFrames={1} maxFrames={60} onChange={(exitDuration) => onChange({ exitDuration })} />
         {DISTANCE_EXITS.has(value.exit) ? (
           <DistanceControl
             label="Out distance"
@@ -752,7 +766,7 @@ const ImageSrcField: React.FC<{ src: string; onChange: (src: string) => void }> 
   );
 };
 
-const VisualFieldsEditor: React.FC<{ visual: VisualConfig; onChange: (v: VisualConfig) => void }> = ({
+export const VisualFieldsEditor: React.FC<{ visual: VisualConfig; onChange: (v: VisualConfig) => void }> = ({
   visual,
   onChange,
 }) => {
@@ -787,9 +801,26 @@ const VisualFieldsEditor: React.FC<{ visual: VisualConfig; onChange: (v: VisualC
           onChange={(e) => onChange({ ...visual, frame: e.target.value as typeof visual.frame })}
         >
           <option value="none">none (bare clip)</option>
+          <option value="plain">plain screen (rounded, no chrome)</option>
           <option value="browser">browser window</option>
           <option value="phone">phone</option>
         </select>
+        {visual.frame === "plain" ? (
+          <>
+            <div style={{ fontSize: 10, color: editorColors.textDim }}>Card shape</div>
+            <select
+              style={inputStyle}
+              value={visual.aspect ?? "16:10"}
+              onChange={(e) => onChange({ ...visual, aspect: e.target.value as typeof visual.aspect })}
+            >
+              {screenAspectSchema.options.map((a) => (
+                <option key={a} value={a}>
+                  {a}
+                </option>
+              ))}
+            </select>
+          </>
+        ) : null}
         {visual.frame === "browser" ? (
           <>
             <div style={{ fontSize: 10, color: editorColors.textDim }}>Browser chrome</div>
@@ -948,6 +979,47 @@ const VisualFieldsEditor: React.FC<{ visual: VisualConfig; onChange: (v: VisualC
     );
   }
 
+  if (visual.type === "checkpoint") {
+    return (
+      <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+        <input
+          style={inputStyle}
+          value={visual.label}
+          onChange={(e) => onChange({ ...visual, label: e.target.value })}
+          placeholder="Checkpoint text"
+        />
+        <textarea
+          style={{ ...inputStyle, resize: "vertical" }}
+          rows={2}
+          value={visual.detail ?? ""}
+          onChange={(e) => onChange({ ...visual, detail: e.target.value || undefined })}
+          placeholder="Optional detail"
+        />
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 6 }}>
+          <select
+            style={rowSelectStyle}
+            value={visual.variant ?? "card"}
+            onChange={(e) => onChange({ ...visual, variant: e.target.value as typeof visual.variant })}
+          >
+            <option value="card">Card</option>
+            <option value="compact">Compact</option>
+            <option value="pill">Pill</option>
+            <option value="outline">Outline</option>
+          </select>
+          <select
+            style={rowSelectStyle}
+            value={visual.state ?? "done"}
+            onChange={(e) => onChange({ ...visual, state: e.target.value as typeof visual.state })}
+          >
+            <option value="done">Done ✓</option>
+            <option value="pending">Pending ○</option>
+            <option value="warning">Warning !</option>
+          </select>
+        </div>
+      </div>
+    );
+  }
+
   if (visual.type === "checklist") {
     return (
       <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
@@ -963,25 +1035,7 @@ const VisualFieldsEditor: React.FC<{ visual: VisualConfig; onChange: (v: VisualC
           ))}
         </select>
 
-        <div style={{ fontSize: 10, color: editorColors.textDim }}>
-          Item pacing — {visual.stagger ?? 6} frames between items
-        </div>
-        <div style={{ display: "grid", gridTemplateColumns: "2fr 1fr", gap: 6, alignItems: "center" }}>
-          <input
-            type="range"
-            min={0}
-            max={60}
-            step={1}
-            value={visual.stagger ?? 6}
-            onChange={(e) => onChange({ ...visual, stagger: Number(e.target.value) })}
-          />
-          <input
-            type="number"
-            style={inputStyle}
-            value={visual.stagger ?? 6}
-            onChange={(e) => onChange({ ...visual, stagger: Number(e.target.value) })}
-          />
-        </div>
+        <SecondsSlider label="Tarpas tarp punktų" frames={visual.stagger ?? 6} maxFrames={60} onChange={(stagger) => onChange({ ...visual, stagger })} />
 
         <div style={{ fontSize: 10, color: editorColors.textDim }}>Sound per item revealing</div>
         <SfxSelect mode="auto" value={visual.sfx} onChange={(sfx) => onChange({ ...visual, sfx })} />
@@ -1419,39 +1473,148 @@ function useAssetPreview(visual: VisualConfig | undefined): { label: string; src
 const RichHeadlineEditor: React.FC<{
   lines: RichHeadlineLine[];
   onChange: (lines: RichHeadlineLine[]) => void;
-}> = ({ lines, onChange }) => {
+  /** `content.richHeadlineX`/`Y` — placement of the whole stack. */
+  stackX?: number;
+  stackY?: number;
+  onStackMove: (patch: { richHeadlineX?: number; richHeadlineY?: number }) => void;
+}> = ({ lines, onChange, stackX, stackY, onStackMove }) => {
   function updateLine(index: number, patch: Partial<RichHeadlineLine>) {
     const next = [...lines];
     next[index] = { ...next[index], ...patch };
     onChange(next);
   }
 
+  /** Array order IS the stack order AND the entrance order — `RichHeadline`
+   * renders top-to-bottom and its stagger clock walks the same array — so one
+   * swap moves a line both visually and in the sequence, which is what "what
+   * comes after what" means here. */
+  function moveLine(index: number, direction: "up" | "down") {
+    const target = direction === "up" ? index - 1 : index + 1;
+    if (target < 0 || target >= lines.length) return;
+    const next = [...lines];
+    [next[index], next[target]] = [next[target], next[index]];
+    onChange(next);
+  }
+
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+      {lines.length ? (
+        <div>
+          <div style={miniLabelStyle}>
+            Stack position —{" "}
+            {stackX === undefined && stackY === undefined
+              ? "in the scene's normal flow"
+              : `${stackX === undefined ? "centred" : `x ${stackX.toFixed(0)}%`}, y ${(stackY ?? 50).toFixed(0)}%`}
+          </div>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 6 }}>
+            <div>
+              <div style={miniLabelStyle}>X</div>
+              <input
+                type="range"
+                min={safeAreaPercent.left}
+                max={safeAreaPercent.right}
+                style={{ width: "100%" }}
+                value={stackX ?? 50}
+                onChange={(e) => onStackMove({ richHeadlineX: Number(e.target.value) })}
+              />
+            </div>
+            <div>
+              <div style={miniLabelStyle}>Y</div>
+              <input
+                type="range"
+                min={safeAreaPercent.top}
+                max={safeAreaPercent.bottom}
+                style={{ width: "100%" }}
+                value={stackY ?? 50}
+                onChange={(e) => onStackMove({ richHeadlineY: Number(e.target.value) })}
+              />
+            </div>
+          </div>
+          {stackX === undefined && stackY === undefined ? null : (
+            <button
+              style={{ ...smallButtonStyle, width: "100%", marginTop: 4 }}
+              onClick={() => onStackMove({ richHeadlineX: undefined, richHeadlineY: undefined })}
+            >
+              ↺ Back to the scene's flow
+            </button>
+          )}
+          <div style={{ fontSize: 10, color: editorColors.textDim, marginTop: 2 }}>
+            Moves the whole stack so consecutive scenes don't all sit on the same line. Leaving X alone keeps the
+            headline centred across the safe area, which is usually what you want.
+          </div>
+        </div>
+      ) : null}
       {lines.map((line, index) => (
         <div key={index} style={{ border: `1px solid ${editorColors.border}`, borderRadius: 8, padding: 8 }}>
           <div style={{ display: "flex", gap: 6, marginBottom: 6 }}>
+            <div style={{ fontSize: 10, color: editorColors.textDim, alignSelf: "center", minWidth: 16 }}>
+              {String(index + 1).padStart(2, "0")}
+            </div>
             <input
               style={inputStyle}
               value={line.text}
               onChange={(e) => updateLine(index, { text: e.target.value })}
               placeholder="Line text"
             />
+            <button
+              style={{ ...smallButtonStyle, opacity: index === 0 ? 0.4 : 1 }}
+              disabled={index === 0}
+              title="Move up — earlier in the stack and in the entrance order"
+              onClick={() => moveLine(index, "up")}
+            >
+              ↑
+            </button>
+            <button
+              style={{ ...smallButtonStyle, opacity: index === lines.length - 1 ? 0.4 : 1 }}
+              disabled={index === lines.length - 1}
+              title="Move down — later in the stack and in the entrance order"
+              onClick={() => moveLine(index, "down")}
+            >
+              ↓
+            </button>
             <button style={smallButtonStyle} onClick={() => onChange(lines.filter((_, i) => i !== index))}>
               ✕
             </button>
           </div>
-          <select
-            style={{ ...rowSelectStyle, marginBottom: 6, width: "100%" }}
-            value={line.size}
-            onChange={(e) => updateLine(index, { size: e.target.value as RichHeadlineLine["size"] })}
-          >
-            {richTextSizeSchema.options.map((s) => (
-              <option key={s} value={s}>
-                {s}
-              </option>
-            ))}
-          </select>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 6, marginBottom: 6 }}>
+            <div>
+              <div style={miniLabelStyle}>Size token</div>
+              <select
+                style={{ ...rowSelectStyle, width: "100%", opacity: line.sizePx ? 0.5 : 1 }}
+                value={line.size}
+                onChange={(e) => updateLine(index, { size: e.target.value as RichHeadlineLine["size"] })}
+              >
+                {richTextSizeSchema.options.map((s) => (
+                  <option key={s} value={s}>
+                    {s}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div>
+              <div style={miniLabelStyle}>Manual px (overrides)</div>
+              <div style={{ display: "flex", gap: 4 }}>
+                <input
+                  type="number"
+                  min={8}
+                  max={400}
+                  style={inputStyle}
+                  placeholder={String(fontSizes[line.size])}
+                  value={line.sizePx ?? ""}
+                  onChange={(e) => updateLine(index, { sizePx: e.target.value ? Number(e.target.value) : undefined })}
+                />
+                {line.sizePx ? (
+                  <button
+                    style={smallButtonStyle}
+                    title="Back to the size token"
+                    onClick={() => updateLine(index, { sizePx: undefined })}
+                  >
+                    ↺
+                  </button>
+                ) : null}
+              </div>
+            </div>
+          </div>
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 6, marginBottom: 6 }}>
             <div>
               <div style={miniLabelStyle}>In</div>
@@ -1492,6 +1655,78 @@ const RichHeadlineEditor: React.FC<{
               </select>
             </div>
           </div>
+          {line.exit ? (
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 6, marginBottom: 6 }}>
+              <SecondsSlider label="Out length" frames={line.exitDuration ?? 18} minFrames={1} maxFrames={60} onChange={(exitDuration) => updateLine(index, { exitDuration })} />
+              <SecondsSlider label="Out delay" frames={line.exitDelay ?? 0} minFrames={-60} maxFrames={60} onChange={(exitDelay) => updateLine(index, { exitDelay })} />
+              <div>
+                <div style={miniLabelStyle}>Out distance</div>
+                <input
+                  type="number"
+                  min={0}
+                  max={2400}
+                  style={inputStyle}
+                  placeholder="70"
+                  value={line.exitDistance ?? ""}
+                  onChange={(e) =>
+                    updateLine(index, { exitDistance: e.target.value ? Number(e.target.value) : undefined })
+                  }
+                />
+              </div>
+            </div>
+          ) : null}
+          {line.exit ? (
+            <div style={{ fontSize: 10, color: editorColors.textDim, marginBottom: 6 }}>
+              By default this line finishes leaving exactly on the cut. Raise Out delay to keep it moving into the
+              cut so it syncs with a carried visual's glide (set that visual's Glide lead to meet it).
+            </div>
+          ) : null}
+          <div style={miniLabelStyle}>
+            {line.x === undefined || line.y === undefined
+              ? "This line — stacked with its neighbours"
+              : `This line — free at x ${line.x.toFixed(0)}%, y ${line.y.toFixed(0)}%`}
+          </div>
+          {line.x === undefined || line.y === undefined ? (
+            <button
+              style={{ ...smallButtonStyle, width: "100%", marginBottom: 6 }}
+              onClick={() => updateLine(index, { x: 50, y: 50 })}
+            >
+              Position this line on its own →
+            </button>
+          ) : (
+            <>
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 6 }}>
+                <div>
+                  <div style={miniLabelStyle}>X</div>
+                  <input
+                    type="range"
+                    min={safeAreaPercent.left}
+                    max={safeAreaPercent.right}
+                    style={{ width: "100%" }}
+                    value={line.x}
+                    onChange={(e) => updateLine(index, { x: Number(e.target.value) })}
+                  />
+                </div>
+                <div>
+                  <div style={miniLabelStyle}>Y</div>
+                  <input
+                    type="range"
+                    min={safeAreaPercent.top}
+                    max={safeAreaPercent.bottom}
+                    style={{ width: "100%" }}
+                    value={line.y}
+                    onChange={(e) => updateLine(index, { y: Number(e.target.value) })}
+                  />
+                </div>
+              </div>
+              <button
+                style={{ ...smallButtonStyle, width: "100%", margin: "4px 0 6px" }}
+                onClick={() => updateLine(index, { x: undefined, y: undefined })}
+              >
+                ↺ Back into the stack
+              </button>
+            </>
+          )}
           <div style={{ marginBottom: 6 }}>
             <div style={miniLabelStyle}>Split by</div>
             <select
@@ -1516,6 +1751,44 @@ const RichHeadlineEditor: React.FC<{
             />
             Pill box highlight
           </label>
+          <div style={miniLabelStyle}>Text color</div>
+          <div style={{ display: "flex", gap: 6, marginBottom: 4, alignItems: "center" }}>
+            <input
+              type="color"
+              value={isValidHex(line.color ?? "") ? (line.color as string) : line.pill ? "#171717" : "#ffffff"}
+              onChange={(e) => updateLine(index, { color: e.target.value })}
+              style={{ width: 32, height: 28, padding: 0, border: `1px solid ${editorColors.border}`, borderRadius: 6, flexShrink: 0 }}
+            />
+            <input
+              style={inputStyle}
+              value={line.color ?? ""}
+              onChange={(e) => updateLine(index, { color: e.target.value || undefined })}
+              placeholder={line.pill ? "default (dark on pill)" : "default (white)"}
+            />
+            {line.color ? (
+              <button style={smallButtonStyle} title="Back to the default" onClick={() => updateLine(index, { color: undefined })}>
+                ↺
+              </button>
+            ) : null}
+          </div>
+          <div style={{ display: "flex", gap: 4, marginBottom: 6 }}>
+            {colorSwatches.map((swatch) => (
+              <button
+                key={swatch.value}
+                title={swatch.label}
+                onClick={() => updateLine(index, { color: swatch.value })}
+                style={{
+                  width: 20,
+                  height: 20,
+                  borderRadius: 4,
+                  border: `1px solid ${editorColors.border}`,
+                  background: swatch.value,
+                  cursor: "pointer",
+                  padding: 0,
+                }}
+              />
+            ))}
+          </div>
           <SfxSelect mode="auto" value={line.sfx} onChange={(sfx) => updateLine(index, { sfx })} />
         </div>
       ))}
@@ -1713,14 +1986,7 @@ const BlocksEditor: React.FC<{ blocks: Block[]; onChange: (blocks: Block[]) => v
               ))}
             </select>
           </div>
-          <div style={miniLabelStyle}>Start delay (frames)</div>
-          <input
-            type="number"
-            style={{ ...inputStyle, marginBottom: 6 }}
-            min={0}
-            value={block.delay ?? 0}
-            onChange={(e) => updateBlock(index, { delay: Number(e.target.value) })}
-          />
+          <SecondsSlider label="Pradžios uždelsimas" frames={block.delay ?? 0} onChange={(delay) => updateBlock(index, { delay })} />
           <div style={miniLabelStyle}>Sound</div>
           <SfxSelect mode="auto" value={block.sfx} onChange={(sfx) => updateBlock(index, { sfx })} />
         </EntryCard>
@@ -1846,6 +2112,7 @@ const PositionedVisualEntryCard: React.FC<{
         sfxMode="explicit"
         value={{
           entrance: entry.entrance,
+          entranceDuration: entry.entranceDuration,
           exit: entry.exit,
           exitDuration: entry.exitDuration,
           entranceDistance: entry.entranceDistance,
@@ -1860,14 +2127,7 @@ const PositionedVisualEntryCard: React.FC<{
         exitApplies={exitApplies}
       />
 
-      <div style={{ ...miniLabelStyle, marginTop: 8 }}>Start delay (frames)</div>
-      <input
-        type="number"
-        min={0}
-        style={{ ...inputStyle, marginBottom: 6 }}
-        value={entry.delay ?? 0}
-        onChange={(e) => onUpdate({ delay: Number(e.target.value) })}
-      />
+      <SecondsSlider label="Pradžios uždelsimas" frames={entry.delay ?? 0} onChange={(delay) => onUpdate({ delay })} />
 
       <div style={subLabelStyle}>Carry across the cut</div>
       <button
@@ -1885,12 +2145,23 @@ const PositionedVisualEntryCard: React.FC<{
             : "This is the last scene — add a scene after it first."}
       </div>
       {entry.link ? (
-        <input
-          style={{ ...inputStyle, marginBottom: 6 }}
-          value={entry.link.groupId}
-          onChange={(e) => onUpdate({ link: e.target.value ? { groupId: e.target.value } : undefined })}
-          placeholder="group id — same string on the neighboring scene"
-        />
+        <>
+          <input
+            style={{ ...inputStyle, marginBottom: 6 }}
+            value={entry.link.groupId}
+            onChange={(e) =>
+              onUpdate({ link: e.target.value ? { ...entry.link!, groupId: e.target.value } : undefined })
+            }
+            placeholder="group id — same string on the neighboring scene"
+          />
+          <SecondsSlider label="Perėjimo pradžia prieš kirpimą" frames={entry.link.glideLead ?? 0} maxFrames={60} onChange={(glideLead) => onUpdate({ link: { ...entry.link!, glideLead } })} />
+          <SecondsSlider label="Perėjimo trukmė" frames={entry.link.glideDuration ?? 18} minFrames={1} maxFrames={90} onChange={(glideDuration) => onUpdate({ link: { ...entry.link!, glideDuration } })} />
+          <div style={{ fontSize: 10, color: editorColors.textDim, marginBottom: 6 }}>
+            {chainRole === "first"
+              ? "Glide timing is read from the scene being arrived AT — set it on the LATER scene in the chain, not here."
+              : "How this hop moves: lead starts it before the cut (so it travels while the previous scene's text is still exiting), length is how long the move takes."}
+          </div>
+        </>
       ) : null}
     </EntryCard>
   );
@@ -2147,6 +2418,9 @@ export const InspectorPanel: React.FC = () => {
               <RichHeadlineEditor
                 lines={scene.content.richHeadline ?? []}
                 onChange={(lines) => updateSceneRichHeadline(selectedSceneId, lines)}
+                stackX={scene.content.richHeadlineX}
+                stackY={scene.content.richHeadlineY}
+                onStackMove={(patch) => updateSceneContent(selectedSceneId, patch)}
               />
             </Section>
           </>
@@ -2191,6 +2465,7 @@ export const InspectorPanel: React.FC = () => {
                       showScale
                       value={{
                         entrance: scene.content[side]?.visualEntrance,
+                        entranceDuration: scene.content[side]?.visualEntranceDuration,
                         exit: scene.content[side]?.visualExit,
                         exitDuration: scene.content[side]?.visualExitDuration,
                         entranceDistance: scene.content[side]?.visualEntranceDistance,
@@ -2204,6 +2479,9 @@ export const InspectorPanel: React.FC = () => {
                       onChange={(patch) =>
                         updateSceneLeftRight(selectedSceneId, side, {
                           ...("entrance" in patch ? { visualEntrance: patch.entrance } : {}),
+                          ...("entranceDuration" in patch
+                            ? { visualEntranceDuration: patch.entranceDuration }
+                            : {}),
                           ...("exit" in patch ? { visualExit: patch.exit } : {}),
                           ...("exitDuration" in patch ? { visualExitDuration: patch.exitDuration } : {}),
                           ...("entranceDistance" in patch ? { visualEntranceDistance: patch.entranceDistance } : {}),
@@ -2293,6 +2571,20 @@ export const InspectorPanel: React.FC = () => {
             ≈ {voDurationSeconds(scene.vo).toFixed(1)}s to say
           </div>
         ) : null}
+      </Section>
+
+      <Section title="Notes" subtitle="Never rendered — what this frame still needs">
+        <div style={{ fontSize: 11, color: editorColors.textDim, marginBottom: 6 }}>
+          Carried over from the storyboard beat that generated this scene (its visual placeholder and notes), so the
+          description of what has to be shown stays attached to the frame that needs it.
+        </div>
+        <textarea
+          rows={3}
+          style={{ ...inputStyle, resize: "vertical" }}
+          value={scene.notes ?? ""}
+          placeholder="e.g. Chrome integration recording"
+          onChange={(e) => updateScene(selectedSceneId, { notes: e.target.value || undefined })}
+        />
       </Section>
 
         </>
@@ -2426,6 +2718,10 @@ export const InspectorPanel: React.FC = () => {
             </option>
           ))}
         </select>
+        <SecondsSlider label="Entrance duration" frames={scene.motion?.entranceDuration ?? 18} minFrames={1} maxFrames={60} onChange={(entranceDuration) => updateSceneMotion(selectedSceneId, { entranceDuration })} />
+        <div style={{ fontSize: 11, color: editorColors.textDim, marginBottom: 6 }}>
+          Empty lets the preset run at its own pace — every preset but fade is a spring, which settles on its own.
+        </div>
         <DistanceControl
           label="Entrance distance"
           value={scene.motion?.entranceDistance}
@@ -2455,15 +2751,7 @@ export const InspectorPanel: React.FC = () => {
           ))}
         </select>
         {scene.motion?.exit ? (
-          <input
-            type="number"
-            min={1}
-            max={60}
-            style={{ ...inputStyle, marginBottom: 6 }}
-            value={scene.motion?.exitDuration ?? 18}
-            onChange={(e) => updateSceneExitDuration(selectedSceneId, Number(e.target.value))}
-            placeholder="Exit duration (frames)"
-          />
+          <SecondsSlider label="Exit duration" frames={scene.motion?.exitDuration ?? 18} minFrames={1} maxFrames={60} onChange={(exitDuration) => updateSceneExitDuration(selectedSceneId, exitDuration)} />
         ) : null}
         {scene.motion?.exit ? (
           <DistanceControl
@@ -2493,14 +2781,7 @@ export const InspectorPanel: React.FC = () => {
           </div>
         </div>
 
-        <div style={labelStyle}>Stagger (frames between elements)</div>
-        <input
-          type="number"
-          min={0}
-          style={inputStyle}
-          value={scene.motion?.stagger ?? 6}
-          onChange={(e) => updateSceneStagger(selectedSceneId, Number(e.target.value))}
-        />
+        <SecondsSlider label="Tarpas tarp elementų" frames={scene.motion?.stagger ?? 6} maxFrames={60} onChange={(stagger) => updateSceneStagger(selectedSceneId, stagger)} />
 
         <div style={labelStyle}>Transition</div>
         <select
@@ -2518,6 +2799,7 @@ export const InspectorPanel: React.FC = () => {
 
         </>
       ) : null}
+
 
       <button
         style={{

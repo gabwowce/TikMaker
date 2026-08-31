@@ -3,6 +3,7 @@ import path from "node:path";
 import { spawn } from "node:child_process";
 import { defineConfig, type Plugin } from "vite";
 import react from "@vitejs/plugin-react";
+import { syncAssets, SOURCE_DIRS } from "./scripts/syncAssets";
 
 const customAssetsDir = path.resolve(__dirname, "public/assets/custom");
 const manifestPath = path.join(customAssetsDir, "manifest.json");
@@ -68,6 +69,58 @@ function readBody(req: import("http").IncomingMessage): Promise<string> {
     req.on("end", () => resolve(body));
     req.on("error", reject);
   });
+}
+
+/** Writes editor data to a real JSON file as well as the browser library.
+ * A temporary sibling is renamed only after the complete JSON is on disk, so
+ * an interrupted write cannot leave the sole backup half-written. */
+function jsonPersistencePlugin(): Plugin {
+  return {
+    name: "json-persistence-api",
+    configureServer(server) {
+      server.middlewares.use("/api/save-json", (req, res) => {
+        if (req.method !== "POST") {
+          res.statusCode = 405;
+          res.end();
+          return;
+        }
+        readBody(req)
+          .then((raw) => {
+            const { kind, data } = JSON.parse(raw) as { kind: "project" | "storyboard"; data: { id?: string } };
+            if (kind !== "project" && kind !== "storyboard") throw new Error("Invalid JSON kind");
+            if (!data || typeof data.id !== "string" || !data.id.trim()) throw new Error("Missing id");
+            const directory = path.resolve(__dirname, kind === "project" ? "projects" : "storyboards");
+            const filename = `${slugify(data.id)}.json`;
+            const target = path.join(directory, filename);
+            const temporary = `${target}.tmp`;
+            fs.mkdirSync(directory, { recursive: true });
+            // Keep recoverable on-disk versions in addition to in-session Undo.
+            // This protects work across browser/server restarts and accidental
+            // deletes that were already auto-saved over the main JSON file.
+            if (fs.existsSync(target)) {
+              const historyDirectory = path.join(directory, ".history", slugify(data.id));
+              fs.mkdirSync(historyDirectory, { recursive: true });
+              const version = path.join(historyDirectory, `${Date.now()}-${Math.random().toString(36).slice(2, 6)}.json`);
+              fs.copyFileSync(target, version);
+              const versions = fs.readdirSync(historyDirectory)
+                .filter((entry) => entry.endsWith(".json"))
+                .map((entry) => ({ entry, modified: fs.statSync(path.join(historyDirectory, entry)).mtimeMs }))
+                .sort((a, b) => b.modified - a.modified);
+              for (const old of versions.slice(100)) fs.rmSync(path.join(historyDirectory, old.entry), { force: true });
+            }
+            fs.writeFileSync(temporary, `${JSON.stringify(data, null, 2)}\n`, "utf-8");
+            fs.renameSync(temporary, target);
+            res.setHeader("Content-Type", "application/json");
+            res.end(JSON.stringify({ ok: true, file: `${kind === "project" ? "projects" : "storyboards"}/${filename}` }));
+          })
+          .catch((err) => {
+            res.statusCode = 500;
+            res.setHeader("Content-Type", "application/json");
+            res.end(JSON.stringify({ error: String(err) }));
+          });
+      });
+    },
+  };
 }
 
 /**
@@ -398,8 +451,70 @@ function renderPlugin(): Plugin {
   };
 }
 
+/**
+ * Keeps the asset folders and the generated manifest in step with each other
+ * while the dev server is running.
+ *
+ * `props/`, `ai/`, `sfx/` and `fonts/` are the SOURCE of every prop, tool logo
+ * and sound in the editor, but nothing reads them directly: `syncAssets` copies
+ * them into `public/` and regenerates `assets.generated.ts`, which is what the
+ * registries import. Dropping a file into `props/` therefore did nothing
+ * visible until someone remembered to run `npm run assets:sync` — a hidden
+ * manual step that reads as "my asset didn't upload". Now the sync runs when the
+ * server starts and again whenever one of those folders changes, and the
+ * manifest rewrite hot-reloads the Visuals tab on its own.
+ */
+function assetSyncPlugin(): Plugin {
+  const sources = Object.values(SOURCE_DIRS).map((dir) => path.resolve(dir));
+  const isSourceFile = (file: string) => {
+    const resolved = path.resolve(file);
+    return sources.some((dir) => resolved.startsWith(dir + path.sep));
+  };
+
+  return {
+    name: "asset-sync",
+    configureServer(server) {
+      const run = (reason: string) => {
+        try {
+          const result = syncAssets();
+          if (result.changed) {
+            console.log(`[asset-sync] ${reason}: ${result.props} props, ${result.logos} logos, ${result.sfx} sfx`);
+          }
+        } catch (error) {
+          // A broken sync must not take the dev server down with it.
+          console.error("[asset-sync] failed:", error);
+        }
+      };
+
+      run("startup");
+
+      // Coalesced: dropping a folder of props fires one event per file, and
+      // each one would otherwise rewrite the manifest and reload the editor.
+      let timer: NodeJS.Timeout | undefined;
+      const schedule = (file: string) => {
+        // Only the source folders. `syncAssets` writes into `public/` and
+        // `src/registries/`, both inside the watched root — reacting to those
+        // would make it re-trigger itself forever.
+        if (!isSourceFile(file)) return;
+        clearTimeout(timer);
+        timer = setTimeout(() => run(`changed ${path.basename(file)}`), 150);
+      };
+
+      server.watcher.add(sources);
+      server.watcher.on("add", schedule);
+      server.watcher.on("unlink", schedule);
+      server.watcher.on("change", schedule);
+    },
+    // The production build reads the manifest at compile time, so it has to be
+    // current before Vite starts resolving modules.
+    buildStart() {
+      if (process.env.NODE_ENV !== "development") syncAssets();
+    },
+  };
+}
+
 export default defineConfig({
-  plugins: [react(), customAssetsPlugin(), renderPlugin()],
+  plugins: [react(), assetSyncPlugin(), jsonPersistencePlugin(), customAssetsPlugin(), renderPlugin()],
   resolve: {
     alias: {
       "@": "/src",

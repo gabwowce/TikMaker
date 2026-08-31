@@ -32,11 +32,64 @@ Do not modify the global design system (`src/video/typography/tokens.ts`, `src/v
 
 ## Workflow
 
-1. Sync assets: `npm run assets:sync` (reads source paths from `.env.local`, copies into `public/assets` and `public/fonts`, regenerates `src/registries/assets.generated.ts`).
-2. `npm run dev` opens the editor (scene library, visual library, background library, asset browser, Remotion Player preview, inspector, scene strip).
+1. Assets sync themselves. `props/`, `ai/`, `sfx/` and `fonts/` (paths overridable in `.env.local`) are the SOURCE of every prop, tool logo and sound; nothing reads them directly. `syncAssets` (`scripts/syncAssets.ts`) copies them into `public/` and regenerates `src/registries/assets.generated.ts`, which is what `propRegistry`/`toolRegistry`/`sfxRegistry` import and therefore what the editor's Visuals and Assets tabs list. The `asset-sync` plugin in `vite.config.ts` runs it when the dev server starts and again whenever one of those folders changes, so a file dropped into `props/` shows up in the running editor without a reload. `npm run assets:sync` runs the same function once, for a build or a cold checkout.
+
+   Note it copies but never deletes: removing a file from `props/` drops it from the manifest (so it vanishes from the editor) while the copy under `public/assets/props/` stays, which is what keeps an older project that still references it from breaking.
+2. `npm run dev` opens the editor. It has two modes, switched at the far left of the header: **Storyboard** (write the script as beats — see the next section) and **Scenes** (scene library, visual library, background library, asset browser, Remotion Player preview, inspector, scene strip).
 3. Build the project as data in `projects/*.json`, or via the editor (Save writes to localStorage, Export JSON downloads the file).
 4. `npm run studio` opens Remotion Studio against the same composition for a render-accurate check.
 5. `npm run render` renders the composition to MP4.
+
+## Storyboard — the script layer, kept in its own file
+
+Before a project is a project it is a SCRIPT, and the script lives in its own
+shape: `storyboards/*.json`, validated by `src/schema/storyboard.ts`, edited in
+the editor's **Storyboard** mode (the toggle at the far left of the header).
+The authoring rules for that file live in `storyboards/README.md` — read it
+before writing a storyboard by hand.
+Nothing about it is shared with `projects/*.json` — different schema, different
+localStorage key (`tikmaker.storyboards`), different id space.
+
+**Why it's split.** A beat says WHAT this moment has to do (say this line, show
+this thing, for about this long); a scene says how it is drawn (layout, layers,
+motion, sfx). Merged, every wording change drags a pile of animation fields
+through the diff and every restack of layers looks like a script edit. Split,
+the script can be finished — and argued about — before a single visual exists.
+
+A **beat** is `{id, role, purpose, voiceover, onScreenText, visualPlaceholder,
+durationSeconds, notes}`. `role` is the only field with mechanical meaning: it
+is a closed enum (`hook`, `problem`, `solution`, `reveal`, `step`, `demo`,
+`proof`, `payoff`, `cta`) and `beatRoleRegistry` maps each one to the scene type
+it generates plus the default `purpose` it starts with. `visualPlaceholder` is
+deliberately PROSE, not a `VisualConfig`: at storyboard time you know what has
+to be shown long before you know which component shows it.
+
+**The crossing is one-way and happens once.** `storyboardToProject`
+(`src/utils/storyboardToProject.ts`), behind the **Generate Scenes** button,
+turns each beat into one placeholder scene — role's scene type, `onScreenText`
+as the headline, the role as the eyebrow, `voiceover` as `scene.vo`, and
+`visualPlaceholder`+`notes` as `scene.notes` (an author-only field, never
+rendered, surfaced in the Inspector's Content tab so the description of what the
+frame needs stays attached to the frame that needs it). It opens a NEW project
+rather than merging into the open one — regenerating over hand-edited scenes
+would silently discard the design work the handoff existed to enable. A
+storyboard is never regenerated FROM a project.
+
+Generation stays deliberately literal — it carries copy and pacing across and
+nothing else. It does follow the house motion rules (transitions cycled by scene
+index, `entrance: "none"` under every slide, `sfx: "none"` so the 3-5 beats that
+earn a cue stay a choice), because those are rules rather than design decisions.
+Picking layouts, visuals and layers is the editing pass that follows, and a
+generator guessing at them produces work to undo, not a starting point.
+
+**Durations are advisory.** A beat's `durationSeconds` is a plan typed weeks
+before the line was recorded, so a generated scene leaves `durationSeconds`
+UNSET whenever the beat has a voiceover and lets `resolveSceneDuration` pace it
+from the VO (see the pacing section). A beat with a duration and no voiceover
+has nothing to derive from, so that number is the only signal there is and it
+gets used. The same fallback drives the storyboard's own running total, which is
+compared against `targetDuration` in the header so an overrun is visible while
+writing rather than after rendering.
 
 ## Adding video content
 
@@ -233,12 +286,95 @@ Scenes (`src/registries/sceneRegistry.ts`): hook-centered, hook-visual, visual-e
 
 Visual primitives (`src/registries/visualTemplateRegistry.ts` for the insertable presets; full type list in `src/schema/visual.ts`):
 - assets: tool-logo, tool-flow, prop — all drawn as bare artwork at the requested size, with no plate/background behind them (the logo files are already tiles; a second container around them read as a bug)
-- media/devices: image, recording (browser/phone/none frame), browser, phone
+- media/devices: image, recording (none/plain/browser/phone frame), browser, screen, phone
+
+**Frames, and which claim each one makes.** `BrowserMockup`'s tab strip and address bar assert "this came from a website" — true for a web app, false for a terminal, a desktop app, or a photo, where it reads as a costume. `frame: "plain"` (and its wrapper twin, the `screen` visual type, which is to `browser` what a plain card is to a window) is that same rounded, shadowed card with the chrome removed: same width, same shadow, same border, so switching between them changes what the media SAYS without moving it in the layout. `frame: "none"` is different again — a raw rectangle with no card at all, for footage that should sit flat against the background. `ScreenFrame` takes an `aspect` (16:9 / 16:10 / 4:3 / 1:1 / 9:16, default 16:10) because a phone screenshot or a square crop otherwise letterboxes inside its own card; portrait ratios are sized by height so they can't overflow the 1920 canvas. Its pixel sizes live in `src/video/visuals/devices/screenFrameSize.ts`, a React-free leaf module, for the same reason `visualMetrics` is one — the auto-layout measures that box while a project is being normalized at import time, and reaching through the component would drag the whole `VisualRenderer` graph into that path.
 - data: stat-counter, checklist, pricing-card, app-mockup (list/stat/chart), progress
 - diagrams: flow (labeled nodes + animated connector), node-group (orbit/radial/one-to-many), stack (staggered pile), transform (crossfade reveal)
 
 Backgrounds: solid-dark, soft-grid, orange-glow, spotlight, perspective-data-grid, floating-glass-layers, dot-grid.
-Motion: `motion.entrance` (none/fade/slideUp/slideDown/slideLeft/slideRight/scaleIn/pop/zoomSettleRight/zoomSettleLeft/zoomSettleTop/zoomSettleBottom) controls how badge/eyebrow/headline/visual/body come in, staggered by `motion.stagger` frames apart — it does NOT apply to Rich Headline lines or Blocks, which carry their own per-line/per-block `animation`. `motion.exit` (none/fade/slideUp/slideDown/slideLeft/slideRight/scaleOut/burstOut, optional — unset = hard cut) animates the whole scene's content out together in the last `motion.exitDuration` frames (default 18) before the scene ends; implemented in `src/video/motion/exits.ts` + `useSceneExitStyle` in `src/video/scenes/EnterOnCue.tsx`, applied by merging its style into each scene's content `AbsoluteFill`. `"none"` is a real preset (not just omitting the field) — it means "no independent animation, only whatever the parent transform carries it with"; see the script-generation section below for when to use it. `zoomSettleRight`/`Left`/`Top`/`Bottom` fly in from that side, overshoot past their resting scale, then settle (`src/video/motion/entrances.ts`); `burstOut` punches up in scale + rotates while fading (`src/video/motion/exits.ts`) — both are OPACITY-based, so never pair them with a scene that also needs "fully leaves the frame" behavior (use `"none"` there instead, see below).
+Motion: `motion.entrance` (none/fade/slideUp/slideDown/slideLeft/slideRight/scaleIn/pop/zoomSettleRight/zoomSettleLeft/zoomSettleTop/zoomSettleBottom/zoomIn/blurIn/spinIn/flipIn/bounceIn/dropIn/rollIn) controls how badge/eyebrow/headline/visual/body come in, staggered by `motion.stagger` frames apart — it does NOT apply to Rich Headline lines or Blocks, which carry their own per-line/per-block `animation`. `motion.exit` (none/fade/slideUp/slideDown/slideLeft/slideRight/scaleOut/burstOut/zoomOut/blurOut/spinOut/flipOut/dropOut/rollOut, optional — unset = hard cut) animates the whole scene's content out together in the last `motion.exitDuration` frames (default 18) before the scene ends; implemented in `src/video/motion/exits.ts` + `useSceneExitStyle` in `src/video/scenes/EnterOnCue.tsx`, applied by merging its style into each scene's content `AbsoluteFill`. `"none"` is a real preset (not just omitting the field) — it means "no independent animation, only whatever the parent transform carries it with"; see the script-generation section below for when to use it. `zoomSettleRight`/`Left`/`Top`/`Bottom` fly in from that side, overshoot past their resting scale, then settle (`src/video/motion/entrances.ts`); `burstOut` punches up in scale + rotates while fading (`src/video/motion/exits.ts`) — both are OPACITY-based, so never pair them with a scene that also needs "fully leaves the frame" behavior (use `"none"` there instead, see below).
+
+**A slide starts (or ends) OUTSIDE the frame.** With no explicit distance, every
+`slide*` in and out travels `offFrameTravel(axis)` (`src/video/motion/entrances.ts`)
+— the real canvas dimension plus a margin, per axis, so the element clears the
+frame from any resting position and the caller never has to work out "how far is
+far enough". That is past `FULL_TRAVEL_DISTANCE`, so these slides carry no
+opacity fade either: the move IS the animation, exactly as `transitions.ts` has
+always treated the whole-scene slide. The old 60px entrance default made an
+element materialise a thumb's width from where it lands, which read as a pop
+followed by a twitch. `dropIn`/`dropOut`/`rollIn`/`rollOut` use the same basis.
+
+**Exits accelerate away; entrances decelerate in.** `standardEasing` is an
+aggressive ease-OUT — right for an arrival, wrong for a departure, and exits
+were using it. It covers ~60% of the travel in the first fifth of the window, so
+an element bolted off-frame almost immediately and the rest of its OUT duration
+was spent invisible; lengthening the duration changed nothing you could see,
+which reads as "the time slider does nothing". `exitEasing`
+(`src/video/motion/easing.ts`) is the mirror curve, and `exits.ts` uses it.
+
+**What the IN/OUT duration means.** It is how long the animation runs, anchored
+to the OBJECT's own window rather than the scene's: an IN occupies its first N
+frames (from `delay`), an OUT its last N (ending at `exitAt`). So "1s OUT" on a
+3s visual animates across that whole final second. The editor's slider is capped
+by that window rather than a flat 2s, so a long move is expressible on a long
+clip.
+
+**"auto" is not "off".** An unset entrance falls back to a real preset —
+`scaleIn` for a visual layer, `pop` for text, `fade` for scene content — so
+clearing one and watching the object keep animating is a fallback, not a bug.
+The explicit `none` preset is what turns an entrance off, and the editor labels
+the two cards `auto · <preset>` and `be efekto` so the difference is visible at
+the point of choosing. Unset EXIT really is no exit, so there both mean the
+same.
+
+**Keyframes: a layer's pose over time.** `keyframes: [{id, frame, x?, y?,
+scale?}]` on a `content.visuals[]` entry (schema in `scene.ts`, math in
+`src/video/layout/visualKeyframes.ts`, a React-free leaf like `visualMetrics`)
+makes a layer follow a path instead of holding one pose. Frames are
+SCENE-relative — the same clock as `delay` and `exitAt`.
+
+It is a SUPERSET of the single pose, not a replacement: any field a keyframe
+omits falls back to the entry's own `x`/`y`/`scale`, so adding one keyframe
+changes nothing until a second one gives it somewhere to go (`hasKeyframePath`
+is "two or more" for exactly that reason). Entrance, exit and Ken Burns still
+apply ON TOP — they are relative transforms, and what keyframes move is the
+resting pose they animate around, which is why none of the three fight over the
+same property. Each segment is eased (`standardEasing`, the same curve a linked
+visual's glide uses), and the first/last keyframe are held outside the path
+rather than extrapolated.
+
+`VisualsLayer` renders one `VisualLayerEntry` component per layer instead of an
+inline `.map` body, because reading the pose now needs `useCurrentFrame()`.
+
+In the editor: diamonds on the layer's timeline row (drag to retime), and a
+Keyframes section in the object panel's Basic tab. **Once a layer has a path,
+the position/scale sliders edit the keyframe under the playhead** — creating one
+there if that frame has none — because writing to the base pose would shift the
+whole path, which is never what moving one point means. A layer with no
+keyframes edits its base pose exactly as before. `addVisualKeyframe` captures
+the pose the layer currently HOLDS (via `poseAtFrame`), so pressing the button
+never makes the layer jump.
+
+**A layer's scale must not scale its own animation.** `VisualsLayer` passes each
+layer's fit scale to `AnimatedVisual` as `ownScale` rather than putting
+`scale(...)` on the positioning wrapper. A transform on the parent scales the
+child's whole coordinate system, so a layer at `scale: 2.8` turned a 1280px exit
+slide into 3584px on screen: the visual cleared the frame in about three frames
+and lengthening the OUT duration only extended how long it sat invisible
+off-screen — which reads exactly like "the duration slider does nothing".
+`AnimatedVisual` composes `<enter> <kenBurns> <exit> scale(ownScale)`, and a
+translate written to the LEFT of a scale is not multiplied by it, so travel
+distances stay canvas pixels.
+
+**Off-frame distance is computed per layer, not guessed.** With no explicit
+`entranceDistance`/`exitDistance`, `VisualsLayer` measures the real distance from
+that layer's centre (its `x`/`y`) plus half its rendered size (`naturalVisualSize`
+x fit) to the edge it is travelling towards. `offFrameTravel` in `entrances.ts` is
+the fallback for callers that only know the axis (scene content, text). Getting
+this right is what makes the duration meaningful: over the whole window the
+element travels from its place to just past the edge, instead of leaving in the
+first few frames and waiting out the rest.
 
 **Slide distance** — every slide/zoomSettle animation takes an optional travel distance in px: `motion.entranceDistance`/`motion.exitDistance` for the scene's content group, and `entranceDistance`/`exitDistance` per layer (`visualEntranceDistance`/`visualExitDistance` on a `comparison` column's visual). Unset = the subtle built-in default (60px in, 70px out), which is deliberately small. At or past `FULL_TRAVEL_DISTANCE` (400px, `src/video/motion/entrances.ts`) the opacity fade is DROPPED — the same reasoning as `transitions.ts`, which never fades either: an element travelling far enough to leave the canvas should read as one continuous move, not as something dissolving a few pixels into it. Use ~1200px (`OFF_FRAME_DISTANCE`, the editor's "Off-frame" button) when you want an element to genuinely start or end outside the frame.
 
@@ -256,7 +392,7 @@ Full-bleed compositions (`node-group` with `layout: "orbit"`, and `corner-props`
 
 **`corner-props` is split automatically, not rendered as a composite.** It used to draw TWO props from one entry, so the pair shared one size, one entrance and no exit. `splitCornerProps` (`src/utils/normalizeProject.ts`) now turns each prop into an ordinary layer at load time — and when the preset is clicked in the Visuals tab — converting its pixel `size` to a `scale` and giving each the `float` Ken Burns preset, which is the old CornerFloat drift. Two layers, full standard controls, no special case. **Do not add per-asset arrays (`sizes[]`, `entrances[]`, …) to any composite visual**: if the pieces need individual control, they are layers.
 
-**A linked chain is ONE mounted element, not one per scene.** `resolveHoistedLinkGroups` (`src/utils/visualLinks.ts`) collects every layer that declares a `link` and collapses a run of consecutive scenes sharing a `groupId` into a single `<Sequence>` spanning the whole run, rendered by `LinkedVisual` (`src/video/typography/LinkedVisual.tsx`); `SceneRenderer` then filters the matching `content.visuals[]` entry out of each member scene so it isn't drawn twice (`hoistedOwnership`). This is what makes a carried `recording` keep PLAYING across the cut instead of restarting from frame 0 and flashing black — inside a per-scene sequence the video element was unmounted and remounted at every boundary. It also means a chain can be any length: the pose walks through every keyframe (`poseAt`), gliding over `GLIDE_FRAMES` at each cut and holding in between. The chain's FIRST member supplies the entrance, distance, Ken Burns drift and entrance sfx; its LAST supplies the exit. The editor's carry buttons EXTEND the chain a scene is already in rather than minting a new `groupId` — minting one orphaned the earlier scenes, which showed up as a recording restarting partway down a run instead of playing through. A `groupId` that appears on only one scene is not hoisted (nothing to carry).
+**A linked chain is ONE mounted element, not one per scene.** `resolveHoistedLinkGroups` (`src/utils/visualLinks.ts`) collects every layer that declares a `link` and collapses a run of consecutive scenes sharing a `groupId` into a single `<Sequence>` spanning the whole run, rendered by `LinkedVisual` (`src/video/typography/LinkedVisual.tsx`); `SceneRenderer` then filters the matching `content.visuals[]` entry out of each member scene so it isn't drawn twice (`hoistedOwnership`). This is what makes a carried `recording` keep PLAYING across the cut instead of restarting from frame 0 and flashing black — inside a per-scene sequence the video element was unmounted and remounted at every boundary. It also means a chain can be any length: the pose walks through every keyframe (`poseAt`), gliding over `GLIDE_FRAMES` at each cut and holding in between — each hop's `link.glideLead`/`glideDuration` (read from the scene being arrived at) can start that move before the cut and resize it, which is how a carry overlaps the outgoing scene's text exit instead of waiting for it. The chain's FIRST member supplies the entrance, distance, Ken Burns drift and entrance sfx; its LAST supplies the exit. The editor's carry buttons EXTEND the chain a scene is already in rather than minting a new `groupId` — minting one orphaned the earlier scenes, which showed up as a recording restarting partway down a run instead of playing through. A `groupId` that appears on only one scene is not hoisted (nothing to carry).
 
 **The move belongs to ONE scene — the one the visual lands in.** The outgoing scene (the one with `linkTo`) does NOT animate at all: it holds its pose until the cut. The incoming scene (`linkFrom`) plays the whole travel in its first `LINK_BLEND_FRAMES`, starting from the previous scene's pose. Animating both sides was the original design and it read as a stutter — the viewer saw the move once as the first scene glided away and again as the second glided in, and with a slide `transition` the two copies travelled in OPPOSITE directions as their frames pushed past each other. For the same reason the editor's "Carry this visual into the next scene →" sets the next scene's `motion.transition` to `cut`: a slide translates the whole incoming frame, so the glide would be riding a frame that is itself moving. Keep the linked pair on `cut` unless you have a specific reason not to.
 
@@ -264,14 +400,20 @@ Full-bleed compositions (`node-group` with `layout: "orbit"`, and `corner-props`
 
 `kenBurnsSpeed` (per layer, alongside `kenBurns`) is a rate multiplier for the CYCLIC presets only (`float`/`rotateCW`/`rotateCCW`) — 1 = default pace, 2 = twice as fast, 0.5 = half. No effect on `zoomIn`/`panLeft`/etc, which are sized to the visual's own duration rather than a rate. The editor's Ken Burns picker shows a Speed slider only when the selected preset is one of the three cyclic ones.
 
-In the editor, every one of these (blocks and visual layers) can be repositioned either via the Inspector's x/y sliders or by **dragging the marker directly on the Player preview** (`src/editor/BlockPositionOverlay.tsx`) — prefer keeping that overlay in sync with the schema if any of these shapes change.
-**Every visual has the same in/out controls.** Each `content.visuals[]` layer and each `comparison` column's visual (`content.left`/`right`) take `entrance`/`exit` + `exitDuration` + `entranceDistance`/`exitDistance` + `kenBurns` + in/out sfx — on the side columns those are the `visual*`-prefixed fields on the side object (`visualEntrance`, `visualExitDistance`, `visualScale`, …), and a side visual defaults to `entrance: "none"` so it moves with its column exactly as before unless you give it its own. The editor renders one shared `VisualMotionEditor` for both, so there's no place where a visual is missing a control the other has; the distance slider only appears for presets that actually travel (slide*/zoomSettle*).
+In the editor, every one of these (blocks, visual layers, the rich-headline stack and any line freed from it) can be repositioned either via the Inspector's x/y sliders or by **dragging the marker directly on the Player preview** (`src/editor/BlockPositionOverlay.tsx`) — prefer keeping that overlay in sync with the schema if any of these shapes change.
+**Every visual has the same in/out controls.** Each `content.visuals[]` layer and each `comparison` column's visual (`content.left`/`right`) take `entrance`/`exit` + `entranceDuration`/`exitDuration` + `entranceDistance`/`exitDistance` + `kenBurns` + in/out sfx — on the side columns those are the `visual*`-prefixed fields on the side object (`visualEntrance`, `visualExitDistance`, `visualScale`, …), and a side visual defaults to `entrance: "none"` so it moves with its column exactly as before unless you give it its own. The editor renders one shared `VisualMotionEditor` for both, so there's no place where a visual is missing a control the other has; the distance slider only appears for presets that actually travel (slide*/zoomSettle*).
+
+**Why `entranceDuration` arrived late.** `exitStyle` is one `interpolate` over an explicit `[duration - exitDuration, duration]` window, so `exitDuration` was always a real knob. Every entrance preset EXCEPT `fade` is a spring, and a spring has no duration — its pace comes from damping/stiffness/mass — so `enter`'s `durationInFrames` was read by the `fade` branch alone and there was no matching field anywhere in the schema. Remotion's `spring()` accepts a `durationInFrames` that stretches or squashes the whole curve to fit, and passing it through makes the knob mean the same thing for all of them. It is threaded through `AnimatedVisual` and `EnterOnCue` and appears as `entranceDuration` on a layer, `visualEntranceDuration` on a comparison column, and `motion.entranceDuration` on a scene. **Unset stays unset on purpose**: `fade` keeps its 18-frame default and every spring keeps its natural pace, so no existing project changed.
 
 Scene content also supports: `badge`, `highlights` (words wrapped in a contrast pill box in the headline — never color, per design rule below), and — only on `comparison`/`steps` — `left`/`right`/`items`.
 
-`content.richHeadline` (optional, `hook-centered`/`hook-visual`/`takeaway` only) is a stack of independently-styled lines — each with its own `size` (hero/headline/title/bodyLarge/body/label token), `font` (tanker/clash), optional `pill` box, and its own entrance `animation`/`splitBy` (word/letter/line) — for CapCut-style multi-size hook captions. When present it replaces the plain `headline` for that scene; see `showcase-hook-centered` in `projects/template-showcase.json` for a worked example. Word/letter-level animation reuses the same 4 entrance presets (fade/slideUp/scaleIn/pop) — do not add a separate animation registry for this.
+`content.richHeadline` (optional, `hook-centered`/`hook-visual`/`takeaway` only) is a stack of independently-styled lines — each with its own `size` (hero/headline/title/bodyLarge/body/label token), `font` (tanker/clash), optional `pill` box, and its own entrance `animation`/`splitBy` (word/letter/line) — for CapCut-style multi-size hook captions. When present it replaces the plain `headline` for that scene; see `showcase-hook-centered` in `projects/template-showcase.json` for a worked example. Word/letter-level animation reuses the same 4 entrance presets (fade/slideUp/scaleIn/pop) — do not add a separate animation registry for this. A line also takes a `color` hex (same field and picker as `Block.color`); unset keeps the token default it would otherwise get — dark inside a `pill`, `colors.textPrimary` outside one — so a pill never needs a manual color to stay legible. That field is line-level styling and NOT a way around the pill rule below: recoloring a whole line for a deliberate look is fine, recoloring one to emphasize it is what `pill` is for. `sizePx` is the same kind of escape hatch for size — a raw px override of the `size` token, exactly as `Block.size` already is, because a hook caption is a typographic composition and the six tokens are rungs on a ladder rather than every size a line might want. Both are authored project DATA; scene components still read `fontSizes`/`colors` and must not hardcode either.
 
-Each line also takes its own `exit` (an `ExitPreset`) — unset means the line simply rides the scene's shared exit fade/slide like it always did (`SceneFrame`'s content column already animates out per `motion.exit`, so doing nothing here IS "use the scene's exit"); set means this ONE line gets an ADDITIONAL, independent exit motion layered on top of that shared one — same "layer a specific motion on top of the ambient one" pattern the old primary-visual exit used. Timing stays shared (`motion.exitDuration`/`exitDistance`); only the preset is per-line, via `ExitConfig` threaded through `AnimatedSplitText`/`AnimatedBox` (`src/video/typography/splitAnimate.tsx`). Because it's additive rather than a replacement, only override a line's exit when you deliberately want it to diverge from its neighbors — setting the SAME preset the scene already uses just compounds the curve for no visual gain.
+**Placing the headline.** `content.richHeadlineX`/`richHeadlineY` position the WHOLE stack as percentages of the 1080x1920 canvas addressing its centre — the same convention (and the same drag-on-preview overlay) as a Block's x/y. Both unset leaves the stack in the scene's flex column, centred in whatever band the `layout` preset's `textZone` gives it; setting either lifts it out, which is how consecutive scenes stop all putting their headline on the same line. Leaving X unset keeps the stack spanning the safe-area column, which is the right default for a headline — an X pins it to a point instead. A LINE's own `x`/`y` is the different move: both set pulls that ONE line out of the stack to its own spot (requiring both keeps "positioned" unambiguous), while the stack controls move the stack and keep it a stack. Either way the entrance clock still walks every line in author order, so freeing one line never retimes its neighbours — and because array order IS both the stack order and the entrance order, the Inspector's per-line up/down arrows move a line in both at once. Positioning lives in `RichHeadline` itself, not in the three scene components, and free lines render as SIBLINGS of the stack so their percentages always address the canvas rather than being re-resolved against a positioned stack.
+
+Each line also takes its own `exit` (an `ExitPreset`) — unset means the line simply rides the scene's shared exit fade/slide like it always did (`SceneFrame`'s content column already animates out per `motion.exit`, so doing nothing here IS "use the scene's exit"); set means this ONE line gets an ADDITIONAL, independent exit motion layered on top of that shared one — same "layer a specific motion on top of the ambient one" pattern the old primary-visual exit used. Alongside the preset a line takes its own `exitDuration`, `exitDistance` and `exitDelay`, all falling back to the scene's `motion.*` when unset and all meaningful ONLY next to a `line.exit` — without a preset of its own the line has no separate window to size or shift, so honoring them alone would compound with the shared column exit rather than retime it. It all travels as one `ExitConfig` threaded through `AnimatedSplitText`/`AnimatedBox` (`src/video/typography/splitAnimate.tsx`). Because it's additive rather than a replacement, only override a line's exit when you deliberately want it to diverge from its neighbors — setting the SAME preset the scene already uses just compounds the curve for no visual gain.
+
+**Syncing text exits with a carried visual.** By default the two beats are adjacent but never overlap: a line's exit occupies the last `exitDuration` frames and FINISHES on the cut, while a linked visual's glide STARTS on the cut and runs into the next scene — so the text is gone before the visual has moved, which reads as dead air (obvious on a chain that holds one icon across a title/explain pair). Two knobs close the gap from opposite sides: `richHeadline[].exitDelay` (signed frames, implemented in `splitAnimate` by pretending the scene is that much longer so `exitStyle` keeps its single "exit is anchored to the end" rule) pushes the text LATER, up to and past the cut; `link.glideLead` pulls the visual's move EARLIER, before the cut. `link.glideDuration` sizes that move. Glide timing is read from the ARRIVING member of the chain — the later scene — so each hop can be timed on its own; setting it on the first scene of a chain does nothing.
 
 Design rule: **highlighting a word is always a pill/box (light background, dark text), never a color change** — `src/video/typography/Text.tsx`'s `renderHighlighted` and `pillInlineStyle`/`pillBlockStyle` are the only places this should be implemented.
 
@@ -279,7 +421,131 @@ The `browser` frame (and `recording` with `frame: "browser"`) draws real browser
 
 Known editor gap: the Inspector has full field editing for the "simple" visual types (stat-counter, checklist, pricing-card, app-mockup, progress, keycap, image, recording) and for `browser`/`phone` (URL + a Content picker that swaps the on-screen visual, including an image or a recording) — but only a read-only summary for the remaining nested ones (flow, node-group, stack, transform), which are configured by picking a preset from the Visuals tab or editing the project JSON directly.
 
+**Three ways to keep what you made**, because "Save" alone conflated them. `Save` writes the project back to its own library entry. `Save As…` (`saveProjectAs` in `projectStore`) mints a FRESH project id and keeps editing that copy, so branching a variant no longer overwrites the video it came from — the library is keyed by project id, which is exactly why reusing the old one would clobber it. `Save as Template…` (`src/editor/state/savedTemplatesStore.ts`) copies the whole project into the Templates tab as a reusable starting point and leaves the project you're editing alone; picking one opens it as a new project with a fresh id. The Templates tab shows **Tavo šablonai** above the built-in `scriptTemplates`, the same shape as Your Scenes below. Unlike `instantiateSavedScene`, a template does NOT re-mint scene/block/layer ids: those only have to be unique within a project, and a template produces a whole project rather than being inserted into one.
+
 The Scenes tab has **Your Scenes** above the blank scene types (`src/editor/state/savedScenesStore.ts`): a scene can be saved with a name and dropped into any project later, copy/visual/layers/animations intact. Inserting re-mints the scene's id plus every block and layer id, and strips each layer's `link` — a carry only means something as a run of adjacent scenes, so half of one would point at a group that isn't there.
+
+**Split timing is one number, resolved in one place.** A text element's
+`splitBy` (word/letter/line) decides the unit and `splitDuration` how long the
+whole animation takes, START TO FINISH: set 0.3s and the sentence goes from
+nothing to fully on screen in 0.3s.
+
+`splitTiming` (`splitAnimate.tsx`) scales BOTH halves of the effect with it —
+the gap between units and each unit's own entrance, the latter taking
+`UNIT_ENTRANCE_SHARE` of the total. Scaling only the gaps makes the words
+overlap while each one still takes as long as it did, which reads as "the
+setting does nothing"; budgeting the entrance a fixed number of frames instead
+is worse still, because a short total then has nothing left to stagger with and
+every word lands at once — the cascade you were speeding up disappears. As a
+share, the words still arrive one after another at any speed.
+
+Four things have to agree on the resulting numbers — the renderer, the per-unit
+sfx cues, the next line's delay in the stack, and both timelines' automatic
+positions — which is why `splitTiming`/`splitSpan` are exported rather than each
+call site multiplying a constant by a unit count. Unset keeps the fixed per-unit
+stagger, so nothing already authored changed.
+
+The wiring is worth checking when this looks broken: `splitDuration` reaching
+`RichHeadline`'s stack clock but NOT its `AnimatedSplitText` made the control
+retime the OTHER lines while leaving the one you were editing untouched.
+
+**The timeline is a view over the schema, not a component library.** Every clip
+edits one named field (`delay`, `exitAt`, a keyframe's `frame`), and every row
+is derived from `content.visuals`/`blocks`/`richHeadline`/`items` plus the
+resolved sfx cues. Dropping in a third-party timeline (react-timeline-editor,
+Twick, openvideodev) means translating that model into theirs and back on every
+edit, and the ones that are full editors bring their own renderer alongside
+Remotion. The behaviours worth having from CapCut — snapping, lane packing, a
+visible selection, a resizable panel — are each a small amount of code against
+the model we already have.
+
+- **Selection lives in the store** (`selectedObjectId` beside `selectedSceneId`
+  and `playheadFrame`), not in a `window` CustomEvent passed between the
+  timeline and the Editor. That event existed only to move an id across the
+  tree; with the id in the store the timeline can also DRAW the selection, which
+  it could not do before — the selected clip takes the accent border, a heavier
+  fill and a glow. `selectScene` clears it, since an object id addresses an
+  element inside the scene that was open.
+- **Every object owns its lane, and nothing re-derives it.** Each object takes
+  an optional `lane`; `SceneTimeline` materializes the packed starting layout
+  into the scene ONCE (one write, one undo entry), and from then on a clip moves
+  when you move it and never otherwise. The previous version packed lanes from
+  scratch on every render, so moving one clip re-packed the others — and
+  dragging a clip sideways changed its own start time, which changed the
+  packing, which threw the clip you were holding into a different row mid-drag.
+  Clips jumping on their own is what an auto-layout looks like from the outside.
+  Trailing empty lanes are dropped; an empty lane BETWEEN two others is kept,
+  because closing the gap would shift everything below it.
+- **Lanes pack, but a pin wins.** Each object takes an optional `lane` (on the
+  layer, block, rich-headline line and step item): drag a clip up or down and it
+  is pinned there, overlap or not, because that is the author saying "this one
+  lives here". Everything unpinned is auto-packed into the first lane with room
+  (`LANE_GAP_FRAMES` of clearance), so a scene with a dozen elements is a few
+  lanes of clips rather than a dozen near-empty stripes. Packing stays within a
+  kind, so the timeline still reads top-to-bottom as text, visuals, sound, and a
+  vertical drag only moves a clip between lanes OF ITS OWN KIND. Empty lanes are
+  dropped, so the indices you drag against are always 0..n-1 with no gaps.
+
+  `lane` is PRESENTATION ONLY — it changes nothing in the render, and for a
+  visual it is **not** z-order: that stays the `content.visuals[]` array index,
+  edited with the Layers arrows. Keeping the two apart is deliberate; making a
+  lane drag also restack the layers would be a second way to say "which is on
+  top", and the two would drift.
+- **The panel is resizable** from its top edge, persisted in
+  `tikmaker.timelineHeight`. How much vertical space a timeline deserves depends
+  on the scene, which is not something to hardcode at 250px.
+
+**Copy, paste and asset-swap also happen in one place.**
+`src/editor/timeline/objectClipboard.ts` holds the clipboard (module-level, NOT
+in the project store — it is session state, and putting it there would push it
+onto the undo stack). `Ctrl+C` / `Ctrl+V` / `Ctrl+D`, the right-click menu and
+any button all call the same functions, with the same guard as Delete (never
+while the caret is in a field, where the browser's own copy/paste is what you
+want). A paste lands at the playhead with the original's length preserved,
+re-mints every id (including keyframe ids) and drops `link` — a carry only means
+something as a run of ADJACENT scenes sharing a groupId, so half of one pasted
+elsewhere points at a group that isn't there.
+
+`replaceVisualAsset` swaps ONLY `entry.visual`. Position, scale, effects,
+keyframes, timing and sound all live on the entry, so they survive by
+construction — which is the point: tune one element, then try a different image
+in it. The right-click menu (`TimelineContextMenu`) reuses the Inspector's own
+`buildAssetOptions`, so the swap list and the Inspector's pickers can't drift.
+
+**Snapping.** Dragging on the preview snaps to the canvas centre, the safe-area
+edges and every other element's centre; dragging a timeline clip snaps to the
+scene's ends, the playhead and every other clip's start and end. Both magnets
+are ~7px wide, converted from pixels so they feel the same at any zoom or
+preview size, and the preview draws a guide line on the axis it caught — a snap
+you can't see is indistinguishable from a drag that jumped. Landing on 50.0 with
+a mouse is a coin flip; without the magnet you end up at 49.7 and the frame
+reads as crooked without it being obvious why.
+
+**Positions are clamped on load, not rejected.** `x`/`y` are 0-100 percentages,
+and one value outside that range failed the whole `videoProjectSchema.parse` —
+which the project library reads as "corrupt entry" and silently drops the ENTIRE
+video. `clampPositions` in `parseProject` pulls them back in range first, so one
+element nudged off the top edge costs you that element's position, not the
+project. It happened for real: `VisualLibrary`'s new-layer fan marched each
+addition 12% higher (`50 - n * 12`) until the sixth landed at `y: -10`, centred
+above the frame where it could not be seen. The fan now wraps.
+
+**Deleting a timeline object happens in one place.** `confirmDeleteTimelineObject`
+(`src/editor/timeline/deleteTimelineObject.ts`) parses the selection id, names
+the object for the prompt, asks, and removes it. Both the object panel's
+**Pašalinti · <name>** button and the **Delete** key call exactly that — two
+implementations of "what does deleting a checklist row do" is how one of them
+ends up deleting the whole visual instead. The key is Delete only (never
+Backspace, which is what you press to fix a typo) and never fires while the
+caret is in an input/textarea/contenteditable. That guard is also why the object
+panel's fields no longer `autoFocus`: with focus stolen on open, the shortcut
+could never reach the handler.
+
+Scrollbars and native controls are themed by the app's ONE global stylesheet,
+`src/editor/GlobalStyles.tsx` — it reads `editorColors`, so there is no second
+set of hex values to drift from the theme. Everything else in the editor is
+inline styles; a scrollbar has no element to attach one to, which is the whole
+reason that file exists.
 
 The Inspector is split into three tabs — **Content** (copy, Rich Headline, Blocks, Voiceover), **Visuals** (Background + the Layers stack) and **Motion** (the scene's duration, entrance/exit, distance, stagger, transition and cue sounds). Per-element animation deliberately stays INSIDE each element's own card rather than moving to the Motion tab: a layer's In/Out belongs next to its position and asset, and Motion is for the scene as a whole.
 

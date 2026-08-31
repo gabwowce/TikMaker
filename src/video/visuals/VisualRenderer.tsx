@@ -6,9 +6,11 @@ import { ToolFlow } from "./assets/ToolFlow";
 import { PropAsset } from "./assets/PropAsset";
 import { ScreenRecording } from "./media/ScreenRecording";
 import { BrowserMockup } from "./devices/BrowserMockup";
+import { ScreenFrame } from "./devices/ScreenFrame";
 import { PhoneMockup } from "./devices/PhoneMockup";
 import { StatCounter } from "./data/StatCounter";
 import { Checklist } from "./data/Checklist";
+import { Checkpoint } from "./data/Checkpoint";
 import { PricingCard } from "./data/PricingCard";
 import { AppMockup } from "./data/AppMockup";
 import { ProgressBar } from "./data/ProgressBar";
@@ -73,6 +75,7 @@ export const VisualRenderer: React.FC<{ visual: VisualConfig }> = ({ visual }) =
           </BrowserMockup>
         );
       if (visual.frame === "phone") return <PhoneMockup>{recording}</PhoneMockup>;
+      if (visual.frame === "plain") return <ScreenFrame aspect={visual.aspect}>{recording}</ScreenFrame>;
       return <div style={{ width: 860, aspectRatio: "16 / 10" }}>{recording}</div>;
     }
 
@@ -81,6 +84,13 @@ export const VisualRenderer: React.FC<{ visual: VisualConfig }> = ({ visual }) =
         <BrowserMockup url={visual.url} title={visual.title} tabs={visual.tabs}>
           <FrameContent visual={visual.content} />
         </BrowserMockup>
+      );
+
+    case "screen":
+      return (
+        <ScreenFrame aspect={visual.aspect}>
+          <FrameContent visual={visual.content} />
+        </ScreenFrame>
       );
 
     case "phone":
@@ -113,6 +123,9 @@ export const VisualRenderer: React.FC<{ visual: VisualConfig }> = ({ visual }) =
           sfx={visual.sfx}
         />
       );
+
+    case "checkpoint":
+      return <Checkpoint label={visual.label} detail={visual.detail} state={visual.state} variant={visual.variant} />;
 
     case "pricing-card":
       return (

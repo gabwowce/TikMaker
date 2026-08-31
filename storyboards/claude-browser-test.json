@@ -1,0 +1,72 @@
+{
+  "id": "claude-browser-test",
+  "title": "Claude Code can test your app",
+  "status": "draft",
+  "targetDuration": 30,
+  "beats": [
+    {
+      "id": "beat-1",
+      "role": "hook",
+      "purpose": "Stop the scroll and set up the idea.",
+      "voiceover": "Claude doesn't have to guess if your app works.",
+      "onScreenText": "Claude can test your app.",
+      "visualPlaceholder": "Claude Code logo on a dynamic background",
+      "durationSeconds": 2.5,
+      "notes": "Strong open. Relatable for a dev audience."
+    },
+    {
+      "id": "beat-2",
+      "role": "problem",
+      "purpose": "Show the pain the viewer already recognises.",
+      "voiceover": "Normally Claude writes the code, then you test the app yourself.",
+      "onScreenText": "Claude writes. You test.",
+      "visualPlaceholder": "Recording of manual click-through testing",
+      "durationSeconds": 3
+    },
+    {
+      "id": "beat-3",
+      "role": "reveal",
+      "purpose": "Turn the idea over — the thing they didn't know.",
+      "voiceover": "But Claude Code can now use Chrome.",
+      "onScreenText": "Claude Code + Chrome",
+      "visualPlaceholder": "Chrome logo, tool-logo visual",
+      "durationSeconds": 2.5
+    },
+    {
+      "id": "beat-4",
+      "role": "demo",
+      "purpose": "Show it actually happening on screen.",
+      "voiceover": "Ask it to test the signup flow on localhost.",
+      "onScreenText": "Test the signup flow on localhost.",
+      "visualPlaceholder": "Recording: the prompt being typed in the CLI",
+      "durationSeconds": 3.5
+    },
+    {
+      "id": "beat-5",
+      "role": "proof",
+      "purpose": "Evidence it worked — the result, not the claim.",
+      "voiceover": "It opens the app, clicks through the UI and reads the console.",
+      "onScreenText": "It opens the app and clicks through the UI.",
+      "visualPlaceholder": "Browser-framed recording of the automated run",
+      "durationSeconds": 4
+    },
+    {
+      "id": "beat-6",
+      "role": "payoff",
+      "purpose": "Land the benefit in one line.",
+      "voiceover": "Find, fix, test again — without leaving the terminal.",
+      "onScreenText": "Find → Fix → Test again.",
+      "visualPlaceholder": "Three-node flow diagram",
+      "durationSeconds": 3
+    },
+    {
+      "id": "beat-7",
+      "role": "cta",
+      "purpose": "Tell them the single next action.",
+      "voiceover": "Let Claude test it, so you can ship.",
+      "onScreenText": "Let Claude test so you can ship.",
+      "visualPlaceholder": "Arrow prop pointing forward",
+      "durationSeconds": 2.5
+    }
+  ]
+}

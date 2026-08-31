@@ -1,21 +1,21 @@
 import React from "react";
 import { Title, BodyLargeText, LabelText, renderHighlighted } from "../typography/Text";
 import { colors, fontFamilies, fontSizes } from "../typography/tokens";
+import { useCurrentFrame } from "remotion";
 import { EnterOnCue, staggerDelay } from "./EnterOnCue";
 import { SceneFrame, SceneCue, useSceneCues } from "./SceneFrame";
 import type { SceneComponentProps } from "./types";
 
 export const StepsScene: React.FC<SceneComponentProps> = ({
-  background,
   content,
   motion,
   durationSeconds,
 }) => {
   const { cue } = useSceneCues(motion);
+  const frame = useCurrentFrame();
 
   return (
     <SceneFrame
-      background={background}
       content={content}
       motion={motion}
       durationSeconds={durationSeconds}
@@ -33,7 +33,7 @@ export const StepsScene: React.FC<SceneComponentProps> = ({
           <EnterOnCue
             key={index}
             preset="slideUp"
-            delay={staggerDelay(index + 1, motion?.stagger)}
+            delay={item.delay ?? cue(index + 1)}
             style={{
               display: "flex",
               alignItems: "center",
@@ -42,6 +42,7 @@ export const StepsScene: React.FC<SceneComponentProps> = ({
               borderRadius: 20,
               backgroundColor: colors.surface,
               border: `1px solid ${colors.border}`,
+              visibility: item.exitAt === undefined || frame < item.exitAt ? "visible" : "hidden",
             }}
           >
             <div
