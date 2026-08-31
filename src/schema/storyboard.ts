@@ -69,6 +69,11 @@ export const storyboardSchema = z.object({
    * after rendering. */
   targetDuration: z.number().positive().max(600).optional(),
   beats: z.array(storyboardBeatSchema),
+  /** When this storyboard was last saved, ms since epoch — same reconciliation
+   * as `VideoProject.savedAt`: the repo's `storyboards/*.json` and the
+   * browser's localStorage both hold a copy, and without a stamp there is no
+   * way to tell a freshly pulled file from a stale cache. */
+  savedAt: z.number().optional(),
 });
 
 export type Storyboard = z.infer<typeof storyboardSchema>;

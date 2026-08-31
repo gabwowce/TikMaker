@@ -69,8 +69,61 @@ function libraryIndexFrom(library: Library): { id: string; title: string }[] {
     .sort((a, b) => a.title.localeCompare(b.title));
 }
 
+/**
+ * Every `projects/*.json` in the repo, bundled at build time.
+ *
+ * These files are what git carries between machines — the editor writes one on
+ * every save (`writeProjectFile`) and they are committed alongside the code.
+ * Reading them here is what makes a fresh clone open with the same library it
+ * had on the machine the work was done on; before this the editor only ever
+ * looked at localStorage, so pulling the repo on a second computer showed the
+ * bundled sample and none of your own videos.
+ *
+ * `import.meta.glob` rather than the dev server's API on purpose: it resolves
+ * in a production build too, and it needs no request to be in flight before the
+ * library can be shown.
+ */
+const diskProjectModules = import.meta.glob<{ default: unknown }>("../../../projects/*.json", { eager: true });
+
+function readDiskProjects(): Library {
+  const library: Library = {};
+  for (const module of Object.values(diskProjectModules)) {
+    try {
+      const project = parseProject(module.default);
+      library[project.id] = project;
+    } catch {
+      // One malformed file must not cost you the rest of the library.
+    }
+  }
+  return library;
+}
+
+/**
+ * Merges the repo's projects with the browser's.
+ *
+ * The disk copy wins unless the local one is strictly newer: a file you pulled
+ * is a deliberate act, while localStorage is a cache that may predate it. The
+ * one case where local must win is a reload that beats the debounced disk write
+ * — there the browser genuinely holds the newest version. Projects that exist
+ * only in localStorage (made before the disk API, or while it was unreachable)
+ * are kept either way.
+ */
+function mergeLibraries(disk: Library, local: Library): Library {
+  const merged: Library = { ...local };
+  for (const [id, diskProject] of Object.entries(disk)) {
+    const localProject = local[id];
+    const localIsNewer = (localProject?.savedAt ?? 0) > (diskProject.savedAt ?? 0);
+    if (!localProject || !localIsNewer) merged[id] = diskProject;
+  }
+  return merged;
+}
+
 function loadInitialState(): { project: VideoProject; library: Library } {
-  const library = readLibrary();
+  const library = mergeLibraries(readDiskProjects(), readLibrary());
+  // Written straight back so the merged view survives even if the session ends
+  // before anything is edited — otherwise a fresh clone would re-merge from
+  // scratch on every load and "Delete project" could never stick.
+  writeLibrary(library);
 
   if (typeof window !== "undefined") {
     const lastOpenedId = window.localStorage.getItem(LAST_OPENED_KEY);
@@ -217,11 +270,15 @@ let applyingHistory = false;
 let historyTransaction: HistorySnapshot | null = null;
 
 function persist(project: VideoProject, library: Library): Library {
-  const next = { ...library, [project.id]: project };
+  // Stamped here rather than at each call site: `persist` is the ONE path that
+  // writes a project, so this is the only place that can promise the disk copy
+  // and the localStorage copy carry the same time.
+  const stamped: VideoProject = { ...project, savedAt: Date.now() };
+  const next = { ...library, [stamped.id]: stamped };
   writeLibrary(next);
-  writeProjectFile(project);
+  writeProjectFile(stamped);
   if (typeof window !== "undefined") {
-    window.localStorage.setItem(LAST_OPENED_KEY, project.id);
+    window.localStorage.setItem(LAST_OPENED_KEY, stamped.id);
   }
   return next;
 }
