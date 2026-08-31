@@ -421,6 +421,26 @@ The `browser` frame (and `recording` with `frame: "browser"`) draws real browser
 
 Known editor gap: the Inspector has full field editing for the "simple" visual types (stat-counter, checklist, pricing-card, app-mockup, progress, keycap, image, recording) and for `browser`/`phone` (URL + a Content picker that swaps the on-screen visual, including an image or a recording) — but only a read-only summary for the remaining nested ones (flow, node-group, stack, transform), which are configured by picking a preset from the Visuals tab or editing the project JSON directly.
 
+**The library lives in two places, and the repo is one of them.** Every save
+writes the project to BOTH the browser's localStorage and `projects/<id>.json`
+on disk (`writeProjectFile` -> the dev server's `/api/save-json`), and those
+files are committed. On startup `projectStore` reads `projects/*.json` via
+`import.meta.glob` and merges them with localStorage — which is what makes a
+fresh clone open with the same videos the work was done on. Before this the
+editor only ever read localStorage, so pulling the repo on a second computer
+showed the bundled sample and none of your own work; the files were right there
+on disk and nothing looked at them.
+
+Reconciliation is by `savedAt` (ms, stamped in `persist`, the one function that
+writes): **the disk copy wins unless the local one is strictly newer.** A file
+you pulled is a deliberate act and localStorage is a cache that may predate it;
+the single case where local must win is a reload that beats the debounced disk
+write. Projects that exist only in localStorage are kept either way.
+`storyboardStore` does exactly the same with `storyboards/*.json`.
+
+`import.meta.glob` rather than an API call because it resolves in a production
+build too, and needs no request in flight before the library can be shown.
+
 **Three ways to keep what you made**, because "Save" alone conflated them. `Save` writes the project back to its own library entry. `Save As…` (`saveProjectAs` in `projectStore`) mints a FRESH project id and keeps editing that copy, so branching a variant no longer overwrites the video it came from — the library is keyed by project id, which is exactly why reusing the old one would clobber it. `Save as Template…` (`src/editor/state/savedTemplatesStore.ts`) copies the whole project into the Templates tab as a reusable starting point and leaves the project you're editing alone; picking one opens it as a new project with a fresh id. The Templates tab shows **Tavo šablonai** above the built-in `scriptTemplates`, the same shape as Your Scenes below. Unlike `instantiateSavedScene`, a template does NOT re-mint scene/block/layer ids: those only have to be unique within a project, and a template produces a whole project rather than being inserted into one.
 
 The Scenes tab has **Your Scenes** above the blank scene types (`src/editor/state/savedScenesStore.ts`): a scene can be saved with a name and dropped into any project later, copy/visual/layers/animations intact. Inserting re-mints the scene's id plus every block and layer id, and strips each layer's `link` — a carry only means something as a run of adjacent scenes, so half of one would point at a group that isn't there.

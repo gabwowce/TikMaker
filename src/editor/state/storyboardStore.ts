@@ -58,11 +58,44 @@ function writeStoryboardFile(storyboard: Storyboard) {
 }
 
 function persist(storyboard: Storyboard, library: Library): Library {
-  const next = { ...library, [storyboard.id]: storyboard };
+  // Stamped in the one place that writes, so the disk copy and the localStorage
+  // copy always carry the same time — see `mergeLibraries`.
+  const stamped: Storyboard = { ...storyboard, savedAt: Date.now() };
+  const next = { ...library, [stamped.id]: stamped };
   writeLibrary(next);
-  writeStoryboardFile(storyboard);
-  if (typeof window !== "undefined") window.localStorage.setItem(LAST_OPENED_KEY, storyboard.id);
+  writeStoryboardFile(stamped);
+  if (typeof window !== "undefined") window.localStorage.setItem(LAST_OPENED_KEY, stamped.id);
   return next;
+}
+
+/**
+ * Every `storyboards/*.json` in the repo, bundled at build time — the same
+ * mechanism `projectStore` uses for `projects/*.json`, and for the same reason:
+ * these files are what git carries between machines, and an editor that only
+ * reads localStorage shows a fresh clone nothing.
+ */
+const diskStoryboardModules = import.meta.glob<{ default: unknown }>("../../../storyboards/*.json", { eager: true });
+
+function readDiskStoryboards(): Library {
+  const library: Library = {};
+  for (const module of Object.values(diskStoryboardModules)) {
+    const result = storyboardSchema.safeParse(module.default);
+    // One malformed file must not cost you the rest of the library.
+    if (result.success) library[result.data.id] = result.data;
+  }
+  return library;
+}
+
+/** Disk wins unless the local copy is strictly newer — see the same function in
+ * `projectStore` for why that is the safe direction. */
+function mergeLibraries(disk: Library, local: Library): Library {
+  const merged: Library = { ...local };
+  for (const [id, diskStoryboard] of Object.entries(disk)) {
+    const localStoryboard = local[id];
+    const localIsNewer = (localStoryboard?.savedAt ?? 0) > (diskStoryboard.savedAt ?? 0);
+    if (!localStoryboard || !localIsNewer) merged[id] = diskStoryboard;
+  }
+  return merged;
 }
 
 export type StoryboardIndexEntry = { id: string; title: string; beats: number };
@@ -115,7 +148,8 @@ type StoryboardState = {
 };
 
 function loadInitial(): { storyboard: Storyboard | null; library: Library } {
-  const library = readLibrary();
+  const library = mergeLibraries(readDiskStoryboards(), readLibrary());
+  writeLibrary(library);
   if (typeof window === "undefined") return { storyboard: null, library };
   const lastOpened = window.localStorage.getItem(LAST_OPENED_KEY);
   if (lastOpened && library[lastOpened]) return { storyboard: library[lastOpened], library };

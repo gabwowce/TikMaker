@@ -7,7 +7,7 @@
   "scenes": [
     {
       "id": "scene-01-hook",
-      "durationSeconds": 2.4,
+      "durationSeconds": 2,
       "vo": "Claude can now test your app like a real user.",
       "notes": "Strong opening frame. Show Claude Code and a web app open in Chrome. Make it obvious that Claude is interacting with the app in the browser.\n\nKeep it bold and clean. This is the promise.",
       "background": {
@@ -29,9 +29,9 @@
             "size": "hero",
             "sizePx": 147,
             "delay": 0,
-            "exitAt": 71,
+            "exitAt": 61,
             "exit": "rollOut",
-            "exitDuration": 7,
+            "exitDuration": 14,
             "splitBy": "letter",
             "splitDuration": 11,
             "lane": 0
@@ -40,11 +40,11 @@
             "text": "can now test your app",
             "size": "title",
             "delay": 12,
-            "exitAt": 71,
+            "exitAt": 61,
             "exit": "rollOut",
-            "exitDuration": 8,
+            "exitDuration": 14,
             "splitBy": "word",
-            "splitDuration": 18,
+            "splitDuration": 10,
             "lane": 1
           },
           {
@@ -55,12 +55,12 @@
             "color": "#171717",
             "x": 50.163132137031,
             "y": 52.01834862385321,
-            "delay": 31,
-            "exitAt": 71,
+            "delay": 22,
+            "exitAt": 61,
             "exit": "rollOut",
-            "exitDuration": 8,
+            "exitDuration": 14,
             "splitBy": "word",
-            "splitDuration": 23,
+            "splitDuration": 10,
             "lane": 2
           }
         ],
@@ -77,10 +77,10 @@
             "scale": 2.5,
             "entrance": "pop",
             "exit": "spinOut",
-            "exitDuration": 8,
+            "exitDuration": 14,
             "exitDistance": 200,
             "delay": 0,
-            "exitAt": 71,
+            "exitAt": 61,
             "kenBurns": "rotateCW",
             "kenBurnsSpeed": 0.3,
             "lane": 0
@@ -96,10 +96,10 @@
             "scale": 2.5,
             "entrance": "pop",
             "exit": "spinOut",
-            "exitDuration": 8,
+            "exitDuration": 14,
             "exitDistance": 280,
             "delay": 0,
-            "exitAt": 71,
+            "exitAt": 61,
             "kenBurns": "rotateCCW",
             "kenBurnsSpeed": 0.3,
             "lane": 1
@@ -478,6 +478,7 @@
       "type": "takeaway"
     }
   ],
+  "savedAt": 1788187080213,
   "audioClips": [
     {
       "id": "audio-mtfmk42a-v4xm",

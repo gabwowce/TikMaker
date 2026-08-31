@@ -18,6 +18,17 @@ Paleidžiant projektą jie automatiškai sinchronizuojami iš `ai/`, `props/`,
 Jei assetai laikomi kitur, nukopijuokite `.env.local.example` į `.env.local`
 ir pakeiskite ten esančius kelius. Įprastam paleidimui `.env.local` nereikia.
 
+Visi išsaugoti video ir storyboard'ai taip pat keliauja su repozitorija —
+`projects/*.json` ir `storyboards/*.json`. Redaktorius juos įkelia paleidžiant,
+tad kitame kompiuteryje biblioteka atrodo lygiai taip pat. Kiekvienas
+išsaugojimas įrašo failą, todėl po darbo pakanka juos sukomitinti:
+
+```bash
+git add projects storyboards public/assets/custom
+git commit -m "Update videos"
+git push
+```
+
 ## Komandos
 
 ```bash
