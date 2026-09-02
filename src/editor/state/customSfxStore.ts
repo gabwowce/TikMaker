@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import type { SfxGroup } from "../../registries/sfxRegistry";
+import { registerSfx, type SfxGroup } from "../../registries/sfxRegistry";
 
 export type CustomSfx = { id: string; label: string; file: string; src: string; group: SfxGroup };
 
@@ -51,6 +51,10 @@ export const useCustomSfxStore = create<CustomSfxState>((set, get) => ({
     });
     if (!res.ok) throw new Error(`Upload failed: ${res.status}`);
     const entry: CustomSfx = await res.json();
+    // The manifest is a static import resolved at page load, so a file uploaded
+    // now is not in it. Without this the new sound had no registry entry until
+    // a reload — no waveform, no playback, and `getSfx` returning undefined.
+    registerSfx(entry);
     set((s) => ({ sfx: [...s.sfx, entry] }));
     return entry;
   },

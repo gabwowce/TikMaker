@@ -1,16 +1,27 @@
 import type { VideoProject } from "../schema/project";
+
+/**
+ * The built-in templates are imported from `src/templates/`, NOT from
+ * `projects/`.
+ *
+ * They used to be ordinary entries in the video library, which meant the app
+ * would not COMPILE once you deleted one from the library — and deleting a
+ * video you are done with is a completely reasonable thing to do. A built-in
+ * template is code that ships with the editor; your library is data you own.
+ * Keeping them in separate folders is what makes those two facts independent.
+ */
 import { parseProject } from "../utils/normalizeProject";
-import problemPayoffJson from "../../projects/template-problem-payoff.json";
-import mythbustJson from "../../projects/template-mythbust.json";
-import beforeAfterJson from "../../projects/template-before-after.json";
-import curiosityLoopJson from "../../projects/template-curiosity-loop.json";
-import vibeCodingRoadmapJson from "../../projects/vibe-coding-mvp-roadmap.json";
-import directionDemoJson from "../../projects/template-direction-demo.json";
-import claudeCodeWorkflowJson from "../../projects/claude-code-workflow.json";
-import devVisualsJson from "../../projects/template-dev-visuals.json";
-import shortcutsJson from "../../projects/claude-code-shortcuts.json";
-import shortcuts4Json from "../../projects/claude-code-shortcuts-4.json";
-import visualCarryJson from "../../projects/template-visual-carry.json";
+import problemPayoffJson from "../templates/template-problem-payoff.json";
+import mythbustJson from "../templates/template-mythbust.json";
+import beforeAfterJson from "../templates/template-before-after.json";
+import curiosityLoopJson from "../templates/template-curiosity-loop.json";
+import vibeCodingRoadmapJson from "../templates/vibe-coding-mvp-roadmap.json";
+import directionDemoJson from "../templates/template-direction-demo.json";
+import claudeCodeWorkflowJson from "../templates/claude-code-workflow.json";
+import devVisualsJson from "../templates/template-dev-visuals.json";
+import shortcutsJson from "../templates/claude-code-shortcuts.json";
+import shortcuts4Json from "../templates/claude-code-shortcuts-4.json";
+import visualCarryJson from "../templates/template-visual-carry.json";
 
 export type ScriptTemplate = {
   id: string;

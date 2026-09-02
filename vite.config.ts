@@ -4,6 +4,14 @@ import { spawn } from "node:child_process";
 import { defineConfig, type Plugin } from "vite";
 import react from "@vitejs/plugin-react";
 import { syncAssets, SOURCE_DIRS } from "./scripts/syncAssets";
+import { libraryApiPlugin } from "./scripts/libraryApi";
+import { voiceApiPlugin } from "./scripts/voiceApi";
+import { config as loadEnv } from "dotenv";
+
+// The ElevenLabs key lives in `.env.local` and is read by the SERVER only —
+// Vite's own env handling would expose it to the browser unless prefixed, and
+// an API key is exactly the thing that must not be.
+loadEnv({ path: path.resolve(__dirname, ".env.local") });
 
 const customAssetsDir = path.resolve(__dirname, "public/assets/custom");
 const manifestPath = path.join(customAssetsDir, "manifest.json");
@@ -69,58 +77,6 @@ function readBody(req: import("http").IncomingMessage): Promise<string> {
     req.on("end", () => resolve(body));
     req.on("error", reject);
   });
-}
-
-/** Writes editor data to a real JSON file as well as the browser library.
- * A temporary sibling is renamed only after the complete JSON is on disk, so
- * an interrupted write cannot leave the sole backup half-written. */
-function jsonPersistencePlugin(): Plugin {
-  return {
-    name: "json-persistence-api",
-    configureServer(server) {
-      server.middlewares.use("/api/save-json", (req, res) => {
-        if (req.method !== "POST") {
-          res.statusCode = 405;
-          res.end();
-          return;
-        }
-        readBody(req)
-          .then((raw) => {
-            const { kind, data } = JSON.parse(raw) as { kind: "project" | "storyboard"; data: { id?: string } };
-            if (kind !== "project" && kind !== "storyboard") throw new Error("Invalid JSON kind");
-            if (!data || typeof data.id !== "string" || !data.id.trim()) throw new Error("Missing id");
-            const directory = path.resolve(__dirname, kind === "project" ? "projects" : "storyboards");
-            const filename = `${slugify(data.id)}.json`;
-            const target = path.join(directory, filename);
-            const temporary = `${target}.tmp`;
-            fs.mkdirSync(directory, { recursive: true });
-            // Keep recoverable on-disk versions in addition to in-session Undo.
-            // This protects work across browser/server restarts and accidental
-            // deletes that were already auto-saved over the main JSON file.
-            if (fs.existsSync(target)) {
-              const historyDirectory = path.join(directory, ".history", slugify(data.id));
-              fs.mkdirSync(historyDirectory, { recursive: true });
-              const version = path.join(historyDirectory, `${Date.now()}-${Math.random().toString(36).slice(2, 6)}.json`);
-              fs.copyFileSync(target, version);
-              const versions = fs.readdirSync(historyDirectory)
-                .filter((entry) => entry.endsWith(".json"))
-                .map((entry) => ({ entry, modified: fs.statSync(path.join(historyDirectory, entry)).mtimeMs }))
-                .sort((a, b) => b.modified - a.modified);
-              for (const old of versions.slice(100)) fs.rmSync(path.join(historyDirectory, old.entry), { force: true });
-            }
-            fs.writeFileSync(temporary, `${JSON.stringify(data, null, 2)}\n`, "utf-8");
-            fs.renameSync(temporary, target);
-            res.setHeader("Content-Type", "application/json");
-            res.end(JSON.stringify({ ok: true, file: `${kind === "project" ? "projects" : "storyboards"}/${filename}` }));
-          })
-          .catch((err) => {
-            res.statusCode = 500;
-            res.setHeader("Content-Type", "application/json");
-            res.end(JSON.stringify({ error: String(err) }));
-          });
-      });
-    },
-  };
 }
 
 /**
@@ -276,7 +232,11 @@ function customAssetsPlugin(): Plugin {
             const entry = manifest.find((a) => a.id === id);
             const remaining = manifest.filter((a) => a.id !== id);
             if (entry) {
-              const filePath = path.join(customSfxDir, entry.file);
+              // Resolved from `src`, not from a hardcoded folder: uploaded
+              // effects live in `custom-sfx/` and generated voice lines in
+              // `voice/`, and assuming the first left the second's file on
+              // disk after its manifest entry was gone.
+              const filePath = path.resolve(__dirname, "public", entry.src.replace(/^\//, ""));
               if (fs.existsSync(filePath)) fs.unlinkSync(filePath);
             }
             writeSfxManifest(remaining);
@@ -514,7 +474,7 @@ function assetSyncPlugin(): Plugin {
 }
 
 export default defineConfig({
-  plugins: [react(), assetSyncPlugin(), jsonPersistencePlugin(), customAssetsPlugin(), renderPlugin()],
+  plugins: [react(), assetSyncPlugin(), libraryApiPlugin(__dirname), voiceApiPlugin(__dirname), customAssetsPlugin(), renderPlugin()],
   resolve: {
     alias: {
       "@": "/src",
@@ -522,5 +482,32 @@ export default defineConfig({
   },
   server: {
     port: 5173,
+    watch: {
+      /**
+       * The editor writes these files itself, several times a minute. They are
+       * pulled in by `import.meta.glob`, so every autosave invalidated a module
+       * Vite had loaded and triggered a full page reload — mid-edit, with the
+       * playhead and every panel reset. Ignoring them costs nothing: the globs
+       * are re-evaluated on the next page load anyway, which is when a file
+       * pulled from git needs to be picked up.
+       *
+       * ANCHORED to the repo root on purpose. These were first written as
+       * name-only globs, and the one for the `library` folder also matched
+       * `src/editor/library` — so every component in the editor's library
+       * folder silently stopped hot-reloading and the dev server went on
+       * serving a stale transform of it. A pattern that matches a folder by
+       * NAME matches every folder with that name, at any depth.
+       */
+      ignored: [
+        path.resolve(__dirname, "projects") + "/**",
+        path.resolve(__dirname, "storyboards") + "/**",
+        path.resolve(__dirname, "library") + "/**",
+        path.resolve(__dirname, "out") + "/**",
+        // Written by the sfx upload and voice generation APIs. `registerSfx`
+        // adds the new entry to the running page, so a reload would only cost
+        // you the editor's state.
+        path.resolve(__dirname, "src/config/customSfx.json"),
+      ],
+    },
   },
 });

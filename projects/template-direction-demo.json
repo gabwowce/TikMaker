@@ -7,7 +7,6 @@
   "scenes": [
     {
       "id": "intro",
-      "type": "hook-centered",
       "durationSeconds": 1.6,
       "background": "solid-dark",
       "content": {
@@ -34,11 +33,11 @@
       "motion": {
         "transition": "cut",
         "stagger": 6
-      }
+      },
+      "type": "hook-centered"
     },
     {
       "id": "dir-right",
-      "type": "visual-explainer",
       "durationSeconds": 2.6,
       "background": "solid-dark",
       "content": {
@@ -46,14 +45,14 @@
         "headline": "ATĖJAU IŠ DEŠINĖS"
       },
       "motion": {
+        "entrance": "none",
         "transition": "slideLeft",
-        "stagger": 6,
-        "entrance": "none"
-      }
+        "stagger": 6
+      },
+      "type": "visual-explainer"
     },
     {
       "id": "dir-top",
-      "type": "visual-explainer",
       "durationSeconds": 2.6,
       "background": "solid-dark",
       "content": {
@@ -61,14 +60,14 @@
         "headline": "ATĖJAU IŠ VIRŠAUS"
       },
       "motion": {
+        "entrance": "none",
         "transition": "slideDown",
-        "stagger": 6,
-        "entrance": "none"
-      }
+        "stagger": 6
+      },
+      "type": "visual-explainer"
     },
     {
       "id": "dir-left",
-      "type": "visual-explainer",
       "durationSeconds": 2.6,
       "background": "solid-dark",
       "content": {
@@ -76,14 +75,14 @@
         "headline": "ATĖJAU IŠ KAIRĖS"
       },
       "motion": {
+        "entrance": "none",
         "transition": "slideRight",
-        "stagger": 6,
-        "entrance": "none"
-      }
+        "stagger": 6
+      },
+      "type": "visual-explainer"
     },
     {
       "id": "dir-bottom",
-      "type": "visual-explainer",
       "durationSeconds": 2.6,
       "background": "solid-dark",
       "content": {
@@ -91,15 +90,15 @@
         "headline": "ATĖJAU IŠ APAČIOS"
       },
       "motion": {
+        "entrance": "none",
         "transition": "slideUp",
-        "stagger": 6,
-        "entrance": "none"
-      }
+        "stagger": 6
+      },
+      "type": "visual-explainer"
     },
     {
       "id": "glide-big",
-      "type": "hook-centered",
-      "durationSeconds": 2.0,
+      "durationSeconds": 2,
       "background": "solid-dark",
       "content": {
         "eyebrow": "DABAR ŽIŪRĖK Į IKONĄ",
@@ -110,57 +109,65 @@
             "pill": true,
             "animation": "fade"
           }
+        ],
+        "visuals": [
+          {
+            "id": "primary-glide-big",
+            "visual": {
+              "type": "prop",
+              "asset": "idea"
+            },
+            "x": 50,
+            "y": 26,
+            "scale": 1.9,
+            "entrance": "none",
+            "link": {
+              "groupId": "demo-glide"
+            }
+          }
         ]
       },
-      "visual": {
-        "type": "prop",
-        "asset": "idea"
-      },
-      "visualPosition": {
-        "x": 50,
-        "y": 26
-      },
-      "visualScale": 1.9,
-      "visualLink": {
-        "groupId": "demo-glide"
-      },
       "motion": {
+        "entrance": "none",
         "transition": "slideLeft",
-        "stagger": 6,
-        "entrance": "none"
-      }
+        "stagger": 6
+      },
+      "type": "hook-centered"
     },
     {
       "id": "glide-small",
-      "type": "visual-explainer",
       "durationSeconds": 2.8,
       "background": "solid-dark",
       "content": {
         "eyebrow": "TA PATI IKONA",
-        "headline": "DABAR MAŽA IR KAMPE"
-      },
-      "visual": {
-        "type": "prop",
-        "asset": "idea"
-      },
-      "visualPosition": {
-        "x": 85,
-        "y": 15
-      },
-      "visualScale": 0.4,
-      "visualLink": {
-        "groupId": "demo-glide"
+        "headline": "DABAR MAŽA IR KAMPE",
+        "visuals": [
+          {
+            "id": "primary-glide-small",
+            "visual": {
+              "type": "prop",
+              "asset": "idea"
+            },
+            "x": 85,
+            "y": 15,
+            "scale": 0.4,
+            "entrance": "none",
+            "link": {
+              "groupId": "demo-glide"
+            }
+          }
+        ]
       },
       "motion": {
+        "entrance": "none",
         "transition": "slideLeft",
-        "stagger": 6,
-        "entrance": "none"
-      }
+        "stagger": 6
+      },
+      "type": "visual-explainer"
     },
     {
       "id": "outro",
-      "type": "takeaway",
-      "durationSeconds": 2.0,
+      "durationSeconds": 2,
       "background": "solid-dark",
       "content": {
         "headline": "VISKAS VEIKIA",
@@ -169,10 +176,11 @@
         ]
       },
       "motion": {
+        "entrance": "none",
         "transition": "slideDown",
-        "stagger": 6,
-        "entrance": "none"
-      }
+        "stagger": 6
+      },
+      "type": "takeaway"
     }
   ]
 }

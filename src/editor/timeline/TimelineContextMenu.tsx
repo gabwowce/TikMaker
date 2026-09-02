@@ -3,6 +3,7 @@ import { editorColors } from "../theme";
 import { useCustomAssetsStore } from "../state/customAssetsStore";
 import { AssetImportButton, buildAssetOptions } from "../panels/InspectorPanel";
 import { confirmDeleteTimelineObject, describeTimelineObject } from "./deleteTimelineObject";
+import { objectIdOf } from "./selectionId";
 import {
   clipboardHas,
   clipboardLabel,
@@ -31,7 +32,11 @@ export const TimelineContextMenu: React.FC<{
 }> = ({ target, playheadLocalFrame, onClose, onSelect }) => {
   const [picking, setPicking] = React.useState(false);
   const { selectionId } = target;
-  const isVisual = selectionId.startsWith("visual-");
+  // `selectionId` carries its scene as a prefix (`sceneId::visual-xxx`) since
+  // multi-scene selection needs it — but that means a bare `.startsWith("visual-")`
+  // stopped matching anything the moment IDs picked up that prefix, and this
+  // menu's asset-swap option silently disappeared for every scene-owned visual.
+  const isVisual = objectIdOf(selectionId).startsWith("visual-");
   const { deletable } = describeTimelineObject(selectionId);
 
   // Escape and any click outside close the menu — a context menu that needs its

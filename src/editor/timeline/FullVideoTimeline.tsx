@@ -5,13 +5,17 @@ import { splitSpan } from "../../video/typography/splitAnimate";
 import { getSfx } from "../../registries/sfxRegistry";
 import { resolveEntranceSfx, resolveExitSfx } from "../../video/motion/sfxDefaults";
 import { hoistedOwnership, resolveHoistedLinkGroups } from "../../utils/visualLinks";
+import { formatTimecode } from "../../utils/timecode";
+import { qualifySelection } from "./selectionId";
+import { applyTimelineObjectPositions } from "./moveTimelineObjects";
+import { isAudioDrag, readAudioDragPayload } from "./audioDrag";
 import { useProjectStore } from "../state/projectStore";
 import { editorColors } from "../theme";
 import { useCustomAssetsStore } from "../state/customAssetsStore";
 import { TimelineContextMenu, type ContextTarget } from "./TimelineContextMenu";
 import { useTimelineWheelZoom } from "./useTimelineWheelZoom";
 import { visualTimelinePreview, type TimelinePreview } from "./visualTimelinePreview";
-import { clipboardHas, copyTimelineObject, duplicateTimelineObject, pasteTimelineObject } from "./objectClipboard";
+import { clipboardHas, copyTimelineObjects, duplicateTimelineObjects, pasteTimelineObjects } from "./objectClipboard";
 import { fallbackWaveform, sliceWaveform, useAudioWaveforms } from "./useAudioWaveforms";
 
 type Kind = "scene" | "text" | "visual" | "item" | "sound";
@@ -71,7 +75,7 @@ const AnimationWindow: React.FC<{ side: "in" | "out"; frames: number; clipFrames
   return <span title={`${side.toUpperCase()} · ${frames} kadrai`} style={{ position: "absolute", zIndex: 3, top: 0, bottom: 0, width, pointerEvents: "none", background: "rgba(255,255,255,.07)", ...(side === "in" ? { left: 0, borderRight: "2px solid white" } : { right: 0, borderLeft: "2px solid white" }) }}><span onPointerDown={begin} style={{ position: "absolute", top: 0, bottom: 0, width: 10, ...(side === "in" ? { right: -5 } : { left: -5 }), pointerEvents: onChange ? "auto" : "none", cursor: "ew-resize" }} /></span>;
 };
 
-const GlobalClip: React.FC<{ row: Row; total: number; fps: number; ppf: number; laneIndex: number; laneCount: number; selected: boolean; snapTargets: number[]; onOpen: () => void; onContextMenu: (event: React.MouseEvent) => void }> = ({ row, total, fps, ppf, laneIndex, laneCount, selected, snapTargets, onOpen, onContextMenu }) => {
+const GlobalClip: React.FC<{ row: Row; total: number; fps: number; ppf: number; laneIndex: number; laneCount: number; selected: boolean; snapTargets: number[]; selectionId: string | null; beginGroupDrag: (() => (delta: number) => void) | null; onOpen: (additive: boolean) => void; onContextMenu: (event: React.MouseEvent) => void }> = ({ row, total, fps, ppf, laneIndex, laneCount, selected, snapTargets, selectionId, beginGroupDrag, onOpen, onContextMenu }) => {
   const beginHistoryTransaction = useProjectStore((state) => state.beginHistoryTransaction);
   const endHistoryTransaction = useProjectStore((state) => state.endHistoryTransaction);
   const [laneShift, setLaneShift] = React.useState(0);
@@ -90,11 +94,20 @@ const GlobalClip: React.FC<{ row: Row; total: number; fps: number; ppf: number; 
     return Math.round(result);
   };
   const drag = (event: React.PointerEvent, edge: "move" | "start" | "end") => {
-    event.preventDefault(); event.stopPropagation(); onOpen();
+    event.preventDefault(); event.stopPropagation();
+    const additive = event.ctrlKey || event.metaKey;
+    // Pressing an already-selected clip must not collapse the selection — that
+    // press is what starts a group drag. Same rule as the scene timeline.
+    const selectOnRelease = selected && !additive;
+    if (!selectOnRelease) onOpen(additive);
     if (!row.set || (edge === "move" && row.movable === false) || (edge === "start" && row.trimStart === false)) return;
     beginHistoryTransaction();
     const originX = event.clientX; const originY = event.clientY; const length = end - start;
+    const moveGroup = edge === "move" ? beginGroupDrag?.() ?? null : null;
+    let moved = false;
     const move = (pointer: PointerEvent) => {
+      if (!moved && Math.abs(pointer.clientX - originX) + Math.abs(pointer.clientY - originY) < 3) return;
+      moved = true;
       if (edge === "move" && row.setLane) {
         const shift = Math.round((pointer.clientY - originY) / ROW_HEIGHT);
         setLaneShift(clamp(laneIndex + shift, 0, Math.max(0, laneCount - 1)) - laneIndex);
@@ -102,16 +115,23 @@ const GlobalClip: React.FC<{ row: Row; total: number; fps: number; ppf: number; 
       const delta = (pointer.clientX - originX) / ppf;
       if (edge === "start") row.set?.(clamp(snap(start + delta), row.trimMin ?? min, end - 1), end);
       else if (edge === "end") row.set?.(start, clamp(snap(end + delta), start + 1, row.trimEndMax ?? max));
-      else { const next = clamp(snap(start + delta), min, max - length); row.set?.(next, next + length); }
+      else {
+        const next = clamp(snap(start + delta), min, max - length);
+        // In a group drag the anchor is written by the batch with everyone
+        // else; writing it here too would be a second, stale write.
+        if (moveGroup) moveGroup(next - start);
+        else row.set?.(next, next + length);
+      }
     };
     const finish = () => {
       window.removeEventListener("pointermove", move); window.removeEventListener("pointerup", finish); window.removeEventListener("pointercancel", finish);
       setLaneShift((shift) => { if (shift) row.setLane?.(laneIndex + shift); return 0; });
+      if (selectOnRelease && !moved) onOpen(false);
       endHistoryTransaction();
     };
     window.addEventListener("pointermove", move); window.addEventListener("pointerup", finish, { once: true }); window.addEventListener("pointercancel", finish, { once: true });
   };
-  return <div onPointerDown={(event) => drag(event, "move")} onContextMenu={onContextMenu} title={`${row.label} · ${(start / fps).toFixed(2)}–${(end / fps).toFixed(2)} s`} style={{ position: "absolute", left: start * ppf, top: 4 + laneShift * ROW_HEIGHT, width: Math.max(row.point ? 20 : 12, (end - start) * ppf), height: ROW_HEIGHT - 8, borderRadius: 4, border: selected ? `2px solid ${editorColors.accent}` : `1px solid ${row.color}`, background: row.kind === "scene" ? `repeating-linear-gradient(90deg, ${row.color}66 0 20px, ${row.color}88 20px 40px)` : `${row.color}55`, boxShadow: selected ? `0 0 0 1px #000, 0 0 10px ${editorColors.accent}66` : undefined, color: "white", fontSize: 10, boxSizing: "border-box", cursor: row.movable === false ? "pointer" : "grab", overflow: "hidden", whiteSpace: "nowrap", zIndex: laneShift ? 10 : selected ? 3 : 1, userSelect: "none" }}>
+  return <div data-timeline-object={selectionId ?? undefined} onPointerDown={(event) => drag(event, "move")} onContextMenu={onContextMenu} title={`${row.label} · ${formatTimecode(start, fps)} – ${formatTimecode(end, fps)} (${start}–${end} kadrai)`} style={{ position: "absolute", left: start * ppf, top: 4 + laneShift * ROW_HEIGHT, width: Math.max(row.point ? 20 : 12, (end - start) * ppf), height: ROW_HEIGHT - 8, borderRadius: 4, border: selected ? `2px solid ${editorColors.accent}` : `1px solid ${row.color}`, background: row.kind === "scene" ? `repeating-linear-gradient(90deg, ${row.color}66 0 20px, ${row.color}88 20px 40px)` : `${row.color}55`, boxShadow: selected ? `0 0 0 1px #000, 0 0 10px ${editorColors.accent}66` : undefined, color: "white", fontSize: 10, boxSizing: "border-box", cursor: row.movable === false ? "pointer" : "grab", overflow: "hidden", whiteSpace: "nowrap", zIndex: laneShift ? 10 : selected ? 3 : 1, userSelect: "none" }}>
     {!row.point && row.trimStart !== false ? <span onPointerDown={(event) => drag(event, "start")} style={{ ...edgeStyle, left: 0 }} /> : null}
     {row.preview?.src ? <ClipPreview preview={row.preview} /> : null}
     {row.waveform ? <Waveform peaks={row.waveform} /> : null}
@@ -139,6 +159,9 @@ export const FullVideoTimeline: React.FC<{ currentFrame: number; onSeek: (frame:
   const project = useProjectStore((state) => state.project);
   const selectedSceneId = useProjectStore((state) => state.selectedSceneId);
   const selectedObjectId = useProjectStore((state) => state.selectedObjectId);
+  const selectedObjectIds = useProjectStore((state) => state.selectedObjectIds);
+  const selectObjects = useProjectStore((state) => state.selectObjects);
+  const toggleObjectSelection = useProjectStore((state) => state.toggleObjectSelection);
   const selectScene = useProjectStore((state) => state.selectScene);
   const selectObject = useProjectStore((state) => state.selectObject);
   const updateScene = useProjectStore((state) => state.updateScene);
@@ -148,6 +171,7 @@ export const FullVideoTimeline: React.FC<{ currentFrame: number; onSeek: (frame:
   const updateSceneVisuals = useProjectStore((state) => state.updateSceneVisuals);
   const updateSceneItems = useProjectStore((state) => state.updateSceneItems);
   const updateAudioClip = useProjectStore((state) => state.updateAudioClip);
+  const addAudioClip = useProjectStore((state) => state.addAudioClip);
   const splitAudioClip = useProjectStore((state) => state.splitAudioClip);
   const beginHistoryTransaction = useProjectStore((state) => state.beginHistoryTransaction);
   const endHistoryTransaction = useProjectStore((state) => state.endHistoryTransaction);
@@ -257,15 +281,153 @@ export const FullVideoTimeline: React.FC<{ currentFrame: number; onSeek: (frame:
   const width = Math.max(900, total * ppf);
   const seek = (clientX: number) => { const rect = rulerRef.current?.getBoundingClientRect(); if (rect) onSeek(clamp(Math.round((clientX - rect.left) / ppf), 0, total - 1)); };
   const dragPlayhead = (event: React.PointerEvent) => { event.preventDefault(); seek(event.clientX); const move = (pointer: PointerEvent) => seek(pointer.clientX); const up = () => { window.removeEventListener("pointermove", move); window.removeEventListener("pointerup", up); }; window.addEventListener("pointermove", move); window.addEventListener("pointerup", up, { once: true }); };
-  const open = (row: Row) => { if (row.sceneId) selectScene(row.sceneId); if (row.objectId) selectObject(row.objectId); else if (row.sceneId) onSeek(row.start); };
+  /** Ctrl/Cmd-click adds to the selection. Switching scene still resets it —
+   * an object id only means something inside the scene it belongs to. */
+  /**
+   * Selecting in the full-video timeline.
+   *
+   * The id is qualified with the row's OWN scene, so a selection that spans
+   * scenes stays meaningful — every consumer (panel, clipboard, delete, group
+   * drag) reads the scene back out of the id instead of assuming the open one.
+   *
+   * A plain click still opens that scene, because the panel and the preview
+   * follow the selection. A Ctrl-click does NOT: switching scene mid-gesture is
+   * exactly what would break building a selection across two of them.
+   */
+  /** Every selected clip moves together — see `SceneTimeline` for why the
+   * origins are captured once and the batch is one write. Rows here already
+   * carry absolute frames, so the delta needs no scene offset. */
+  const beginGroupDragFor = (rowSelectionId: string | null) => {
+    if (!rowSelectionId || selectedObjectIds.length < 2 || !selectedObjectIds.includes(rowSelectionId)) return null;
+    return () => {
+      const origins = rows
+        .filter((row) => row.objectId && selectedObjectIds.includes(qualifySelection(row.sceneId, row.objectId)))
+        .map((row) => ({
+          id: qualifySelection(row.sceneId, row.objectId!),
+          start: Math.round(row.start),
+          end: Math.round(row.end),
+          from: timings.find((timing) => timing.scene.id === row.sceneId)?.from ?? 0,
+        }));
+      return (delta: number) => {
+        const positions = new Map<string, { start: number; end: number }>();
+        for (const origin of origins) {
+          const length = origin.end - origin.start;
+          const start = Math.max(0, origin.start + delta);
+          // Scene-owned objects store SCENE-relative frames; the rows here are
+          // absolute, so the scene's own start is taken back off before the
+          // batch writes it.
+          const offset = origin.id.includes("audio-clip-") ? 0 : origin.from;
+          positions.set(origin.id, { start: start - offset, end: start + length - offset });
+        }
+        applyTimelineObjectPositions(positions);
+      };
+    };
+  };
+
+  const [marquee, setMarquee] = React.useState<{ left: number; top: number; width: number; height: number } | null>(null);
+
+  /** Rubber-band selection, identical in behaviour to the scene timeline: it
+   * hit-tests the clips' real rects, so it needs no geometry of its own. */
+  const beginMarquee = (event: React.PointerEvent<HTMLElement>) => {
+    const additive = event.ctrlKey || event.metaKey || event.shiftKey;
+    const base = additive ? [...selectedObjectIds] : [];
+    const originX = event.clientX;
+    const originY = event.clientY;
+    const seekTarget = event.currentTarget;
+    let dragging = false;
+
+    const move = (pointer: PointerEvent) => {
+      if (!dragging && Math.abs(pointer.clientX - originX) + Math.abs(pointer.clientY - originY) < 4) return;
+      dragging = true;
+      const box = {
+        left: Math.min(originX, pointer.clientX),
+        top: Math.min(originY, pointer.clientY),
+        width: Math.abs(pointer.clientX - originX),
+        height: Math.abs(pointer.clientY - originY),
+      };
+      setMarquee(box);
+      const hits: string[] = [];
+      for (const element of viewportRef.current?.querySelectorAll("[data-timeline-object]") ?? []) {
+        const rect = element.getBoundingClientRect();
+        const overlaps =
+          rect.left < box.left + box.width && box.left < rect.right && rect.top < box.top + box.height && box.top < rect.bottom;
+        const id = element.getAttribute("data-timeline-object");
+        if (overlaps && id) hits.push(id);
+      }
+      selectObjects([...new Set([...base, ...hits])]);
+    };
+
+    const finish = (pointer: PointerEvent) => {
+      window.removeEventListener("pointermove", move);
+      window.removeEventListener("pointerup", finish);
+      window.removeEventListener("pointercancel", finish);
+      setMarquee(null);
+      if (dragging) return;
+      const rect = seekTarget.getBoundingClientRect();
+      onSeek(clamp(Math.round((pointer.clientX - rect.left) / ppf), 0, total));
+      if (!additive) selectObject(null);
+    };
+
+    window.addEventListener("pointermove", move);
+    window.addEventListener("pointerup", finish, { once: true });
+    window.addEventListener("pointercancel", finish, { once: true });
+  };
+
+  const [dropFrame, setDropFrame] = React.useState<number | null>(null);
+
+  const dragOverAudio = (event: React.DragEvent<HTMLElement>) => {
+    if (!isAudioDrag(event)) return;
+    event.preventDefault();
+    event.dataTransfer.dropEffect = "copy";
+    const rect = event.currentTarget.getBoundingClientRect();
+    setDropFrame(clamp(Math.round((event.clientX - rect.left) / ppf), 0, total));
+  };
+
+  const dropAudio = (event: React.DragEvent<HTMLElement>) => {
+    const payload = readAudioDragPayload(event);
+    if (!payload) return;
+    event.preventDefault();
+    setDropFrame(null);
+    const rect = event.currentTarget.getBoundingClientRect();
+    const at = clamp(Math.round((event.clientX - rect.left) / ppf), 0, total);
+    beginHistoryTransaction();
+    addAudioClip(payload.sfxId, at);
+    const clips = useProjectStore.getState().project.audioClips ?? [];
+    const inserted = clips[clips.length - 1];
+    if (inserted) {
+      if (payload.cut) updateAudioClip(inserted.id, payload.cut);
+      selectObject(`audio-clip-${inserted.id}`);
+    }
+    endHistoryTransaction();
+  };
+
+  const open = (row: Row, additive = false) => {
+    const id = row.objectId ? qualifySelection(row.sceneId, row.objectId) : null;
+    if (!additive && row.sceneId && row.sceneId !== selectedSceneId) selectScene(row.sceneId);
+    if (id) {
+      if (additive) toggleObjectSelection(id);
+      else selectObject(id);
+    } else if (row.sceneId) onSeek(row.start);
+  };
   const snapTargets = (row: Row) => [0, total, currentFrame, ...timings.flatMap((timing) => [timing.from, timing.from + timing.durationInFrames]), ...rows.filter((entry) => entry.id !== row.id).flatMap((entry) => [entry.start, entry.end])];
   const fit = () => setPpf(clamp(Math.max(320, (viewportRef.current?.clientWidth ?? 1000) - LABEL - 24) / total, MIN_ZOOM, MAX_ZOOM));
-  const selectedTiming = timings.find((timing) => timing.scene.id === selectedSceneId);
-  const localPlayhead = Math.max(0, currentFrame - (selectedTiming?.from ?? 0));
+  /**
+   * Paste lands in the scene UNDER THE PLAYHEAD, not in whichever scene was
+   * last clicked.
+   *
+   * In this view every scene is on screen at once, so "the selected scene" is a
+   * side effect of the last click rather than a statement of intent — while the
+   * playhead is exactly where you said you wanted something. Copying from scene
+   * 2 and pasting into scene 7 is then just: move the playhead, Ctrl+V.
+   */
+  const playheadTiming =
+    timings.find((timing) => currentFrame >= timing.from && currentFrame < timing.from + timing.durationInFrames) ??
+    timings.find((timing) => timing.scene.id === selectedSceneId);
+  const localPlayhead = Math.max(0, currentFrame - (playheadTiming?.from ?? 0));
   const selectedAudioId = selectedObjectId?.startsWith("audio-clip-") ? selectedObjectId.slice(11) : null;
   const selectedAudio = selectedAudioId ? (project.audioClips ?? []).find((clip) => clip.id === selectedAudioId) : undefined;
   const selectedAudioRow = selectedAudio ? rows.find((row) => row.id === selectedAudio.id) : undefined;
-  const selectedSoundRow = rows.find((row) => row.kind === "sound" && row.objectId === selectedObjectId && row.waveform);
+  const selectedSoundRow = rows.find((row) => row.kind === "sound" && row.objectId && qualifySelection(row.sceneId, row.objectId) === selectedObjectId && row.waveform);
   const playheadInsideSound = Boolean(selectedSoundRow && currentFrame > selectedSoundRow.start && currentFrame < selectedSoundRow.end);
   const splitSelectedAudio = () => {
     if (!selectedAudio || !selectedAudioRow) return;
@@ -281,16 +443,17 @@ export const FullVideoTimeline: React.FC<{ currentFrame: number; onSeek: (frame:
     selectedSoundRow.set?.(selectedSoundRow.start, currentFrame);
   };
   const copySelected = () => {
-    if (selectedObjectId && copyTimelineObject(selectedObjectId)) setClipboardReady(true);
+    if (copyTimelineObjects(selectedObjectIds)) setClipboardReady(true);
   };
   const pasteAtPlayhead = () => {
-    const pasted = pasteTimelineObject(localPlayhead);
-    if (pasted) selectObject(pasted);
+    if (playheadTiming && playheadTiming.scene.id !== selectedSceneId) selectScene(playheadTiming.scene.id);
+    const pasted = pasteTimelineObjects(localPlayhead);
+    if (pasted.length) selectObjects(pasted);
   };
   const duplicateSelected = () => {
-    if (!selectedObjectId) return;
-    const pasted = duplicateTimelineObject(selectedObjectId, localPlayhead);
-    if (pasted) selectObject(pasted);
+    if (playheadTiming && playheadTiming.scene.id !== selectedSceneId) selectScene(playheadTiming.scene.id);
+    const pasted = duplicateTimelineObjects(selectedObjectIds, localPlayhead);
+    if (pasted.length) selectObjects(pasted);
   };
   const resetSceneGuides = () => {
     beginHistoryTransaction();
@@ -299,16 +462,18 @@ export const FullVideoTimeline: React.FC<{ currentFrame: number; onSeek: (frame:
   };
 
   return <div style={{ flexShrink: 0, borderTop: `1px solid ${editorColors.border}`, background: "#151515" }}>
-    <div style={toolbar}><button style={buttonStyle} onClick={onSceneMode}>Scene</button><button style={{ ...buttonStyle, color: editorColors.accent, borderColor: editorColors.accent }}>Full video</button><span style={{ fontSize: 10, color: editorColors.textDim }}>{(total / project.fps).toFixed(1)} s · {rows.length} objektai</span><button onClick={resetSceneGuides} style={buttonStyle} title="Atstatyti scenų gaires pagal automatinę nuoseklią tvarką; video nepasikeis">Reset scene guides</button><button disabled={!selectedObjectId} onClick={copySelected} style={buttonStyle} title="Ctrl+C">Copy</button><button disabled={!clipboardReady} onClick={pasteAtPlayhead} style={buttonStyle} title="Ctrl+V · įkelti ties balta linija">Paste</button><button disabled={!selectedObjectId} onClick={duplicateSelected} style={buttonStyle} title="Ctrl+D">Duplicate</button><span style={{ width: 1, height: 20, background: editorColors.border }} /><button disabled={!playheadInsideSound} onClick={trimSelectedAudioLeft} style={buttonStyle} title="Nukirpti klipo kairę iki baltos linijos">|← Trim left</button><button disabled={!selectedAudio || !playheadInsideSound} onClick={splitSelectedAudio} style={buttonStyle} title="Padalinti savarankišką audio klipą ties balta linija">✂ Split</button><button disabled={!playheadInsideSound} onClick={trimSelectedAudioRight} style={buttonStyle} title="Nukirpti klipo dešinę iki baltos linijos">Trim right →|</button><div style={{ flex: 1 }} /><span>−</span><input type="range" min={MIN_ZOOM} max={MAX_ZOOM} step={0.15} value={ppf} onChange={(event) => setPpf(Number(event.target.value))} style={{ width: 120, accentColor: editorColors.accent }} /><span>+</span><button onClick={fit} style={buttonStyle}>Fit</button><span style={{ minWidth: 62, color: editorColors.accent, fontSize: 10 }}>{(currentFrame / project.fps).toFixed(2)} s</span></div>
+    <div style={toolbar}><button style={buttonStyle} onClick={onSceneMode}>Scene</button><button style={{ ...buttonStyle, color: editorColors.accent, borderColor: editorColors.accent }}>Full video</button><span style={{ fontSize: 10, color: editorColors.textDim }}>{(total / project.fps).toFixed(1)} s · {rows.length} objektai</span><button onClick={resetSceneGuides} style={buttonStyle} title="Atstatyti scenų gaires pagal automatinę nuoseklią tvarką; video nepasikeis">Reset scene guides</button><button disabled={!selectedObjectIds.length} onClick={copySelected} style={buttonStyle} title="Ctrl+C · Ctrl+click žymi kelis">Copy{selectedObjectIds.length > 1 ? ` (${selectedObjectIds.length})` : ""}</button><button disabled={!clipboardReady} onClick={pasteAtPlayhead} style={buttonStyle} title="Ctrl+V · įkelti ties balta linija">Paste</button><button disabled={!selectedObjectIds.length} onClick={duplicateSelected} style={buttonStyle} title="Ctrl+D">Duplicate{selectedObjectIds.length > 1 ? ` (${selectedObjectIds.length})` : ""}</button><span style={{ width: 1, height: 20, background: editorColors.border }} /><button disabled={!playheadInsideSound} onClick={trimSelectedAudioLeft} style={buttonStyle} title="Nukirpti klipo kairę iki baltos linijos">|← Trim left</button><button disabled={!selectedAudio || !playheadInsideSound} onClick={splitSelectedAudio} style={buttonStyle} title="Padalinti savarankišką audio klipą ties balta linija">✂ Split</button><button disabled={!playheadInsideSound} onClick={trimSelectedAudioRight} style={buttonStyle} title="Nukirpti klipo dešinę iki baltos linijos">Trim right →|</button><div style={{ flex: 1 }} /><span>−</span><input type="range" min={MIN_ZOOM} max={MAX_ZOOM} step={0.15} value={ppf} onChange={(event) => setPpf(Number(event.target.value))} style={{ width: 120, accentColor: editorColors.accent }} /><span>+</span><button onClick={fit} style={buttonStyle}>Fit</button><span title={`${currentFrame} kadras`} style={{ minWidth: 84, color: editorColors.accent, fontSize: 10, fontFamily: "ui-monospace, monospace" }}>{formatTimecode(currentFrame, project.fps)}</span></div>
     <div ref={viewportRef} style={{ height: 330, overflow: "auto" }}><div style={{ position: "relative", width: LABEL + width, minWidth: "100%" }}>
       <div ref={rulerRef} onPointerDown={dragPlayhead} style={{ position: "sticky", top: 0, zIndex: 20, marginLeft: LABEL, width, height: 27, background: "#181818", cursor: "ew-resize", borderBottom: `1px solid ${editorColors.border}` }}>{Array.from({ length: Math.floor(total / project.fps) + 1 }, (_, index) => <span key={index} style={{ position: "absolute", left: index * project.fps * ppf, top: 4, height: 22, fontSize: 9, color: editorColors.textDim, borderLeft: "1px solid #555", paddingLeft: 4 }}>{index}s</span>)}</div>
       <div onPointerDown={dragPlayhead} style={{ position: "absolute", zIndex: 18, left: LABEL + currentFrame * ppf, top: 20, bottom: 0, width: 3, marginLeft: -1, background: "white", cursor: "ew-resize" }}><span style={{ position: "absolute", left: -4, width: 11, height: 11, background: "white", transform: "rotate(45deg)" }} /></div>
       {tracks.map((track) => {
         const sameKind = tracks.filter((entry) => entry.kind === track.kind);
         const label = `${KIND_LABEL[track.kind]} ${track.lane + 1}`;
-        return <div key={`${track.kind}-${track.lane}`} style={{ height: ROW_HEIGHT, display: "flex", borderBottom: "1px solid #292929" }}><div style={{ position: "sticky", left: 0, zIndex: 12, width: LABEL, flexShrink: 0, padding: "11px 10px", boxSizing: "border-box", background: track.rows.length ? "#191919" : "#171717", borderRight: `1px solid ${editorColors.border}`, color: track.rows.length ? editorColors.text : editorColors.textDim, fontSize: 10 }}><i style={{ display: "inline-block", width: 7, height: 7, borderRadius: 2, marginRight: 7, background: KIND_COLOR[track.kind] }} />{track.rows.length ? label : `+ nauja ${KIND_LABEL[track.kind].toLowerCase()} linija`}</div><div style={{ position: "relative", width, flexShrink: 0, backgroundImage: `repeating-linear-gradient(to right, transparent 0, transparent ${Math.max(1, project.fps * ppf - 1)}px, #292929 ${project.fps * ppf}px)` }}>{timings.slice(1).map((timing) => <span key={timing.scene.id} style={{ position: "absolute", zIndex: 0, left: timing.from * ppf, top: 0, bottom: 0, borderLeft: "1px dashed #555" }} />)}{track.rows.map((row) => <GlobalClip key={row.id} row={row} total={total} fps={project.fps} ppf={ppf} laneIndex={sameKind.indexOf(track)} laneCount={sameKind.length} selected={row.objectId === selectedObjectId} snapTargets={snapTargets(row)} onOpen={() => open(row)} onContextMenu={(event) => { event.preventDefault(); open(row); if (row.objectId) setContextTarget({ selectionId: row.objectId, x: event.clientX, y: event.clientY }); }} />)}</div></div>;
+        return <div key={`${track.kind}-${track.lane}`} style={{ height: ROW_HEIGHT, display: "flex", borderBottom: "1px solid #292929" }}><div style={{ position: "sticky", left: 0, zIndex: 12, width: LABEL, flexShrink: 0, padding: "11px 10px", boxSizing: "border-box", background: track.rows.length ? "#191919" : "#171717", borderRight: `1px solid ${editorColors.border}`, color: track.rows.length ? editorColors.text : editorColors.textDim, fontSize: 10 }}><i style={{ display: "inline-block", width: 7, height: 7, borderRadius: 2, marginRight: 7, background: KIND_COLOR[track.kind] }} />{track.rows.length ? label : `+ nauja ${KIND_LABEL[track.kind].toLowerCase()} linija`}</div><div onPointerDown={(event) => { if (event.target === event.currentTarget) beginMarquee(event); }} onDragOver={dragOverAudio} onDragLeave={() => setDropFrame(null)} onDrop={dropAudio} style={{ position: "relative", width, flexShrink: 0, backgroundImage: `repeating-linear-gradient(to right, transparent 0, transparent ${Math.max(1, project.fps * ppf - 1)}px, #292929 ${project.fps * ppf}px)` }}>{timings.slice(1).map((timing) => <span key={timing.scene.id} style={{ position: "absolute", zIndex: 0, left: timing.from * ppf, top: 0, bottom: 0, borderLeft: "1px dashed #555" }} />)}{track.rows.map((row) => { const rowSelectionId = row.objectId ? qualifySelection(row.sceneId, row.objectId) : null; return <GlobalClip key={row.id} row={row} total={total} fps={project.fps} ppf={ppf} laneIndex={sameKind.indexOf(track)} laneCount={sameKind.length} selectionId={rowSelectionId} beginGroupDrag={beginGroupDragFor(rowSelectionId)} selected={Boolean(row.objectId && selectedObjectIds.includes(qualifySelection(row.sceneId, row.objectId)))} snapTargets={snapTargets(row)} onOpen={(additive) => open(row, additive)} onContextMenu={(event) => { event.preventDefault(); open(row); if (rowSelectionId) setContextTarget({ selectionId: rowSelectionId, x: event.clientX, y: event.clientY }); }} />; })}</div></div>;
       })}
     </div></div>
+    {dropFrame !== null ? <div style={{ position: "absolute", zIndex: 30, left: LABEL + dropFrame * ppf, top: 66, bottom: 0, width: 2, background: "#38bdf8", pointerEvents: "none" }} /> : null}
+    {marquee ? <div style={{ position: "fixed", left: marquee.left, top: marquee.top, width: marquee.width, height: marquee.height, border: `1px solid ${editorColors.accent}`, background: `${editorColors.accent}22`, pointerEvents: "none", zIndex: 50 }} /> : null}
     {contextTarget ? <TimelineContextMenu target={contextTarget} playheadLocalFrame={localPlayhead} onClose={() => setContextTarget(null)} onSelect={selectObject} /> : null}
   </div>;
 };

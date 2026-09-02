@@ -7,101 +7,123 @@
   "scenes": [
     {
       "id": "hook",
-      "type": "hook-centered",
-      "background": "solid-dark",
-      "layout": "text-only",
       "vo": "Claude Code gets way better once you know three keys.",
+      "background": "solid-dark",
       "content": {
         "richHeadline": [
           {
             "text": "3 keys that fix",
             "size": "title",
-            "animation": "slideDown"
+            "animation": "slideDown",
+            "lane": 0
           },
           {
             "text": "90%",
             "size": "hero",
             "pill": true,
-            "animation": "pop"
+            "animation": "pop",
+            "lane": 1
           },
           {
             "text": "of the pain",
             "size": "title",
-            "animation": "slideUp"
+            "animation": "slideUp",
+            "lane": 2
+          }
+        ],
+        "visuals": [
+          {
+            "id": "primary-hook-corner-0",
+            "visual": {
+              "type": "tool-logo",
+              "tool": "claude"
+            },
+            "x": 13.88888888888889,
+            "y": 17.708333333333336,
+            "scale": 2.091,
+            "entrance": "slideUp",
+            "kenBurns": "float",
+            "lane": 0
+          },
+          {
+            "id": "primary-hook-corner-1",
+            "visual": {
+              "type": "tool-logo",
+              "tool": "claude"
+            },
+            "x": 86.11111111111111,
+            "y": 80.20833333333334,
+            "scale": 2.091,
+            "entrance": "slideUp",
+            "kenBurns": "float",
+            "lane": 1
           }
         ]
       },
-      "visual": {
-        "type": "corner-props",
-        "assets": [
-          {
-            "type": "tool-logo",
-            "tool": "claude"
-          }
-        ],
-        "diagonal": "tlbr",
-        "size": 460,
-        "speed": 0.8
-      },
+      "layout": "text-only",
       "motion": {
         "entrance": "slideUp",
         "transition": "cut",
         "stagger": 5
-      }
+      },
+      "type": "hook-centered"
     },
     {
       "id": "rewind-pain",
-      "type": "visual-explainer",
-      "background": "solid-dark",
-      "layout": "visual-bottom",
       "vo": "You ask for one small fix. It touches six files.",
+      "background": "solid-dark",
       "content": {
         "eyebrow": "01 PROBLEM",
         "headline": "You asked for ONE thing",
         "highlights": [
           "ONE"
+        ],
+        "visuals": [
+          {
+            "id": "primary-rewind-pain",
+            "visual": {
+              "type": "claude-cli",
+              "transcript": [
+                {
+                  "text": "fix the login button colour",
+                  "kind": "user"
+                },
+                {
+                  "text": "edited 6 files",
+                  "kind": "tool"
+                },
+                {
+                  "text": "renamed your API client",
+                  "kind": "dim"
+                },
+                {
+                  "text": "rewrote the auth flow",
+                  "kind": "dim"
+                }
+              ],
+              "mode": "accept edits on",
+              "modeActive": true
+            },
+            "x": 50,
+            "y": 57,
+            "scale": 1,
+            "entrance": "slideUp"
+          }
         ]
       },
-      "visual": {
-        "type": "claude-cli",
-        "transcript": [
-          {
-            "text": "fix the login button colour",
-            "kind": "user"
-          },
-          {
-            "text": "edited 6 files",
-            "kind": "tool"
-          },
-          {
-            "text": "renamed your API client",
-            "kind": "dim"
-          },
-          {
-            "text": "rewrote the auth flow",
-            "kind": "dim"
-          }
-        ],
-        "mode": "accept edits on",
-        "modeActive": true
-      },
+      "layout": "visual-bottom",
       "motion": {
         "entrance": "slideUp",
         "transition": "slideLeft",
         "stagger": 6,
         "sfx": "none"
-      }
+      },
+      "type": "visual-explainer"
     },
     {
       "id": "rewind-fix",
-      "type": "visual-explainer",
-      "background": "solid-dark",
-      "layout": "visual-bottom",
-      "visualPosition": {
-        "x": 50,
-        "y": 64
-      },
       "vo": "Double tap escape and you are back to before it started.",
+      "background": "solid-dark",
       "content": {
         "eyebrow": "01 FIX",
         "headline": "Jump back to any CHECKPOINT",
@@ -109,6 +131,32 @@
           "CHECKPOINT"
         ],
         "visuals": [
+          {
+            "id": "primary-rewind-fix",
+            "visual": {
+              "type": "claude-cli",
+              "overlay": {
+                "title": "rewind to a checkpoint",
+                "items": [
+                  {
+                    "text": "before the colour fix",
+                    "selected": true
+                  },
+                  {
+                    "text": "after login refactor"
+                  },
+                  {
+                    "text": "session start"
+                  }
+                ]
+              }
+            },
+            "x": 50,
+            "y": 64,
+            "scale": 1,
+            "entrance": "slideUp",
+            "sfx": "d-select"
+          },
           {
             "id": "keys",
             "visual": {
@@ -120,86 +168,72 @@
             },
             "x": 50,
             "y": 34,
-            "delay": 6,
-            "entrance": "none"
+            "entrance": "none",
+            "delay": 6
           }
         ]
       },
-      "visual": {
-        "type": "claude-cli",
-        "overlay": {
-          "title": "rewind to a checkpoint",
-          "items": [
-            {
-              "text": "before the colour fix",
-              "selected": true
-            },
-            {
-              "text": "after login refactor"
-            },
-            {
-              "text": "session start"
-            }
-          ]
-        }
-      },
-      "visualSfx": "d-select",
+      "layout": "visual-bottom",
       "motion": {
         "entrance": "slideUp",
         "transition": "slideLeft",
         "stagger": 6,
         "sfx": "none"
-      }
+      },
+      "type": "visual-explainer"
     },
     {
       "id": "plan-pain",
-      "type": "visual-explainer",
-      "background": "solid-dark",
-      "layout": "visual-bottom",
       "vo": "By default it starts editing before you agree to anything.",
+      "background": "solid-dark",
       "content": {
         "eyebrow": "02 PROBLEM",
         "headline": "It edits BEFORE you agree",
         "highlights": [
           "BEFORE"
+        ],
+        "visuals": [
+          {
+            "id": "primary-plan-pain",
+            "visual": {
+              "type": "claude-cli",
+              "transcript": [
+                {
+                  "text": "add rate limiting to the API",
+                  "kind": "user"
+                },
+                {
+                  "text": "writing middleware/limit.ts",
+                  "kind": "tool"
+                },
+                {
+                  "text": "wait, not like that",
+                  "kind": "dim"
+                }
+              ],
+              "mode": "accept edits on",
+              "modeActive": true
+            },
+            "x": 50,
+            "y": 57,
+            "scale": 1,
+            "entrance": "slideUp"
+          }
         ]
       },
-      "visual": {
-        "type": "claude-cli",
-        "transcript": [
-          {
-            "text": "add rate limiting to the API",
-            "kind": "user"
-          },
-          {
-            "text": "writing middleware/limit.ts",
-            "kind": "tool"
-          },
-          {
-            "text": "wait, not like that",
-            "kind": "dim"
-          }
-        ],
-        "mode": "accept edits on",
-        "modeActive": true
-      },
+      "layout": "visual-bottom",
       "motion": {
         "entrance": "slideUp",
         "transition": "slideLeft",
         "stagger": 6,
         "sfx": "none"
-      }
+      },
+      "type": "visual-explainer"
     },
     {
       "id": "plan-fix",
-      "type": "visual-explainer",
-      "background": "solid-dark",
-      "layout": "visual-bottom",
-      "visualPosition": {
-        "x": 50,
-        "y": 64
-      },
       "vo": "Shift tab turns on plan mode. Now it proposes and you approve.",
+      "background": "solid-dark",
       "content": {
         "eyebrow": "02 FIX",
         "headline": "It PROPOSES, you approve",
@@ -207,6 +241,33 @@
           "PROPOSES"
         ],
         "visuals": [
+          {
+            "id": "primary-plan-fix",
+            "visual": {
+              "type": "claude-cli",
+              "transcript": [
+                {
+                  "text": "here is the plan:",
+                  "kind": "tool"
+                },
+                {
+                  "text": "1. add a limiter middleware",
+                  "kind": "result"
+                },
+                {
+                  "text": "2. wire it into /api routes",
+                  "kind": "result"
+                }
+              ],
+              "mode": "plan mode on",
+              "modeActive": true
+            },
+            "x": 50,
+            "y": 64,
+            "scale": 1,
+            "entrance": "slideUp",
+            "sfx": "d-select"
+          },
           {
             "id": "keys",
             "visual": {
@@ -218,74 +279,59 @@
             },
             "x": 50,
             "y": 34,
-            "delay": 6,
-            "entrance": "none"
+            "entrance": "none",
+            "delay": 6
           }
         ]
       },
-      "visual": {
-        "type": "claude-cli",
-        "transcript": [
-          {
-            "text": "here is the plan:",
-            "kind": "tool"
-          },
-          {
-            "text": "1. add a limiter middleware",
-            "kind": "result"
-          },
-          {
-            "text": "2. wire it into /api routes",
-            "kind": "result"
-          }
-        ],
-        "mode": "plan mode on",
-        "modeActive": true
-      },
-      "visualSfx": "d-select",
+      "layout": "visual-bottom",
       "motion": {
         "entrance": "slideUp",
         "transition": "slideLeft",
         "stagger": 6,
         "sfx": "none"
-      }
+      },
+      "type": "visual-explainer"
     },
     {
       "id": "history-pain",
-      "type": "visual-explainer",
-      "background": "solid-dark",
-      "layout": "visual-bottom",
       "vo": "That perfect prompt you wrote last week is still in there.",
+      "background": "solid-dark",
       "content": {
         "eyebrow": "03 PROBLEM",
         "headline": "That perfect prompt is GONE",
         "highlights": [
           "GONE"
+        ],
+        "visuals": [
+          {
+            "id": "primary-history-pain",
+            "visual": {
+              "type": "claude-cli",
+              "input": "how did I word that one again...",
+              "mode": "scrolling up forever",
+              "modeActive": false
+            },
+            "x": 50,
+            "y": 57,
+            "scale": 1,
+            "entrance": "slideUp"
+          }
         ]
       },
-      "visual": {
-        "type": "claude-cli",
-        "input": "how did I word that one again...",
-        "mode": "scrolling up forever",
-        "modeActive": false
-      },
+      "layout": "visual-bottom",
       "motion": {
         "entrance": "slideUp",
         "transition": "slideLeft",
         "stagger": 6,
         "sfx": "none"
-      }
+      },
+      "type": "visual-explainer"
     },
     {
       "id": "history-fix",
-      "type": "visual-explainer",
-      "background": "solid-dark",
-      "layout": "visual-bottom",
-      "visualPosition": {
-        "x": 50,
-        "y": 64
-      },
       "vo": "Control R searches every prompt you have ever sent.",
+      "background": "solid-dark",
       "content": {
         "eyebrow": "03 FIX",
         "headline": "SEARCH your whole history",
@@ -293,6 +339,32 @@
           "SEARCH"
         ],
         "visuals": [
+          {
+            "id": "primary-history-fix",
+            "visual": {
+              "type": "claude-cli",
+              "overlay": {
+                "title": "search history: deploy",
+                "items": [
+                  {
+                    "text": "deploy to staging with...",
+                    "selected": true
+                  },
+                  {
+                    "text": "fix the deploy script"
+                  },
+                  {
+                    "text": "why did deploy fail?"
+                  }
+                ]
+              }
+            },
+            "x": 50,
+            "y": 64,
+            "scale": 1,
+            "entrance": "slideUp",
+            "sfx": "d-select"
+          },
           {
             "id": "keys",
             "visual": {
@@ -304,43 +376,24 @@
             },
             "x": 50,
             "y": 34,
-            "delay": 6,
-            "entrance": "none"
+            "entrance": "none",
+            "delay": 6
           }
         ]
       },
-      "visual": {
-        "type": "claude-cli",
-        "overlay": {
-          "title": "search history: deploy",
-          "items": [
-            {
-              "text": "deploy to staging with...",
-              "selected": true
-            },
-            {
-              "text": "fix the deploy script"
-            },
-            {
-              "text": "why did deploy fail?"
-            }
-          ]
-        }
-      },
-      "visualSfx": "d-select",
+      "layout": "visual-bottom",
       "motion": {
         "entrance": "slideUp",
         "transition": "slideLeft",
         "stagger": 6,
         "sfx": "none"
-      }
+      },
+      "type": "visual-explainer"
     },
     {
       "id": "cta",
-      "type": "takeaway",
-      "background": "solid-dark",
-      "layout": "text-only",
       "vo": "Three keys. Way less fighting. Follow for the rest.",
+      "background": "solid-dark",
       "content": {
         "richHeadline": [
           {
@@ -364,25 +417,42 @@
             "pill": true,
             "animation": "pop"
           }
+        ],
+        "visuals": [
+          {
+            "id": "primary-cta-corner-0",
+            "visual": {
+              "type": "tool-logo",
+              "tool": "claude"
+            },
+            "x": 86.11111111111111,
+            "y": 17.708333333333336,
+            "scale": 2.091,
+            "entrance": "slideUp",
+            "kenBurns": "float"
+          },
+          {
+            "id": "primary-cta-corner-1",
+            "visual": {
+              "type": "tool-logo",
+              "tool": "claude"
+            },
+            "x": 13.88888888888889,
+            "y": 80.20833333333334,
+            "scale": 2.091,
+            "entrance": "slideUp",
+            "kenBurns": "float"
+          }
         ]
       },
-      "visual": {
-        "type": "corner-props",
-        "assets": [
-          {
-            "type": "tool-logo",
-            "tool": "claude"
-          }
-        ],
-        "diagonal": "trbl",
-        "size": 460,
-        "speed": 0.8
-      },
+      "layout": "text-only",
       "motion": {
         "entrance": "slideUp",
         "transition": "slideLeft",
         "stagger": 6
-      }
+      },
+      "type": "takeaway"
     }
-  ]
+  ],
+  "savedAt": 1788234951837
 }

@@ -9,9 +9,7 @@ import {
   type Storyboard,
   type StoryboardBeat,
 } from "../../schema/storyboard";
-
-const LIBRARY_KEY = "tikmaker.storyboards";
-const LAST_OPENED_KEY = "tikmaker.lastOpenedStoryboardId";
+import { readDisk, scheduleSave, saveNow, deleteEntry, usePreferences } from "./fileLibrary";
 
 /** The skeleton a "New Storyboard" starts from — the classic short-form spine.
  * An empty list is technically the honest starting point, but a blank page is
@@ -20,82 +18,39 @@ const DEFAULT_ROLES: BeatRole[] = ["hook", "problem", "reveal", "demo", "proof",
 
 type Library = Record<string, Storyboard>;
 
+/** The open library, in memory — `storyboards/*.json` is the storage. Same
+ * single-copy rule as `projectStore`; see `fileLibrary.ts`. */
+let library: Library = {};
+
 function newId(prefix: string): string {
   return `${prefix}-${Math.random().toString(36).slice(2, 9)}`;
 }
 
 function readLibrary(): Library {
-  if (typeof window === "undefined") return {};
-  try {
-    const raw = window.localStorage.getItem(LIBRARY_KEY);
-    if (!raw) return {};
-    const parsed = JSON.parse(raw) as Record<string, unknown>;
-    const library: Library = {};
-    for (const [id, value] of Object.entries(parsed)) {
-      const result = storyboardSchema.safeParse(value);
-      // Drop the bad entry, not the library — same reasoning as the project
-      // library and the saved-template store.
-      if (result.success) library[id] = result.data;
-    }
-    return library;
-  } catch {
-    return {};
-  }
-}
-
-function writeLibrary(library: Library) {
-  if (typeof window === "undefined") return;
-  window.localStorage.setItem(LIBRARY_KEY, JSON.stringify(library));
-}
-
-function writeStoryboardFile(storyboard: Storyboard) {
-  if (typeof window === "undefined") return;
-  void fetch("/api/save-json", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ kind: "storyboard", data: storyboard }),
-  }).catch(() => undefined);
-}
-
-function persist(storyboard: Storyboard, library: Library): Library {
-  // Stamped in the one place that writes, so the disk copy and the localStorage
-  // copy always carry the same time — see `mergeLibraries`.
-  const stamped: Storyboard = { ...storyboard, savedAt: Date.now() };
-  const next = { ...library, [stamped.id]: stamped };
-  writeLibrary(next);
-  writeStoryboardFile(stamped);
-  if (typeof window !== "undefined") window.localStorage.setItem(LAST_OPENED_KEY, stamped.id);
-  return next;
-}
-
-/**
- * Every `storyboards/*.json` in the repo, bundled at build time — the same
- * mechanism `projectStore` uses for `projects/*.json`, and for the same reason:
- * these files are what git carries between machines, and an editor that only
- * reads localStorage shows a fresh clone nothing.
- */
-const diskStoryboardModules = import.meta.glob<{ default: unknown }>("../../../storyboards/*.json", { eager: true });
-
-function readDiskStoryboards(): Library {
-  const library: Library = {};
-  for (const module of Object.values(diskStoryboardModules)) {
-    const result = storyboardSchema.safeParse(module.default);
-    // One malformed file must not cost you the rest of the library.
-    if (result.success) library[result.data.id] = result.data;
-  }
   return library;
 }
 
-/** Disk wins unless the local copy is strictly newer — see the same function in
- * `projectStore` for why that is the safe direction. */
-function mergeLibraries(disk: Library, local: Library): Library {
-  const merged: Library = { ...local };
-  for (const [id, diskStoryboard] of Object.entries(disk)) {
-    const localStoryboard = local[id];
-    const localIsNewer = (localStoryboard?.savedAt ?? 0) > (diskStoryboard.savedAt ?? 0);
-    if (!localStoryboard || !localIsNewer) merged[id] = diskStoryboard;
-  }
-  return merged;
+function writeLibrary(next: Library) {
+  library = next;
+}
+
+function rememberLastOpened(id: string) {
+  usePreferences.getState().set({ lastOpenedStoryboardId: id });
+}
+
+/** The ONE path that writes a storyboard. */
+function persist(storyboard: Storyboard, library: Library): Library {
+  const stamped: Storyboard = { ...storyboard, savedAt: Date.now() };
+  const next = { ...library, [stamped.id]: stamped };
+  writeLibrary(next);
+  scheduleSave("storyboard", stamped);
+  rememberLastOpened(stamped.id);
+  return next;
+}
+
+function parseStoryboard(json: unknown): Storyboard | null {
+  const result = storyboardSchema.safeParse(json);
+  return result.success ? result.data : null;
 }
 
 export type StoryboardIndexEntry = { id: string; title: string; beats: number };
@@ -148,10 +103,10 @@ type StoryboardState = {
 };
 
 function loadInitial(): { storyboard: Storyboard | null; library: Library } {
-  const library = mergeLibraries(readDiskStoryboards(), readLibrary());
+  const library: Library = {};
+  for (const storyboard of readDisk("storyboard", parseStoryboard)) library[storyboard.id] = storyboard;
   writeLibrary(library);
-  if (typeof window === "undefined") return { storyboard: null, library };
-  const lastOpened = window.localStorage.getItem(LAST_OPENED_KEY);
+  const lastOpened = usePreferences.getState().lastOpenedStoryboardId;
   if (lastOpened && library[lastOpened]) return { storyboard: library[lastOpened], library };
   return { storyboard: Object.values(library)[0] ?? null, library };
 }
@@ -187,14 +142,15 @@ export const useStoryboardStore = create<StoryboardState>((set, get) => ({
     const library = readLibrary();
     const storyboard = library[id];
     if (!storyboard) return;
-    if (typeof window !== "undefined") window.localStorage.setItem(LAST_OPENED_KEY, id);
+    rememberLastOpened(id);
     set({ storyboard, selectedBeatId: storyboard.beats[0]?.id ?? null, importError: null });
   },
 
   remove: (id) => {
-    const library = readLibrary();
+    const library = { ...readLibrary() };
     delete library[id];
     writeLibrary(library);
+    void deleteEntry("storyboard", id).catch(() => undefined);
     const isOpen = get().storyboard?.id === id;
     set({
       index: indexFrom(library),
@@ -206,7 +162,12 @@ export const useStoryboardStore = create<StoryboardState>((set, get) => ({
   save: () => {
     const storyboard = get().storyboard;
     if (!storyboard) return;
-    set({ index: indexFrom(persist(storyboard, readLibrary())) });
+    const stamped: Storyboard = { ...storyboard, savedAt: Date.now() };
+    const library = { ...readLibrary(), [stamped.id]: stamped };
+    writeLibrary(library);
+    void saveNow("storyboard", stamped);
+    rememberLastOpened(stamped.id);
+    set({ index: indexFrom(library) });
   },
 
   replace: (storyboard) => {
@@ -302,24 +263,8 @@ export const useStoryboardStore = create<StoryboardState>((set, get) => ({
 // Match video projects: storyboard edits are kept without requiring a Save
 // click. The explicit button remains useful as an immediate flush.
 if (typeof window !== "undefined") {
-  let autoSaveTimer: ReturnType<typeof setTimeout> | undefined;
   useStoryboardStore.subscribe((state, previous) => {
-    if (state.storyboard === previous.storyboard) return;
-    if (state.storyboard) {
-      const immediateLibrary = { ...readLibrary(), [state.storyboard.id]: state.storyboard };
-      writeLibrary(immediateLibrary);
-      window.localStorage.setItem(LAST_OPENED_KEY, state.storyboard.id);
-    }
-    if (autoSaveTimer) clearTimeout(autoSaveTimer);
-    autoSaveTimer = setTimeout(() => {
-      const storyboard = useStoryboardStore.getState().storyboard;
-      if (!storyboard) return;
-      writeStoryboardFile(storyboard);
-      useStoryboardStore.setState({ index: indexFrom(readLibrary()) });
-    }, 800);
-  });
-  window.addEventListener("pagehide", () => {
-    const storyboard = useStoryboardStore.getState().storyboard;
-    if (storyboard) navigator.sendBeacon?.("/api/save-json", JSON.stringify({ kind: "storyboard", data: storyboard }));
+    if (state.storyboard === previous.storyboard || !state.storyboard) return;
+    useStoryboardStore.setState({ index: indexFrom(persist(state.storyboard, readLibrary())) });
   });
 }

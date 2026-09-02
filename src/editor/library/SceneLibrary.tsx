@@ -3,6 +3,7 @@ import { sceneRegistry, getSceneDefinition } from "../../registries/sceneRegistr
 import { useProjectStore } from "../state/projectStore";
 import { useSavedScenesStore, instantiateSavedScene } from "../state/savedScenesStore";
 import { editorColors } from "../theme";
+import { usePreferences } from "../state/fileLibrary";
 
 const sectionTitleStyle: React.CSSProperties = {
   fontSize: 11,
@@ -56,6 +57,17 @@ export const SceneLibrary: React.FC = () => {
   const renameSaved = useSavedScenesStore((s) => s.rename);
 
   const [name, setName] = useState("");
+  const [showHidden, setShowHidden] = useState(false);
+
+  /**
+   * A built-in scene type is a React component that existing projects still
+   * render, so "remove this one" can only mean "stop offering it to me". The
+   * choice lives in `library/preferences.json`, next to the rest of the
+   * library, and is reversible — deleting the component would not be.
+   */
+  const hidden = usePreferences((s) => s.hiddenSceneTypes);
+  const toggleHidden = usePreferences((s) => s.toggleHidden);
+  const visibleSceneTypes = showHidden ? sceneRegistry : sceneRegistry.filter((scene) => !hidden.includes(scene.type));
 
   useEffect(() => {
     loadSaved();
@@ -148,14 +160,37 @@ export const SceneLibrary: React.FC = () => {
       </div>
 
       <div>
-        <div style={sectionTitleStyle}>Blank Scenes</div>
-        <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-          {sceneRegistry.map((scene) => (
-            <button key={scene.type} onClick={() => addScene(scene.type)} style={cardStyle}>
-              <div style={{ fontSize: 13, fontWeight: 600 }}>{scene.name}</div>
-              <div style={{ fontSize: 11, color: editorColors.textDim, marginTop: 2 }}>{scene.description}</div>
+        <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between" }}>
+          <div style={sectionTitleStyle}>Blank Scenes</div>
+          {hidden.length ? (
+            <button style={smallButtonStyle} onClick={() => setShowHidden((v) => !v)}>
+              {showHidden ? "Slėpti paslėptas" : `Rodyti paslėptas (${hidden.length})`}
             </button>
-          ))}
+          ) : null}
+        </div>
+        <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+          {visibleSceneTypes.map((scene) => {
+            const isHidden = hidden.includes(scene.type);
+            return (
+              <div key={scene.type} style={{ position: "relative", opacity: isHidden ? 0.45 : 1 }}>
+                <button onClick={() => addScene(scene.type)} style={cardStyle}>
+                  <div style={{ fontSize: 13, fontWeight: 600, paddingRight: 26 }}>{scene.name}</div>
+                  <div style={{ fontSize: 11, color: editorColors.textDim, marginTop: 2 }}>{scene.description}</div>
+                </button>
+                <button
+                  style={{ ...smallButtonStyle, position: "absolute", top: 6, right: 6 }}
+                  title={
+                    isHidden
+                      ? "Grąžinti į sąrašą"
+                      : "Paslėpti iš sąrašo. Scenos tipas yra kodas — projektai, kurie jį naudoja, veikia toliau."
+                  }
+                  onClick={() => toggleHidden("hiddenSceneTypes", scene.type)}
+                >
+                  {isHidden ? "↺" : "✕"}
+                </button>
+              </div>
+            );
+          })}
         </div>
       </div>
     </div>

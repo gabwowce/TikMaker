@@ -6,12 +6,14 @@ import { VisualLibrary } from "../library/VisualLibrary";
 import { BackgroundLibrary } from "../library/BackgroundLibrary";
 import { AssetLibrary } from "../library/AssetLibrary";
 import { SoundLibrary } from "../library/SoundLibrary";
+import { VoiceLibrary } from "../library/VoiceLibrary";
 import { TextLibrary } from "../library/TextLibrary";
 
 const tabs = [
   { id: "text", label: "Text", Component: TextLibrary },
   { id: "visuals", label: "Visuals", Component: VisualLibrary },
   { id: "sound", label: "Sound", Component: SoundLibrary },
+  { id: "voice", label: "Voice", Component: VoiceLibrary },
   { id: "scenes", label: "Scenes", Component: SceneLibrary },
   { id: "templates", label: "Templates", Component: TemplateLibrary },
   { id: "backgrounds", label: "BG", Component: BackgroundLibrary },

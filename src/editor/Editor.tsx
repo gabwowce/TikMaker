@@ -15,10 +15,13 @@ import { useSavedTemplatesStore } from "./state/savedTemplatesStore";
 import { StoryboardView } from "./storyboard/StoryboardView";
 import { SceneTimeline } from "./timeline/SceneTimeline";
 import { TimelineObjectPanel } from "./timeline/TimelineObjectPanel";
-import { confirmDeleteTimelineObject } from "./timeline/deleteTimelineObject";
-import { copyTimelineObject, duplicateTimelineObject, pasteTimelineObject } from "./timeline/objectClipboard";
+import { confirmDeleteTimelineObjects } from "./timeline/deleteTimelineObject";
+import { copyTimelineObjects, duplicateTimelineObjects, pasteTimelineObjects } from "./timeline/objectClipboard";
 import { GlobalStyles } from "./GlobalStyles";
 import { SafeZoneOverlay, safeZonePresets, type SafeZonePlatform } from "./SafeZoneOverlay";
+import { SaveStatusBadge } from "./SaveStatusBadge";
+import { ImportJsonDialog } from "./ImportJsonDialog";
+import { RecoveryDialog } from "./RecoveryDialog";
 
 /** The preview sizes itself to whatever room the middle column has, instead of
  * sitting at a fixed 380px while the space around it goes unused. Capped so it
@@ -45,6 +48,8 @@ export const Editor: React.FC = () => {
   const [showSafeZones, setShowSafeZones] = React.useState(false);
   const [safeZonePlatform, setSafeZonePlatform] = React.useState<SafeZonePlatform>("all");
   const selectedTimelineObjectId = useProjectStore((s) => s.selectedObjectId);
+  const selectedTimelineObjectIds = useProjectStore((s) => s.selectedObjectIds);
+  const selectTimelineObjects = useProjectStore((s) => s.selectObjects);
   const setSelectedTimelineObjectId = useProjectStore((s) => s.selectObject);
 
   /** Delete removes the selected timeline object, after confirming. It lives
@@ -63,11 +68,11 @@ export const Editor: React.FC = () => {
       if (target?.isContentEditable) return;
       if (target && /^(INPUT|TEXTAREA|SELECT)$/.test(target.tagName)) return;
       event.preventDefault();
-      if (confirmDeleteTimelineObject(selectedTimelineObjectId)) setSelectedTimelineObjectId(null);
+      if (confirmDeleteTimelineObjects(selectedTimelineObjectIds)) setSelectedTimelineObjectId(null);
     };
     window.addEventListener("keydown", onKeyDown);
     return () => window.removeEventListener("keydown", onKeyDown);
-  }, [selectedTimelineObjectId]);
+  }, [selectedTimelineObjectId, selectedTimelineObjectIds]);
 
   React.useEffect(() => {
     const stage = stageRef.current;
@@ -130,21 +135,30 @@ export const Editor: React.FC = () => {
       if (target && /^(INPUT|TEXTAREA|SELECT)$/.test(target.tagName)) return;
       if (window.getSelection()?.toString()) return;
 
-      const sceneFrom = computeSceneTimings(project).find((entry) => entry.scene.id === selectedSceneId)?.from ?? 0;
-      const localFrame = Math.max(0, playheadFrame - sceneFrom);
+      // Paste targets the scene under the PLAYHEAD, falling back to the open
+      // one. In the full-video view the two are routinely different, and the
+      // playhead is the one you actually pointed at.
+      const timings = computeSceneTimings(project);
+      const pasteTiming =
+        timings.find((entry) => playheadFrame >= entry.from && playheadFrame < entry.from + entry.durationInFrames) ??
+        timings.find((entry) => entry.scene.id === selectedSceneId);
+      if (pasteTiming && pasteTiming.scene.id !== selectedSceneId) {
+        useProjectStore.getState().selectScene(pasteTiming.scene.id);
+      }
+      const localFrame = Math.max(0, playheadFrame - (pasteTiming?.from ?? 0));
 
       if (key === "c" && selectedTimelineObjectId) {
-        if (copyTimelineObject(selectedTimelineObjectId)) event.preventDefault();
+        if (copyTimelineObjects(selectedTimelineObjectIds)) event.preventDefault();
       } else if (key === "d" && selectedTimelineObjectId) {
-        const pasted = duplicateTimelineObject(selectedTimelineObjectId, localFrame);
-        if (pasted) {
-          setSelectedTimelineObjectId(pasted);
+        const pasted = duplicateTimelineObjects(selectedTimelineObjectIds, localFrame);
+        if (pasted.length) {
+          selectTimelineObjects(pasted);
           event.preventDefault();
         }
       } else if (key === "v") {
-        const pasted = pasteTimelineObject(localFrame);
-        if (pasted) {
-          setSelectedTimelineObjectId(pasted);
+        const pasted = pasteTimelineObjects(localFrame);
+        if (pasted.length) {
+          selectTimelineObjects(pasted);
           event.preventDefault();
         }
       }
@@ -153,7 +167,12 @@ export const Editor: React.FC = () => {
     return () => window.removeEventListener("keydown", onKeyDown);
   }, [selectedTimelineObjectId, selectedSceneId, playheadFrame, project]);
   const selectScene = useProjectStore((s) => s.selectScene);
-  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [importOpen, setImportOpen] = useState(false);
+  const [recoveryOpen, setRecoveryOpen] = useState(false);
+  /** Which half of the right column is showing while an object is selected.
+   * Resets to the object whenever a DIFFERENT one is picked, because that click
+   * is a request to look at it. */
+  const [rightPanel, setRightPanel] = useState<"object" | "scene">("object");
   const [importError, setImportError] = useState<string | null>(null);
   /** Storyboard vs scene editing are different jobs on different data (see
    * `schema/storyboard.ts`), so they get separate modes rather than another
@@ -186,6 +205,10 @@ export const Editor: React.FC = () => {
   }, [durationInFrames]);
 
   useEffect(() => {
+    setRightPanel("object");
+  }, [selectedTimelineObjectId]);
+
+  useEffect(() => {
     if (!selectedSceneId) return;
     const selectedTiming = computeSceneTimings(project).find((entry) => entry.scene.id === selectedSceneId);
     if (!selectedTiming) return;
@@ -196,10 +219,10 @@ export const Editor: React.FC = () => {
 
 
 
-  /** "Save As" branches the video: a new named entry that this session keeps
-   * editing, leaving the one it came from untouched. */
-  function handleSaveAs() {
-    const title = window.prompt("Išsaugoti kaip naują video — pavadinimas", `${project.title} kopija`);
+  /** Duplicate branches the video: a new named entry that this session keeps
+   * editing, leaving the one it came from untouched on disk. */
+  function handleDuplicate() {
+    const title = window.prompt("Dublikuoti video — naujas pavadinimas", `${project.title} kopija`);
     if (title?.trim()) saveProjectAs(title.trim());
   }
 
@@ -224,14 +247,16 @@ export const Editor: React.FC = () => {
     URL.revokeObjectURL(url);
   }
 
-  async function handleImportFile(file: File) {
+  /** Returns the failure message, or null on success — the dialog keeps itself
+   * open and shows the error, so a typo in a pasted blob does not cost you the
+   * paste. */
+  function handleImportText(text: string): string | null {
     setImportError(null);
     try {
-      const text = await file.text();
-      const parsed = parseProject(JSON.parse(text));
-      loadProject(parsed);
+      loadProject(parseProject(JSON.parse(text)));
+      return null;
     } catch (err) {
-      setImportError(err instanceof Error ? err.message : "Invalid project JSON.");
+      return err instanceof Error ? err.message : "Netinkamas projekto JSON.";
     }
   }
 
@@ -315,8 +340,26 @@ export const Editor: React.FC = () => {
               New
             </button>
             <button
+              onClick={() => setRecoveryOpen(true)}
+              style={topButtonStyle}
+              title="Ankstesnės šio video versijos ir ištrinti projektai"
+            >
+              ↺ Atkurti
+            </button>
+            <button
+              onClick={handleDuplicate}
+              style={topButtonStyle}
+              title="Sukurti šio video kopiją nauju pavadinimu ir tęsti darbą su ja"
+            >
+              Duplicate
+            </button>
+            <button
               onClick={() => {
-                if (window.confirm(`Delete "${project.title}"? This cannot be undone.`)) deleteProject(project.id);
+                // Honest wording: the file is moved to `library/.trash/`, not
+                // destroyed, so this is recoverable by hand.
+                if (window.confirm(`Ištrinti „${project.title}"? Failas keliauja į library/.trash/.`)) {
+                  deleteProject(project.id);
+                }
               }}
               style={topButtonStyle}
             >
@@ -335,25 +378,12 @@ export const Editor: React.FC = () => {
                 Import failed: {importError}
               </span>
             ) : null}
-            <input
-              ref={fileInputRef}
-              type="file"
-              accept="application/json,.json"
-              style={{ display: "none" }}
-              onChange={(e) => {
-                const file = e.target.files?.[0];
-                if (file) handleImportFile(file);
-                e.target.value = "";
-              }}
-            />
-            <button onClick={() => fileInputRef.current?.click()} style={topButtonStyle}>
+            <SaveStatusBadge />
+            <button onClick={() => setImportOpen(true)} style={topButtonStyle} title="Įklijuoti arba įkelti projekto JSON">
               Import JSON
             </button>
-            <button onClick={saveProject} style={topButtonStyle} title="Save this video back to its own entry">
+            <button onClick={saveProject} style={topButtonStyle} title="Įrašyti dabar (šiaip viskas saugoma automatiškai)">
               Save
-            </button>
-            <button onClick={handleSaveAs} style={topButtonStyle} title="Keep this as a separate, named video">
-              Save As…
             </button>
             <button
               onClick={handleSaveAsTemplate}
@@ -369,6 +399,16 @@ export const Editor: React.FC = () => {
           </>
         ) : null}
       </div>
+
+      {recoveryOpen ? <RecoveryDialog onClose={() => setRecoveryOpen(false)} /> : null}
+
+      {importOpen ? (
+        <ImportJsonDialog
+          title="Importuoti projekto JSON"
+          onImport={handleImportText}
+          onClose={() => setImportOpen(false)}
+        />
+      ) : null}
 
       {mode === "storyboard" ? (
         <StoryboardView onGenerated={() => setMode("scenes")} />
@@ -549,8 +589,55 @@ export const Editor: React.FC = () => {
               </div>
             </div>
 
+            {/* Scene settings and object settings are both reachable at all
+                times. They used to be either/or: selecting anything on the
+                timeline replaced the scene panel, so the scene's own duration,
+                background and transition could only be reached by first
+                deselecting — and something is almost always selected. */}
             {selectedTimelineObjectId ? (
-              <TimelineObjectPanel selectionId={selectedTimelineObjectId} onClose={() => setSelectedTimelineObjectId(null)} />
+              <div
+                className="panel-stack"
+                style={{
+                  // Carries the column's own size, because the panels inside it
+                  // no longer can — see the `.panel-stack` rule in GlobalStyles.
+                  width: "clamp(300px, 23vw, 480px)",
+                  flexShrink: 0,
+                  minHeight: 0,
+                  display: "flex",
+                  flexDirection: "column",
+                  // Without this the panel inside overflows the column visibly
+                  // instead of scrolling within it.
+                  overflow: "hidden",
+                  borderLeft: `1px solid ${editorColors.border}`,
+                  background: editorColors.panel,
+                }}
+              >
+                <div style={{ display: "flex", gap: 3, padding: "6px 10px 0", flexShrink: 0 }}>
+                  {(["object", "scene"] as const).map((id) => (
+                    <button
+                      key={id}
+                      onClick={() => setRightPanel(id)}
+                      style={{
+                        flex: 1,
+                        padding: "4px 0",
+                        fontSize: 10,
+                        borderRadius: 5,
+                        cursor: "pointer",
+                        border: `1px solid ${rightPanel === id ? editorColors.accent : editorColors.border}`,
+                        background: rightPanel === id ? "rgba(255,112,36,0.10)" : "transparent",
+                        color: rightPanel === id ? editorColors.accent : editorColors.textDim,
+                      }}
+                    >
+                      {id === "object" ? "Objektas" : "Scena"}
+                    </button>
+                  ))}
+                </div>
+                {rightPanel === "object" ? (
+                  <TimelineObjectPanel selectionId={selectedTimelineObjectId} onClose={() => setSelectedTimelineObjectId(null)} />
+                ) : (
+                  <InspectorPanel />
+                )}
+              </div>
             ) : (
               <InspectorPanel />
             )}

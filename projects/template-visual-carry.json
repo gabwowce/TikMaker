@@ -7,9 +7,8 @@
   "scenes": [
     {
       "id": "carry-intro",
-      "type": "hook-centered",
-      "background": "soft-grid",
       "vo": "Vienas vizualas gali keliauti per kelis kadrus — nekeisdamas savęs, tik pozicija ir dydį.",
+      "background": "soft-grid",
       "content": {
         "eyebrow": "PATIKRA",
         "richHeadline": [
@@ -33,95 +32,103 @@
       },
       "motion": {
         "entrance": "fade",
-        "stagger": 4,
-        "transition": "cut"
-      }
+        "transition": "cut",
+        "stagger": 4
+      },
+      "type": "hook-centered"
     },
     {
       "id": "carry-a",
-      "type": "hook-visual",
-      "background": "soft-grid",
       "vo": "Pirmajame kadre jis didelis ir centre. Čia jis nieko neanimuoja išeidamas — tiesiog laiko savo vietą.",
+      "background": "soft-grid",
       "content": {
         "eyebrow": "01 DIDELIS",
         "headline": "Čia jis laiko poziciją.",
         "highlights": [
           "laiko"
+        ],
+        "visuals": [
+          {
+            "id": "primary-carry-a",
+            "visual": {
+              "type": "browser",
+              "url": "yourapp.com",
+              "content": {
+                "type": "app-mockup",
+                "appTitle": "YOUR APP",
+                "kind": "list",
+                "items": [
+                  "Row one",
+                  "Row two",
+                  "Row three"
+                ]
+              }
+            },
+            "x": 50,
+            "y": 62,
+            "scale": 0.9,
+            "entrance": "fade",
+            "link": {
+              "groupId": "carry-browser"
+            }
+          }
         ]
-      },
-      "visual": {
-        "type": "browser",
-        "url": "yourapp.com",
-        "content": {
-          "type": "app-mockup",
-          "appTitle": "YOUR APP",
-          "kind": "list",
-          "items": [
-            "Row one",
-            "Row two",
-            "Row three"
-          ]
-        }
-      },
-      "visualPosition": {
-        "x": 50,
-        "y": 62
-      },
-      "visualScale": 0.9,
-      "visualLink": {
-        "groupId": "carry-browser"
       },
       "motion": {
         "entrance": "fade",
-        "stagger": 6,
-        "transition": "cut"
-      }
+        "transition": "cut",
+        "stagger": 6
+      },
+      "type": "hook-visual"
     },
     {
       "id": "carry-b",
-      "type": "visual-explainer",
-      "background": "soft-grid",
       "vo": "Antrajame kadre jis nuslysta į viršų ir sumažėja. Visas judesys vyksta čia.",
+      "background": "soft-grid",
       "content": {
         "eyebrow": "02 MAŽAS",
         "headline": "Judesys priklauso šitam kadrui.",
         "highlights": [
           "šitam"
+        ],
+        "visuals": [
+          {
+            "id": "primary-carry-b",
+            "visual": {
+              "type": "browser",
+              "url": "yourapp.com",
+              "content": {
+                "type": "app-mockup",
+                "appTitle": "YOUR APP",
+                "kind": "list",
+                "items": [
+                  "Row one",
+                  "Row two",
+                  "Row three"
+                ]
+              }
+            },
+            "x": 50,
+            "y": 36,
+            "scale": 0.45,
+            "entrance": "fade",
+            "link": {
+              "groupId": "carry-browser"
+            }
+          }
         ]
-      },
-      "visual": {
-        "type": "browser",
-        "url": "yourapp.com",
-        "content": {
-          "type": "app-mockup",
-          "appTitle": "YOUR APP",
-          "kind": "list",
-          "items": [
-            "Row one",
-            "Row two",
-            "Row three"
-          ]
-        }
-      },
-      "visualPosition": {
-        "x": 50,
-        "y": 36
-      },
-      "visualScale": 0.45,
-      "visualLink": {
-        "groupId": "carry-browser"
       },
       "motion": {
         "entrance": "fade",
-        "stagger": 6,
-        "transition": "cut"
-      }
+        "transition": "cut",
+        "stagger": 6
+      },
+      "type": "visual-explainer"
     },
     {
       "id": "carry-c",
-      "type": "takeaway",
-      "background": "soft-grid",
       "vo": "Trečiajame kadre jis nukeliauja žemyn. Tas pats groupId gretimose scenose sujungia visą grandinę.",
+      "background": "soft-grid",
       "content": {
         "eyebrow": "03 KAMPE",
         "richHeadline": [
@@ -136,35 +143,40 @@
             "pill": true,
             "animation": "pop"
           }
+        ],
+        "visuals": [
+          {
+            "id": "primary-carry-c",
+            "visual": {
+              "type": "browser",
+              "url": "yourapp.com",
+              "content": {
+                "type": "app-mockup",
+                "appTitle": "YOUR APP",
+                "kind": "list",
+                "items": [
+                  "Row one",
+                  "Row two",
+                  "Row three"
+                ]
+              }
+            },
+            "x": 50,
+            "y": 80,
+            "scale": 0.3,
+            "entrance": "fade",
+            "link": {
+              "groupId": "carry-browser"
+            }
+          }
         ]
-      },
-      "visual": {
-        "type": "browser",
-        "url": "yourapp.com",
-        "content": {
-          "type": "app-mockup",
-          "appTitle": "YOUR APP",
-          "kind": "list",
-          "items": [
-            "Row one",
-            "Row two",
-            "Row three"
-          ]
-        }
-      },
-      "visualPosition": {
-        "x": 50,
-        "y": 80
-      },
-      "visualScale": 0.3,
-      "visualLink": {
-        "groupId": "carry-browser"
       },
       "motion": {
         "entrance": "fade",
-        "stagger": 6,
-        "transition": "cut"
-      }
+        "transition": "cut",
+        "stagger": 6
+      },
+      "type": "takeaway"
     }
   ]
 }

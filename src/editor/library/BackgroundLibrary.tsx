@@ -4,6 +4,7 @@ import { useProjectStore } from "../state/projectStore";
 import { useSavedBackgroundsStore } from "../state/savedBackgroundsStore";
 import { useCustomAssetsStore, assetKind } from "../state/customAssetsStore";
 import { editorColors } from "../theme";
+import { usePreferences } from "../state/fileLibrary";
 import { backgroundFillStyle } from "../../video/backgrounds/customBackgroundStyle";
 import { GridOverlay } from "../../video/backgrounds/GridOverlay";
 import type { BackgroundFill, BackgroundGrid, CustomBackground } from "../../schema/scene";
@@ -313,6 +314,15 @@ export const BackgroundLibrary: React.FC = () => {
   const selectedSceneId = useProjectStore((s) => s.selectedSceneId);
   const updateSceneBackground = useProjectStore((s) => s.updateSceneBackground);
   const savedBackgrounds = useSavedBackgroundsStore((s) => s.backgrounds);
+
+  /** A built-in background is a component; hiding it is the only "remove"
+   * available, and it is reversible. Stored in `library/preferences.json`. */
+  const hiddenBackgrounds = usePreferences((s) => s.hiddenBackgroundIds);
+  const toggleHidden = usePreferences((s) => s.toggleHidden);
+  const [showHiddenBackgrounds, setShowHiddenBackgrounds] = React.useState(false);
+  const visibleBackgroundPresets = showHiddenBackgrounds
+    ? backgroundRegistry
+    : backgroundRegistry.filter((bg) => !hiddenBackgrounds.includes(bg.id));
   const removeSavedBackground = useSavedBackgroundsStore((s) => s.remove);
   const disabled = !selectedSceneId;
 
@@ -324,25 +334,63 @@ export const BackgroundLibrary: React.FC = () => {
         </div>
       ) : null}
 
-      <div style={sectionTitleStyle}>Presets</div>
-      <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-        {backgroundRegistry.map((bg) => (
+      <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between" }}>
+        <div style={sectionTitleStyle}>Presets</div>
+        {hiddenBackgrounds.length ? (
           <button
-            key={bg.id}
-            onClick={() => selectedSceneId && updateSceneBackground(selectedSceneId, bg.id)}
             style={{
-              textAlign: "left",
-              padding: "10px 12px",
-              borderRadius: 8,
+              padding: "3px 8px",
+              fontSize: 10,
+              borderRadius: 6,
               border: `1px solid ${editorColors.border}`,
-              background: editorColors.panelElevated,
-              color: editorColors.text,
+              background: "transparent",
+              color: editorColors.textDim,
               cursor: "pointer",
             }}
+            onClick={() => setShowHiddenBackgrounds((v) => !v)}
           >
-            <div style={{ fontSize: 13, fontWeight: 600 }}>{bg.name}</div>
-            <div style={{ fontSize: 11, color: editorColors.textDim, marginTop: 2 }}>{bg.description}</div>
+            {showHiddenBackgrounds ? "Slėpti paslėptus" : `Rodyti paslėptus (${hiddenBackgrounds.length})`}
           </button>
+        ) : null}
+      </div>
+      <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+        {visibleBackgroundPresets.map((bg) => (
+          <div key={bg.id} style={{ position: "relative", opacity: hiddenBackgrounds.includes(bg.id) ? 0.45 : 1 }}>
+            <button
+              onClick={() => selectedSceneId && updateSceneBackground(selectedSceneId, bg.id)}
+              style={{
+                textAlign: "left",
+                width: "100%",
+                padding: "10px 12px",
+                borderRadius: 8,
+                border: `1px solid ${editorColors.border}`,
+                background: editorColors.panelElevated,
+                color: editorColors.text,
+                cursor: "pointer",
+              }}
+            >
+              <div style={{ fontSize: 13, fontWeight: 600, paddingRight: 26 }}>{bg.name}</div>
+              <div style={{ fontSize: 11, color: editorColors.textDim, marginTop: 2 }}>{bg.description}</div>
+            </button>
+            <button
+              style={{
+                position: "absolute",
+                top: 6,
+                right: 6,
+                padding: "3px 7px",
+                fontSize: 10,
+                borderRadius: 6,
+                border: `1px solid ${editorColors.border}`,
+                background: "transparent",
+                color: editorColors.textDim,
+                cursor: "pointer",
+              }}
+              title={hiddenBackgrounds.includes(bg.id) ? "Grąžinti į sąrašą" : "Paslėpti šį foną"}
+              onClick={() => toggleHidden("hiddenBackgroundIds", bg.id)}
+            >
+              {hiddenBackgrounds.includes(bg.id) ? "↺" : "✕"}
+            </button>
+          </div>
         ))}
       </div>
 

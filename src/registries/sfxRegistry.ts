@@ -2,7 +2,11 @@ import { generatedSfx } from "./assets.generated";
 import customSfxManifest from "../config/customSfx.json";
 import { assetUrl } from "../utils/assetUrl";
 
-export type SfxGroup = "ui" | "impact" | "text" | "transition" | "reveal" | "success" | "misc";
+/** `voice` is generated speech (see `scripts/voiceApi.ts`). It sits in the same
+ * registry as the sound effects on purpose: an audio clip refers to a registry
+ * id, and everything the timeline can do to a sound — waveform, trim, split,
+ * volume, drag — it can then do to a voiceover line for free. */
+export type SfxGroup = "ui" | "impact" | "text" | "transition" | "reveal" | "success" | "voice" | "misc";
 
 const groupByFileId: Record<string, SfxGroup> = {
   "d-tick": "ui",
@@ -93,7 +97,32 @@ export const sfxRegistry: Record<string, SfxDefinition> = Object.fromEntries([
   ] as const),
 ]);
 
-export const sfxList = Object.values(sfxRegistry);
+export const sfxList: SfxDefinition[] = Object.values(sfxRegistry);
+
+/**
+ * Adds a sound that was created while the editor was already running.
+ *
+ * The manifest is a static import, resolved once at page load, so a file the
+ * dev server wrote a second ago is not in it. Without this, a freshly generated
+ * voiceover would resolve to `undefined` in `getSfx` — no waveform, no
+ * playback, nothing on the timeline — until a reload, and a reload in the
+ * middle of generating a line is not a workflow. The manifest on disk is still
+ * the source of truth; this is the same entry, arriving early.
+ */
+export function registerSfx(entry: { id: string; label: string; src: string; group?: string }): SfxDefinition {
+  const definition: SfxDefinition = {
+    id: entry.id,
+    label: entry.label,
+    group: (entry.group as SfxGroup) ?? "misc",
+    src: assetUrl(entry.src),
+    custom: true,
+  };
+  sfxRegistry[definition.id] = definition;
+  const at = sfxList.findIndex((existing) => existing.id === definition.id);
+  if (at === -1) sfxList.push(definition);
+  else sfxList[at] = definition;
+  return definition;
+}
 
 export function getSfx(id: string): SfxDefinition | undefined {
   return sfxRegistry[id];

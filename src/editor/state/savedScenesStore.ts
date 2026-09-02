@@ -1,8 +1,7 @@
 import { create } from "zustand";
 import { sceneSchema, type Scene } from "../../schema/scene";
 import { z } from "zod";
-
-const STORAGE_KEY = "tikmaker.savedScenes";
+import { readDisk, scheduleSave, deleteEntry } from "./fileLibrary";
 
 export type SavedScene = {
   id: string;
@@ -20,21 +19,12 @@ const savedSceneSchema = z.object({
   savedAt: z.number(),
 });
 
-function read(): SavedScene[] {
-  try {
-    const raw = window.localStorage.getItem(STORAGE_KEY);
-    if (!raw) return [];
-    const parsed = z.array(savedSceneSchema).safeParse(JSON.parse(raw));
-    // A scene shape that no longer validates (an old field, a renamed preset)
-    // would otherwise break the whole library, so drop just the bad entries.
-    return parsed.success ? parsed.data : [];
-  } catch {
-    return [];
-  }
-}
-
-function write(scenes: SavedScene[]) {
-  window.localStorage.setItem(STORAGE_KEY, JSON.stringify(scenes));
+function parse(json: unknown): SavedScene | null {
+  const result = savedSceneSchema.safeParse(json);
+  // A scene shape that no longer validates (an old field, a renamed preset)
+  // would otherwise break the whole library, so drop just the bad entry — the
+  // file stays on disk and can be fixed by hand.
+  return result.success ? result.data : null;
 }
 
 function newId(prefix: string): string {
@@ -70,31 +60,41 @@ type SavedScenesState = {
   remove: (id: string) => void;
 };
 
-/** Reusable scenes the user liked enough to keep — the built-in scene types are
- * empty shells, so without this every "I want that layout again" meant rebuilding
- * it or hunting for the project it lived in. Stored in localStorage next to the
- * project library. */
-export const useSavedScenesStore = create<SavedScenesState>((set, get) => ({
-  scenes: [],
+function sortByNewest(scenes: SavedScene[]): SavedScene[] {
+  return [...scenes].sort((a, b) => b.savedAt - a.savedAt);
+}
 
-  load: () => set({ scenes: read() }),
+/**
+ * Reusable scenes you liked enough to keep — the built-in scene types are empty
+ * shells, so without this every "I want that layout again" meant rebuilding it
+ * or hunting for the project it lived in.
+ *
+ * One file per scene in `library/scenes/`, exactly like a project. This used to
+ * be localStorage, which meant the most reusable work in the app was the only
+ * work that did not survive a clone, a second browser or a cleared cache.
+ */
+export const useSavedScenesStore = create<SavedScenesState>((set, get) => ({
+  scenes: sortByNewest(readDisk("scene", parse)),
+
+  // Disk is read once at module load; this stays for the call sites that
+  // refresh on mount and is now just a re-sort of what is already in memory.
+  load: () => set({ scenes: sortByNewest(get().scenes) }),
 
   save: (scene, name) => {
     const entry: SavedScene = { id: newId("saved"), name, scene, savedAt: Date.now() };
-    const next = [entry, ...get().scenes];
-    write(next);
-    set({ scenes: next });
+    scheduleSave("scene", entry);
+    set({ scenes: [entry, ...get().scenes] });
   },
 
   rename: (id, name) => {
     const next = get().scenes.map((s) => (s.id === id ? { ...s, name } : s));
-    write(next);
+    const renamed = next.find((s) => s.id === id);
+    if (renamed) scheduleSave("scene", renamed);
     set({ scenes: next });
   },
 
   remove: (id) => {
-    const next = get().scenes.filter((s) => s.id !== id);
-    write(next);
-    set({ scenes: next });
+    void deleteEntry("scene", id).catch(() => undefined);
+    set({ scenes: get().scenes.filter((s) => s.id !== id) });
   },
 }));

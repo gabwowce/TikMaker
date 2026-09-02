@@ -1,6 +1,7 @@
 import React from "react";
 import { AbsoluteFill, Audio, Sequence, useCurrentFrame } from "remotion";
 import { colors, fontFamilies, fontSizes } from "./tokens";
+import { fontFamilyFor, textTransformFor } from "./textStyle";
 import { AnimatedSplitText, AnimatedBox, splitText, splitTiming } from "./splitAnimate";
 import { getSfx } from "../../registries/sfxRegistry";
 import { resolveTextEntranceSfx, SFX_VOLUME } from "../motion/sfxDefaults";
@@ -8,7 +9,7 @@ import type { Block } from "../../schema/scene";
 
 const CUE_WINDOW_FRAMES = 30;
 
-const fontFor = (block: Block): string => (block.font === "clash" ? fontFamilies.clashMedium : fontFamilies.tanker);
+const fontFor = (block: Block): string => fontFamilyFor(block.font, "tanker");
 
 const BlockUnit: React.FC<{ block: Block; baseDelay: number; durationInFrames: number }> = ({ block, baseDelay, durationInFrames }) => {
   const delay = block.delay ?? baseDelay;
@@ -20,7 +21,8 @@ const BlockUnit: React.FC<{ block: Block; baseDelay: number; durationInFrames: n
     letterSpacing: block.letterSpacing,
     textAlign: "center",
     whiteSpace: "nowrap",
-    textTransform: font === fontFamilies.tanker ? "uppercase" : undefined,
+    // Tanker has always uppercased; the field lets a block say otherwise.
+    textTransform: textTransformFor(block.textCase, font === fontFamilies.tanker ? "upper" : "none"),
   };
 
   const content = (

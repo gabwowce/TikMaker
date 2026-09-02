@@ -1,5 +1,6 @@
 import { videoProjectSchema, type VideoProject } from "../schema/project";
-import type { PositionedVisualEntry, Scene } from "../schema/scene";
+import type { PositionedVisualEntry, RichHeadlineLine, Scene } from "../schema/scene";
+import { colors } from "../video/typography/tokens";
 import { autoScale, layoutPresets } from "../video/layout/layoutPresets";
 import { naturalVisualSize } from "../video/layout/visualMetrics";
 
@@ -126,7 +127,68 @@ export function splitCornerProps(entry: PositionedVisualEntry): PositionedVisual
   });
 }
 
-export function normalizeScene(scene: Scene): Scene {
+
+/**
+ * The size each scene type drew its headline at, before headlines became text
+ * objects.
+ *
+ * Converting a legacy `headline` into a Rich Headline line has to LOOK the
+ * same, and each scene component chose its own size: Hook Centered used
+ * `HeroText`, Hook With Visual and Takeaway used `Headline`, everything else
+ * used `Title`. Getting this table wrong would resize the opening frame of
+ * every old video at once, which is why it is a table and not a default.
+ */
+const LEGACY_HEADLINE_SIZE: Record<string, RichHeadlineLine["size"]> = {
+  "hook-centered": "hero",
+  "hook-visual": "headline",
+  takeaway: "headline",
+  "visual-explainer": "title",
+  "screen-demo": "title",
+  comparison: "title",
+  steps: "title",
+};
+
+/**
+ * Folds `content.eyebrow` / `content.headline` into `content.richHeadline`.
+ *
+ * Same one-way migration as `primaryVisualAsLayer`, and for the same reason:
+ * there were two ways to put text in a scene, each with its own fields, its own
+ * editor and different capabilities — a headline could never be recoloured or
+ * positioned, and a line could never be a headline. Old projects open unchanged
+ * and re-save in the new shape.
+ *
+ * A scene that already has a rich headline is left alone: its lines are what it
+ * renders, and the legacy fields were being ignored anyway.
+ */
+export function legacyTextAsLines(scene: Scene): Scene {
+  const { eyebrow, headline, highlights, ...content } = scene.content;
+  if (!eyebrow && !headline) return scene;
+  if ((scene.content.richHeadline?.length ?? 0) > 0) {
+    // Already migrated in spirit — drop the ignored leftovers so the editor
+    // stops offering fields that change nothing.
+    return { ...scene, content: { ...content, richHeadline: scene.content.richHeadline } };
+  }
+
+  const lines: RichHeadlineLine[] = [];
+  if (eyebrow) {
+    // The eyebrow was drawn small, spaced and in the accent colour; the line
+    // has to say all three explicitly, because a line's default is none of them.
+    lines.push({ text: eyebrow, size: "label", color: colors.accent, letterSpacing: 4 });
+  }
+  if (headline) {
+    lines.push({
+      text: headline,
+      size: LEGACY_HEADLINE_SIZE[scene.type] ?? "headline",
+      ...(highlights?.length ? { highlights } : {}),
+    });
+  }
+
+  return { ...scene, content: { ...content, richHeadline: lines } };
+}
+
+export function normalizeScene(rawScene: Scene): Scene {
+  // Text first, so the rest of this function only ever sees the new shape.
+  const scene = legacyTextAsLines(rawScene);
   const primary = primaryVisualAsLayer(scene);
   const existing = scene.content.visuals ?? [];
 

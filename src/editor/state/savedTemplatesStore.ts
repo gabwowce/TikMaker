@@ -1,8 +1,7 @@
 import { create } from "zustand";
 import { z } from "zod";
 import { videoProjectSchema, type VideoProject } from "../../schema/project";
-
-const STORAGE_KEY = "tikmaker.savedTemplates";
+import { readDisk, scheduleSave, deleteEntry } from "./fileLibrary";
 
 export type SavedTemplate = {
   id: string;
@@ -22,22 +21,11 @@ const savedTemplateSchema = z.object({
   savedAt: z.number(),
 });
 
-function read(): SavedTemplate[] {
-  try {
-    const raw = window.localStorage.getItem(STORAGE_KEY);
-    if (!raw) return [];
-    const parsed = z.array(savedTemplateSchema).safeParse(JSON.parse(raw));
-    // Same reasoning as `savedScenesStore`: a project shape that no longer
-    // validates would otherwise take the whole library down, so drop the bad
-    // entries rather than the list.
-    return parsed.success ? parsed.data : [];
-  } catch {
-    return [];
-  }
-}
-
-function write(templates: SavedTemplate[]) {
-  window.localStorage.setItem(STORAGE_KEY, JSON.stringify(templates));
+function parse(json: unknown): SavedTemplate | null {
+  const result = savedTemplateSchema.safeParse(json);
+  // Same reasoning as `savedScenesStore`: drop the entry that no longer
+  // validates, never the list.
+  return result.success ? result.data : null;
 }
 
 function newId(prefix: string): string {
@@ -65,36 +53,39 @@ type SavedTemplatesState = {
   remove: (id: string) => void;
 };
 
+function sortByNewest(templates: SavedTemplate[]): SavedTemplate[] {
+  return [...templates].sort((a, b) => b.savedAt - a.savedAt);
+}
+
 /**
- * Whole videos the user kept as reusable starting points, sitting alongside the
- * built-in script templates in `scriptTemplates.ts`.
+ * Whole videos kept as reusable starting points, sitting alongside the built-in
+ * script templates in `scriptTemplates.ts`.
  *
  * The project library already stores finished videos, but opening one and
  * editing it EDITS that video — there was no way to say "this shape was good,
- * start a new one from it" without duplicating by hand. Same split as the
- * Scenes tab's "Your Scenes" above the blank scene types.
+ * start a new one from it" without duplicating by hand. One file per template
+ * in `library/templates/`, same storage rule as everything else.
  */
 export const useSavedTemplatesStore = create<SavedTemplatesState>((set, get) => ({
-  templates: [],
+  templates: sortByNewest(readDisk("template", parse)),
 
-  load: () => set({ templates: read() }),
+  load: () => set({ templates: sortByNewest(get().templates) }),
 
   save: (project, name, description) => {
     const entry: SavedTemplate = { id: newId("tpl"), name, description, project, savedAt: Date.now() };
-    const next = [entry, ...get().templates];
-    write(next);
-    set({ templates: next });
+    scheduleSave("template", entry);
+    set({ templates: [entry, ...get().templates] });
   },
 
   rename: (id, name) => {
     const next = get().templates.map((t) => (t.id === id ? { ...t, name } : t));
-    write(next);
+    const renamed = next.find((t) => t.id === id);
+    if (renamed) scheduleSave("template", renamed);
     set({ templates: next });
   },
 
   remove: (id) => {
-    const next = get().templates.filter((t) => t.id !== id);
-    write(next);
-    set({ templates: next });
+    void deleteEntry("template", id).catch(() => undefined);
+    set({ templates: get().templates.filter((t) => t.id !== id) });
   },
 }));

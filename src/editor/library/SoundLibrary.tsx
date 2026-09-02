@@ -27,7 +27,7 @@ const inputStyle: React.CSSProperties = {
 
 const rowSelectStyle: React.CSSProperties = { ...inputStyle, fontSize: 11, padding: "6px 8px" };
 
-const sfxGroups: SfxGroup[] = ["impact", "reveal", "transition", "text", "ui", "success", "misc"];
+const sfxGroups: SfxGroup[] = ["voice", "impact", "reveal", "transition", "text", "ui", "success", "misc"];
 
 const entrancePresets = ["slideUp", "slideDown", "slideLeft", "slideRight", "scaleIn", "pop", "fade"];
 const exitPresets = ["slideUp", "slideDown", "slideLeft", "slideRight", "scaleOut", "fade"];

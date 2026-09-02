@@ -19,48 +19,29 @@ import { createEmptyProject } from "../../schema/project";
 import { parseProject } from "../../utils/normalizeProject";
 import { getSceneDefinition } from "../../registries/sceneRegistry";
 import { getScriptTemplate } from "../../registries/scriptTemplates";
-import exampleProjectJson from "../../../projects/template-showcase.json";
+import exampleProjectJson from "../../templates/template-showcase.json";
 import { naturalVisualSize } from "../../video/layout/visualMetrics";
-import { poseAtFrame } from "../../video/layout/visualKeyframes";
-
-const LEGACY_STORAGE_KEY = "tikmaker.project";
-const LIBRARY_KEY = "tikmaker.library";
-const LAST_OPENED_KEY = "tikmaker.lastOpenedId";
+import { poseAtFrame, type KeyframeProperty } from "../../video/layout/visualKeyframes";
+import { readDisk, scheduleSave, saveNow, deleteEntry, usePreferences } from "./fileLibrary";
 
 type Library = Record<string, VideoProject>;
 
+/**
+ * The open library, in memory.
+ *
+ * Not a cache of anything — `projects/*.json` is the storage, this is just the
+ * parsed view of it for the current session. The store used to keep a second
+ * copy in localStorage and reconcile the two by timestamp on startup; see
+ * `fileLibrary.ts` for why that reconciliation could not be made correct.
+ */
+let library: Library = {};
+
 function readLibrary(): Library {
-  if (typeof window === "undefined") return {};
-  try {
-    const raw = window.localStorage.getItem(LIBRARY_KEY);
-    if (!raw) return {};
-    const parsed = JSON.parse(raw) as Record<string, unknown>;
-    const library: Library = {};
-    for (const [id, value] of Object.entries(parsed)) {
-      try {
-        library[id] = parseProject(value);
-      } catch {
-        // skip corrupt entry
-      }
-    }
-    return library;
-  } catch {
-    return {};
-  }
+  return library;
 }
 
-function writeLibrary(library: Library) {
-  if (typeof window === "undefined") return;
-  window.localStorage.setItem(LIBRARY_KEY, JSON.stringify(library));
-}
-
-function writeProjectFile(project: VideoProject) {
-  if (typeof window === "undefined") return;
-  void fetch("/api/save-json", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ kind: "project", data: project }),
-  }).catch(() => undefined);
+function writeLibrary(next: Library) {
+  library = next;
 }
 
 function libraryIndexFrom(library: Library): { id: string; title: string }[] {
@@ -69,86 +50,32 @@ function libraryIndexFrom(library: Library): { id: string; title: string }[] {
     .sort((a, b) => a.title.localeCompare(b.title));
 }
 
-/**
- * Every `projects/*.json` in the repo, bundled at build time.
- *
- * These files are what git carries between machines — the editor writes one on
- * every save (`writeProjectFile`) and they are committed alongside the code.
- * Reading them here is what makes a fresh clone open with the same library it
- * had on the machine the work was done on; before this the editor only ever
- * looked at localStorage, so pulling the repo on a second computer showed the
- * bundled sample and none of your own videos.
- *
- * `import.meta.glob` rather than the dev server's API on purpose: it resolves
- * in a production build too, and it needs no request to be in flight before the
- * library can be shown.
- */
-const diskProjectModules = import.meta.glob<{ default: unknown }>("../../../projects/*.json", { eager: true });
-
-function readDiskProjects(): Library {
-  const library: Library = {};
-  for (const module of Object.values(diskProjectModules)) {
-    try {
-      const project = parseProject(module.default);
-      library[project.id] = project;
-    } catch {
-      // One malformed file must not cost you the rest of the library.
-    }
-  }
-  return library;
-}
-
-/**
- * Merges the repo's projects with the browser's.
- *
- * The disk copy wins unless the local one is strictly newer: a file you pulled
- * is a deliberate act, while localStorage is a cache that may predate it. The
- * one case where local must win is a reload that beats the debounced disk write
- * — there the browser genuinely holds the newest version. Projects that exist
- * only in localStorage (made before the disk API, or while it was unreachable)
- * are kept either way.
- */
-function mergeLibraries(disk: Library, local: Library): Library {
-  const merged: Library = { ...local };
-  for (const [id, diskProject] of Object.entries(disk)) {
-    const localProject = local[id];
-    const localIsNewer = (localProject?.savedAt ?? 0) > (diskProject.savedAt ?? 0);
-    if (!localProject || !localIsNewer) merged[id] = diskProject;
-  }
-  return merged;
-}
-
 function loadInitialState(): { project: VideoProject; library: Library } {
-  const library = mergeLibraries(readDiskProjects(), readLibrary());
-  // Written straight back so the merged view survives even if the session ends
-  // before anything is edited — otherwise a fresh clone would re-merge from
-  // scratch on every load and "Delete project" could never stick.
+  const library: Library = {};
+  for (const project of readDisk("project", parseProject)) library[project.id] = project;
   writeLibrary(library);
 
-  if (typeof window !== "undefined") {
-    const lastOpenedId = window.localStorage.getItem(LAST_OPENED_KEY);
-    if (lastOpenedId && library[lastOpenedId]) {
-      return { project: library[lastOpenedId], library };
-    }
-
-    // Migrate the old single-project storage key if present.
-    const legacy = window.localStorage.getItem(LEGACY_STORAGE_KEY);
-    if (legacy) {
-      try {
-        const project = parseProject(JSON.parse(legacy));
-        library[project.id] = project;
-        writeLibrary(library);
-        window.localStorage.setItem(LAST_OPENED_KEY, project.id);
-        window.localStorage.removeItem(LEGACY_STORAGE_KEY);
-        return { project, library };
-      } catch {
-        // fall through
-      }
-    }
+  // A project just restored from the trash should be the one that opens, not
+  // whatever was last edited — restoring it IS the intent to look at it.
+  const restored = typeof window === "undefined" ? null : window.localStorage.getItem("tikmaker.reopenAfterRestore");
+  if (restored) {
+    window.localStorage.removeItem("tikmaker.reopenAfterRestore");
+    if (library[restored]) return { project: library[restored], library };
   }
 
-  const fallback = parseProject(exampleProjectJson);
-  return { project: fallback, library };
+  const lastOpenedId = usePreferences.getState().lastOpenedProjectId;
+  if (lastOpenedId && library[lastOpenedId]) return { project: library[lastOpenedId], library };
+
+  const first = Object.values(library)[0];
+  if (first) return { project: first, library };
+
+  // Nothing on disk at all (a stripped checkout): open the bundled sample so
+  // the editor always has something to show.
+  return { project: parseProject(exampleProjectJson), library };
+}
+
+function rememberLastOpened(id: string) {
+  usePreferences.getState().set({ lastOpenedProjectId: id });
 }
 
 function makeSceneId(): string {
@@ -233,7 +160,16 @@ type ProjectStore = {
    * or moves an existing keyframe on that frame to the pose given. Both the
    * panel's "+ Keyframe" button and a drag on the preview go through here, so
    * "what does adding a keyframe capture" has one answer. */
-  addVisualKeyframe: (sceneId: string, entryId: string, frame: number, pose?: { x?: number; y?: number; scale?: number }) => void;
+  addVisualKeyframe: (
+    sceneId: string,
+    entryId: string,
+    frame: number,
+    /** Which track the keyframe belongs to. Position and scale are separate
+     * timelines (see `visualKeyframes.ts`), so a keyframe pins one of them —
+     * writing both would make every scale change also freeze the position. */
+    property: KeyframeProperty,
+    pose?: { x?: number; y?: number; scale?: number }
+  ) => void;
   updateVisualKeyframe: (sceneId: string, entryId: string, keyframeId: string, patch: { frame?: number; x?: number; y?: number; scale?: number }) => void;
   removeVisualKeyframe: (sceneId: string, entryId: string, keyframeId: string) => void;
   /** Copies this scene's primary visual onto the NEXT scene and wires both
@@ -255,7 +191,14 @@ type ProjectStore = {
    * the selection and the panel can read it without a window event carrying the
    * id between them. */
   selectedObjectId: string | null;
+  /** Everything the timeline has selected. Always contains `selectedObjectId`
+   * when there is one; a plain click collapses it to a single entry. */
+  selectedObjectIds: string[];
   selectObject: (id: string | null) => void;
+  /** Ctrl/Cmd-click on a timeline clip — see the implementation. */
+  toggleObjectSelection: (id: string) => void;
+  /** Selects exactly this set, e.g. everything a multi-object paste created. */
+  selectObjects: (ids: string[]) => void;
   selectScene: (id: string | null) => void;
   setActiveVisualSlot: (slot: VisualSlot) => void;
 };
@@ -269,17 +212,14 @@ const redoStack: HistorySnapshot[] = [];
 let applyingHistory = false;
 let historyTransaction: HistorySnapshot | null = null;
 
+/** The ONE path that writes a project: updates the in-memory library and
+ * queues the file write. Everything else in this store goes through it. */
 function persist(project: VideoProject, library: Library): Library {
-  // Stamped here rather than at each call site: `persist` is the ONE path that
-  // writes a project, so this is the only place that can promise the disk copy
-  // and the localStorage copy carry the same time.
   const stamped: VideoProject = { ...project, savedAt: Date.now() };
   const next = { ...library, [stamped.id]: stamped };
   writeLibrary(next);
-  writeProjectFile(stamped);
-  if (typeof window !== "undefined") {
-    window.localStorage.setItem(LAST_OPENED_KEY, stamped.id);
-  }
+  scheduleSave("project", stamped);
+  rememberLastOpened(stamped.id);
   return next;
 }
 
@@ -294,6 +234,7 @@ export const useProjectStore = create<ProjectStore>((set, get) => ({
   canRedo: false,
   playheadFrame: 0,
   selectedObjectId: null,
+  selectedObjectIds: [],
   undo: () => {
     const previous = undoStack.pop();
     if (!previous) return;
@@ -405,7 +346,12 @@ export const useProjectStore = create<ProjectStore>((set, get) => ({
   },
 
   saveProject: () => {
-    const library = persist(get().project, readLibrary());
+    // The explicit button means "be on disk now", so it skips the debounce.
+    const project = get().project;
+    const library = { ...readLibrary(), [project.id]: { ...project, savedAt: Date.now() } };
+    writeLibrary(library);
+    void saveNow("project", library[project.id]);
+    rememberLastOpened(project.id);
     set({ libraryIndex: libraryIndexFrom(library) });
   },
 
@@ -428,14 +374,17 @@ export const useProjectStore = create<ProjectStore>((set, get) => ({
     const library = readLibrary();
     const project = library[id];
     if (!project) return;
-    if (typeof window !== "undefined") window.localStorage.setItem(LAST_OPENED_KEY, id);
+    rememberLastOpened(id);
     set({ project, selectedSceneId: project.scenes[0]?.id ?? null });
   },
 
   deleteProject: (id) => {
-    const library = readLibrary();
+    const library = { ...readLibrary() };
     delete library[id];
     writeLibrary(library);
+    // Without this the file stayed on disk and the project came back on the
+    // next reload — a "delete" that undoes itself.
+    void deleteEntry("project", id).catch(() => undefined);
     set({ libraryIndex: libraryIndexFrom(library) });
 
     if (get().project.id === id) {
@@ -887,7 +836,7 @@ export const useProjectStore = create<ProjectStore>((set, get) => ({
     });
   },
 
-  addVisualKeyframe: (sceneId, entryId, frame, pose) => {
+  addVisualKeyframe: (sceneId, entryId, frame, property, pose) => {
     set((state) => ({
       project: {
         ...state.project,
@@ -900,19 +849,23 @@ export const useProjectStore = create<ProjectStore>((set, get) => ({
             // jump. `poseAtFrame` already answers that for a keyframed layer,
             // and falls back to the base pose for one with no path yet.
             const current = poseAtFrame(entry, frame);
-            const next = {
-              id: `kf-${Math.random().toString(36).slice(2, 9)}`,
-              frame,
-              x: pose?.x ?? current.x,
-              y: pose?.y ?? current.y,
-              scale: pose?.scale ?? current.scale ?? entry.scale,
-            };
+            // ONLY the fields of this property. A keyframe that also wrote the
+            // other one would silently pin it, and the two tracks would stop
+            // being independent the first time you touched either.
+            const pinned =
+              property === "scale"
+                ? { scale: pose?.scale ?? current.scale ?? entry.scale ?? 1 }
+                : { x: pose?.x ?? current.x, y: pose?.y ?? current.y };
             const existing = entry.keyframes ?? [];
+            // Merged onto a keyframe already sitting on this frame, so position
+            // and scale can share one diamond when they happen to coincide.
             const at = existing.findIndex((keyframe) => keyframe.frame === frame);
             const keyframes =
               at === -1
-                ? [...existing, next].sort((a, b) => a.frame - b.frame)
-                : existing.map((keyframe, index) => (index === at ? { ...keyframe, ...next, id: keyframe.id } : keyframe));
+                ? [...existing, { id: `kf-${Math.random().toString(36).slice(2, 9)}`, frame, ...pinned }].sort(
+                    (a, b) => a.frame - b.frame
+                  )
+                : existing.map((keyframe, index) => (index === at ? { ...keyframe, ...pinned } : keyframe));
             return { ...entry, keyframes };
           });
           return { ...scene, content: { ...scene.content, visuals } };
@@ -985,10 +938,25 @@ export const useProjectStore = create<ProjectStore>((set, get) => ({
     }));
   },
 
-  selectObject: (id) => set({ selectedObjectId: id }),
+  selectObject: (id) => set({ selectedObjectId: id, selectedObjectIds: id ? [id] : [] }),
+
+  /**
+   * Ctrl/Cmd-click: add the object to the selection, or drop it if it was
+   * already in it. The LAST one added stays `selectedObjectId` — the object
+   * panel edits exactly one thing, and "the one you just clicked" is the only
+   * answer that does not surprise anyone.
+   */
+  toggleObjectSelection: (id) =>
+    set((state) => {
+      const has = state.selectedObjectIds.includes(id);
+      const next = has ? state.selectedObjectIds.filter((entry) => entry !== id) : [...state.selectedObjectIds, id];
+      return { selectedObjectIds: next, selectedObjectId: has ? (next[next.length - 1] ?? null) : id };
+    }),
   // Changing scene drops the object selection: the id addresses an element
   // inside the scene that was open, and it means nothing in the next one.
-  selectScene: (id) => set({ selectedSceneId: id, selectedObjectId: null }),
+  selectObjects: (ids) => set({ selectedObjectIds: ids, selectedObjectId: ids[ids.length - 1] ?? null }),
+
+  selectScene: (id) => set({ selectedSceneId: id, selectedObjectId: null, selectedObjectIds: [] }),
   setActiveVisualSlot: (slot) => set({ activeVisualSlot: slot }),
 }));
 
@@ -1024,29 +992,15 @@ if (typeof window !== "undefined") {
   });
 }
 
-// Debounced auto-save: every change to `project` gets written to the local library
-// so a reload (or crash) never silently loses work, without needing an explicit Save click.
+// Auto-save: every change to `project` is queued to its file, so a reload or a
+// crash never silently loses work and the Save button is only ever a flush.
+// `scheduleSave` owns the debounce, the retries and the unload beacon.
 if (typeof window !== "undefined") {
-  let autoSaveTimer: ReturnType<typeof setTimeout> | undefined;
   useProjectStore.subscribe((state, prevState) => {
     if (state.project === prevState.project) return;
     // Pointer drags are persisted by endHistoryTransaction, once the pointer is
     // released. Skipping intermediate positions also keeps disk JSON clean.
     if (historyTransaction) return;
-    // localStorage is synchronous: protect every keystroke immediately. Disk
-    // writes remain debounced below so typing does not hammer the filesystem.
-    const immediateLibrary = { ...readLibrary(), [state.project.id]: state.project };
-    writeLibrary(immediateLibrary);
-    window.localStorage.setItem(LAST_OPENED_KEY, state.project.id);
-    if (autoSaveTimer) clearTimeout(autoSaveTimer);
-    autoSaveTimer = setTimeout(() => {
-      const project = useProjectStore.getState().project;
-      writeProjectFile(project);
-      useProjectStore.setState({ libraryIndex: libraryIndexFrom(readLibrary()) });
-    }, 800);
-  });
-  window.addEventListener("pagehide", () => {
-    const project = useProjectStore.getState().project;
-    navigator.sendBeacon?.("/api/save-json", JSON.stringify({ kind: "project", data: project }));
+    useProjectStore.setState({ libraryIndex: libraryIndexFrom(persist(state.project, readLibrary())) });
   });
 }

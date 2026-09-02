@@ -7,64 +7,123 @@
   "scenes": [
     {
       "id": "hook",
-      "type": "hook-centered",
       "durationSeconds": 2.8,
       "background": "solid-dark",
       "content": {
         "richHeadline": [
-          { "text": "dauguma mano, kad", "size": "title", "animation": "fade" },
-          { "text": "REIKIA MOKĖTI KODUOTI", "size": "headline", "animation": "slideUp" },
-          { "text": "tai netiesa", "size": "hero", "pill": true, "animation": "pop" }
+          {
+            "text": "dauguma mano, kad",
+            "size": "title",
+            "animation": "fade"
+          },
+          {
+            "text": "REIKIA MOKĖTI KODUOTI",
+            "size": "headline",
+            "animation": "slideUp"
+          },
+          {
+            "text": "tai netiesa",
+            "size": "hero",
+            "pill": true,
+            "animation": "pop"
+          }
         ]
       },
-      "motion": { "entrance": "fade", "exit": "fade", "exitDuration": 18, "transition": "cut", "stagger": 6 }
+      "motion": {
+        "entrance": "fade",
+        "exit": "fade",
+        "exitDuration": 18,
+        "transition": "cut",
+        "stagger": 6
+      },
+      "type": "hook-centered"
     },
     {
       "id": "myth-vs-reality",
-      "type": "comparison",
       "durationSeconds": 4.2,
       "background": "solid-dark",
       "content": {
         "left": {
           "label": "MITAS",
           "headline": "Reikia metų mokymosi",
-          "visual": { "type": "prop", "asset": "clock" }
+          "visual": {
+            "type": "prop",
+            "asset": "clock"
+          }
         },
         "right": {
           "label": "REALYBĖ",
           "headline": "Užtenka savaitės su AI",
-          "visual": { "type": "prop", "asset": "idea" }
+          "visual": {
+            "type": "prop",
+            "asset": "idea"
+          }
         }
       },
-      "motion": { "entrance": "fade", "exit": "fade", "exitDuration": 18, "transition": "cut", "stagger": 6 }
+      "motion": {
+        "entrance": "fade",
+        "exit": "fade",
+        "exitDuration": 18,
+        "transition": "cut",
+        "stagger": 6
+      },
+      "type": "comparison"
     },
     {
       "id": "why",
-      "type": "visual-explainer",
-      "durationSeconds": 4.0,
+      "durationSeconds": 4,
       "background": "solid-dark",
       "content": {
         "headline": "Kodėl realybė pasikeitė",
-        "highlights": ["pasikeitė"]
+        "highlights": [
+          "pasikeitė"
+        ],
+        "visuals": [
+          {
+            "id": "primary-why",
+            "visual": {
+              "type": "tool-flow",
+              "tools": [
+                "chatgpt",
+                "claude",
+                "github"
+              ]
+            },
+            "x": 50,
+            "y": 57,
+            "scale": 1.1081081081081081,
+            "entrance": "pop",
+            "kenBurns": "zoomIn"
+          }
+        ]
       },
-      "visual": {
-        "type": "tool-flow",
-        "tools": ["chatgpt", "claude", "github"]
+      "motion": {
+        "entrance": "fade",
+        "exit": "fade",
+        "exitDuration": 18,
+        "transition": "cut",
+        "stagger": 6
       },
-      "visualEntrance": "pop",
-      "visualKenBurns": "zoomIn",
-      "motion": { "entrance": "fade", "exit": "fade", "exitDuration": 18, "transition": "cut", "stagger": 6 }
+      "type": "visual-explainer"
     },
     {
       "id": "cta",
-      "type": "takeaway",
-      "durationSeconds": 3.0,
+      "durationSeconds": 3,
       "background": "solid-dark",
       "content": {
         "headline": "Nustok tikėti mitais. Pradėk daryti.",
-        "highlights": ["Pradėk", "daryti"]
+        "highlights": [
+          "Pradėk",
+          "daryti"
+        ]
       },
-      "motion": { "entrance": "pop", "exit": "fade", "exitDuration": 16, "transition": "cut" }
+      "motion": {
+        "entrance": "pop",
+        "exit": "fade",
+        "exitDuration": 16,
+        "transition": "cut"
+      },
+      "type": "takeaway"
     }
   ]
 }

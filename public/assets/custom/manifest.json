@@ -19,5 +19,19 @@
     "file": "0829-mtdwilsu.mp4",
     "src": "/assets/custom/0829-mtdwilsu.mp4",
     "kind": "video"
+  },
+  {
+    "id": "0901-1-mtilavn5",
+    "label": "0901(1)",
+    "file": "0901-1-mtilavn5.mp4",
+    "src": "/assets/custom/0901-1-mtilavn5.mp4",
+    "kind": "video"
+  },
+  {
+    "id": "0901-2-mtir6kew",
+    "label": "0901(2)",
+    "file": "0901-2-mtir6kew.mp4",
+    "src": "/assets/custom/0901-2-mtir6kew.mp4",
+    "kind": "video"
   }
 ]
