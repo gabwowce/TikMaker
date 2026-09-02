@@ -66,7 +66,19 @@ function syncDir(srcDir: string, outDir: string, extensions: string[]): Manifest
 
     entries.push({ id, file: filename, label });
   }
-  return entries;
+  // `readdirSync` hands back the FILESYSTEM's order, which is not a defined
+  // order at all: it varies by filesystem, by OS, and on APFS it shifts as
+  // files are added and removed. The manifest is a committed source file, so
+  // that turned every unrelated sync into a diff — the same entries, moved —
+  // and left `assets.generated.ts` showing as modified with nothing to say.
+  //
+  // Sorting on `id` rather than `file` is what makes it stable across machines:
+  // `toId` has already lowercased and stripped the name, so `Vercel.png` and
+  // `vercel.png` land in the same place instead of wherever each platform's
+  // case handling puts them. Compared by code point (never `localeCompare`,
+  // which answers differently under a different locale — the one thing this is
+  // trying to stop).
+  return entries.sort((a, b) => (a.id < b.id ? -1 : a.id > b.id ? 1 : a.file < b.file ? -1 : a.file > b.file ? 1 : 0));
 }
 
 function syncFonts() {

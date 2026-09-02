@@ -13,11 +13,6 @@ export const generatedLogos: AssetManifestEntry[] = [
     "label": "chatgpt"
   },
   {
-    "id": "claude-svg",
-    "file": "claude-svg.svg",
-    "label": "claude svg"
-  },
-  {
     "id": "claude",
     "file": "claude.png",
     "label": "claude"
@@ -26,6 +21,11 @@ export const generatedLogos: AssetManifestEntry[] = [
     "id": "claude-ai-symbol",
     "file": "Claude_AI_symbol.svg.webp",
     "label": "Claude AI symbol"
+  },
+  {
+    "id": "claude-svg",
+    "file": "claude-svg.svg",
+    "label": "claude svg"
   },
   {
     "id": "cloudflare",
@@ -334,14 +334,14 @@ export const generatedSfx: AssetManifestEntry[] = [
     "label": "check"
   },
   {
-    "id": "counter-short",
-    "file": "counter-short.wav",
-    "label": "counter short"
-  },
-  {
     "id": "counter",
     "file": "counter.wav",
     "label": "counter"
+  },
+  {
+    "id": "counter-short",
+    "file": "counter-short.wav",
+    "label": "counter short"
   },
   {
     "id": "d-break",
@@ -349,14 +349,14 @@ export const generatedSfx: AssetManifestEntry[] = [
     "label": "d break"
   },
   {
-    "id": "d-count-short",
-    "file": "d-count-short.wav",
-    "label": "d count short"
-  },
-  {
     "id": "d-count",
     "file": "d-count.wav",
     "label": "d count"
+  },
+  {
+    "id": "d-count-short",
+    "file": "d-count-short.wav",
+    "label": "d count short"
   },
   {
     "id": "d-done",
@@ -434,14 +434,14 @@ export const generatedSfx: AssetManifestEntry[] = [
     "label": "paper slide"
   },
   {
-    "id": "riser-2",
-    "file": "riser-2.wav",
-    "label": "riser 2"
-  },
-  {
     "id": "riser",
     "file": "riser.mp3",
     "label": "riser"
+  },
+  {
+    "id": "riser-2",
+    "file": "riser-2.wav",
+    "label": "riser 2"
   },
   {
     "id": "select",
@@ -479,14 +479,14 @@ export const generatedSfx: AssetManifestEntry[] = [
     "label": "tick"
   },
   {
-    "id": "type-word",
-    "file": "type-word.mp3",
-    "label": "type word"
-  },
-  {
     "id": "type",
     "file": "type.wav",
     "label": "type"
+  },
+  {
+    "id": "type-word",
+    "file": "type-word.mp3",
+    "label": "type word"
   },
   {
     "id": "whoop-click",
