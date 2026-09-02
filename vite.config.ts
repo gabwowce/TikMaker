@@ -6,6 +6,7 @@ import react from "@vitejs/plugin-react";
 import { syncAssets, SOURCE_DIRS } from "./scripts/syncAssets";
 import { libraryApiPlugin } from "./scripts/libraryApi";
 import { voiceApiPlugin } from "./scripts/voiceApi";
+import { isVideoFile, transcodeForScrubbing } from "./scripts/transcodeRecording";
 import { config as loadEnv } from "dotenv";
 
 // The ElevenLabs key lives in `.env.local` and is read by the SERVER only —
@@ -114,15 +115,34 @@ function customAssetsPlugin(): Plugin {
             };
             const ext = path.extname(filename) || ".png";
             const id = `${slugify(label || filename)}-${Date.now().toString(36)}`;
-            const file = `${id}${ext}`;
+            let file = `${id}${ext}`;
 
             fs.mkdirSync(customAssetsDir, { recursive: true });
             fs.writeFileSync(path.join(customAssetsDir, file), Buffer.from(dataBase64, "base64"));
+
+            // A capture tool encodes for playback, which is the opposite of what
+            // an editor needs: the uploads that prompted this were 4K with a
+            // single keyframe, so every scrub decoded the whole clip from frame
+            // 0 and the timeline froze. `transcodeForScrubbing` re-encodes once,
+            // here, and keeps the original — see that module for the reasoning.
+            // A failure is not fatal: the raw upload still plays, just slowly,
+            // and losing the import entirely would be the worse outcome.
+            if (isVideoFile(file)) {
+              try {
+                const result = transcodeForScrubbing(path.join(customAssetsDir, file));
+                file = path.basename(result.file);
+              } catch (err) {
+                console.warn(`[upload] transcode failed, keeping the original: ${String(err)}`);
+              }
+            }
 
             const entry: CustomAsset = {
               id,
               label: label || filename,
               file,
+              // Rebuilt from `file` rather than the uploaded name: a .mov/.webm
+              // comes back out as .mp4, and a stale extension here is a 404 at
+              // render time with nothing to point at.
               src: `/assets/custom/${file}`,
               kind: kindForFile(ext),
             };
