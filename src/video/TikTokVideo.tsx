@@ -1,48 +1,49 @@
 import React from "react";
-import { AbsoluteFill, Audio, Sequence } from "remotion";
+import { AbsoluteFill, Audio, Sequence, interpolate } from "remotion";
 import type { VideoProject } from "../schema/project";
 import { SceneRenderer } from "./SceneRenderer";
 import { colors } from "./typography/tokens";
 import { ensureFontsLoaded } from "./typography/fonts";
 import { getSfx } from "../registries/sfxRegistry";
 import { projectDurationInFrames } from "../utils/duration";
+import { resolveAudioClips, VOICE_DUCK_FADE_FRAMES } from "../utils/voiceClips";
 
 export const TikTokVideo: React.FC<{ project: VideoProject }> = ({ project }) => {
   ensureFontsLoaded();
   const duration = projectDurationInFrames(project);
 
+  // Playback windows come from `resolveAudioClips`, which also applies the
+  // monophonic-voice rule — see `utils/voiceClips.ts` for why that is decided
+  // here rather than trimmed into the project data. Everything that is not a
+  // voice line keeps overlapping and overrunning its scene exactly as before.
+  const resolved = resolveAudioClips(project.audioClips ?? [], duration);
+
   return (
     <AbsoluteFill style={{ backgroundColor: colors.background }}>
       <SceneRenderer project={project} />
-      {(project.audioClips ?? []).map((clip) => {
+      {resolved.map(({ clip, from, durationInFrames, endAt, duckedBy }) => {
         const src = getSfx(clip.sfxId)?.src;
-        // Unset `durationInFrames` is a real, common state — every freshly
-        // generated voiceover starts this way on purpose (see
-        // `VoiceoverGenerator`): the waveform decoder measures the file for the
-        // TIMELINE, and nothing here needs to guess a number ahead of it. But
-        // this renderer used the SAME "unset" as license to stretch the clip to
-        // `duration - clip.from` — the rest of the entire video — and then told
-        // `<Audio>` to keep requesting playback up to that point via `endAt`.
-        // The container `<Sequence>` staying that long is harmless (Remotion
-        // sequences don't have to match their content's real length), but
-        // forcing `endAt` past the file's own end is not: it is the difference
-        // between "play this clip" and "keep this clip's transport open for the
-        // rest of the video," and a clip authored to run into the next cut had
-        // no way to say "no further than my own audio."
-        const hasExplicitEnd = clip.durationInFrames !== undefined;
-        const clipDuration = Math.max(1, Math.min(clip.durationInFrames ?? (duration - clip.from), duration - clip.from));
+        if (!src) return null;
         const startFrom = Math.max(0, clip.startFrom ?? 0);
-        return src && clip.from < duration ? (
-          <Sequence key={clip.id} from={clip.from} durationInFrames={clipDuration} layout="none" name={`audio:${clip.id}`}>
+        const level = clip.volume ?? 1;
+        // A ducked line is being stopped mid-sentence, so it has to fade rather
+        // than end — a hard cut on speech is a click, which is more noticeable
+        // than the overlap this is removing.
+        const fade = Math.min(VOICE_DUCK_FADE_FRAMES, durationInFrames);
+        const volume = duckedBy
+          ? (frame: number) => level * interpolate(frame, [durationInFrames - fade, durationInFrames], [1, 0], { extrapolateLeft: "clamp", extrapolateRight: "clamp" })
+          : level;
+        return (
+          <Sequence key={clip.id} from={from} durationInFrames={durationInFrames} layout="none" name={`audio:${clip.id}`}>
             <Audio
               src={src}
-              volume={clip.volume ?? 1}
+              volume={volume}
               playbackRate={clip.playbackRate ?? 1}
               startFrom={startFrom}
-              endAt={hasExplicitEnd ? startFrom + clipDuration : undefined}
+              endAt={endAt}
             />
           </Sequence>
-        ) : null;
+        );
       })}
     </AbsoluteFill>
   );

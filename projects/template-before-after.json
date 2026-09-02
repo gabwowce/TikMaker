@@ -1,0 +1,153 @@
+{
+  "id": "template-before-after",
+  "title": "Šablonas: Before / After",
+  "fps": 30,
+  "width": 1080,
+  "height": 1920,
+  "scenes": [
+    {
+      "id": "hook",
+      "durationSeconds": 3,
+      "background": "solid-dark",
+      "content": {
+        "headline": "Taip atrodė mano darbas prieš AI",
+        "highlights": [
+          "prieš"
+        ],
+        "visuals": [
+          {
+            "id": "primary-hook",
+            "visual": {
+              "type": "checklist",
+              "items": [
+                {
+                  "label": "valandos rankinio darbo",
+                  "lane": 0
+                },
+                {
+                  "label": "nuolatinės klaidos",
+                  "lane": 1
+                },
+                {
+                  "label": "nuobodus pasikartojimas",
+                  "lane": 2
+                }
+              ],
+              "size": "body",
+              "stagger": 8
+            },
+            "x": 50,
+            "y": 57,
+            "scale": 1.1714285714285715,
+            "entrance": "slideUp",
+            "kenBurns": "panUp",
+            "lane": 0
+          }
+        ]
+      },
+      "motion": {
+        "entrance": "fade",
+        "exit": "fade",
+        "exitDuration": 18,
+        "transition": "cut",
+        "stagger": 6
+      },
+      "type": "hook-visual"
+    },
+    {
+      "id": "before-after",
+      "durationSeconds": 4.4,
+      "background": "solid-dark",
+      "content": {
+        "left": {
+          "label": "PRIEŠ",
+          "headline": "3 valandos per dieną",
+          "body": "rankinis darbas",
+          "visual": {
+            "type": "prop",
+            "asset": "clock"
+          }
+        },
+        "right": {
+          "label": "PO",
+          "headline": "15 minučių per dieną",
+          "body": "automatizuota su AI",
+          "visual": {
+            "type": "prop",
+            "asset": "sync-arrows"
+          }
+        }
+      },
+      "motion": {
+        "entrance": "fade",
+        "exit": "fade",
+        "exitDuration": 18,
+        "transition": "cut",
+        "stagger": 6
+      },
+      "type": "comparison"
+    },
+    {
+      "id": "how",
+      "durationSeconds": 4.5,
+      "background": "solid-dark",
+      "content": {
+        "headline": "Štai tiksliai kaip",
+        "visuals": [
+          {
+            "id": "primary-how",
+            "visual": {
+              "type": "prop",
+              "asset": "browser-window"
+            },
+            "x": 50,
+            "y": 57,
+            "scale": 2,
+            "entrance": "slideUp"
+          }
+        ]
+      },
+      "motion": {
+        "entrance": "slideUp",
+        "exit": "fade",
+        "exitDuration": 16,
+        "transition": "cut"
+      },
+      "type": "screen-demo"
+    },
+    {
+      "id": "cta",
+      "durationSeconds": 3,
+      "background": "solid-dark",
+      "content": {
+        "richHeadline": [
+          {
+            "text": "tavo eilė",
+            "size": "title",
+            "animation": "fade"
+          },
+          {
+            "text": "PAKEISTI",
+            "size": "hero",
+            "pill": true,
+            "animation": "pop"
+          },
+          {
+            "text": "klausk komentaruose, jei reikia pagalbos",
+            "size": "body",
+            "animation": "slideUp"
+          }
+        ]
+      },
+      "motion": {
+        "entrance": "fade",
+        "exit": "fade",
+        "exitDuration": 18,
+        "transition": "cut",
+        "stagger": 6
+      },
+      "type": "takeaway"
+    }
+  ],
+  "savedAt": 1788191971561
+}

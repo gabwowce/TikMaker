@@ -513,16 +513,24 @@
         "grid": "lines"
       },
       "content": {
-        "richHeadline": [
+        "richHeadline": [],
+        "visuals": [
           {
-            "text": "STEP",
-            "size": "label",
-            "letterSpacing": 4,
-            "color": "#FF7024"
-          },
-          {
-            "text": "Click buttons\nOpen pages\nFill forms",
-            "size": "title"
+            "id": "visual-mtk7ynd3",
+            "visual": {
+              "type": "recording",
+              "src": "assets/recordings/placeholder.mp4",
+              "frame": "plain",
+              "playbackRate": 1,
+              "startFrom": 0,
+              "fit": "cover"
+            },
+            "x": 50,
+            "y": 50,
+            "scale": 1.1,
+            "entrance": "slideUp",
+            "entranceDuration": 18,
+            "lane": 0
           }
         ]
       },
@@ -705,7 +713,7 @@
       "type": "takeaway"
     }
   ],
-  "savedAt": 1788356138380,
+  "savedAt": 1788365840522,
   "audioClips": [
     {
       "id": "audio-mtime2ch-johj",
@@ -723,11 +731,9 @@
       "volume": 1
     },
     {
-      "id": "audio-mtirhd69-ku8h",
-      "sfxId": "vo-claude-code-can-now-test-your-app-like-a-mtimjun4",
+      "id": "audio-mtk7vmqe-729f",
+      "sfxId": "vo-claude-code-can-now-test-your-app-like-a-mti66x6n",
       "from": 49,
-      "durationInFrames": 85,
-      "lane": 1,
       "volume": 1
     }
   ]
