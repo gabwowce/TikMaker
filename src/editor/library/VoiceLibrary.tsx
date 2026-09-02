@@ -7,6 +7,7 @@ import { useAudioWaveforms } from "../timeline/useAudioWaveforms";
 import { setAudioDragPayload } from "../timeline/audioDrag";
 import { voiceCutoffFrame } from "../../utils/voiceClips";
 import { useCustomSfxStore } from "../state/customSfxStore";
+import { projectDurationInFrames } from "../../utils/duration";
 
 /**
  * Every voiceover this video uses, every cut you kept, and every line you have
@@ -73,6 +74,7 @@ export const VoiceLibrary: React.FC = () => {
   const waveforms = useAudioWaveforms(voices.map((entry) => entry.src), project.fps);
 
   const voiceClips = (project.audioClips ?? []).filter((clip) => getSfx(clip.sfxId)?.group === "voice");
+  const totalFrames = projectDurationInFrames(project);
 
   /** Places a clip at the playhead and hands back its id, so every "use this"
    * button in here behaves identically. */
@@ -129,6 +131,13 @@ export const VoiceLibrary: React.FC = () => {
               const audible = cutoff === undefined ? undefined : cutoff - clip.from;
               const wanted = clip.durationInFrames ?? full;
               const ducked = audible !== undefined && wanted !== undefined && audible < wanted;
+              // How far this line still speaks after the video has ended. A
+              // clip with no explicit length counts as ONE frame towards the
+              // composition (`projectDurationInFrames`), so the video can end
+              // mid-sentence without anything on screen saying so — and the
+              // preview loops, which starts the first line over the tail of
+              // this one. That is what "the voice doubles" sounds like.
+              const overrun = wanted === undefined ? 0 : Math.max(0, clip.from + wanted - totalFrames);
               return (
                 <div key={clip.id} style={card}>
                   <div style={{ fontSize: 11, fontWeight: 600, marginBottom: 2 }}>{source?.label ?? clip.sfxId}</div>
@@ -145,6 +154,14 @@ export const VoiceLibrary: React.FC = () => {
                     >
                       ⚠ Nutildoma po {seconds(audible!, project.fps)} — čia prasideda kita balso eilutė
                       {wanted !== undefined ? ` (negirdima ${seconds(wanted - audible!, project.fps)})` : ""}
+                    </div>
+                  ) : null}
+                  {overrun > 0 ? (
+                    <div
+                      style={{ fontSize: 10, color: "#fbbf24", marginBottom: 6, lineHeight: 1.5 }}
+                      title="Video baigiasi šiai eilutei dar kalbant. Peržiūra sukasi ratu, todėl toje vietoje pirmoji eilutė startuoja ant šitos — girdisi kaip dubliavimasis. Paspausk „Sutalpinti“, kad klipas gautų tikrą savo ilgį."
+                    >
+                      ⚠ Išeina {seconds(overrun, project.fps)} už video pabaigos — cikle persidengia su pradžia
                     </div>
                   ) : null}
                   <div style={{ display: "flex", gap: 5, flexWrap: "wrap" }}>
@@ -168,6 +185,18 @@ export const VoiceLibrary: React.FC = () => {
                     <button style={smallButton} title="Įsiminti šį pjūvį pakartotiniam naudojimui" onClick={() => keepCut(clip)}>
                       💾 Įsiminti iškarpą
                     </button>
+                    {overrun > 0 && full !== undefined ? (
+                      // Writing the real length is the whole fix: the clip then
+                      // COUNTS towards `projectDurationInFrames`, so the video
+                      // grows to hold the line instead of ending on top of it.
+                      <button
+                        style={smallButton}
+                        title="Įrašyti klipui tikrą jo ilgį, kad video pailgėtų ir eilutė tilptų iki galo"
+                        onClick={() => updateAudioClip(clip.id, { durationInFrames: full })}
+                      >
+                        ⤢ Sutalpinti
+                      </button>
+                    ) : null}
                   </div>
                 </div>
               );
