@@ -705,7 +705,7 @@
       "type": "takeaway"
     }
   ],
-  "savedAt": 1788366899250,
+  "savedAt": 1788367465009,
   "audioClips": [
     {
       "id": "audio-mtimh5cl-pd7k",
@@ -725,9 +725,9 @@
       "id": "audio-mtkbftk4-gzdr",
       "sfxId": "soft-whoosh",
       "from": 60,
-      "volume": 0.1,
       "startFrom": 2,
-      "durationInFrames": 15
+      "durationInFrames": 15,
+      "volume": 0.1
     }
   ]
 }
