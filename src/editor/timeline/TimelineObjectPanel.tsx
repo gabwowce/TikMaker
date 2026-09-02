@@ -10,6 +10,7 @@ import { splitSpan, splitText } from "../../video/typography/splitAnimate";
 import { useProjectStore } from "../state/projectStore";
 import { editorColors } from "../theme";
 import { SfxSelect, VisualFieldsEditor } from "../panels/InspectorPanel";
+import { resolveTextEntranceSfx } from "../../video/motion/sfxDefaults";
 import { confirmDeleteTimelineObject, describeTimelineObject } from "./deleteTimelineObject";
 import { keyframePins, keyframesFor, poseAtFrame, sortedKeyframes, type KeyframeProperty } from "../../video/layout/visualKeyframes";
 import type { PositionedVisualEntry } from "../../schema/scene";
@@ -126,7 +127,7 @@ export const TimelineObjectPanel: React.FC<{ selectionId: string; onClose: () =>
       const { entranceDuration, ...rest } = patch;
       update({ ...renameEntranceField(rest), ...(entranceDuration !== undefined ? { splitDuration: entranceDuration, entranceDuration: undefined } : {}) });
     }} /></>;
-    audio = <AudioPair entrance={line.sfx} mode="explicit" onEntrance={(sfx) => update({ sfx })} />;
+    audio = <AudioPair entrance={line.sfx} mode="auto" autoEntranceSfx={resolveTextEntranceSfx({ entrance: line.animation ?? "pop", splitBy: line.splitBy ?? "word" })} onEntrance={(sfx) => update({ sfx })} />;
   } else if (blockId) {
     const index = blocks.findIndex((item) => item.id === blockId);
     const block = blocks[index];
@@ -139,7 +140,7 @@ export const TimelineObjectPanel: React.FC<{ selectionId: string; onClose: () =>
       const { entranceDuration, ...rest } = patch;
       update({ ...renameEntranceField(rest), ...(entranceDuration !== undefined ? { splitDuration: entranceDuration, entranceDuration: undefined } : {}) });
     }} /></>;
-    audio = <AudioPair entrance={block.sfx} mode="explicit" onEntrance={(sfx) => update({ sfx })} />;
+    audio = <AudioPair entrance={block.sfx} mode="auto" autoEntranceSfx={resolveTextEntranceSfx({ entrance: block.animation ?? "pop", splitBy: block.splitBy ?? "word" })} onEntrance={(sfx) => update({ sfx })} />;
   } else if (visualId) {
     const index = visuals.findIndex((item) => item.id === visualId);
     const visual = visuals[index];
@@ -685,7 +686,7 @@ const SliderField: React.FC<{ label: string; value: number; min: number; max: nu
   return <div style={{ marginBottom: 14 }}><div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 5 }}><span style={labelStyle}>{label}</span><label style={numberPillStyle}><input type="number" min={min} max={max} step={step} value={Number(value.toFixed(decimals))} onChange={(event) => onChange(Number(event.target.value))} style={{ ...numberInputStyle, width: decimals > 2 ? 60 : undefined }} /><span>{suffix}</span></label></div><input type="range" min={min} max={max} step={step} value={value} onPointerDown={begin} onPointerUp={end} onPointerCancel={end} onKeyDown={begin} onKeyUp={end} onChange={(event) => onChange(Number(event.target.value))} style={rangeStyle} /></div>;
 };
 
-const AudioPair: React.FC<{ entrance?: string; exit?: string; mode: "auto" | "explicit"; onEntrance: (value?: string) => void; onExit?: (value?: string) => void }> = ({ entrance, exit, mode, onEntrance, onExit }) => <Section title="Garsai"><Field label="IN garsas"><SfxSelect mode={mode} value={entrance} onChange={onEntrance} /></Field>{onExit ? <Field label="OUT garsas"><SfxSelect mode={mode} value={exit} onChange={onExit} /></Field> : null}</Section>;
+const AudioPair: React.FC<{ entrance?: string; exit?: string; mode: "auto" | "explicit"; autoEntranceSfx?: string; onEntrance: (value?: string) => void; onExit?: (value?: string) => void }> = ({ entrance, exit, mode, autoEntranceSfx, onEntrance, onExit }) => <Section title="Garsai"><Field label="IN garsas"><SfxSelect mode={mode} autoResolvesTo={autoEntranceSfx} value={entrance} onChange={onEntrance} /></Field>{onExit ? <Field label="OUT garsas"><SfxSelect mode={mode} value={exit} onChange={onExit} /></Field> : null}</Section>;
 
 const Section: React.FC<{ title: string; children: React.ReactNode }> = ({ title, children }) => <section style={sectionStyle}><div style={sectionTitle}>{title}</div>{children}</section>;
 const Field: React.FC<{ label: string; children: React.ReactNode }> = ({ label, children }) => <label style={{ display: "block", marginBottom: 12 }}><div style={labelStyle}>{label}</div>{children}</label>;
