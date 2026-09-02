@@ -1,8 +1,7 @@
 import { create } from "zustand";
 import { z } from "zod";
 import { customBackgroundSchema, type CustomBackground } from "../../schema/scene";
-
-const STORAGE_KEY = "tikmaker.savedBackgrounds";
+import { readDisk, scheduleSave, deleteEntry } from "./fileLibrary";
 
 export type SavedBackground = {
   id: string;
@@ -18,21 +17,11 @@ const savedBackgroundSchema = z.object({
   savedAt: z.number(),
 });
 
-function read(): SavedBackground[] {
-  try {
-    const raw = window.localStorage.getItem(STORAGE_KEY);
-    if (!raw) return [];
-    const parsed = z.array(savedBackgroundSchema).safeParse(JSON.parse(raw));
-    // Same reasoning as savedScenesStore: drop only the entries that no longer
-    // validate instead of losing the whole library to one bad one.
-    return parsed.success ? parsed.data : [];
-  } catch {
-    return [];
-  }
-}
-
-function write(backgrounds: SavedBackground[]) {
-  window.localStorage.setItem(STORAGE_KEY, JSON.stringify(backgrounds));
+function parse(json: unknown): SavedBackground | null {
+  const result = savedBackgroundSchema.safeParse(json);
+  // Same reasoning as savedScenesStore: drop only the entry that no longer
+  // validates instead of losing the whole library to one bad one.
+  return result.success ? result.data : null;
 }
 
 type SavedBackgroundsState = {
@@ -44,26 +33,28 @@ type SavedBackgroundsState = {
   remove: (id: string) => void;
 };
 
+/** One file per background in `library/backgrounds/`, same storage rule as
+ * projects, scenes and templates. */
 export const useSavedBackgroundsStore = create<SavedBackgroundsState>((set, get) => ({
-  backgrounds: read(),
+  backgrounds: readDisk("background", parse).sort((a, b) => a.name.localeCompare(b.name)),
 
   save: (name, background) => {
     const trimmed = name.trim();
     if (!trimmed) return;
     const existing = get().backgrounds.find((b) => b.name === trimmed);
-    const next = existing
-      ? get().backgrounds.map((b) => (b.id === existing.id ? { ...b, background, savedAt: Date.now() } : b))
-      : [
-          ...get().backgrounds,
-          { id: `bg-${Date.now().toString(36)}`, name: trimmed, background, savedAt: Date.now() },
-        ];
-    write(next);
-    set({ backgrounds: next });
+    const entry: SavedBackground = existing
+      ? { ...existing, background, savedAt: Date.now() }
+      : { id: `bg-${Date.now().toString(36)}`, name: trimmed, background, savedAt: Date.now() };
+    scheduleSave("background", entry);
+    set({
+      backgrounds: existing
+        ? get().backgrounds.map((b) => (b.id === entry.id ? entry : b))
+        : [...get().backgrounds, entry],
+    });
   },
 
   remove: (id) => {
-    const next = get().backgrounds.filter((b) => b.id !== id);
-    write(next);
-    set({ backgrounds: next });
+    void deleteEntry("background", id).catch(() => undefined);
+    set({ backgrounds: get().backgrounds.filter((b) => b.id !== id) });
   },
 }));

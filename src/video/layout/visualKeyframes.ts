@@ -1,5 +1,5 @@
 import { interpolate } from "remotion";
-import { standardEasing } from "../motion/easing";
+import { pathEasing } from "../motion/easing";
 import type { PositionedVisualEntry } from "../../schema/scene";
 
 /**
@@ -38,60 +38,99 @@ export function sortedKeyframes(entry: PositionedVisualEntry): VisualKeyframe[] 
  * keyframe is a pinned pose, not a move — it reads as "no keyframes" until a
  * second one gives it somewhere to go. */
 export function hasKeyframePath(entry: PositionedVisualEntry): boolean {
-  return (entry.keyframes?.length ?? 0) >= 2;
-}
-
-function resolve(keyframe: VisualKeyframe, base: LayerPose): LayerPose {
-  return {
-    x: keyframe.x ?? base.x,
-    y: keyframe.y ?? base.y,
-    scale: keyframe.scale ?? base.scale,
-  };
+  // Per TRACK: two position keyframes make a path even if scale never moves,
+  // and the other way round. Counting the whole array would call "one position
+  // keyframe plus one scale keyframe" a path, which it is in neither.
+  return keyframesFor(entry, "position").length >= 2 || keyframesFor(entry, "scale").length >= 2;
 }
 
 /**
- * The pose at `frame` (scene-relative). Holds the first keyframe before the
- * path starts and the last one after it ends — a layer is on screen for longer
- * than its path, and extrapolating past the ends would send it drifting off to
- * nowhere.
+ * The properties a keyframe can pin, and which fields belong to each.
  *
- * Each segment is eased rather than linear: a keyframe is a place the author
- * said to BE at, so arriving and departing softly reads as deliberate, the same
- * curve a linked visual's glide already uses between two scenes.
+ * Position is ONE property, not two: X and Y are a place, you move a layer TO
+ * somewhere, and splitting them would mean two keyframes and two timings for a
+ * single gesture. Scale is genuinely separate — growing a layer while it
+ * travels is a different beat from the travel itself.
  */
-export function poseAtFrame(entry: PositionedVisualEntry, frame: number): LayerPose {
-  const base = basePose(entry);
-  const keyframes = sortedKeyframes(entry);
-  if (keyframes.length === 0) return base;
-  if (keyframes.length === 1) return resolve(keyframes[0], base);
+export type KeyframeProperty = "position" | "scale";
 
+export function keyframePins(keyframe: VisualKeyframe, property: KeyframeProperty): boolean {
+  return property === "scale" ? keyframe.scale !== undefined : keyframe.x !== undefined || keyframe.y !== undefined;
+}
+
+/**
+ * The keyframes that actually say something about ONE property, in time order.
+ *
+ * This is what makes the two tracks independent. Before it, every keyframe was
+ * resolved against the layer's base pose for the fields it left out — so a
+ * keyframe that only moved the layer also asserted "and the scale is the base
+ * scale", and a scale keyframe dragged the position back to base. Two
+ * properties could not be animated on different rhythms, which is the whole
+ * point of having keyframes per property.
+ */
+export function keyframesFor(entry: PositionedVisualEntry, property: KeyframeProperty): VisualKeyframe[] {
+  return sortedKeyframes(entry).filter((keyframe) => keyframePins(keyframe, property));
+}
+
+/**
+ * Interpolates ONE track.
+ *
+ * Held flat before the first keyframe and after the last, and eased with
+ * `pathEasing` inside each segment — symmetric, so the travel occupies the
+ * WHOLE gap. Widen the gap and the same movement genuinely takes longer; that
+ * is the entire contract of a keyframe pair, and an arrival curve breaks it by
+ * finishing the move in the first tenth and standing still for the rest.
+ */
+function valueAt(
+  keyframes: VisualKeyframe[],
+  frame: number,
+  read: (keyframe: VisualKeyframe) => number | undefined,
+  fallback: number
+): number {
+  if (keyframes.length === 0) return fallback;
+  const valueOf = (keyframe: VisualKeyframe) => read(keyframe) ?? fallback;
   const first = keyframes[0];
   const last = keyframes[keyframes.length - 1];
-  if (frame <= first.frame) return resolve(first, base);
-  if (frame >= last.frame) return resolve(last, base);
+  if (frame <= first.frame) return valueOf(first);
+  if (frame >= last.frame) return valueOf(last);
 
   let index = 0;
   while (index < keyframes.length - 2 && keyframes[index + 1].frame <= frame) index++;
-  const from = resolve(keyframes[index], base);
-  const to = resolve(keyframes[index + 1], base);
-  const span: [number, number] = [keyframes[index].frame, keyframes[index + 1].frame];
+  const from = keyframes[index];
+  const to = keyframes[index + 1];
   // Two keyframes on the same frame would make `interpolate` divide by zero.
-  if (span[1] <= span[0]) return to;
+  if (to.frame <= from.frame) return valueOf(to);
 
-  const ease = (a: number, b: number) =>
-    interpolate(frame, span, [a, b], {
-      extrapolateLeft: "clamp",
-      extrapolateRight: "clamp",
-      easing: standardEasing,
-    });
+  return interpolate(frame, [from.frame, to.frame], [valueOf(from), valueOf(to)], {
+    extrapolateLeft: "clamp",
+    extrapolateRight: "clamp",
+    easing: pathEasing,
+  });
+}
+
+/**
+ * The pose at `frame` (scene-relative), resolved per property.
+ *
+ * Each track holds at its own ends, so a layer whose position is keyframed and
+ * whose scale is not keeps the scale it was given, and a scale animation that
+ * starts after the travel has finished does not drag the layer back.
+ *
+ * Every segment is eased rather than linear: a keyframe is a place the author
+ * said to BE at, so arriving and departing softly reads as deliberate — the
+ * same curve a linked visual's glide uses between two scenes.
+ */
+export function poseAtFrame(entry: PositionedVisualEntry, frame: number): LayerPose {
+  const base = basePose(entry);
+  const position = keyframesFor(entry, "position");
+  const scale = keyframesFor(entry, "scale");
+  if (position.length === 0 && scale.length === 0) return base;
 
   return {
-    x: ease(from.x, to.x),
-    y: ease(from.y, to.y),
-    scale:
-      from.scale === undefined && to.scale === undefined
-        ? undefined
-        : ease(from.scale ?? base.scale ?? 1, to.scale ?? base.scale ?? 1),
+    x: valueAt(position, frame, (keyframe) => keyframe.x, base.x),
+    y: valueAt(position, frame, (keyframe) => keyframe.y, base.y),
+    // Left undefined when nothing keyframes it, so a layer with no scale
+    // keyframes keeps whatever its own `scale` (or auto-fit) decided.
+    scale: scale.length === 0 ? base.scale : valueAt(scale, frame, (keyframe) => keyframe.scale, base.scale ?? 1),
   };
 }
 

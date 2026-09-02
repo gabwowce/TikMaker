@@ -5,8 +5,8 @@ import { videoDefaults } from "./video/typography/tokens";
 import { projectDurationInFrames } from "./utils/duration";
 import { createEmptyProject } from "./schema/project";
 import { parseProject } from "./utils/normalizeProject";
-import showcaseProjectJson from "../projects/template-showcase.json";
-import claudeConnectorsJson from "../projects/claude-connectors.json";
+import showcaseProjectJson from "./templates/template-showcase.json";
+import claudeConnectorsJson from "./templates/claude-connectors.json";
 
 const showcaseProject = parseProject(showcaseProjectJson);
 const claudeConnectorsProject = parseProject(claudeConnectorsJson);

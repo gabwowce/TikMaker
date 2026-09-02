@@ -3,6 +3,7 @@ import { scriptTemplateRegistry } from "../../registries/scriptTemplates";
 import { useProjectStore } from "../state/projectStore";
 import { instantiateSavedTemplate, useSavedTemplatesStore } from "../state/savedTemplatesStore";
 import { editorColors } from "../theme";
+import { usePreferences } from "../state/fileLibrary";
 
 const smallActionStyle: React.CSSProperties = {
   fontSize: 10,
@@ -30,6 +31,13 @@ export const TemplateLibrary: React.FC = () => {
   const loadTemplates = useSavedTemplatesStore((s) => s.load);
   const removeTemplate = useSavedTemplatesStore((s) => s.remove);
   const renameTemplate = useSavedTemplatesStore((s) => s.rename);
+
+  /** Built-in templates are code, so hiding is the only "remove" available —
+   * same rule and the same preferences file as the blank scene types. */
+  const hidden = usePreferences((s) => s.hiddenTemplateIds);
+  const toggleHidden = usePreferences((s) => s.toggleHidden);
+  const [showHidden, setShowHidden] = React.useState(false);
+  const builtIns = showHidden ? scriptTemplateRegistry : scriptTemplateRegistry.filter((t) => !hidden.includes(t.id));
 
   React.useEffect(() => {
     loadTemplates();
@@ -95,11 +103,17 @@ export const TemplateLibrary: React.FC = () => {
         Geriausiai veikiantys TikTok scenarijų šablonai — pasirink vieną, jis atsidarys kaip naujas projektas su
         pavyzdiniu turiniu, kurį gali redaguoti kaip įprastą sceną.
       </div>
-      {scriptTemplateRegistry.map((template) => (
+      {hidden.length ? (
+        <button style={{ ...smallActionStyle, alignSelf: "flex-start" }} onClick={() => setShowHidden((v) => !v)}>
+          {showHidden ? "Slėpti paslėptus" : `Rodyti paslėptus (${hidden.length})`}
+        </button>
+      ) : null}
+      {builtIns.map((template) => (
+        <div key={template.id} style={{ position: "relative", opacity: hidden.includes(template.id) ? 0.45 : 1 }}>
         <button
-          key={template.id}
           onClick={() => useScriptTemplate(template.id)}
           style={{
+            width: "100%",
             textAlign: "left",
             padding: "12px 12px 10px",
             borderRadius: 8,
@@ -133,6 +147,14 @@ export const TemplateLibrary: React.FC = () => {
             ))}
           </div>
         </button>
+        <button
+          style={{ ...smallActionStyle, position: "absolute", top: 8, right: 8 }}
+          title={hidden.includes(template.id) ? "Grąžinti į sąrašą" : "Paslėpti šį šabloną"}
+          onClick={() => toggleHidden("hiddenTemplateIds", template.id)}
+        >
+          {hidden.includes(template.id) ? "↺" : "✕"}
+        </button>
+        </div>
       ))}
     </div>
   );

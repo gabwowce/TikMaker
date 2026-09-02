@@ -1,0 +1,206 @@
+{
+  "id": "tpl-0ykdh1z",
+  "name": "tips-1-2-3",
+  "project": {
+    "id": "claude-code-shortcuts-4-mtdv0go7",
+    "title": "4 Claude Code Shortcuts",
+    "fps": 30,
+    "width": 1080,
+    "height": 1920,
+    "scenes": [
+      {
+        "id": "hook",
+        "background": {
+          "type": "custom",
+          "fill": {
+            "kind": "solid",
+            "color": "#2c2b2b"
+          },
+          "grid": "lines"
+        },
+        "content": {
+          "headline": "",
+          "richHeadline": [
+            {
+              "text": "4",
+              "size": "hero",
+              "pill": true,
+              "splitBy": "letter"
+            },
+            {
+              "text": "Claude Code ",
+              "size": "hero",
+              "color": "#FFFFFF",
+              "splitBy": "word"
+            },
+            {
+              "text": "Shortcuts ",
+              "size": "hero",
+              "pill": true,
+              "splitBy": "letter"
+            },
+            {
+              "text": "Worth Learning",
+              "size": "hero",
+              "splitBy": "word"
+            }
+          ],
+          "visuals": [
+            {
+              "id": "hook-corner-0",
+              "visual": {
+                "type": "tool-logo",
+                "tool": "claude-ai-symbol"
+              },
+              "x": 15.497553017944535,
+              "y": 9.678899082568808,
+              "scale": 2.5,
+              "entrance": "pop",
+              "exit": "slideLeft",
+              "kenBurns": "rotateCW",
+              "kenBurnsSpeed": 0.3
+            },
+            {
+              "id": "hook-corner-1",
+              "visual": {
+                "type": "tool-logo",
+                "tool": "claude-ai-symbol"
+              },
+              "x": 87.43882544861337,
+              "y": 88.6697247706422,
+              "scale": 2.5,
+              "entrance": "pop",
+              "exit": "slideRight",
+              "kenBurns": "rotateCW",
+              "kenBurnsSpeed": 0.3
+            }
+          ]
+        },
+        "motion": {
+          "entrance": "fade",
+          "exit": "fade",
+          "exitDuration": 18,
+          "exitDistance": 600,
+          "transition": "cut"
+        },
+        "type": "hook-centered"
+      },
+      {
+        "id": "s3-explain",
+        "background": {
+          "type": "custom",
+          "fill": {
+            "kind": "solid",
+            "color": "#2c2b2b"
+          },
+          "grid": "lines"
+        },
+        "content": {
+          "headline": "",
+          "richHeadline": [
+            {
+              "text": "Claude went",
+              "size": "hero",
+              "sizePx": 116,
+              "splitBy": "letter"
+            },
+            {
+              "text": "in the wrong direction?",
+              "size": "bodyLarge",
+              "sizePx": 91,
+              "pill": true,
+              "x": 49.42903752039152,
+              "y": 55.36697247706422,
+              "splitBy": "word"
+            },
+            {
+              "text": "#1",
+              "size": "hero",
+              "splitBy": "word"
+            }
+          ],
+          "visuals": [
+            {
+              "id": "visual-mtdw7gw7-corner-0",
+              "visual": {
+                "type": "prop",
+                "asset": "uturn"
+              },
+              "x": 81.40293637846656,
+              "y": 10.688073394495413,
+              "scale": 2.5,
+              "entrance": "pop",
+              "kenBurns": "rotateCCW"
+            },
+            {
+              "id": "visual-mtdw7gw7-corner-1",
+              "visual": {
+                "type": "prop",
+                "asset": "uturn"
+              },
+              "x": 23.00163132137031,
+              "y": 76.19266055045871,
+              "scale": 2.5,
+              "entrance": "pop",
+              "kenBurns": "rotateCW"
+            }
+          ]
+        },
+        "motion": {
+          "entrance": "fade",
+          "transition": "cut"
+        },
+        "type": "hook-centered"
+      },
+      {
+        "id": "scene-hee8nzf",
+        "durationSeconds": 3,
+        "background": {
+          "type": "custom",
+          "fill": {
+            "kind": "solid",
+            "color": "#2c2b2b"
+          },
+          "grid": "lines"
+        },
+        "content": {
+          "headline": "",
+          "richHeadline": [
+            {
+              "text": "New line",
+              "size": "title",
+              "splitBy": "word"
+            }
+          ],
+          "visuals": [
+            {
+              "id": "visual-mtdwejsp",
+              "visual": {
+                "type": "recording",
+                "src": "/assets/custom/0829-mtdwilsu.mp4",
+                "frame": "plain",
+                "playbackRate": 1,
+                "fit": "cover",
+                "aspect": "16:10"
+              },
+              "x": 66.394779771615,
+              "y": 50.412844036697244,
+              "scale": 1.5,
+              "entrance": "zoomSettleRight",
+              "exit": "slideLeft",
+              "exitDuration": 18,
+              "entranceDistance": 380,
+              "exitDistance": 920
+            }
+          ]
+        },
+        "motion": {
+          "entrance": "fade",
+          "transition": "cut"
+        },
+        "type": "hook-centered"
+      }
+    ]
+  },
+  "savedAt": 1787980212367
+}

@@ -27,6 +27,11 @@ export const videoProjectSchema = z.object({
     durationInFrames: z.number().min(1).optional(),
     lane: z.number().int().min(0).max(24).optional(),
     volume: z.number().min(0).max(2).optional(),
+    /** Playback speed. 1 = as recorded. Applies to any audio clip, not just a
+     * voiceover — a sound effect that needs to be snappier is the same knob.
+     * The editor rescales `durationInFrames` alongside it so the clip on the
+     * timeline stays as long as what you actually hear. */
+    playbackRate: z.number().min(0.25).max(4).optional(),
   })).optional(),
 });
 

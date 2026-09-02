@@ -8,8 +8,7 @@
       "id": "beat-1",
       "role": "hook",
       "purpose": "Stop the scroll and set up the idea.",
-      "voiceover": "Claude doesn't have to guess if your app works.",
-      "onScreenText": "Claude can test your app.",
+      "voiceover": "\nTired of testing app manuallty?",
       "visualPlaceholder": "Claude Code logo on a dynamic background",
       "durationSeconds": 2.5,
       "notes": "Strong open. Relatable for a dev audience."
@@ -68,5 +67,6 @@
       "visualPlaceholder": "Arrow prop pointing forward",
       "durationSeconds": 2.5
     }
-  ]
+  ],
+  "savedAt": 1788256839053
 }

@@ -157,7 +157,31 @@ export const transitionPresetSchema = z.enum([
   "slideDown",
 ]);
 export const richTextSizeSchema = z.enum(["hero", "headline", "title", "bodyLarge", "body", "label"]);
-export const richTextFontSchema = z.enum(["tanker", "clash"]);
+/**
+ * The typefaces a text element can actually be set in.
+ *
+ * `tanker` and `clash` are kept as the original two names so nothing already
+ * authored breaks; the rest name a specific WEIGHT, because that is how these
+ * families ship — Clash and Panchang are separate files per weight, and Tanker
+ * has exactly one. "Bold" is therefore a different face, not a `fontWeight`
+ * number: asking the browser to embolden a single-weight face gives you a
+ * smeared synthetic bold, which is the thing a type system exists to avoid.
+ */
+export const richTextFontSchema = z.enum([
+  "tanker",
+  "clash",
+  "clashMedium",
+  "clashSemibold",
+  "clashBold",
+  "panchangMedium",
+  "panchangSemibold",
+]);
+
+/** Letter case, applied at render. The text you typed is left alone — this is
+ * presentation, so changing your mind about caps never costs you the wording.
+ * Unset keeps each element's historical default (uppercase for a headline
+ * line, uppercase for Tanker blocks). */
+export const textCaseSchema = z.enum(["upper", "lower", "none"]);
 export const richTextSplitBySchema = z.enum(["word", "letter", "line"]);
 
 export const sceneTypeSchema = z.enum([
@@ -222,6 +246,11 @@ const richHeadlineLineSchema = z.object({
    * still read `fontSizes` (see the design rules in CLAUDE.md). */
   sizePx: z.number().min(8).max(400).optional(),
   font: richTextFontSchema.optional(),
+  /** See `textCaseSchema`. Unset = uppercase, which is what every headline
+   * line has always rendered as. */
+  textCase: textCaseSchema.optional(),
+  /** Extra space between letters, px. Same field and meaning as `Block`'s. */
+  letterSpacing: z.number().min(-20).max(80).optional(),
   pill: z.boolean().optional(),
   /** Hex color for THIS line's text, same field and same `#RRGGBB` form as
    * `Block.color`. Unset = the token default this line would otherwise get
@@ -233,6 +262,11 @@ const richHeadlineLineSchema = z.object({
    * whole line for a deliberate look is fine; recoloring one to emphasize it
    * is the thing `pill` exists for. */
   color: z.string().optional(),
+  /** Words inside THIS line drawn in a pill box. Carried over from the old
+   * scene-level `content.highlights` when a legacy headline is converted into
+   * a line, and the same design rule applies: calling a word out is always a
+   * pill, never a colour change. Only meaningful for a word split. */
+  highlights: z.array(z.string()).optional(),
   /** Freeform position (percent of the full 1080x1920 canvas — same
    * convention as `Block.x`/`y` and a layer's `x`/`y`), for a line that should
    * sit somewhere OTHER than stacked in the centered headline column. Both
@@ -407,6 +441,9 @@ const blockSchema = z.object({
   size: z.number().positive().optional(),
   color: z.string().optional(),
   font: richTextFontSchema.optional(),
+  /** See `textCaseSchema`. Unset keeps the old rule: Tanker uppercases, the
+   * other faces render as typed. */
+  textCase: textCaseSchema.optional(),
   letterSpacing: z.number().optional(),
   animation: entrancePresetSchema.optional(),
   entranceDuration: z.number().min(1).max(90).optional(),
@@ -597,6 +634,7 @@ export type StepItem = z.infer<typeof stepItemSchema>;
 export type RichHeadlineLine = z.infer<typeof richHeadlineLineSchema>;
 export type RichTextSize = z.infer<typeof richTextSizeSchema>;
 export type RichTextFont = z.infer<typeof richTextFontSchema>;
+export type TextCase = z.infer<typeof textCaseSchema>;
 export type RichTextSplitBy = z.infer<typeof richTextSplitBySchema>;
 export type Block = z.infer<typeof blockSchema>;
 export type BlockType = z.infer<typeof blockTypeSchema>;

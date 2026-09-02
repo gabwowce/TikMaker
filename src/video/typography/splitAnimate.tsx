@@ -3,6 +3,7 @@ import { useCurrentFrame, useVideoConfig } from "remotion";
 import { enter } from "../motion/entrances";
 import { exitStyle as computeExitStyle } from "../motion/exits";
 import type { EntrancePreset, ExitPreset } from "../../schema/scene";
+import { pillInlineStyle } from "./Text";
 
 export type SplitBy = "word" | "letter" | "line";
 
@@ -157,12 +158,15 @@ export const AnimatedUnit: React.FC<{
   preset?: EntrancePreset;
   entranceDistance?: number;
   entranceDuration?: number;
+  /** Extra styling for THIS unit — the pill box on a highlighted word. It sits
+   * under the animation transform, so a pilled word animates like any other. */
+  style?: React.CSSProperties;
   exit?: ExitConfig;
-}> = ({ text, delay, preset, entranceDistance, entranceDuration, exit }) => {
+}> = ({ text, delay, preset, entranceDistance, entranceDuration, style: ownStyle, exit }) => {
   const style = useEnterExitStyle({ entrancePreset: preset, delay, entranceDistance, entranceDuration, exit });
 
   return (
-    <span style={{ display: "inline-block", whiteSpace: "pre", ...style }}>
+    <span style={{ display: "inline-block", whiteSpace: "pre", ...ownStyle, ...style }}>
       {text}
     </span>
   );
@@ -178,9 +182,13 @@ export const AnimatedSplitText: React.FC<{
   entranceDistance?: number;
   entranceDuration?: number;
   splitDuration?: number;
+  /** Units matching one of these get the pill box. Word-level only: a pill
+   * around a single letter is not a highlight, it is a typo. */
+  highlights?: string[];
   exit?: ExitConfig;
-}> = ({ text, splitBy, baseDelay, preset, entranceDistance, entranceDuration, splitDuration, exit }) => {
+}> = ({ text, splitBy, baseDelay, preset, entranceDistance, entranceDuration, splitDuration, highlights, exit }) => {
   const units = splitText(text, splitBy);
+  const pilled = new Set((splitBy === "word" ? highlights ?? [] : []).map((word) => word.trim().toLowerCase()));
   const timing = splitTiming(splitBy, units.length, splitDuration, entranceDuration);
 
   return (
@@ -193,6 +201,7 @@ export const AnimatedSplitText: React.FC<{
           preset={preset}
           entranceDistance={entranceDistance}
           entranceDuration={timing.unitEntrance}
+          style={pilled.has(unit.trim().toLowerCase()) ? pillInlineStyle : undefined}
           exit={exit}
         />
       ))}

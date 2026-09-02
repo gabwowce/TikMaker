@@ -1,6 +1,7 @@
 import { useProjectStore } from "../state/projectStore";
 import type { Block, PositionedVisualEntry, RichHeadlineLine, StepItem } from "../../schema/scene";
 import { computeSceneTimings } from "../../utils/duration";
+import { parseSelection } from "./selectionId";
 
 /**
  * Copy / paste / duplicate for whatever the timeline has selected.
@@ -23,27 +24,37 @@ type ClipboardEntry =
 
 /** Module-level rather than in the store: a clipboard is editor session state,
  * not part of the project, and putting it in the project store would push it
- * onto the undo stack. */
-let clipboard: ClipboardEntry | null = null;
+ * onto the undo stack.
+ *
+ * A LIST, because the timeline selects more than one clip: copying a headline
+ * together with the layer it labels and pasting the pair into the next scene is
+ * the whole reason to select two things at once. One object is just a list of
+ * length one, so there is no second code path. */
+let clipboard: ClipboardEntry[] = [];
 
 export function clipboardHas(): boolean {
-  return clipboard !== null;
+  return clipboard.length > 0;
+}
+
+function entryLabel(entry: ClipboardEntry): string {
+  switch (entry.kind) {
+    case "visual":
+      return entry.value.visual.type;
+    case "block":
+      return entry.value.text;
+    case "line":
+      return entry.value.text;
+    case "step":
+      return entry.value.label;
+    case "audio":
+      return entry.value.sfxId;
+  }
 }
 
 export function clipboardLabel(): string | null {
-  if (!clipboard) return null;
-  switch (clipboard.kind) {
-    case "visual":
-      return clipboard.value.visual.type;
-    case "block":
-      return clipboard.value.text;
-    case "line":
-      return clipboard.value.text;
-    case "step":
-      return clipboard.value.label;
-    case "audio":
-      return clipboard.value.sfxId;
-  }
+  if (!clipboard.length) return null;
+  if (clipboard.length === 1) return entryLabel(clipboard[0]);
+  return `${clipboard.length} objektai`;
 }
 
 function newId(prefix: string): string {
@@ -68,125 +79,164 @@ function freshVisual(entry: PositionedVisualEntry): PositionedVisualEntry {
   };
 }
 
-export function copyTimelineObject(selectionId: string): boolean {
+/**
+ * The clipboard entry for ONE selection id, or null if it addresses nothing.
+ *
+ * The scene comes from the ID, not from what is open: copying is often the LAST
+ * thing you do in a scene before moving to the next one, and resolving against
+ * the open scene meant the copy silently referred to the wrong objects the
+ * moment the selection spanned scenes.
+ */
+function entryFor(selectionId: string): ClipboardEntry | null {
   const { project, selectedSceneId } = useProjectStore.getState();
-  if (selectionId.startsWith("audio-clip-")) {
-    const clip = (project.audioClips ?? []).find((entry) => entry.id === selectionId.slice(11));
-    if (!clip) return false;
-    clipboard = { kind: "audio", value: clip };
-    return true;
+  const { sceneId: owner, objectId } = parseSelection(selectionId);
+  if (objectId.startsWith("audio-clip-")) {
+    const clip = (project.audioClips ?? []).find((entry) => entry.id === objectId.slice(11));
+    return clip ? { kind: "audio", value: clip } : null;
   }
-  const scene = project.scenes.find((entry) => entry.id === selectedSceneId);
-  if (!scene) return false;
-  const sceneEnd = computeSceneTimings(project).find((entry) => entry.scene.id === selectedSceneId)?.durationInFrames ?? project.fps;
+  const sceneId = owner ?? selectedSceneId;
+  const scene = project.scenes.find((entry) => entry.id === sceneId);
+  if (!scene) return null;
+  const sceneEnd = computeSceneTimings(project).find((entry) => entry.scene.id === sceneId)?.durationInFrames ?? project.fps;
+  const selection = objectId;
 
-  if (selectionId.startsWith("visual-")) {
-    const entry = scene.content.visuals?.find((visual) => visual.id === selectionId.slice(7));
-    if (!entry) return false;
-    clipboard = { kind: "visual", value: { ...entry, exitAt: entry.exitAt ?? sceneEnd } };
-    return true;
-  }
-
-  if (selectionId.startsWith("block-")) {
-    const block = scene.content.blocks?.find((entry) => entry.id === selectionId.slice(6));
-    if (!block) return false;
-    clipboard = { kind: "block", value: { ...block, exitAt: block.exitAt ?? sceneEnd } };
-    return true;
+  if (selection.startsWith("visual-")) {
+    const entry = scene.content.visuals?.find((visual) => visual.id === selection.slice(7));
+    return entry ? { kind: "visual", value: { ...entry, exitAt: entry.exitAt ?? sceneEnd } } : null;
   }
 
-  const lineIndex = /^line-(\d+)$/.exec(selectionId)?.[1];
+  if (selection.startsWith("block-")) {
+    const block = scene.content.blocks?.find((entry) => entry.id === selection.slice(6));
+    return block ? { kind: "block", value: { ...block, exitAt: block.exitAt ?? sceneEnd } } : null;
+  }
+
+  const lineIndex = /^line-(\d+)$/.exec(selection)?.[1];
   if (lineIndex !== undefined) {
     const line = scene.content.richHeadline?.[Number(lineIndex)];
-    if (!line) return false;
-    clipboard = { kind: "line", value: { ...line, exitAt: line.exitAt ?? scene.motion?.exitAt ?? sceneEnd } };
-    return true;
+    return line ? { kind: "line", value: { ...line, exitAt: line.exitAt ?? scene.motion?.exitAt ?? sceneEnd } } : null;
   }
 
-  const stepIndex = /^step-(\d+)$/.exec(selectionId)?.[1];
+  const stepIndex = /^step-(\d+)$/.exec(selection)?.[1];
   if (stepIndex !== undefined) {
     const item = scene.content.items?.[Number(stepIndex)];
-    if (!item) return false;
-    clipboard = { kind: "step", value: { ...item, exitAt: item.exitAt ?? scene.motion?.exitAt ?? sceneEnd } };
-    return true;
+    return item ? { kind: "step", value: { ...item, exitAt: item.exitAt ?? scene.motion?.exitAt ?? sceneEnd } } : null;
   }
 
-  return false;
+  return null;
 }
 
-/**
- * Drops the clipboard into the selected scene and returns the new object's
- * selection id, so the caller can select what it just made.
- *
- * `atFrame` (scene-relative, normally the playhead) becomes the copy's start,
- * with its original length preserved — pasting at the playhead is what every
- * editor does, and it beats landing on top of the original where you cannot
- * tell anything happened.
- */
-export function pasteTimelineObject(atFrame?: number): string | null {
-  if (!clipboard) return null;
+export function copyTimelineObject(selectionId: string): boolean {
+  return copyTimelineObjects([selectionId]);
+}
+
+/** Copies every selected object at once, keeping author order. */
+export function copyTimelineObjects(selectionIds: string[]): boolean {
+  const entries = selectionIds.map(entryFor).filter((entry): entry is ClipboardEntry => entry !== null);
+  if (!entries.length) return false;
+  clipboard = entries;
+  return true;
+}
+
+/** Where a clipboard entry started, so a multi-object paste can keep the
+ * spacing the objects had relative to each other. */
+function startOf(entry: ClipboardEntry): number {
+  return entry.kind === "audio" ? entry.value.from : (entry.value.delay ?? 0);
+}
+
+/** Keeps a copy the same length as the original, moved to `at`. */
+function retime<T extends { delay?: number; exitAt?: number }>(value: T, at: number | undefined): T {
+  if (at === undefined) return value;
+  const shift = at - (value.delay ?? 0);
+  return { ...value, delay: at, exitAt: value.exitAt === undefined ? undefined : value.exitAt + shift };
+}
+
+/** Pastes ONE entry. Reads the store fresh, so pasting several in a row appends
+ * to what the previous one added instead of to a stale snapshot. */
+function pasteOne(entry: ClipboardEntry, at: number | undefined): string | null {
   const state = useProjectStore.getState();
   const { project, selectedSceneId } = state;
-  const scene = project.scenes.find((entry) => entry.id === selectedSceneId);
+  const scene = project.scenes.find((candidate) => candidate.id === selectedSceneId);
   if (!scene || !selectedSceneId) return null;
-  if (clipboard.kind === "audio") {
-    const sceneFrom = computeSceneTimings(project).find((entry) => entry.scene.id === selectedSceneId)?.from ?? 0;
-    state.beginHistoryTransaction();
-    state.addAudioClip(clipboard.value.sfxId, sceneFrom + (atFrame ?? 0));
+
+  if (entry.kind === "audio") {
+    const sceneFrom = computeSceneTimings(project).find((timing) => timing.scene.id === selectedSceneId)?.from ?? 0;
+    state.addAudioClip(entry.value.sfxId, sceneFrom + (at ?? 0));
     const clips = useProjectStore.getState().project.audioClips ?? [];
     const inserted = clips[clips.length - 1];
-    if (inserted) state.updateAudioClip(inserted.id, {
-      startFrom: clipboard.value.startFrom,
-      durationInFrames: clipboard.value.durationInFrames,
-      volume: clipboard.value.volume,
-    });
-    state.endHistoryTransaction();
+    if (inserted) {
+      state.updateAudioClip(inserted.id, {
+        startFrom: entry.value.startFrom,
+        durationInFrames: entry.value.durationInFrames,
+        volume: entry.value.volume,
+      });
+    }
     return inserted ? `audio-clip-${inserted.id}` : null;
   }
 
-  /** Keeps the copy the same length as the original, moved to `atFrame`. */
-  function retime<T extends { delay?: number; exitAt?: number }>(value: T): T {
-    if (atFrame === undefined) return value;
-    const start = value.delay ?? 0;
-    const shift = atFrame - start;
-    return {
-      ...value,
-      delay: atFrame,
-      exitAt: value.exitAt === undefined ? undefined : value.exitAt + shift,
-    };
-  }
-
-  if (clipboard.kind === "visual") {
-    const copy = retime(freshVisual(clipboard.value));
+  if (entry.kind === "visual") {
+    const copy = retime(freshVisual(entry.value), at);
     state.updateSceneVisuals(selectedSceneId, [...(scene.content.visuals ?? []), copy]);
     return `visual-${copy.id}`;
   }
 
-  if (clipboard.kind === "block") {
-    const copy = retime({ ...clipboard.value, id: newId("block") });
+  if (entry.kind === "block") {
+    const copy = retime({ ...entry.value, id: newId("block") }, at);
     state.updateSceneBlocks(selectedSceneId, [...(scene.content.blocks ?? []), copy]);
     return `block-${copy.id}`;
   }
 
-  if (clipboard.kind === "line") {
+  if (entry.kind === "line") {
     const lines = scene.content.richHeadline ?? [];
     // Rich Headline is capped at 6 lines by the schema; silently dropping the
     // paste would look like the shortcut not working.
     if (lines.length >= 6) return null;
-    const copy = retime({ ...clipboard.value });
-    state.updateSceneRichHeadline(selectedSceneId, [...lines, copy]);
+    state.updateSceneRichHeadline(selectedSceneId, [...lines, retime({ ...entry.value }, at)]);
     return `line-${lines.length}`;
   }
 
   const items = scene.content.items ?? [];
-  const copy = retime({ ...clipboard.value });
-  state.updateSceneItems(selectedSceneId, [...items, copy]);
+  state.updateSceneItems(selectedSceneId, [...items, retime({ ...entry.value }, at)]);
   return `step-${items.length}`;
+}
+
+/**
+ * Drops the whole clipboard into the selected scene and returns the new
+ * objects' selection ids.
+ *
+ * `atFrame` (scene-relative, normally the playhead) becomes the start of the
+ * EARLIEST copied object; the rest keep their offsets from it, so a group
+ * pasted together arrives arranged the way it was copied rather than stacked on
+ * one frame. The whole paste is one history transaction — Ctrl+Z after pasting
+ * four objects undoes the paste, not a quarter of it.
+ */
+export function pasteTimelineObjects(atFrame?: number): string[] {
+  if (!clipboard.length) return [];
+  const state = useProjectStore.getState();
+  const origin = Math.min(...clipboard.map(startOf));
+  state.beginHistoryTransaction();
+  const pasted = clipboard
+    .map((entry) => pasteOne(entry, atFrame === undefined ? undefined : atFrame + (startOf(entry) - origin)))
+    .filter((id): id is string => id !== null);
+  state.endHistoryTransaction();
+  return pasted;
+}
+
+/** Single-object paste — returns the last id so the caller can select it. */
+export function pasteTimelineObject(atFrame?: number): string | null {
+  const pasted = pasteTimelineObjects(atFrame);
+  return pasted[pasted.length - 1] ?? null;
 }
 
 /** Copy and paste in one gesture, which is what "duplicate" is. */
 export function duplicateTimelineObject(selectionId: string, atFrame?: number): string | null {
   if (!copyTimelineObject(selectionId)) return null;
   return pasteTimelineObject(atFrame);
+}
+
+/** Duplicates every selected object at once, keeping their relative timing. */
+export function duplicateTimelineObjects(selectionIds: string[], atFrame?: number): string[] {
+  if (!copyTimelineObjects(selectionIds)) return [];
+  return pasteTimelineObjects(atFrame);
 }
 
 /**
@@ -196,17 +246,19 @@ export function duplicateTimelineObject(selectionId: string, atFrame?: number): 
  * one element, then try a different image in it.
  */
 export function replaceVisualAsset(selectionId: string, visual: PositionedVisualEntry["visual"]): boolean {
-  if (!selectionId.startsWith("visual-")) return false;
+  const { sceneId: owner, objectId } = parseSelection(selectionId);
+  if (!objectId.startsWith("visual-")) return false;
   const state = useProjectStore.getState();
   const { project, selectedSceneId } = state;
-  const scene = project.scenes.find((entry) => entry.id === selectedSceneId);
-  if (!scene || !selectedSceneId) return false;
+  const sceneId = owner ?? selectedSceneId;
+  const scene = project.scenes.find((entry) => entry.id === sceneId);
+  if (!scene || !sceneId) return false;
 
-  const id = selectionId.slice(7);
+  const id = objectId.slice(7);
   const visuals = scene.content.visuals ?? [];
   if (!visuals.some((entry) => entry.id === id)) return false;
   state.updateSceneVisuals(
-    selectedSceneId,
+    sceneId,
     visuals.map((entry) => (entry.id === id ? { ...entry, visual } : entry))
   );
   return true;

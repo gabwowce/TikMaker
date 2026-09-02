@@ -16,6 +16,22 @@ import { editorColors } from "./theme";
  * ignore the WebKit pseudo-elements entirely.
  */
 const css = `
+  /**
+   * The right column stacks a small Scene/Object switch above whichever panel
+   * is showing. Both panels size THEMSELVES — each sets the column width and
+   * expects to be a direct flex child of the row — so once they sit inside a
+   * wrapper they have to be told to fill it instead. This cannot be an inline
+   * style: the rule targets a child rendered by another component.
+   */
+  .panel-stack > :nth-child(2) {
+    width: 100% !important;
+    /* Basis 0, not auto: with auto the panel's own tall content sets the
+       basis and the box grows past the column instead of scrolling inside it. */
+    flex: 1 1 0;
+    min-height: 0;
+    border-left: none !important;
+  }
+
   :root {
     color-scheme: dark;
     scrollbar-color: ${editorColors.border} transparent;

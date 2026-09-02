@@ -10,7 +10,9 @@
     "render": "remotion render",
     "render:project": "tsx scripts/render-project.ts",
     "assets:sync": "tsx scripts/syncAssets.ts",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest"
   },
   "dependencies": {
     "@remotion/cli": "4.0.290",
@@ -28,6 +30,7 @@
     "dotenv": "^16.4.5",
     "tsx": "^4.16.2",
     "typescript": "5.5.4",
-    "vite": "^5.3.4"
+    "vite": "^5.3.4",
+    "vitest": "^2.1.9"
   }
 }

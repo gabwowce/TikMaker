@@ -1,0 +1,13 @@
+{
+  "id": "bg-mte0fafd",
+  "name": "gray-lines",
+  "background": {
+    "type": "custom",
+    "fill": {
+      "kind": "solid",
+      "color": "#313030"
+    },
+    "grid": "lines"
+  },
+  "savedAt": 1787985537673
+}

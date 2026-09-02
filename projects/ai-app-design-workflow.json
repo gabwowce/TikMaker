@@ -87,45 +87,6 @@
       "type": "hook-centered"
     },
     {
-      "id": "step1-title",
-      "durationSeconds": 2.5,
-      "background": {
-        "type": "custom",
-        "fill": {
-          "kind": "solid",
-          "color": "#2c2b2b"
-        },
-        "grid": "lines"
-      },
-      "content": {
-        "headline": "",
-        "richHeadline": [
-          {
-            "text": "Step 1",
-            "size": "hero",
-            "pill": true,
-            "splitBy": "word"
-          },
-          {
-            "text": "Send your screen",
-            "size": "headline",
-            "splitBy": "word"
-          },
-          {
-            "text": "to ChatGPT.",
-            "size": "headline",
-            "splitBy": "word"
-          }
-        ],
-        "visuals": []
-      },
-      "motion": {
-        "entrance": "fade",
-        "transition": "cut"
-      },
-      "type": "hook-centered"
-    },
-    {
       "id": "step1-recording",
       "durationSeconds": 3,
       "background": {
@@ -145,26 +106,30 @@
             "pill": true,
             "x": 50,
             "y": 11.4583333333333,
-            "splitBy": "word"
+            "splitBy": "word",
+            "lane": 0
           },
           {
             "text": "Redesign this screen.",
             "size": "headline",
             "x": 50.40783034257748,
             "y": 20.229357798165136,
-            "splitBy": "word"
+            "splitBy": "word",
+            "lane": 1
           },
           {
             "text": "Keep the functionality.",
             "size": "title",
             "x": 50,
             "y": 73.4583333333333,
-            "splitBy": "word"
+            "splitBy": "word",
+            "lane": 2
           },
           {
             "text": "Rethink hierarchy and layout.",
             "size": "title",
-            "splitBy": "word"
+            "splitBy": "word",
+            "lane": 0
           }
         ],
         "visuals": [
@@ -185,9 +150,52 @@
             "exit": "slideLeft",
             "exitDuration": 18,
             "entranceDistance": 380,
-            "exitDistance": 920
+            "exitDistance": 920,
+            "lane": 0
           }
         ]
+      },
+      "motion": {
+        "entrance": "fade",
+        "transition": "cut"
+      },
+      "type": "hook-centered"
+    },
+    {
+      "id": "step1-title",
+      "durationSeconds": 2.5,
+      "background": {
+        "type": "custom",
+        "fill": {
+          "kind": "solid",
+          "color": "#2c2b2b"
+        },
+        "grid": "lines"
+      },
+      "content": {
+        "headline": "",
+        "richHeadline": [
+          {
+            "text": "Step 1",
+            "size": "hero",
+            "pill": true,
+            "splitBy": "word",
+            "lane": 0
+          },
+          {
+            "text": "Send your screen",
+            "size": "headline",
+            "splitBy": "word",
+            "lane": 1
+          },
+          {
+            "text": "to ChatGPT.",
+            "size": "headline",
+            "splitBy": "word",
+            "lane": 2
+          }
+        ],
+        "visuals": []
       },
       "motion": {
         "entrance": "fade",
@@ -597,5 +605,6 @@
       },
       "type": "takeaway"
     }
-  ]
+  ],
+  "savedAt": 1788258266839
 }

@@ -1,6 +1,9 @@
 import React from "react";
 import { useProjectStore } from "../state/projectStore";
 import { editorColors } from "../theme";
+import { useVoiceStore } from "../state/voiceStore";
+import { qualifySelection } from "../timeline/selectionId";
+import { usePreferences } from "../state/fileLibrary";
 import {
   entrancePresetSchema,
   exitPresetSchema,
@@ -180,7 +183,13 @@ function assetKeyOf(visual: VisualConfig | undefined, custom: CustomAsset[]): st
  * layer switches to it. The Assets tab still exists for managing the library,
  * but needing a round trip through it just to drop one PNG into one layer was
  * the long way round. */
-export const AssetImportButton: React.FC<{ onImported: (visual: VisualConfig) => void }> = ({ onImported }) => {
+export const AssetImportButton: React.FC<{
+  onImported: (visual: VisualConfig, asset: CustomAsset) => void;
+  /** Narrows the file dialog when the caller can only use one kind — a
+   * `recording` slot offering PNGs is an invitation to pick the wrong file. */
+  accept?: string;
+  label?: string;
+}> = ({ onImported, accept = "image/*,video/*", label = "Import…" }) => {
   const upload = useCustomAssetsStore((s) => s.upload);
   const inputRef = React.useRef<HTMLInputElement>(null);
   const [busy, setBusy] = React.useState(false);
@@ -192,8 +201,9 @@ export const AssetImportButton: React.FC<{ onImported: (visual: VisualConfig) =>
     try {
       // Filename minus extension is a good enough label — the Assets tab can
       // rename it later, and blocking on a name prompt here defeats the point.
-      const label = file.name.replace(/\.[^.]+$/, "") || file.name;
-      onImported(customAssetToVisual(await upload(file, label)));
+      const name = file.name.replace(/\.[^.]+$/, "") || file.name;
+      const asset = await upload(file, name);
+      onImported(customAssetToVisual(asset), asset);
     } catch (err) {
       setError(String(err));
     } finally {
@@ -207,7 +217,7 @@ export const AssetImportButton: React.FC<{ onImported: (visual: VisualConfig) =>
       <input
         ref={inputRef}
         type="file"
-        accept="image/*,video/*"
+        accept={accept}
         style={{ display: "none" }}
         onChange={(e) => {
           const file = e.target.files?.[0];
@@ -220,7 +230,7 @@ export const AssetImportButton: React.FC<{ onImported: (visual: VisualConfig) =>
         title="Import a PNG or a screen recording from your computer and use it here"
         onClick={() => inputRef.current?.click()}
       >
-        {busy ? "Importing…" : "Import…"}
+        {busy ? "Įkeliama…" : label}
       </button>
       {error ? <div style={{ fontSize: 10, color: "#ff8a65", marginTop: 4 }}>{error}</div> : null}
     </>
@@ -284,7 +294,7 @@ const AssetSelect: React.FC<{ value: VisualConfig | undefined; allowNone?: boole
   );
 };
 
-const sfxGroupOrder: SfxGroup[] = ["impact", "reveal", "transition", "text", "ui", "success", "misc"];
+const sfxGroupOrder: SfxGroup[] = ["voice", "impact", "reveal", "transition", "text", "ui", "success", "misc"];
 const sfxByGroupSorted: [SfxGroup, typeof sfxList][] = sfxGroupOrder
   .map((group) => [group, sfxList.filter((s) => s.group === group)] as [SfxGroup, typeof sfxList])
   .filter(([, list]) => list.length > 0);
@@ -717,29 +727,47 @@ const ImportPicker: React.FC<{
 
   const matching = customAssets.filter((a) => assetKind(a) === kind);
 
+  // The import button sits HERE, next to the slot being filled. Sending you to
+  // the Assets tab to import and then back to pick it is two context switches
+  // for one intention, and it was the only asset slot in the editor that did
+  // not offer the import it needs.
+  const importButton = (
+    <AssetImportButton
+      accept={kind === "video" ? "video/*" : "image/*"}
+      label={kind === "video" ? "Įkelti įrašą…" : "Įkelti paveikslėlį…"}
+      onImported={(_visual, asset) => onChange(asset.src)}
+    />
+  );
+
   if (matching.length === 0) {
     return (
-      <div style={{ fontSize: 10, color: editorColors.textDim }}>
-        {kind === "video"
-          ? "Import a .mp4/.mov in the Assets tab and it shows up here — or paste a path under public/ below."
-          : "Import an image in the Assets tab and it shows up here as a one-click option."}
+      <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+        <div style={{ fontSize: 10, color: editorColors.textDim }}>
+          {kind === "video"
+            ? "Dar nėra įkeltų įrašų. Įkelk .mp4/.mov — arba žemiau įrašyk kelią po public/."
+            : "Dar nėra įkeltų paveikslėlių."}
+        </div>
+        <div style={{ display: "flex" }}>{importButton}</div>
       </div>
     );
   }
 
   return (
-    <select
-      style={inputStyle}
-      value={matching.some((a) => a.src === src) ? src : ""}
-      onChange={(e) => e.target.value && onChange(e.target.value)}
-    >
-      <option value="">Pick from Your Imports…</option>
-      {matching.map((asset) => (
-        <option key={asset.id} value={asset.src}>
-          {asset.label}
-        </option>
-      ))}
-    </select>
+    <div style={{ display: "flex", gap: 6, alignItems: "center" }}>
+      <select
+        style={{ ...inputStyle, flex: 1, minWidth: 0 }}
+        value={matching.some((a) => a.src === src) ? src : ""}
+        onChange={(e) => e.target.value && onChange(e.target.value)}
+      >
+        <option value="">Pasirink iš įkeltų…</option>
+        {matching.map((asset) => (
+          <option key={asset.id} value={asset.src}>
+            {asset.label}
+          </option>
+        ))}
+      </select>
+      {importButton}
+    </div>
   );
 };
 
@@ -2240,6 +2268,332 @@ const PositionedVisualsEditor: React.FC<{
  * every one of them a hunt. */
 type InspectorTab = "content" | "visuals" | "motion";
 
+
+
+/**
+ * The ElevenLabs generation settings, mirroring the sliders in their own UI.
+ *
+ * Speed is first and always visible because it is the one that decides whether
+ * the narration fits a short: the default pace reads as slow against fast cuts,
+ * and generating at 1.1–1.2 is a different thing from playing a slow take
+ * faster — one is someone talking quickly, the other is a tape running fast.
+ * The rest sit behind a toggle; they are worth having, but they are not what
+ * you reach for on every line.
+ *
+ * The values live in `library/preferences.json`, not in the project: this is
+ * how you want your narrator to sound, not a property of one video.
+ */
+const VoiceSettingsFields: React.FC = () => {
+  const preferences = usePreferences();
+  const setPreferences = usePreferences((s) => s.set);
+  const defaults = useVoiceStore((s) => s.defaults);
+  const [open, setOpen] = React.useState(false);
+
+  // Until the server has answered, there is nothing honest to draw a slider
+  // against: a hardcoded fallback here would be a second set of defaults, and
+  // the one on the server is the set that actually reaches ElevenLabs.
+  if (!defaults) return null;
+
+  const slider = (
+    label: string,
+    value: number | undefined,
+    fallback: number,
+    min: number,
+    max: number,
+    onChange: (value: number) => void,
+    hint?: string
+  ) => {
+    const resolved = value ?? fallback;
+    return (
+      <div style={{ marginBottom: 8 }}>
+        <div style={{ display: "flex", justifyContent: "space-between", fontSize: 10, color: editorColors.textDim }}>
+          <span>{label}</span>
+          <span style={{ color: editorColors.text }}>
+            {resolved.toFixed(2)}
+            {value === undefined ? " · numatyta" : ""}
+          </span>
+        </div>
+        <input
+          type="range"
+          min={min}
+          max={max}
+          step={0.05}
+          value={resolved}
+          onChange={(event) => onChange(Number(event.target.value))}
+          style={{ width: "100%", accentColor: editorColors.accent }}
+        />
+        {hint ? <div style={{ fontSize: 9, color: editorColors.textDim }}>{hint}</div> : null}
+      </div>
+    );
+  };
+
+  const overridden =
+    preferences.voiceSpeed !== undefined ||
+    preferences.voiceStability !== undefined ||
+    preferences.voiceSimilarity !== undefined ||
+    preferences.voiceStyle !== undefined ||
+    preferences.voiceSpeakerBoost !== undefined;
+
+  return (
+    <div style={{ marginBottom: 10, paddingBottom: 8, borderBottom: `1px solid ${editorColors.border}` }}>
+      {slider(
+        "Kalbėjimo greitis",
+        preferences.voiceSpeed,
+        defaults.speed,
+        0.7,
+        1.2,
+        (voiceSpeed) => setPreferences({ voiceSpeed }),
+        "Generuojama tokiu tempu — greitas kalbėjimas, ne pagreitintas įrašas."
+      )}
+
+      <div style={{ display: "flex", gap: 6 }}>
+        <button onClick={() => setOpen((value) => !value)} style={{ ...smallButtonStyle, padding: "3px 8px", fontSize: 10 }}>
+          {open ? "▾ Mažiau" : "▸ Daugiau nustatymų"}
+        </button>
+        {overridden ? (
+          <button
+            style={{ ...smallButtonStyle, padding: "3px 8px", fontSize: 10 }}
+            title="Grąžinti serverio numatytuosius"
+            onClick={() =>
+              setPreferences({
+                voiceSpeed: undefined,
+                voiceStability: undefined,
+                voiceSimilarity: undefined,
+                voiceStyle: undefined,
+                voiceSpeakerBoost: undefined,
+              })
+            }
+          >
+            ↺ Numatytieji
+          </button>
+        ) : null}
+      </div>
+
+      {open ? (
+        <div style={{ marginTop: 8 }}>
+          {slider("Stabilumas", preferences.voiceStability, defaults.stability, 0, 1, (voiceStability) => setPreferences({ voiceStability }), "Aukštesnis — vienodesnis, žemesnis — raiškesnis.")}
+          {slider("Panašumas", preferences.voiceSimilarity, defaults.similarityBoost, 0, 1, (voiceSimilarity) => setPreferences({ voiceSimilarity }))}
+          {slider("Stiliaus išraiška", preferences.voiceStyle, defaults.style, 0, 1, (voiceStyle) => setPreferences({ voiceStyle }), "ElevenLabs įspėja: virš 0.50 balsas gali tapti nestabilus.")}
+          <label style={{ display: "flex", alignItems: "center", gap: 6, fontSize: 10, color: editorColors.textDim }}>
+            <input
+              type="checkbox"
+              checked={preferences.voiceSpeakerBoost ?? defaults.speakerBoost}
+              onChange={(event) => setPreferences({ voiceSpeakerBoost: event.target.checked })}
+            />
+            Speaker boost
+          </label>
+        </div>
+      ) : null}
+    </div>
+  );
+};
+
+/**
+ * Turns this scene's `vo` line into an audio clip on the timeline.
+ *
+ * The clip is placed at the scene's own start frame, which is where a line
+ * spoken over this scene belongs — and from there it is an ordinary audio clip:
+ * drag it, trim it, change its volume or speed, let it run past the cut.
+ *
+ * Its length is left UNSET on purpose. The waveform decoder already measures
+ * the file when it draws it, and the timeline falls back to that; writing a
+ * guessed length here would be a second, worse answer to a question something
+ * else already answers exactly.
+ */
+const VoiceoverGenerator: React.FC<{ sceneId: string; text: string | undefined }> = ({ sceneId, text }) => {
+  const configured = useVoiceStore((s) => s.configured);
+  const checkStatus = useVoiceStore((s) => s.checkStatus);
+  const generate = useVoiceStore((s) => s.generate);
+  const generating = useVoiceStore((s) => s.generating.includes(sceneId));
+  const error = useVoiceStore((s) => s.error);
+  const project = useProjectStore((s) => s.project);
+  const addAudioClip = useProjectStore((s) => s.addAudioClip);
+  const selectObject = useProjectStore((s) => s.selectObject);
+  const preferences = usePreferences();
+
+  React.useEffect(() => {
+    if (configured === null) void checkStatus();
+  }, [configured, checkStatus]);
+
+  const sceneFrom = computeSceneTimings(project).find((entry) => entry.scene.id === sceneId)?.from ?? 0;
+
+  if (configured === false) {
+    return (
+      <div style={{ fontSize: 11, color: editorColors.textDim, marginTop: 8, lineHeight: 1.5 }}>
+        Balso generavimas išjungtas. Įrašyk <code>ELEVENLABS_API_KEY</code> į <code>.env.local</code> ir perkrauk dev
+        serverį.
+      </div>
+    );
+  }
+
+  return (
+    <div style={{ marginTop: 8 }}>
+      <VoiceSettingsFields />
+      <button
+        disabled={!text?.trim() || generating}
+        onClick={async () => {
+          if (!text?.trim()) return;
+          const clip = await generate({
+            text,
+            label: text.trim().slice(0, 40),
+            key: sceneId,
+            settings: {
+              speed: preferences.voiceSpeed,
+              stability: preferences.voiceStability,
+              similarityBoost: preferences.voiceSimilarity,
+              style: preferences.voiceStyle,
+              speakerBoost: preferences.voiceSpeakerBoost,
+            },
+          });
+          if (!clip) return;
+          addAudioClip(clip.id, sceneFrom);
+          const clips = useProjectStore.getState().project.audioClips ?? [];
+          const inserted = clips[clips.length - 1];
+          if (inserted) selectObject(`audio-clip-${inserted.id}`);
+        }}
+        style={{
+          ...smallButtonStyle,
+          opacity: !text?.trim() || generating ? 0.5 : 1,
+          borderColor: editorColors.accent,
+          color: editorColors.accent,
+        }}
+      >
+        {generating ? "Generuojama…" : "🎙 Generuoti įgarsinimą"}
+      </button>
+      {error ? (
+        <div style={{ fontSize: 10, color: "#ff8a65", marginTop: 6, whiteSpace: "pre-wrap" }}>{error}</div>
+      ) : null}
+    </div>
+  );
+};
+
+
+/**
+ * The scene's objects as a LIST, not as a second editor.
+ *
+ * Every one of these had a full editor here AND a full editor in the object
+ * panel — two sets of controls for one line of text, which is how the two drift
+ * and how you end up hunting for the colour picker that only exists in one of
+ * them. Configuration lives with the selection: click a row, the object panel
+ * opens on it.
+ *
+ * What stays here is what the SCENE owns and an individual object cannot answer
+ * on its own: what exists, in what order, and adding or removing one.
+ */
+const SceneObjectList: React.FC<{
+  rows: { id: string; label: string; detail?: string }[];
+  emptyLabel: string;
+  onAdd?: () => void;
+  addLabel?: string;
+  onMove?: (id: string, direction: -1 | 1) => void;
+  onRemove?: (id: string) => void;
+}> = ({ rows, emptyLabel, onAdd, addLabel, onMove, onRemove }) => {
+  const selectedObjectId = useProjectStore((s) => s.selectedObjectId);
+  const selectObject = useProjectStore((s) => s.selectObject);
+  const selectedSceneId = useProjectStore((s) => s.selectedSceneId);
+
+  return (
+    <div style={{ display: "flex", flexDirection: "column", gap: 5 }}>
+      {rows.length === 0 ? <div style={{ fontSize: 11, color: editorColors.textDim }}>{emptyLabel}</div> : null}
+      {rows.map((row, index) => {
+        const qualified = qualifySelection(selectedSceneId ?? undefined, row.id);
+        const selected = selectedObjectId === qualified;
+        return (
+          <div
+            key={row.id}
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: 4,
+              padding: "7px 8px",
+              borderRadius: 7,
+              border: `1px solid ${selected ? editorColors.accent : editorColors.border}`,
+              background: selected ? "rgba(255,112,36,0.08)" : editorColors.panelElevated,
+            }}
+          >
+            <button
+              onClick={() => selectObject(qualified)}
+              title="Atidaryti nustatymus"
+              style={{ flex: 1, minWidth: 0, textAlign: "left", background: "transparent", border: "none", color: editorColors.text, cursor: "pointer", padding: 0 }}
+            >
+              <div style={{ fontSize: 11, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                {row.label || <em style={{ color: editorColors.textDim }}>(tuščia)</em>}
+              </div>
+              {row.detail ? <div style={{ fontSize: 10, color: editorColors.textDim }}>{row.detail}</div> : null}
+            </button>
+            {onMove ? (
+              <>
+                <button style={miniButtonStyle} disabled={index === 0} title="Aukštyn" onClick={() => onMove(row.id, -1)}>↑</button>
+                <button style={miniButtonStyle} disabled={index === rows.length - 1} title="Žemyn" onClick={() => onMove(row.id, 1)}>↓</button>
+              </>
+            ) : null}
+            {onRemove ? (
+              <button style={miniButtonStyle} title="Pašalinti" onClick={() => onRemove(row.id)}>×</button>
+            ) : null}
+          </div>
+        );
+      })}
+      {onAdd ? (
+        <button style={{ ...smallButtonStyle, marginTop: 3 }} onClick={onAdd}>
+          {addLabel ?? "+ Pridėti"}
+        </button>
+      ) : null}
+    </div>
+  );
+};
+
+const miniButtonStyle: React.CSSProperties = {
+  padding: "2px 6px",
+  fontSize: 10,
+  borderRadius: 5,
+  border: `1px solid ${editorColors.border}`,
+  background: "transparent",
+  color: editorColors.textDim,
+  cursor: "pointer",
+};
+
+
+/** The whole rich-headline stack's position, which is a SCENE-level choice —
+ * it decides where the text column sits, not what any one line does. A line's
+ * own x/y lives in that line's panel. */
+const StackPositionFields: React.FC<{
+  x?: number;
+  y?: number;
+  onChange: (patch: { richHeadlineX?: number; richHeadlineY?: number }) => void;
+}> = ({ x, y, onChange }) => (
+  <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+    {([
+      ["X", x, (value: number | undefined) => onChange({ richHeadlineX: value })],
+      ["Y", y, (value: number | undefined) => onChange({ richHeadlineY: value })],
+    ] as const).map(([label, value, set]) => (
+      <div key={label}>
+        <div style={{ display: "flex", justifyContent: "space-between", fontSize: 10, color: editorColors.textDim }}>
+          <span>{label}</span>
+          <span>{value === undefined ? "auto" : `${Math.round(value)}%`}</span>
+        </div>
+        <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+          <input
+            type="range"
+            min={0}
+            max={100}
+            step={0.5}
+            value={value ?? 50}
+            onChange={(event) => set(Number(event.target.value))}
+            style={{ flex: 1, accentColor: editorColors.accent }}
+          />
+          <button
+            style={{ ...miniButtonStyle, opacity: value === undefined ? 0.4 : 1 }}
+            title="Grąžinti automatinę vietą"
+            onClick={() => set(undefined)}
+          >
+            ↺
+          </button>
+        </div>
+      </div>
+    ))}
+  </div>
+);
+
 const inspectorTabs: { id: InspectorTab; label: string }[] = [
   { id: "content", label: "Content" },
   { id: "visuals", label: "Visuals" },
@@ -2375,53 +2729,50 @@ export const InspectorPanel: React.FC = () => {
       {tab === "content" ? (
         <>
       <Section title="Content" defaultOpen>
-        {!isComparison ? (
+        {!isSteps && !isComparison ? (
           <>
-            <div style={labelStyle}>Eyebrow</div>
-            <input
-              style={inputStyle}
-              value={scene.content.eyebrow ?? ""}
-              onChange={(e) => updateSceneContent(selectedSceneId, { eyebrow: e.target.value })}
-            />
-          </>
-        ) : null}
-
-        {!isSteps ? (
-          <>
-            <div style={labelStyle}>Headline</div>
-            <textarea
-              style={{ ...inputStyle, minHeight: 60, resize: "vertical", fontFamily: "inherit" }}
-              value={scene.content.headline ?? ""}
-              onChange={(e) => updateSceneContent(selectedSceneId, { headline: e.target.value })}
-            />
-
-            <div style={labelStyle}>Highlighted words</div>
-            <input
-              style={inputStyle}
-              value={(scene.content.highlights ?? []).join(", ")}
-              onChange={(e) =>
-                updateSceneHighlights(
-                  selectedSceneId,
-                  e.target.value
-                    .split(",")
-                    .map((w) => w.trim())
-                    .filter(Boolean)
-                )
-              }
-              placeholder="Comma-separated words to pill-highlight"
-            />
-
-            <Section
-              title="Rich Headline"
-              subtitle='Stacked, independently-sized/animated lines — overrides Headline above. Only used by Hook Centered, Hook With Visual and Takeaway.'
-            >
-              <RichHeadlineEditor
-                lines={scene.content.richHeadline ?? []}
-                onChange={(lines) => updateSceneRichHeadline(selectedSceneId, lines)}
-                stackX={scene.content.richHeadlineX}
-                stackY={scene.content.richHeadlineY}
-                onStackMove={(patch) => updateSceneContent(selectedSceneId, patch)}
+            <Section title={`Tekstas (${(scene.content.richHeadline ?? []).length})`} defaultOpen>
+              <div style={{ fontSize: 11, color: editorColors.textDim, marginBottom: 8, lineHeight: 1.45 }}>
+                Paspausk eilutę — jos turinys, stilius, vieta, animacija ir garsas atsidaro objekto skydelyje.
+              </div>
+              <SceneObjectList
+                rows={(scene.content.richHeadline ?? []).map((line, index) => ({
+                  id: `line-${index}`,
+                  label: line.text,
+                  detail: `${line.size}${line.pill ? " · pill" : ""}${line.x !== undefined && line.y !== undefined ? ` · x${Math.round(line.x)} y${Math.round(line.y)}` : ""}`,
+                }))}
+                emptyLabel="Šioje scenoje teksto dar nėra."
+                addLabel="+ Tekstas"
+                onAdd={() => {
+                  const lines = scene.content.richHeadline ?? [];
+                  if (lines.length >= 6) return;
+                  updateSceneRichHeadline(selectedSceneId, [...lines, { text: "Naujas tekstas", size: "headline" as const }]);
+                }}
+                onMove={(id, direction) => {
+                  const lines = [...(scene.content.richHeadline ?? [])];
+                  const at = Number(id.slice(5));
+                  const to = at + direction;
+                  if (to < 0 || to >= lines.length) return;
+                  [lines[at], lines[to]] = [lines[to], lines[at]];
+                  updateSceneRichHeadline(selectedSceneId, lines);
+                }}
+                onRemove={(id) => {
+                  const at = Number(id.slice(5));
+                  updateSceneRichHeadline(selectedSceneId, (scene.content.richHeadline ?? []).filter((_, index) => index !== at));
+                }}
               />
+              <div style={{ marginTop: 10 }}>
+                <div style={labelStyle}>Teksto stulpelio vieta</div>
+                <div style={{ fontSize: 10, color: editorColors.textDim, marginBottom: 6 }}>
+                  Perkelia VISĄ stulpelį, kad gretimos scenos nedėtų antraščių ant tos pačios linijos. Atskiros eilutės
+                  vieta nustatoma jos pačios skydelyje.
+                </div>
+                <StackPositionFields
+                  x={scene.content.richHeadlineX}
+                  y={scene.content.richHeadlineY}
+                  onChange={(patch) => updateSceneContent(selectedSceneId, patch)}
+                />
+              </div>
             </Section>
           </>
         ) : null}
@@ -2547,30 +2898,40 @@ export const InspectorPanel: React.FC = () => {
         ) : null}
       </Section>
 
-      <Section title="Blocks" subtitle="Freeform positioned text/badge — available on every template">
-        <BlocksEditor
-          blocks={scene.content.blocks ?? []}
-          onChange={(blocks) => updateSceneBlocks(selectedSceneId, blocks)}
-        />
-      </Section>
+      {(scene.content.blocks ?? []).length ? (
+        <Section title={`Seni teksto blokai (${scene.content.blocks!.length})`} subtitle="Ankstesnio modelio tekstas. Konfigūruojamas pažymėjus, kaip ir visa kita.">
+          <SceneObjectList
+            rows={(scene.content.blocks ?? []).map((block) => ({
+              id: `block-${block.id}`,
+              label: block.text,
+              detail: `${block.type} · x${Math.round(block.x)} y${Math.round(block.y)}`,
+            }))}
+            emptyLabel=""
+            onRemove={(id) =>
+              updateSceneBlocks(selectedSceneId, (scene.content.blocks ?? []).filter((block) => `block-${block.id}` !== id))
+            }
+          />
+        </Section>
+      ) : null}
 
-      <Section title="Voiceover" subtitle="Drives how long this scene stays on screen" defaultOpen>
+      <Section title="Įgarsinimas" subtitle="Nustato, kiek scena laikosi ekrane" defaultOpen>
         <div style={{ fontSize: 11, color: editorColors.textDim, marginBottom: 6 }}>
-          The line you'll record for this scene. The app doesn't generate audio — it uses the wording to work out how
-          long the scene has to stay up so the cut never lands before you finish the sentence.
+          Tekstas, kurį sakai per šią sceną. Iš jo skaičiuojama scenos trukmė, kad kirpimas nenukristų anksčiau, nei
+          baigi sakinį — ir iš jo pat generuojamas balsas.
         </div>
         <textarea
           rows={3}
           style={{ ...inputStyle, resize: "vertical" }}
           value={scene.vo ?? ""}
-          placeholder="What you say over this scene…"
+          placeholder="Ką sakai per šią sceną…"
           onChange={(e) => updateScene(selectedSceneId, { vo: e.target.value || undefined })}
         />
         {scene.vo ? (
           <div style={{ fontSize: 11, color: editorColors.textDim, marginTop: 4 }}>
-            ≈ {voDurationSeconds(scene.vo).toFixed(1)}s to say
+            ≈ {voDurationSeconds(scene.vo).toFixed(1)}s ištarti
           </div>
         ) : null}
+        <VoiceoverGenerator sceneId={selectedSceneId} text={scene.vo} />
       </Section>
 
       <Section title="Notes" subtitle="Never rendered — what this frame still needs">
@@ -2640,14 +3001,26 @@ export const InspectorPanel: React.FC = () => {
       <Section
         title={`Layers${(scene.content.visuals?.length ?? 0) > 0 ? ` (${scene.content.visuals!.length})` : ""}`}
         defaultOpen
-        subtitle="Every visual in this scene, listed bottom layer first — the last one draws on top. Each has the same controls: position, scale, In/Out, Ken Burns, sound and carry into the next scene. Use ↑ / ↓ to restack. Add more from the Visuals tab."
+        subtitle="Apačioje esantis piešiamas po viršutiniu. ↑ / ↓ keičia eiliškumą; nustatymai — paspaudus sluoksnį. Naujų pridedi iš Visuals kortelės."
       >
-        <PositionedVisualsEditor
-          visuals={scene.content.visuals ?? []}
-          canCarry={hasNextScene}
-          onCarry={(entryId) => linkLayerToNextScene(selectedSceneId, entryId)}
-          onChange={(visuals) => updateSceneVisuals(selectedSceneId, visuals)}
-          roleFor={roleForLayer}
+        <SceneObjectList
+          rows={(scene.content.visuals ?? []).map((entry) => ({
+            id: `visual-${entry.id}`,
+            label: entry.visual.type,
+            detail: `x${Math.round(entry.x)} y${Math.round(entry.y)}${entry.scale ? ` · ${entry.scale.toFixed(2)}×` : ""}${entry.link ? " · perkeliamas" : ""}`,
+          }))}
+          emptyLabel="Sluoksnių nėra. Pridėk iš Visuals kortelės."
+          onMove={(id, direction) => {
+            const visuals = [...(scene.content.visuals ?? [])];
+            const at = visuals.findIndex((entry) => `visual-${entry.id}` === id);
+            const to = at + direction;
+            if (at === -1 || to < 0 || to >= visuals.length) return;
+            [visuals[at], visuals[to]] = [visuals[to], visuals[at]];
+            updateSceneVisuals(selectedSceneId, visuals);
+          }}
+          onRemove={(id) =>
+            updateSceneVisuals(selectedSceneId, (scene.content.visuals ?? []).filter((entry) => `visual-${entry.id}` !== id))
+          }
         />
       </Section>
 

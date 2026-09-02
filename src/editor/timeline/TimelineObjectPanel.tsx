@@ -1,20 +1,25 @@
 import React from "react";
 import { entrancePresetSchema, exitPresetSchema, kenBurnsPresetSchema, richTextSplitBySchema, type EntrancePreset, type ExitPreset, type KenBurnsPreset } from "../../schema/scene";
 import { computeSceneTimings, projectDurationInFrames } from "../../utils/duration";
+import { formatDuration, framesToSeconds, frameStep } from "../../utils/timecode";
+import { parseSelection } from "./selectionId";
+import { fontSizes } from "../../video/typography/tokens";
+import { TEXT_CASE_OPTIONS, TEXT_FONT_OPTIONS } from "../../video/typography/textStyle";
+import type { RichTextFont, TextCase } from "../../schema/scene";
 import { splitSpan, splitText } from "../../video/typography/splitAnimate";
 import { useProjectStore } from "../state/projectStore";
 import { editorColors } from "../theme";
 import { SfxSelect, VisualFieldsEditor } from "../panels/InspectorPanel";
 import { confirmDeleteTimelineObject, describeTimelineObject } from "./deleteTimelineObject";
-import { hasKeyframePath, keyframeAtFrame, poseAtFrame, sortedKeyframes } from "../../video/layout/visualKeyframes";
+import { keyframePins, keyframesFor, poseAtFrame, sortedKeyframes, type KeyframeProperty } from "../../video/layout/visualKeyframes";
 import type { PositionedVisualEntry } from "../../schema/scene";
 
 type InspectorTab = "basic" | "effects" | "audio";
 
-export const TimelineObjectPanel: React.FC<{ selectionId: string; onClose: () => void }> = ({ selectionId, onClose }) => {
+export const TimelineObjectPanel: React.FC<{ selectionId: string; onClose: () => void }> = ({ selectionId: rawSelectionId, onClose }) => {
   const [tab, setTab] = React.useState<InspectorTab>("basic");
   const project = useProjectStore((state) => state.project);
-  const selectedSceneId = useProjectStore((state) => state.selectedSceneId);
+  const openSceneId = useProjectStore((state) => state.selectedSceneId);
   const updateScene = useProjectStore((state) => state.updateScene);
   const updateSceneMotion = useProjectStore((state) => state.updateSceneMotion);
   const updateSceneRichHeadline = useProjectStore((state) => state.updateSceneRichHeadline);
@@ -23,7 +28,14 @@ export const TimelineObjectPanel: React.FC<{ selectionId: string; onClose: () =>
   const updateSceneItems = useProjectStore((state) => state.updateSceneItems);
   const updateAudioClip = useProjectStore((state) => state.updateAudioClip);
 
-  React.useEffect(() => setTab("basic"), [selectionId]);
+  React.useEffect(() => setTab("basic"), [rawSelectionId]);
+
+  // The panel edits the object the ID names, in the scene the ID names — not
+  // whatever scene is open. In the full-video timeline those are routinely
+  // different, and resolving against the open scene edited the wrong object.
+  const parsed = parseSelection(rawSelectionId);
+  const selectionId = parsed.objectId;
+  const selectedSceneId = parsed.sceneId ?? openSceneId;
 
   const timing = computeSceneTimings(project).find((entry) => entry.scene.id === selectedSceneId);
   if (!timing || !selectedSceneId) return <EmptyInspector onClose={onClose} />;
@@ -62,7 +74,17 @@ export const TimelineObjectPanel: React.FC<{ selectionId: string; onClose: () =>
     if (!clip) return <EmptyInspector onClose={onClose} />;
     title = "Audio klipas";
     subtitle = "Globalus garsas";
-    basic = <><TimePoint value={clip.from} max={projectDurationInFrames(project)} onChange={(from) => updateAudioClip(clip.id, { from })} /><Section title="Apkarpymas"><FrameSlider label="Šaltinio IN" value={clip.startFrom ?? 0} min={0} max={Math.max(1, (clip.startFrom ?? 0) + (clip.durationInFrames ?? 30))} fps={project.fps} onChange={(startFrom) => updateAudioClip(clip.id, { startFrom })} /><FrameSlider label="Trukmė" value={clip.durationInFrames ?? 30} min={1} max={Math.max(30, projectDurationInFrames(project))} fps={project.fps} onChange={(durationInFrames) => updateAudioClip(clip.id, { durationInFrames })} /></Section><SliderField label="Garsumas" value={clip.volume ?? 1} min={0} max={2} step={0.05} suffix="×" onChange={(volume) => updateAudioClip(clip.id, { volume })} /></>;
+    basic = <><TimePoint value={clip.from} max={projectDurationInFrames(project)} onChange={(from) => updateAudioClip(clip.id, { from })} /><Section title="Apkarpymas"><FrameSlider label="Šaltinio IN" value={clip.startFrom ?? 0} min={0} max={Math.max(1, (clip.startFrom ?? 0) + (clip.durationInFrames ?? 30))} fps={project.fps} onChange={(startFrom) => updateAudioClip(clip.id, { startFrom })} /><FrameSlider label="Trukmė" value={clip.durationInFrames ?? 30} min={1} max={Math.max(30, projectDurationInFrames(project))} fps={project.fps} onChange={(durationInFrames) => updateAudioClip(clip.id, { durationInFrames })} /></Section><SliderField label="Garsumas" value={clip.volume ?? 1} min={0} max={2} step={0.05} suffix="×" onChange={(volume) => updateAudioClip(clip.id, { volume })} /><SliderField label="Greitis" value={clip.playbackRate ?? 1} min={0.5} max={2} step={0.05} suffix="×" onChange={(playbackRate) => {
+      // Speeding a clip up makes it SHORTER, so its clip on the timeline has to
+      // shrink with it — otherwise the bar keeps claiming three seconds of
+      // audio that now lasts two, and everything lined up after it is wrong.
+      const previous = clip.playbackRate ?? 1;
+      const length = clip.durationInFrames;
+      updateAudioClip(clip.id, {
+        playbackRate,
+        durationInFrames: length === undefined ? undefined : Math.max(1, Math.round(length * (previous / playbackRate))),
+      });
+    }} /></>;
     audio = <Section title="Garsas"><Field label="Garso efektas"><SfxSelect mode="explicit" value={clip.sfxId} onChange={(sfxId) => sfxId && updateAudioClip(clip.id, { sfxId })} /></Field></Section>;
   } else if (sceneSound) {
     const isOut = sceneSound === "out";
@@ -99,11 +121,11 @@ export const TimelineObjectPanel: React.FC<{ selectionId: string; onClose: () =>
     const update = (patch: Partial<typeof line>) => updateSceneRichHeadline(selectedSceneId, lines.map((value, at) => at === index ? { ...value, ...patch } : value));
     title = `Tekstas ${index + 1}`;
     subtitle = "Rich Headline eilutė";
-    basic = <><Section title="Turinys"><Field label="Tekstas"><textarea rows={3} style={inputStyle} value={line.text} onChange={(event) => update({ text: event.target.value })} /></Field><SplitFields text={line.text} splitBy={line.splitBy} splitDuration={line.splitDuration} onChange={update} /></Section><TimingFields start={line.delay ?? 0} end={line.exitAt ?? sceneEnd} max={max} onChange={(delay, exitAt) => update({ delay, exitAt })} /></>;
-    effects = <EffectsEditor entrance={line.animation} exit={line.exit} entranceDuration={line.splitDuration ?? line.entranceDuration} exitDuration={line.exitDuration} autoEntrance="pop" windowFrames={(line.exitAt ?? sceneEnd) - (line.delay ?? 0)} onChange={(patch) => {
+    basic = <><Section title="Turinys"><Field label="Tekstas"><textarea rows={3} style={inputStyle} value={line.text} onChange={(event) => update({ text: event.target.value })} /></Field><label style={{ display: "flex", alignItems: "center", gap: 8, fontSize: 11, color: editorColors.textDim, cursor: "pointer" }}><input type="checkbox" checked={line.pill ?? false} onChange={(event) => update({ pill: event.target.checked || undefined })} />Pill (šviesus fonas, tamsus tekstas)</label></Section><TypographyFields font={line.font} defaultFont="tanker" textCase={line.textCase} defaultCase="upper" color={line.color} defaultColorHint={line.pill ? "auto · tamsi" : "auto · balta"} letterSpacing={line.letterSpacing} onChange={update} /><TextPlacementFields x={line.x} y={line.y} sizePx={line.sizePx} sizeFallback={fontSizes[line.size]} onChange={update} /><TimingFields start={line.delay ?? 0} end={line.exitAt ?? sceneEnd} max={max} onChange={(delay, exitAt) => update({ delay, exitAt })} /></>;
+    effects = <><Section title="Skaidymas"><SplitFields text={line.text} splitBy={line.splitBy} splitDuration={line.splitDuration} onChange={update} /></Section><EffectsEditor entrance={line.animation} exit={line.exit} entranceDuration={line.splitDuration ?? line.entranceDuration} exitDuration={line.exitDuration} autoEntrance="pop" ownsInDuration={false} windowFrames={(line.exitAt ?? sceneEnd) - (line.delay ?? 0)} onChange={(patch) => {
       const { entranceDuration, ...rest } = patch;
       update({ ...renameEntranceField(rest), ...(entranceDuration !== undefined ? { splitDuration: entranceDuration, entranceDuration: undefined } : {}) });
-    }} />;
+    }} /></>;
     audio = <AudioPair entrance={line.sfx} mode="explicit" onEntrance={(sfx) => update({ sfx })} />;
   } else if (blockId) {
     const index = blocks.findIndex((item) => item.id === blockId);
@@ -112,11 +134,11 @@ export const TimelineObjectPanel: React.FC<{ selectionId: string; onClose: () =>
     const update = (patch: Partial<typeof block>) => updateSceneBlocks(selectedSceneId, blocks.map((value, at) => at === index ? { ...value, ...patch } : value));
     title = "Teksto blokas";
     subtitle = block.type;
-    basic = <><Section title="Turinys"><Field label="Tekstas"><textarea rows={3} style={inputStyle} value={block.text} onChange={(event) => update({ text: event.target.value })} /></Field><SplitFields text={block.text} splitBy={block.splitBy} splitDuration={block.splitDuration} onChange={update} /></Section><PositionFields x={block.x} y={block.y} scale={block.size ?? 52} scaleMin={8} scaleMax={200} scaleLabel="Dydis" onChange={(patch) => update({ x: patch.x ?? block.x, y: patch.y ?? block.y, size: patch.scale })} /><TimingFields start={block.delay ?? 0} end={block.exitAt ?? sceneEnd} max={max} onChange={(delay, exitAt) => update({ delay, exitAt })} /></>;
-    effects = <EffectsEditor entrance={block.animation} exit={block.exit} entranceDuration={block.splitDuration ?? block.entranceDuration} exitDuration={block.exitDuration} autoEntrance="pop" windowFrames={(block.exitAt ?? sceneEnd) - (block.delay ?? 0)} onChange={(patch) => {
+    basic = <><Section title="Turinys"><Field label="Tekstas"><textarea rows={3} style={inputStyle} value={block.text} onChange={(event) => update({ text: event.target.value })} /></Field></Section><TypographyFields font={block.font} defaultFont="tanker" textCase={block.textCase} defaultCase={(block.font ?? "tanker") === "tanker" ? "upper" : "none"} color={block.color} defaultColorHint="auto · balta" letterSpacing={block.letterSpacing} onChange={update} /><PositionFields x={block.x} y={block.y} scale={block.size ?? 52} scaleMin={8} scaleMax={200} scaleLabel="Dydis" onChange={(patch) => update({ x: patch.x ?? block.x, y: patch.y ?? block.y, size: patch.scale })} /><TimingFields start={block.delay ?? 0} end={block.exitAt ?? sceneEnd} max={max} onChange={(delay, exitAt) => update({ delay, exitAt })} /></>;
+    effects = <><Section title="Skaidymas"><SplitFields text={block.text} splitBy={block.splitBy} splitDuration={block.splitDuration} onChange={update} /></Section><EffectsEditor entrance={block.animation} exit={block.exit} entranceDuration={block.splitDuration ?? block.entranceDuration} exitDuration={block.exitDuration} autoEntrance="pop" ownsInDuration={false} windowFrames={(block.exitAt ?? sceneEnd) - (block.delay ?? 0)} onChange={(patch) => {
       const { entranceDuration, ...rest } = patch;
       update({ ...renameEntranceField(rest), ...(entranceDuration !== undefined ? { splitDuration: entranceDuration, entranceDuration: undefined } : {}) });
-    }} />;
+    }} /></>;
     audio = <AudioPair entrance={block.sfx} mode="explicit" onEntrance={(sfx) => update({ sfx })} />;
   } else if (visualId) {
     const index = visuals.findIndex((item) => item.id === visualId);
@@ -162,7 +184,7 @@ export const TimelineObjectPanel: React.FC<{ selectionId: string; onClose: () =>
     <div style={tabsStyle}>{tabs.map((item) => <button key={item.id} onClick={() => setTab(item.id)} style={{ ...tabStyle, color: tab === item.id ? editorColors.accent : editorColors.textDim, background: tab === item.id ? editorColors.panel : "transparent" }}>{item.label}</button>)}</div>
     <div style={bodyStyle}>
       {tabs.find((item) => item.id === tab)?.content ?? <EmptyTab />}
-      {tab === "basic" ? <DeleteObjectButton selectionId={selectionId} onDeleted={onClose} /> : null}
+      {tab === "basic" ? <DeleteObjectButton selectionId={rawSelectionId} onDeleted={onClose} /> : null}
     </div>
   </aside>;
 };
@@ -182,22 +204,54 @@ const VisualPoseFields: React.FC<{ sceneId: string; entry: PositionedVisualEntry
   const addVisualKeyframe = useProjectStore((state) => state.addVisualKeyframe);
   const updateVisualKeyframe = useProjectStore((state) => state.updateVisualKeyframe);
   const localFrame = Math.max(0, playheadFrame - sceneFrom);
-  const keyed = hasKeyframePath(entry);
   const pose = poseAtFrame(entry, localFrame);
-  const here = keyframeAtFrame(entry, localFrame);
 
+  const positionKeys = keyframesFor(entry, "position");
+  const scaleKeys = keyframesFor(entry, "scale");
+
+  /**
+   * An edit goes to the track it belongs to.
+   *
+   * Moving a layer writes a POSITION keyframe and leaves the scale track
+   * untouched; resizing writes a SCALE one. Before the split, one edit wrote
+   * both, so nudging the position also froze the scale at that instant and
+   * silently killed any scale animation running through it.
+   */
   function apply(patch: { x?: number; y?: number; scale?: number }) {
-    if (!keyed) {
-      onChange({ x: patch.x ?? entry.x, y: patch.y ?? entry.y, scale: patch.scale ?? entry.scale });
-      return;
+    const movesPosition = patch.x !== undefined || patch.y !== undefined;
+    const movesScale = patch.scale !== undefined;
+
+    if (movesPosition) {
+      if (positionKeys.length >= 2) {
+        const here = positionKeys.find((keyframe) => keyframe.frame === localFrame);
+        if (here) updateVisualKeyframe(sceneId, entry.id, here.id, { x: patch.x, y: patch.y });
+        else addVisualKeyframe(sceneId, entry.id, localFrame, "position", { x: patch.x, y: patch.y });
+      } else {
+        onChange({ x: patch.x ?? entry.x, y: patch.y ?? entry.y });
+      }
     }
-    if (here) updateVisualKeyframe(sceneId, entry.id, here.id, patch);
-    else addVisualKeyframe(sceneId, entry.id, localFrame, patch);
+
+    if (movesScale) {
+      if (scaleKeys.length >= 2) {
+        const here = scaleKeys.find((keyframe) => keyframe.frame === localFrame);
+        if (here) updateVisualKeyframe(sceneId, entry.id, here.id, { scale: patch.scale });
+        else addVisualKeyframe(sceneId, entry.id, localFrame, "scale", { scale: patch.scale });
+      } else {
+        onChange({ scale: patch.scale });
+      }
+    }
   }
+
+  const note = [
+    positionKeys.length >= 2 ? "poziciją" : null,
+    scaleKeys.length >= 2 ? "mastelį" : null,
+  ].filter(Boolean);
 
   return <>
     <PositionFields x={pose.x} y={pose.y} scale={pose.scale ?? 1} scaleMin={0.1} scaleMax={4} scaleLabel="Mastelis" onChange={apply} />
-    {keyed ? <div style={hintStyle}>{here ? "Redaguoji keyframe'ą ties playhead'u." : "Pakeitimas sukurs naują keyframe'ą ties playhead'u."}</div> : null}
+    {note.length ? (
+      <div style={hintStyle}>Keiti {note.join(" ir ")} ties playhead'u — jei ten keyframe'o nėra, jis bus sukurtas.</div>
+    ) : null}
   </>;
 };
 
@@ -207,29 +261,90 @@ const VisualPoseFields: React.FC<{ sceneId: string; entry: PositionedVisualEntry
  * the numeric view of it, for the frame you cannot hit by hand.
  */
 const KeyframeFields: React.FC<{ sceneId: string; entry: PositionedVisualEntry; sceneFrom: number; max: number }> = ({ sceneId, entry, sceneFrom, max }) => {
-  const fps = useProjectStore((state) => state.project.fps);
   const playheadFrame = useProjectStore((state) => state.playheadFrame);
+  const localFrame = Math.min(Math.max(0, playheadFrame - sceneFrom), max);
+
+  return (
+    <Section title="Keyframes">
+      <div style={hintStyle}>
+        Pozicija ir mastelis turi atskiras juostas — vienas keyframe'as tik prisega pozą, kelias prasideda nuo dviejų.
+        Judesys trunka lygiai tiek, kiek tarpas tarp dviejų keyframe'ų.
+      </div>
+      <KeyframeTrack sceneId={sceneId} entry={entry} property="position" label="Pozicija" localFrame={localFrame} max={max} />
+      <KeyframeTrack sceneId={sceneId} entry={entry} property="scale" label="Mastelis" localFrame={localFrame} max={max} />
+    </Section>
+  );
+};
+
+/** One property's keyframes. Two of these make the section; nothing about
+ * either knows the other exists, which is the point. */
+const KeyframeTrack: React.FC<{
+  sceneId: string;
+  entry: PositionedVisualEntry;
+  property: KeyframeProperty;
+  label: string;
+  localFrame: number;
+  max: number;
+}> = ({ sceneId, entry, property, label, localFrame, max }) => {
+  const fps = useProjectStore((state) => state.project.fps);
   const addVisualKeyframe = useProjectStore((state) => state.addVisualKeyframe);
   const updateVisualKeyframe = useProjectStore((state) => state.updateVisualKeyframe);
   const removeVisualKeyframe = useProjectStore((state) => state.removeVisualKeyframe);
-  const localFrame = Math.min(Math.max(0, playheadFrame - sceneFrom), max);
-  const keyframes = sortedKeyframes(entry);
+  const keyframes = keyframesFor(entry, property);
 
-  return <Section title={`Keyframes (${keyframes.length})`}>
-    <div style={hintStyle}>Pozicija ir mastelis per laiką. Vienas keyframe'as tik prisega pozą — kelias prasideda nuo dviejų.</div>
-    {keyframes.map((keyframe, index) => (
-      <div key={keyframe.id} style={keyframeRowStyle}>
-        <span style={{ color: editorColors.accent }}>◆</span>
-        <span style={{ fontSize: 10, color: editorColors.textDim, width: 16 }}>{index + 1}</span>
-        <input type="number" min={0} max={max} step={0.1} value={Number((keyframe.frame / fps).toFixed(2))} onChange={(event) => updateVisualKeyframe(sceneId, entry.id, keyframe.id, { frame: Math.round(Number(event.target.value) * fps) })} style={{ ...numberInputStyle, width: 46, textAlign: "left" }} />
-        <span style={{ fontSize: 10, color: editorColors.textDim, flex: 1 }}>s · x {Math.round(keyframe.x ?? entry.x)} y {Math.round(keyframe.y ?? entry.y)} · {(keyframe.scale ?? entry.scale ?? 1).toFixed(2)}×</span>
-        <button style={smallIconButtonStyle} title="Pašalinti keyframe'ą" onClick={() => removeVisualKeyframe(sceneId, entry.id, keyframe.id)}>×</button>
+  const describe = (keyframe: (typeof keyframes)[number]) =>
+    property === "scale"
+      ? `${(keyframe.scale ?? entry.scale ?? 1).toFixed(2)}×`
+      : `x ${Math.round(keyframe.x ?? entry.x)} y ${Math.round(keyframe.y ?? entry.y)}`;
+
+  /**
+   * Removing the property from a shared keyframe rather than deleting the row
+   * outright: one diamond can pin both tracks, and dropping the whole keyframe
+   * would take the other property's pose with it.
+   */
+  const clear = (keyframe: (typeof keyframes)[number]) => {
+    const other: KeyframeProperty = property === "scale" ? "position" : "scale";
+    if (keyframePins(keyframe, other)) {
+      updateVisualKeyframe(
+        sceneId,
+        entry.id,
+        keyframe.id,
+        property === "scale" ? { scale: undefined } : { x: undefined, y: undefined }
+      );
+    } else {
+      removeVisualKeyframe(sceneId, entry.id, keyframe.id);
+    }
+  };
+
+  return (
+    <div style={{ marginBottom: 10 }}>
+      <div style={{ fontSize: 10, textTransform: "uppercase", letterSpacing: 0.6, color: editorColors.textDim, marginBottom: 4 }}>
+        {label} ({keyframes.length})
       </div>
-    ))}
-    <button style={addKeyframeStyle} onClick={() => addVisualKeyframe(sceneId, entry.id, localFrame)}>
-      ◆ Pridėti keyframe'ą ties {(localFrame / fps).toFixed(2)}s
-    </button>
-  </Section>;
+      {keyframes.map((keyframe, index) => (
+        <div key={keyframe.id} style={keyframeRowStyle}>
+          <span style={{ color: property === "scale" ? "#38bdf8" : editorColors.accent }}>◆</span>
+          <span style={{ fontSize: 10, color: editorColors.textDim, width: 16 }}>{index + 1}</span>
+          <input
+            type="number"
+            min={0}
+            max={max}
+            step={frameStep(fps)}
+            value={framesToSeconds(keyframe.frame, fps)}
+            onChange={(event) => updateVisualKeyframe(sceneId, entry.id, keyframe.id, { frame: Math.round(Number(event.target.value) * fps) })}
+            style={{ ...numberInputStyle, width: 56, textAlign: "left" }}
+          />
+          <span style={{ fontSize: 10, color: editorColors.textDim, flex: 1 }}>s · {describe(keyframe)}</span>
+          <button style={smallIconButtonStyle} title={`Pašalinti ${label.toLowerCase()} keyframe'ą`} onClick={() => clear(keyframe)}>
+            ×
+          </button>
+        </div>
+      ))}
+      <button style={addKeyframeStyle} onClick={() => addVisualKeyframe(sceneId, entry.id, localFrame, property)}>
+        ◆ {label} ties {formatDuration(localFrame, fps)}
+      </button>
+    </div>
+  );
 };
 
 /**
@@ -241,6 +356,164 @@ const KeyframeFields: React.FC<{ sceneId: string; entry: PositionedVisualEntry; 
  * between units is derived, so a four-word line and a twelve-word line both
  * finish in the time you asked for instead of the long one dragging on.
  */
+
+/** The palette the swatches offer. Deliberately short: a text colour is a
+ * design decision, and twenty near-identical greys is not a decision, it is a
+ * shrug. The hex field is there for anything else. */
+const TEXT_COLOR_SWATCHES = ["#FFFFFF", "#171717", "#FF7024", "#FFD166", "#4ADE80", "#60A5FA", "#F472B6"];
+
+/**
+ * Typeface, weight, letter case, colour and tracking for a text element.
+ *
+ * One component for both the Rich Headline lines and the freeform Blocks: they
+ * carry the same fields and render through the same resolver
+ * (`video/typography/textStyle.ts`), so giving each its own editor would be two
+ * places to add the next control to — and one of them would be forgotten.
+ *
+ * Bold is a FACE, not a checkbox. Clash and Panchang ship one file per weight
+ * and Tanker has exactly one, so a `fontWeight: 700` on Tanker would ask the
+ * browser to fake it. Picking "Clash Bold" asks for the file that is actually
+ * bold.
+ */
+const TypographyFields: React.FC<{
+  font: RichTextFont | undefined;
+  defaultFont: RichTextFont;
+  textCase: TextCase | undefined;
+  defaultCase: TextCase;
+  color: string | undefined;
+  defaultColorHint: string;
+  letterSpacing: number | undefined;
+  onChange: (patch: { font?: RichTextFont; textCase?: TextCase; color?: string; letterSpacing?: number }) => void;
+}> = ({ font, defaultFont, textCase, defaultCase, color, defaultColorHint, letterSpacing, onChange }) => (
+  <Section title="Stilius">
+    <Field label="Šriftas">
+      <select style={inputStyle} value={font ?? defaultFont} onChange={(event) => onChange({ font: event.target.value as RichTextFont })}>
+        {TEXT_FONT_OPTIONS.map((option) => (
+          <option key={option.id} value={option.id}>{option.label}</option>
+        ))}
+      </select>
+    </Field>
+
+    <div style={{ marginBottom: 12 }}>
+      <div style={labelStyle}>Raidžių registras</div>
+      <div style={{ display: "flex", gap: 6 }}>
+        {TEXT_CASE_OPTIONS.map((option) => {
+          const active = (textCase ?? defaultCase) === option.id;
+          return (
+            <button
+              key={option.id}
+              title={option.title}
+              onClick={() => onChange({ textCase: option.id })}
+              style={{
+                flex: 1,
+                padding: "7px 0",
+                fontSize: 12,
+                fontWeight: 600,
+                borderRadius: 6,
+                cursor: "pointer",
+                background: active ? "rgba(255,112,36,0.14)" : "transparent",
+                border: `1px solid ${active ? editorColors.accent : editorColors.border}`,
+                color: active ? editorColors.accent : editorColors.text,
+              }}
+            >
+              {option.label}
+            </button>
+          );
+        })}
+      </div>
+    </div>
+
+    <div style={{ marginBottom: 12 }}>
+      <div style={labelStyle}>Spalva</div>
+      <div style={{ display: "flex", gap: 6, alignItems: "center", flexWrap: "wrap" }}>
+        {TEXT_COLOR_SWATCHES.map((swatch) => (
+          <button
+            key={swatch}
+            title={swatch}
+            onClick={() => onChange({ color: swatch })}
+            style={{
+              width: 22,
+              height: 22,
+              borderRadius: 5,
+              background: swatch,
+              cursor: "pointer",
+              border: `2px solid ${color?.toUpperCase() === swatch ? editorColors.accent : "rgba(255,255,255,0.18)"}`,
+            }}
+          />
+        ))}
+        <input
+          value={color ?? ""}
+          placeholder={defaultColorHint}
+          spellCheck={false}
+          onChange={(event) => {
+            const next = event.target.value.trim();
+            // Empty means "no override", which is not the same as black —
+            // unset is what lets a pill keep its automatically legible colour.
+            onChange({ color: next === "" ? undefined : next });
+          }}
+          style={{ ...inputStyle, width: 96, fontFamily: "ui-monospace, monospace" }}
+        />
+      </div>
+    </div>
+
+    <SliderField label="Tarpai tarp raidžių" value={letterSpacing ?? 0} min={-8} max={40} step={0.5} suffix="px" onChange={(value) => onChange({ letterSpacing: value === 0 ? undefined : value })} />
+  </Section>
+);
+
+
+/**
+ * Where a text line sits.
+ *
+ * A Rich Headline line normally lives in the scene's centred stack, and that is
+ * the right default for a headline. Setting BOTH `x` and `y` lifts it out to a
+ * point of its own — both, because "positioned" has to be unambiguous: one
+ * coordinate set and the other not would leave the renderer guessing which half
+ * of the layout still applies.
+ *
+ * So the toggle is the honest control, and the sliders only exist once it is
+ * on. Turning it off drops both coordinates and the line falls back into the
+ * stack exactly where its neighbours are.
+ */
+const TextPlacementFields: React.FC<{
+  x?: number;
+  y?: number;
+  sizePx?: number;
+  sizeFallback: number;
+  onChange: (patch: { x?: number; y?: number; sizePx?: number }) => void;
+}> = ({ x, y, sizePx, sizeFallback, onChange }) => {
+  const free = x !== undefined && y !== undefined;
+  return (
+    <Section title="Vieta ir dydis">
+      <label style={{ display: "flex", alignItems: "center", gap: 8, fontSize: 11, color: editorColors.textDim, marginBottom: 10, cursor: "pointer" }}>
+        <input
+          type="checkbox"
+          checked={free}
+          onChange={(event) => onChange(event.target.checked ? { x: x ?? 50, y: y ?? 50 } : { x: undefined, y: undefined })}
+        />
+        Laisva pozicija
+      </label>
+      {free ? (
+        <>
+          <SliderField label="X" value={x ?? 50} min={0} max={100} step={0.5} suffix="%" onChange={(value) => onChange({ x: value })} />
+          <SliderField label="Y" value={y ?? 50} min={0} max={100} step={0.5} suffix="%" onChange={(value) => onChange({ y: value })} />
+        </>
+      ) : (
+        <div style={hintStyle}>Eilutė lieka scenos teksto stulpelyje kartu su kitomis.</div>
+      )}
+      <SliderField
+        label="Dydis"
+        value={sizePx ?? sizeFallback}
+        min={12}
+        max={220}
+        step={1}
+        suffix="px"
+        onChange={(value) => onChange({ sizePx: Math.round(value) === Math.round(sizeFallback) ? undefined : value })}
+      />
+      {sizePx === undefined ? <div style={hintStyle}>Dydis iš „{"{"}size{"}"}“ tokeno — {Math.round(sizeFallback)}px.</div> : null}
+    </Section>
+  );
+};
+
 const SplitFields: React.FC<{
   text: string;
   splitBy?: "word" | "letter" | "line";
@@ -284,7 +557,7 @@ const SplitFields: React.FC<{
             ↺ Auto
           </button>
           <span style={hintStyle}>
-            {splitDuration === undefined ? `auto · ${(automatic / fps).toFixed(2)}s` : `${(splitDuration / fps).toFixed(2)}s`}
+            {splitDuration === undefined ? `auto · ${formatDuration(automatic, fps)}` : formatDuration(splitDuration, fps)}
           </span>
         </div>
       </>
@@ -338,9 +611,12 @@ function renameEntranceField(patch: EffectPatch): { animation?: EntrancePreset }
  * OUT has no such fallback — unset really is no exit — so both its ∅ card and
  * its `none` preset mean the same thing there.
  */
-const EffectsEditor: React.FC<EffectPatch & { autoEntrance: string; windowFrames?: number; onChange: (patch: EffectPatch) => void }> = ({ entrance, exit, entranceDuration, exitDuration, autoEntrance, windowFrames, onChange }) => <>
+/** `ownsInDuration: false` for text, where `SplitFields` is the one control for
+ * how long the entrance takes — it writes the SAME `splitDuration`, so showing
+ * both put one value behind two sliders with two different names. */
+const EffectsEditor: React.FC<EffectPatch & { autoEntrance: string; windowFrames?: number; ownsInDuration?: boolean; onChange: (patch: EffectPatch) => void }> = ({ entrance, exit, entranceDuration, exitDuration, autoEntrance, windowFrames, ownsInDuration = true, onChange }) => <>
   <EffectPicker title="IN efektas" values={entrancePresetSchema.options} value={entrance} emptyLabel={`auto · ${friendlyEffect(autoEntrance)}`} onChange={(value) => onChange({ entrance: value as EntrancePreset | undefined })} />
-  <DurationSlider label="IN trukmė" value={entranceDuration ?? 18} windowFrames={windowFrames} onChange={(value) => onChange({ entranceDuration: value })} />
+  {ownsInDuration ? <DurationSlider label="IN trukmė" value={entranceDuration ?? 18} windowFrames={windowFrames} onChange={(value) => onChange({ entranceDuration: value })} /> : null}
   <EffectPicker title="OUT efektas" values={exitPresetSchema.options} value={exit} emptyLabel="be efekto" onChange={(value) => onChange({ exit: value as ExitPreset | undefined })} />
   <DurationSlider label="OUT trukmė" value={exitDuration ?? 18} windowFrames={windowFrames} onChange={(value) => onChange({ exitDuration: value })} />
 </>;
@@ -383,7 +659,7 @@ const EffectPicker: React.FC<{ title: string; values: readonly string[]; value?:
 const DurationSlider: React.FC<{ label: string; value: number; windowFrames?: number; onChange: (frames: number) => void }> = ({ label, value, windowFrames, onChange }) => {
   const fps = useProjectStore((state) => state.project.fps);
   const maxSeconds = Math.max(0.3, Math.min(60, (windowFrames ?? 2 * fps) / fps));
-  return <SliderField label={label} value={value / fps} min={1 / fps} max={maxSeconds} step={0.05} suffix="s" onChange={(next) => onChange(Math.max(1, Math.round(next * fps)))} />;
+  return <SliderField label={label} value={framesToSeconds(value, fps)} min={frameStep(fps)} max={maxSeconds} step={frameStep(fps)} suffix="s" decimals={3} onChange={(next) => onChange(Math.max(1, Math.round(next * fps)))} />;
 };
 
 const TimingFields: React.FC<{ start: number; end: number; max: number; onChange: (start: number, end: number) => void }> = ({ start, end, max, onChange }) => {
@@ -396,14 +672,17 @@ const TimePoint: React.FC<{ value: number; max: number; onChange: (value: number
   return <Section title="Laikas"><FrameSlider label="Pozicija" value={value} min={0} max={Math.max(1, max - 1)} fps={fps} onChange={onChange} /></Section>;
 };
 
-const FrameSlider: React.FC<{ label: string; value: number; min: number; max: number; fps: number; onChange: (value: number) => void }> = ({ label, value, min, max, fps, onChange }) => <SliderField label={label} value={Number((value / fps).toFixed(2))} min={min / fps} max={max / fps} step={0.1} suffix="s" onChange={(seconds) => onChange(Math.max(min, Math.min(max, Math.round(seconds * fps))))} />;
+/** Every time field steps by ONE FRAME and shows milliseconds. The old 0.1s
+ * step could not express three quarters of the positions a clip can actually
+ * hold, and rounding the display to 0.01s hid the frame you were hunting. */
+const FrameSlider: React.FC<{ label: string; value: number; min: number; max: number; fps: number; onChange: (value: number) => void }> = ({ label, value, min, max, fps, onChange }) => <SliderField label={label} value={framesToSeconds(value, fps)} min={framesToSeconds(min, fps)} max={framesToSeconds(max, fps)} step={frameStep(fps)} suffix="s" decimals={3} onChange={(seconds) => onChange(Math.max(min, Math.min(max, Math.round(seconds * fps))))} />;
 
 const PositionFields: React.FC<{ x: number; y: number; scale: number; scaleMin: number; scaleMax: number; scaleLabel: string; onChange: (patch: { x?: number; y?: number; scale?: number }) => void }> = ({ x, y, scale, scaleMin, scaleMax, scaleLabel, onChange }) => <Section title="Pozicija"><SliderField label="X" value={x} min={0} max={100} step={0.5} suffix="%" onChange={(value) => onChange({ x: value })} /><SliderField label="Y" value={y} min={0} max={100} step={0.5} suffix="%" onChange={(value) => onChange({ y: value })} /><SliderField label={scaleLabel} value={scale} min={scaleMin} max={scaleMax} step={scaleMax > 10 ? 1 : 0.05} suffix={scaleMax > 10 ? "px" : "×"} onChange={(value) => onChange({ scale: value })} /></Section>;
 
-const SliderField: React.FC<{ label: string; value: number; min: number; max: number; step: number; suffix: string; onChange: (value: number) => void }> = ({ label, value, min, max, step, suffix, onChange }) => {
+const SliderField: React.FC<{ label: string; value: number; min: number; max: number; step: number; suffix: string; decimals?: number; onChange: (value: number) => void }> = ({ label, value, min, max, step, suffix, decimals = 2, onChange }) => {
   const begin = useProjectStore((state) => state.beginHistoryTransaction);
   const end = useProjectStore((state) => state.endHistoryTransaction);
-  return <div style={{ marginBottom: 14 }}><div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 5 }}><span style={labelStyle}>{label}</span><label style={numberPillStyle}><input type="number" min={min} max={max} step={step} value={Number(value.toFixed(2))} onChange={(event) => onChange(Number(event.target.value))} style={numberInputStyle} /><span>{suffix}</span></label></div><input type="range" min={min} max={max} step={step} value={value} onPointerDown={begin} onPointerUp={end} onPointerCancel={end} onKeyDown={begin} onKeyUp={end} onChange={(event) => onChange(Number(event.target.value))} style={rangeStyle} /></div>;
+  return <div style={{ marginBottom: 14 }}><div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 5 }}><span style={labelStyle}>{label}</span><label style={numberPillStyle}><input type="number" min={min} max={max} step={step} value={Number(value.toFixed(decimals))} onChange={(event) => onChange(Number(event.target.value))} style={{ ...numberInputStyle, width: decimals > 2 ? 60 : undefined }} /><span>{suffix}</span></label></div><input type="range" min={min} max={max} step={step} value={value} onPointerDown={begin} onPointerUp={end} onPointerCancel={end} onKeyDown={begin} onKeyUp={end} onChange={(event) => onChange(Number(event.target.value))} style={rangeStyle} /></div>;
 };
 
 const AudioPair: React.FC<{ entrance?: string; exit?: string; mode: "auto" | "explicit"; onEntrance: (value?: string) => void; onExit?: (value?: string) => void }> = ({ entrance, exit, mode, onEntrance, onExit }) => <Section title="Garsai"><Field label="IN garsas"><SfxSelect mode={mode} value={entrance} onChange={onEntrance} /></Field>{onExit ? <Field label="OUT garsas"><SfxSelect mode={mode} value={exit} onChange={onExit} /></Field> : null}</Section>;

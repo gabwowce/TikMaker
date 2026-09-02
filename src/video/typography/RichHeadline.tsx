@@ -1,7 +1,8 @@
 import React from "react";
 import { Audio, Sequence, useVideoConfig } from "remotion";
 import { staggerDelay } from "../scenes/EnterOnCue";
-import { colors, fontFamilies, fontSizes, safeArea } from "./tokens";
+import { colors, fontSizes, safeArea } from "./tokens";
+import { fontFamilyFor, textTransformFor } from "./textStyle";
 import { SAFE_CONTENT_WIDTH } from "../layout/layoutPresets";
 import { pillBlockStyle } from "./Text";
 import { AnimatedSplitText, AnimatedBox, splitText, splitTiming, splitSpan, type ExitConfig } from "./splitAnimate";
@@ -9,8 +10,9 @@ import { getSfx } from "../../registries/sfxRegistry";
 import { resolveTextEntranceSfx, SFX_VOLUME } from "../motion/sfxDefaults";
 import type { RichHeadlineLine, Scene } from "../../schema/scene";
 
-// Always Tanker — only line.size varies (see the Design rules in CLAUDE.md).
-const fontForLine = (): string => fontFamilies.tanker;
+// Tanker unless the line asks for another face. `line.font` was in the schema
+// from the start but ignored here, so picking a font in the editor did nothing;
+// `textStyle.ts` is now the single answer for both headline lines and blocks.
 
 const LINE_GAP = 6;
 const CUE_WINDOW_FRAMES = 30;
@@ -21,7 +23,7 @@ const RichHeadlineLineRow: React.FC<{ line: RichHeadlineLine; baseDelay: number;
   exit,
 }) => {
   const splitBy = line.splitBy ?? "word";
-  const font = fontForLine();
+  const font = fontFamilyFor(line.font, "tanker");
   // A line with no override needs no exit config of its own at all: it's
   // already inside the scene's exit-styled content column (`SceneFrame`),
   // which fades/slides everything out together per `motion.exit` — that IS
@@ -53,7 +55,8 @@ const RichHeadlineLineRow: React.FC<{ line: RichHeadlineLine; baseDelay: number;
         lineHeight: 0.95,
         color: line.color ?? (line.pill ? colors.background : colors.textPrimary),
         textAlign: "center",
-        textTransform: "uppercase",
+        letterSpacing: line.letterSpacing,
+        textTransform: textTransformFor(line.textCase, "upper"),
       }}
     >
       <AnimatedSplitText
@@ -63,6 +66,7 @@ const RichHeadlineLineRow: React.FC<{ line: RichHeadlineLine; baseDelay: number;
         preset={line.animation}
         entranceDuration={line.entranceDuration}
         splitDuration={line.splitDuration}
+        highlights={line.highlights}
         exit={resolvedExit}
       />
     </div>

@@ -8,7 +8,7 @@
     {
       "id": "scene-01-hook",
       "durationSeconds": 2,
-      "vo": "Claude can now test your app like a real user.",
+      "vo": "Claude code can now test your app like a real user.",
       "notes": "Strong opening frame. Show Claude Code and a web app open in Chrome. Make it obvious that Claude is interacting with the app in the browser.\n\nKeep it bold and clean. This is the promise.",
       "background": {
         "type": "custom",
@@ -299,6 +299,22 @@
       "content": {
         "eyebrow": "REVEAL",
         "headline": "Claude Code + Chrome",
+        "richHeadline": [
+          {
+            "text": "Claude code ",
+            "size": "headline",
+            "animation": "slideUp",
+            "delay": 0,
+            "lane": 0
+          },
+          {
+            "text": "NEW HEADLINE",
+            "size": "headline",
+            "animation": "slideUp",
+            "delay": 0,
+            "lane": 1
+          }
+        ],
         "visuals": []
       },
       "motion": {
@@ -478,7 +494,7 @@
       "type": "takeaway"
     }
   ],
-  "savedAt": 1788187080213,
+  "savedAt": 1788258626440,
   "audioClips": [
     {
       "id": "audio-mtfmk42a-v4xm",
@@ -487,6 +503,14 @@
       "startFrom": 3,
       "durationInFrames": 14,
       "volume": 0.3
+    },
+    {
+      "id": "audio-mti66x6t-uqta",
+      "sfxId": "vo-claude-code-can-now-test-your-app-like-a-mti66x6n",
+      "from": 0,
+      "durationInFrames": 104,
+      "lane": 1,
+      "volume": 1
     }
   ]
 }

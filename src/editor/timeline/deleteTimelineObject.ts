@@ -1,4 +1,5 @@
 import { useProjectStore } from "../state/projectStore";
+import { parseSelection } from "./selectionId";
 
 /**
  * Removing whatever the timeline has selected, in ONE place.
@@ -20,9 +21,10 @@ export type TimelineObjectDescription = {
   deletable: boolean;
 };
 
-export function describeTimelineObject(selectionId: string): TimelineObjectDescription {
+export function describeTimelineObject(rawSelectionId: string): TimelineObjectDescription {
   const { project, selectedSceneId } = useProjectStore.getState();
-  const scene = project.scenes.find((entry) => entry.id === selectedSceneId);
+  const { sceneId: owner, objectId: selectionId } = parseSelection(rawSelectionId);
+  const scene = project.scenes.find((entry) => entry.id === (owner ?? selectedSceneId));
 
   if (selectionId === "text-group") return { label: "Scenos tekstai", deletable: false };
   if (selectionId.startsWith("audio-clip-")) return { label: "Audio klipas", deletable: true };
@@ -63,9 +65,14 @@ export function describeTimelineObject(selectionId: string): TimelineObjectDescr
 
 /** Deletes without asking. `confirmDeleteTimelineObject` is the one to call
  * from the UI — nothing here is undoable except through the history stack. */
-export function deleteTimelineObject(selectionId: string): boolean {
+export function deleteTimelineObject(rawSelectionId: string): boolean {
   const state = useProjectStore.getState();
-  const { project, selectedSceneId } = state;
+  const { project, selectedSceneId: openSceneId } = state;
+  // Same rule as the clipboard: the id says which scene it belongs to, so
+  // deleting a clip in the full-video timeline removes THAT object rather than
+  // whatever sits at the same index in the scene that happens to be open.
+  const { sceneId: owner, objectId: selectionId } = parseSelection(rawSelectionId);
+  const selectedSceneId = owner ?? openSceneId;
   const scene = project.scenes.find((entry) => entry.id === selectedSceneId);
 
   if (selectionId.startsWith("audio-clip-")) {
@@ -157,8 +164,44 @@ export function deleteTimelineObject(selectionId: string): boolean {
  * scene's work is exactly the accident this exists to prevent.
  */
 export function confirmDeleteTimelineObject(selectionId: string): boolean {
-  const { label, deletable } = describeTimelineObject(selectionId);
-  if (!deletable) return false;
-  if (!window.confirm(`Pašalinti: ${label}?`)) return false;
-  return deleteTimelineObject(selectionId);
+  return confirmDeleteTimelineObjects([selectionId]);
+}
+
+/**
+ * Deletes everything selected, behind ONE confirmation and ONE undo step.
+ *
+ * Index-addressed ids (`line-2`, `step-0`) shift when an earlier sibling is
+ * removed, so they are deleted from the end backwards — otherwise removing
+ * lines 1 and 2 removes line 1 and then whatever slid into position 2.
+ */
+export function confirmDeleteTimelineObjects(selectionIds: string[]): boolean {
+  const deletable = selectionIds.filter((id) => describeTimelineObject(id).deletable);
+  if (!deletable.length) return false;
+
+  const prompt =
+    deletable.length === 1
+      ? `Pašalinti: ${describeTimelineObject(deletable[0]).label}?`
+      : `Pašalinti ${deletable.length} objektus?`;
+  if (!window.confirm(prompt)) return false;
+
+  const state = useProjectStore.getState();
+  state.beginHistoryTransaction();
+  // Sorted by index DESCENDING within each scene: `line-2` and `line-1` in the
+  // same scene shift each other, but ids in different scenes never do, so the
+  // scene is part of the sort key rather than something to ignore.
+  const ordered = [...deletable].sort((a, b) => {
+    const sceneA = parseSelection(a).sceneId ?? "";
+    const sceneB = parseSelection(b).sceneId ?? "";
+    return sceneA === sceneB ? indexIn(b) - indexIn(a) : sceneA.localeCompare(sceneB);
+  });
+  const removed = ordered.map(deleteTimelineObject).some(Boolean);
+  state.endHistoryTransaction();
+  return removed;
+}
+
+/** The numeric suffix of an index-addressed id, or -1 for ids that address by
+ * their own key and are therefore order-independent. */
+function indexIn(selectionId: string): number {
+  const match = /-(\d+)$/.exec(parseSelection(selectionId).objectId);
+  return match ? Number(match[1]) : -1;
 }

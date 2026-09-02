@@ -40,5 +40,47 @@
     "file": "drop-deep-mt7exj07.mp3",
     "src": "/assets/custom-sfx/drop-deep-mt7exj07.mp3",
     "group": "ui"
+  },
+  {
+    "id": "vo-claude-code-can-now-test-your-app-like-a-mti66x6n",
+    "label": "Claude code can now test your app like a",
+    "file": "vo-claude-code-can-now-test-your-app-like-a-mti66x6n.mp3",
+    "src": "/assets/voice/vo-claude-code-can-now-test-your-app-like-a-mti66x6n.mp3",
+    "group": "voice"
+  },
+  {
+    "id": "elevenlabs-2026-09-01t04-37-41-victoria-warm-trustworthy-and-relatable-pvc-sp115-s100-sb100-se100-b-m2-mti6rf5g",
+    "label": "ElevenLabs_2026-09-01T04_37_41_Victoria - Warm, Trustworthy, and Relatable_pvc_sp115_s100_sb100_se100_b_m2",
+    "file": "elevenlabs-2026-09-01t04-37-41-victoria-warm-trustworthy-and-relatable-pvc-sp115-s100-sb100-se100-b-m2-mti6rf5g.mp3",
+    "src": "/assets/custom-sfx/elevenlabs-2026-09-01t04-37-41-victoria-warm-trustworthy-and-relatable-pvc-sp115-s100-sb100-se100-b-m2-mti6rf5g.mp3",
+    "group": "voice"
+  },
+  {
+    "id": "vo-tired-of-testing-app-manuallty-mtim9rzj",
+    "label": "Tired of testing app manuallty?",
+    "file": "vo-tired-of-testing-app-manuallty-mtim9rzj.mp3",
+    "src": "/assets/voice/vo-tired-of-testing-app-manuallty-mtim9rzj.mp3",
+    "group": "voice"
+  },
+  {
+    "id": "vo-manually-mtimb51t",
+    "label": "manually?",
+    "file": "vo-manually-mtimb51t.mp3",
+    "src": "/assets/voice/vo-manually-mtimb51t.mp3",
+    "group": "voice"
+  },
+  {
+    "id": "vo-tired-of-testing-app-manually-mtimh5ci",
+    "label": "Tired of testing app manually?",
+    "file": "vo-tired-of-testing-app-manually-mtimh5ci.mp3",
+    "src": "/assets/voice/vo-tired-of-testing-app-manually-mtimh5ci.mp3",
+    "group": "voice"
+  },
+  {
+    "id": "vo-claude-code-can-now-test-your-app-like-a-mtimjun4",
+    "label": "Claude code can now test your app like a",
+    "file": "vo-claude-code-can-now-test-your-app-like-a-mtimjun4.mp3",
+    "src": "/assets/voice/vo-claude-code-can-now-test-your-app-like-a-mtimjun4.mp3",
+    "group": "voice"
   }
 ]
