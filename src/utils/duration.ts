@@ -25,15 +25,48 @@ export type SceneTiming = {
  * duration (`projectDurationInFrames`) and `SceneRenderer`'s actual `<Sequence>`
  * placement — they must never drift apart or scenes will play past the
  * composition's declared length (or leave trailing dead frames). */
+/**
+ * The frame every audio clip has finished by. Read from the clips' own absolute
+ * `from`, so it does not depend on scene placement and can be used while
+ * computing it.
+ */
+function audioEndFrame(project: VideoProject): number {
+  let end = 0;
+  for (const clip of project.audioClips ?? []) end = Math.max(end, clip.from + (clip.durationInFrames ?? 1));
+  return end;
+}
+
 export function computeSceneTimings(project: VideoProject): SceneTiming[] {
   let cursor = 0;
-  return project.scenes.map((scene) => {
+  const timings = project.scenes.map((scene) => {
     const durationSeconds = resolveSceneDuration(scene);
     const durationInFrames = Math.round(durationSeconds * project.fps);
     const from = cursor;
     cursor = from + durationInFrames;
     return { scene, from, durationInFrames, durationSeconds };
   });
+
+  // A voice line is free to run past the scene it starts in — that is what lets
+  // a line carry across a cut, and nothing here interferes with it. The END of
+  // the video is the one place that cannot work: scenes only render inside
+  // their own `<Sequence>`, so a line still speaking after the last one ends
+  // would play over a black frame, and with the Player looping it would collide
+  // with the first line of the next pass.
+  //
+  // So the LAST scene is held until the audio is done. Extending the scene
+  // rather than appending dead time is deliberate: it keeps `SceneRenderer` and
+  // the composition length reading the same numbers from this one function, and
+  // it means the frame the viewer is left looking at is the last scene rather
+  // than black.
+  const last = timings[timings.length - 1];
+  if (last) {
+    const held = Math.max(last.durationInFrames, Math.ceil(audioEndFrame(project)) - last.from);
+    if (held > last.durationInFrames) {
+      last.durationInFrames = held;
+      last.durationSeconds = held / project.fps;
+    }
+  }
+  return timings;
 }
 
 export function projectDurationInFrames(project: VideoProject): number {
