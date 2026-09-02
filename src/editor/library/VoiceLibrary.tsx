@@ -5,6 +5,7 @@ import { sfxList, getSfx } from "../../registries/sfxRegistry";
 import { editorColors } from "../theme";
 import { useAudioWaveforms } from "../timeline/useAudioWaveforms";
 import { setAudioDragPayload } from "../timeline/audioDrag";
+import { voiceCutoffFrame } from "../../utils/voiceClips";
 import { useCustomSfxStore } from "../state/customSfxStore";
 
 /**
@@ -119,6 +120,15 @@ export const VoiceLibrary: React.FC = () => {
               const trimmed =
                 (clip.startFrom ?? 0) > 0 ||
                 (full !== undefined && clip.durationInFrames !== undefined && clip.durationInFrames < full);
+              // Voice is monophonic (`utils/voiceClips.ts`), so a line that is
+              // still speaking when the next one starts goes quiet instead of
+              // doubling. That is the right sound, but it is silent about
+              // itself — without this the words simply are not there and the
+              // recording looks intact everywhere you check.
+              const cutoff = voiceCutoffFrame(project.audioClips ?? [], clip);
+              const audible = cutoff === undefined ? undefined : cutoff - clip.from;
+              const wanted = clip.durationInFrames ?? full;
+              const ducked = audible !== undefined && wanted !== undefined && audible < wanted;
               return (
                 <div key={clip.id} style={card}>
                   <div style={{ fontSize: 11, fontWeight: 600, marginBottom: 2 }}>{source?.label ?? clip.sfxId}</div>
@@ -128,6 +138,15 @@ export const VoiceLibrary: React.FC = () => {
                     {full ? ` iš ${seconds(full, project.fps)}` : ""}
                     {clip.playbackRate && clip.playbackRate !== 1 ? ` · ${clip.playbackRate}×` : ""}
                   </div>
+                  {ducked ? (
+                    <div
+                      style={{ fontSize: 10, color: "#fbbf24", marginBottom: 6, lineHeight: 1.5 }}
+                      title="Balsas yra monofoninis: vienu metu girdima tik viena eilutė. Patrauk kitą eilutę toliau arba pailgink sceną, kad tilptų visa."
+                    >
+                      ⚠ Nutildoma po {seconds(audible!, project.fps)} — čia prasideda kita balso eilutė
+                      {wanted !== undefined ? ` (negirdima ${seconds(wanted - audible!, project.fps)})` : ""}
+                    </div>
+                  ) : null}
                   <div style={{ display: "flex", gap: 5, flexWrap: "wrap" }}>
                     <button style={smallButton} onClick={() => selectObject(`audio-clip-${clip.id}`)}>
                       Rodyti
