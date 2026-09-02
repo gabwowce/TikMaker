@@ -19,7 +19,8 @@ import { useSavedBackgroundsStore } from "../state/savedBackgroundsStore";
 import { BackgroundSwatch } from "../library/BackgroundLibrary";
 import { propList } from "../../registries/propRegistry";
 import { toolList } from "../../registries/toolRegistry";
-import { sfxList, type SfxGroup } from "../../registries/sfxRegistry";
+import { getSfx, sfxList, type SfxGroup } from "../../registries/sfxRegistry";
+import { resolveTextEntranceSfx } from "../../video/motion/sfxDefaults";
 import { fontSizes, safeAreaPercent, videoDefaults } from "../../video/typography/tokens";
 import { resolveSceneDuration, pacingWarning, voDurationSeconds } from "../../utils/pacing";
 import { computeSceneTimings } from "../../utils/duration";
@@ -304,17 +305,30 @@ const sfxByGroupSorted: [SfxGroup, typeof sfxList][] = sfxGroupOrder
  * "pick a sensible default from the animation preset" (see `sfxDefaults.ts`)
  * on top of "No sound"; `mode="explicit"` is silent unless a sound is chosen,
  * for freeform items where a default would get noisy — see CLAUDE.md Sound section. */
-export const SfxSelect: React.FC<{ value: string | undefined; mode: "auto" | "explicit"; onChange: (v: string | undefined) => void }> = ({
-  value,
-  mode,
-  onChange,
-}) => (
+export const SfxSelect: React.FC<{
+  value: string | undefined;
+  mode: "auto" | "explicit";
+  /**
+   * The sfx id an UNSET value actually plays, for elements that resolve a
+   * default (text, scene motion). Naming it matters more than it looks: an
+   * unset text cue is not silence — `resolveTextEntranceSfx` always returns a
+   * sound for a word/letter split — so "Auto" alone leaves the author guessing
+   * which of the listed effects they are hearing, and no way to tell whether
+   * picking that same one explicitly would change anything.
+   */
+  autoResolvesTo?: string;
+  onChange: (v: string | undefined) => void;
+}> = ({ value, mode, autoResolvesTo, onChange }) => (
   <select
     style={rowSelectStyle}
     value={value ?? ""}
     onChange={(e) => onChange(e.target.value || undefined)}
   >
-    {mode === "auto" ? <option value="">Auto (default)</option> : null}
+    {mode === "auto" ? (
+      <option value="">
+        {autoResolvesTo ? `Auto · ${getSfx(autoResolvesTo)?.label ?? autoResolvesTo}` : "Auto (default)"}
+      </option>
+    ) : null}
     <option value="none">No sound</option>
     {sfxByGroupSorted.map(([group, list]) => (
       <optgroup key={group} label={group}>
@@ -1769,6 +1783,22 @@ const RichHeadlineEditor: React.FC<{
               ))}
             </select>
           </div>
+          {/* Right under Split by, because the split IS what the cue is tied to:
+           * a word/letter split fires the sound once per unit and a line split
+           * once for the whole line, so changing one without seeing the other
+           * is how a line ends up ticking twenty times. */}
+          <div style={{ marginBottom: 6 }}>
+            <div style={miniLabelStyle}>Sound</div>
+            <SfxSelect
+              mode="auto"
+              autoResolvesTo={resolveTextEntranceSfx({
+                entrance: line.animation ?? "pop",
+                splitBy: line.splitBy ?? "word",
+              })}
+              value={line.sfx}
+              onChange={(sfx) => updateLine(index, { sfx })}
+            />
+          </div>
           <label
             style={{ fontSize: 11, color: editorColors.textDim, display: "flex", gap: 6, alignItems: "center", marginBottom: 6 }}
           >
@@ -2016,7 +2046,15 @@ const BlocksEditor: React.FC<{ blocks: Block[]; onChange: (blocks: Block[]) => v
           </div>
           <SecondsSlider label="Pradžios uždelsimas" frames={block.delay ?? 0} onChange={(delay) => updateBlock(index, { delay })} />
           <div style={miniLabelStyle}>Sound</div>
-          <SfxSelect mode="auto" value={block.sfx} onChange={(sfx) => updateBlock(index, { sfx })} />
+          <SfxSelect
+            mode="auto"
+            autoResolvesTo={resolveTextEntranceSfx({
+              entrance: block.animation ?? "pop",
+              splitBy: block.splitBy ?? "word",
+            })}
+            value={block.sfx}
+            onChange={(sfx) => updateBlock(index, { sfx })}
+          />
         </EntryCard>
       ))}
       <button
