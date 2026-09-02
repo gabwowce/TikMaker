@@ -3,31 +3,6 @@ export type AssetManifestEntry = { id: string; file: string; label: string };
 
 export const generatedLogos: AssetManifestEntry[] = [
   {
-    "id": "claude-ai-symbol",
-    "file": "Claude_AI_symbol.svg.webp",
-    "label": "Claude AI symbol"
-  },
-  {
-    "id": "cloudflare",
-    "file": "Cloudflare.png",
-    "label": "Cloudflare"
-  },
-  {
-    "id": "netlify",
-    "file": "Netlify.png",
-    "label": "Netlify"
-  },
-  {
-    "id": "vs-code",
-    "file": "VS-Code.png",
-    "label": "VS Code"
-  },
-  {
-    "id": "vercel",
-    "file": "Vercel.png",
-    "label": "Vercel"
-  },
-  {
     "id": "bolt",
     "file": "bolt.png",
     "label": "bolt"
@@ -46,6 +21,16 @@ export const generatedLogos: AssetManifestEntry[] = [
     "id": "claude",
     "file": "claude.png",
     "label": "claude"
+  },
+  {
+    "id": "claude-ai-symbol",
+    "file": "Claude_AI_symbol.svg.webp",
+    "label": "Claude AI symbol"
+  },
+  {
+    "id": "cloudflare",
+    "file": "Cloudflare.png",
+    "label": "Cloudflare"
   },
   {
     "id": "discord",
@@ -78,6 +63,11 @@ export const generatedLogos: AssetManifestEntry[] = [
     "label": "gmail"
   },
   {
+    "id": "google-chrome",
+    "file": "google-chrome.png",
+    "label": "google chrome"
+  },
+  {
     "id": "grok",
     "file": "grok.png",
     "label": "grok"
@@ -96,6 +86,11 @@ export const generatedLogos: AssetManifestEntry[] = [
     "id": "midjourney",
     "file": "midjourney.png",
     "label": "midjourney"
+  },
+  {
+    "id": "netlify",
+    "file": "Netlify.png",
+    "label": "Netlify"
   },
   {
     "id": "reddit",
@@ -123,6 +118,16 @@ export const generatedLogos: AssetManifestEntry[] = [
     "label": "supabase"
   },
   {
+    "id": "vercel",
+    "file": "Vercel.png",
+    "label": "Vercel"
+  },
+  {
+    "id": "vs-code",
+    "file": "VS-Code.png",
+    "label": "VS Code"
+  },
+  {
     "id": "x",
     "file": "x.png",
     "label": "x"
@@ -130,11 +135,6 @@ export const generatedLogos: AssetManifestEntry[] = [
 ];
 
 export const generatedProps: AssetManifestEntry[] = [
-  {
-    "id": "frustration",
-    "file": "Frustration.png",
-    "label": "Frustration"
-  },
   {
     "id": "broom",
     "file": "broom.png",
@@ -194,6 +194,11 @@ export const generatedProps: AssetManifestEntry[] = [
     "id": "eye",
     "file": "eye.png",
     "label": "eye"
+  },
+  {
+    "id": "frustration",
+    "file": "Frustration.png",
+    "label": "Frustration"
   },
   {
     "id": "fuel-gauge",

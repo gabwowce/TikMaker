@@ -388,7 +388,7 @@
             "id": "visual-ft2trou",
             "visual": {
               "type": "tool-logo",
-              "tool": "claude"
+              "tool": "google-chrome"
             },
             "x": 50,
             "y": 62.174479166666664,
@@ -513,24 +513,16 @@
         "grid": "lines"
       },
       "content": {
-        "richHeadline": [],
-        "visuals": [
+        "richHeadline": [
           {
-            "id": "visual-mtk7ynd3",
-            "visual": {
-              "type": "recording",
-              "src": "assets/recordings/placeholder.mp4",
-              "frame": "plain",
-              "playbackRate": 1,
-              "startFrom": 0,
-              "fit": "cover"
-            },
-            "x": 50,
-            "y": 50,
-            "scale": 1.1,
-            "entrance": "slideUp",
-            "entranceDuration": 18,
-            "lane": 0
+            "text": "STEP",
+            "size": "label",
+            "letterSpacing": 4,
+            "color": "#FF7024"
+          },
+          {
+            "text": "Click buttons\nOpen pages\nFill forms",
+            "size": "title"
           }
         ]
       },
@@ -713,17 +705,8 @@
       "type": "takeaway"
     }
   ],
-  "savedAt": 1788365840522,
+  "savedAt": 1788366899250,
   "audioClips": [
-    {
-      "id": "audio-mtime2ch-johj",
-      "sfxId": "soft-whoosh",
-      "from": 0,
-      "startFrom": 2,
-      "durationInFrames": 15,
-      "lane": 1,
-      "volume": 0.25
-    },
     {
       "id": "audio-mtimh5cl-pd7k",
       "sfxId": "vo-tired-of-testing-app-manually-mtimh5ci",
@@ -731,10 +714,20 @@
       "volume": 1
     },
     {
-      "id": "audio-mtk7vmqe-729f",
-      "sfxId": "vo-claude-code-can-now-test-your-app-like-a-mti66x6n",
+      "id": "audio-mtirhd69-ku8h",
+      "sfxId": "vo-claude-code-can-now-test-your-app-like-a-mtimjun4",
       "from": 49,
+      "durationInFrames": 85,
+      "lane": 1,
       "volume": 1
+    },
+    {
+      "id": "audio-mtkbftk4-gzdr",
+      "sfxId": "soft-whoosh",
+      "from": 60,
+      "volume": 0.1,
+      "startFrom": 2,
+      "durationInFrames": 15
     }
   ]
 }
