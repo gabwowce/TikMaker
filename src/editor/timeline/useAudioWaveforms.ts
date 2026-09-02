@@ -56,6 +56,25 @@ async function decode(src: string, fps: number): Promise<AudioWaveform | null> {
   return task;
 }
 
+/**
+ * The decoded length of `src`, if some part of the editor has already drawn its
+ * waveform. Synchronous on purpose: it is read while a clip is being PLACED, to
+ * stamp the clip with a real `durationInFrames` instead of leaving it unset.
+ *
+ * Unset is not a harmless "use the whole file". `projectDurationInFrames`
+ * counts an unset clip as ONE frame, so the composition never grows to contain
+ * it and the video ends mid-sentence — and with the Player looping, the next
+ * pass starts the first line while the last one is still speaking, which is
+ * heard as the voice doubling. `resolveAudioClips` cannot fix that from its
+ * side: it only sees clips within one pass and knows nothing about the wrap.
+ *
+ * Returns undefined when the file has not been decoded yet, in which case the
+ * caller leaves the field unset and behaves exactly as before.
+ */
+export function cachedAudioDuration(src: string | undefined): number | undefined {
+  return src ? cache.get(src)?.durationInFrames : undefined;
+}
+
 export function useAudioWaveforms(sources: string[], fps: number): Map<string, AudioWaveform> {
   const key = [...new Set(sources.filter(Boolean))].sort().join("\n");
   const [, redraw] = React.useReducer((value) => value + 1, 0);

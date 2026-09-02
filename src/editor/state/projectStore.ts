@@ -23,6 +23,8 @@ import exampleProjectJson from "../../templates/template-showcase.json";
 import { naturalVisualSize } from "../../video/layout/visualMetrics";
 import { poseAtFrame, type KeyframeProperty } from "../../video/layout/visualKeyframes";
 import { readDisk, scheduleSave, saveNow, deleteEntry, usePreferences } from "./fileLibrary";
+import { getSfx } from "../../registries/sfxRegistry";
+import { cachedAudioDuration } from "../timeline/useAudioWaveforms";
 
 type Library = Record<string, VideoProject>;
 
@@ -288,7 +290,21 @@ export const useProjectStore = create<ProjectStore>((set, get) => ({
       ...state.project,
       audioClips: [
         ...(state.project.audioClips ?? []),
-        { id: `audio-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 6)}`, sfxId, from: Math.max(0, Math.round(from ?? state.playheadFrame)), volume: 1 },
+        {
+          id: `audio-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 6)}`,
+          sfxId,
+          from: Math.max(0, Math.round(from ?? state.playheadFrame)),
+          volume: 1,
+          // Stamped here, in the ONE function every "add this sound" path goes
+          // through, rather than at the six call sites that have a waveform in
+          // scope. An unset length is counted as a single frame by
+          // `projectDurationInFrames`, so a voice line placed near the end left
+          // the composition ending mid-sentence — and the looping Player then
+          // started the first line over the top of it. Undefined when the file
+          // has not been decoded yet, which is the old behaviour; in practice
+          // the library drew its waveform before this button could be clicked.
+          durationInFrames: cachedAudioDuration(getSfx(sfxId)?.src),
+        },
       ],
     },
   })),

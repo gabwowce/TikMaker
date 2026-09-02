@@ -73,3 +73,39 @@ describe("monophonic voice", () => {
     expect(resolveAudioClips([clip("vo-a", 5000)], 1000, isVoice)).toEqual([]);
   });
 });
+
+describe("a line that outlives the composition", () => {
+  /** `projectDurationInFrames` — an unset length counts as a single frame, so
+   * an untrimmed clip never grows the video to contain itself. Mirrored here
+   * rather than imported, to keep the test hermetic. */
+  const compositionEnd = (scenesEnd: number, clips: AudioClip[]) =>
+    clips.reduce((end, c) => Math.max(end, c.from + (c.durationInFrames ?? 1)), scenesEnd);
+
+  it("an untrimmed clip does not extend the video, so it is cut at the end", () => {
+    // The outro line's file is 90 frames, but nothing records that.
+    const clips = [clip("vo-intro", 0, { durationInFrames: 60 }), clip("vo-outro", 300)];
+    const end = compositionEnd(330, clips);
+    expect(end).toBe(330);
+
+    const [, outro] = resolveAudioClips(clips, end, isVoice);
+    // Mounted only to the end of the video — 60 frames short of the real file.
+    expect(outro.durationInFrames).toBe(30);
+    // With the Player looping, frame 330 restarts the composition and vo-intro
+    // begins while this line still has 2s of speech left. That is the doubling.
+  });
+
+  it("recording the real length grows the video to hold the line", () => {
+    // What `addAudioClip` now stamps at placement, and what the Voice tab's
+    // "Sutalpinti" button writes for clips placed before that existed.
+    const clips = [clip("vo-intro", 0, { durationInFrames: 60 }), clip("vo-outro", 300, { durationInFrames: 90 })];
+    const end = compositionEnd(330, clips);
+    expect(end).toBe(390);
+
+    const [, outro] = resolveAudioClips(clips, end, isVoice);
+    expect(outro.durationInFrames).toBe(90);
+    expect(outro.endAt).toBe(90);
+    // The line now finishes exactly as the video does, so the loop point no
+    // longer lands in the middle of it.
+    expect(outro.from + outro.durationInFrames).toBe(end);
+  });
+});
