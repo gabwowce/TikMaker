@@ -12,7 +12,8 @@
     "assets:sync": "tsx scripts/syncAssets.ts",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "recordings:optimize": "tsx scripts/optimizeRecordings.ts"
   },
   "dependencies": {
     "@remotion/cli": "4.0.290",

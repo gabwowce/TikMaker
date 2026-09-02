@@ -2,8 +2,8 @@
   {
     "id": "placeholder-mtbolil2",
     "label": "placeholder",
-    "file": "placeholder-mtbolil2.mov",
-    "src": "/assets/custom/placeholder-mtbolil2.mov",
+    "file": "placeholder-mtbolil2.mp4",
+    "src": "/assets/custom/placeholder-mtbolil2.mp4",
     "kind": "video"
   },
   {
@@ -25,6 +25,20 @@
     "label": "0901(2)",
     "file": "0901-2-mtir6kew.mp4",
     "src": "/assets/custom/0901-2-mtir6kew.mp4",
+    "kind": "video"
+  },
+  {
+    "id": "0901-3-mtkcd029",
+    "label": "0901(3)",
+    "file": "0901-3-mtkcd029.mp4",
+    "src": "/assets/custom/0901-3-mtkcd029.mp4",
+    "kind": "video"
+  },
+  {
+    "id": "0901-4-mtkcjhrp",
+    "label": "0901(4)",
+    "file": "0901-4-mtkcjhrp.mp4",
+    "src": "/assets/custom/0901-4-mtkcjhrp.mp4",
     "kind": "video"
   }
 ]

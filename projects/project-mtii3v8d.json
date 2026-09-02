@@ -69,13 +69,13 @@
             "keyframes": [
               {
                 "id": "kf-8ggcuvg",
-                "frame": 39,
+                "frame": 41,
                 "x": 12.037037037037036,
                 "y": 5.827067669172932
               },
               {
                 "id": "kf-kpy0097",
-                "frame": 60,
+                "frame": 58,
                 "x": 86.5
               }
             ]
@@ -101,13 +101,13 @@
             "keyframes": [
               {
                 "id": "kf-c15ozgr",
-                "frame": 39,
+                "frame": 41,
                 "x": 85.18930957683742,
                 "y": 88.03258145363408
               },
               {
                 "id": "kf-f536h98",
-                "frame": 60,
+                "frame": 58,
                 "x": 7
               }
             ]
@@ -349,6 +349,7 @@
             "exitAt": 64,
             "exit": "slideLeft",
             "exitDuration": 11,
+            "splitBy": "line",
             "splitDuration": 8,
             "lane": 1
           },
@@ -502,6 +503,7 @@
     },
     {
       "id": "scene-05-step",
+      "durationSeconds": 4.7,
       "vo": "It can click buttons, move through pages, and fill out forms for you.",
       "notes": "Show 3 quick action examples: button click, page navigation, form filling.\n\nThese should be very concrete. Good place for more energetic animation.",
       "background": {
@@ -518,11 +520,74 @@
             "text": "STEP",
             "size": "label",
             "letterSpacing": 4,
-            "color": "#FF7024"
+            "color": "#FF7024",
+            "delay": 0,
+            "exitAt": 141,
+            "exit": "fade",
+            "lane": 0
           },
           {
             "text": "Click buttons\nOpen pages\nFill forms",
-            "size": "title"
+            "size": "title",
+            "delay": 24,
+            "exitAt": 141,
+            "exit": "fade",
+            "lane": 1
+          }
+        ],
+        "visuals": [
+          {
+            "id": "visual-phlc8x2",
+            "visual": {
+              "type": "recording",
+              "src": "/assets/custom/0901-4-mtkcjhrp.mp4",
+              "frame": "plain",
+              "playbackRate": 1,
+              "startFrom": 0,
+              "fit": "cover"
+            },
+            "x": 26.5,
+            "y": 50,
+            "scale": 1.8,
+            "exit": "slideLeft",
+            "exitDuration": 2,
+            "delay": 0,
+            "exitAt": 141,
+            "lane": 0,
+            "keyframes": [
+              {
+                "id": "kf-c9ap9k6",
+                "frame": 32,
+                "x": 0,
+                "y": 50,
+                "scale": 2.25
+              },
+              {
+                "id": "kf-a2jixow",
+                "frame": 44,
+                "x": 0,
+                "scale": 2.4
+              },
+              {
+                "id": "kf-0k0f9lz",
+                "frame": 82,
+                "x": 0,
+                "y": 50,
+                "scale": 2.25
+              },
+              {
+                "id": "kf-5ouefaj",
+                "frame": 100,
+                "x": 67,
+                "scale": 1.6
+              },
+              {
+                "id": "kf-6mpq0ek",
+                "frame": 122,
+                "x": 64,
+                "scale": 2
+              }
+            ]
           }
         ]
       },
@@ -705,7 +770,7 @@
       "type": "takeaway"
     }
   ],
-  "savedAt": 1788367737009,
+  "savedAt": 1788369342710,
   "audioClips": [
     {
       "id": "audio-mtimh5cl-pd7k",
@@ -728,6 +793,40 @@
       "startFrom": 2,
       "durationInFrames": 15,
       "volume": 0.1
+    },
+    {
+      "id": "audio-mtkc66y6-lfye",
+      "sfxId": "paper-slide",
+      "from": 189,
+      "volume": 1
+    },
+    {
+      "id": "audio-mtkc6bjx-s6yu",
+      "sfxId": "paper-slide",
+      "from": 215,
+      "volume": 1
+    },
+    {
+      "id": "audio-mtkc7e2h-id17",
+      "sfxId": "paper-slide",
+      "from": 39,
+      "durationInFrames": 21,
+      "lane": 1,
+      "volume": 1
+    },
+    {
+      "id": "audio-mtkch8m6-lv79",
+      "sfxId": "soft-whoosh",
+      "from": 237,
+      "durationInFrames": 17,
+      "volume": 0.55
+    },
+    {
+      "id": "audio-mtkchykj-piqf",
+      "sfxId": "soft-whoosh",
+      "from": 253,
+      "durationInFrames": 17,
+      "volume": 0.55
     }
   ]
 }
