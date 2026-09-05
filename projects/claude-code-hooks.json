@@ -1,25 +1,26 @@
 {
-  "id": "project-mtii3v8d",
-  "title": "Claude can now test your app like a real user v2",
+  "id": "claude-code-hooks",
+  "title": "Stop Claude Code from breaking your app",
   "collection": "Claude Code + Chrome",
   "fps": 30,
   "width": 1080,
   "height": 1920,
   "storyPlan": {
     "targetDuration": 30,
-    "premise": "Claude Code can test a web app like a real user through Google Chrome.",
-    "audience": "Developers and AI app builders"
+    "premise": "Claude Code hooks add guardrails that can stop dangerous actions and verify edits automatically.",
+    "audience": "Developers already using AI coding agents"
   },
   "scenes": [
     {
-      "id": "scene-odn7i8z",
+      "id": "hooks-scene-1",
       "plan": {
         "role": "hook",
-        "purpose": "Stop the scroll with a familiar manual-testing pain.",
-        "visualBrief": "Claude Code marks on a dynamic background."
+        "purpose": "Open with a blunt risk that matches the breaking-glass effect.",
+        "visualBrief": "The glass breaks as the word BREAK lands."
       },
-      "durationSeconds": 1.6333333333333333,
-      "vo": "Tired of testing apps manually?",
+      "durationSeconds": 2.2333333333333334,
+      "vo": "Claude Code can break your app.",
+      "notes": "Claude marks move across the frame while the question lands.\n\nTemplate geometry, animation and timing are intentionally preserved.",
       "background": {
         "type": "custom",
         "fill": {
@@ -32,30 +33,32 @@
         "items": [],
         "richHeadline": [
           {
-            "text": "Tired of testing apps",
+            "text": "CLAUDE CODE CAN",
             "size": "headline",
+            "sizePx": 131,
             "x": 50,
             "y": 38,
             "delay": 0,
-            "exitAt": 49,
+            "exitAt": 67,
             "exit": "slideLeft",
             "exitDuration": 12,
-            "splitDuration": 29,
+            "splitDuration": 19,
             "lane": 1
           },
           {
-            "text": "manually?",
+            "text": "BREAK YOUR APP.",
             "size": "headline",
+            "sizePx": 131,
             "pill": true,
             "color": "#171717",
             "x": 50,
-            "y": 44.5,
-            "delay": 29,
-            "exitAt": 49,
+            "y": 44.92481203007519,
+            "delay": 20,
+            "exitAt": 67,
             "exit": "slideLeft",
             "exitDuration": 9,
             "splitBy": "letter",
-            "splitDuration": 13,
+            "splitDuration": 25,
             "lane": 2
           }
         ],
@@ -76,20 +79,20 @@
             "exitDuration": 8,
             "exitDistance": 200,
             "delay": 0,
-            "exitAt": 121,
+            "exitAt": 135,
             "kenBurns": "rotateCW",
             "kenBurnsSpeed": 0.3,
             "lane": 3,
             "keyframes": [
               {
                 "id": "kf-8ggcuvg",
-                "frame": 41,
+                "frame": 55,
                 "x": 12.037037037037036,
                 "y": 5.827067669172932
               },
               {
                 "id": "kf-kpy0097",
-                "frame": 58,
+                "frame": 77,
                 "x": 86.5
               }
             ]
@@ -109,23 +112,40 @@
             "exitDuration": 8,
             "exitDistance": 280,
             "delay": 0,
-            "exitAt": 121,
+            "exitAt": 135,
             "kenBurns": "rotateCCW",
             "kenBurnsSpeed": 0.3,
             "lane": 4,
             "keyframes": [
               {
                 "id": "kf-c15ozgr",
-                "frame": 41,
+                "frame": 55,
                 "x": 85.18930957683742,
                 "y": 88.03258145363408
               },
               {
                 "id": "kf-f536h98",
-                "frame": 58,
+                "frame": 77,
                 "x": 7
               }
             ]
+          },
+          {
+            "id": "visual-mtmtnwtg",
+            "visual": {
+              "type": "prop",
+              "asset": "broken-glass"
+            },
+            "x": 50,
+            "y": 51.06516290726817,
+            "scale": 4,
+            "entrance": "fade",
+            "entranceDuration": 14,
+            "exit": "fade",
+            "exitDuration": 28,
+            "delay": 39,
+            "exitAt": 67,
+            "lane": 0
           }
         ]
       },
@@ -137,15 +157,15 @@
       "type": "hook-centered"
     },
     {
-      "id": "scene-01-hook",
+      "id": "hooks-scene-2",
       "plan": {
         "role": "reveal",
-        "purpose": "Reveal the new capability in one clear promise.",
-        "visualBrief": "Claude Code with a real app open in Chrome."
+        "purpose": "Reveal hooks as the guardrail layer around Claude Code.",
+        "visualBrief": "Show Claude Code beside a replaceable terminal or editor recording."
       },
       "durationSeconds": 2.533333333333333,
-      "vo": "Claude Code can now test your app like a real user.",
-      "notes": "Strong opening frame. Show Claude Code and a web app open in Chrome. Make it obvious that Claude is interacting with the app in the browser.\n\nKeep it bold and clean. This is the promise.",
+      "vo": "Claude Code hooks add guardrails to every action.",
+      "notes": "Show Claude Code beside a replaceable terminal or editor recording.\n\nTemplate geometry, animation and timing are intentionally preserved.",
       "background": {
         "type": "custom",
         "fill": {
@@ -160,11 +180,11 @@
         "items": [],
         "richHeadline": [
           {
-            "text": "Claude Code",
+            "text": "Claude Code Hooks",
             "size": "hero",
-            "sizePx": 147,
-            "x": 50,
-            "y": 22,
+            "sizePx": 101,
+            "x": 50.163132137031,
+            "y": 21.74185463659148,
             "delay": 2,
             "exitAt": 72,
             "exit": "rollOut",
@@ -174,26 +194,27 @@
             "lane": 0
           },
           {
-            "text": "can now test your app",
+            "text": "add guardrails",
             "size": "title",
-            "x": 50,
-            "y": 28,
+            "x": 50.163132137031,
+            "y": 27.506265664160402,
             "delay": 17,
             "exitAt": 72,
             "exit": "rollOut",
             "exitDuration": 8,
             "splitBy": "word",
             "splitDuration": 10,
-            "lane": 1
+            "lane": 1,
+            "sizePx": 118
           },
           {
-            "text": "like a real user.",
+            "text": "to every action.",
             "size": "headline",
             "sizePx": 108,
             "pill": true,
             "color": "#171717",
-            "x": 50.163132137031,
-            "y": 71,
+            "x": 50,
+            "y": 70.23809523809523,
             "delay": 42,
             "exitAt": 72,
             "exit": "rollOut",
@@ -239,14 +260,15 @@
       "type": "hook-centered"
     },
     {
-      "id": "scene-1gkt5f9",
+      "id": "hooks-scene-3",
       "plan": {
         "role": "benefit",
-        "purpose": "Turn the feature into two concrete developer benefits.",
-        "visualBrief": "Clock changes to a bug: less wasted time, fewer missed bugs."
+        "purpose": "Make the protection concrete rather than describing hooks abstractly.",
+        "visualBrief": "Warning changes into a successful test check."
       },
       "durationSeconds": 2.2666666666666666,
-      "vo": "So you waste less time and catch more bugs.",
+      "vo": "They can block dangerous commands and run checks automatically.",
+      "notes": "Warning changes into a successful test check.\n\nTemplate geometry, animation and timing are intentionally preserved.",
       "background": {
         "type": "custom",
         "fill": {
@@ -259,7 +281,7 @@
         "items": [],
         "richHeadline": [
           {
-            "text": "DON'T WASTE TIME",
+            "text": "BLOCK BAD COMMANDS",
             "size": "headline",
             "pill": true,
             "x": 50.24038461538461,
@@ -273,7 +295,7 @@
             "lane": 0
           },
           {
-            "text": "DON'T MISS BUGS",
+            "text": "RUN CHECKS AUTOMATICALLY",
             "size": "headline",
             "pill": true,
             "x": 50.24038461538461,
@@ -336,15 +358,15 @@
       "type": "hook-centered"
     },
     {
-      "id": "scene-03-reveal",
+      "id": "hooks-scene-4",
       "plan": {
         "role": "mechanism",
-        "purpose": "Explain how Claude gains access to the app.",
-        "visualBrief": "Claude Code and Google Chrome connect visually."
+        "purpose": "Explain the two hook moments in one memorable contrast.",
+        "visualBrief": "Claude plus VS Code; PreToolUse protects before, PostToolUse verifies after."
       },
       "durationSeconds": 2.1333333333333333,
-      "vo": "It connects directly to Google Chrome.",
-      "notes": "Show Claude Code connected to Chrome. Browser is open with a local app ready to be tested.\n\nSimple reveal frame. Don't overload it.",
+      "vo": "Pre-tool hooks can stop an action. Post-tool hooks check the result.",
+      "notes": "Claude plus VS Code; PreToolUse protects before, PostToolUse verifies after.\n\nTemplate geometry, animation and timing are intentionally preserved.",
       "background": {
         "type": "custom",
         "fill": {
@@ -356,7 +378,7 @@
       "content": {
         "richHeadline": [
           {
-            "text": "Claude Code",
+            "text": "PRE-TOOL",
             "size": "headline",
             "x": 50,
             "y": 18.1640625,
@@ -384,7 +406,7 @@
             "lane": 1
           },
           {
-            "text": "Google Chrome",
+            "text": "POST-TOOL",
             "size": "headline",
             "x": 50,
             "y": 50,
@@ -419,7 +441,7 @@
             "id": "visual-ft2trou",
             "visual": {
               "type": "tool-logo",
-              "tool": "google-chrome"
+              "tool": "vs-code"
             },
             "x": 50,
             "y": 62.174479166666664,
@@ -443,15 +465,15 @@
       "type": "hook-visual"
     },
     {
-      "id": "scene-04-solution",
+      "id": "hooks-scene-5",
       "plan": {
         "role": "setup",
-        "purpose": "Show the extension being installed and added to Chrome.",
-        "visualBrief": "Install the Chrome extension and finish on the Add extension confirmation."
+        "purpose": "Show the small configuration required to automate verification.",
+        "visualBrief": "REPLACE RECORDING: open .claude/settings.json and add a PostToolUse test hook."
       },
       "durationSeconds": 3.6666666666666665,
-      "vo": "First, install the extension, and add it to Chrome.",
-      "notes": "Intro card for the capabilities section. Could show a small browser visual with multiple action markers or icons around it.\n\nActs like a mini chapter break before the list.",
+      "vo": "Add a hook in settings to run tests whenever Claude edits code.",
+      "notes": "REPLACE RECORDING: open .claude/settings.json and add a PostToolUse test hook.\n\nTemplate geometry, animation and timing are intentionally preserved.",
       "background": {
         "type": "custom",
         "fill": {
@@ -542,15 +564,15 @@
       "type": "visual-explainer"
     },
     {
-      "id": "scene-05-step",
+      "id": "hooks-scene-6",
       "plan": {
         "role": "proof",
-        "purpose": "Show the prompt being sent and Claude testing through the extension.",
-        "visualBrief": "Open the extension panel, send the prompt, then show Claude navigating the website by itself."
+        "purpose": "Prove the hook fires without the developer manually running a command.",
+        "visualBrief": "REPLACE RECORDING: ask Claude to edit code, show tests running automatically, then a green result."
       },
       "durationSeconds": 3.966666666666667,
-      "vo": "Open it, send your prompt, and watch Claude test the app.",
-      "notes": "Show 3 quick action examples: button click, page navigation, form filling.\n\nThese should be very concrete. Good place for more energetic animation.",
+      "vo": "Then every edit is tested before broken code slips through.",
+      "notes": "REPLACE RECORDING: ask Claude to edit code, show tests running automatically, then a green result.\n\nTemplate geometry, animation and timing are intentionally preserved.",
       "background": {
         "type": "custom",
         "fill": {
@@ -629,15 +651,15 @@
       "type": "visual-explainer"
     },
     {
-      "id": "scene-10-cta",
+      "id": "hooks-scene-7",
       "plan": {
         "role": "cta",
-        "purpose": "End with one clear next action.",
-        "visualBrief": "Clean end card with an arrow and Claude mark."
+        "purpose": "Turn this into a recurring series for advanced Claude Code workflows.",
+        "visualBrief": "Reuse the clean Claude end card."
       },
       "durationSeconds": 1.8,
-      "vo": "Follow for more AI building tips.",
-      "notes": "Clean ending frame. Keep Claude Code and Chrome theme, with simple follow CTA.\n\nShort, clear, no extra explanation.",
+      "vo": "Follow for practical Claude Code workflows.",
+      "notes": "Reuse the clean Claude end card.\n\nTemplate geometry, animation and timing are intentionally preserved.",
       "background": {
         "type": "custom",
         "fill": {
@@ -649,7 +671,7 @@
       "content": {
         "richHeadline": [
           {
-            "text": "FOLLOW FOR MORE",
+            "text": "FOLLOW FOR PRACTICAL",
             "size": "label",
             "sizePx": 83,
             "letterSpacing": 4,
@@ -662,7 +684,7 @@
             "lane": 0
           },
           {
-            "text": "AI BUILDING TIPS",
+            "text": "CLAUDE CODE WORKFLOWS",
             "size": "headline",
             "delay": 21,
             "exitAt": 54,
@@ -721,25 +743,8 @@
       "type": "takeaway"
     }
   ],
-  "savedAt": 1788519475144,
+  "savedAt": 1788520620354,
   "audioClips": [
-    {
-      "id": "audio-mtimh5cl-pd7k",
-      "sfxId": "vo-tired-of-testing-app-manually-mtimh5ci",
-      "from": 0,
-      "durationInFrames": 49,
-      "volume": 1,
-      "voiceText": "Tired of testing apps manually?"
-    },
-    {
-      "id": "audio-mtirhd69-ku8h",
-      "sfxId": "vo-claude-code-can-now-test-your-app-like-a-mtimjun4",
-      "from": 49,
-      "durationInFrames": 85,
-      "lane": 1,
-      "volume": 1,
-      "voiceText": "Claude code can now test your app like a real user."
-    },
     {
       "id": "audio-mtkbftk4-gzdr",
       "sfxId": "soft-whoosh",
@@ -757,55 +762,6 @@
       "volume": 1
     },
     {
-      "id": "audio-mtkch8m6-lv79",
-      "sfxId": "soft-whoosh",
-      "from": 237,
-      "durationInFrames": 17,
-      "volume": 0.55
-    },
-    {
-      "id": "audio-mtmqhcuy-56js",
-      "sfxId": "vo-follow-for-more-ai-building-tips-mtmqhcux",
-      "from": 486,
-      "durationInFrames": 54,
-      "volume": 1,
-      "voiceText": "Follow for more AI building tips."
-    },
-    {
-      "id": "audio-mtmqlxou-8c4j",
-      "sfxId": "vo-don-t-waste-time-don-t-miss-bugs-mtmq89r4",
-      "from": 125,
-      "startFrom": 2,
-      "durationInFrames": 61,
-      "volume": 1
-    },
-    {
-      "id": "audio-mtmqm6u9-ex0c",
-      "sfxId": "vo-it-connects-directly-to-google-chrome-mtmq9i16",
-      "from": 189,
-      "durationInFrames": 61,
-      "lane": 1,
-      "volume": 1
-    },
-    {
-      "id": "audio-mtmqmvbk-0sdg",
-      "sfxId": "vo-first-install-the-extension-and-add-it-mtmqmvbi",
-      "from": 257,
-      "durationInFrames": 99,
-      "lane": 1,
-      "volume": 1,
-      "voiceText": "First, install the extension, and add it to Chrome."
-    },
-    {
-      "id": "audio-mtmqn9jc-irea",
-      "sfxId": "vo-open-it-send-your-prompt-and-watch-cla-mtmqn9iz",
-      "from": 372,
-      "durationInFrames": 102,
-      "lane": 1,
-      "volume": 1,
-      "voiceText": "Open it, send your prompt, and watch Claude test the app."
-    },
-    {
       "id": "audio-mtmqqad7-mj4v",
       "sfxId": "soft-whoosh",
       "from": 108,
@@ -814,27 +770,42 @@
       "volume": 0.1
     },
     {
-      "id": "audio-mtmqudel-yhxb",
-      "sfxId": "roll-in-mtmqu3ax",
-      "from": 189,
-      "startFrom": 79,
-      "durationInFrames": 17,
-      "volume": 1
-    },
-    {
-      "id": "audio-mtmqv225-j8ww",
-      "sfxId": "roll-in-mtmqu3ax",
-      "from": 215,
-      "startFrom": 79,
-      "durationInFrames": 17,
-      "volume": 1
-    },
-    {
       "id": "audio-mtms3wgf-c88i",
       "sfxId": "soft-whoosh",
       "from": 356,
       "durationInFrames": 17,
       "volume": 0.15
+    },
+    {
+      "id": "audio-mtmtpqh1-4zs5",
+      "sfxId": "glass-break-mtmtphba",
+      "from": 36,
+      "durationInFrames": 39,
+      "volume": 1
+    },
+    {
+      "id": "audio-mtmumt42-ghfw",
+      "sfxId": "roll-in-mtmqu3ax",
+      "from": 211,
+      "volume": 1,
+      "durationInFrames": 16,
+      "startFrom": 80
+    },
+    {
+      "id": "audio-mtmuncn1-mnxs",
+      "sfxId": "roll-in-mtmqu3ax",
+      "from": 237,
+      "volume": 1,
+      "durationInFrames": 16,
+      "startFrom": 80
+    },
+    {
+      "id": "audio-mtmuvz7g-pl70",
+      "sfxId": "metalic-riser-mtmuvwqs",
+      "from": 275,
+      "volume": 0.1,
+      "durationInFrames": 25,
+      "startFrom": 209
     }
   ]
 }

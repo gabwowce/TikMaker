@@ -17,8 +17,8 @@
       "id": "beat-2",
       "role": "problem",
       "purpose": "Show the pain the viewer already recognises.",
-      "voiceover": "Normally Claude writes the code, then you test the app yourself.",
-      "onScreenText": "Claude writes. You test.",
+      "voiceover": "Claude code can now test your app like a real user.",
+      "onScreenText": "Claude code can now test your app",
       "visualPlaceholder": "Recording of manual click-through testing",
       "durationSeconds": 3
     },
@@ -26,8 +26,8 @@
       "id": "beat-3",
       "role": "reveal",
       "purpose": "Turn the idea over — the thing they didn't know.",
-      "voiceover": "But Claude Code can now use Chrome.",
-      "onScreenText": "Claude Code + Chrome",
+      "voiceover": "DON'T WASTE TIME. DON'T MISS BUGS",
+      "onScreenText": "DON'T WASTE TIME. DON'T MISS BUGS",
       "visualPlaceholder": "Chrome logo, tool-logo visual",
       "durationSeconds": 2.5
     },
@@ -35,8 +35,7 @@
       "id": "beat-4",
       "role": "demo",
       "purpose": "Show it actually happening on screen.",
-      "voiceover": "Ask it to test the signup flow on localhost.",
-      "onScreenText": "Test the signup flow on localhost.",
+      "voiceover": "Claude code + Google Chrome",
       "visualPlaceholder": "Recording: the prompt being typed in the CLI",
       "durationSeconds": 3.5
     },
@@ -44,18 +43,16 @@
       "id": "beat-5",
       "role": "proof",
       "purpose": "Evidence it worked — the result, not the claim.",
-      "voiceover": "It opens the app, clicks through the UI and reads the console.",
-      "onScreenText": "It opens the app and clicks through the UI.",
-      "visualPlaceholder": "Browser-framed recording of the automated run",
+      "visualPlaceholder": "instaliuoti google chrome recordas",
       "durationSeconds": 4
     },
     {
       "id": "beat-6",
       "role": "payoff",
       "purpose": "Land the benefit in one line.",
-      "voiceover": "Find, fix, test again — without leaving the terminal.",
-      "onScreenText": "Find → Fix → Test again.",
-      "visualPlaceholder": "Three-node flow diagram",
+      "voiceover": "Let Claude test it, so you can ship.",
+      "onScreenText": "Let Claude test it, so you can ship.",
+      "visualPlaceholder": "promtas claude kad testuotu recordas",
       "durationSeconds": 3
     },
     {
@@ -68,5 +65,5 @@
       "durationSeconds": 2.5
     }
   ],
-  "savedAt": 1788256839053
+  "savedAt": 1788496239787
 }

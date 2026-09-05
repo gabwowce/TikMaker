@@ -7,6 +7,9 @@
   "scenes": [
     {
       "id": "scene-01-hook",
+      "plan": {
+        "role": "hook"
+      },
       "durationSeconds": 2,
       "vo": "Claude code can now test your app like a real user.",
       "notes": "Strong opening frame. Show Claude Code and a web app open in Chrome. Make it obvious that Claude is interacting with the app in the browser.\n\nKeep it bold and clean. This is the promise.",
@@ -83,7 +86,7 @@
             "exitAt": 61,
             "kenBurns": "rotateCW",
             "kenBurnsSpeed": 0.3,
-            "lane": 0
+            "lane": 3
           },
           {
             "id": "visual-mte0ktmf-corner-1",
@@ -102,7 +105,7 @@
             "exitAt": 61,
             "kenBurns": "rotateCCW",
             "kenBurnsSpeed": 0.3,
-            "lane": 1
+            "lane": 4
           }
         ]
       },
@@ -119,6 +122,9 @@
     },
     {
       "id": "scene-1gkt5f9",
+      "plan": {
+        "role": "hook"
+      },
       "durationSeconds": 5.3,
       "background": {
         "type": "custom",
@@ -129,7 +135,6 @@
         "grid": "lines"
       },
       "content": {
-        "headline": "New headline",
         "items": [],
         "richHeadline": [
           {
@@ -286,6 +291,9 @@
     },
     {
       "id": "scene-03-reveal",
+      "plan": {
+        "role": "reveal"
+      },
       "vo": "Now Claude Code can connect directly to Chrome and do that testing for you.",
       "notes": "Show Claude Code connected to Chrome. Browser is open with a local app ready to be tested.\n\nSimple reveal frame. Don't overload it.",
       "background": {
@@ -297,8 +305,6 @@
         "grid": "lines"
       },
       "content": {
-        "eyebrow": "REVEAL",
-        "headline": "Claude Code + Chrome",
         "richHeadline": [
           {
             "text": "Claude code ",
@@ -327,6 +333,9 @@
     },
     {
       "id": "scene-04-solution",
+      "plan": {
+        "role": "benefit"
+      },
       "vo": "And that means Claude can actually use your app, not just write code for it.",
       "notes": "Intro card for the capabilities section. Could show a small browser visual with multiple action markers or icons around it.\n\nActs like a mini chapter break before the list.",
       "background": {
@@ -338,8 +347,18 @@
         "grid": "lines"
       },
       "content": {
-        "eyebrow": "SOLUTION",
-        "headline": "What can it do?"
+        "richHeadline": [
+          {
+            "text": "SOLUTION",
+            "size": "label",
+            "letterSpacing": 4,
+            "color": "#FF7024"
+          },
+          {
+            "text": "What can it do?",
+            "size": "title"
+          }
+        ]
       },
       "motion": {
         "entrance": "none",
@@ -351,6 +370,9 @@
     },
     {
       "id": "scene-05-step",
+      "plan": {
+        "role": "benefit"
+      },
       "vo": "It can click buttons, move through pages, and fill out forms for you.",
       "notes": "Show 3 quick action examples: button click, page navigation, form filling.\n\nThese should be very concrete. Good place for more energetic animation.",
       "background": {
@@ -362,8 +384,18 @@
         "grid": "lines"
       },
       "content": {
-        "eyebrow": "STEP",
-        "headline": "Click buttons\nOpen pages\nFill forms"
+        "richHeadline": [
+          {
+            "text": "STEP",
+            "size": "label",
+            "letterSpacing": 4,
+            "color": "#FF7024"
+          },
+          {
+            "text": "Click buttons\nOpen pages\nFill forms",
+            "size": "title"
+          }
+        ]
       },
       "motion": {
         "entrance": "none",
@@ -375,6 +407,9 @@
     },
     {
       "id": "scene-06-step",
+      "plan": {
+        "role": "benefit"
+      },
       "vo": "It can also check validation, inspect browser errors, and show you exactly what happened on screen.",
       "notes": "Show validation message, browser console error, and a visible test flow happening on screen.\n\nThis is the more technical half of the benefits.",
       "background": {
@@ -386,8 +421,18 @@
         "grid": "lines"
       },
       "content": {
-        "eyebrow": "STEP",
-        "headline": "Check validation\nRead errors\nShow what happened"
+        "richHeadline": [
+          {
+            "text": "STEP",
+            "size": "label",
+            "letterSpacing": 4,
+            "color": "#FF7024"
+          },
+          {
+            "text": "Check validation\nRead errors\nShow what happened",
+            "size": "title"
+          }
+        ]
       },
       "motion": {
         "entrance": "none",
@@ -399,6 +444,9 @@
     },
     {
       "id": "scene-07-step",
+      "plan": {
+        "role": "benefit"
+      },
       "vo": "To connect it, install the Claude Chrome extension, then start Claude Code with chrome enabled.",
       "notes": "Quick setup sequence. Show the extension in Chrome and then terminal / Claude Code setup step.\n\nKeep this fast. Enough to show the idea, not a full tutorial.",
       "background": {
@@ -410,8 +458,18 @@
         "grid": "lines"
       },
       "content": {
-        "eyebrow": "STEP",
-        "headline": "Install extension\nStart with Chrome"
+        "richHeadline": [
+          {
+            "text": "STEP",
+            "size": "label",
+            "letterSpacing": 4,
+            "color": "#FF7024"
+          },
+          {
+            "text": "Install extension\nStart with Chrome",
+            "size": "title"
+          }
+        ]
       },
       "motion": {
         "entrance": "none",
@@ -423,6 +481,9 @@
     },
     {
       "id": "scene-08-demo",
+      "plan": {
+        "role": "demo"
+      },
       "vo": "Then you can simply ask Claude to test your app, for example: test the signup flow and tell me what breaks.",
       "notes": "Screen recording of Claude Code receiving a prompt to test the signup flow on the local app.\n\nMake the prompt readable. This is the 'I can try this too' moment.",
       "background": {
@@ -434,8 +495,18 @@
         "grid": "lines"
       },
       "content": {
-        "eyebrow": "DEMO",
-        "headline": "Test the signup flow\nand tell me what breaks."
+        "richHeadline": [
+          {
+            "text": "DEMO",
+            "size": "label",
+            "letterSpacing": 4,
+            "color": "#FF7024"
+          },
+          {
+            "text": "Test the signup flow\nand tell me what breaks.",
+            "size": "title"
+          }
+        ]
       },
       "motion": {
         "entrance": "none",
@@ -447,6 +518,9 @@
     },
     {
       "id": "scene-09-proof",
+      "plan": {
+        "role": "demo"
+      },
       "vo": "Now you can watch Claude click through the app, test the flow, and inspect the result live on screen.",
       "notes": "Show Claude actively using the app in Chrome: clicking, typing, submitting, and checking the result.\n\nThis should feel like the strongest visual proof moment.",
       "background": {
@@ -458,8 +532,18 @@
         "grid": "lines"
       },
       "content": {
-        "eyebrow": "PROOF",
-        "headline": "Watch it test live."
+        "richHeadline": [
+          {
+            "text": "PROOF",
+            "size": "label",
+            "letterSpacing": 4,
+            "color": "#FF7024"
+          },
+          {
+            "text": "Watch it test live.",
+            "size": "title"
+          }
+        ]
       },
       "motion": {
         "entrance": "none",
@@ -471,6 +555,9 @@
     },
     {
       "id": "scene-10-cta",
+      "plan": {
+        "role": "payoff"
+      },
       "vo": "Follow for more AI app building tips.",
       "notes": "Clean ending frame. Keep Claude Code and Chrome theme, with simple follow CTA.\n\nShort, clear, no extra explanation.",
       "background": {
@@ -482,8 +569,18 @@
         "grid": "lines"
       },
       "content": {
-        "eyebrow": "CTA",
-        "headline": "Follow for more AI app building tips."
+        "richHeadline": [
+          {
+            "text": "CTA",
+            "size": "label",
+            "letterSpacing": 4,
+            "color": "#FF7024"
+          },
+          {
+            "text": "Follow for more AI app building tips.",
+            "size": "headline"
+          }
+        ]
       },
       "motion": {
         "entrance": "none",
@@ -494,7 +591,7 @@
       "type": "takeaway"
     }
   ],
-  "savedAt": 1788258626440,
+  "savedAt": 1788520619074,
   "audioClips": [
     {
       "id": "audio-mtfmk42a-v4xm",

@@ -51,6 +51,7 @@ const globs: Record<LibraryKind, Record<string, { default: unknown }>> = {
  * no server to ask. In the editor, the server's own listing is the truth.
  */
 const diskCache = new Map<LibraryKind, unknown[]>();
+const SAVE_JOURNAL_KEY = "tikmaker.pending-save-journal.v1";
 
 const ALL_KINDS: LibraryKind[] = ["project", "storyboard", "scene", "template", "background", "voiceVariant"];
 
@@ -62,6 +63,27 @@ const ALL_KINDS: LibraryKind[] = ["project", "storyboard", "scene", "template", 
  * would be too late for exactly the reads that matter.
  */
 export async function primeDiskCache(): Promise<void> {
+  // A reload can happen inside the 400ms debounce or while the final beacon is
+  // still in flight. Replay the emergency journal before reading disk, so the
+  // latest browser state reaches the one authoritative file first.
+  if (typeof window !== "undefined") {
+    try {
+      const journal = JSON.parse(window.localStorage.getItem(SAVE_JOURNAL_KEY) ?? "{}") as Record<string, { kind: LibraryKind; data: { id: string } }>;
+      for (const [key, entry] of Object.entries(journal)) {
+        try {
+          await postJson("/api/library/save", { kind: entry.kind, data: entry.data });
+          delete journal[key];
+        } catch {
+          // Keep it for the next startup; the normal save status will surface
+          // a server failure once the editor is running.
+        }
+      }
+      if (Object.keys(journal).length) window.localStorage.setItem(SAVE_JOURNAL_KEY, JSON.stringify(journal));
+      else window.localStorage.removeItem(SAVE_JOURNAL_KEY);
+    } catch {
+      // A malformed journal must not prevent the disk library from opening.
+    }
+  }
   await Promise.all(
     ALL_KINDS.map(async (kind) => {
       try {
@@ -162,6 +184,15 @@ async function postJson(url: string, body: unknown): Promise<void> {
  */
 const unsaved = new Map<string, { kind: LibraryKind; data: { id: string } }>();
 
+function persistSaveJournal() {
+  if (typeof window === "undefined") return;
+  if (!unsaved.size) {
+    window.localStorage.removeItem(SAVE_JOURNAL_KEY);
+    return;
+  }
+  window.localStorage.setItem(SAVE_JOURNAL_KEY, JSON.stringify(Object.fromEntries(unsaved)));
+}
+
 async function writeEntry(kind: LibraryKind, data: { id: string }): Promise<void> {
   const key = `${kind}:${data.id}`;
   unsaved.set(key, { kind, data });
@@ -173,6 +204,7 @@ async function writeEntry(kind: LibraryKind, data: { id: string }): Promise<void
       // Only clear if nothing newer arrived while this request was in flight —
       // otherwise a slow save would mark the newer edit as written.
       if (unsaved.get(key)?.data === data) unsaved.delete(key);
+      persistSaveJournal();
       setStatus({
         state: unsaved.size ? "saving" : "saved",
         lastSavedAt: Date.now(),
@@ -210,6 +242,9 @@ export function scheduleSave(kind: LibraryKind, data: { id: string }) {
   // Record it immediately: if the tab closes before the timer fires, `flushSaves`
   // still has the newest version to send.
   unsaved.set(key, { kind, data });
+  // Synchronous and immediate: even a crash before the debounce fires keeps
+  // the exact newest project for `primeDiskCache` to replay on next load.
+  persistSaveJournal();
   setStatus({ state: "saving", pending: unsaved.size });
   clearTimeout(timers.get(key));
   timers.set(
@@ -235,6 +270,7 @@ export async function deleteEntry(kind: LibraryKind, id: string): Promise<void> 
   clearTimeout(timers.get(key));
   timers.delete(key);
   unsaved.delete(key);
+  persistSaveJournal();
   try {
     await postJson("/api/library/delete", { kind, id });
     setStatus({ state: "saved", lastSavedAt: Date.now(), error: null, pending: unsaved.size });
@@ -252,7 +288,10 @@ function flushSaves() {
   for (const [key, entry] of unsaved) {
     const payload = JSON.stringify({ kind: entry.kind, data: entry.data });
     const sent = navigator.sendBeacon?.("/api/library/save", new Blob([payload], { type: "application/json" }));
-    if (sent) unsaved.delete(key);
+    // Do not clear the journal merely because the browser accepted the beacon:
+    // accepted is not the same as written. Startup replay removes it only
+    // after the server confirms the save.
+    void sent;
   }
 }
 

@@ -1,25 +1,26 @@
 {
-  "id": "project-mtii3v8d",
-  "title": "Claude can now test your app like a real user v2",
+  "id": "claude-code-browser-acceptance-tests",
+  "title": "Claude Code can test real user flows",
   "collection": "Claude Code + Chrome",
   "fps": 30,
   "width": 1080,
   "height": 1920,
   "storyPlan": {
     "targetDuration": 30,
-    "premise": "Claude Code can test a web app like a real user through Google Chrome.",
-    "audience": "Developers and AI app builders"
+    "premise": "Claude Code combines codebase context with a live Chrome session to verify complete user journeys.",
+    "audience": "Developers already using AI coding agents"
   },
   "scenes": [
     {
-      "id": "scene-odn7i8z",
+      "id": "hooks-scene-1",
       "plan": {
         "role": "hook",
-        "purpose": "Stop the scroll with a familiar manual-testing pain.",
-        "visualBrief": "Claude Code marks on a dynamic background."
+        "purpose": "Challenge the false confidence created by passing isolated tests.",
+        "visualBrief": "Claude marks move across the frame while the gap between tests and reality lands."
       },
       "durationSeconds": 1.6333333333333333,
-      "vo": "Tired of testing apps manually?",
+      "vo": "Tests passed. But the user flow still broke?",
+      "notes": "Claude marks move across the frame while the gap between tests and reality lands.\n\nTemplate geometry, animation and timing are intentionally preserved.",
       "background": {
         "type": "custom",
         "fill": {
@@ -32,7 +33,7 @@
         "items": [],
         "richHeadline": [
           {
-            "text": "Tired of testing apps",
+            "text": "YOUR TESTS PASSED",
             "size": "headline",
             "x": 50,
             "y": 38,
@@ -41,10 +42,10 @@
             "exit": "slideLeft",
             "exitDuration": 12,
             "splitDuration": 29,
-            "lane": 1
+            "lane": 0
           },
           {
-            "text": "manually?",
+            "text": "BUT THE FLOW BROKE?",
             "size": "headline",
             "pill": true,
             "color": "#171717",
@@ -56,7 +57,7 @@
             "exitDuration": 9,
             "splitBy": "letter",
             "splitDuration": 13,
-            "lane": 2
+            "lane": 1
           }
         ],
         "blocks": [],
@@ -79,7 +80,7 @@
             "exitAt": 121,
             "kenBurns": "rotateCW",
             "kenBurnsSpeed": 0.3,
-            "lane": 3,
+            "lane": 2,
             "keyframes": [
               {
                 "id": "kf-8ggcuvg",
@@ -112,7 +113,7 @@
             "exitAt": 121,
             "kenBurns": "rotateCCW",
             "kenBurnsSpeed": 0.3,
-            "lane": 4,
+            "lane": 3,
             "keyframes": [
               {
                 "id": "kf-c15ozgr",
@@ -137,15 +138,15 @@
       "type": "hook-centered"
     },
     {
-      "id": "scene-01-hook",
+      "id": "hooks-scene-2",
       "plan": {
         "role": "reveal",
-        "purpose": "Reveal the new capability in one clear promise.",
-        "visualBrief": "Claude Code with a real app open in Chrome."
+        "purpose": "Reveal that Claude can verify the behavior users actually experience.",
+        "visualBrief": "Keep the existing Claude Code and live app recording."
       },
       "durationSeconds": 2.533333333333333,
-      "vo": "Claude Code can now test your app like a real user.",
-      "notes": "Strong opening frame. Show Claude Code and a web app open in Chrome. Make it obvious that Claude is interacting with the app in the browser.\n\nKeep it bold and clean. This is the promise.",
+      "vo": "Claude Code can verify real user flows inside Chrome.",
+      "notes": "Keep the existing Claude Code and live app recording.\n\nTemplate geometry, animation and timing are intentionally preserved.",
       "background": {
         "type": "custom",
         "fill": {
@@ -174,7 +175,7 @@
             "lane": 0
           },
           {
-            "text": "can now test your app",
+            "text": "can verify user flows",
             "size": "title",
             "x": 50,
             "y": 28,
@@ -187,7 +188,7 @@
             "lane": 1
           },
           {
-            "text": "like a real user.",
+            "text": "inside real Chrome.",
             "size": "headline",
             "sizePx": 108,
             "pill": true,
@@ -239,14 +240,15 @@
       "type": "hook-centered"
     },
     {
-      "id": "scene-1gkt5f9",
+      "id": "hooks-scene-3",
       "plan": {
         "role": "benefit",
-        "purpose": "Turn the feature into two concrete developer benefits.",
-        "visualBrief": "Clock changes to a bug: less wasted time, fewer missed bugs."
+        "purpose": "Contrast isolated automated checks with a complete browser journey.",
+        "visualBrief": "Keep the clock-to-bug visual as the cost of missing integration failures."
       },
       "durationSeconds": 2.2666666666666666,
-      "vo": "So you waste less time and catch more bugs.",
+      "vo": "Not just isolated checks. It tests the entire user journey.",
+      "notes": "Keep the clock-to-bug visual as the cost of missing integration failures.\n\nTemplate geometry, animation and timing are intentionally preserved.",
       "background": {
         "type": "custom",
         "fill": {
@@ -259,7 +261,7 @@
         "items": [],
         "richHeadline": [
           {
-            "text": "DON'T WASTE TIME",
+            "text": "NOT JUST UNIT TESTS",
             "size": "headline",
             "pill": true,
             "x": 50.24038461538461,
@@ -273,7 +275,7 @@
             "lane": 0
           },
           {
-            "text": "DON'T MISS BUGS",
+            "text": "TEST THE WHOLE FLOW",
             "size": "headline",
             "pill": true,
             "x": 50.24038461538461,
@@ -336,15 +338,15 @@
       "type": "hook-centered"
     },
     {
-      "id": "scene-03-reveal",
+      "id": "hooks-scene-4",
       "plan": {
         "role": "mechanism",
-        "purpose": "Explain how Claude gains access to the app.",
-        "visualBrief": "Claude Code and Google Chrome connect visually."
+        "purpose": "Explain why this is deeper than a generic browser automation demo.",
+        "visualBrief": "Keep the existing Claude plus Google Chrome logo composition."
       },
       "durationSeconds": 2.1333333333333333,
-      "vo": "It connects directly to Google Chrome.",
-      "notes": "Show Claude Code connected to Chrome. Browser is open with a local app ready to be tested.\n\nSimple reveal frame. Don't overload it.",
+      "vo": "It combines your codebase context with a live browser.",
+      "notes": "Keep the existing Claude plus Google Chrome logo composition.\n\nTemplate geometry, animation and timing are intentionally preserved.",
       "background": {
         "type": "custom",
         "fill": {
@@ -356,7 +358,7 @@
       "content": {
         "richHeadline": [
           {
-            "text": "Claude Code",
+            "text": "YOUR CODEBASE",
             "size": "headline",
             "x": 50,
             "y": 18.1640625,
@@ -384,7 +386,7 @@
             "lane": 1
           },
           {
-            "text": "Google Chrome",
+            "text": "LIVE CHROME",
             "size": "headline",
             "x": 50,
             "y": 50,
@@ -419,7 +421,7 @@
             "id": "visual-ft2trou",
             "visual": {
               "type": "tool-logo",
-              "tool": "google-chrome"
+              "tool": "vs-code"
             },
             "x": 50,
             "y": 62.174479166666664,
@@ -443,15 +445,15 @@
       "type": "hook-visual"
     },
     {
-      "id": "scene-04-solution",
+      "id": "hooks-scene-5",
       "plan": {
         "role": "setup",
-        "purpose": "Show the extension being installed and added to Chrome.",
-        "visualBrief": "Install the Chrome extension and finish on the Add extension confirmation."
+        "purpose": "Show the short one-time connection before browser verification.",
+        "visualBrief": "Keep the existing recording of installing and adding the Chrome extension."
       },
       "durationSeconds": 3.6666666666666665,
-      "vo": "First, install the extension, and add it to Chrome.",
-      "notes": "Intro card for the capabilities section. Could show a small browser visual with multiple action markers or icons around it.\n\nActs like a mini chapter break before the list.",
+      "vo": "Connect the extension, then give Claude your acceptance criteria.",
+      "notes": "Keep the existing recording of installing and adding the Chrome extension.\n\nTemplate geometry, animation and timing are intentionally preserved.",
       "background": {
         "type": "custom",
         "fill": {
@@ -542,15 +544,15 @@
       "type": "visual-explainer"
     },
     {
-      "id": "scene-05-step",
+      "id": "hooks-scene-6",
       "plan": {
         "role": "proof",
-        "purpose": "Show the prompt being sent and Claude testing through the extension.",
-        "visualBrief": "Open the extension panel, send the prompt, then show Claude navigating the website by itself."
+        "purpose": "Show acceptance criteria becoming an actual end-to-end browser run.",
+        "visualBrief": "Keep the existing recording: open Claude, send the prompt, then show it navigating the website."
       },
       "durationSeconds": 3.966666666666667,
-      "vo": "Open it, send your prompt, and watch Claude test the app.",
-      "notes": "Show 3 quick action examples: button click, page navigation, form filling.\n\nThese should be very concrete. Good place for more energetic animation.",
+      "vo": "Ask it to test signup, validation, and every step in between.",
+      "notes": "Keep the existing recording: open Claude, send the prompt, then show it navigating the website.\n\nTemplate geometry, animation and timing are intentionally preserved.",
       "background": {
         "type": "custom",
         "fill": {
@@ -629,15 +631,15 @@
       "type": "visual-explainer"
     },
     {
-      "id": "scene-10-cta",
+      "id": "hooks-scene-7",
       "plan": {
         "role": "cta",
-        "purpose": "End with one clear next action.",
-        "visualBrief": "Clean end card with an arrow and Claude mark."
+        "purpose": "Turn this into a recurring series about deeper Claude Code workflows.",
+        "visualBrief": "Reuse the clean Claude end card."
       },
       "durationSeconds": 1.8,
-      "vo": "Follow for more AI building tips.",
-      "notes": "Clean ending frame. Keep Claude Code and Chrome theme, with simple follow CTA.\n\nShort, clear, no extra explanation.",
+      "vo": "Follow for deeper Claude Code workflows.",
+      "notes": "Reuse the clean Claude end card.\n\nTemplate geometry, animation and timing are intentionally preserved.",
       "background": {
         "type": "custom",
         "fill": {
@@ -649,7 +651,7 @@
       "content": {
         "richHeadline": [
           {
-            "text": "FOLLOW FOR MORE",
+            "text": "FOLLOW FOR DEEPER",
             "size": "label",
             "sizePx": 83,
             "letterSpacing": 4,
@@ -662,7 +664,7 @@
             "lane": 0
           },
           {
-            "text": "AI BUILDING TIPS",
+            "text": "CLAUDE CODE WORKFLOWS",
             "size": "headline",
             "delay": 21,
             "exitAt": 54,
@@ -721,25 +723,8 @@
       "type": "takeaway"
     }
   ],
-  "savedAt": 1788519475144,
+  "savedAt": 1788518966762,
   "audioClips": [
-    {
-      "id": "audio-mtimh5cl-pd7k",
-      "sfxId": "vo-tired-of-testing-app-manually-mtimh5ci",
-      "from": 0,
-      "durationInFrames": 49,
-      "volume": 1,
-      "voiceText": "Tired of testing apps manually?"
-    },
-    {
-      "id": "audio-mtirhd69-ku8h",
-      "sfxId": "vo-claude-code-can-now-test-your-app-like-a-mtimjun4",
-      "from": 49,
-      "durationInFrames": 85,
-      "lane": 1,
-      "volume": 1,
-      "voiceText": "Claude code can now test your app like a real user."
-    },
     {
       "id": "audio-mtkbftk4-gzdr",
       "sfxId": "soft-whoosh",
@@ -762,48 +747,6 @@
       "from": 237,
       "durationInFrames": 17,
       "volume": 0.55
-    },
-    {
-      "id": "audio-mtmqhcuy-56js",
-      "sfxId": "vo-follow-for-more-ai-building-tips-mtmqhcux",
-      "from": 486,
-      "durationInFrames": 54,
-      "volume": 1,
-      "voiceText": "Follow for more AI building tips."
-    },
-    {
-      "id": "audio-mtmqlxou-8c4j",
-      "sfxId": "vo-don-t-waste-time-don-t-miss-bugs-mtmq89r4",
-      "from": 125,
-      "startFrom": 2,
-      "durationInFrames": 61,
-      "volume": 1
-    },
-    {
-      "id": "audio-mtmqm6u9-ex0c",
-      "sfxId": "vo-it-connects-directly-to-google-chrome-mtmq9i16",
-      "from": 189,
-      "durationInFrames": 61,
-      "lane": 1,
-      "volume": 1
-    },
-    {
-      "id": "audio-mtmqmvbk-0sdg",
-      "sfxId": "vo-first-install-the-extension-and-add-it-mtmqmvbi",
-      "from": 257,
-      "durationInFrames": 99,
-      "lane": 1,
-      "volume": 1,
-      "voiceText": "First, install the extension, and add it to Chrome."
-    },
-    {
-      "id": "audio-mtmqn9jc-irea",
-      "sfxId": "vo-open-it-send-your-prompt-and-watch-cla-mtmqn9iz",
-      "from": 372,
-      "durationInFrames": 102,
-      "lane": 1,
-      "volume": 1,
-      "voiceText": "Open it, send your prompt, and watch Claude test the app."
     },
     {
       "id": "audio-mtmqqad7-mj4v",

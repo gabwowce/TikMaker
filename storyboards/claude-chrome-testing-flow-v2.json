@@ -1,98 +1,19 @@
 {
   "id": "claude-chrome-testing-flow-v2",
-  "title": "Claude can now test your app like a real user",
-  "status": "draft",
-  "targetDuration": 35,
+  "title": "Claude Code tests your app in Chrome",
+  "status": "ready",
+  "targetDuration": 38,
   "beats": [
-    {
-      "id": "beat-hook",
-      "role": "hook",
-      "purpose": "Open with the main result in one strong line.",
-      "voiceover": "Claude can now test your app like a real user.",
-      "onScreenText": "Claude can now test your app like a real user.",
-      "visualPlaceholder": "Strong opening frame. Show Claude Code and a web app open in Chrome. Make it obvious that Claude is interacting with the app in the browser.",
-      "notes": "Keep it bold and clean. This is the promise."
-    },
-    {
-      "id": "beat-problem",
-      "role": "problem",
-      "purpose": "Show why manual testing is annoying and inefficient.",
-      "voiceover": "Manually clicking through your app after every change takes time, you still miss bugs, and honestly it gets annoying fast.",
-      "onScreenText": "Manual testing takes time. And you still miss things.",
-      "visualPlaceholder": "Show the painful workflow: code change, open app, click through pages, fill inputs, miss something, go back, test again.",
-      "notes": "This should feel repetitive and frustrating."
-    },
-    {
-      "id": "beat-reveal",
-      "role": "reveal",
-      "purpose": "Introduce the solution clearly.",
-      "voiceover": "Now Claude Code can connect directly to Chrome and do that testing for you.",
-      "onScreenText": "Claude Code + Chrome",
-      "visualPlaceholder": "Show Claude Code connected to Chrome. Browser is open with a local app ready to be tested.",
-      "notes": "Simple reveal frame. Don't overload it."
-    },
-    {
-      "id": "beat-capabilities-intro",
-      "role": "solution",
-      "purpose": "Introduce what Claude can do once Chrome is connected.",
-      "voiceover": "And that means Claude can actually use your app, not just write code for it.",
-      "onScreenText": "What can it do?",
-      "visualPlaceholder": "Intro card for the capabilities section. Could show a small browser visual with multiple action markers or icons around it.",
-      "notes": "Acts like a mini chapter break before the list."
-    },
-    {
-      "id": "beat-capabilities-1",
-      "role": "step",
-      "purpose": "Show the first group of practical actions.",
-      "voiceover": "It can click buttons, move through pages, and fill out forms for you.",
-      "onScreenText": "Click buttons\nOpen pages\nFill forms",
-      "visualPlaceholder": "Show 3 quick action examples: button click, page navigation, form filling.",
-      "notes": "These should be very concrete. Good place for more energetic animation."
-    },
-    {
-      "id": "beat-capabilities-2",
-      "role": "step",
-      "purpose": "Show the second group of practical actions.",
-      "voiceover": "It can also check validation, inspect browser errors, and show you exactly what happened on screen.",
-      "onScreenText": "Check validation\nRead errors\nShow what happened",
-      "visualPlaceholder": "Show validation message, browser console error, and a visible test flow happening on screen.",
-      "notes": "This is the more technical half of the benefits."
-    },
-    {
-      "id": "beat-setup",
-      "role": "step",
-      "purpose": "Quickly show how to connect Claude Code to Chrome.",
-      "voiceover": "To connect it, install the Claude Chrome extension, then start Claude Code with chrome enabled.",
-      "onScreenText": "Install extension\nStart with Chrome",
-      "visualPlaceholder": "Quick setup sequence. Show the extension in Chrome and then terminal / Claude Code setup step.",
-      "notes": "Keep this fast. Enough to show the idea, not a full tutorial."
-    },
-    {
-      "id": "beat-demo",
-      "role": "demo",
-      "purpose": "Show the exact kind of prompt the viewer can use.",
-      "voiceover": "Then you can simply ask Claude to test your app, for example: test the signup flow and tell me what breaks.",
-      "onScreenText": "Test the signup flow\nand tell me what breaks.",
-      "visualPlaceholder": "Screen recording of Claude Code receiving a prompt to test the signup flow on the local app.",
-      "notes": "Make the prompt readable. This is the 'I can try this too' moment."
-    },
-    {
-      "id": "beat-proof",
-      "role": "proof",
-      "purpose": "Prove that the testing is happening live on screen.",
-      "voiceover": "Now you can watch Claude click through the app, test the flow, and inspect the result live on screen.",
-      "onScreenText": "Watch it test live.",
-      "visualPlaceholder": "Show Claude actively using the app in Chrome: clicking, typing, submitting, and checking the result.",
-      "notes": "This should feel like the strongest visual proof moment."
-    },
-    {
-      "id": "beat-cta",
-      "role": "cta",
-      "purpose": "End with a clear next action for the viewer.",
-      "voiceover": "Follow for more AI app building tips.",
-      "onScreenText": "Follow for more AI app building tips.",
-      "visualPlaceholder": "Clean ending frame. Keep Claude Code and Chrome theme, with simple follow CTA.",
-      "notes": "Short, clear, no extra explanation."
-    }
+    { "id": "beat-manual-hook", "role": "hook", "purpose": "Start with a question the viewer immediately recognises.", "voiceover": "Tired of testing apps manually?", "onScreenText": "Tired of testing apps manually?", "visualPlaceholder": "Keep the existing kinetic text and Claude marks.", "durationSeconds": 1.63, "notes": "Short question; do not add another idea here." },
+    { "id": "beat-main-promise", "role": "reveal", "purpose": "Deliver the main promise immediately after the question.", "voiceover": "Claude Code can now test your app like a real user.", "onScreenText": "Claude Code\ncan test your app\nlike a real user", "visualPlaceholder": "Use the existing Chrome recording behind the bold promise.", "durationSeconds": 2.4, "notes": "Emphasise ‘real user’." },
+    { "id": "beat-benefit", "role": "payoff", "purpose": "Turn the feature into two concrete benefits.", "voiceover": "So you waste less time and catch more bugs.", "onScreenText": "DON'T WASTE TIME\nDON'T MISS BUGS", "visualPlaceholder": "Keep the existing clock-to-bug swap.", "durationSeconds": 2.27, "notes": "Say it as one quick sentence across both visual states." },
+    { "id": "beat-connection", "role": "solution", "purpose": "Explain the mechanism without slowing the pace.", "voiceover": "It connects directly to Chrome.", "onScreenText": "Claude Code + Chrome", "visualPlaceholder": "Keep the existing Claude and Chrome logo connection frame.", "durationSeconds": 2.13 },
+    { "id": "beat-use-not-write", "role": "solution", "purpose": "Clarify the important difference: Claude can operate the product.", "voiceover": "Then it can use your app — not just write the code.", "onScreenText": "It can USE your app", "visualPlaceholder": "Keep the current browser recording and camera moves; add only a brief USE emphasis if the frame needs copy.", "durationSeconds": 4.33, "notes": "The recording is the proof, so on-screen copy should stay minimal." },
+    { "id": "beat-actions", "role": "step", "purpose": "Show the everyday actions it can perform.", "voiceover": "It clicks buttons, opens pages, and fills forms for you.", "onScreenText": "CLICK BUTTONS\nOPEN PAGES\nFILL FORMS", "visualPlaceholder": "Keep the current recording and reveal each line when that action happens.", "durationSeconds": 4.7 },
+    { "id": "beat-debugging", "role": "step", "purpose": "Move from basic interaction to useful debugging evidence.", "voiceover": "It checks validation, reads browser errors, and shows exactly what happened.", "onScreenText": "CHECK VALIDATION\nREAD ERRORS\nSEE WHAT HAPPENED", "visualPlaceholder": "Show a validation state, DevTools error, then the visible failed result.", "durationSeconds": 4.5 },
+    { "id": "beat-setup", "role": "step", "purpose": "Make setup feel quick and achievable.", "voiceover": "Install the Chrome extension, then launch Claude Code with Chrome enabled.", "onScreenText": "1. INSTALL EXTENSION\n2. START WITH CHROME", "visualPlaceholder": "Two fast shots: extension installed, then the Claude Code launch command.", "durationSeconds": 4.3 },
+    { "id": "beat-prompt", "role": "demo", "purpose": "Give the viewer one prompt they can copy.", "voiceover": "Now ask: test the signup flow and tell me what breaks.", "onScreenText": "Test the signup flow\nand tell me what breaks.", "visualPlaceholder": "Make the exact prompt large and readable in Claude Code.", "durationSeconds": 4.0 },
+    { "id": "beat-live-proof", "role": "proof", "purpose": "Finish the explanation with undeniable on-screen proof.", "voiceover": "Then watch Claude click, type, submit, and inspect the result live.", "onScreenText": "WATCH IT TEST LIVE", "visualPlaceholder": "Strongest recording: clicking, typing, submitting, then finding the result.", "durationSeconds": 4.5 },
+    { "id": "beat-cta", "role": "cta", "purpose": "End with one simple action.", "voiceover": "Follow for more AI app-building tips.", "onScreenText": "FOLLOW FOR MORE\nAI APP-BUILDING TIPS", "visualPlaceholder": "Clean Claude and Chrome themed end card.", "durationSeconds": 2.0 }
   ]
 }

@@ -88,6 +88,6 @@ export function projectDurationInFrames(project: VideoProject): number {
     }
     for (const item of content.items ?? []) end = Math.max(end, timing.from + (item.exitAt ?? timing.durationInFrames));
   }
-  for (const clip of project.audioClips ?? []) end = Math.max(end, clip.from + (clip.durationInFrames ?? 1));
+  end = Math.max(end, audioEndFrame(project));
   return Math.max(1, Math.ceil(end));
 }

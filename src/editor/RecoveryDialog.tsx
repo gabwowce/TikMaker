@@ -17,7 +17,7 @@ import { parseProject } from "../utils/normalizeProject";
  * remember the version you want, not "the one from 13:05".
  */
 
-type Version = { file: string; savedAt: number; scenes?: number; title?: string };
+type Version = { file: string; savedAt: number; scenes?: number; title?: string; voiceClips?: number; sfxClips?: number };
 type Trashed = { file: string; deletedAt: number; title?: string; id?: string; scenes?: number };
 
 const when = (at: number) => new Date(at).toLocaleString("lt-LT", { dateStyle: "short", timeStyle: "medium" });
@@ -179,6 +179,10 @@ export const RecoveryDialog: React.FC<{ onClose: () => void }> = ({ onClose }) =
                     <div style={{ fontSize: 10, color: editorColors.textDim, fontVariantNumeric: "tabular-nums" }}>
                       {when(stamp)}
                       {row.scenes !== undefined ? ` · ${row.scenes} scenos` : ""}
+                      {isVersion && (row as Version).voiceClips !== undefined
+                        ? ` · ${(row as Version).voiceClips} VO · ${(row as Version).sfxClips} SFX`
+                        : ""}
+                      {isVersion ? ` · ${row.file}` : ""}
                     </div>
                   </div>
                   <button

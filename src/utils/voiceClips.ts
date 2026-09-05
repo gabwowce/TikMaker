@@ -77,22 +77,22 @@ export type ResolvedAudioClip = {
  * "hold this clip's transport open for the rest of the video".
  */
 export function resolveAudioClips(clips: AudioClip[], totalDuration: number, isVoice: (clip: AudioClip) => boolean = isVoiceClip): ResolvedAudioClip[] {
+  void isVoice;
   return clips.flatMap((clip) => {
     if (clip.from >= totalDuration) return [];
+    const from = clip.from;
     const startFrom = Math.max(0, clip.startFrom ?? 0);
-    const window = totalDuration - clip.from;
+    const window = totalDuration - from;
     const requested = Math.min(clip.durationInFrames ?? window, window);
 
-    const cutoff = voiceCutoffFrame(clips, clip, isVoice);
-    const allowed = cutoff === undefined ? requested : Math.min(requested, Math.max(1, cutoff - clip.from));
-    const durationInFrames = Math.max(1, allowed);
-    const duckedBy = cutoff !== undefined && allowed < requested
-      ? clips.find((other) => other.from === cutoff && isVoice(other))?.id
-      : undefined;
+    // Scene boundaries and later voice clips are timeline guides, not masks.
+    // The authored clip length is the sole playback boundary, so a sentence
+    // may naturally continue while the next scene is already visible.
+    const durationInFrames = Math.max(1, requested);
 
     return [{
       clip,
-      from: clip.from,
+      from,
       durationInFrames,
       // An explicit length, or a duck, both mean a known end. Only the
       // "unset and uninterrupted" case has to let the file decide.
@@ -103,7 +103,7 @@ export function resolveAudioClips(clips: AudioClip[], totalDuration: number, isV
       // the difference between "play this clip" and "hold this clip's
       // transport open for the rest of the video".
       endAt: clip.durationInFrames !== undefined ? startFrom + durationInFrames : undefined,
-      duckedBy,
+      duckedBy: undefined,
     }];
   });
 }

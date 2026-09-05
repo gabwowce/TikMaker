@@ -8,15 +8,15 @@ const clip = (id: string, from: number, patch: Partial<AudioClip> = {}): AudioCl
  * depending on which voiceovers happen to be in `customSfx.json`. */
 const isVoice = (value: AudioClip) => value.sfxId.startsWith("vo-");
 
-describe("monophonic voice", () => {
-  it("stops a voice line where the next one starts", () => {
-    const clips = [clip("vo-a", 0), clip("vo-b", 49)];
+describe("audio clips across scene boundaries", () => {
+  it("lets voice clips overlap at their authored timeline positions", () => {
+    const clips = [clip("vo-a", 0, { durationInFrames: 60 }), clip("vo-b", 49, { durationInFrames: 30 })];
     const [a, b] = resolveAudioClips(clips, 1000, isVoice);
-    expect(a.durationInFrames).toBe(49);
-    expect(a.duckedBy).toBe("vo-b");
-    // The last line has nothing after it, so it plays to its own end.
+    expect(a.durationInFrames).toBe(60);
+    expect(a.duckedBy).toBeUndefined();
+    expect(b.from).toBe(49);
     expect(b.duckedBy).toBeUndefined();
-    expect(b.endAt).toBeUndefined();
+    expect(b.endAt).toBe(30);
   });
 
   it("leaves a voice line alone when nothing follows it", () => {
@@ -40,26 +40,27 @@ describe("monophonic voice", () => {
     expect(a.duckedBy).toBeUndefined();
   });
 
-  it("caps an explicit length that would still overlap the next line", () => {
+  it("keeps an explicit length without moving the next line", () => {
     const clips = [clip("vo-a", 0, { durationInFrames: 200 }), clip("vo-b", 60)];
     const [a] = resolveAudioClips(clips, 1000, isVoice);
-    expect(a.durationInFrames).toBe(60);
-    expect(a.duckedBy).toBe("vo-b");
+    expect(a.durationInFrames).toBe(200);
+    expect(a.duckedBy).toBeUndefined();
+    expect(resolveAudioClips(clips, 1000, isVoice)[1].from).toBe(60);
   });
 
-  it("keeps the source offset when an explicitly cut line is ducked", () => {
+  it("keeps the source offset and authored length across another voice", () => {
     const clips = [clip("vo-a", 0, { startFrom: 30, durationInFrames: 200 }), clip("vo-b", 45)];
     const [a] = resolveAudioClips(clips, 1000, isVoice);
-    expect(a.durationInFrames).toBe(45);
-    expect(a.endAt).toBe(75);
+    expect(a.durationInFrames).toBe(200);
+    expect(a.endAt).toBe(230);
   });
 
-  it("never sets endAt from a duck alone, so the transport is not held open", () => {
+  it("leaves endAt unset for an untrimmed clip", () => {
     // `vo-a` has no explicit length and the next line is 20s away. Ducking must
     // shorten the mounted window without asking the file to play that far.
     const clips = [clip("vo-a", 0), clip("vo-b", 600)];
     const [a] = resolveAudioClips(clips, 2000, isVoice);
-    expect(a.durationInFrames).toBe(600);
+    expect(a.durationInFrames).toBe(2000);
     expect(a.endAt).toBeUndefined();
   });
 

@@ -9,6 +9,7 @@ import { AnimatedSplitText, AnimatedBox, splitText, splitTiming, splitSpan, type
 import { getSfx } from "../../registries/sfxRegistry";
 import { resolveTextEntranceSfx, SFX_VOLUME } from "../motion/sfxDefaults";
 import type { RichHeadlineLine, Scene } from "../../schema/scene";
+import { timelineLayerZIndex } from "../layout/layerOrder";
 
 // Tanker unless the line asks for another face. `line.font` was in the schema
 // from the start but ignored here, so picking a font in the editor did nothing;
@@ -203,10 +204,10 @@ export const RichHeadline: React.FC<{
         }}
       >
         {stacked.map(({ line, delay }, index) => (
-          <React.Fragment key={index}>
+          <div key={index} style={{ position: "relative", zIndex: timelineLayerZIndex(line.lane) }}>
             <RichHeadlineLineRow line={line} baseDelay={delay} exit={sharedExit} />
             <RichHeadlineLineSfx line={line} baseDelay={delay} />
-          </React.Fragment>
+          </div>
         ))}
       </div>
 
@@ -231,6 +232,7 @@ export const RichHeadline: React.FC<{
             // respects.
             width: "max-content",
             maxWidth: SAFE_CONTENT_WIDTH,
+            zIndex: timelineLayerZIndex(line.lane),
           }}
         >
           <RichHeadlineLineRow line={line} baseDelay={delay} exit={sharedExit} />

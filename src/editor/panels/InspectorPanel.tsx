@@ -2446,6 +2446,7 @@ const VoiceoverGenerator: React.FC<{ sceneId: string; text: string | undefined }
   const error = useVoiceStore((s) => s.error);
   const project = useProjectStore((s) => s.project);
   const addAudioClip = useProjectStore((s) => s.addAudioClip);
+  const updateAudioClip = useProjectStore((s) => s.updateAudioClip);
   const selectObject = useProjectStore((s) => s.selectObject);
   const preferences = usePreferences();
 
@@ -2487,7 +2488,10 @@ const VoiceoverGenerator: React.FC<{ sceneId: string; text: string | undefined }
           addAudioClip(clip.id, sceneFrom);
           const clips = useProjectStore.getState().project.audioClips ?? [];
           const inserted = clips[clips.length - 1];
-          if (inserted) selectObject(`audio-clip-${inserted.id}`);
+          if (inserted) {
+            updateAudioClip(inserted.id, { voiceText: text.trim() });
+            selectObject(`audio-clip-${inserted.id}`);
+          }
         }}
         style={{
           ...smallButtonStyle,
@@ -2962,7 +2966,10 @@ export const InspectorPanel: React.FC = () => {
           style={{ ...inputStyle, resize: "vertical" }}
           value={scene.vo ?? ""}
           placeholder="Ką sakai per šią sceną…"
-          onChange={(e) => updateScene(selectedSceneId, { vo: e.target.value || undefined })}
+          onChange={(e) => {
+            const vo = e.target.value || undefined;
+            updateScene(selectedSceneId, { vo });
+          }}
         />
         {scene.vo ? (
           <div style={{ fontSize: 11, color: editorColors.textDim, marginTop: 4 }}>
