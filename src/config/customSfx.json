@@ -82,5 +82,68 @@
     "file": "vo-claude-code-can-now-test-your-app-like-a-mtimjun4.mp3",
     "src": "/assets/voice/vo-claude-code-can-now-test-your-app-like-a-mtimjun4.mp3",
     "group": "voice"
+  },
+  {
+    "id": "vo-don-t-waste-time-don-t-miss-bugs-mtmq89r4",
+    "label": "DON'T WASTE TIME\nDON'T MISS BUGS",
+    "file": "vo-don-t-waste-time-don-t-miss-bugs-mtmq89r4.mp3",
+    "src": "/assets/voice/vo-don-t-waste-time-don-t-miss-bugs-mtmq89r4.mp3",
+    "group": "voice"
+  },
+  {
+    "id": "vo-it-connects-directly-to-google-chrome-mtmq9i16",
+    "label": "It connects directly to Google Chrome.",
+    "file": "vo-it-connects-directly-to-google-chrome-mtmq9i16.mp3",
+    "src": "/assets/voice/vo-it-connects-directly-to-google-chrome-mtmq9i16.mp3",
+    "group": "voice"
+  },
+  {
+    "id": "vo-follow-for-more-ai-building-tips-mtmqhcux",
+    "label": "Follow for more AI building tips.",
+    "file": "vo-follow-for-more-ai-building-tips-mtmqhcux.mp3",
+    "src": "/assets/voice/vo-follow-for-more-ai-building-tips-mtmqhcux.mp3",
+    "group": "voice"
+  },
+  {
+    "id": "vo-first-install-the-extension-and-add-it-mtmqmvbi",
+    "label": "First, install the extension, and add it",
+    "file": "vo-first-install-the-extension-and-add-it-mtmqmvbi.mp3",
+    "src": "/assets/voice/vo-first-install-the-extension-and-add-it-mtmqmvbi.mp3",
+    "group": "voice"
+  },
+  {
+    "id": "vo-open-it-send-your-prompt-and-watch-cla-mtmqn9iz",
+    "label": "Open it, send your prompt, and watch Cla",
+    "file": "vo-open-it-send-your-prompt-and-watch-cla-mtmqn9iz.mp3",
+    "src": "/assets/voice/vo-open-it-send-your-prompt-and-watch-cla-mtmqn9iz.mp3",
+    "group": "voice"
+  },
+  {
+    "id": "roll-in-mtmqu3ax",
+    "label": "roll in",
+    "file": "roll-in-mtmqu3ax.mp3",
+    "src": "/assets/custom-sfx/roll-in-mtmqu3ax.mp3",
+    "group": "ui"
+  },
+  {
+    "id": "glass-break-mtmtphba",
+    "label": "glass-break",
+    "file": "glass-break-mtmtphba.mp3",
+    "src": "/assets/custom-sfx/glass-break-mtmtphba.mp3",
+    "group": "misc"
+  },
+  {
+    "id": "vo-what-if-claude-couldn-t-break-your-app-mtmu2064",
+    "label": "WHAT IF CLAUDE\nCOULDN'T BREAK YOUR APP?",
+    "file": "vo-what-if-claude-couldn-t-break-your-app-mtmu2064.mp3",
+    "src": "/assets/voice/vo-what-if-claude-couldn-t-break-your-app-mtmu2064.mp3",
+    "group": "voice"
+  },
+  {
+    "id": "metalic-riser-mtmuvwqs",
+    "label": "metalic-riser",
+    "file": "metalic-riser-mtmuvwqs.mp3",
+    "src": "/assets/custom-sfx/metalic-riser-mtmuvwqs.mp3",
+    "group": "misc"
   }
 ]

@@ -94,6 +94,9 @@ type StoryboardState = {
   updateTargetDuration: (seconds: number | undefined) => void;
 
   addBeat: (role: BeatRole, afterIndex?: number) => void;
+  /** Scene-editor bridge: insert at an exact scene position and return the id
+   * that the new scene must keep. */
+  insertLinkedBeat: (role: BeatRole, index: number, copyFromId?: string) => StoryboardBeat | null;
   updateBeat: (id: string, patch: Partial<StoryboardBeat>) => void;
   removeBeat: (id: string) => void;
   moveBeat: (id: string, direction: "up" | "down") => void;
@@ -208,6 +211,19 @@ export const useStoryboardStore = create<StoryboardState>((set, get) => ({
       beats.splice(afterIndex === undefined ? beats.length : afterIndex + 1, 0, beat);
       return { storyboard: { ...s.storyboard, beats }, selectedBeatId: beat.id };
     });
+  },
+
+  insertLinkedBeat: (role, index, copyFromId) => {
+    const current = get().storyboard;
+    if (!current) return null;
+    const source = copyFromId ? current.beats.find((beat) => beat.id === copyFromId) : undefined;
+    const beat: StoryboardBeat = source
+      ? { ...source, id: newId("beat"), notes: source.notes ? `${source.notes}\n\nDuplicated for a new scene.` : "Duplicated for a new scene." }
+      : newBeat(role);
+    const beats = [...current.beats];
+    beats.splice(Math.max(0, Math.min(index, beats.length)), 0, beat);
+    set({ storyboard: { ...current, beats }, selectedBeatId: beat.id });
+    return beat;
   },
 
   updateBeat: (id, patch) => {

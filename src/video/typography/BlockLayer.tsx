@@ -6,6 +6,7 @@ import { AnimatedSplitText, AnimatedBox, splitText, splitTiming } from "./splitA
 import { getSfx } from "../../registries/sfxRegistry";
 import { resolveTextEntranceSfx, SFX_VOLUME } from "../motion/sfxDefaults";
 import type { Block } from "../../schema/scene";
+import { timelineLayerZIndex } from "../layout/layerOrder";
 
 const CUE_WINDOW_FRAMES = 30;
 
@@ -123,6 +124,7 @@ export const BlockLayer: React.FC<{ blocks?: Block[]; baseDelay?: number; durati
               left: `${block.x}%`,
               top: `${block.y}%`,
               transform: "translate(-50%, -50%)",
+              zIndex: timelineLayerZIndex(block.lane),
               // The chosen OUT preset owns the animation. This wrapper only
               // enforces the clip edge, avoiding an extra hard-coded fade.
               visibility: block.exitAt === undefined || frame < block.exitAt ? "visible" : "hidden",

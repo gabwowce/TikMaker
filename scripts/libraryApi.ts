@@ -142,15 +142,20 @@ export function createLibraryApi(root: string) {
           const file = path.join(directory, entry);
           let scenes: number | undefined;
           let title: string | undefined;
+          let voiceClips = 0;
+          let sfxClips = 0;
           try {
             const data = JSON.parse(fs.readFileSync(file, "utf-8"));
             scenes = Array.isArray(data?.scenes) ? data.scenes.length : undefined;
             title = typeof data?.title === "string" ? data.title : undefined;
+            const clips = Array.isArray(data?.audioClips) ? data.audioClips : [];
+            voiceClips = clips.filter((clip: { sfxId?: unknown }) => typeof clip?.sfxId === "string" && clip.sfxId.startsWith("vo-")).length;
+            sfxClips = clips.length - voiceClips;
           } catch {
             // A snapshot that will not parse is still worth listing: you can
             // see it exists and when, which is more than nothing.
           }
-          return { file: entry, savedAt: fs.statSync(file).mtimeMs, scenes, title };
+          return { file: entry, savedAt: fs.statSync(file).mtimeMs, scenes, title, voiceClips, sfxClips };
         })
         .sort((a, b) => b.savedAt - a.savedAt);
     },

@@ -1,14 +1,25 @@
 {
   "id": "project-mtii3v8d",
   "title": "Claude can now test your app like a real user v2",
+  "collection": "Claude Code + Chrome",
   "fps": 30,
   "width": 1080,
   "height": 1920,
+  "storyPlan": {
+    "targetDuration": 30,
+    "premise": "Claude Code can test a web app like a real user through Google Chrome.",
+    "audience": "Developers and AI app builders"
+  },
   "scenes": [
     {
       "id": "scene-odn7i8z",
+      "plan": {
+        "role": "hook",
+        "purpose": "Stop the scroll with a familiar manual-testing pain.",
+        "visualBrief": "Claude Code marks on a dynamic background."
+      },
       "durationSeconds": 1.6333333333333333,
-      "vo": "Tired of testing app manually?",
+      "vo": "Tired of testing apps manually?",
       "background": {
         "type": "custom",
         "fill": {
@@ -18,9 +29,10 @@
         "grid": "lines"
       },
       "content": {
+        "items": [],
         "richHeadline": [
           {
-            "text": "Tired of testing app ",
+            "text": "Tired of testing apps",
             "size": "headline",
             "x": 50,
             "y": 38,
@@ -29,7 +41,7 @@
             "exit": "slideLeft",
             "exitDuration": 12,
             "splitDuration": 29,
-            "lane": 0
+            "lane": 1
           },
           {
             "text": "manually?",
@@ -44,9 +56,10 @@
             "exitDuration": 9,
             "splitBy": "letter",
             "splitDuration": 13,
-            "lane": 1
+            "lane": 2
           }
         ],
+        "blocks": [],
         "visuals": [
           {
             "id": "visual-gm36vwn",
@@ -57,7 +70,8 @@
             "x": 12.037037037037036,
             "y": 5.827067669172932,
             "scale": 2.5,
-            "entrance": "slideLeft",
+            "entrance": "none",
+            "entranceDuration": 1,
             "exit": "spinOut",
             "exitDuration": 8,
             "exitDistance": 200,
@@ -65,7 +79,7 @@
             "exitAt": 121,
             "kenBurns": "rotateCW",
             "kenBurnsSpeed": 0.3,
-            "lane": 1,
+            "lane": 3,
             "keyframes": [
               {
                 "id": "kf-8ggcuvg",
@@ -89,7 +103,8 @@
             "x": 85.18930957683742,
             "y": 88.03258145363408,
             "scale": 2.5,
-            "entrance": "slideLeft",
+            "entrance": "none",
+            "entranceDuration": 1,
             "exit": "spinOut",
             "exitDuration": 8,
             "exitDistance": 280,
@@ -97,7 +112,7 @@
             "exitAt": 121,
             "kenBurns": "rotateCCW",
             "kenBurnsSpeed": 0.3,
-            "lane": 0,
+            "lane": 4,
             "keyframes": [
               {
                 "id": "kf-c15ozgr",
@@ -123,8 +138,13 @@
     },
     {
       "id": "scene-01-hook",
-      "durationSeconds": 2.4,
-      "vo": "Claude code can now test your app like a real user.",
+      "plan": {
+        "role": "reveal",
+        "purpose": "Reveal the new capability in one clear promise.",
+        "visualBrief": "Claude Code with a real app open in Chrome."
+      },
+      "durationSeconds": 2.533333333333333,
+      "vo": "Claude Code can now test your app like a real user.",
       "notes": "Strong opening frame. Show Claude Code and a web app open in Chrome. Make it obvious that Claude is interacting with the app in the browser.\n\nKeep it bold and clean. This is the promise.",
       "background": {
         "type": "custom",
@@ -136,12 +156,11 @@
       },
       "content": {
         "eyebrow": "",
-        "headline": "",
         "highlights": [],
         "items": [],
         "richHeadline": [
           {
-            "text": "Claude code",
+            "text": "Claude Code",
             "size": "hero",
             "sizePx": 147,
             "x": 50,
@@ -204,7 +223,7 @@
             "exitDuration": 12,
             "delay": 17,
             "exitAt": 72,
-            "lane": 2
+            "lane": 3
           }
         ]
       },
@@ -221,7 +240,13 @@
     },
     {
       "id": "scene-1gkt5f9",
+      "plan": {
+        "role": "benefit",
+        "purpose": "Turn the feature into two concrete developer benefits.",
+        "visualBrief": "Clock changes to a bug: less wasted time, fewer missed bugs."
+      },
       "durationSeconds": 2.2666666666666666,
+      "vo": "So you waste less time and catch more bugs.",
       "background": {
         "type": "custom",
         "fill": {
@@ -259,7 +284,7 @@
             "exit": "fade",
             "splitBy": "word",
             "splitDuration": 27,
-            "lane": 0
+            "lane": 1
           }
         ],
         "blocks": [],
@@ -281,7 +306,7 @@
             "exitDistance": 1280,
             "delay": 0,
             "exitAt": 34,
-            "lane": 1
+            "lane": 2
           },
           {
             "id": "visual-mtec98ik",
@@ -296,7 +321,7 @@
             "exit": "rollOut",
             "delay": 34,
             "exitAt": 68,
-            "lane": 1
+            "lane": 3
           }
         ]
       },
@@ -312,8 +337,13 @@
     },
     {
       "id": "scene-03-reveal",
+      "plan": {
+        "role": "mechanism",
+        "purpose": "Explain how Claude gains access to the app.",
+        "visualBrief": "Claude Code and Google Chrome connect visually."
+      },
       "durationSeconds": 2.1333333333333333,
-      "vo": "Now Claude Code can connect directly to Chrome and do that testing for you.",
+      "vo": "It connects directly to Google Chrome.",
       "notes": "Show Claude Code connected to Chrome. Browser is open with a local app ready to be tested.\n\nSimple reveal frame. Don't overload it.",
       "background": {
         "type": "custom",
@@ -326,7 +356,7 @@
       "content": {
         "richHeadline": [
           {
-            "text": "Claude code ",
+            "text": "Claude Code",
             "size": "headline",
             "x": 50,
             "y": 18.1640625,
@@ -383,7 +413,7 @@
             "exitDuration": 11,
             "delay": 0,
             "exitAt": 64,
-            "lane": 0
+            "lane": 3
           },
           {
             "id": "visual-ft2trou",
@@ -400,7 +430,7 @@
             "exitDuration": 11,
             "delay": 26,
             "exitAt": 64,
-            "lane": 1
+            "lane": 4
           }
         ]
       },
@@ -414,8 +444,13 @@
     },
     {
       "id": "scene-04-solution",
-      "durationSeconds": 4.333333333333333,
-      "vo": "And that means Claude can actually use your app, not just write code for it.",
+      "plan": {
+        "role": "setup",
+        "purpose": "Show the extension being installed and added to Chrome.",
+        "visualBrief": "Install the Chrome extension and finish on the Add extension confirmation."
+      },
+      "durationSeconds": 3.6666666666666665,
+      "vo": "First, install the extension, and add it to Chrome.",
       "notes": "Intro card for the capabilities section. Could show a small browser visual with multiple action markers or icons around it.\n\nActs like a mini chapter break before the list.",
       "background": {
         "type": "custom",
@@ -426,7 +461,9 @@
         "grid": "lines"
       },
       "content": {
+        "items": [],
         "richHeadline": [],
+        "blocks": [],
         "visuals": [
           {
             "id": "visual-mtir6ay4",
@@ -442,10 +479,10 @@
             "y": 50,
             "scale": 1.15,
             "exit": "slideLeft",
-            "exitDuration": 7,
+            "exitDuration": 30,
             "delay": 0,
-            "exitAt": 130,
-            "lane": 0,
+            "exitAt": 110,
+            "lane": 2,
             "keyframes": [
               {
                 "id": "kf-ka7721q",
@@ -475,14 +512,14 @@
               },
               {
                 "id": "kf-kmuby1a",
-                "frame": 105,
+                "frame": 110,
                 "x": 32,
                 "y": 50,
                 "scale": 3.2
               },
               {
                 "id": "kf-an8kh7o",
-                "frame": 120,
+                "frame": 110,
                 "x": 49,
                 "scale": 1.05
               }
@@ -496,15 +533,23 @@
         "transition": "slideUp",
         "stagger": 6,
         "startDelay": 0,
-        "exitAt": 130,
-        "sfx": "none"
+        "exitAt": 110,
+        "sfx": "none",
+        "exitSfx": "none",
+        "exitSfxAt": 89,
+        "exitSfxDuration": 30
       },
       "type": "visual-explainer"
     },
     {
       "id": "scene-05-step",
-      "durationSeconds": 4.7,
-      "vo": "It can click buttons, move through pages, and fill out forms for you.",
+      "plan": {
+        "role": "proof",
+        "purpose": "Show the prompt being sent and Claude testing through the extension.",
+        "visualBrief": "Open the extension panel, send the prompt, then show Claude navigating the website by itself."
+      },
+      "durationSeconds": 3.966666666666667,
+      "vo": "Open it, send your prompt, and watch Claude test the app.",
       "notes": "Show 3 quick action examples: button click, page navigation, form filling.\n\nThese should be very concrete. Good place for more energetic animation.",
       "background": {
         "type": "custom",
@@ -515,26 +560,7 @@
         "grid": "lines"
       },
       "content": {
-        "richHeadline": [
-          {
-            "text": "STEP",
-            "size": "label",
-            "letterSpacing": 4,
-            "color": "#FF7024",
-            "delay": 0,
-            "exitAt": 141,
-            "exit": "fade",
-            "lane": 0
-          },
-          {
-            "text": "Click buttons\nOpen pages\nFill forms",
-            "size": "title",
-            "delay": 24,
-            "exitAt": 141,
-            "exit": "fade",
-            "lane": 1
-          }
-        ],
+        "richHeadline": [],
         "visuals": [
           {
             "id": "visual-phlc8x2",
@@ -550,10 +576,10 @@
             "y": 50,
             "scale": 1.8,
             "exit": "slideLeft",
-            "exitDuration": 2,
+            "exitDuration": 7,
             "delay": 0,
-            "exitAt": 141,
-            "lane": 0,
+            "exitAt": 119,
+            "lane": 2,
             "keyframes": [
               {
                 "id": "kf-c9ap9k6",
@@ -593,151 +619,24 @@
       },
       "motion": {
         "entrance": "none",
+        "exit": "fade",
         "transition": "slideLeft",
         "stagger": 6,
+        "startDelay": 0,
+        "exitAt": 119,
         "sfx": "none"
       },
       "type": "visual-explainer"
-    },
-    {
-      "id": "scene-06-step",
-      "vo": "It can also check validation, inspect browser errors, and show you exactly what happened on screen.",
-      "notes": "Show validation message, browser console error, and a visible test flow happening on screen.\n\nThis is the more technical half of the benefits.",
-      "background": {
-        "type": "custom",
-        "fill": {
-          "kind": "solid",
-          "color": "#313030"
-        },
-        "grid": "lines"
-      },
-      "content": {
-        "richHeadline": [
-          {
-            "text": "STEP",
-            "size": "label",
-            "letterSpacing": 4,
-            "color": "#FF7024"
-          },
-          {
-            "text": "Check validation\nRead errors\nShow what happened",
-            "size": "title"
-          }
-        ]
-      },
-      "motion": {
-        "entrance": "none",
-        "transition": "slideDown",
-        "stagger": 6,
-        "sfx": "none"
-      },
-      "type": "visual-explainer"
-    },
-    {
-      "id": "scene-07-step",
-      "vo": "To connect it, install the Claude Chrome extension, then start Claude Code with chrome enabled.",
-      "notes": "Quick setup sequence. Show the extension in Chrome and then terminal / Claude Code setup step.\n\nKeep this fast. Enough to show the idea, not a full tutorial.",
-      "background": {
-        "type": "custom",
-        "fill": {
-          "kind": "solid",
-          "color": "#313030"
-        },
-        "grid": "lines"
-      },
-      "content": {
-        "richHeadline": [
-          {
-            "text": "STEP",
-            "size": "label",
-            "letterSpacing": 4,
-            "color": "#FF7024"
-          },
-          {
-            "text": "Install extension\nStart with Chrome",
-            "size": "title"
-          }
-        ]
-      },
-      "motion": {
-        "entrance": "none",
-        "transition": "slideRight",
-        "stagger": 6,
-        "sfx": "none"
-      },
-      "type": "visual-explainer"
-    },
-    {
-      "id": "scene-08-demo",
-      "vo": "Then you can simply ask Claude to test your app, for example: test the signup flow and tell me what breaks.",
-      "notes": "Screen recording of Claude Code receiving a prompt to test the signup flow on the local app.\n\nMake the prompt readable. This is the 'I can try this too' moment.",
-      "background": {
-        "type": "custom",
-        "fill": {
-          "kind": "solid",
-          "color": "#313030"
-        },
-        "grid": "lines"
-      },
-      "content": {
-        "richHeadline": [
-          {
-            "text": "DEMO",
-            "size": "label",
-            "letterSpacing": 4,
-            "color": "#FF7024"
-          },
-          {
-            "text": "Test the signup flow\nand tell me what breaks.",
-            "size": "title"
-          }
-        ]
-      },
-      "motion": {
-        "entrance": "none",
-        "transition": "slideUp",
-        "stagger": 6,
-        "sfx": "none"
-      },
-      "type": "screen-demo"
-    },
-    {
-      "id": "scene-09-proof",
-      "vo": "Now you can watch Claude click through the app, test the flow, and inspect the result live on screen.",
-      "notes": "Show Claude actively using the app in Chrome: clicking, typing, submitting, and checking the result.\n\nThis should feel like the strongest visual proof moment.",
-      "background": {
-        "type": "custom",
-        "fill": {
-          "kind": "solid",
-          "color": "#313030"
-        },
-        "grid": "lines"
-      },
-      "content": {
-        "richHeadline": [
-          {
-            "text": "PROOF",
-            "size": "label",
-            "letterSpacing": 4,
-            "color": "#FF7024"
-          },
-          {
-            "text": "Watch it test live.",
-            "size": "title"
-          }
-        ]
-      },
-      "motion": {
-        "entrance": "none",
-        "transition": "slideLeft",
-        "stagger": 6,
-        "sfx": "none"
-      },
-      "type": "screen-demo"
     },
     {
       "id": "scene-10-cta",
-      "vo": "Follow for more AI app building tips.",
+      "plan": {
+        "role": "cta",
+        "purpose": "End with one clear next action.",
+        "visualBrief": "Clean end card with an arrow and Claude mark."
+      },
+      "durationSeconds": 1.8,
+      "vo": "Follow for more AI building tips.",
       "notes": "Clean ending frame. Keep Claude Code and Chrome theme, with simple follow CTA.\n\nShort, clear, no extra explanation.",
       "background": {
         "type": "custom",
@@ -750,14 +649,66 @@
       "content": {
         "richHeadline": [
           {
-            "text": "CTA",
+            "text": "FOLLOW FOR MORE",
             "size": "label",
+            "sizePx": 83,
             "letterSpacing": 4,
-            "color": "#FF7024"
+            "color": "#D97757",
+            "delay": 0,
+            "exitAt": 54,
+            "exit": "fade",
+            "exitDuration": 8,
+            "splitDuration": 22,
+            "lane": 0
           },
           {
-            "text": "Follow for more AI app building tips.",
-            "size": "headline"
+            "text": "AI BUILDING TIPS",
+            "size": "headline",
+            "delay": 21,
+            "exitAt": 54,
+            "exit": "fade",
+            "exitDuration": 1,
+            "splitBy": "letter",
+            "splitDuration": 31,
+            "lane": 1
+          }
+        ],
+        "visuals": [
+          {
+            "id": "visual-z49cn40",
+            "visual": {
+              "type": "tool-logo",
+              "tool": "claude-ai-symbol"
+            },
+            "x": 12.037037037037036,
+            "y": 5.827067669172932,
+            "scale": 2.5,
+            "entrance": "fade",
+            "exitDuration": 8,
+            "exitDistance": 200,
+            "delay": 0,
+            "exitAt": 54,
+            "kenBurns": "rotateCW",
+            "kenBurnsSpeed": 0.3,
+            "lane": 2
+          },
+          {
+            "id": "visual-qso4z0b",
+            "visual": {
+              "type": "tool-logo",
+              "tool": "claude-ai-symbol"
+            },
+            "x": 85.18930957683742,
+            "y": 88.03258145363408,
+            "scale": 2.5,
+            "entrance": "fade",
+            "exitDuration": 8,
+            "exitDistance": 280,
+            "delay": 0,
+            "exitAt": 54,
+            "kenBurns": "rotateCCW",
+            "kenBurnsSpeed": 0.3,
+            "lane": 3
           }
         ]
       },
@@ -770,13 +721,15 @@
       "type": "takeaway"
     }
   ],
-  "savedAt": 1788371751566,
+  "savedAt": 1788519475144,
   "audioClips": [
     {
       "id": "audio-mtimh5cl-pd7k",
       "sfxId": "vo-tired-of-testing-app-manually-mtimh5ci",
       "from": 0,
-      "volume": 1
+      "durationInFrames": 49,
+      "volume": 1,
+      "voiceText": "Tired of testing apps manually?"
     },
     {
       "id": "audio-mtirhd69-ku8h",
@@ -784,7 +737,8 @@
       "from": 49,
       "durationInFrames": 85,
       "lane": 1,
-      "volume": 1
+      "volume": 1,
+      "voiceText": "Claude code can now test your app like a real user."
     },
     {
       "id": "audio-mtkbftk4-gzdr",
@@ -793,18 +747,6 @@
       "startFrom": 2,
       "durationInFrames": 15,
       "volume": 0.1
-    },
-    {
-      "id": "audio-mtkc66y6-lfye",
-      "sfxId": "paper-slide",
-      "from": 189,
-      "volume": 1
-    },
-    {
-      "id": "audio-mtkc6bjx-s6yu",
-      "sfxId": "paper-slide",
-      "from": 215,
-      "volume": 1
     },
     {
       "id": "audio-mtkc7e2h-id17",
@@ -822,11 +764,77 @@
       "volume": 0.55
     },
     {
-      "id": "audio-mtkchykj-piqf",
+      "id": "audio-mtmqhcuy-56js",
+      "sfxId": "vo-follow-for-more-ai-building-tips-mtmqhcux",
+      "from": 486,
+      "durationInFrames": 54,
+      "volume": 1,
+      "voiceText": "Follow for more AI building tips."
+    },
+    {
+      "id": "audio-mtmqlxou-8c4j",
+      "sfxId": "vo-don-t-waste-time-don-t-miss-bugs-mtmq89r4",
+      "from": 125,
+      "startFrom": 2,
+      "durationInFrames": 61,
+      "volume": 1
+    },
+    {
+      "id": "audio-mtmqm6u9-ex0c",
+      "sfxId": "vo-it-connects-directly-to-google-chrome-mtmq9i16",
+      "from": 189,
+      "durationInFrames": 61,
+      "lane": 1,
+      "volume": 1
+    },
+    {
+      "id": "audio-mtmqmvbk-0sdg",
+      "sfxId": "vo-first-install-the-extension-and-add-it-mtmqmvbi",
+      "from": 257,
+      "durationInFrames": 99,
+      "lane": 1,
+      "volume": 1,
+      "voiceText": "First, install the extension, and add it to Chrome."
+    },
+    {
+      "id": "audio-mtmqn9jc-irea",
+      "sfxId": "vo-open-it-send-your-prompt-and-watch-cla-mtmqn9iz",
+      "from": 372,
+      "durationInFrames": 102,
+      "lane": 1,
+      "volume": 1,
+      "voiceText": "Open it, send your prompt, and watch Claude test the app."
+    },
+    {
+      "id": "audio-mtmqqad7-mj4v",
       "sfxId": "soft-whoosh",
-      "from": 253,
+      "from": 108,
+      "startFrom": 2,
+      "durationInFrames": 15,
+      "volume": 0.1
+    },
+    {
+      "id": "audio-mtmqudel-yhxb",
+      "sfxId": "roll-in-mtmqu3ax",
+      "from": 189,
+      "startFrom": 79,
       "durationInFrames": 17,
-      "volume": 0.55
+      "volume": 1
+    },
+    {
+      "id": "audio-mtmqv225-j8ww",
+      "sfxId": "roll-in-mtmqu3ax",
+      "from": 215,
+      "startFrom": 79,
+      "durationInFrames": 17,
+      "volume": 1
+    },
+    {
+      "id": "audio-mtms3wgf-c88i",
+      "sfxId": "soft-whoosh",
+      "from": 356,
+      "durationInFrames": 17,
+      "volume": 0.15
     }
   ]
 }

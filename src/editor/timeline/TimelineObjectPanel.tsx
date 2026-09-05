@@ -385,7 +385,10 @@ const TypographyFields: React.FC<{
   defaultColorHint: string;
   letterSpacing: number | undefined;
   onChange: (patch: { font?: RichTextFont; textCase?: TextCase; color?: string; letterSpacing?: number }) => void;
-}> = ({ font, defaultFont, textCase, defaultCase, color, defaultColorHint, letterSpacing, onChange }) => (
+}> = ({ font, defaultFont, textCase, defaultCase, color, defaultColorHint, letterSpacing, onChange }) => {
+  const resolvedFont = font ?? defaultFont;
+  const tankerCapsOnly = resolvedFont === "tanker";
+  return (
   <Section title="Stilius">
     <Field label="Šriftas">
       <select style={inputStyle} value={font ?? defaultFont} onChange={(event) => onChange({ font: event.target.value as RichTextFont })}>
@@ -400,10 +403,12 @@ const TypographyFields: React.FC<{
       <div style={{ display: "flex", gap: 6 }}>
         {TEXT_CASE_OPTIONS.map((option) => {
           const active = (textCase ?? defaultCase) === option.id;
+          const disabled = tankerCapsOnly && option.id !== "upper";
           return (
             <button
               key={option.id}
-              title={option.title}
+              title={disabled ? "Tanker šriftas vizualiai turi tik didžiąsias raides. Pasirink Clash arba Panchang." : option.title}
+              disabled={disabled}
               onClick={() => onChange({ textCase: option.id })}
               style={{
                 flex: 1,
@@ -411,7 +416,8 @@ const TypographyFields: React.FC<{
                 fontSize: 12,
                 fontWeight: 600,
                 borderRadius: 6,
-                cursor: "pointer",
+                cursor: disabled ? "not-allowed" : "pointer",
+                opacity: disabled ? 0.35 : 1,
                 background: active ? "rgba(255,112,36,0.14)" : "transparent",
                 border: `1px solid ${active ? editorColors.accent : editorColors.border}`,
                 color: active ? editorColors.accent : editorColors.text,
@@ -422,6 +428,7 @@ const TypographyFields: React.FC<{
           );
         })}
       </div>
+      {tankerCapsOnly ? <div style={hintStyle}>Tanker rodo tik didžiųjų formos raides. Mažosioms pasirink Clash arba Panchang šriftą.</div> : null}
     </div>
 
     <div style={{ marginBottom: 12 }}>
@@ -459,7 +466,8 @@ const TypographyFields: React.FC<{
 
     <SliderField label="Tarpai tarp raidžių" value={letterSpacing ?? 0} min={-8} max={40} step={0.5} suffix="px" onChange={(value) => onChange({ letterSpacing: value === 0 ? undefined : value })} />
   </Section>
-);
+  );
+};
 
 
 /**

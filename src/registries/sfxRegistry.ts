@@ -124,6 +124,23 @@ export function registerSfx(entry: { id: string; label: string; src: string; gro
   return definition;
 }
 
+/** Refreshes the runtime registry from disk before the editor mounts.
+ * `customSfx.json` is intentionally ignored by Vite's watcher, so its static
+ * import can remain cached across a browser reload while newly generated voice
+ * files already exist on disk. The API is current in development; production
+ * safely falls back to the bundled manifest. */
+export async function primeSfxRegistry(): Promise<void> {
+  try {
+    const response = await fetch("/api/custom-sfx");
+    if (!response.ok) return;
+    const entries = (await response.json()) as CustomSfxEntry[];
+    if (!Array.isArray(entries)) return;
+    for (const entry of entries) registerSfx(entry);
+  } catch {
+    // No writable dev server: keep the static registry.
+  }
+}
+
 export function getSfx(id: string): SfxDefinition | undefined {
   return sfxRegistry[id];
 }

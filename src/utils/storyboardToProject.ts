@@ -28,6 +28,7 @@ function sceneFromBeat(beat: StoryboardBeat, index: number): Scene {
 
   return {
     id: sceneIdFor(beat, index),
+    storyboardBeatId: beat.id,
     type: role.sceneType,
     // Left unset whenever there's a VO to pace from: `resolveSceneDuration`
     // gives the scene whichever is longer — speaking the line or reading the
@@ -74,6 +75,7 @@ export function storyboardToProject(storyboard: Storyboard): VideoProject {
     fps: 30,
     width: 1080,
     height: 1920,
+    storyboardId: storyboard.id,
     scenes: storyboard.beats.map(sceneFromBeat),
   });
 }

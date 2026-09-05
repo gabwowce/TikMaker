@@ -350,6 +350,17 @@ const BeatInspector: React.FC<{ beat: StoryboardBeat | null; index: number; coun
   const updateBeat = useStoryboardStore((s) => s.updateBeat);
   const removeBeat = useStoryboardStore((s) => s.removeBeat);
   const moveBeat = useStoryboardStore((s) => s.moveBeat);
+  const project = useProjectStore((s) => s.project);
+  const updateScene = useProjectStore((s) => s.updateScene);
+
+  const changeBeat = (patch: Partial<StoryboardBeat>) => {
+    if (!beat) return;
+    updateBeat(beat.id, patch);
+    if (project.storyboardId === useStoryboardStore.getState().storyboard?.id && Object.prototype.hasOwnProperty.call(patch, "voiceover")) {
+      const scene = project.scenes.find((entry) => entry.storyboardBeatId === beat.id);
+      if (scene) updateScene(scene.id, { vo: patch.voiceover?.trim() || undefined });
+    }
+  };
 
   return (
     <div
@@ -390,7 +401,7 @@ const BeatInspector: React.FC<{ beat: StoryboardBeat | null; index: number; coun
             <select
               style={inputStyle}
               value={beat.role}
-              onChange={(e) => updateBeat(beat.id, { role: beatRoleSchema.parse(e.target.value) as BeatRole })}
+              onChange={(e) => changeBeat({ role: beatRoleSchema.parse(e.target.value) as BeatRole })}
             >
               {beatRoleRegistry.map((r) => (
                 <option key={r.role} value={r.role}>
@@ -405,7 +416,7 @@ const BeatInspector: React.FC<{ beat: StoryboardBeat | null; index: number; coun
               rows={2}
               style={{ ...inputStyle, resize: "vertical" }}
               value={beat.purpose ?? ""}
-              onChange={(e) => updateBeat(beat.id, { purpose: e.target.value || undefined })}
+              onChange={(e) => changeBeat({ purpose: e.target.value || undefined })}
             />
           </Field>
 
@@ -415,7 +426,7 @@ const BeatInspector: React.FC<{ beat: StoryboardBeat | null; index: number; coun
               style={{ ...inputStyle, resize: "vertical" }}
               value={beat.voiceover ?? ""}
               placeholder="The line you'll say over this beat…"
-              onChange={(e) => updateBeat(beat.id, { voiceover: e.target.value || undefined })}
+              onChange={(e) => changeBeat({ voiceover: e.target.value || undefined })}
             />
           </Field>
 
@@ -424,7 +435,7 @@ const BeatInspector: React.FC<{ beat: StoryboardBeat | null; index: number; coun
               rows={2}
               style={{ ...inputStyle, resize: "vertical" }}
               value={beat.onScreenText ?? ""}
-              onChange={(e) => updateBeat(beat.id, { onScreenText: e.target.value || undefined })}
+              onChange={(e) => changeBeat({ onScreenText: e.target.value || undefined })}
             />
           </Field>
 
@@ -434,7 +445,7 @@ const BeatInspector: React.FC<{ beat: StoryboardBeat | null; index: number; coun
               style={{ ...inputStyle, resize: "vertical" }}
               value={beat.visualPlaceholder ?? ""}
               placeholder="e.g. Chrome integration recording"
-              onChange={(e) => updateBeat(beat.id, { visualPlaceholder: e.target.value || undefined })}
+              onChange={(e) => changeBeat({ visualPlaceholder: e.target.value || undefined })}
             />
           </Field>
 
@@ -450,7 +461,7 @@ const BeatInspector: React.FC<{ beat: StoryboardBeat | null; index: number; coun
               value={beat.durationSeconds ?? ""}
               placeholder={beat.voiceover ? voDurationSeconds(beat.voiceover).toFixed(1) : "auto"}
               onChange={(e) =>
-                updateBeat(beat.id, { durationSeconds: e.target.value === "" ? undefined : Number(e.target.value) })
+                changeBeat({ durationSeconds: e.target.value === "" ? undefined : Number(e.target.value) })
               }
             />
           </Field>
@@ -460,7 +471,7 @@ const BeatInspector: React.FC<{ beat: StoryboardBeat | null; index: number; coun
               rows={3}
               style={{ ...inputStyle, resize: "vertical" }}
               value={beat.notes ?? ""}
-              onChange={(e) => updateBeat(beat.id, { notes: e.target.value || undefined })}
+              onChange={(e) => changeBeat({ notes: e.target.value || undefined })}
             />
           </Field>
         </div>

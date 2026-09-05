@@ -12,7 +12,8 @@ import { parseProject } from "../utils/normalizeProject";
 import { BlockPositionOverlay } from "./BlockPositionOverlay";
 import { RenderButton } from "./RenderButton";
 import { useSavedTemplatesStore } from "./state/savedTemplatesStore";
-import { StoryboardView } from "./storyboard/StoryboardView";
+import { ProjectStoryboardView } from "./storyboard/ProjectStoryboardView";
+import { StoryboardGuide } from "./storyboard/StoryboardGuide";
 import { SceneTimeline } from "./timeline/SceneTimeline";
 import { TimelineObjectPanel } from "./timeline/TimelineObjectPanel";
 import { confirmDeleteTimelineObjects } from "./timeline/deleteTimelineObject";
@@ -109,6 +110,14 @@ export const Editor: React.FC = () => {
   const loadProject = useProjectStore((s) => s.loadProject);
   const updateProjectTitle = useProjectStore((s) => s.updateProjectTitle);
   const libraryIndex = useProjectStore((s) => s.libraryIndex);
+  const projectCollections = useMemo(() => {
+    const groups = new Map<string, typeof libraryIndex>();
+    for (const entry of libraryIndex) {
+      const label = entry.collection?.trim() || "Kiti video";
+      groups.set(label, [...(groups.get(label) ?? []), entry]);
+    }
+    return [...groups.entries()];
+  }, [libraryIndex]);
   const openProject = useProjectStore((s) => s.openProject);
   const deleteProject = useProjectStore((s) => s.deleteProject);
   const createProject = useProjectStore((s) => s.createProject);
@@ -330,10 +339,10 @@ export const Editor: React.FC = () => {
               {!libraryIndex.some((p) => p.id === project.id) ? (
                 <option value={project.id}>{project.title} (unsaved)</option>
               ) : null}
-              {libraryIndex.map((p) => (
-                <option key={p.id} value={p.id}>
-                  {p.title}
-                </option>
+              {projectCollections.map(([collection, entries]) => (
+                <optgroup key={collection} label={collection}>
+                  {entries.map((p) => <option key={p.id} value={p.id}>{p.title}</option>)}
+                </optgroup>
               ))}
             </select>
             <button onClick={() => createProject("Untitled project")} style={topButtonStyle}>
@@ -411,7 +420,7 @@ export const Editor: React.FC = () => {
       ) : null}
 
       {mode === "storyboard" ? (
-        <StoryboardView onGenerated={() => setMode("scenes")} />
+        <ProjectStoryboardView onOpenScenes={() => setMode("scenes")} />
       ) : (
         <>
           <div style={{ flex: 1, display: "flex", overflow: "hidden" }}>
@@ -421,6 +430,7 @@ export const Editor: React.FC = () => {
             wrapper OUTSIDE it, or they would scroll away with the preview at
             the very moment a zoom makes them needed. */}
             <div style={{ flex: 1, position: "relative", overflow: "hidden" }}>
+              <StoryboardGuide onOpenStoryboard={() => setMode("storyboard")} />
               <div
                 ref={stageRef}
                 style={{
@@ -479,7 +489,7 @@ export const Editor: React.FC = () => {
                         // can stack past the Player's default shared-audio-tag limit and crash
                         // the preview. Raised well above worst case; doesn't affect real
                         // exports, which don't go through this browser-audio-tag limit at all.
-                        numberOfSharedAudioTags={40}
+                        numberOfSharedAudioTags={0}
                       />
                     </div>
                     {showSafeZones ? <SafeZoneOverlay platform={safeZonePlatform} /> : null}

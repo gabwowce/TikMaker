@@ -11,6 +11,7 @@ import type {
   SideContent,
   StepItem,
   RichHeadlineLine,
+  ScenePlanRole,
   Block,
   PositionedVisualEntry,
 } from "../../schema/scene";
@@ -46,10 +47,10 @@ function writeLibrary(next: Library) {
   library = next;
 }
 
-function libraryIndexFrom(library: Library): { id: string; title: string }[] {
+function libraryIndexFrom(library: Library): { id: string; title: string; collection?: string }[] {
   return Object.values(library)
-    .map((p) => ({ id: p.id, title: p.title }))
-    .sort((a, b) => a.title.localeCompare(b.title));
+    .map((p) => ({ id: p.id, title: p.title, collection: p.collection }))
+    .sort((a, b) => (a.collection ?? "").localeCompare(b.collection ?? "") || a.title.localeCompare(b.title));
 }
 
 function loadInitialState(): { project: VideoProject; library: Library } {
@@ -84,9 +85,17 @@ function makeSceneId(): string {
   return `scene-${Math.random().toString(36).slice(2, 9)}`;
 }
 
+function planRoleForSceneType(type: SceneType): ScenePlanRole {
+  if (type === "screen-demo") return "demo";
+  if (type === "takeaway") return "payoff";
+  if (type === "hook-centered") return "hook";
+  if (type === "hook-visual") return "reveal";
+  return "benefit";
+}
+
 export type VisualSlot = "main" | "left" | "right";
 
-export type LibraryEntry = { id: string; title: string };
+export type LibraryEntry = { id: string; title: string; collection?: string };
 
 type ProjectStore = {
   project: VideoProject;
@@ -116,6 +125,7 @@ type ProjectStore = {
   saveProjectAs: (title: string) => void;
   exportProjectJson: () => string;
   updateProjectTitle: (title: string) => void;
+  updateProjectStoryPlan: (patch: Partial<NonNullable<VideoProject["storyPlan"]>>) => void;
   openProject: (id: string) => void;
   deleteProject: (id: string) => void;
 
@@ -386,6 +396,10 @@ export const useProjectStore = create<ProjectStore>((set, get) => ({
     set((state) => ({ project: { ...state.project, title } }));
   },
 
+  updateProjectStoryPlan: (patch) => {
+    set((state) => ({ project: { ...state.project, storyPlan: { ...state.project.storyPlan, ...patch } } }));
+  },
+
   openProject: (id) => {
     const library = readLibrary();
     const project = library[id];
@@ -423,6 +437,7 @@ export const useProjectStore = create<ProjectStore>((set, get) => ({
       const newScene: Scene = {
         id: makeSceneId(),
         type,
+        plan: { role: planRoleForSceneType(type), purpose: def.description },
         // Left unset on purpose — a new scene is auto-paced from its VO/text
         // (see `resolveSceneDuration`) until someone pins an explicit length.
         durationSeconds: undefined,
@@ -442,23 +457,27 @@ export const useProjectStore = create<ProjectStore>((set, get) => ({
       const scenes = [...state.project.scenes];
       const at = scenes.findIndex((s) => s.id === state.selectedSceneId);
       const index = at === -1 ? scenes.length : at + 1;
-      scenes.splice(index, 0, scene);
-      return { project: { ...state.project, scenes }, selectedSceneId: scene.id };
+      const inserted = scene.plan ? scene : { ...scene, plan: { role: planRoleForSceneType(scene.type) } };
+      scenes.splice(index, 0, inserted);
+      return { project: { ...state.project, scenes }, selectedSceneId: inserted.id };
     });
   },
 
   removeScene: (id) => {
-    set((state) => ({
-      project: { ...state.project, scenes: state.project.scenes.filter((s) => s.id !== id) },
-      selectedSceneId: state.selectedSceneId === id ? null : state.selectedSceneId,
-    }));
+    set((state) => {
+      return {
+        project: { ...state.project, scenes: state.project.scenes.filter((s) => s.id !== id) },
+        selectedSceneId: state.selectedSceneId === id ? null : state.selectedSceneId,
+      };
+    });
   },
 
   duplicateScene: (id) => {
     set((state) => {
       const index = state.project.scenes.findIndex((s) => s.id === id);
       if (index === -1) return state;
-      const clone: Scene = { ...state.project.scenes[index], id: makeSceneId() };
+      const source = state.project.scenes[index];
+      const clone: Scene = { ...source, id: makeSceneId(), storyboardBeatId: undefined };
       const scenes = [...state.project.scenes];
       scenes.splice(index + 1, 0, clone);
       return { project: { ...state.project, scenes }, selectedSceneId: clone.id };

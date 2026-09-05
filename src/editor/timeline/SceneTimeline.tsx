@@ -414,6 +414,17 @@ const SceneTimelineScene: React.FC<SceneTimelineProps & { onFullMode: () => void
   const cueIds = timings.flatMap(({ scene }) => [resolveEntranceSfx({ override: scene.motion?.sfx, entrance: scene.motion?.entrance }), scene.motion?.exit ? resolveExitSfx({ override: scene.motion?.exitSfx, exit: scene.motion.exit }) : undefined, ...(scene.content.visuals ?? []).flatMap((visual) => [visual.sfx && visual.sfx !== "none" ? visual.sfx : undefined, visual.exitSfx && visual.exitSfx !== "none" ? visual.exitSfx : undefined])]).filter((id): id is string => Boolean(id));
   const audioSources = [...(project.audioClips ?? []).map((clip) => getSfx(clip.sfxId)?.src), ...cueIds.map((id) => getSfx(id)?.src)].filter((src): src is string => Boolean(src));
   const audioWaveforms = useAudioWaveforms(audioSources, project.fps);
+  React.useEffect(() => {
+    // Legacy clips did not store their decoded length. Persist it as soon as
+    // the waveform is available, so VO hand-offs can keep the whole first line
+    // and delay the next one instead of guessing at a scene boundary.
+    for (const clip of project.audioClips ?? []) {
+      if (clip.durationInFrames !== undefined) continue;
+      const src = getSfx(clip.sfxId)?.src;
+      const durationInFrames = src ? audioWaveforms.get(src)?.durationInFrames : undefined;
+      if (durationInFrames !== undefined) updateAudioClip(clip.id, { durationInFrames });
+    }
+  }, [audioWaveforms, project.audioClips, updateAudioClip]);
   const cueShape = (id: string, sourceStart: number, requestedDuration: number | undefined, seed: string) => {
     const src = getSfx(id)?.src; const info = src ? audioWaveforms.get(src) : undefined;
     const available = Math.max(1, (info?.durationInFrames ?? sourceStart + (requestedDuration ?? 30)) - sourceStart);
@@ -544,6 +555,44 @@ const SceneTimelineScene: React.FC<SceneTimelineProps & { onFullMode: () => void
       }];
     }),
   ];
+  /** Moving a visual row is a stack reorder, not merely writing the same lane
+   * onto two clips. Everything between the old and new position shifts once,
+   * and one scene update saves the whole operation atomically. */
+  const moveVisualRowToLane = (movedId: string, targetLane: number) => {
+    const visualRows = rows.filter((row) => row.kind !== "sound" && row.setLane);
+    const moved = visualRows.find((row) => row.id === movedId);
+    if (!moved || moved.lane === undefined || moved.lane === targetLane) return;
+    const originLane = moved.lane;
+    const nextLane = new Map<string, number>();
+    for (const row of visualRows) {
+      if (row.id === movedId) nextLane.set(row.id, targetLane);
+      else if (row.lane === undefined) continue;
+      else if (targetLane < originLane && row.lane >= targetLane && row.lane < originLane) nextLane.set(row.id, row.lane + 1);
+      else if (targetLane > originLane && row.lane > originLane && row.lane <= targetLane) nextLane.set(row.id, row.lane - 1);
+    }
+    updateScene(selectedSceneId, {
+      content: {
+        ...scene.content,
+        richHeadline: lines.map((line, index) => ({ ...line, lane: nextLane.get(`line-${index}`) ?? line.lane })),
+        blocks: blocks.map((block) => ({ ...block, lane: nextLane.get(`block-${block.id}`) ?? block.lane })),
+        items: steps.map((item, index) => ({ ...item, lane: nextLane.get(`step-${index}`) ?? item.lane })),
+        visuals: visuals.map((entry) => ({
+          ...entry,
+          lane: nextLane.get(`visual-${entry.id}`) ?? entry.lane,
+          visual: entry.visual.type === "checklist" ? {
+            ...entry.visual,
+            items: entry.visual.items.map((item, itemIndex) => ({
+              ...item,
+              lane: nextLane.get(`check-${entry.id}-${itemIndex}`) ?? item.lane,
+            })),
+          } : entry.visual,
+        })),
+      },
+    });
+  };
+  for (const row of rows) {
+    if (row.kind !== "sound" && row.setLane) row.setLane = (lane) => moveVisualRowToLane(row.id, lane);
+  }
   /** Frames worth landing on: the scene's own ends, the playhead, and every
    * OTHER clip's start and end — the last is what "align these two" means. */
   const snapTargetsFor = (rowId: string): number[] => {
@@ -577,8 +626,7 @@ const SceneTimelineScene: React.FC<SceneTimelineProps & { onFullMode: () => void
    * below it — the exact jump this design exists to prevent.
    */
   const lanes: { kind: TimelineRow["kind"]; rows: TimelineRow[] }[] = [];
-  for (const kind of ["text", "visual", "item", "sound"] as const) {
-    const ofKind = rows.filter((row) => row.kind === kind);
+  for (const ofKind of [rows.filter((row) => row.kind !== "sound"), rows.filter((row) => row.kind === "sound")]) {
     if (ofKind.length === 0) continue;
 
     const buckets: TimelineRow[][] = [];
@@ -588,7 +636,10 @@ const SceneTimelineScene: React.FC<SceneTimelineProps & { onFullMode: () => void
       buckets[index].push(row);
     }
     while (buckets.length && buckets[buckets.length - 1].length === 0) buckets.pop();
-    for (const bucket of buckets) lanes.push({ kind, rows: bucket });
+    for (const bucket of buckets) {
+      const first = bucket[0];
+      if (first) lanes.push({ kind: first.kind, rows: bucket });
+    }
   }
 
   /**
@@ -600,19 +651,22 @@ const SceneTimelineScene: React.FC<SceneTimelineProps & { onFullMode: () => void
    * timeline is pure presentation.
    */
   React.useEffect(() => {
-    const needing = rows.filter((row) => row.setLane && row.lane === undefined);
-    if (needing.length === 0) return;
+    const visualRows = rows.filter((row) => row.kind !== "sound" && row.setLane);
+    const soundRows = rows.filter((row) => row.kind === "sound" && row.setLane);
+    const visualNeedsLayout = visualRows.some((row) => row.lane === undefined)
+      || visualRows.some((row, index) => visualRows.slice(index + 1).some((other) => row.lane === other.lane && overlaps(row, other)));
+    const soundNeedsLayout = soundRows.some((row) => row.lane === undefined);
+    if (!visualNeedsLayout && !soundNeedsLayout) return;
 
     const assigned = new Map<string, number>();
-    for (const kind of ["text", "visual", "item", "sound"] as const) {
-      const ofKind = rows.filter((row) => row.kind === kind);
+    for (const [ofKind, rebuild] of [[visualRows, visualNeedsLayout], [soundRows, false]] as const) {
       const buckets: TimelineRow[][] = [];
       // Pinned rows hold their slot; the rest fill the first lane with room.
-      for (const row of ofKind.filter((row) => row.lane !== undefined)) {
+      for (const row of ofKind.filter((row) => !rebuild && row.lane !== undefined)) {
         while (buckets.length <= row.lane!) buckets.push([]);
         buckets[row.lane!].push(row);
       }
-      for (const row of ofKind.filter((row) => row.lane === undefined).sort((a, b) => a.start - b.start)) {
+      for (const row of ofKind.filter((row) => rebuild || row.lane === undefined)) {
         let index = buckets.findIndex((bucket) => bucket.every((other) => !overlaps(row, other)));
         if (index === -1) {
           index = buckets.length;
@@ -631,25 +685,25 @@ const SceneTimelineScene: React.FC<SceneTimelineProps & { onFullMode: () => void
       content: {
         ...scene.content,
         richHeadline: lines.length
-          ? lines.map((line, index) => ({ ...line, lane: line.lane ?? assigned.get(`line-${index}`) }))
+          ? lines.map((line, index) => ({ ...line, lane: assigned.get(`line-${index}`) ?? line.lane }))
           : scene.content.richHeadline,
         blocks: blocks.length
-          ? blocks.map((block) => ({ ...block, lane: block.lane ?? assigned.get(`block-${block.id}`) }))
+          ? blocks.map((block) => ({ ...block, lane: assigned.get(`block-${block.id}`) ?? block.lane }))
           : scene.content.blocks,
         items: steps.length
-          ? steps.map((item, index) => ({ ...item, lane: item.lane ?? assigned.get(`step-${index}`) }))
+          ? steps.map((item, index) => ({ ...item, lane: assigned.get(`step-${index}`) ?? item.lane }))
           : scene.content.items,
         visuals: visuals.length
           ? visuals.map((entry) => ({
               ...entry,
-              lane: entry.lane ?? assigned.get(`visual-${entry.id}`),
+              lane: assigned.get(`visual-${entry.id}`) ?? entry.lane,
               visual:
                 entry.visual.type === "checklist"
                   ? {
                       ...entry.visual,
                       items: entry.visual.items.map((item, itemIndex) => ({
                         ...item,
-                        lane: item.lane ?? assigned.get(`check-${entry.id}-${itemIndex}`),
+                        lane: assigned.get(`check-${entry.id}-${itemIndex}`) ?? item.lane,
                       })),
                     }
                   : entry.visual,
@@ -665,7 +719,7 @@ const SceneTimelineScene: React.FC<SceneTimelineProps & { onFullMode: () => void
   /** A lane's position among the lanes of ITS OWN kind — what a vertical drag
    * counts in, since a text clip can only move between text lanes. */
   const laneIndexOf = (lane: (typeof lanes)[number]) =>
-    lanes.filter((candidate) => candidate.kind === lane.kind).indexOf(lane);
+    lanes.filter((candidate) => (candidate.kind === "sound") === (lane.kind === "sound")).indexOf(lane);
 
   const trackWidth = Math.max(640, max * pixelsPerFrame);
   const tickEveryFrames = pixelsPerFrame >= 8 ? project.fps / 2 : project.fps;
@@ -1057,7 +1111,7 @@ const SceneTimelineScene: React.FC<SceneTimelineProps & { onFullMode: () => void
             <div onPointerDown={(event) => { if (event.target === event.currentTarget) beginMarquee(event); }} onDragOver={dragOverAudio} onDragLeave={() => setDropFrame(null)} onDrop={dropAudio} style={{ position: "relative", width: trackWidth, flexShrink: 0, backgroundImage: `repeating-linear-gradient(to right, transparent 0, transparent ${project.fps * pixelsPerFrame - 1}px, #292929 ${project.fps * pixelsPerFrame}px)` }}>
               <span title="Scenos riba · objektai gali tęstis toliau" style={{ position: "absolute", zIndex: 2, left: sceneEnd * pixelsPerFrame, top: 0, bottom: 0, borderLeft: `2px dashed ${editorColors.accent}`, pointerEvents: "none", opacity: 0.75 }} />
               {lane.rows.map((row) => <React.Fragment key={row.id}>
-                <Clip row={row} max={max} pixelsPerFrame={pixelsPerFrame} snapTargets={snapTargetsFor(row.id)} fps={project.fps} selected={selectedObjectIds.includes(qualifySelection(selectedSceneId, row.id))} laneIndex={laneIndexOf(lane)} laneCount={lanes.filter((candidate) => candidate.kind === lane.kind).length} onContextMenu={(event) => { event.preventDefault(); openInspector(row); setContextTarget({ selectionId: qualifySelection(selectedSceneId, row.id), x: event.clientX, y: event.clientY }); }} onDragStart={beginHistoryTransaction} onDragEnd={endHistoryTransaction} onSelect={(additive) => openInspector(row, additive)} beginGroupDrag={beginGroupDragFor(row.id)} />
+                <Clip row={row} max={max} pixelsPerFrame={pixelsPerFrame} snapTargets={snapTargetsFor(row.id)} fps={project.fps} selected={selectedObjectIds.includes(qualifySelection(selectedSceneId, row.id))} laneIndex={laneIndexOf(lane)} laneCount={lanes.filter((candidate) => (candidate.kind === "sound") === (lane.kind === "sound")).length} onContextMenu={(event) => { event.preventDefault(); openInspector(row); setContextTarget({ selectionId: qualifySelection(selectedSceneId, row.id), x: event.clientX, y: event.clientY }); }} onDragStart={beginHistoryTransaction} onDragEnd={endHistoryTransaction} onSelect={(additive) => openInspector(row, additive)} beginGroupDrag={beginGroupDragFor(row.id)} />
                 <KeyframeMarkers row={row} max={max} pixelsPerFrame={pixelsPerFrame} onDragStart={beginHistoryTransaction} onDragEnd={endHistoryTransaction} onSelect={() => openInspector(row)} />
               </React.Fragment>)}
             </div>

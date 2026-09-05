@@ -1,5 +1,6 @@
 import React from "react";
 import { Title, renderHighlighted } from "../typography/Text";
+import { RichHeadline } from "../typography/RichHeadline";
 import { SceneFrame, SceneCue, useSceneCues } from "./SceneFrame";
 import type { SceneComponentProps } from "./types";
 
@@ -9,7 +10,7 @@ export const VisualExplainerScene: React.FC<SceneComponentProps> = ({
   motion,
   durationSeconds,
 }) => {
-  const { cue } = useSceneCues(motion);
+  const { baseDelay, cue } = useSceneCues(motion);
 
   return (
     <SceneFrame
@@ -20,9 +21,21 @@ export const VisualExplainerScene: React.FC<SceneComponentProps> = ({
       textZone="top"
       gap={40}
     >
-      <SceneCue motion={motion} delay={cue(0)}>
-        <Title>{renderHighlighted(content.headline, content.highlights)}</Title>
-      </SceneCue>
+      {content.richHeadline?.length ? (
+        <RichHeadline
+          lines={content.richHeadline}
+          stagger={motion?.stagger}
+          baseDelay={baseDelay}
+          motion={motion}
+          durationSeconds={durationSeconds}
+          x={content.richHeadlineX}
+          y={content.richHeadlineY}
+        />
+      ) : content.headline ? (
+        <SceneCue motion={motion} delay={cue(0)}>
+          <Title>{renderHighlighted(content.headline, content.highlights)}</Title>
+        </SceneCue>
+      ) : null}
     </SceneFrame>
   );
 };

@@ -136,6 +136,11 @@ export const generatedLogos: AssetManifestEntry[] = [
 
 export const generatedProps: AssetManifestEntry[] = [
   {
+    "id": "broken-glass",
+    "file": "broken-glass.png",
+    "label": "broken glass"
+  },
+  {
     "id": "broom",
     "file": "broom.png",
     "label": "broom"

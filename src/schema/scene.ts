@@ -11,6 +11,27 @@ export const backgroundIdSchema = z.enum([
   "spotlight",
 ]);
 
+/** Narrative job of a scene. This lives on the scene itself: storyboard is a
+ * view of the edit, not a second document that can drift away from it. */
+export const scenePlanRoleSchema = z.enum([
+  "hook",
+  "problem",
+  "reveal",
+  "benefit",
+  "mechanism",
+  "setup",
+  "demo",
+  "proof",
+  "payoff",
+  "cta",
+]);
+
+export const scenePlanSchema = z.object({
+  role: scenePlanRoleSchema,
+  purpose: z.string().optional(),
+  visualBrief: z.string().optional(),
+});
+
 /** What paints the background, independent of the optional grid overlay below.
  * `image` references a file under `public/` — same rule as everywhere else
  * (`assetUrl`), so it survives a render, not just the editor preview. */
@@ -474,6 +495,10 @@ const blockSchema = z.object({
 
 const baseSceneFields = {
   id: z.string(),
+  plan: scenePlanSchema.optional(),
+  /** Stable link back to the source storyboard beat. Scene order may change
+   * during an edit, so an array index is not a durable relationship. */
+  storyboardBeatId: z.string().optional(),
   /** Optional — when omitted the length is derived from `vo` + on-screen text
    * by `resolveSceneDuration` (`src/utils/pacing.ts`), so a scene can't cut
    * before the voiceover finishes or the text can be read. Set it explicitly
@@ -618,6 +643,7 @@ export const sceneSchema = z.object({
 });
 
 export type Scene = z.infer<typeof sceneSchema>;
+export type ScenePlanRole = z.infer<typeof scenePlanRoleSchema>;
 export type BackgroundId = z.infer<typeof backgroundIdSchema>;
 export type BackgroundFill = z.infer<typeof backgroundFillSchema>;
 export type BackgroundGrid = z.infer<typeof backgroundGridSchema>;

@@ -8,6 +8,7 @@ import { poseAtFrame } from "../layout/visualKeyframes";
 import { videoDefaults } from "./tokens";
 import { isFullBleedVisual } from "../visuals/isFullBleed";
 import type { PositionedVisualEntry } from "../../schema/scene";
+import { timelineLayerZIndex } from "../layout/layerOrder";
 
 /**
  * How far THIS layer has to travel to sit exactly off-frame, given where it
@@ -195,7 +196,7 @@ const VisualLayerEntry: React.FC<{
     />
   );
 
-  if (backdrop) return <AbsoluteFill>{animated}</AbsoluteFill>;
+  if (backdrop) return <AbsoluteFill style={{ zIndex: timelineLayerZIndex(entry.lane) }}>{animated}</AbsoluteFill>;
 
   return (
     <div
@@ -204,6 +205,7 @@ const VisualLayerEntry: React.FC<{
         left: `${pose.x}%`,
         top: `${pose.y}%`,
         transform: "translate(-50%, -50%)",
+        zIndex: timelineLayerZIndex(entry.lane),
       }}
     >
       {animated}
