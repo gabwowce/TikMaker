@@ -223,6 +223,33 @@ const undoStack: HistorySnapshot[] = [];
 const redoStack: HistorySnapshot[] = [];
 let applyingHistory = false;
 let historyTransaction: HistorySnapshot | null = null;
+/** When the open transaction started. A transaction is a claim about a gesture
+ * that is still happening, and no gesture lasts this long — see
+ * `endStaleHistoryTransaction`. */
+let historyTransactionAt = 0;
+const HISTORY_TRANSACTION_TIMEOUT = 2000;
+
+/**
+ * Closes a transaction that was opened and never closed.
+ *
+ * A transaction is opened on pointer-down/key-down and closed on the matching
+ * up. Those do not always pair: pressing Tab on a slider fires `keydown` on the
+ * slider and `keyup` on whatever the focus moved to, and a component that
+ * unmounts mid-drag never sees its own pointer-up at all. The pair is best
+ * effort, so the only safe design is one where a missing `end` costs nothing.
+ *
+ * It used to cost everything. `historyTransaction` gated the autosave
+ * subscription as well as undo grouping, so one unmatched `begin` silently
+ * stopped BOTH for the rest of the session while the save badge still read
+ * "saved". Autosave no longer consults it at all (see the subscription at the
+ * bottom of this file); this watchdog is the second line of defence, keeping
+ * undo from accumulating one enormous step.
+ */
+function endStaleHistoryTransaction() {
+  if (!historyTransaction) return;
+  if (Date.now() - historyTransactionAt < HISTORY_TRANSACTION_TIMEOUT) return;
+  useProjectStore.getState().endHistoryTransaction();
+}
 
 /** The ONE path that writes a project: updates the in-memory library and
  * queues the file write. Everything else in this store goes through it. */
@@ -276,9 +303,14 @@ export const useProjectStore = create<ProjectStore>((set, get) => ({
     applyingHistory = false;
   },
   beginHistoryTransaction: () => {
+    // A gesture that opens a second transaction without closing the first is
+    // the stuck case; take the newer one rather than ignoring it, so the undo
+    // step covers the gesture actually in progress.
+    endStaleHistoryTransaction();
     if (historyTransaction) return;
     const state = get();
     historyTransaction = { project: state.project, selectedSceneId: state.selectedSceneId };
+    historyTransactionAt = Date.now();
   },
   endHistoryTransaction: () => {
     if (!historyTransaction) return;
@@ -289,10 +321,10 @@ export const useProjectStore = create<ProjectStore>((set, get) => ({
     undoStack.push(before);
     if (undoStack.length > HISTORY_LIMIT) undoStack.shift();
     redoStack.length = 0;
-    // Dragging updates the live preview continuously, but persistence happens
-    // once here, after pointer-up, with only the final coordinates/timing.
-    const library = persist(project, readLibrary());
-    set({ canUndo: true, canRedo: false, libraryIndex: libraryIndexFrom(library) });
+    // Persistence is NOT done here. The whole gesture has been reaching disk
+    // all along through the autosave subscription, coalesced by `scheduleSave`'s
+    // debounce; this only closes the undo step.
+    set({ canUndo: true, canRedo: false });
   },
   setPlayheadFrame: (playheadFrame) => set({ playheadFrame: Math.max(0, Math.round(playheadFrame)) }),
   addAudioClip: (sfxId, from) => set((state) => ({
@@ -1030,12 +1062,38 @@ if (typeof window !== "undefined") {
 // Auto-save: every change to `project` is queued to its file, so a reload or a
 // crash never silently loses work and the Save button is only ever a flush.
 // `scheduleSave` owns the debounce, the retries and the unload beacon.
+//
+// NOTHING may gate this. It used to skip the write whenever an undo transaction
+// was open, on the reasoning that a pointer drag would otherwise write on every
+// pointermove — but `scheduleSave` already collapses those into one write 400ms
+// after the last change, so the guard bought nothing and cost everything: one
+// unmatched `beginHistoryTransaction` (Tab on a slider, a component unmounting
+// mid-drag) stopped every save for the rest of the session, with the save badge
+// still reading "saved". Undo grouping and durability are unrelated concerns and
+// must not share a switch.
 if (typeof window !== "undefined") {
   useProjectStore.subscribe((state, prevState) => {
     if (state.project === prevState.project) return;
-    // Pointer drags are persisted by endHistoryTransaction, once the pointer is
-    // released. Skipping intermediate positions also keeps disk JSON clean.
-    if (historyTransaction) return;
     useProjectStore.setState({ libraryIndex: libraryIndexFrom(persist(state.project, readLibrary())) });
   });
+}
+
+/**
+ * Last-resort closers for a transaction whose matching `end` never arrived.
+ *
+ * These cannot lose data — the autosave above no longer depends on them — but
+ * without them the undo stack would fold an unbounded amount of editing into a
+ * single step.
+ */
+if (typeof window !== "undefined") {
+  // Deferred by a turn of the event loop so the component's own handler for the
+  // same event — which may still be writing the gesture's final value — runs
+  // first and lands inside the undo step it belongs to.
+  const close = () => setTimeout(() => useProjectStore.getState().endHistoryTransaction(), 0);
+  window.addEventListener("pointerup", close);
+  window.addEventListener("pointercancel", close);
+  window.addEventListener("blur", close);
+  // A slider opens a transaction on keydown; Tab moves focus before the keyup,
+  // so the keyup lands here instead of on the control that opened it.
+  window.addEventListener("keyup", close);
 }

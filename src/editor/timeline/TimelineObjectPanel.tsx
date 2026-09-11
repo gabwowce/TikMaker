@@ -7,6 +7,7 @@ import { fontSizes } from "../../video/typography/tokens";
 import { TEXT_CASE_OPTIONS, TEXT_FONT_OPTIONS } from "../../video/typography/textStyle";
 import type { RichTextFont, TextCase } from "../../schema/scene";
 import { splitSpan, splitText } from "../../video/typography/splitAnimate";
+import { useHistoryGesture } from "../useHistoryGesture";
 import { useProjectStore } from "../state/projectStore";
 import { editorColors } from "../theme";
 import { SfxSelect, VisualFieldsEditor } from "../panels/InspectorPanel";
@@ -689,9 +690,8 @@ const FrameSlider: React.FC<{ label: string; value: number; min: number; max: nu
 const PositionFields: React.FC<{ x: number; y: number; scale: number; scaleMin: number; scaleMax: number; scaleLabel: string; onChange: (patch: { x?: number; y?: number; scale?: number }) => void }> = ({ x, y, scale, scaleMin, scaleMax, scaleLabel, onChange }) => <Section title="Pozicija"><SliderField label="X" value={x} min={0} max={100} step={0.5} suffix="%" onChange={(value) => onChange({ x: value })} /><SliderField label="Y" value={y} min={0} max={100} step={0.5} suffix="%" onChange={(value) => onChange({ y: value })} /><SliderField label={scaleLabel} value={scale} min={scaleMin} max={scaleMax} step={scaleMax > 10 ? 1 : 0.05} suffix={scaleMax > 10 ? "px" : "×"} onChange={(value) => onChange({ scale: value })} /></Section>;
 
 const SliderField: React.FC<{ label: string; value: number; min: number; max: number; step: number; suffix: string; decimals?: number; onChange: (value: number) => void }> = ({ label, value, min, max, step, suffix, decimals = 2, onChange }) => {
-  const begin = useProjectStore((state) => state.beginHistoryTransaction);
-  const end = useProjectStore((state) => state.endHistoryTransaction);
-  return <div style={{ marginBottom: 14 }}><div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 5 }}><span style={labelStyle}>{label}</span><label style={numberPillStyle}><input type="number" min={min} max={max} step={step} value={Number(value.toFixed(decimals))} onChange={(event) => onChange(Number(event.target.value))} style={{ ...numberInputStyle, width: decimals > 2 ? 60 : undefined }} /><span>{suffix}</span></label></div><input type="range" min={min} max={max} step={step} value={value} onPointerDown={begin} onPointerUp={end} onPointerCancel={end} onKeyDown={begin} onKeyUp={end} onChange={(event) => onChange(Number(event.target.value))} style={rangeStyle} /></div>;
+  const gesture = useHistoryGesture();
+  return <div style={{ marginBottom: 14 }}><div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 5 }}><span style={labelStyle}>{label}</span><label style={numberPillStyle}><input type="number" min={min} max={max} step={step} value={Number(value.toFixed(decimals))} onChange={(event) => onChange(Number(event.target.value))} style={{ ...numberInputStyle, width: decimals > 2 ? 60 : undefined }} /><span>{suffix}</span></label></div><input type="range" min={min} max={max} step={step} value={value} {...gesture} onChange={(event) => onChange(Number(event.target.value))} style={rangeStyle} /></div>;
 };
 
 const AudioPair: React.FC<{ entrance?: string; exit?: string; mode: "auto" | "explicit"; autoEntranceSfx?: string; onEntrance: (value?: string) => void; onExit?: (value?: string) => void }> = ({ entrance, exit, mode, autoEntranceSfx, onEntrance, onExit }) => <Section title="Garsai"><Field label="IN garsas"><SfxSelect mode={mode} autoResolvesTo={autoEntranceSfx} value={entrance} onChange={onEntrance} /></Field>{onExit ? <Field label="OUT garsas"><SfxSelect mode={mode} value={exit} onChange={onExit} /></Field> : null}</Section>;

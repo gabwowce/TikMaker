@@ -1,4 +1,5 @@
 import React from "react";
+import { useHistoryGesture } from "../useHistoryGesture";
 import { useProjectStore } from "../state/projectStore";
 import { editorColors } from "../theme";
 import { useVoiceStore } from "../state/voiceStore";
@@ -64,9 +65,8 @@ const inputStyle: React.CSSProperties = {
 const animationSeconds = (frames: number) => Number((frames / videoDefaults.fps).toFixed(2));
 const SecondsSlider: React.FC<{ label: string; frames: number; minFrames?: number; maxFrames?: number; onChange: (frames: number) => void }> = ({ label, frames, minFrames = 0, maxFrames = 300, onChange }) => {
   const seconds = animationSeconds(frames);
-  const begin = useProjectStore((state) => state.beginHistoryTransaction);
-  const end = useProjectStore((state) => state.endHistoryTransaction);
-  return <div style={{ marginBottom: 8 }}><div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 4 }}><span style={miniLabelStyle}>{label}</span><span style={{ fontSize: 10, color: editorColors.text }}>{seconds.toFixed(2)} s</span></div><input type="range" min={minFrames / videoDefaults.fps} max={maxFrames / videoDefaults.fps} step={0.1} value={seconds} onPointerDown={begin} onPointerUp={end} onPointerCancel={end} onKeyDown={begin} onKeyUp={end} onChange={(event) => onChange(Math.max(minFrames, Math.min(maxFrames, Math.round(Number(event.target.value) * videoDefaults.fps))))} style={{ width: "100%", accentColor: editorColors.accent }} /></div>;
+  const gesture = useHistoryGesture();
+  return <div style={{ marginBottom: 8 }}><div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 4 }}><span style={miniLabelStyle}>{label}</span><span style={{ fontSize: 10, color: editorColors.text }}>{seconds.toFixed(2)} s</span></div><input type="range" min={minFrames / videoDefaults.fps} max={maxFrames / videoDefaults.fps} step={0.1} value={seconds} {...gesture} onChange={(event) => onChange(Math.max(minFrames, Math.min(maxFrames, Math.round(Number(event.target.value) * videoDefaults.fps))))} style={{ width: "100%", accentColor: editorColors.accent }} /></div>;
 };
 
 const smallButtonStyle: React.CSSProperties = {

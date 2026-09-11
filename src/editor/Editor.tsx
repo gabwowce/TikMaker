@@ -21,6 +21,7 @@ import { copyTimelineObjects, duplicateTimelineObjects, pasteTimelineObjects } f
 import { GlobalStyles } from "./GlobalStyles";
 import { SafeZoneOverlay, safeZonePresets, type SafeZonePlatform } from "./SafeZoneOverlay";
 import { SaveStatusBadge } from "./SaveStatusBadge";
+import { LibraryLoadWarning } from "./LibraryLoadWarning";
 import { ImportJsonDialog } from "./ImportJsonDialog";
 import { RecoveryDialog } from "./RecoveryDialog";
 
@@ -281,6 +282,7 @@ export const Editor: React.FC = () => {
       }}
     >
       <GlobalStyles />
+      <LibraryLoadWarning />
       <div
         style={{
           height: 56,

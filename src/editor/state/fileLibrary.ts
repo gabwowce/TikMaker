@@ -113,16 +113,54 @@ export async function primeDiskCache(): Promise<void> {
  * alternative is that one stale field in one entry takes the whole library down
  * with it — and the file itself is still sitting there to be fixed by hand.
  */
+export type LoadFailure = { kind: LibraryKind; label: string; reason: string };
+
+/**
+ * Entries that were on disk but could not be loaded.
+ *
+ * Dropping the bad entry instead of throwing is right — one stale field must
+ * not take the whole library down. Dropping it SILENTLY was not: from the
+ * outside, a project that fails validation and a project that was never saved
+ * look exactly the same, and the file sitting on disk is no comfort if nothing
+ * ever tells you to go and look at it. `LibraryLoadWarning` renders this.
+ */
+export const useLoadFailures = create<{ failures: LoadFailure[] }>(() => ({ failures: [] }));
+
+/** Names the entry the way its author would recognise it, for the warning. */
+function describeEntry(value: unknown): string {
+  if (!value || typeof value !== "object") return "be pavadinimo";
+  const entry = value as { title?: unknown; name?: unknown; id?: unknown };
+  for (const candidate of [entry.title, entry.name, entry.id]) {
+    if (typeof candidate === "string" && candidate.trim()) return candidate;
+  }
+  return "be pavadinimo";
+}
+
+/** Turns a Zod error into the one thing worth reading: which field failed. */
+function describeReason(error: unknown): string {
+  const issues = (error as { issues?: { path?: (string | number)[]; message?: string }[] })?.issues;
+  const first = issues?.[0];
+  if (first) return `${(first.path ?? []).join(".") || "šaknis"} — ${first.message ?? "netinkama reikšmė"}`;
+  return error instanceof Error ? error.message : "neatitinka schemos";
+}
+
 export function readDisk<T>(kind: LibraryKind, parse: (json: unknown) => T | null): T[] {
   const raw = diskCache.get(kind) ?? Object.values(globs[kind]).map((module) => module.default);
   const entries: T[] = [];
+  const failures: LoadFailure[] = [];
   for (const value of raw) {
     try {
       const parsed = parse(value);
+      // A `null` is the safeParse stores' way of saying the same thing a throw
+      // says for projects. Both are a dropped entry and both have to be seen.
       if (parsed) entries.push(parsed);
-    } catch {
-      // Malformed entry: skipped, never fatal.
+      else failures.push({ kind, label: describeEntry(value), reason: "neatitinka schemos" });
+    } catch (err) {
+      failures.push({ kind, label: describeEntry(value), reason: describeReason(err) });
     }
+  }
+  if (failures.length) {
+    useLoadFailures.setState((state) => ({ failures: [...state.failures, ...failures] }));
   }
   return entries;
 }
@@ -184,13 +222,43 @@ async function postJson(url: string, body: unknown): Promise<void> {
  */
 const unsaved = new Map<string, { kind: LibraryKind; data: { id: string } }>();
 
-function persistSaveJournal() {
+function persistSaveJournalNow() {
   if (typeof window === "undefined") return;
+  journalDirty = false;
   if (!unsaved.size) {
     window.localStorage.removeItem(SAVE_JOURNAL_KEY);
     return;
   }
   window.localStorage.setItem(SAVE_JOURNAL_KEY, JSON.stringify(Object.fromEntries(unsaved)));
+}
+
+/**
+ * How often the emergency journal may be rewritten.
+ *
+ * The journal only has to survive a CRASH — the real write to disk happens
+ * 400ms later and is the copy that matters. It was being written synchronously
+ * on every single change, which meant `JSON.stringify` of the whole project
+ * (45KB in this repo's largest) plus a blocking `localStorage.setItem` on the
+ * main thread for every keystroke, before React had even begun to re-render.
+ * That is the typing lag. Two seconds of exposure on a path that is already the
+ * backup of a backup is a trade worth making many times over.
+ */
+const JOURNAL_INTERVAL = 2000;
+let journalDirty = false;
+let journalTimer: ReturnType<typeof setTimeout> | undefined;
+
+function persistSaveJournal() {
+  if (typeof window === "undefined") return;
+  journalDirty = true;
+  if (journalTimer) return;
+  journalTimer = setTimeout(() => {
+    journalTimer = undefined;
+    if (!journalDirty) return;
+    // Off the interaction path entirely where the browser supports it.
+    const idle = (window as { requestIdleCallback?: (cb: () => void) => void }).requestIdleCallback;
+    if (idle) idle(persistSaveJournalNow);
+    else persistSaveJournalNow();
+  }, JOURNAL_INTERVAL);
 }
 
 async function writeEntry(kind: LibraryKind, data: { id: string }): Promise<void> {
@@ -285,13 +353,35 @@ export async function deleteEntry(kind: LibraryKind, id: string): Promise<void> 
  * survives an unloading document — a `fetch` issued here is cancelled.
  */
 function flushSaves() {
-  for (const [key, entry] of unsaved) {
+  // The throttled journal may be holding changes that have not reached
+  // localStorage yet, and this is the last moment they can. Synchronous on
+  // purpose: an unloading document does not come back to run a timer.
+  persistSaveJournalNow();
+
+  for (const [, entry] of unsaved) {
     const payload = JSON.stringify({ kind: entry.kind, data: entry.data });
-    const sent = navigator.sendBeacon?.("/api/library/save", new Blob([payload], { type: "application/json" }));
+    const blob = new Blob([payload], { type: "application/json" });
     // Do not clear the journal merely because the browser accepted the beacon:
     // accepted is not the same as written. Startup replay removes it only
     // after the server confirms the save.
-    void sent;
+    const sent = navigator.sendBeacon?.("/api/library/save", blob) ?? false;
+    if (sent) continue;
+
+    // `sendBeacon` refuses silently once the queued bytes pass the browser's
+    // budget (~64KB across all pending beacons) — and this repo's largest
+    // project is already 45KB, so a second pending entry is enough to cross it.
+    // `keepalive` is the only other send that outlives the document.
+    try {
+      void fetch("/api/library/save", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: payload,
+        keepalive: true,
+      });
+    } catch {
+      // Nothing more can be done from an unloading page; the journal written
+      // above is what recovers this entry on the next startup.
+    }
   }
 }
 
@@ -373,7 +463,12 @@ let preferencesTimer: ReturnType<typeof setTimeout> | undefined;
 function persistPreferences(preferences: EditorPreferences) {
   clearTimeout(preferencesTimer);
   preferencesTimer = setTimeout(() => {
-    void postJson("/api/library/preferences", preferences).catch(() => undefined);
+    // Reported like any other write. Silently swallowing this is how "the
+    // editor forgot which project I had open" and "my hidden templates came
+    // back" became mysteries rather than a visible failed save.
+    void postJson("/api/library/preferences", preferences).catch((err) => {
+      setStatus({ state: "error", error: `Nepavyko išsaugoti nustatymų: ${err instanceof Error ? err.message : String(err)}` });
+    });
   }, AUTOSAVE_DELAY);
 }
 
