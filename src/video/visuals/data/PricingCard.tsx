@@ -1,6 +1,3 @@
-import React from "react";
-import { colors, fontFamilies, fontSizes } from "../../typography/tokens";
-
 type PricingCardProps = {
   title: string;
   price: string;
@@ -8,55 +5,44 @@ type PricingCardProps = {
   features?: string[];
   highlight?: boolean;
 };
-
-export const PricingCard: React.FC<PricingCardProps> = ({ title, price, period, features, highlight }) => (
-  <div
-    style={{
-      width: 560,
-      borderRadius: 28,
-      padding: 40,
-      backgroundColor: highlight ? colors.accentSoft : colors.surface,
-      border: `1px solid ${highlight ? colors.accent : colors.border}`,
-      display: "flex",
-      flexDirection: "column",
-      gap: 24,
-      boxShadow: "0 30px 60px rgba(0,0,0,0.35)",
-    }}
-  >
+export function PricingCard({
+  title,
+  price,
+  period,
+  features,
+  highlight,
+}: PricingCardProps) {
+  return (
     <div
-      style={{
-        fontFamily: fontFamilies.clashMedium,
-        fontSize: fontSizes.label,
-        color: colors.textSecondary,
-        textTransform: "uppercase",
-        letterSpacing: 2,
-      }}
+      className={`w-[560px] rounded-[28px] p-10 flex flex-col gap-6 [box-shadow:0_30px_60px_rgba(0,0,0,0.35)] ${highlight ? "bg-[rgba(255,_112,_36,_0.15)]" : "bg-[#222222]"} ${highlight ? "[border:1px_solid_#FF7024]" : "[border:1px_solid_rgba(255,255,255,0.10)]"}`}
     >
-      {title}
-    </div>
-
-    <div style={{ display: "flex", alignItems: "baseline", gap: 12 }}>
-      <div style={{ fontFamily: fontFamilies.clashBold, fontSize: fontSizes.title, color: colors.textPrimary }}>
-        {price}
+      <div className="[font-family:ClashDisplay-Medium] text-[42px] text-[#B8B8B8] uppercase [letter-spacing:2px]">
+        {title}
       </div>
-      {period ? (
-        <div style={{ fontFamily: fontFamilies.clashMedium, fontSize: fontSizes.label, color: colors.textSecondary }}>
-          {period}
+
+      <div className="flex items-baseline gap-3">
+        <div className="[font-family:ClashDisplay-Bold] text-[80px] text-[#FFFFFF]">
+          {price}
+        </div>
+        {period ? (
+          <div className="[font-family:ClashDisplay-Medium] text-[42px] text-[#B8B8B8]">
+            {period}
+          </div>
+        ) : null}
+      </div>
+
+      {features && features.length > 0 ? (
+        <div className="flex flex-col gap-3.5">
+          {features.map((feature, index) => (
+            <div key={index} className="flex items-center gap-3.5">
+              <div className="text-[#FF7024] text-[24px]">✓</div>
+              <div className="[font-family:ClashDisplay-Medium] text-[52px] text-[#FFFFFF]">
+                {feature}
+              </div>
+            </div>
+          ))}
         </div>
       ) : null}
     </div>
-
-    {features && features.length > 0 ? (
-      <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
-        {features.map((feature, index) => (
-          <div key={index} style={{ display: "flex", alignItems: "center", gap: 14 }}>
-            <div style={{ color: colors.accent, fontSize: 24 }}>✓</div>
-            <div style={{ fontFamily: fontFamilies.clashMedium, fontSize: fontSizes.body, color: colors.textPrimary }}>
-              {feature}
-            </div>
-          </div>
-        ))}
-      </div>
-    ) : null}
-  </div>
-);
+  );
+}

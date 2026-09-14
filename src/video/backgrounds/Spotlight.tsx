@@ -1,20 +1,7 @@
-import React from "react";
-import { colors } from "../typography/tokens";
-
-export const Spotlight: React.FC = () => (
-  <div style={{ position: "absolute", inset: 0, backgroundColor: colors.background, overflow: "hidden" }}>
-    <div
-      style={{
-        position: "absolute",
-        left: "50%",
-        top: "42%",
-        width: 1400,
-        height: 1400,
-        marginLeft: -700,
-        marginTop: -700,
-        borderRadius: "50%",
-        background: `radial-gradient(circle, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0) 60%)`,
-      }}
-    />
-  </div>
-);
+export function Spotlight() {
+  return (
+    <div className="absolute inset-0 bg-[#171717] overflow-hidden">
+      <div className="absolute left-[50%] top-[42%] w-[1400px] h-[1400px] ml-[-700px] mt-[-700px] rounded-[50%] [background:radial-gradient(circle,_rgba(255,255,255,0.06)_0%,_rgba(255,255,255,0)_60%)]" />
+    </div>
+  );
+}

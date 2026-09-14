@@ -1,7 +1,6 @@
 import { describe, expect, it } from "vitest";
 import type { Storyboard } from "../../schema/storyboard";
 import { storyboardToProject } from "../storyboardToProject";
-
 describe("storyboardToProject links", () => {
   it("keeps a durable storyboard and beat id on generated scenes", () => {
     const storyboard: Storyboard = {
@@ -13,10 +12,11 @@ describe("storyboardToProject links", () => {
         { id: "beat-proof", role: "proof", onScreenText: "The proof" },
       ],
     };
-
     const project = storyboardToProject(storyboard);
-
     expect(project.storyboardId).toBe("sb-linked");
-    expect(project.scenes.map((scene) => scene.storyboardBeatId)).toEqual(["beat-hook", "beat-proof"]);
+    expect(project.scenes.map((scene) => scene.storyboardBeatId)).toEqual([
+      "beat-hook",
+      "beat-proof",
+    ]);
   });
 });

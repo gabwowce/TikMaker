@@ -1,0 +1,13 @@
+@layer theme, base, mantine, components, utilities;
+
+@import "tailwindcss/theme.css" layer(theme);
+@import "tailwindcss/utilities.css" layer(utilities) source(".");
+
+@theme inline {
+  --color-editor-panel: var(--editor-panel);
+  --color-editor-panel-raised: var(--editor-panel-raised);
+  --color-editor-border: var(--editor-border);
+  --color-editor-text: var(--editor-text);
+  --color-editor-muted: var(--editor-muted);
+  --color-editor-accent: var(--editor-accent);
+}

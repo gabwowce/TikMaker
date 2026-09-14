@@ -1,19 +1,20 @@
-import React from "react";
-import { Title, BodyLargeText, LabelText, renderHighlighted } from "../typography/Text";
-import { colors, fontFamilies, fontSizes } from "../typography/tokens";
 import { useCurrentFrame } from "remotion";
-import { EnterOnCue, staggerDelay } from "./EnterOnCue";
-import { SceneFrame, SceneCue, useSceneCues } from "./SceneFrame";
+import {
+  BodyLargeText,
+  LabelText,
+  renderHighlighted,
+  Title,
+} from "../typography/Text";
+import { EnterOnCue } from "./EnterOnCue";
+import { SceneCue, SceneFrame, useSceneCues } from "./SceneFrame";
 import type { SceneComponentProps } from "./types";
-
-export const StepsScene: React.FC<SceneComponentProps> = ({
+export function StepsScene({
   content,
   motion,
   durationSeconds,
-}) => {
+}: SceneComponentProps) {
   const { cue } = useSceneCues(motion);
   const frame = useCurrentFrame();
-
   return (
     <SceneFrame
       content={content}
@@ -24,46 +25,39 @@ export const StepsScene: React.FC<SceneComponentProps> = ({
     >
       {content.headline ? (
         <SceneCue motion={motion} delay={cue(0)}>
-          <Title>{renderHighlighted(content.headline, content.highlights)}</Title>
+          <Title>
+            {renderHighlighted(content.headline, content.highlights)}
+          </Title>
         </SceneCue>
       ) : null}
 
-      <div style={{ display: "flex", flexDirection: "column", gap: 24, width: "100%" }}>
+      <div className="flex flex-col gap-6 w-full">
         {(content.items ?? []).map((item, index) => (
           <EnterOnCue
             key={index}
             preset="slideUp"
             delay={item.delay ?? cue(index + 1)}
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: 28,
-              padding: "24px 32px",
-              borderRadius: 20,
-              backgroundColor: colors.surface,
-              border: `1px solid ${colors.border}`,
-              visibility: item.exitAt === undefined || frame < item.exitAt ? "visible" : "hidden",
-            }}
+            className={`flex items-center gap-7 p-[24px_32px] rounded-[20px] bg-[#222222] [border:1px_solid_rgba(255,255,255,0.10)] ${item.exitAt === undefined || frame < item.exitAt ? "[visibility:visible]" : "[visibility:hidden]"}`}
           >
-            <div
-              style={{
-                fontFamily: fontFamilies.tanker,
-                fontSize: fontSizes.title,
-                color: colors.accent,
-                minWidth: 90,
-              }}
-            >
+            <div className="[font-family:Tanker-Regular] text-[80px] text-[#FF7024] min-w-22.5">
               {String(index + 1).padStart(2, "0")}
             </div>
-            <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
-              <LabelText align="left" style={{ fontFamily: fontFamilies.tanker, textTransform: "uppercase" }}>
+            <div className="flex flex-col gap-1">
+              <LabelText
+                align="left"
+                className="[font-family:Tanker-Regular] uppercase"
+              >
                 {item.label}
               </LabelText>
-              {item.value ? <BodyLargeText align="left" tone="secondary">{item.value}</BodyLargeText> : null}
+              {item.value ? (
+                <BodyLargeText align="left" tone="secondary">
+                  {item.value}
+                </BodyLargeText>
+              ) : null}
             </div>
           </EnterOnCue>
         ))}
       </div>
     </SceneFrame>
   );
-};
+}

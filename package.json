@@ -16,6 +16,8 @@
     "recordings:optimize": "tsx scripts/optimizeRecordings.ts"
   },
   "dependencies": {
+    "@mantine/core": "7.17.8",
+    "@mantine/hooks": "7.17.8",
     "@remotion/cli": "4.0.290",
     "@remotion/player": "4.0.290",
     "react": "18.3.1",
@@ -25,10 +27,14 @@
     "zustand": "^4.5.2"
   },
   "devDependencies": {
+    "@remotion/tailwind-v4": "4.0.290",
+    "@tailwindcss/postcss": "4.1.18",
     "@types/react": "18.3.1",
     "@types/react-dom": "18.3.1",
     "@vitejs/plugin-react": "^4.3.1",
     "dotenv": "^16.4.5",
+    "prettier": "3.8.1",
+    "tailwindcss": "4.1.18",
     "tsx": "^4.16.2",
     "typescript": "5.5.4",
     "vite": "^5.3.4",

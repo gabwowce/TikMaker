@@ -1,17 +1,21 @@
 import type { VisualConfig } from "../schema/visual";
 import { toolList } from "./toolRegistry";
-
-/** Section the editor groups this template under in the Visuals tab. */
-export type VisualTemplateCategory = "media" | "data" | "dev" | "diagrams" | "atmosphere";
-
-export const visualTemplateCategories: { id: VisualTemplateCategory; label: string }[] = [
+export type VisualTemplateCategory =
+  | "media"
+  | "data"
+  | "dev"
+  | "diagrams"
+  | "atmosphere";
+export const visualTemplateCategories: {
+  id: VisualTemplateCategory;
+  label: string;
+}[] = [
   { id: "media", label: "Screens & Media" },
   { id: "data", label: "Data & Cards" },
   { id: "dev", label: "Dev" },
   { id: "diagrams", label: "Diagrams" },
   { id: "atmosphere", label: "Atmosphere" },
 ];
-
 export type VisualTemplateDefinition = {
   id: string;
   label: string;
@@ -19,9 +23,9 @@ export type VisualTemplateDefinition = {
   category: VisualTemplateCategory;
   build: () => VisualConfig;
 };
-
-const firstTools = (count: number) => toolList.slice(0, count).map((t) => t.id);
-
+function firstTools(count: number) {
+  return toolList.slice(0, count).map((t) => t.id);
+}
 export const visualTemplateRegistry: VisualTemplateDefinition[] = [
   {
     id: "tool-flow",
@@ -47,7 +51,8 @@ export const visualTemplateRegistry: VisualTemplateDefinition[] = [
     id: "recording-plain",
     category: "media",
     label: "Screen Recording (Plain)",
-    description: "A screen recording on a rounded card — no browser chrome, for footage that isn't a website.",
+    description:
+      "A screen recording on a rounded card — no browser chrome, for footage that isn't a website.",
     build: () => ({
       type: "recording",
       src: "assets/recordings/placeholder.mp4",
@@ -75,7 +80,13 @@ export const visualTemplateRegistry: VisualTemplateDefinition[] = [
     category: "data",
     label: "Stat Counter",
     description: "A number that animates from one value to another.",
-    build: () => ({ type: "stat-counter", from: 10000, to: 1, label: "USERS", decimals: 0 }),
+    build: () => ({
+      type: "stat-counter",
+      from: 10000,
+      to: 1,
+      label: "USERS",
+      decimals: 0,
+    }),
   },
   {
     id: "checklist",
@@ -95,29 +106,50 @@ export const visualTemplateRegistry: VisualTemplateDefinition[] = [
     id: "checkpoint-card",
     category: "data",
     label: "Checkpoint Card",
-    description: "One independent checkpoint card — add as many layers as needed.",
-    build: () => ({ type: "checkpoint", label: "TAKES TIME", state: "done", variant: "card" }),
+    description:
+      "One independent checkpoint card — add as many layers as needed.",
+    build: () => ({
+      type: "checkpoint",
+      label: "TAKES TIME",
+      state: "done",
+      variant: "card",
+    }),
   },
   {
     id: "checkpoint-compact",
     category: "data",
     label: "Checkpoint Compact",
     description: "A smaller independent checkpoint row.",
-    build: () => ({ type: "checkpoint", label: "MISSES BUGS", state: "warning", variant: "compact" }),
+    build: () => ({
+      type: "checkpoint",
+      label: "MISSES BUGS",
+      state: "warning",
+      variant: "compact",
+    }),
   },
   {
     id: "checkpoint-pill",
     category: "data",
     label: "Checkpoint Pill",
     description: "A short pill-shaped checkpoint for compact compositions.",
-    build: () => ({ type: "checkpoint", label: "DONE", state: "done", variant: "pill" }),
+    build: () => ({
+      type: "checkpoint",
+      label: "DONE",
+      state: "done",
+      variant: "pill",
+    }),
   },
   {
     id: "checkpoint-outline",
     category: "data",
     label: "Checkpoint Outline",
     description: "Transparent checkpoint with a colored outline.",
-    build: () => ({ type: "checkpoint", label: "NEXT STEP", state: "pending", variant: "outline" }),
+    build: () => ({
+      type: "checkpoint",
+      label: "NEXT STEP",
+      state: "pending",
+      variant: "outline",
+    }),
   },
   {
     id: "pricing-card",
@@ -173,7 +205,8 @@ export const visualTemplateRegistry: VisualTemplateDefinition[] = [
     id: "keycap",
     category: "dev",
     label: "Keycaps",
-    description: "Physical keyboard keys — for telling the viewer what to press.",
+    description:
+      "Physical keyboard keys — for telling the viewer what to press.",
     build: () => ({ type: "keycap", keys: ["ESC"], caption: "to stop it" }),
   },
   {
@@ -211,13 +244,19 @@ export const visualTemplateRegistry: VisualTemplateDefinition[] = [
     category: "data",
     label: "Progress Bar",
     description: "A simple animated progress/completion bar.",
-    build: () => ({ type: "progress", value: 7, max: 10, label: "WEEKLY GOAL" }),
+    build: () => ({
+      type: "progress",
+      value: 7,
+      max: 10,
+      label: "WEEKLY GOAL",
+    }),
   },
   {
     id: "flow-system",
     category: "diagrams",
     label: "System Flow",
-    description: "Labeled nodes connected by an animated arrow (e.g. USER → TOOL).",
+    description:
+      "Labeled nodes connected by an animated arrow (e.g. USER → TOOL).",
     build: () => ({
       type: "flow",
       nodes: [{ label: "USER" }, { label: "TOOL" }],
@@ -246,7 +285,8 @@ export const visualTemplateRegistry: VisualTemplateDefinition[] = [
     id: "node-group-orbit-ring",
     category: "diagrams",
     label: "Orbit Ring (Big, No Center)",
-    description: "Tool logos on a large ring framing your headline — no center graphic.",
+    description:
+      "Tool logos on a large ring framing your headline — no center graphic.",
     build: () => ({
       type: "node-group",
       nodes: firstTools(4).map((id) => ({ type: "tool-logo", tool: id })),
@@ -280,7 +320,12 @@ export const visualTemplateRegistry: VisualTemplateDefinition[] = [
       items: [
         { type: "pricing-card", title: "PLAN A", price: "€4" },
         { type: "pricing-card", title: "PLAN B", price: "€8" },
-        { type: "pricing-card", title: "PLAN C", price: "€12", highlight: true },
+        {
+          type: "pricing-card",
+          title: "PLAN C",
+          price: "€12",
+          highlight: true,
+        },
       ],
     }),
   },
@@ -300,7 +345,8 @@ export const visualTemplateRegistry: VisualTemplateDefinition[] = [
     id: "corner-props-float",
     category: "atmosphere",
     label: "Floating Corner Props",
-    description: "Two props drifting slowly in opposite corners, behind the headline.",
+    description:
+      "Two props drifting slowly in opposite corners, behind the headline.",
     build: () => ({
       type: "corner-props",
       assets: [
@@ -315,18 +361,25 @@ export const visualTemplateRegistry: VisualTemplateDefinition[] = [
   {
     id: "browser-image",
     label: "Browser + Image",
-    description: "A browser window holding a screenshot — swap the image in the Inspector's Content picker.",
+    description:
+      "A browser window holding a screenshot — swap the image in the Inspector's Content picker.",
     category: "media",
     build: () => ({
       type: "browser",
       url: "yourapp.com",
-      content: { type: "app-mockup", appTitle: "YOUR APP", kind: "list", items: ["Row one", "Row two", "Row three"] },
+      content: {
+        type: "app-mockup",
+        appTitle: "YOUR APP",
+        kind: "list",
+        items: ["Row one", "Row two", "Row three"],
+      },
     }),
   },
   {
     id: "browser-recording",
     label: "Browser + Recording",
-    description: "A browser window holding a screen recording — point it at your clip in the Inspector.",
+    description:
+      "A browser window holding a screen recording — point it at your clip in the Inspector.",
     category: "media",
     build: () => ({
       type: "recording",
@@ -340,37 +393,55 @@ export const visualTemplateRegistry: VisualTemplateDefinition[] = [
   {
     id: "screen-image",
     label: "Plain Screen + Image",
-    description: "A screenshot or photo on a rounded card — the browser frame minus the chrome. Swap the image in the Inspector's Content picker.",
+    description:
+      "A screenshot or photo on a rounded card — the browser frame minus the chrome. Swap the image in the Inspector's Content picker.",
     category: "media",
     build: () => ({
       type: "screen",
       aspect: "16:10",
-      content: { type: "app-mockup", appTitle: "YOUR APP", kind: "list", items: ["Row one", "Row two", "Row three"] },
+      content: {
+        type: "app-mockup",
+        appTitle: "YOUR APP",
+        kind: "list",
+        items: ["Row one", "Row two", "Row three"],
+      },
     }),
   },
   {
     id: "phone-image",
     label: "Phone + Image",
-    description: "A phone frame holding a screenshot — swap the image in the Inspector's Content picker.",
+    description:
+      "A phone frame holding a screenshot — swap the image in the Inspector's Content picker.",
     category: "media",
     build: () => ({
       type: "phone",
-      content: { type: "app-mockup", appTitle: "YOUR APP", kind: "stat", stat: { value: "482", label: "This month" } },
+      content: {
+        type: "app-mockup",
+        appTitle: "YOUR APP",
+        kind: "stat",
+        stat: { value: "482", label: "This month" },
+      },
     }),
   },
   {
     id: "image-plain",
     label: "Image (No Frame)",
-    description: "A bare image — pick the file from Your Imports or the Assets tab.",
+    description:
+      "A bare image — pick the file from Your Imports or the Assets tab.",
     category: "media",
     build: () => ({ type: "image", src: "/assets/props/idea.png" }),
   },
   {
     id: "keycap-combo",
     label: "Keycap Combo",
-    description: "Two keys pressed together (CTRL + R) — edit the keys in the Inspector.",
+    description:
+      "Two keys pressed together (CTRL + R) — edit the keys in the Inspector.",
     category: "dev",
-    build: () => ({ type: "keycap", keys: ["CTRL", "R"], caption: "to reload" }),
+    build: () => ({
+      type: "keycap",
+      keys: ["CTRL", "R"],
+      caption: "to reload",
+    }),
   },
   {
     id: "terminal-error",
@@ -391,7 +462,8 @@ export const visualTemplateRegistry: VisualTemplateDefinition[] = [
   {
     id: "terminal-success",
     label: "Terminal (Success)",
-    description: "A command that works — the payoff half of a problem/fix pair.",
+    description:
+      "A command that works — the payoff half of a problem/fix pair.",
     category: "dev",
     build: () => ({
       type: "terminal",
@@ -419,7 +491,8 @@ export const visualTemplateRegistry: VisualTemplateDefinition[] = [
   {
     id: "claude-cli-menu",
     label: "Claude CLI (Menu)",
-    description: "The TUI with a menu overlay open — shows the RESULT of a shortcut, not just its name.",
+    description:
+      "The TUI with a menu overlay open — shows the RESULT of a shortcut, not just its name.",
     category: "dev",
     build: () => ({
       type: "claude-cli",
@@ -451,7 +524,8 @@ export const visualTemplateRegistry: VisualTemplateDefinition[] = [
   {
     id: "flow-vertical",
     label: "Flow (Vertical)",
-    description: "Steps stacked top to bottom — fits 9:16 better than a wide row.",
+    description:
+      "Steps stacked top to bottom — fits 9:16 better than a wide row.",
     category: "diagrams",
     build: () => ({
       type: "flow",
@@ -484,8 +558,18 @@ export const visualTemplateRegistry: VisualTemplateDefinition[] = [
     category: "diagrams",
     build: () => ({
       type: "transform",
-      from: { type: "app-mockup", appTitle: "BEFORE", kind: "list", items: ["Messy", "Manual", "Slow"] },
-      to: { type: "app-mockup", appTitle: "AFTER", kind: "stat", stat: { value: "2 min", label: "Per task" } },
+      from: {
+        type: "app-mockup",
+        appTitle: "BEFORE",
+        kind: "list",
+        items: ["Messy", "Manual", "Slow"],
+      },
+      to: {
+        type: "app-mockup",
+        appTitle: "AFTER",
+        kind: "stat",
+        stat: { value: "2 min", label: "Per task" },
+      },
       holdFrames: 40,
     }),
   },
@@ -506,7 +590,8 @@ export const visualTemplateRegistry: VisualTemplateDefinition[] = [
   {
     id: "corner-props-trbl",
     label: "Floating Corner Props (Reverse)",
-    description: "The same drifting accent on the opposite diagonal — alternate it between scenes.",
+    description:
+      "The same drifting accent on the opposite diagonal — alternate it between scenes.",
     category: "atmosphere",
     build: () => ({
       type: "corner-props",

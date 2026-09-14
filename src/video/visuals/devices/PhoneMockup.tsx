@@ -1,34 +1,19 @@
-import React from "react";
-import { colors } from "../../typography/tokens";
-
+import { type ReactNode } from "react";
 type PhoneMockupProps = {
-  children: React.ReactNode;
+  children: ReactNode;
   scale?: number;
 };
-
-export const PhoneMockup: React.FC<PhoneMockupProps> = ({ children, scale = 1 }) => (
-  <div
-    style={{
-      width: 420 * scale,
-      aspectRatio: "9 / 19.5",
-      borderRadius: 48,
-      padding: 14,
-      backgroundColor: "#0b0b0b",
-      boxShadow: "0 40px 80px rgba(0,0,0,0.5)",
-      border: `1px solid ${colors.border}`,
-    }}
-  >
+export function PhoneMockup({ children, scale = 1 }: PhoneMockupProps) {
+  return (
     <div
+      className="[aspect-ratio:9_/_19.5] rounded-[48px] p-3.5 bg-[#0b0b0b] [box-shadow:0_40px_80px_rgba(0,0,0,0.5)] [border:1px_solid_rgba(255,255,255,0.10)]"
       style={{
-        position: "relative",
-        width: "100%",
-        height: "100%",
-        borderRadius: 34,
-        overflow: "hidden",
-        backgroundColor: colors.background,
+        width: 420 * scale,
       }}
     >
-      {children}
+      <div className="relative w-full h-full rounded-[34px] overflow-hidden bg-[#171717]">
+        {children}
+      </div>
     </div>
-  </div>
-);
+  );
+}

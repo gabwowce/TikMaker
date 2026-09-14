@@ -1,28 +1,17 @@
-import React from "react";
-import { safeArea } from "./tokens";
 import type { CSSProperties } from "react";
-
+import { safeArea } from "./tokens";
 export const safeAreaPadding: CSSProperties = {
   paddingLeft: safeArea.left,
   paddingRight: safeArea.right,
   paddingTop: safeArea.top,
   paddingBottom: safeArea.bottom,
 };
-
-export const SafeArea: React.FC<{ debug?: boolean }> = ({ debug }) => {
+type SafeAreaProps = {
+  debug?: boolean;
+};
+export function SafeArea({ debug }: SafeAreaProps) {
   if (!debug) return null;
   return (
-    <div
-      style={{
-        position: "absolute",
-        inset: 0,
-        top: safeArea.top,
-        left: safeArea.left,
-        right: safeArea.right,
-        bottom: safeArea.bottom,
-        border: "2px dashed rgba(255,112,36,0.6)",
-        pointerEvents: "none",
-      }}
-    />
+    <div className="absolute inset-0 top-[220px] left-[130px] right-[130px] bottom-[500px] [border:2px_dashed_rgba(255,112,36,0.6)] pointer-events-none" />
   );
-};
+}

@@ -1,119 +1,114 @@
-import React from "react";
-import { useCurrentFrame, interpolate } from "remotion";
-import { colors, fontFamilies, fontSizes } from "../../typography/tokens";
+import { type ReactNode } from "react";
+import { interpolate, useCurrentFrame } from "remotion";
 import { standardEasing } from "../../motion/easing";
-
 type AppMockupProps = {
   appTitle: string;
   kind: "list" | "stat" | "chart";
   items?: string[];
-  stat?: { value: string; label: string };
+  stat?: {
+    value: string;
+    label: string;
+  };
   chartValues?: number[];
 };
 
-const CARD_WIDTH = 640;
-
-const AppFrame: React.FC<{ appTitle: string; children: React.ReactNode }> = ({ appTitle, children }) => (
-  <div
-    style={{
-      width: CARD_WIDTH,
-      borderRadius: 28,
-      overflow: "hidden",
-      backgroundColor: colors.surface,
-      border: `1px solid ${colors.border}`,
-      boxShadow: "0 30px 60px rgba(0,0,0,0.35)",
-    }}
-  >
-    <div
-      style={{
-        padding: "22px 28px",
-        borderBottom: `1px solid ${colors.border}`,
-        display: "flex",
-        alignItems: "center",
-        gap: 12,
-      }}
-    >
-      <div style={{ width: 14, height: 14, borderRadius: "50%", backgroundColor: colors.accent }} />
-      <div style={{ fontFamily: fontFamilies.clashSemibold, fontSize: fontSizes.body, color: colors.textPrimary }}>
-        {appTitle}
+type AppFrameProps = {
+  appTitle: string;
+  children: ReactNode;
+};
+function AppFrame({ appTitle, children }: AppFrameProps) {
+  return (
+    <div className="w-[640px] rounded-[28px] overflow-hidden bg-[#222222] [border:1px_solid_rgba(255,255,255,0.10)] [box-shadow:0_30px_60px_rgba(0,0,0,0.35)]">
+      <div className="p-[22px_28px] [border-bottom:1px_solid_rgba(255,255,255,0.10)] flex items-center gap-3">
+        <div className="w-3.5 h-3.5 rounded-[50%] bg-[#FF7024]" />
+        <div className="[font-family:ClashDisplay-Semibold] text-[52px] text-[#FFFFFF]">
+          {appTitle}
+        </div>
+      </div>
+      <div className="p-7">{children}</div>
+    </div>
+  );
+}
+type AppMockupListProps = {
+  items: string[];
+};
+function AppMockupList({ items }: AppMockupListProps) {
+  return (
+    <div className="flex flex-col gap-3.5">
+      {items.map((item, index) => (
+        <div
+          key={index}
+          className="p-[16px_20px] rounded-[14px] bg-[#292929] [font-family:ClashDisplay-Medium] text-[52px] text-[#FFFFFF]"
+        >
+          {item}
+        </div>
+      ))}
+    </div>
+  );
+}
+type AppMockupStatProps = {
+  stat: {
+    value: string;
+    label: string;
+  };
+};
+function AppMockupStat({ stat }: AppMockupStatProps) {
+  return (
+    <div className="flex flex-col gap-2 items-start">
+      <div className="[font-family:ClashDisplay-Bold] text-[80px] text-[#FFFFFF]">
+        {stat.value}
+      </div>
+      <div className="[font-family:ClashDisplay-Medium] text-[42px] text-[#B8B8B8] uppercase [letter-spacing:2px]">
+        {stat.label}
       </div>
     </div>
-    <div style={{ padding: 28 }}>{children}</div>
-  </div>
-);
-
-const AppMockupList: React.FC<{ items: string[] }> = ({ items }) => (
-  <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
-    {items.map((item, index) => (
-      <div
-        key={index}
-        style={{
-          padding: "16px 20px",
-          borderRadius: 14,
-          backgroundColor: colors.surfaceElevated,
-          fontFamily: fontFamilies.clashMedium,
-          fontSize: fontSizes.body,
-          color: colors.textPrimary,
-        }}
-      >
-        {item}
-      </div>
-    ))}
-  </div>
-);
-
-const AppMockupStat: React.FC<{ stat: { value: string; label: string } }> = ({ stat }) => (
-  <div style={{ display: "flex", flexDirection: "column", gap: 8, alignItems: "flex-start" }}>
-    <div style={{ fontFamily: fontFamilies.clashBold, fontSize: fontSizes.title, color: colors.textPrimary }}>
-      {stat.value}
-    </div>
-    <div
-      style={{
-        fontFamily: fontFamilies.clashMedium,
-        fontSize: fontSizes.label,
-        color: colors.textSecondary,
-        textTransform: "uppercase",
-        letterSpacing: 2,
-      }}
-    >
-      {stat.label}
-    </div>
-  </div>
-);
-
-const AppMockupChart: React.FC<{ values: number[] }> = ({ values }) => {
+  );
+}
+type AppMockupChartProps = {
+  values: number[];
+};
+function AppMockupChart({ values }: AppMockupChartProps) {
   const frame = useCurrentFrame();
   const max = Math.max(...values, 1);
-
   return (
-    <div style={{ display: "flex", alignItems: "flex-end", gap: 12, height: 220 }}>
+    <div className="flex items-end gap-3 h-[220px]">
       {values.map((v, index) => {
         const targetHeight = (v / max) * 100;
-        const height = interpolate(frame - index * 4, [0, 24], [0, targetHeight], {
-          extrapolateLeft: "clamp",
-          extrapolateRight: "clamp",
-          easing: standardEasing,
-        });
+        const height = interpolate(
+          frame - index * 4,
+          [0, 24],
+          [0, targetHeight],
+          {
+            extrapolateLeft: "clamp",
+            extrapolateRight: "clamp",
+            easing: standardEasing,
+          },
+        );
         return (
           <div
             key={index}
+            className="flex-1 rounded-lg bg-[#FF7024]"
             style={{
-              flex: 1,
               height: `${height}%`,
-              borderRadius: 8,
-              backgroundColor: colors.accent,
             }}
           />
         );
       })}
     </div>
   );
-};
-
-export const AppMockup: React.FC<AppMockupProps> = ({ appTitle, kind, items, stat, chartValues }) => (
-  <AppFrame appTitle={appTitle}>
-    {kind === "list" ? <AppMockupList items={items ?? []} /> : null}
-    {kind === "stat" && stat ? <AppMockupStat stat={stat} /> : null}
-    {kind === "chart" ? <AppMockupChart values={chartValues ?? []} /> : null}
-  </AppFrame>
-);
+}
+export function AppMockup({
+  appTitle,
+  kind,
+  items,
+  stat,
+  chartValues,
+}: AppMockupProps) {
+  return (
+    <AppFrame appTitle={appTitle}>
+      {kind === "list" ? <AppMockupList items={items ?? []} /> : null}
+      {kind === "stat" && stat ? <AppMockupStat stat={stat} /> : null}
+      {kind === "chart" ? <AppMockupChart values={chartValues ?? []} /> : null}
+    </AppFrame>
+  );
+}

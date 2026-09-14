@@ -1,17 +1,14 @@
-import React from "react";
-import { Title, renderHighlighted } from "../typography/Text";
 import { RichHeadline } from "../typography/RichHeadline";
-import { SceneFrame, SceneCue, useSceneCues } from "./SceneFrame";
+import { Title, renderHighlighted } from "../typography/Text";
+import { SceneCue, SceneFrame, useSceneCues } from "./SceneFrame";
 import type { SceneComponentProps } from "./types";
-
-export const ScreenDemoScene: React.FC<SceneComponentProps> = ({
+export function ScreenDemoScene({
   content,
   layout,
   motion,
   durationSeconds,
-}) => {
+}: SceneComponentProps) {
   const { baseDelay, cue } = useSceneCues(motion);
-
   return (
     <SceneFrame
       content={content}
@@ -33,9 +30,11 @@ export const ScreenDemoScene: React.FC<SceneComponentProps> = ({
         />
       ) : content.headline ? (
         <SceneCue motion={motion} delay={cue(0)}>
-          <Title>{renderHighlighted(content.headline, content.highlights)}</Title>
+          <Title>
+            {renderHighlighted(content.headline, content.highlights)}
+          </Title>
         </SceneCue>
       ) : null}
     </SceneFrame>
   );
-};
+}

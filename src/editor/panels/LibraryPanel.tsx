@@ -1,13 +1,10 @@
-import React, { useState } from "react";
-import { editorColors } from "../theme";
-import { TemplateLibrary } from "../library/TemplateLibrary";
-import { SceneLibrary } from "../library/SceneLibrary";
-import { VisualLibrary } from "../library/VisualLibrary";
+import { Tabs } from "@mantine/core";
 import { BackgroundLibrary } from "../library/BackgroundLibrary";
-import { AssetLibrary } from "../library/AssetLibrary";
+import { SceneLibrary } from "../library/SceneLibrary";
 import { SoundLibrary } from "../library/SoundLibrary";
-import { VoiceLibrary } from "../library/VoiceLibrary";
 import { TextLibrary } from "../library/TextLibrary";
+import { VisualLibrary } from "../library/VisualLibrary";
+import { VoiceLibrary } from "../library/VoiceLibrary";
 
 const tabs = [
   { id: "text", label: "Text", Component: TextLibrary },
@@ -15,62 +12,32 @@ const tabs = [
   { id: "sound", label: "Sound", Component: SoundLibrary },
   { id: "voice", label: "Voice", Component: VoiceLibrary },
   { id: "scenes", label: "Scenes", Component: SceneLibrary },
-  { id: "templates", label: "Templates", Component: TemplateLibrary },
   { id: "backgrounds", label: "BG", Component: BackgroundLibrary },
-  { id: "assets", label: "Assets", Component: AssetLibrary },
-] as const;
+];
 
-export const LibraryPanel: React.FC = () => {
-  const [active, setActive] = useState<(typeof tabs)[number]["id"]>("text");
-  const ActiveComponent = tabs.find((t) => t.id === active)!.Component;
-
+export function LibraryPanel() {
   return (
-    <div
-      style={{
-        // Grows with the window instead of squeezing a 3-up asset grid into a
-        // fixed 260px: the 9:16 preview is narrow by definition, so the space
-        // either side is better spent on the panels than left empty.
-        width: "clamp(260px, 19vw, 420px)",
-        flexShrink: 0,
-        borderRight: `1px solid ${editorColors.border}`,
-        background: editorColors.panel,
-        display: "flex",
-        flexDirection: "column",
-        overflow: "hidden",
-      }}
+    <Tabs
+      defaultValue="text"
+      keepMounted={false}
+      className="editor-ui flex w-[clamp(260px,19vw,420px)] shrink-0 flex-col overflow-hidden border-0 border-r border-solid border-editor-border bg-editor-panel"
     >
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(3, 1fr)",
-          borderBottom: `1px solid ${editorColors.border}`,
-        }}
-      >
+      <Tabs.List className="grid grid-cols-3" aria-label="Library">
         {tabs.map((tab) => (
-          <button
-            key={tab.id}
-            onClick={() => setActive(tab.id)}
-            style={{
-              padding: "9px 2px",
-              fontSize: 11,
-              fontWeight: 600,
-              whiteSpace: "nowrap",
-              overflow: "hidden",
-              textOverflow: "ellipsis",
-              background: active === tab.id ? editorColors.panelElevated : "transparent",
-              color: active === tab.id ? editorColors.accent : editorColors.textDim,
-              border: "none",
-              borderBottom: active === tab.id ? `2px solid ${editorColors.accent}` : "2px solid transparent",
-              cursor: "pointer",
-            }}
-          >
+          <Tabs.Tab key={tab.id} value={tab.id}>
             {tab.label}
-          </button>
+          </Tabs.Tab>
         ))}
-      </div>
-      <div style={{ flex: 1, overflowY: "auto", padding: 12 }}>
-        <ActiveComponent />
-      </div>
-    </div>
+      </Tabs.List>
+      {tabs.map(({ id, Component }) => (
+        <Tabs.Panel
+          key={id}
+          value={id}
+          className="min-h-0 flex-1 overflow-y-auto p-3"
+        >
+          <Component />
+        </Tabs.Panel>
+      ))}
+    </Tabs>
   );
-};
+}

@@ -1,12 +1,14 @@
-import React from "react";
-import { LabelText, HeroText, renderHighlighted } from "../typography/Text";
 import { RichHeadline } from "../typography/RichHeadline";
-import { SceneFrame, SceneCue, useSceneCues } from "./SceneFrame";
+import { HeroText, LabelText, renderHighlighted } from "../typography/Text";
+import { SceneCue, SceneFrame, useSceneCues } from "./SceneFrame";
 import type { SceneComponentProps } from "./types";
-
-export const HookCenteredScene: React.FC<SceneComponentProps> = ({ content, layout, motion, durationSeconds }) => {
+export function HookCenteredScene({
+  content,
+  layout,
+  motion,
+  durationSeconds,
+}: SceneComponentProps) {
   const { baseDelay, cue } = useSceneCues(motion);
-
   return (
     <SceneFrame
       content={content}
@@ -18,7 +20,7 @@ export const HookCenteredScene: React.FC<SceneComponentProps> = ({ content, layo
     >
       {content.eyebrow ? (
         <SceneCue motion={motion} delay={cue(0)}>
-          <LabelText tone="accent" style={{ letterSpacing: 4, textTransform: "uppercase" }}>
+          <LabelText tone="accent" className="[letter-spacing:4px] uppercase">
             {content.eyebrow}
           </LabelText>
         </SceneCue>
@@ -36,9 +38,11 @@ export const HookCenteredScene: React.FC<SceneComponentProps> = ({ content, layo
         />
       ) : (
         <SceneCue motion={motion} delay={cue(1)} fallback="slideUp">
-          <HeroText>{renderHighlighted(content.headline, content.highlights)}</HeroText>
+          <HeroText>
+            {renderHighlighted(content.headline, content.highlights)}
+          </HeroText>
         </SceneCue>
       )}
     </SceneFrame>
   );
-};
+}

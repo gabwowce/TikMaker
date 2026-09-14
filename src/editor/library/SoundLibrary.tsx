@@ -1,42 +1,45 @@
-import React, { useEffect, useRef, useState } from "react";
-import { sfxList, type SfxGroup, type SfxDefinition } from "../../registries/sfxRegistry";
-import { useCustomSfxStore } from "../state/customSfxStore";
-import { useSfxOverridesStore } from "../state/sfxOverridesStore";
+import { ActionIcon, Button, NativeSelect, TextInput } from "@mantine/core";
+import { useEffect, useRef, useState } from "react";
+import {
+  sfxList,
+  type SfxDefinition,
+  type SfxGroup,
+} from "../../registries/sfxRegistry";
 import type { SfxDefaultKind } from "../../video/motion/sfxDefaults";
-import { editorColors } from "../theme";
+import { useCustomSfxStore } from "../state/customSfxStore";
 import { useProjectStore } from "../state/projectStore";
+import { useSfxOverridesStore } from "../state/sfxOverridesStore";
 
-const sectionTitleStyle: React.CSSProperties = {
-  fontSize: 11,
-  textTransform: "uppercase",
-  letterSpacing: 1,
-  color: editorColors.textDim,
-  margin: "12px 0 6px",
-};
-
-const inputStyle: React.CSSProperties = {
-  width: "100%",
-  padding: "8px 10px",
-  borderRadius: 6,
-  border: `1px solid ${editorColors.border}`,
-  background: editorColors.panelElevated,
-  color: editorColors.text,
-  fontSize: 13,
-  boxSizing: "border-box",
-};
-
-const rowSelectStyle: React.CSSProperties = { ...inputStyle, fontSize: 11, padding: "6px 8px" };
-
-const sfxGroups: SfxGroup[] = ["voice", "impact", "reveal", "transition", "text", "ui", "success", "misc"];
-
-const entrancePresets = ["slideUp", "slideDown", "slideLeft", "slideRight", "scaleIn", "pop", "fade"];
-const exitPresets = ["slideUp", "slideDown", "slideLeft", "slideRight", "scaleOut", "fade"];
-
-/** Plays one sfx via a shared <audio> element so only one preview plays at a time. */
+const sfxGroups: SfxGroup[] = [
+  "voice",
+  "impact",
+  "reveal",
+  "transition",
+  "text",
+  "ui",
+  "success",
+  "misc",
+];
+const entrancePresets = [
+  "slideUp",
+  "slideDown",
+  "slideLeft",
+  "slideRight",
+  "scaleIn",
+  "pop",
+  "fade",
+];
+const exitPresets = [
+  "slideUp",
+  "slideDown",
+  "slideLeft",
+  "slideRight",
+  "scaleOut",
+  "fade",
+];
 function usePlayer() {
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const [playingId, setPlayingId] = useState<string | undefined>();
-
   function play(sfx: SfxDefinition) {
     if (!audioRef.current) audioRef.current = new Audio();
     const audio = audioRef.current;
@@ -47,119 +50,112 @@ function usePlayer() {
     setPlayingId(sfx.id);
     audio.onended = () => setPlayingId(undefined);
   }
-
   return { play, playingId };
 }
-
-const DefaultsSection: React.FC = () => {
+function DefaultsSection() {
   const overrides = useSfxOverridesStore((s) => s.overrides);
   const load = useSfxOverridesStore((s) => s.load);
   const setEntranceDefault = useSfxOverridesStore((s) => s.setEntranceDefault);
   const setExitDefault = useSfxOverridesStore((s) => s.setExitDefault);
-
   const [kind, setKind] = useState<SfxDefaultKind>("content");
-
   useEffect(() => {
     load();
   }, [load]);
-
   const sfxByGroupSorted = sfxGroups
-    .map((group) => [group, sfxList.filter((s) => s.group === group)] as [SfxGroup, SfxDefinition[]])
+    .map(
+      (group) =>
+        [group, sfxList.filter((s) => s.group === group)] as [
+          SfxGroup,
+          SfxDefinition[],
+        ],
+    )
     .filter(([, list]) => list.length > 0);
-
-  const Picker: React.FC<{ value: string | undefined; onChange: (v: string | undefined) => void }> = ({
-    value,
-    onChange,
-  }) => (
-    <select
-      style={rowSelectStyle}
-      value={value ?? ""}
-      onChange={(e) => onChange(e.target.value || undefined)}
-    >
-      <option value="">Built-in default</option>
-      <option value="none">No sound</option>
-      {sfxByGroupSorted.map(([group, list]) => (
-        <optgroup key={group} label={group}>
-          {list.map((sfx) => (
-            <option key={sfx.id} value={sfx.id}>
-              {sfx.label}
-            </option>
-          ))}
-        </optgroup>
-      ))}
-    </select>
-  );
-
+  type PickerProps = {
+    value: string | undefined;
+    onChange: (v: string | undefined) => void;
+  };
+  function Picker({ value, onChange }: PickerProps) {
+    return (
+      <NativeSelect
+        className="w-full"
+        value={value ?? ""}
+        onChange={(e) => onChange(e.target.value || undefined)}
+      >
+        <option value="">Built-in default</option>
+        <option value="none">No sound</option>
+        {sfxByGroupSorted.map(([group, list]) => (
+          <optgroup key={group} label={group}>
+            {list.map((sfx) => (
+              <option key={sfx.id} value={sfx.id}>
+                {sfx.label}
+              </option>
+            ))}
+          </optgroup>
+        ))}
+      </NativeSelect>
+    );
+  }
   const kindBucket = overrides[kind] ?? {};
-
   return (
     <div>
-      <div style={sectionTitleStyle}>Defaults</div>
-      <div style={{ display: "flex", gap: 4, marginBottom: 10 }}>
+      <div className="text-[11px] uppercase tracking-[1px] text-editor-muted m-[12px_0_6px]">
+        Defaults
+      </div>
+      <div className="flex gap-1 mb-2.5">
         {(
           [
             ["content", "Text / content"],
             ["visual", "Visual"],
           ] as [SfxDefaultKind, string][]
         ).map(([k, label]) => (
-          <button
+          <Button
+            variant="default"
             key={k}
             onClick={() => setKind(k)}
-            style={{
-              flex: 1,
-              padding: "6px 0",
-              fontSize: 11,
-              fontWeight: 600,
-              borderRadius: 6,
-              border: `1px solid ${editorColors.border}`,
-              background: kind === k ? editorColors.accent : editorColors.panelElevated,
-              color: kind === k ? "#111" : editorColors.text,
-              cursor: "pointer",
-            }}
+            className={`flex-1 ${kind === k ? "bg-editor-accent" : "bg-editor-panel-raised"} ${kind === k ? "text-[#111]" : "text-editor-text"}`}
           >
             {label}
-          </button>
+          </Button>
         ))}
       </div>
 
-      <div style={{ fontSize: 10, color: editorColors.textDim, marginBottom: 8 }}>
-        {kind === "content"
-          ? "Applies to the scene's badge/eyebrow/headline/body cue and to Blocks / Rich Headline lines."
-          : "Applies to a scene's primary visual (the main image/graphic) entrance and exit."}
-      </div>
-
-      <div style={{ fontSize: 10, textTransform: "uppercase", letterSpacing: 1, color: editorColors.textDim, margin: "8px 0 6px" }}>
+      <div className="text-[10px] uppercase tracking-[1px] text-editor-muted m-[8px_0_6px]">
         Entrance
       </div>
-      <div style={{ display: "flex", flexDirection: "column", gap: 6, marginBottom: 8 }}>
+      <div className="flex flex-col gap-1.5 mb-2">
         {entrancePresets.map((preset) => (
-          <div key={preset} style={{ display: "flex", alignItems: "center", gap: 8 }}>
-            <div style={{ width: 72, fontSize: 11, color: editorColors.text }}>{preset}</div>
-            <div style={{ flex: 1 }}>
-              <Picker value={kindBucket.entrance?.[preset]} onChange={(v) => setEntranceDefault(kind, preset, v)} />
+          <div key={preset} className="flex items-center gap-2">
+            <div className="w-18 text-[11px] text-editor-text">{preset}</div>
+            <div className="flex-1">
+              <Picker
+                value={kindBucket.entrance?.[preset]}
+                onChange={(v) => setEntranceDefault(kind, preset, v)}
+              />
             </div>
           </div>
         ))}
       </div>
 
-      <div style={{ fontSize: 10, textTransform: "uppercase", letterSpacing: 1, color: editorColors.textDim, margin: "8px 0 6px" }}>
+      <div className="text-[10px] uppercase tracking-[1px] text-editor-muted m-[8px_0_6px]">
         Exit
       </div>
-      <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+      <div className="flex flex-col gap-1.5">
         {exitPresets.map((preset) => (
-          <div key={preset} style={{ display: "flex", alignItems: "center", gap: 8 }}>
-            <div style={{ width: 72, fontSize: 11, color: editorColors.text }}>{preset}</div>
-            <div style={{ flex: 1 }}>
-              <Picker value={kindBucket.exit?.[preset]} onChange={(v) => setExitDefault(kind, preset, v)} />
+          <div key={preset} className="flex items-center gap-2">
+            <div className="w-18 text-[11px] text-editor-text">{preset}</div>
+            <div className="flex-1">
+              <Picker
+                value={kindBucket.exit?.[preset]}
+                onChange={(v) => setExitDefault(kind, preset, v)}
+              />
             </div>
           </div>
         ))}
       </div>
     </div>
   );
-};
-
-const UploadForm: React.FC = () => {
+}
+function UploadForm() {
   const upload = useCustomSfxStore((s) => s.upload);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [file, setFile] = useState<File | null>(null);
@@ -167,7 +163,6 @@ const UploadForm: React.FC = () => {
   const [group, setGroup] = useState<SfxGroup>("misc");
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | undefined>();
-
   async function handleUpload() {
     if (!file || !label.trim()) return;
     setBusy(true);
@@ -183,148 +178,115 @@ const UploadForm: React.FC = () => {
       setBusy(false);
     }
   }
-
   return (
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        gap: 6,
-        padding: 10,
-        borderRadius: 8,
-        border: `1px dashed ${editorColors.border}`,
-        marginBottom: 8,
-      }}
-    >
+    <div className="flex flex-col gap-1.5 p-2.5 rounded-lg [border:1px_dashed_#2c2c2c] mb-2">
       <input
         ref={fileInputRef}
         type="file"
         accept="audio/*,.wav,.mp3"
         onChange={(e) => setFile(e.target.files?.[0] ?? null)}
-        style={{ fontSize: 11, color: editorColors.textDim }}
+        className="text-[11px] text-editor-muted"
       />
-      <input
-        style={inputStyle}
+      <TextInput
+        className="w-full"
         value={label}
         onChange={(e) => setLabel(e.target.value)}
         placeholder="Name this sound (e.g. 'card flip')"
       />
-      <select style={rowSelectStyle} value={group} onChange={(e) => setGroup(e.target.value as SfxGroup)}>
+      <NativeSelect
+        className="w-full"
+        value={group}
+        onChange={(e) => setGroup(e.target.value as SfxGroup)}
+      >
         {sfxGroups.map((g) => (
           <option key={g} value={g}>
             {g}
           </option>
         ))}
-      </select>
-      <button
-        style={{
-          ...inputStyle,
-          cursor: file && label.trim() && !busy ? "pointer" : "not-allowed",
-          opacity: file && label.trim() && !busy ? 1 : 0.5,
-        }}
+      </NativeSelect>
+      <Button
+        variant="default"
+        className={`w-full ${file && label.trim() && !busy ? "cursor-pointer" : "[cursor:not-allowed]"} ${file && label.trim() && !busy ? "opacity-[1]" : "opacity-[0.5]"}`}
         disabled={!file || !label.trim() || busy}
         onClick={handleUpload}
       >
         {busy ? "Uploading…" : "Import sound"}
-      </button>
-      {error ? <div style={{ fontSize: 11, color: "#ff8a65" }}>{error}</div> : null}
+      </Button>
+      {error ? <div className="text-[11px] text-[#ff8a65]">{error}</div> : null}
     </div>
   );
-};
-
-const SfxRow: React.FC<{
+}
+type SfxRowProps = {
   sfx: SfxDefinition;
   playing: boolean;
   onPlay: () => void;
   onDelete?: () => void;
   onAdd?: () => void;
-}> = ({ sfx, playing, onPlay, onDelete, onAdd }) => (
-  <div
-    style={{
-      display: "flex",
-      alignItems: "center",
-      gap: 6,
-      padding: "5px 8px",
-      background: editorColors.panelElevated,
-      borderRadius: 6,
-    }}
-  >
-    <button
-      title="Preview"
-      onClick={onPlay}
-      style={{
-        width: 20,
-        height: 20,
-        lineHeight: "18px",
-        padding: 0,
-        borderRadius: 4,
-        border: `1px solid ${editorColors.border}`,
-        background: playing ? editorColors.accent : editorColors.panel,
-        color: playing ? "#111" : editorColors.text,
-        fontSize: 10,
-        cursor: "pointer",
-        flexShrink: 0,
-      }}
-    >
-      {playing ? "■" : "▶"}
-    </button>
-    <span style={{ flex: 1, fontSize: 11, color: editorColors.text, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
-      {sfx.label}
-    </span>
-    <span style={{ fontSize: 10, color: editorColors.textDim }}>{sfx.group}</span>
-    {onAdd ? <button title="Pridėti į bendrą timeline ties playhead" onClick={onAdd} style={{ width: 22, height: 20, borderRadius: 4, border: `1px solid ${editorColors.accent}`, background: editorColors.panel, color: editorColors.accent, cursor: "pointer" }}>+</button> : null}
-    {onDelete ? (
-      <button
-        title={`Remove "${sfx.label}"`}
-        onClick={onDelete}
-        style={{
-          width: 18,
-          height: 18,
-          lineHeight: "16px",
-          padding: 0,
-          borderRadius: 4,
-          border: `1px solid ${editorColors.border}`,
-          background: editorColors.panel,
-          color: editorColors.textDim,
-          fontSize: 10,
-          cursor: "pointer",
-          flexShrink: 0,
-        }}
+};
+function SfxRow({ sfx, playing, onPlay, onDelete, onAdd }: SfxRowProps) {
+  return (
+    <div className="flex items-center gap-1.5 p-[5px_8px] bg-editor-panel-raised rounded-md">
+      <Button
+        variant="default"
+        aria-label="Preview"
+        onClick={onPlay}
+        className={`w-5 shrink-0 ${playing ? "bg-editor-accent" : "bg-editor-panel"} ${playing ? "text-[#111]" : "text-editor-text"}`}
       >
-        ✕
-      </button>
-    ) : null}
-  </div>
-);
-
-export const SoundLibrary: React.FC = () => {
-  const customSfx = useCustomSfxStore((s) => s.sfx);
+        {playing ? "■" : "▶"}
+      </Button>
+      <span className="flex-1 text-[11px] text-editor-text overflow-hidden text-ellipsis whitespace-nowrap">
+        {sfx.label}
+      </span>
+      <span className="text-[10px] text-editor-muted">{sfx.group}</span>
+      {onAdd ? (
+        <ActionIcon
+          variant="default"
+          aria-label="Add to the video timeline at the playhead"
+          onClick={onAdd}
+          className="w-5.5"
+        >
+          +
+        </ActionIcon>
+      ) : null}
+      {onDelete ? (
+        <ActionIcon
+          variant="default"
+          aria-label={`Remove "${sfx.label}"`}
+          onClick={onDelete}
+          className="w-4.5 shrink-0"
+        >
+          ✕
+        </ActionIcon>
+      ) : null}
+    </div>
+  );
+}
+export function SoundLibrary() {
   const loadCustomSfx = useCustomSfxStore((s) => s.load);
   const removeCustomSfx = useCustomSfxStore((s) => s.remove);
   const { play, playingId } = usePlayer();
   const addAudioClip = useProjectStore((s) => s.addAudioClip);
-
   useEffect(() => {
     loadCustomSfx();
   }, [loadCustomSfx]);
-
   const builtIn = sfxList.filter((s) => !s.custom);
   const custom = sfxList.filter((s) => s.custom);
-
   return (
     <div>
       <DefaultsSection />
 
-      <div style={sectionTitleStyle}>Import sound</div>
+      <div className="text-[11px] uppercase tracking-[1px] text-editor-muted m-[12px_0_6px]">
+        Import sound
+      </div>
       <UploadForm />
 
-      <div style={sectionTitleStyle}>Custom ({custom.length})</div>
+      <div className="text-[11px] uppercase tracking-[1px] text-editor-muted m-[12px_0_6px]">
+        Custom ({custom.length})
+      </div>
       {custom.length === 0 ? (
-        <div style={{ fontSize: 11, color: editorColors.textDim, marginBottom: 8 }}>
-          No imported sounds yet — use the form above.
-        </div>
+        <div className="text-[11px] text-editor-muted mb-2">No sounds</div>
       ) : (
-        <div style={{ display: "flex", flexDirection: "column", gap: 4, marginBottom: 8 }}>
+        <div className="flex flex-col gap-1 mb-2">
           {custom.map((sfx) => (
             <SfxRow
               key={sfx.id}
@@ -338,12 +300,20 @@ export const SoundLibrary: React.FC = () => {
         </div>
       )}
 
-      <div style={sectionTitleStyle}>Built-in ({builtIn.length})</div>
-      <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
+      <div className="text-[11px] uppercase tracking-[1px] text-editor-muted m-[12px_0_6px]">
+        Built-in ({builtIn.length})
+      </div>
+      <div className="flex flex-col gap-1">
         {builtIn.map((sfx) => (
-          <SfxRow key={sfx.id} sfx={sfx} playing={playingId === sfx.id} onPlay={() => play(sfx)} onAdd={() => addAudioClip(sfx.id)} />
+          <SfxRow
+            key={sfx.id}
+            sfx={sfx}
+            playing={playingId === sfx.id}
+            onPlay={() => play(sfx)}
+            onAdd={() => addAudioClip(sfx.id)}
+          />
         ))}
       </div>
     </div>
   );
-};
+}

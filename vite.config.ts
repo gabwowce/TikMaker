@@ -1,34 +1,39 @@
+import react from "@vitejs/plugin-react";
+import { config as loadEnv } from "dotenv";
+import { spawn } from "node:child_process";
 import fs from "node:fs";
 import path from "node:path";
-import { spawn } from "node:child_process";
 import { defineConfig, type Plugin } from "vite";
-import react from "@vitejs/plugin-react";
-import { syncAssets, SOURCE_DIRS } from "./scripts/syncAssets";
 import { libraryApiPlugin } from "./scripts/libraryApi";
+import { SOURCE_DIRS, syncAssets } from "./scripts/syncAssets";
+import {
+  isVideoFile,
+  transcodeForScrubbing,
+} from "./scripts/transcodeRecording";
 import { voiceApiPlugin } from "./scripts/voiceApi";
-import { isVideoFile, transcodeForScrubbing } from "./scripts/transcodeRecording";
-import { config as loadEnv } from "dotenv";
-
-// The ElevenLabs key lives in `.env.local` and is read by the SERVER only —
-// Vite's own env handling would expose it to the browser unless prefixed, and
-// an API key is exactly the thing that must not be.
 loadEnv({ path: path.resolve(__dirname, ".env.local") });
-
 const customAssetsDir = path.resolve(__dirname, "public/assets/custom");
 const manifestPath = path.join(customAssetsDir, "manifest.json");
-
 const customSfxDir = path.resolve(__dirname, "public/assets/custom-sfx");
 const sfxManifestPath = path.resolve(__dirname, "src/config/customSfx.json");
-
-const sfxOverridesPath = path.resolve(__dirname, "src/config/sfxOverrides.json");
-
-/** `kind` tells the editor whether this import is a still or a clip — a video
- * has to become a `recording` visual, not an `image`, and can't be previewed
- * with an <img>. Entries written before this field existed have no `kind` and
- * are treated as images. */
-type CustomAsset = { id: string; label: string; file: string; src: string; kind: "image" | "video" };
-type CustomSfx = { id: string; label: string; file: string; src: string; group: string };
-
+const sfxOverridesPath = path.resolve(
+  __dirname,
+  "src/config/sfxOverrides.json",
+);
+type CustomAsset = {
+  id: string;
+  label: string;
+  file: string;
+  src: string;
+  kind: "image" | "video";
+};
+type CustomSfx = {
+  id: string;
+  label: string;
+  file: string;
+  src: string;
+  group: string;
+};
 function readManifest(): CustomAsset[] {
   if (!fs.existsSync(manifestPath)) return [];
   try {
@@ -37,12 +42,10 @@ function readManifest(): CustomAsset[] {
     return [];
   }
 }
-
 function writeManifest(list: CustomAsset[]) {
   fs.mkdirSync(customAssetsDir, { recursive: true });
   fs.writeFileSync(manifestPath, JSON.stringify(list, null, 2));
 }
-
 function readSfxManifest(): CustomSfx[] {
   if (!fs.existsSync(sfxManifestPath)) return [];
   try {
@@ -51,18 +54,14 @@ function readSfxManifest(): CustomSfx[] {
     return [];
   }
 }
-
 function writeSfxManifest(list: CustomSfx[]) {
   fs.mkdirSync(path.dirname(sfxManifestPath), { recursive: true });
   fs.writeFileSync(sfxManifestPath, JSON.stringify(list, null, 2));
 }
-
 const VIDEO_EXTENSIONS = new Set([".mp4", ".mov", ".webm", ".m4v"]);
-
 function kindForFile(ext: string): "image" | "video" {
   return VIDEO_EXTENSIONS.has(ext.toLowerCase()) ? "video" : "image";
 }
-
 function slugify(name: string): string {
   const slug = name
     .toLowerCase()
@@ -70,7 +69,6 @@ function slugify(name: string): string {
     .replace(/(^-|-$)/g, "");
   return slug || "asset";
 }
-
 function readBody(req: import("http").IncomingMessage): Promise<string> {
   return new Promise((resolve, reject) => {
     let body = "";
@@ -79,13 +77,6 @@ function readBody(req: import("http").IncomingMessage): Promise<string> {
     req.on("error", reject);
   });
 }
-
-/**
- * Dev-only upload API for user-supplied images: the editor has no backend,
- * so this middleware writes the file straight into public/assets/custom and
- * records its label in manifest.json — the label is what lets a human (or an
- * AI authoring a project JSON) know what the picture is for.
- */
 function customAssetsPlugin(): Plugin {
   return {
     name: "custom-assets-api",
@@ -99,7 +90,6 @@ function customAssetsPlugin(): Plugin {
         res.setHeader("Content-Type", "application/json");
         res.end(JSON.stringify(readManifest()));
       });
-
       server.middlewares.use("/api/upload-asset", (req, res) => {
         if (req.method !== "POST") {
           res.statusCode = 405;
@@ -116,40 +106,33 @@ function customAssetsPlugin(): Plugin {
             const ext = path.extname(filename) || ".png";
             const id = `${slugify(label || filename)}-${Date.now().toString(36)}`;
             let file = `${id}${ext}`;
-
             fs.mkdirSync(customAssetsDir, { recursive: true });
-            fs.writeFileSync(path.join(customAssetsDir, file), Buffer.from(dataBase64, "base64"));
-
-            // A capture tool encodes for playback, which is the opposite of what
-            // an editor needs: the uploads that prompted this were 4K with a
-            // single keyframe, so every scrub decoded the whole clip from frame
-            // 0 and the timeline froze. `transcodeForScrubbing` re-encodes once,
-            // here, and keeps the original — see that module for the reasoning.
-            // A failure is not fatal: the raw upload still plays, just slowly,
-            // and losing the import entirely would be the worse outcome.
+            fs.writeFileSync(
+              path.join(customAssetsDir, file),
+              Buffer.from(dataBase64, "base64"),
+            );
             if (isVideoFile(file)) {
               try {
-                const result = transcodeForScrubbing(path.join(customAssetsDir, file));
+                const result = transcodeForScrubbing(
+                  path.join(customAssetsDir, file),
+                );
                 file = path.basename(result.file);
               } catch (err) {
-                console.warn(`[upload] transcode failed, keeping the original: ${String(err)}`);
+                console.warn(
+                  `[upload] transcode failed, keeping the original: ${String(err)}`,
+                );
               }
             }
-
             const entry: CustomAsset = {
               id,
               label: label || filename,
               file,
-              // Rebuilt from `file` rather than the uploaded name: a .mov/.webm
-              // comes back out as .mp4, and a stale extension here is a 404 at
-              // render time with nothing to point at.
               src: `/assets/custom/${file}`,
               kind: kindForFile(ext),
             };
             const manifest = readManifest();
             manifest.push(entry);
             writeManifest(manifest);
-
             res.setHeader("Content-Type", "application/json");
             res.end(JSON.stringify(entry));
           })
@@ -159,7 +142,6 @@ function customAssetsPlugin(): Plugin {
             res.end(JSON.stringify({ error: String(err) }));
           });
       });
-
       server.middlewares.use("/api/delete-asset", (req, res) => {
         if (req.method !== "POST") {
           res.statusCode = 405;
@@ -168,7 +150,9 @@ function customAssetsPlugin(): Plugin {
         }
         readBody(req)
           .then((raw) => {
-            const { id } = JSON.parse(raw) as { id: string };
+            const { id } = JSON.parse(raw) as {
+              id: string;
+            };
             const manifest = readManifest();
             const entry = manifest.find((a) => a.id === id);
             const remaining = manifest.filter((a) => a.id !== id);
@@ -186,7 +170,6 @@ function customAssetsPlugin(): Plugin {
             res.end(JSON.stringify({ error: String(err) }));
           });
       });
-
       server.middlewares.use("/api/custom-sfx", (req, res) => {
         if (req.method !== "GET") {
           res.statusCode = 405;
@@ -196,7 +179,6 @@ function customAssetsPlugin(): Plugin {
         res.setHeader("Content-Type", "application/json");
         res.end(JSON.stringify(readSfxManifest()));
       });
-
       server.middlewares.use("/api/upload-sfx", (req, res) => {
         if (req.method !== "POST") {
           res.statusCode = 405;
@@ -214,10 +196,11 @@ function customAssetsPlugin(): Plugin {
             const ext = path.extname(filename) || ".mp3";
             const id = `${slugify(label || filename)}-${Date.now().toString(36)}`;
             const file = `${id}${ext}`;
-
             fs.mkdirSync(customSfxDir, { recursive: true });
-            fs.writeFileSync(path.join(customSfxDir, file), Buffer.from(dataBase64, "base64"));
-
+            fs.writeFileSync(
+              path.join(customSfxDir, file),
+              Buffer.from(dataBase64, "base64"),
+            );
             const entry: CustomSfx = {
               id,
               label: label || filename,
@@ -228,7 +211,6 @@ function customAssetsPlugin(): Plugin {
             const manifest = readSfxManifest();
             manifest.push(entry);
             writeSfxManifest(manifest);
-
             res.setHeader("Content-Type", "application/json");
             res.end(JSON.stringify(entry));
           })
@@ -238,7 +220,6 @@ function customAssetsPlugin(): Plugin {
             res.end(JSON.stringify({ error: String(err) }));
           });
       });
-
       server.middlewares.use("/api/delete-sfx", (req, res) => {
         if (req.method !== "POST") {
           res.statusCode = 405;
@@ -247,16 +228,18 @@ function customAssetsPlugin(): Plugin {
         }
         readBody(req)
           .then((raw) => {
-            const { id } = JSON.parse(raw) as { id: string };
+            const { id } = JSON.parse(raw) as {
+              id: string;
+            };
             const manifest = readSfxManifest();
             const entry = manifest.find((a) => a.id === id);
             const remaining = manifest.filter((a) => a.id !== id);
             if (entry) {
-              // Resolved from `src`, not from a hardcoded folder: uploaded
-              // effects live in `custom-sfx/` and generated voice lines in
-              // `voice/`, and assuming the first left the second's file on
-              // disk after its manifest entry was gone.
-              const filePath = path.resolve(__dirname, "public", entry.src.replace(/^\//, ""));
+              const filePath = path.resolve(
+                __dirname,
+                "public",
+                entry.src.replace(/^\//, ""),
+              );
               if (fs.existsSync(filePath)) fs.unlinkSync(filePath);
             }
             writeSfxManifest(remaining);
@@ -269,7 +252,6 @@ function customAssetsPlugin(): Plugin {
             res.end(JSON.stringify({ error: String(err) }));
           });
       });
-
       server.middlewares.use("/api/sfx-overrides", (req, res) => {
         if (req.method === "GET") {
           res.setHeader("Content-Type", "application/json");
@@ -293,7 +275,10 @@ function customAssetsPlugin(): Plugin {
           .then((raw) => {
             const overrides = JSON.parse(raw);
             fs.mkdirSync(path.dirname(sfxOverridesPath), { recursive: true });
-            fs.writeFileSync(sfxOverridesPath, JSON.stringify(overrides, null, 2));
+            fs.writeFileSync(
+              sfxOverridesPath,
+              JSON.stringify(overrides, null, 2),
+            );
             res.setHeader("Content-Type", "application/json");
             res.end(JSON.stringify({ ok: true }));
           })
@@ -306,28 +291,16 @@ function customAssetsPlugin(): Plugin {
     },
   };
 }
-
-
 type RenderJob = {
   id: string;
   status: "running" | "done" | "error";
-  /** 0..1 across the two phases remotion reports (frames, then stitching). */
   progress: number;
   phase: string;
   outputPath?: string;
   error?: string;
 };
-
 const renderJobs = new Map<string, RenderJob>();
 const rendersDir = path.resolve(__dirname, "out");
-
-/**
- * Dev-only render API. The editor keeps projects in the browser, so without
- * this the only way to get an MP4 was Export JSON followed by a terminal
- * command — which is the one step nobody discovers. This writes the project to
- * a temp props file, shells out to the same `remotion render` the CLI script
- * uses, and reports progress by parsing its output.
- */
 function renderPlugin(): Plugin {
   return {
     name: "render-api",
@@ -340,45 +313,58 @@ function renderPlugin(): Plugin {
         }
         readBody(req)
           .then((raw) => {
-            const { project } = JSON.parse(raw) as { project: { id?: string; title?: string; scenes?: unknown[] } };
-            if (!project?.scenes?.length) throw new Error("Project has no scenes");
-
+            const { project } = JSON.parse(raw) as {
+              project: {
+                id?: string;
+                title?: string;
+                scenes?: unknown[];
+              };
+            };
+            if (!project?.scenes?.length)
+              throw new Error("Project has no scenes");
             const id = `${slugify(project.title || project.id || "video")}-${Date.now().toString(36)}`;
             const outputPath = path.join(rendersDir, `${id}.mp4`);
             const propsPath = path.join(rendersDir, `.${id}.props.json`);
             fs.mkdirSync(rendersDir, { recursive: true });
             fs.writeFileSync(propsPath, JSON.stringify({ project }), "utf-8");
-
-            const job: RenderJob = { id, status: "running", progress: 0, phase: "Starting Remotion…" };
+            const job: RenderJob = {
+              id,
+              status: "running",
+              progress: 0,
+              phase: "Starting Remotion…",
+            };
             renderJobs.set(id, job);
-
             const child = spawn(
               "npx",
-              ["remotion", "render", "TikTokVideo", outputPath, `--props=${propsPath}`],
-              { cwd: __dirname, shell: true }
+              [
+                "remotion",
+                "render",
+                "TikTokVideo",
+                outputPath,
+                `--props=${propsPath}`,
+              ],
+              { cwd: __dirname, shell: true },
             );
-
-            const readOutput = (chunk: Buffer) => {
+            function readOutput(chunk: Buffer) {
               const text = chunk.toString();
-              // `remotion render` reports "Rendered 12/576" then "Stitched 40/576".
-              // Frames are the slow half, so they get most of the bar.
               const rendered = /Rendered (\d+)\/(\d+)/.exec(text);
               const stitched = /Stitched (\d+)\/(\d+)/.exec(text);
               if (rendered) {
-                job.progress = (Number(rendered[1]) / Number(rendered[2])) * 0.85;
+                job.progress =
+                  (Number(rendered[1]) / Number(rendered[2])) * 0.85;
                 job.phase = `Rendering frames ${rendered[1]}/${rendered[2]}`;
               } else if (stitched) {
-                job.progress = 0.85 + (Number(stitched[1]) / Number(stitched[2])) * 0.15;
+                job.progress =
+                  0.85 + (Number(stitched[1]) / Number(stitched[2])) * 0.15;
                 job.phase = `Encoding ${stitched[1]}/${stitched[2]}`;
               }
-            };
+            }
             child.stdout.on("data", readOutput);
             child.stderr.on("data", (chunk: Buffer) => {
               readOutput(chunk);
               const text = chunk.toString();
               if (/Error|error:/.test(text)) job.error = text.slice(-600);
             });
-
             child.on("close", (code) => {
               fs.rmSync(propsPath, { force: true });
               if (code === 0 && fs.existsSync(outputPath)) {
@@ -392,7 +378,6 @@ function renderPlugin(): Plugin {
                 job.error = job.error ?? `Render exited with code ${code}`;
               }
             });
-
             res.setHeader("Content-Type", "application/json");
             res.end(JSON.stringify({ id }));
           })
@@ -402,9 +387,10 @@ function renderPlugin(): Plugin {
             res.end(JSON.stringify({ error: String(err) }));
           });
       });
-
       server.middlewares.use("/api/render-status", (req, res) => {
-        const id = new URL(req.url ?? "", "http://localhost").searchParams.get("id") ?? "";
+        const id =
+          new URL(req.url ?? "", "http://localhost").searchParams.get("id") ??
+          "";
         const job = renderJobs.get(id);
         res.setHeader("Content-Type", "application/json");
         if (!job) {
@@ -414,9 +400,10 @@ function renderPlugin(): Plugin {
         }
         res.end(JSON.stringify(job));
       });
-
       server.middlewares.use("/api/render-file", (req, res) => {
-        const id = new URL(req.url ?? "", "http://localhost").searchParams.get("id") ?? "";
+        const id =
+          new URL(req.url ?? "", "http://localhost").searchParams.get("id") ??
+          "";
         const job = renderJobs.get(id);
         if (!job?.outputPath || !fs.existsSync(job.outputPath)) {
           res.statusCode = 404;
@@ -424,77 +411,62 @@ function renderPlugin(): Plugin {
           return;
         }
         res.setHeader("Content-Type", "video/mp4");
-        res.setHeader("Content-Disposition", `attachment; filename="${path.basename(job.outputPath)}"`);
+        res.setHeader(
+          "Content-Disposition",
+          `attachment; filename="${path.basename(job.outputPath)}"`,
+        );
         fs.createReadStream(job.outputPath).pipe(res);
       });
     },
   };
 }
-
-/**
- * Keeps the asset folders and the generated manifest in step with each other
- * while the dev server is running.
- *
- * `props/`, `ai/`, `sfx/` and `fonts/` are the SOURCE of every prop, tool logo
- * and sound in the editor, but nothing reads them directly: `syncAssets` copies
- * them into `public/` and regenerates `assets.generated.ts`, which is what the
- * registries import. Dropping a file into `props/` therefore did nothing
- * visible until someone remembered to run `npm run assets:sync` — a hidden
- * manual step that reads as "my asset didn't upload". Now the sync runs when the
- * server starts and again whenever one of those folders changes, and the
- * manifest rewrite hot-reloads the Visuals tab on its own.
- */
 function assetSyncPlugin(): Plugin {
   const sources = Object.values(SOURCE_DIRS).map((dir) => path.resolve(dir));
-  const isSourceFile = (file: string) => {
+  function isSourceFile(file: string) {
     const resolved = path.resolve(file);
     return sources.some((dir) => resolved.startsWith(dir + path.sep));
-  };
-
+  }
   return {
     name: "asset-sync",
     configureServer(server) {
-      const run = (reason: string) => {
+      function run(reason: string) {
         try {
           const result = syncAssets();
           if (result.changed) {
-            console.log(`[asset-sync] ${reason}: ${result.props} props, ${result.logos} logos, ${result.sfx} sfx`);
+            console.log(
+              `[asset-sync] ${reason}: ${result.props} props, ${result.logos} logos, ${result.sfx} sfx`,
+            );
           }
         } catch (error) {
-          // A broken sync must not take the dev server down with it.
           console.error("[asset-sync] failed:", error);
         }
-      };
-
+      }
       run("startup");
-
-      // Coalesced: dropping a folder of props fires one event per file, and
-      // each one would otherwise rewrite the manifest and reload the editor.
       let timer: NodeJS.Timeout | undefined;
-      const schedule = (file: string) => {
-        // Only the source folders. `syncAssets` writes into `public/` and
-        // `src/registries/`, both inside the watched root — reacting to those
-        // would make it re-trigger itself forever.
+      function schedule(file: string) {
         if (!isSourceFile(file)) return;
         clearTimeout(timer);
         timer = setTimeout(() => run(`changed ${path.basename(file)}`), 150);
-      };
-
+      }
       server.watcher.add(sources);
       server.watcher.on("add", schedule);
       server.watcher.on("unlink", schedule);
       server.watcher.on("change", schedule);
     },
-    // The production build reads the manifest at compile time, so it has to be
-    // current before Vite starts resolving modules.
     buildStart() {
       if (process.env.NODE_ENV !== "development") syncAssets();
     },
   };
 }
-
 export default defineConfig({
-  plugins: [react(), assetSyncPlugin(), libraryApiPlugin(__dirname), voiceApiPlugin(__dirname), customAssetsPlugin(), renderPlugin()],
+  plugins: [
+    react(),
+    assetSyncPlugin(),
+    libraryApiPlugin(__dirname),
+    voiceApiPlugin(__dirname),
+    customAssetsPlugin(),
+    renderPlugin(),
+  ],
   resolve: {
     alias: {
       "@": "/src",
@@ -503,29 +475,11 @@ export default defineConfig({
   server: {
     port: 5173,
     watch: {
-      /**
-       * The editor writes these files itself, several times a minute. They are
-       * pulled in by `import.meta.glob`, so every autosave invalidated a module
-       * Vite had loaded and triggered a full page reload — mid-edit, with the
-       * playhead and every panel reset. Ignoring them costs nothing: the globs
-       * are re-evaluated on the next page load anyway, which is when a file
-       * pulled from git needs to be picked up.
-       *
-       * ANCHORED to the repo root on purpose. These were first written as
-       * name-only globs, and the one for the `library` folder also matched
-       * `src/editor/library` — so every component in the editor's library
-       * folder silently stopped hot-reloading and the dev server went on
-       * serving a stale transform of it. A pattern that matches a folder by
-       * NAME matches every folder with that name, at any depth.
-       */
       ignored: [
         path.resolve(__dirname, "projects") + "/**",
         path.resolve(__dirname, "storyboards") + "/**",
         path.resolve(__dirname, "library") + "/**",
         path.resolve(__dirname, "out") + "/**",
-        // Written by the sfx upload and voice generation APIs. `registerSfx`
-        // adds the new entry to the running page, so a reload would only cost
-        // you the editor's state.
         path.resolve(__dirname, "src/config/customSfx.json"),
       ],
     },

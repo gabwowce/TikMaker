@@ -1,127 +1,82 @@
-import React from "react";
-import { colors } from "../../typography/tokens";
-
+import { type ReactNode } from "react";
 type BrowserMockupProps = {
   title?: string;
   url?: string;
-  /** Extra tab labels shown to the right of the active one. */
   tabs?: string[];
-  children: React.ReactNode;
+  children: ReactNode;
   scale?: number;
 };
-
-/** The real macOS traffic lights — a screenshot of a browser reads as fake the
- * moment these are grey, which is the single most recognisable detail of the
- * whole frame. */
 const TRAFFIC_LIGHTS = ["#ff5f57", "#febc2e", "#28c840"];
 
-const CHROME_BG = "#2b2b2e";
-const TAB_ACTIVE_BG = "#3c3c40";
-const CHROME_TEXT = "#c9c9cf";
-const CHROME_DIM = "#8a8a92";
-
-const Tab: React.FC<{ label: string; active?: boolean }> = ({ label, active }) => (
-  <div
-    style={{
-      display: "flex",
-      alignItems: "center",
-      gap: 10,
-      maxWidth: 260,
-      padding: "10px 18px",
-      borderRadius: "10px 10px 0 0",
-      background: active ? TAB_ACTIVE_BG : "transparent",
-      color: active ? CHROME_TEXT : CHROME_DIM,
-      fontFamily: "ClashDisplay-Medium",
-      fontSize: 22,
-      whiteSpace: "nowrap",
-      overflow: "hidden",
-      textOverflow: "ellipsis",
-    }}
-  >
-    <div
-      style={{
-        width: 16,
-        height: 16,
-        borderRadius: 4,
-        flexShrink: 0,
-        background: active ? colors.accent : CHROME_DIM,
-      }}
-    />
-    {label}
-  </div>
-);
-
-/**
- * A browser window that looks like an actual browser: coloured traffic lights,
- * a tab strip with a favicon and an active tab, and a real address bar with a
- * lock. The old version was three grey circles and an optional pill, which read
- * as a placeholder rather than as "this is a screenshot of a website".
- */
-export const BrowserMockup: React.FC<BrowserMockupProps> = ({ url, title, tabs, children, scale = 1 }) => {
-  const activeTab = title ?? (url ? url.replace(/^https?:\/\//, "").split("/")[0] : "New Tab");
-
+type TabProps = {
+  label: string;
+  active?: boolean;
+};
+function Tab({ label, active }: TabProps) {
   return (
     <div
+      className={`flex items-center gap-2.5 max-w-[260px] p-[10px_18px] rounded-[10px_10px_0_0] [font-family:ClashDisplay-Medium] text-[22px] whitespace-nowrap overflow-hidden text-ellipsis ${active ? "bg-[#3c3c40]" : "bg-transparent"} ${active ? "text-[#c9c9cf]" : "text-[#8a8a92]"}`}
+    >
+      <div
+        className={`w-4 h-4 rounded shrink-0 ${active ? "bg-[#FF7024]" : "bg-[#8a8a92]"}`}
+      />
+      {label}
+    </div>
+  );
+}
+export function BrowserMockup({
+  url,
+  title,
+  tabs,
+  children,
+  scale = 1,
+}: BrowserMockupProps) {
+  const activeTab =
+    title ?? (url ? url.replace(/^https?:\/\//, "").split("/")[0] : "New Tab");
+  return (
+    <div
+      className="rounded-[20px] overflow-hidden bg-[#222222] [box-shadow:0_40px_80px_rgba(0,0,0,0.45)] [border:1px_solid_rgba(255,255,255,0.10)]"
       style={{
         width: 860 * scale,
-        borderRadius: 20,
-        overflow: "hidden",
-        backgroundColor: colors.surface,
-        boxShadow: "0 40px 80px rgba(0,0,0,0.45)",
-        border: `1px solid ${colors.border}`,
       }}
     >
-      <div style={{ backgroundColor: CHROME_BG, paddingTop: 14 }}>
-        <div style={{ display: "flex", alignItems: "flex-end", gap: 6, padding: "0 20px" }}>
-          <div style={{ display: "flex", gap: 9, paddingBottom: 12, marginRight: 10 }}>
+      <div className="bg-[#2b2b2e] pt-3.5">
+        <div className="flex items-end gap-1.5 p-[0_20px]">
+          <div className="flex gap-[9px] pb-3 mr-2.5">
             {TRAFFIC_LIGHTS.map((color) => (
-              <div key={color} style={{ width: 15, height: 15, borderRadius: "50%", background: color }} />
+              <div
+                key={color}
+                className="w-[15px] h-[15px] rounded-[50%]"
+                style={{
+                  background: color,
+                }}
+              />
             ))}
           </div>
           <Tab label={activeTab} active />
           {(tabs ?? []).slice(0, 2).map((label, index) => (
             <Tab key={index} label={label} />
           ))}
-          <div style={{ color: CHROME_DIM, fontSize: 26, paddingBottom: 10, paddingLeft: 6 }}>+</div>
+          <div className="text-[#8a8a92] text-[26px] pb-2.5 pl-1.5">+</div>
         </div>
 
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            gap: 14,
-            padding: "12px 20px",
-            backgroundColor: TAB_ACTIVE_BG,
-          }}
-        >
-          <span style={{ color: CHROME_DIM, fontSize: 24, fontFamily: "ClashDisplay-Medium" }}>‹</span>
-          <span style={{ color: CHROME_DIM, fontSize: 24, fontFamily: "ClashDisplay-Medium" }}>›</span>
-          <div
-            style={{
-              flex: 1,
-              display: "flex",
-              alignItems: "center",
-              gap: 10,
-              padding: "9px 18px",
-              borderRadius: 999,
-              backgroundColor: "rgba(0,0,0,0.35)",
-              color: CHROME_TEXT,
-              fontSize: 22,
-              fontFamily: "ClashDisplay-Medium",
-              whiteSpace: "nowrap",
-              overflow: "hidden",
-              textOverflow: "ellipsis",
-            }}
-          >
-            <span style={{ color: CHROME_DIM, fontSize: 18 }}>🔒</span>
+        <div className="flex items-center gap-3.5 p-[12px_20px] bg-[#3c3c40]">
+          <span className="text-[#8a8a92] text-[24px] [font-family:ClashDisplay-Medium]">
+            ‹
+          </span>
+          <span className="text-[#8a8a92] text-[24px] [font-family:ClashDisplay-Medium]">
+            ›
+          </span>
+          <div className="flex-1 flex items-center gap-2.5 p-[9px_18px] rounded-[999px] bg-[rgba(0,0,0,0.35)] text-[#c9c9cf] text-[22px] [font-family:ClashDisplay-Medium] whitespace-nowrap overflow-hidden text-ellipsis">
+            <span className="text-[#8a8a92] text-[18px]">🔒</span>
             {url ?? "yourapp.com"}
           </div>
         </div>
       </div>
 
-      <div style={{ position: "relative", width: "100%", aspectRatio: "16 / 10", backgroundColor: colors.background }}>
+      <div className="relative w-full [aspect-ratio:16_/_10] bg-[#171717]">
         {children}
       </div>
     </div>
   );
-};
+}
