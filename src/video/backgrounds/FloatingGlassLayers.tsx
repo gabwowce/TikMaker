@@ -1,7 +1,4 @@
-import React from "react";
-import { useCurrentFrame, interpolate } from "remotion";
-import { colors } from "../typography/tokens";
-
+import { interpolate, useCurrentFrame } from "remotion";
 type Panel = {
   left: number;
   top: number;
@@ -13,50 +10,83 @@ type Panel = {
   period: number;
   phase: number;
 };
-
 const panels: Panel[] = [
-  { left: -260, top: -180, width: 780, height: 900, rotate: -8, driftX: 18, driftY: 12, period: 340, phase: 0 },
-  { left: 560, top: 120, width: 820, height: 1000, rotate: 6, driftX: -22, driftY: 16, period: 410, phase: 60 },
-  { left: -320, top: 980, width: 900, height: 1000, rotate: -5, driftX: 14, driftY: -18, period: 380, phase: 130 },
-  { left: 480, top: 1300, width: 760, height: 800, rotate: 9, driftX: -16, driftY: -12, period: 300, phase: 200 },
+  {
+    left: -260,
+    top: -180,
+    width: 780,
+    height: 900,
+    rotate: -8,
+    driftX: 18,
+    driftY: 12,
+    period: 340,
+    phase: 0,
+  },
+  {
+    left: 560,
+    top: 120,
+    width: 820,
+    height: 1000,
+    rotate: 6,
+    driftX: -22,
+    driftY: 16,
+    period: 410,
+    phase: 60,
+  },
+  {
+    left: -320,
+    top: 980,
+    width: 900,
+    height: 1000,
+    rotate: -5,
+    driftX: 14,
+    driftY: -18,
+    period: 380,
+    phase: 130,
+  },
+  {
+    left: 480,
+    top: 1300,
+    width: 760,
+    height: 800,
+    rotate: 9,
+    driftX: -16,
+    driftY: -12,
+    period: 300,
+    phase: 200,
+  },
 ];
-
-export const FloatingGlassLayers: React.FC = () => {
+export function FloatingGlassLayers() {
   const frame = useCurrentFrame();
-
   return (
-    <div style={{ position: "absolute", inset: 0, backgroundColor: colors.background, overflow: "hidden" }}>
+    <div className="absolute inset-0 bg-[#171717] overflow-hidden">
       {panels.map((panel, i) => {
-        const x = interpolate(Math.sin((frame + panel.phase) / panel.period), [-1, 1], [-panel.driftX, panel.driftX]);
-        const y = interpolate(Math.cos((frame + panel.phase) / panel.period), [-1, 1], [-panel.driftY, panel.driftY]);
-
+        const x = interpolate(
+          Math.sin((frame + panel.phase) / panel.period),
+          [-1, 1],
+          [-panel.driftX, panel.driftX],
+        );
+        const y = interpolate(
+          Math.cos((frame + panel.phase) / panel.period),
+          [-1, 1],
+          [-panel.driftY, panel.driftY],
+        );
         return (
           <div
             key={i}
+            className="absolute rounded-[48px] [background:linear-gradient(160deg,_rgba(255,255,255,0.05)_0%,_rgba(255,255,255,0.015)_45%,_rgba(255,112,36,0.03)_100%)] [border:1px_solid_rgba(255,255,255,0.06)] [box-shadow:0_0_120px_rgba(0,0,0,0.35)] [backdrop-filter:blur(2px)]"
             style={{
-              position: "absolute",
               left: panel.left + x,
               top: panel.top + y,
               width: panel.width,
               height: panel.height,
-              borderRadius: 48,
               transform: `rotate(${panel.rotate}deg)`,
-              background: "linear-gradient(160deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.015) 45%, rgba(255,112,36,0.03) 100%)",
-              border: "1px solid rgba(255,255,255,0.06)",
-              boxShadow: "0 0 120px rgba(0,0,0,0.35)",
-              backdropFilter: "blur(2px)",
             }}
           />
         );
       })}
 
-      <div
-        style={{
-          position: "absolute",
-          inset: 0,
-          background: `radial-gradient(circle at 50% 40%, rgba(0,0,0,0) 0%, ${colors.background} 78%)`,
-        }}
-      />
+      <div className="absolute inset-0 [background:radial-gradient(circle_at_50%_40%,_rgba(0,0,0,0)_0%,_#171717_78%)]" />
     </div>
   );
-};
+}

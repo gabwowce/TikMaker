@@ -1,12 +1,10 @@
-import { generatedProps } from "./assets.generated";
 import { assetUrl } from "../utils/assetUrl";
-
+import { generatedProps } from "./assets.generated";
 export type PropDefinition = {
   id: string;
   name: string;
   src: string;
 };
-
 export const propRegistry: Record<string, PropDefinition> = Object.fromEntries(
   generatedProps.map((entry) => [
     entry.id,
@@ -15,11 +13,9 @@ export const propRegistry: Record<string, PropDefinition> = Object.fromEntries(
       name: entry.label.replace(/\b\w/g, (c) => c.toUpperCase()),
       src: assetUrl(`/assets/props/${entry.file}`),
     },
-  ])
+  ]),
 );
-
 export const propList = Object.values(propRegistry);
-
 export function getProp(id: string): PropDefinition | undefined {
   return propRegistry[id];
 }

@@ -1,34 +1,18 @@
-import React from "react";
-import { useProjectStore } from "../state/projectStore";
-import { editorColors } from "../theme";
+import { Button } from "@mantine/core";
 import { getSceneDefinition } from "../../registries/sceneRegistry";
-import { resolveSceneDuration, pacingWarning } from "../../utils/pacing";
-
-export const SceneStrip: React.FC = () => {
+import { resolveSceneDuration } from "../../utils/pacing";
+import { useProjectStore } from "../state/projectStore";
+export function SceneStrip() {
   const scenes = useProjectStore((s) => s.project.scenes);
   const selectedSceneId = useProjectStore((s) => s.selectedSceneId);
   const selectScene = useProjectStore((s) => s.selectScene);
   const duplicateScene = useProjectStore((s) => s.duplicateScene);
   const removeScene = useProjectStore((s) => s.removeScene);
   const moveScene = useProjectStore((s) => s.moveScene);
-
   return (
-    <div
-      style={{
-        height: 110,
-        borderTop: `1px solid ${editorColors.border}`,
-        background: editorColors.panel,
-        display: "flex",
-        alignItems: "center",
-        gap: 10,
-        padding: "0 16px",
-        overflowX: "auto",
-      }}
-    >
+    <div className="h-[110px] border-0 border-t border-solid border-editor-border bg-editor-panel flex items-center gap-2.5 p-[0_16px] overflow-x-auto">
       {scenes.length === 0 ? (
-        <div style={{ color: editorColors.textDim, fontSize: 13 }}>
-          No scenes yet — add one from the Scenes tab.
-        </div>
+        <div className="text-editor-muted text-[13px]">No scenes</div>
       ) : null}
 
       {scenes.map((scene, index) => {
@@ -36,97 +20,74 @@ export const SceneStrip: React.FC = () => {
         const isSelected = scene.id === selectedSceneId;
         const seconds = resolveSceneDuration(scene);
         const isAuto = typeof scene.durationSeconds !== "number";
-        const warning = pacingWarning(scene);
         return (
           <div
             key={scene.id}
             onClick={() => selectScene(scene.id)}
-            style={{
-              minWidth: 150,
-              padding: 10,
-              borderRadius: 8,
-              border: `1px solid ${isSelected ? editorColors.accent : editorColors.border}`,
-              background: editorColors.panelElevated,
-              cursor: "pointer",
-              flexShrink: 0,
-            }}
+            className={`min-w-[150px] p-2.5 rounded-lg bg-editor-panel-raised cursor-pointer shrink-0 ${isSelected ? "[border:1px_solid_#FF7024]" : "[border:1px_solid_#2c2c2c]"}`}
           >
-            <div style={{ fontSize: 11, color: editorColors.textDim }}>
+            <div className="text-[11px] text-editor-muted">
               {String(index + 1).padStart(2, "0")} {def.name.toUpperCase()}
             </div>
             <div
-              style={{
-                fontSize: 12,
-                color: warning ? "#ff8a65" : editorColors.text,
-                marginTop: 2,
-                display: "flex",
-                alignItems: "baseline",
-                gap: 5,
-              }}
-              title={warning ?? (isAuto ? "Length comes from the voiceover / on-screen text" : undefined)}
+              className={`text-[12px] mt-0.5 flex items-baseline gap-[5px] text-editor-text`}
             >
-              {warning ? "⚠ " : null}
               {seconds.toFixed(1)}s
               {isAuto ? (
-                <span style={{ fontSize: 9, color: editorColors.textDim, letterSpacing: 0.4 }}>AUTO</span>
+                <span className="text-[9px] text-editor-muted [letter-spacing:0.4px]">
+                  AUTO
+                </span>
               ) : null}
             </div>
-            <div style={{ display: "flex", gap: 4, marginTop: 6 }}>
-              <button
-                title="Move up"
+            <div className="flex gap-1 mt-1.5">
+              <Button
+                variant="default"
+                aria-label="Move up"
                 onClick={(e) => {
                   e.stopPropagation();
                   moveScene(scene.id, "up");
                 }}
-                style={miniButtonStyle}
+                className="flex-1"
               >
                 ↑
-              </button>
-              <button
-                title="Move down"
+              </Button>
+              <Button
+                variant="default"
+                aria-label="Move down"
                 onClick={(e) => {
                   e.stopPropagation();
                   moveScene(scene.id, "down");
                 }}
-                style={miniButtonStyle}
+                className="flex-1"
               >
                 ↓
-              </button>
-              <button
-                title="Duplicate"
+              </Button>
+              <Button
+                variant="default"
+                aria-label="Duplicate"
                 onClick={(e) => {
                   e.stopPropagation();
                   duplicateScene(scene.id);
                 }}
-                style={miniButtonStyle}
+                className="flex-1"
               >
                 ⧉
-              </button>
-              <button
-                title="Delete"
+              </Button>
+              <Button
+                variant="default"
+                aria-label="Delete"
                 onClick={(e) => {
                   e.stopPropagation();
                   removeScene(scene.id);
                 }}
-                style={miniButtonStyle}
+                className="flex-1"
               >
                 ✕
-              </button>
+              </Button>
             </div>
           </div>
         );
       })}
     </div>
   );
-};
-
-const miniButtonStyle: React.CSSProperties = {
-  flex: 1,
-  fontSize: 11,
-  padding: "3px 0",
-  borderRadius: 4,
-  border: `1px solid ${editorColors.border}`,
-  background: "transparent",
-  color: editorColors.textDim,
-  cursor: "pointer",
-};
+}

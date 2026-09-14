@@ -1,20 +1,16 @@
-import React from "react";
-import { useCurrentFrame, interpolate, spring, useVideoConfig } from "remotion";
+import { interpolate, spring, useCurrentFrame, useVideoConfig } from "remotion";
 import type { VisualConfig } from "../../../schema/visual";
 import { VisualRenderer } from "../VisualRenderer";
-
 type StackProps = {
   items: VisualConfig[];
   direction?: "vertical" | "horizontal";
 };
-
-export const Stack: React.FC<StackProps> = ({ items, direction = "vertical" }) => {
+export function Stack({ items, direction = "vertical" }: StackProps) {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
   const vertical = direction === "vertical";
-
   return (
-    <div style={{ position: "relative", display: "flex", flexDirection: "column", alignItems: "center" }}>
+    <div className="relative flex flex-col items-center">
       {items.map((item, index) => {
         const delay = index * 8;
         const progress = spring({
@@ -27,13 +23,11 @@ export const Stack: React.FC<StackProps> = ({ items, direction = "vertical" }) =
           extrapolateLeft: "clamp",
           extrapolateRight: "clamp",
         });
-
         return (
           <div
             key={index}
+            className={`${index === 0 ? "mt-0" : vertical ? "mt-[-28px]" : "mt-0"} ${index === 0 || vertical ? "ml-0" : "ml-[-28px]"}`}
             style={{
-              marginTop: index === 0 ? 0 : vertical ? -28 : 0,
-              marginLeft: index === 0 || vertical ? 0 : -28,
               transform: vertical
                 ? `translateY(${offset}px) rotate(${(index % 2 === 0 ? -1 : 1) * 1.5}deg)`
                 : `translateX(${offset}px) rotate(${(index % 2 === 0 ? -1 : 1) * 1.5}deg)`,
@@ -47,4 +41,4 @@ export const Stack: React.FC<StackProps> = ({ items, direction = "vertical" }) =
       })}
     </div>
   );
-};
+}

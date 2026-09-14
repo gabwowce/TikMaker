@@ -1,8 +1,12 @@
 import { create } from "zustand";
 import { registerSfx, type SfxGroup } from "../../registries/sfxRegistry";
-
-export type CustomSfx = { id: string; label: string; file: string; src: string; group: SfxGroup };
-
+export type CustomSfx = {
+  id: string;
+  label: string;
+  file: string;
+  src: string;
+  group: SfxGroup;
+};
 type CustomSfxState = {
   sfx: CustomSfx[];
   loaded: boolean;
@@ -12,7 +16,6 @@ type CustomSfxState = {
   upload: (file: File, label: string, group: SfxGroup) => Promise<CustomSfx>;
   remove: (id: string) => Promise<void>;
 };
-
 function readFileAsBase64(file: File): Promise<string> {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
@@ -24,12 +27,10 @@ function readFileAsBase64(file: File): Promise<string> {
     reader.readAsDataURL(file);
   });
 }
-
 export const useCustomSfxStore = create<CustomSfxState>((set, get) => ({
   sfx: [],
   loaded: false,
   loading: false,
-
   load: async () => {
     if (get().loaded || get().loading) return;
     set({ loading: true, error: undefined });
@@ -41,7 +42,6 @@ export const useCustomSfxStore = create<CustomSfxState>((set, get) => ({
       set({ error: String(err), loading: false });
     }
   },
-
   upload: async (file, label, group) => {
     const dataBase64 = await readFileAsBase64(file);
     const res = await fetch("/api/upload-sfx", {
@@ -51,14 +51,10 @@ export const useCustomSfxStore = create<CustomSfxState>((set, get) => ({
     });
     if (!res.ok) throw new Error(`Upload failed: ${res.status}`);
     const entry: CustomSfx = await res.json();
-    // The manifest is a static import resolved at page load, so a file uploaded
-    // now is not in it. Without this the new sound had no registry entry until
-    // a reload — no waveform, no playback, and `getSfx` returning undefined.
     registerSfx(entry);
     set((s) => ({ sfx: [...s.sfx, entry] }));
     return entry;
   },
-
   remove: async (id) => {
     await fetch("/api/delete-sfx", {
       method: "POST",

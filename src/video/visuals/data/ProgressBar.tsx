@@ -1,15 +1,11 @@
-import React from "react";
-import { useCurrentFrame, interpolate } from "remotion";
-import { colors, fontFamilies, fontSizes } from "../../typography/tokens";
+import { interpolate, useCurrentFrame } from "remotion";
 import { standardEasing } from "../../motion/easing";
-
 type ProgressBarProps = {
   value: number;
   max: number;
   label?: string;
 };
-
-export const ProgressBar: React.FC<ProgressBarProps> = ({ value, max, label }) => {
+export function ProgressBar({ value, max, label }: ProgressBarProps) {
   const frame = useCurrentFrame();
   const targetRatio = Math.min(1, Math.max(0, value / max));
   const ratio = interpolate(frame, [0, 40], [0, targetRatio], {
@@ -17,32 +13,21 @@ export const ProgressBar: React.FC<ProgressBarProps> = ({ value, max, label }) =
     extrapolateRight: "clamp",
     easing: standardEasing,
   });
-
   return (
-    <div style={{ display: "flex", flexDirection: "column", gap: 16, width: 640 }}>
+    <div className="flex flex-col gap-4 w-[640px]">
       {label ? (
-        <div style={{ fontFamily: fontFamilies.clashMedium, fontSize: fontSizes.label, color: colors.textSecondary }}>
+        <div className="[font-family:ClashDisplay-Medium] text-[42px] text-[#B8B8B8]">
           {label}
         </div>
       ) : null}
-      <div
-        style={{
-          height: 28,
-          borderRadius: 999,
-          backgroundColor: colors.surface,
-          border: `1px solid ${colors.border}`,
-          overflow: "hidden",
-        }}
-      >
+      <div className="h-7 rounded-[999px] bg-[#222222] [border:1px_solid_rgba(255,255,255,0.10)] overflow-hidden">
         <div
+          className="h-full rounded-[999px] bg-[#FF7024]"
           style={{
-            height: "100%",
             width: `${ratio * 100}%`,
-            borderRadius: 999,
-            backgroundColor: colors.accent,
           }}
         />
       </div>
     </div>
   );
-};
+}

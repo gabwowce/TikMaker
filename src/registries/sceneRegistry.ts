@@ -1,22 +1,20 @@
-import type React from "react";
+import { type ComponentType } from "react";
 import type { SceneType } from "../schema/scene";
-import type { SceneComponentProps } from "../video/scenes/types";
+import { ComparisonScene } from "../video/scenes/ComparisonScene";
 import { HookCenteredScene } from "../video/scenes/HookCenteredScene";
 import { HookVisualScene } from "../video/scenes/HookVisualScene";
-import { VisualExplainerScene } from "../video/scenes/VisualExplainerScene";
 import { ScreenDemoScene } from "../video/scenes/ScreenDemoScene";
-import { TakeawayScene } from "../video/scenes/TakeawayScene";
-import { ComparisonScene } from "../video/scenes/ComparisonScene";
 import { StepsScene } from "../video/scenes/StepsScene";
-
+import { TakeawayScene } from "../video/scenes/TakeawayScene";
+import type { SceneComponentProps } from "../video/scenes/types";
+import { VisualExplainerScene } from "../video/scenes/VisualExplainerScene";
 export type SceneDefinition = {
   type: SceneType;
   name: string;
   description: string;
-  component: React.FC<SceneComponentProps>;
+  component: ComponentType<SceneComponentProps>;
   defaultDurationSeconds: number;
 };
-
 export const sceneRegistry: SceneDefinition[] = [
   {
     type: "hook-centered",
@@ -35,7 +33,8 @@ export const sceneRegistry: SceneDefinition[] = [
   {
     type: "visual-explainer",
     name: "Visual Explainer",
-    description: "Main educational scene: title, large visual, short explanation.",
+    description:
+      "Main educational scene: title, large visual, short explanation.",
     component: VisualExplainerScene,
     defaultDurationSeconds: 4,
   },
@@ -68,7 +67,6 @@ export const sceneRegistry: SceneDefinition[] = [
     defaultDurationSeconds: 4.5,
   },
 ];
-
 export function getSceneDefinition(type: SceneType): SceneDefinition {
   const def = sceneRegistry.find((s) => s.type === type);
   if (!def) throw new Error(`Unknown scene type: ${type}`);
