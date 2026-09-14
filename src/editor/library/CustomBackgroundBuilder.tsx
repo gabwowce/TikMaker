@@ -29,6 +29,7 @@ export function CustomBackgroundBuilder({
   const [shape, setShape] = useState<"linear" | "radial">("linear");
   const [angle, setAngle] = useState(135);
   const [imageSrc, setImageSrc] = useState("");
+  const [grid, setGrid] = useState<CustomBackground["grid"]>("none");
   const [name, setName] = useState("");
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState("");
@@ -37,15 +38,16 @@ export function CustomBackgroundBuilder({
     void loadAssets();
   }, [loadAssets]);
   function buildBackground(): CustomBackground | null {
-    if (kind === "solid") return { type: "custom", fill: { kind, color } };
+    if (kind === "solid") return { type: "custom", fill: { kind, color }, grid };
     if (kind === "gradient") {
       return {
         type: "custom",
         fill: { kind, colors: [color, secondColor], shape, angle },
+        grid,
       };
     }
     if (imageSrc)
-      return { type: "custom", fill: { kind: "image", src: imageSrc } };
+      return { type: "custom", fill: { kind: "image", src: imageSrc }, grid };
     return null;
   }
   const background = buildBackground();
@@ -166,6 +168,18 @@ export function CustomBackgroundBuilder({
         </>
       ) : null}
 
+      <NativeSelect
+        label="Grid overlay"
+        value={grid}
+        data={[
+          { value: "none", label: "None" },
+          { value: "lines", label: "Squares" },
+          { value: "dots", label: "Dots" },
+        ]}
+        onChange={(event) =>
+          setGrid(event.currentTarget.value as CustomBackground["grid"])
+        }
+      />
       {background ? <BackgroundSwatch background={background} /> : null}
       <Button disabled={!sceneId || !background} onClick={applyBackground}>
         Apply
