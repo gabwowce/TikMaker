@@ -539,30 +539,12 @@ Windows PowerShell aplinkoje prireikus `npm.cmd`.
 ## Žinoma skola ir spąstai
 
 Sąrašas sąmoningai laikomas dokumentacijoje, o ne nutylimas: skaitytojas turi žinoti, kuo
-kodu **negalima** pasitikėti.
-
-### Atjungti saugikliai
-
-`pacingWarning` (`utils/pacing.ts`), `visualOverflowWarning` ir `layerOverflowWarning`
-(`video/layout/layoutPresets.ts`) yra parašyti ir **niekur nekviečiami**. Anksčiau jie rodė
-įspėjimus redaktoriuje; laidai nutrūko per refaktoringą. **Nepasitikėk jais kaip apsauga** —
-kol neprijungti, perviršis ir per trumpa scena nepastebimi automatiškai.
-
-Tai vienintelė likusi šio sąrašo skola, kurios dar niekas nesutvarkė.
-
-### Dvi laiko juostos
-
-`buildSceneTimelineRows.ts` ir `buildFullTimelineRows.ts` (po ~565 eilutes) daro tą patį
-dviem mastelio lygiais; jų eilučių tipai `TimelineRow` ir `Row` sutampa maždaug 80 %.
-Dalis logikos jau bendrinama (`audioCueShape`, `useAudioWaveforms`, `visualTimelinePreview`,
-`groupDrag`, `sceneTimelineEnd`), bet pats eilučių konstravimas — ne.
-
-Sujungti verta, bet tai gyvas, sudėtingas kodas su pelės tempimu, todėl imtis tik
-turint tai dengiančius testus.
+kodu **negalima** pasitikėti. Šiuo metu tokių vietų nebėra — liko vienas dubliavimas,
+kuris kainuoja skaitymo laiką, bet nieko nemeluoja.
 
 ### Kas jau sutvarkyta
 
-Šie dalykai anksčiau buvo šiame sąraše ir yra pašalinti — vardai paliekami, kad
+Šie dalykai anksčiau buvo skolos sąraše ir yra išspręsti — vardai paliekami, kad
 skaitant senesnius commit'us būtų aišku, ko ieškoti:
 
 - **Storyboard failų šaka** (`schema/storyboard.ts`, `storyboardToProject.ts`,
@@ -580,6 +562,22 @@ skaitant senesnius commit'us būtų aišku, ko ieškoti:
 - **Tokenų reikšmės Tailwind klasėse** — dabar temos vardai (`text-brand-accent`,
   `text-headline`), o `tokens.test.ts` neleidžia abiem vietoms nukrypti.
 - **12 nepasiekiamų šablonų** ir visas `template` bibliotekos vamzdynas.
+- **Atjungti įspėjimų saugikliai** — `pacingWarning` ir `layerOverflowWarning` vėl rodomi
+  ten, kur redaguojama juos sukėlusi reikšmė.
+- **Du beveik vienodi laiko juostos eilučių tipai** — liko vienas `TimelineRow`
+  (`timelineRowTypes.ts`), ten pat ir `KIND_COLOR`, kuris anksčiau buvo dviejuose failuose.
+
+### Kas dar liko
+
+**Du eilučių builderiai.** `buildSceneTimelineRows.ts` ir `buildFullTimelineRows.ts`
+(po ~560 eilučių) tebėra atskiri. Jie jau dalijasi eilutės tipu, spalvomis ir pagalbinėmis
+funkcijomis (`audioCueShape`, `useAudioWaveforms`, `visualTimelinePreview`, `groupDrag`,
+`sceneTimelineEnd`), bet pats klipų surinkimas dubliuojasi.
+
+Sujungti juos būtų galima, bet jie skiriasi laiko baze (scenos-santykinė prieš absoliučią)
+ir tuo, ką iš viso rodo, o sujungimas keistų du didelius komponentus su pelės tempimu.
+`__tests__/buildTimelineRows.test.ts` fiksuoja abiejų išvestį, tad toks darbas būtų
+patikrinamas — bet tempimo elgesį vis tiek reikėtų pertikrinti naršyklėje.
 
 ### Neatlikta (nedaryti, kol neprašyta)
 
