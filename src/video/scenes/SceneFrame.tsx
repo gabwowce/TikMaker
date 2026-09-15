@@ -1,5 +1,5 @@
 import { type ReactNode } from "react";
-import { AbsoluteFill } from "remotion";
+import { AbsoluteFill, useVideoConfig } from "remotion";
 import {
   resolveTextZone,
   textZoneJustify,
@@ -34,6 +34,7 @@ export function SceneFrame({
   gap = 40,
   children,
 }: SceneFrameProps) {
+  const { fps } = useVideoConfig();
   const sharedExitStyle = useSceneExitStyle(durationSeconds, motion);
   const exitStyle = content.richHeadline?.length ? {} : sharedExitStyle;
   const baseDelay = sceneStartDelay(motion);
@@ -56,7 +57,7 @@ export function SceneFrame({
       <BlockLayer
         blocks={content.blocks}
         baseDelay={baseDelay}
-        durationInFrames={Math.round(durationSeconds * 30)}
+        durationInFrames={Math.round(durationSeconds * fps)}
       />
       <VisualsLayer
         visuals={content.visuals}

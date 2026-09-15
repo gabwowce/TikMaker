@@ -7,6 +7,7 @@ import { createEmptyProject } from "../../schema/project";
 import type { Scene, ScenePlanRole, SceneType } from "../../schema/scene";
 import { poseAtFrame } from "../../video/layout/visualKeyframes";
 import { cachedAudioDuration } from "../timeline/useAudioWaveforms";
+import { planRoleFor } from "../../utils/normalizeProject";
 import { deleteEntry, saveNow } from "./fileLibrary";
 import {
   libraryIndexFrom,
@@ -21,13 +22,6 @@ export type { LibraryEntry, VisualSlot } from "./projectStoreTypes";
 
 function makeSceneId(): string {
   return `scene-${Math.random().toString(36).slice(2, 9)}`;
-}
-function planRoleForSceneType(type: SceneType): ScenePlanRole {
-  if (type === "screen-demo") return "demo";
-  if (type === "takeaway") return "payoff";
-  if (type === "hook-centered") return "hook";
-  if (type === "hook-visual") return "reveal";
-  return "benefit";
 }
 
 const initialProject = createEmptyProject("empty", "Empty Project");
@@ -263,7 +257,7 @@ export const useProjectStore = create<ProjectStore>((set, get) => ({
       const newScene: Scene = {
         id: makeSceneId(),
         type,
-        plan: { role: planRoleForSceneType(type), purpose: def.description },
+        plan: { role: planRoleFor(type), purpose: def.description },
         durationSeconds: undefined,
         background,
         content: { headline: "New headline" },
@@ -285,7 +279,7 @@ export const useProjectStore = create<ProjectStore>((set, get) => ({
       const index = at === -1 ? scenes.length : at + 1;
       const inserted = scene.plan
         ? scene
-        : { ...scene, plan: { role: planRoleForSceneType(scene.type) } };
+        : { ...scene, plan: { role: planRoleFor(scene.type) } };
       scenes.splice(index, 0, inserted);
       return {
         project: { ...state.project, scenes },
