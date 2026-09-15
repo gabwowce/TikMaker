@@ -115,3 +115,17 @@ export function DistanceControl({
     </div>
   );
 }
+
+// Saugiklių įspėjimas. Rodomas ten, kur redaguojama jį sukėlusi reikšmė —
+// įspėjimas kitame skydelyje nei priežastis nepasiekia autoriaus.
+export function Warning({ text }: { text: string | null }) {
+  if (!text) return null;
+  return (
+    <div
+      role="status"
+      className="mt-1.5 rounded-md border border-solid border-orange-500/40 bg-orange-500/10 px-2.5 py-1.5 text-[11px] leading-snug text-orange-300"
+    >
+      {text}
+    </div>
+  );
+}

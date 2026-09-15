@@ -16,8 +16,10 @@ import {
   sceneOnScreenText,
   withOnScreenText,
 } from "../../utils/projectStoryPlan";
+import { layerOverflowWarning } from "../../video/layout/layoutPresets";
 import { resolveTextEntranceSfx } from "../../video/motion/sfxDefaults";
 import { fontSizes } from "../../video/typography/tokens";
+import { Warning } from "../inspector/controls";
 import { SfxSelect } from "../inspector/SfxSelect";
 import { VisualFieldsEditor } from "../inspector/VisualFieldsEditor";
 import { useProjectStore } from "../state/projectStore";
@@ -624,6 +626,7 @@ export function TimelineObjectPanel({
           sceneFrom={timing.from}
           onChange={(patch) => update(patch)}
         />
+        <Warning text={layerOverflowWarning(visual)} />
         <KeyframeFields
           sceneId={selectedSceneId}
           entry={visual}

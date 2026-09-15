@@ -5,7 +5,8 @@ import {
   exitPresetSchema,
   transitionPresetSchema,
 } from "../../schema/scene";
-import { resolveSceneDuration } from "../../utils/pacing";
+import { pacingWarning, resolveSceneDuration } from "../../utils/pacing";
+import { Warning } from "./controls";
 import { useProjectStore } from "../state/projectStore";
 import { DistanceControl, SecondsSlider } from "./controls";
 import { SfxSelect } from "./SfxSelect";
@@ -52,18 +53,21 @@ export function SceneMotionSettings({ scene }: { scene: Scene }) {
             Fit to voiceover / reading time ({resolved.toFixed(1)}s)
           </label>
           {!isAuto ? (
-            <TextInput
-              type="number"
-              step={0.1}
-              min={0.5}
-              className="w-full"
-              value={scene.durationSeconds}
-              onChange={(e) =>
-                updateScene(selectedSceneId, {
-                  durationSeconds: Number(e.target.value),
-                })
-              }
-            />
+            <>
+              <TextInput
+                type="number"
+                step={0.1}
+                min={0.5}
+                className="w-full"
+                value={scene.durationSeconds}
+                onChange={(e) =>
+                  updateScene(selectedSceneId, {
+                    durationSeconds: Number(e.target.value),
+                  })
+                }
+              />
+              <Warning text={pacingWarning(scene)} />
+            </>
           ) : null}
         </>
 
