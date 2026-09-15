@@ -14,7 +14,7 @@ import { splitSpan } from "../../video/typography/splitAnimate";
 import type { CustomAsset } from "../state/customAssetsStore";
 import { useProjectStore } from "../state/projectStore";
 import { audioCueShape } from "./audioCueShape";
-import { TimelineRow } from "./sceneTimelineTypes";
+import { TimelineRow } from "./timelineRowTypes";
 import type { AudioWaveform } from "./useAudioWaveforms";
 import { fallbackWaveform, sliceWaveform } from "./useAudioWaveforms";
 import { visualTimelinePreview } from "./visualTimelinePreview";

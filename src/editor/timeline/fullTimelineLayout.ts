@@ -1,4 +1,4 @@
-import { Kind, Row, Track } from "./fullTimelineTypes";
+import { Kind, TimelineRow, Track } from "./timelineRowTypes";
 
 export const LABEL = 170;
 
@@ -18,28 +18,20 @@ export const KIND_LABEL: Record<Kind, string> = {
   sound: "Sounds",
 };
 
-export const KIND_COLOR: Record<Kind, string> = {
-  scene: "#64748b",
-  text: "#8b5cf6",
-  visual: "#ff7024",
-  item: "#14b8a6",
-  sound: "#3b82f6",
-};
-
 export function clamp(value: number, min: number, max: number) {
   return Math.min(max, Math.max(min, value));
 }
 
-export function overlaps(a: Row, b: Row) {
+export function overlaps(a: TimelineRow, b: TimelineRow) {
   return a.start < b.end + 2 && b.start < a.end + 2;
 }
 
-export function buildTracks(rows: Row[]): Track[] {
+export function buildTracks(rows: TimelineRow[]): Track[] {
   const tracks: Track[] = [];
   for (const kind of KIND_ORDER) {
     const matching = rows.filter((row) => row.kind === kind);
     if (!matching.length) continue;
-    const lanes: Row[][] = [];
+    const lanes: TimelineRow[][] = [];
     for (const row of matching) {
       let lane = row.lane;
       if (lane === undefined) {

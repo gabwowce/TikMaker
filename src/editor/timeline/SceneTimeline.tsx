@@ -37,12 +37,11 @@ import {
   MIN_SCENE_FRAMES,
   autoLane,
   clamp,
-  colorsByKind,
   laneLabel,
   overlaps,
   snapFrame,
 } from "./sceneTimelineLayout";
-import { TimelineRow } from "./sceneTimelineTypes";
+import { TimelineRow, KIND_COLOR } from "./timelineRowTypes";
 import { qualifySelection } from "./selectionId";
 import { TimelineContextMenu, type ContextTarget } from "./TimelineContextMenu";
 import { useAudioWaveforms } from "./useAudioWaveforms";
@@ -719,11 +718,11 @@ function SceneTimelineScene({
   }
   function trimSelectedAudioLeft() {
     if (!selectedSoundRow || !playheadInsideSound) return;
-    selectedSoundRow.set(localFrame, selectedSoundRow.end);
+    selectedSoundRow.set?.(localFrame, selectedSoundRow.end);
   }
   function trimSelectedAudioRight() {
     if (!selectedSoundRow || !playheadInsideSound) return;
-    selectedSoundRow.set(selectedSoundRow.start, localFrame);
+    selectedSoundRow.set?.(selectedSoundRow.start, localFrame);
   }
   return (
     <div className="shrink-0 relative border-0 border-t border-solid border-editor-border bg-[#151515]">
@@ -947,7 +946,7 @@ function SceneTimelineScene({
                   <span
                     className="inline-block w-[7px] h-[7px] mr-[7px] rounded-[2px]"
                     style={{
-                      background: colorsByKind[lane.kind],
+                      background: KIND_COLOR[lane.kind],
                     }}
                   />
                   {laneLabel(lane.kind)}

@@ -23,7 +23,6 @@ import { isAudioDrag, readAudioDragPayload } from "./audioDrag";
 import { buildFullTimelineRows } from "./buildFullTimelineRows";
 import { GlobalClip } from "./FullTimelineClip";
 import {
-  KIND_COLOR,
   KIND_LABEL,
   LABEL,
   MAX_ZOOM,
@@ -31,7 +30,7 @@ import {
   buildTracks,
   clamp,
 } from "./fullTimelineLayout";
-import { Row } from "./fullTimelineTypes";
+import { TimelineRow, KIND_COLOR } from "./timelineRowTypes";
 import { applyTimelineObjectPositions } from "./moveTimelineObjects";
 import {
   clipboardHas,
@@ -260,7 +259,7 @@ export function FullVideoTimeline({
     }
     endHistoryTransaction();
   }
-  function open(row: Row, additive = false) {
+  function open(row: TimelineRow, additive = false) {
     const id = row.objectId
       ? qualifySelection(row.sceneId, row.objectId)
       : null;
@@ -271,7 +270,7 @@ export function FullVideoTimeline({
       else selectObject(id);
     } else if (row.sceneId) onSeek(row.start);
   }
-  function snapTargets(row: Row) {
+  function snapTargets(row: TimelineRow) {
     return [
       0,
       total,

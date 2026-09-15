@@ -8,11 +8,10 @@ import { AnimationWindow } from "./AnimationWindow";
 import { ClipPreview } from "./ClipPreview";
 import {
   clamp,
-  colorsByKind,
   ROW_HEIGHT,
   snapFrame,
 } from "./sceneTimelineLayout";
-import { DragMode, TimelineRow } from "./sceneTimelineTypes";
+import { DragMode, TimelineRow, KIND_COLOR } from "./timelineRowTypes";
 
 type ClipProps = {
   row: TimelineRow;
@@ -81,10 +80,10 @@ export function Clip({
           snapTargets,
           pixelsPerFrame,
         );
-        row.set(clamp(next, row.trimMin ?? 0, originEnd - 1), originEnd);
+        row.set?.(clamp(next, row.trimMin ?? 0, originEnd - 1), originEnd);
       } else if (mode === "end") {
         const next = snapFrame(originEnd + delta, snapTargets, pixelsPerFrame);
-        row.set(
+        row.set?.(
           originStart,
           clamp(next, originStart + 1, row.trimEndMax ?? max),
         );
@@ -99,7 +98,7 @@ export function Clip({
             : snappedEnd;
         const start = clamp(nextStart, 0, max - length);
         if (moveGroup) moveGroup(start - originStart);
-        else row.set(start, start + length);
+        else row.set?.(start, start + length);
       }
     }
     function finish() {
@@ -130,10 +129,10 @@ export function Clip({
         height: ROW_HEIGHT - 8,
         border: selected
           ? `2px solid ${editorColors.accent}`
-          : `1px solid ${colorsByKind[row.kind]}`,
+          : `1px solid ${KIND_COLOR[row.kind]}`,
         background: selected
-          ? `${colorsByKind[row.kind]}99`
-          : `${colorsByKind[row.kind]}44`,
+          ? `${KIND_COLOR[row.kind]}99`
+          : `${KIND_COLOR[row.kind]}44`,
         boxShadow: selected
           ? `0 0 0 1px rgba(0,0,0,0.6), 0 2px 10px ${editorColors.accent}55`
           : undefined,

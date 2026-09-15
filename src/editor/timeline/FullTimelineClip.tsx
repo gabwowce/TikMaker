@@ -9,10 +9,10 @@ import { editorColors } from "../theme";
 import { AnimationWindow } from "./AnimationWindow";
 import { ClipPreview } from "./ClipPreview";
 import { clamp, ROW_HEIGHT } from "./fullTimelineLayout";
-import { Row } from "./fullTimelineTypes";
+import { KIND_COLOR, TimelineRow } from "./timelineRowTypes";
 
 type GlobalClipProps = {
-  row: Row;
+  row: TimelineRow;
   total: number;
   fps: number;
   ppf: number;
@@ -45,6 +45,7 @@ export function GlobalClip({
   const endHistoryTransaction = useProjectStore(
     (state) => state.endHistoryTransaction,
   );
+  const clipColor = row.color ?? KIND_COLOR[row.kind];
   const [laneShift, setLaneShift] = useState(0);
   const min = row.min ?? 0;
   const max = row.max ?? total;
@@ -128,11 +129,11 @@ export function GlobalClip({
         height: ROW_HEIGHT - 8,
         border: selected
           ? `2px solid ${editorColors.accent}`
-          : `1px solid ${row.color}`,
+          : `1px solid ${clipColor}`,
         background:
           row.kind === "scene"
-            ? `repeating-linear-gradient(90deg, ${row.color}66 0 20px, ${row.color}88 20px 40px)`
-            : `${row.color}55`,
+            ? `repeating-linear-gradient(90deg, ${clipColor}66 0 20px, ${clipColor}88 20px 40px)`
+            : `${clipColor}55`,
         boxShadow: selected
           ? `0 0 0 1px #000, 0 0 10px ${editorColors.accent}66`
           : undefined,

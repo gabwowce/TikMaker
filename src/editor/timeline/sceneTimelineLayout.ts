@@ -1,15 +1,8 @@
-import { TimelineRow } from "./sceneTimelineTypes";
+import { TimelineRow } from "./timelineRowTypes";
 
 export const LABEL_WIDTH = 190;
 
 export const ROW_HEIGHT = 34;
-
-export const colorsByKind = {
-  text: "#8b5cf6",
-  visual: "#ff7024",
-  item: "#14b8a6",
-  sound: "#3b82f6",
-};
 
 export function laneLabel(kind: TimelineRow["kind"]) {
   return kind === "text"

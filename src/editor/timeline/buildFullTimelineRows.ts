@@ -14,8 +14,7 @@ import { splitSpan } from "../../video/typography/splitAnimate";
 import type { CustomAsset } from "../state/customAssetsStore";
 import { useProjectStore } from "../state/projectStore";
 import { audioCueShape } from "./audioCueShape";
-import { KIND_COLOR } from "./fullTimelineLayout";
-import { Row } from "./fullTimelineTypes";
+import { TimelineRow } from "./timelineRowTypes";
 import type { AudioWaveform } from "./useAudioWaveforms";
 import { fallbackWaveform, sliceWaveform } from "./useAudioWaveforms";
 import { visualTimelinePreview } from "./visualTimelinePreview";
@@ -37,7 +36,7 @@ export function buildFullTimelineRows(
   const timings = computeSceneTimings(project);
   const linkGroups = resolveHoistedLinkGroups(timings);
   const linkedOwnership = hoistedOwnership(linkGroups);
-  const rows: Row[] = [];
+  const rows: TimelineRow[] = [];
   for (const [sceneIndex, timing] of timings.entries()) {
     const { scene, from, durationInFrames } = timing;
     const sceneEnd = editHorizon;
@@ -49,7 +48,6 @@ export function buildFullTimelineRows(
       sceneId: scene.id,
       label: `${String(sceneIndex + 1).padStart(2, "0")} · ${scene.type}${scene.vo ? ` · ${scene.vo}` : ""}`,
       kind: "scene",
-      color: KIND_COLOR.scene,
       start: guideStart,
       end: guideEnd,
       max: editHorizon,
@@ -78,7 +76,6 @@ export function buildFullTimelineRows(
         objectId: `line-${index}`,
         label: line.text,
         kind: "text",
-        color: KIND_COLOR.text,
         start: from + localStart,
         end: from + (line.exitAt ?? durationInFrames),
         min: from,
@@ -139,7 +136,6 @@ export function buildFullTimelineRows(
         objectId: `block-${block.id}`,
         label: block.text,
         kind: "text",
-        color: KIND_COLOR.text,
         start: from + (block.delay ?? 0),
         end: from + (block.exitAt ?? durationInFrames),
         min: from,
@@ -209,7 +205,6 @@ export function buildFullTimelineRows(
         label: preview.label,
         preview,
         kind: "visual",
-        color: KIND_COLOR.visual,
         start: from + (visual.delay ?? 0),
         end: from + (visual.exitAt ?? durationInFrames),
         min: from,
@@ -247,7 +242,6 @@ export function buildFullTimelineRows(
           objectId: `sound-visual-${visual.id}-in`,
           label: `${visual.visual.type} IN`,
           kind: "sound",
-          color: KIND_COLOR.sound,
           waveform: shape.waveform,
           start: cue,
           end,
@@ -292,7 +286,6 @@ export function buildFullTimelineRows(
           objectId: `sound-visual-${visual.id}-out`,
           label: `${visual.visual.type} OUT`,
           kind: "sound",
-          color: KIND_COLOR.sound,
           waveform: shape.waveform,
           start: cue,
           end,
@@ -325,7 +318,6 @@ export function buildFullTimelineRows(
         objectId: `step-${index}`,
         label: item.label,
         kind: "item",
-        color: KIND_COLOR.item,
         start: from + (item.delay ?? (index + 1) * 6),
         end: from + (item.exitAt ?? durationInFrames),
         min: from,
@@ -369,7 +361,6 @@ export function buildFullTimelineRows(
         objectId: "sound-scene-in",
         label: "Scene IN",
         kind: "sound",
-        color: KIND_COLOR.sound,
         waveform: shape.waveform,
         start: cue,
         end,
@@ -424,7 +415,6 @@ export function buildFullTimelineRows(
         objectId: "sound-scene-out",
         label: "Scene OUT",
         kind: "sound",
-        color: KIND_COLOR.sound,
         waveform: shape.waveform,
         start: cue,
         end,
