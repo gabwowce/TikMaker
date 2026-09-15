@@ -9,40 +9,6 @@ import { autoScale, layoutPresets } from "../video/layout/layoutPresets";
 import { naturalVisualSize } from "../video/layout/visualMetrics";
 import { colors } from "../video/typography/tokens";
 import { withOnScreenText } from "./projectStoryPlan";
-const INLINE_FALLBACK_LAYOUT = "visual-bottom" as const;
-function isBackdrop(scene: Scene): boolean {
-  const v = scene.visual;
-  if (!v) return false;
-  return (
-    v.type === "corner-props" ||
-    (v.type === "node-group" && v.layout === "orbit")
-  );
-}
-export function primaryVisualAsLayer(
-  scene: Scene,
-): PositionedVisualEntry | null {
-  const visual = scene.visual;
-  if (!visual) return null;
-  const preset = layoutPresets[scene.layout ?? INLINE_FALLBACK_LAYOUT];
-  const position = scene.visualPosition ?? preset.visual;
-  const scale = scene.visualScale ?? autoScale(visual, preset);
-  return {
-    id: `primary-${scene.id}`,
-    visual,
-    x: position.x,
-    y: position.y,
-    scale: isBackdrop(scene) ? undefined : scale,
-    entrance: scene.visualEntrance ?? scene.motion?.entrance,
-    exit: scene.visualExit,
-    exitDuration: scene.visualExitDuration,
-    entranceDistance: scene.visualEntranceDistance,
-    exitDistance: scene.visualExitDistance,
-    kenBurns: scene.visualKenBurns,
-    sfx: scene.visualSfx,
-    exitSfx: scene.visualExitSfx,
-    link: scene.visualLink,
-  };
-}
 const CORNER_SLOTS = {
   tl: { x: (150 / 1080) * 100, y: (340 / 1920) * 100 },
   tr: { x: ((1080 - 150) / 1080) * 100, y: (340 / 1920) * 100 },
@@ -115,35 +81,10 @@ export function legacyTextAsLines(scene: Scene): Scene {
 }
 export function normalizeScene(rawScene: Scene): Scene {
   const scene = legacyTextAsLines(rawScene);
-  const primary = primaryVisualAsLayer(scene);
   const existing = scene.content.visuals ?? [];
-  if (!primary) {
-    const split = existing.flatMap(splitCornerProps);
-    if (split.length === existing.length) return scene;
-    return { ...scene, content: { ...scene.content, visuals: split } };
-  }
-  const {
-    visual: _visual,
-    visualPosition: _visualPosition,
-    visualEntrance: _visualEntrance,
-    visualExit: _visualExit,
-    visualExitDuration: _visualExitDuration,
-    visualEntranceDistance: _visualEntranceDistance,
-    visualExitDistance: _visualExitDistance,
-    visualScale: _visualScale,
-    visualLink: _visualLink,
-    visualKenBurns: _visualKenBurns,
-    visualSfx: _visualSfx,
-    visualExitSfx: _visualExitSfx,
-    ...rest
-  } = scene;
-  return {
-    ...rest,
-    content: {
-      ...scene.content,
-      visuals: [primary, ...existing].flatMap(splitCornerProps),
-    },
-  };
+  const split = existing.flatMap(splitCornerProps);
+  if (split.length === existing.length) return scene;
+  return { ...scene, content: { ...scene.content, visuals: split } };
 }
 export function normalizeProject(project: VideoProject): VideoProject {
   const repairClaudeFlow =

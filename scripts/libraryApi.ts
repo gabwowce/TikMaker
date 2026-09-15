@@ -3,7 +3,6 @@ import path from "node:path";
 import type { Plugin } from "vite";
 export const COLLECTIONS = {
   project: "projects",
-  storyboard: "storyboards",
   scene: "library/scenes",
   template: "library/templates",
   background: "library/backgrounds",

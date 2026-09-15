@@ -35,7 +35,9 @@ export function VisualLibrary() {
   const scene = useProjectStore((s) =>
     s.project.scenes.find((sc) => sc.id === s.selectedSceneId),
   );
-  const updateSceneVisual = useProjectStore((s) => s.updateSceneVisual);
+  const updateSceneColumnVisual = useProjectStore(
+    (s) => s.updateSceneColumnVisual,
+  );
   const updateSceneVisuals = useProjectStore((s) => s.updateSceneVisuals);
   const activeVisualSlot = useProjectStore((s) => s.activeVisualSlot);
   const setActiveVisualSlot = useProjectStore((s) => s.setActiveVisualSlot);
@@ -48,17 +50,15 @@ export function VisualLibrary() {
   const disabled = !selectedSceneId;
   const isComparison = scene?.type === "comparison";
 
-  const layersFull = false;
   const showTargets = isComparison;
   const effectiveTarget: Target = isComparison ? target : "layer";
   function assign(visual: VisualConfig) {
     if (!selectedSceneId || !scene) return;
     if (effectiveTarget === "column") {
       if (activeVisualSlot === "main") setActiveVisualSlot("left");
-      updateSceneVisual(selectedSceneId, visual);
+      updateSceneColumnVisual(selectedSceneId, visual);
       return;
     }
-    if (layersFull) return;
     const existing = scene.content.visuals ?? [];
     const added = splitCornerProps({
       id: `visual-${Date.now().toString(36)}`,
@@ -241,7 +241,7 @@ export function VisualLibrary() {
         <Button
           variant="default"
           className="mt-2.5"
-          onClick={() => updateSceneVisual(selectedSceneId, undefined)}
+          onClick={() => updateSceneColumnVisual(selectedSceneId, undefined)}
         >
           Remove this column's visual
         </Button>

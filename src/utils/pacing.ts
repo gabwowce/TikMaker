@@ -31,9 +31,6 @@ function onScreenText(scene: Scene): string {
     if (side.headline) parts.push(side.headline);
     if (side.body) parts.push(side.body);
   }
-  if (scene.visual?.type === "checklist") {
-    for (const item of scene.visual.items) parts.push(item.label);
-  }
   for (const entry of c.visuals ?? []) {
     if (entry.visual.type === "checklist") {
       for (const item of entry.visual.items) parts.push(item.label);
@@ -67,10 +64,9 @@ function scannableText(visual: VisualConfig | undefined): string {
   }
 }
 export function skimDurationSeconds(scene: Scene): number {
-  const parts = [
-    scannableText(scene.visual),
-    ...(scene.content.visuals ?? []).map((v) => scannableText(v.visual)),
-  ];
+  const parts = (scene.content.visuals ?? []).map((v) =>
+    scannableText(v.visual),
+  );
   const words = wordCount(parts.join(" "));
   if (words === 0) return 0;
   return words / SKIM_WORDS_PER_SECOND;

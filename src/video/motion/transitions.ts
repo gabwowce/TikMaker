@@ -20,11 +20,6 @@ const DIRECTIONS: Record<Exclude<TransitionPreset, "cut">, Direction> = {
   slideUp: { axis: "y", sign: 1 },
   slideDown: { axis: "y", sign: -1 },
 };
-export function isOverlappingTransition(
-  preset: TransitionPreset | undefined,
-): boolean {
-  return Boolean(preset) && preset !== "cut";
-}
 export function transitionStyle(
   preset: TransitionPreset | undefined,
   args: TransitionArgs,

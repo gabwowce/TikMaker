@@ -74,22 +74,6 @@ export const layoutPresets = {
   },
 } as const satisfies Record<LayoutId, LayoutPreset>;
 export const layoutIds = layoutIdSchema.options;
-export type Placement = {
-  position: {
-    x: number;
-    y: number;
-  };
-  scale: number;
-};
-export function resolveScenePlacement(scene: Scene): Placement | null {
-  const visual = scene.visual;
-  if (!visual) return null;
-  const preset = scene.layout ? layoutPresets[scene.layout] : undefined;
-  const position = scene.visualPosition ?? preset?.visual;
-  if (!position) return null;
-  const scale = scene.visualScale ?? (preset ? autoScale(visual, preset) : 1);
-  return { position, scale };
-}
 export function fitPositionedVisual(
   visual: VisualConfig,
   explicitScale?: number,

@@ -63,28 +63,10 @@ export type ProjectStore = {
   moveScene: (id: string, direction: "up" | "down") => void;
   updateScene: (id: string, patch: Partial<Scene>) => void;
   updateSceneContent: (id: string, content: Partial<Scene["content"]>) => void;
-  updateSceneVisual: (id: string, visual: VisualConfig | undefined) => void;
-  updateSceneVisualPosition: (
+  updateSceneColumnVisual: (
     id: string,
-    position:
-      | {
-          x: number;
-          y: number;
-        }
-      | undefined,
+    visual: VisualConfig | undefined,
   ) => void;
-  updateSceneVisualEntrance: (
-    id: string,
-    entrance: EntrancePreset | undefined,
-  ) => void;
-  updateSceneVisualExit: (id: string, exit: ExitPreset | undefined) => void;
-  updateSceneVisualExitDuration: (id: string, exitDuration: number) => void;
-  updateSceneVisualKenBurns: (
-    id: string,
-    kenBurns: KenBurnsPreset | undefined,
-  ) => void;
-  updateSceneVisualSfx: (id: string, sfx: string | undefined) => void;
-  updateSceneVisualExitSfx: (id: string, sfx: string | undefined) => void;
   updateSceneBackground: (id: string, background: SceneBackground) => void;
   updateAllScenesBackground: (background: SceneBackground) => void;
   updateSceneEntrance: (id: string, entrance: EntrancePreset) => void;
@@ -98,7 +80,6 @@ export type ProjectStore = {
   updateSceneExitSfx: (id: string, sfx: string | undefined) => void;
   updateSceneTransition: (id: string, transition: TransitionPreset) => void;
   updateSceneStagger: (id: string, stagger: number) => void;
-  updateSceneHighlights: (id: string, highlights: string[]) => void;
   updateSceneLeftRight: (
     id: string,
     side: "left" | "right",
@@ -135,7 +116,6 @@ export type ProjectStore = {
     entryId: string,
     keyframeId: string,
   ) => void;
-  linkVisualToNextScene: (id: string) => void;
   linkLayerToNextScene: (sceneId: string, entryId: string) => void;
   selectedObjectId: string | null;
   selectedObjectIds: string[];

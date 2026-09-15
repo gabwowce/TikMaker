@@ -1,4 +1,4 @@
-import { linkVisualToNextScene, linkLayerToNextScene } from "./linkScenes";
+import { linkLayerToNextScene } from "./linkScenes";
 import { create } from "zustand";
 import { getSceneDefinition } from "../../registries/sceneRegistry";
 import { getSfx } from "../../registries/sfxRegistry";
@@ -310,11 +310,7 @@ export const useProjectStore = create<ProjectStore>((set, get) => ({
       const index = state.project.scenes.findIndex((s) => s.id === id);
       if (index === -1) return state;
       const source = state.project.scenes[index];
-      const clone: Scene = {
-        ...source,
-        id: makeSceneId(),
-        storyboardBeatId: undefined,
-      };
+      const clone: Scene = { ...source, id: makeSceneId() };
       const scenes = [...state.project.scenes];
       scenes.splice(index + 1, 0, clone);
       return {
@@ -359,46 +355,12 @@ export const useProjectStore = create<ProjectStore>((set, get) => ({
       },
     }));
   },
-  updateSceneVisual(id, visual) {
-    const slot = get().activeVisualSlot;
-    set((state) => ({
-      project: {
-        ...state.project,
-        scenes: state.project.scenes.map((s) => {
-          if (s.id !== id) return s;
-          if (slot === "main") return { ...s, visual };
-          const sideKey = slot;
-          return {
-            ...s,
-            content: {
-              ...s.content,
-              [sideKey]: { ...s.content[sideKey], visual },
-            },
-          };
-        }),
-      },
-    }));
-  },
-  updateSceneVisualPosition(id, position) {
-    get().updateScene(id, { visualPosition: position });
-  },
-  updateSceneVisualEntrance(id, entrance) {
-    get().updateScene(id, { visualEntrance: entrance });
-  },
-  updateSceneVisualExit(id, exit) {
-    get().updateScene(id, { visualExit: exit });
-  },
-  updateSceneVisualExitDuration(id, exitDuration) {
-    get().updateScene(id, { visualExitDuration: exitDuration });
-  },
-  updateSceneVisualKenBurns(id, kenBurns) {
-    get().updateScene(id, { visualKenBurns: kenBurns });
-  },
-  updateSceneVisualSfx(id, sfx) {
-    get().updateScene(id, { visualSfx: sfx });
-  },
-  updateSceneVisualExitSfx(id, sfx) {
-    get().updateScene(id, { visualExitSfx: sfx });
+  updateSceneColumnVisual(id, visual) {
+    const side = get().activeVisualSlot;
+    if (side === "main") return;
+    get().updateSceneContent(id, {
+      [side]: { ...get().project.scenes.find((s) => s.id === id)?.content[side], visual },
+    });
   },
   updateSceneBackground(id, background) {
     get().updateScene(id, { background: background });
@@ -442,9 +404,6 @@ export const useProjectStore = create<ProjectStore>((set, get) => ({
   updateSceneStagger(id, stagger) {
     get().updateSceneMotion(id, { stagger: stagger });
   },
-  updateSceneHighlights(id, highlights) {
-    get().updateSceneContent(id, { highlights: highlights });
-  },
   updateSceneLeftRight(id, side, patch) {
     set((state) => ({
       project: {
@@ -471,9 +430,6 @@ export const useProjectStore = create<ProjectStore>((set, get) => ({
   },
   updateSceneBlocks(id, blocks) {
     get().updateSceneContent(id, { blocks: blocks });
-  },
-  linkVisualToNextScene(id) {
-    set((state) => ({ project: linkVisualToNextScene(state.project, id) }));
   },
   linkLayerToNextScene(sceneId, entryId) {
     set((state) => ({

@@ -1,9 +1,5 @@
 import { describe, expect, it } from "vitest";
-import {
-  resolveAudioClips,
-  voiceCutoffFrame,
-  type AudioClip,
-} from "../voiceClips";
+import { resolveAudioClips, type AudioClip } from "../voiceClips";
 function clip(
   id: string,
   from: number,
@@ -16,85 +12,61 @@ function clip(
     ...patch,
   };
 }
-function isVoice(value: AudioClip) {
-  return value.sfxId.startsWith("vo-");
-}
 describe("audio clips across scene boundaries", () => {
   it("lets voice clips overlap at their authored timeline positions", () => {
     const clips = [
       clip("vo-a", 0, { durationInFrames: 60 }),
       clip("vo-b", 49, { durationInFrames: 30 }),
     ];
-    const [a, b] = resolveAudioClips(clips, 1000, isVoice);
+    const [a, b] = resolveAudioClips(clips, 1000);
     expect(a.durationInFrames).toBe(60);
-    expect(a.duckedBy).toBeUndefined();
     expect(b.from).toBe(49);
-    expect(b.duckedBy).toBeUndefined();
     expect(b.endAt).toBe(30);
   });
-  it("leaves a voice line alone when nothing follows it", () => {
-    const [only] = resolveAudioClips([clip("vo-a", 10)], 1000, isVoice);
+  it("runs an untrimmed line to the end of the video", () => {
+    const [only] = resolveAudioClips([clip("vo-a", 10)], 1000);
     expect(only.durationInFrames).toBe(990);
-    expect(only.duckedBy).toBeUndefined();
   });
-  it("lets sound effects overlap voice and each other, and overrun their scene", () => {
+  it("lets sound effects overlap voice and each other", () => {
     const clips = [
       clip("vo-a", 0),
       clip("whoosh", 10, { durationInFrames: 400 }),
       clip("pop", 12, { durationInFrames: 300 }),
     ];
-    const resolved = resolveAudioClips(clips, 1000, isVoice);
+    const resolved = resolveAudioClips(clips, 1000);
     expect(resolved.find((r) => r.clip.id === "whoosh")!.durationInFrames).toBe(
       400,
     );
     expect(resolved.find((r) => r.clip.id === "pop")!.durationInFrames).toBe(
       300,
     );
-    expect(
-      resolved.every((r) => r.clip.id === "vo-a" || r.duckedBy === undefined),
-    ).toBe(true);
-  });
-  it("does not stretch a voice line that already ends before the next one", () => {
-    const clips = [
-      clip("vo-a", 0, { durationInFrames: 20 }),
-      clip("vo-b", 100),
-    ];
-    const [a] = resolveAudioClips(clips, 1000, isVoice);
-    expect(a.durationInFrames).toBe(20);
-    expect(a.duckedBy).toBeUndefined();
   });
   it("keeps an explicit length without moving the next line", () => {
     const clips = [
       clip("vo-a", 0, { durationInFrames: 200 }),
       clip("vo-b", 60),
     ];
-    const [a] = resolveAudioClips(clips, 1000, isVoice);
-    expect(a.durationInFrames).toBe(200);
-    expect(a.duckedBy).toBeUndefined();
-    expect(resolveAudioClips(clips, 1000, isVoice)[1].from).toBe(60);
+    const resolved = resolveAudioClips(clips, 1000);
+    expect(resolved[0].durationInFrames).toBe(200);
+    expect(resolved[1].from).toBe(60);
   });
-  it("keeps the source offset and authored length across another voice", () => {
+  it("keeps the source offset and authored length", () => {
     const clips = [
       clip("vo-a", 0, { startFrom: 30, durationInFrames: 200 }),
       clip("vo-b", 45),
     ];
-    const [a] = resolveAudioClips(clips, 1000, isVoice);
+    const [a] = resolveAudioClips(clips, 1000);
     expect(a.durationInFrames).toBe(200);
     expect(a.endAt).toBe(230);
   });
   it("leaves endAt unset for an untrimmed clip", () => {
     const clips = [clip("vo-a", 0), clip("vo-b", 600)];
-    const [a] = resolveAudioClips(clips, 2000, isVoice);
+    const [a] = resolveAudioClips(clips, 2000);
     expect(a.durationInFrames).toBe(2000);
     expect(a.endAt).toBeUndefined();
   });
-  it("only looks forward, so the earlier line is the one cut", () => {
-    const clips = [clip("vo-a", 0), clip("vo-b", 49)];
-    expect(voiceCutoffFrame(clips, clips[0], isVoice)).toBe(49);
-    expect(voiceCutoffFrame(clips, clips[1], isVoice)).toBeUndefined();
-  });
   it("drops clips that start past the end of the video", () => {
-    expect(resolveAudioClips([clip("vo-a", 5000)], 1000, isVoice)).toEqual([]);
+    expect(resolveAudioClips([clip("vo-a", 5000)], 1000)).toEqual([]);
   });
 });
 describe("a line that outlives the composition", () => {
@@ -111,7 +83,7 @@ describe("a line that outlives the composition", () => {
     ];
     const end = compositionEnd(330, clips);
     expect(end).toBe(330);
-    const [, outro] = resolveAudioClips(clips, end, isVoice);
+    const [, outro] = resolveAudioClips(clips, end);
     expect(outro.durationInFrames).toBe(30);
   });
   it("recording the real length grows the video to hold the line", () => {
@@ -121,7 +93,7 @@ describe("a line that outlives the composition", () => {
     ];
     const end = compositionEnd(330, clips);
     expect(end).toBe(390);
-    const [, outro] = resolveAudioClips(clips, end, isVoice);
+    const [, outro] = resolveAudioClips(clips, end);
     expect(outro.durationInFrames).toBe(90);
     expect(outro.endAt).toBe(90);
     expect(outro.from + outro.durationInFrames).toBe(end);

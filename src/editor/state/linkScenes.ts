@@ -1,44 +1,5 @@
 import type { VideoProject } from "../../schema/project";
 
-export function linkVisualToNextScene(
-  project: VideoProject,
-  id: string,
-): VideoProject {
-  const index = project.scenes.findIndex((s) => s.id === id);
-  const scene = project.scenes[index];
-  const next = project.scenes[index + 1];
-  if (!scene?.visual || !next) return project;
-  const groupId = scene.visualLink?.groupId ?? `${scene.id}-glide`;
-  const fromPosition = scene.visualPosition ?? { x: 50, y: 55 };
-  const fromScale = scene.visualScale ?? 1;
-  const toPosition = { x: 50, y: fromPosition.y > 40 ? 20 : 80 };
-  const toScale = Math.max(0.2, Number((fromScale * 0.5).toFixed(2)));
-  const scenes = [...project.scenes];
-  scenes[index] = {
-    ...scene,
-    visualPosition: fromPosition,
-    visualScale: fromScale,
-    visualLink: { groupId },
-    visualExit: undefined,
-    visualExitDuration: undefined,
-    visualExitDistance: undefined,
-  };
-  scenes[index + 1] = {
-    ...next,
-    visual: scene.visual,
-    visualPosition: toPosition,
-    visualScale: toScale,
-    visualLink: { groupId },
-    visualEntrance: undefined,
-    visualEntranceDistance: undefined,
-    motion: {
-      ...next.motion,
-      transition: "cut",
-    },
-  };
-  return { ...project, scenes };
-}
-
 export function linkLayerToNextScene(
   project: VideoProject,
   sceneId: string,

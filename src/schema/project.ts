@@ -14,7 +14,6 @@ export const videoProjectSchema = z.object({
       audience: z.string().optional(),
     })
     .optional(),
-  storyboardId: z.string().optional(),
   scenes: z.array(sceneSchema),
   savedAt: z.number().optional(),
   audioClips: z

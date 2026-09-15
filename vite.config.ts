@@ -477,7 +477,6 @@ export default defineConfig({
     watch: {
       ignored: [
         path.resolve(__dirname, "projects") + "/**",
-        path.resolve(__dirname, "storyboards") + "/**",
         path.resolve(__dirname, "library") + "/**",
         path.resolve(__dirname, "out") + "/**",
         path.resolve(__dirname, "src/config/customSfx.json"),

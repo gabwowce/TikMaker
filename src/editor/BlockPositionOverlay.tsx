@@ -11,16 +11,11 @@ import type {
 } from "../schema/scene";
 import { safeAreaPercent } from "../video/typography/tokens";
 import { useProjectStore } from "./state/projectStore";
-const VISUAL_MARKER_ID = "__visual__";
 const RICH_STACK_MARKER_ID = "__rich-stack__";
 const RICH_LINE_MARKER_PREFIX = "__rich-line__";
 type BlockPositionOverlayProps = {
   blocks: Block[];
   visuals: PositionedVisualEntry[];
-  visualPosition?: {
-    x: number;
-    y: number;
-  };
   richHeadline?: RichHeadlineLine[];
   richHeadlineX?: number;
   richHeadlineY?: number;
@@ -30,7 +25,6 @@ type BlockPositionOverlayProps = {
 export function BlockPositionOverlay({
   blocks,
   visuals,
-  visualPosition,
   richHeadline,
   richHeadlineX,
   richHeadlineY,
@@ -39,9 +33,6 @@ export function BlockPositionOverlay({
 }: BlockPositionOverlayProps) {
   const selectedSceneId = useProjectStore((s) => s.selectedSceneId);
   const updateSceneBlocks = useProjectStore((s) => s.updateSceneBlocks);
-  const updateSceneVisualPosition = useProjectStore(
-    (s) => s.updateSceneVisualPosition,
-  );
   const updateSceneVisuals = useProjectStore((s) => s.updateSceneVisuals);
   const updateSceneContent = useProjectStore((s) => s.updateSceneContent);
   const updateSceneRichHeadline = useProjectStore(
@@ -140,13 +131,6 @@ export function BlockPositionOverlay({
     setGuides({ x: snappedX.hit, y: snappedY.hit });
     const rawX = snappedX.value;
     const rawY = snappedY.value;
-    if (markerId === VISUAL_MARKER_ID) {
-      updateSceneVisualPosition(selectedSceneId, {
-        x: clampPercent(rawX),
-        y: clampPercent(rawY),
-      });
-      return;
-    }
     if (markerId === RICH_STACK_MARKER_ID) {
       updateSceneContent(selectedSceneId, {
         richHeadlineX: clampPercent(
@@ -266,7 +250,6 @@ export function BlockPositionOverlay({
   if (
     blocks.length === 0 &&
     visuals.length === 0 &&
-    !visualPosition &&
     !stackPositioned &&
     freeLines.length === 0
   )
@@ -283,13 +266,6 @@ export function BlockPositionOverlay({
         height,
       }}
     >
-      {visualPosition ? (
-        <DragHandle
-          id={VISUAL_MARKER_ID}
-          x={visualPosition.x}
-          y={visualPosition.y}
-        />
-      ) : null}
       {visuals.map((visual) => (
         <DragHandle key={visual.id} id={visual.id} x={visual.x} y={visual.y} />
       ))}

@@ -1,7 +1,6 @@
 import type { VideoProject } from "../schema/project";
 import type { Scene } from "../schema/scene";
 import { resolveSceneDuration } from "./pacing";
-export const SCENE_OVERLAP_FRAMES = 0;
 export type SceneTiming = {
   scene: Scene;
   from: number;

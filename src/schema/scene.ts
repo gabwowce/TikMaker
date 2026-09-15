@@ -262,7 +262,6 @@ const blockSchema = z.object({
 const baseSceneFields = {
   id: z.string(),
   plan: scenePlanSchema.optional(),
-  storyboardBeatId: z.string().optional(),
   durationSeconds: z.number().positive().optional(),
   timelineRange: z
     .object({
@@ -287,24 +286,6 @@ const baseSceneFields = {
     visuals: z.array(positionedVisualSchema).optional(),
   }),
   layout: layoutIdSchema.optional(),
-  visual: visualConfigSchema.optional(),
-  visualPosition: z
-    .object({
-      x: z.number().min(0).max(100),
-      y: z.number().min(0).max(100),
-    })
-    .optional(),
-  visualEntrance: entrancePresetSchema.optional(),
-  visualExit: exitPresetSchema.optional(),
-  visualEntranceDuration: z.number().min(1).max(60).optional(),
-  visualExitDuration: z.number().min(1).max(60).optional(),
-  visualEntranceDistance: z.number().min(0).max(2400).optional(),
-  visualExitDistance: z.number().min(0).max(2400).optional(),
-  visualScale: z.number().positive().optional(),
-  visualLink: z.object({ groupId: z.string() }).optional(),
-  visualKenBurns: kenBurnsPresetSchema.optional(),
-  visualSfx: z.string().optional(),
-  visualExitSfx: z.string().optional(),
   motion: z
     .object({
       entrance: entrancePresetSchema.optional(),

@@ -9,25 +9,6 @@ const base = {
   scenes: [] as unknown[],
 };
 describe("parseProject", () => {
-  it("folds a legacy primary visual into the layer stack", () => {
-    const project = parseProject({
-      ...base,
-      scenes: [
-        {
-          id: "s",
-          type: "hook-centered",
-          background: "solid-dark",
-          content: {},
-          visual: { type: "tool-logo", tool: "claude" },
-        },
-      ],
-    });
-    const layers = project.scenes[0].content.visuals ?? [];
-    expect(layers).toHaveLength(1);
-    expect(layers[0].visual).toEqual({ type: "tool-logo", tool: "claude" });
-    expect(typeof layers[0].x).toBe("number");
-    expect(typeof layers[0].y).toBe("number");
-  });
   it("clamps an out-of-range position instead of dropping the project", () => {
     const project = parseProject({
       ...base,

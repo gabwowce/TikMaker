@@ -26,7 +26,6 @@ export function instantiateSavedScene(saved: SavedScene): Scene {
   return {
     ...scene,
     id: newId("scene"),
-    visualLink: undefined,
     content: {
       ...scene.content,
       blocks: scene.content.blocks?.map((b) => ({ ...b, id: newId("block") })),

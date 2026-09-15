@@ -37,13 +37,15 @@ describe("scene updates", () => {
   it("updates the selected field without changing other scenes or content", () => {
     const actions = useProjectStore.getState();
     const second = actions.project.scenes[1];
-    actions.updateSceneVisualPosition("first", { x: 25, y: 60 });
+    actions.updateSceneVisuals("first", [
+      { id: "layer", visual: { type: "image", src: "a.png" }, x: 25, y: 60 },
+    ]);
     actions.updateSceneRichHeadline("first", [
       { text: "New title", size: "headline" },
     ]);
     actions.updateSceneEntrance("first", "slideUp");
     const [first, unchanged] = useProjectStore.getState().project.scenes;
-    expect(first.visualPosition).toEqual({ x: 25, y: 60 });
+    expect(first.content.visuals?.[0]).toMatchObject({ x: 25, y: 60 });
     expect(first.content.headline).toBe("Original title");
     expect(first.content.eyebrow).toBe("Keep this eyebrow");
     expect(first.content.richHeadline?.[0].text).toBe("New title");

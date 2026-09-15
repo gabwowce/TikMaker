@@ -1,7 +1,6 @@
 import { create } from "zustand";
 export type LibraryKind =
   | "project"
-  | "storyboard"
   | "scene"
   | "template"
   | "background"
@@ -18,9 +17,6 @@ const globs: Record<
   project: import.meta.glob<{
     default: unknown;
   }>("../../../projects/*.json", { eager: true }),
-  storyboard: import.meta.glob<{
-    default: unknown;
-  }>("../../../storyboards/*.json", { eager: true }),
   scene: import.meta.glob<{
     default: unknown;
   }>("../../../library/scenes/*.json", { eager: true }),
@@ -38,7 +34,6 @@ const diskCache = new Map<LibraryKind, unknown[]>();
 const SAVE_JOURNAL_KEY = "tikmaker.pending-save-journal.v1";
 const ALL_KINDS: LibraryKind[] = [
   "project",
-  "storyboard",
   "scene",
   "template",
   "background",
@@ -277,7 +272,6 @@ export type EditorPreferences = {
   voiceStyle?: number;
   voiceSpeakerBoost?: boolean;
   lastOpenedProjectId?: string;
-  lastOpenedStoryboardId?: string;
   timelineHeight?: number;
 };
 const DEFAULT_PREFERENCES: EditorPreferences = {

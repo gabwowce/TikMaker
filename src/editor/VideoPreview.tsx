@@ -64,7 +64,6 @@ export function VideoPreview({
             <BlockPositionOverlay
               blocks={scene?.content.blocks ?? []}
               visuals={scene?.content.visuals ?? []}
-              visualPosition={scene?.visualPosition}
               richHeadline={scene?.content.richHeadline}
               richHeadlineX={scene?.content.richHeadlineX}
               richHeadlineY={scene?.content.richHeadlineY}

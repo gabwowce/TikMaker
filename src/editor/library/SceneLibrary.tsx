@@ -18,7 +18,6 @@ function describe(scene: ReturnType<typeof instantiateSavedScene>): string {
     scene.content.richHeadline?.map((l) => l.text).join(" ");
   if (headline)
     bits.push(`“${headline.slice(0, 40)}${headline.length > 40 ? "…" : ""}”`);
-  if (scene.visual) bits.push(scene.visual.type);
   const layers = scene.content.visuals?.length ?? 0;
   if (layers) bits.push(`+${layers} layer${layers === 1 ? "" : "s"}`);
   return bits.join(" · ");
