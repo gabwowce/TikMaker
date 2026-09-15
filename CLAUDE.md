@@ -28,21 +28,20 @@ paskui svarstoma rašyti kodą.
 
 ## Kur kas gyvena
 
-| Kelias | Kas viduje |
-| --- | --- |
-| `src/schema/` | Zod schemos — **duomenų modelio tiesos šaltinis** (`project`, `scene`, `visual`) |
-| `src/registries/` | Sąrašai, ką galima pasirinkti: scenos, vizualų presetai, fonai, garsai, propai, logotipai |
-| `src/utils/` | Grynos funkcijos: trukmė, tempas, normalizavimas, sluoksnių grandinės, garso klipai |
-| `src/video/` | Atvaizdavimas: scenos, tipografija, judesys, vizualai, fonai, išdėstymas |
-| `src/editor/` | Redaktoriaus sąsaja — **turi savo `README.md`, skaityti jį** |
-| `src/templates/` | JSON šablonai (naudojamas tik `template-showcase.json`, žr. skolos skyrių) |
-| `src/config/` | `customSfx.json`, `sfxOverrides.json` |
-| `projects/` | Tikri projektai (6) — biblioteka juos skaito iš disko |
-| `library/` | Išsaugotos scenos, šablonai, fonai, balso variantai |
-| `storyboards/` | **Mirusi šaka** — nieko iš UI nebeskaito (žr. skolos skyrių) |
-| `props/`, `ai/`, `sfx/`, `fonts/` | Turtų **šaltiniai**; niekas jų neskaito tiesiogiai |
-| `public/assets/` | Sinchronizuota turtų kopija, kurią mato naršyklė ir renderis |
-| `scripts/` | Dev serverio API, turtų sinchronizavimas, renderis, balso generavimas |
+| Kelias                            | Kas viduje                                                                                |
+| --------------------------------- | ----------------------------------------------------------------------------------------- |
+| `src/schema/`                     | Zod schemos — **duomenų modelio tiesos šaltinis** (`project`, `scene`, `visual`)          |
+| `src/registries/`                 | Sąrašai, ką galima pasirinkti: scenos, vizualų presetai, fonai, garsai, propai, logotipai |
+| `src/utils/`                      | Grynos funkcijos: trukmė, tempas, normalizavimas, sluoksnių grandinės, garso klipai       |
+| `src/video/`                      | Atvaizdavimas: scenos, tipografija, judesys, vizualai, fonai, išdėstymas                  |
+| `src/editor/`                     | Redaktoriaus sąsaja — **turi savo `README.md`, skaityti jį**                              |
+| `src/templates/`                  | `template-showcase.json` — atsarginis pavyzdinis projektas, kai biblioteka tuščia         |
+| `src/config/`                     | `customSfx.json`, `sfxOverrides.json`                                                     |
+| `projects/`                       | Tikri projektai (6) — biblioteka juos skaito iš disko                                     |
+| `library/`                        | Išsaugotos scenos, šablonai, fonai, balso variantai                                       |
+| `props/`, `ai/`, `sfx/`, `fonts/` | Turtų **šaltiniai**; niekas jų neskaito tiesiogiai                                        |
+| `public/assets/`                  | Sinchronizuota turtų kopija, kurią mato naršyklė ir renderis                              |
+| `scripts/`                        | Dev serverio API, turtų sinchronizavimas, renderis, balso generavimas                     |
 
 **Turtai sinchronizuojasi patys.** `scripts/syncAssets.ts` kopijuoja `props/`, `ai/`, `sfx/`
 ir `fonts/` į `public/` ir pergeneruoja `src/registries/assets.generated.ts` — būtent šį failą
@@ -144,9 +143,11 @@ Ką jis daro:
 1. `clampPositions` — `x`/`y` įspraudžiami į 0–100 **prieš** validaciją. Viena reikšmė už ribų
    anksčiau numesdavo **visą projektą** kaip sugadintą; dabar tai kainuoja to elemento poziciją.
 2. `videoProjectSchema.parse` — validacija.
-3. `legacyTextAsLines` — `content.eyebrow` ir `content.headline` **verčiami į
-   `content.richHeadline` eilutes** ir originalūs laukai ištrinami. Eyebrow tampa
-   `{size: "label", color: accent, letterSpacing: 4}`, headline — dydžiu pagal scenos tipą.
+3. `legacyTextAsLines` — senas `content.eyebrow` + `content.headline` **verčiamas į
+   `content.richHeadline` eilutes**. Vyksta ties RAW JSON, **prieš** validaciją, nes
+   schemoje tų laukų nebėra ir Zod juos nutylėdamas nuvalytų — senas projektas liktų
+   be teksto. Eyebrow tampa `{size: "label", color: accent, letterSpacing: 4}`,
+   headline — dydžiu pagal scenos tipą.
 4. `primaryVisualAsLayer` — senas `scene.visual` su `visual*` palydovais suplokštinamas į
    `content.visuals[0]`.
 5. `splitCornerProps` — `corner-props` išskaidomas į du savarankiškus sluoksnius su
@@ -214,14 +215,14 @@ Scena tedeklaruoja savo teksto elementus, teksto zoną ir tarpą.
 
 ### Vizualai (`src/video/visuals/`, 22 tipai)
 
-| Grupė | Tipai |
-| --- | --- |
-| Turtai | `tool-logo`, `tool-flow`, `prop` |
-| Media / įrenginiai | `image`, `recording`, `browser`, `screen`, `phone` |
-| Duomenys | `stat-counter`, `checklist`, `checkpoint`, `pricing-card`, `app-mockup`, `progress` |
-| Dev | `keycap`, `terminal`, `code-diff`, `claude-cli` |
-| Diagramos | `flow`, `node-group`, `stack`, `transform` |
-| Sudėtinis | `corner-props` (įkeliant išskaidomas į sluoksnius) |
+| Grupė              | Tipai                                                                               |
+| ------------------ | ----------------------------------------------------------------------------------- |
+| Turtai             | `tool-logo`, `tool-flow`, `prop`                                                    |
+| Media / įrenginiai | `image`, `recording`, `browser`, `screen`, `phone`                                  |
+| Duomenys           | `stat-counter`, `checklist`, `checkpoint`, `pricing-card`, `app-mockup`, `progress` |
+| Dev                | `keycap`, `terminal`, `code-diff`, `claude-cli`                                     |
+| Diagramos          | `flow`, `node-group`, `stack`, `transform`                                          |
+| Sudėtinis          | `corner-props` (įkeliant išskaidomas į sluoksnius)                                  |
 
 Turtai piešiami kaip gryna grafika be plokštelės — logotipų failai jau yra plytelės, ir antras
 rėmelis atrodė kaip klaida.
@@ -258,12 +259,12 @@ derinti ranka.
 Rašyk `vo` kiekvienai scenai ir **palik `durationSeconds` nenustatytą**.
 `resolveSceneDuration` (`src/utils/pacing.ts`) duoda didžiausią iš keturių:
 
-| Šaltinis | Tempas | Kam |
-| --- | --- | --- |
-| grindys | 2.0 s (1.8 s `hook-centered` be VO) | niekas nebūna pasąmoninis |
-| kalbėjimas | 3.2 ž/s + 0.5 s uodega | `vo` |
-| skaitymas | 2.0 ž/s | visas ekrano tekstas |
-| skenavimas | 4.0 ž/s | `terminal`, `code-diff`, `claude-cli` turinys |
+| Šaltinis   | Tempas                              | Kam                                           |
+| ---------- | ----------------------------------- | --------------------------------------------- |
+| grindys    | 2.0 s (1.8 s `hook-centered` be VO) | niekas nebūna pasąmoninis                     |
+| kalbėjimas | 3.2 ž/s + 0.5 s uodega              | `vo`                                          |
+| skaitymas  | 2.0 ž/s                             | visas ekrano tekstas                          |
+| skenavimas | 4.0 ž/s                             | `terminal`, `code-diff`, `claude-cli` turinys |
 
 Skenavimas atskirtas nuo skaitymo sąmoningai: kodas peržvelgiamas, o ne skaitomas žodis po
 žodžio.
@@ -365,14 +366,14 @@ Garso cue išvedami automatiškai iš `motion.entrance` / `motion.exit`
 (`src/video/motion/sfxDefaults.ts`), bet kategorijų prasmė yra reali trumpo formato montažo
 konvencija:
 
-| Grupė | Kam |
-| --- | --- |
-| `transition` (whoosh, swipe, paper-slide) | judesys ir inercija: slydimas, pjūvis |
-| `ui` / `impact` (pop, click, snap) | vieno elemento pasirodymas: antraštės žodis, skaičius |
-| `reveal` (riser) | **laukimas prieš** atomazgą, ne pati atomazga |
-| `success` (ding, d-done, d-fix) | pasiekimas, varnelė, CTA nusileidimas |
-| `text` | teksto vienetų cue |
-| `voice` | balso klipai — pagal šią grupę atpažįstamas VO (`isVoiceClip`) |
+| Grupė                                     | Kam                                                            |
+| ----------------------------------------- | -------------------------------------------------------------- |
+| `transition` (whoosh, swipe, paper-slide) | judesys ir inercija: slydimas, pjūvis                          |
+| `ui` / `impact` (pop, click, snap)        | vieno elemento pasirodymas: antraštės žodis, skaičius          |
+| `reveal` (riser)                          | **laukimas prieš** atomazgą, ne pati atomazga                  |
+| `success` (ding, d-done, d-fix)           | pasiekimas, varnelė, CTA nusileidimas                          |
+| `text`                                    | teksto vienetų cue                                             |
+| `voice`                                   | balso klipai — pagal šią grupę atpažįstamas VO (`isVoiceClip`) |
 
 **Saikas svarbesnis už pasirinkimą.** Cue ant kiekvienos scenos skamba mėgėjiškai; tikri
 montuotojai palieka girdimą efektą **3–5 svarbiausiems video momentams** (kabliukas, vienas
@@ -442,23 +443,26 @@ aukštesnė tikrai neišreiškia to, ko reikia:
 
 **Niekada nerašyti antrą kartą:**
 
-| Sąvoka | Vienintelė realizacija |
-| --- | --- |
-| Scenos karkasas | `SceneFrame` |
-| Stagger laikas | `useSceneCues(motion)` → `cue(i)` |
-| Vizualo įėjimas / išėjimas / dreifas / garsas | `AnimatedVisual` |
-| Vizualo įdėjimas į sceną | `content.visuals[]` įrašas per `VisualsLayer` |
-| Įėjimo / išėjimo kreivės | `motion/entrances.ts`, `motion/exits.ts` |
-| Nepertraukiamas dreifas | `motion/kenBurns.ts` |
-| Teksto stiliai | `typography/Text.tsx` + `tokens.ts` |
-| Žodžio paryškinimas | `renderHighlighted` (`Text.tsx`) |
-| Failas iš `public/` | `assetUrl()` |
-| Vizualo dydis talpinimui | `naturalVisualSize` (`visualMetrics.ts`) |
-| Projekto įkėlimas | `parseProject()` |
-| Sluoksnio z-eilė | `timelineLayerZIndex(lane)` |
-| Turto pasirinkimas redaktoriuje | `AssetSelect` |
-| Vizualo judesio laukai | `VisualMotionEditor` |
-| Laiko juostos objekto trynimas | `confirmDeleteTimelineObject` |
+| Sąvoka                                        | Vienintelė realizacija                        |
+| --------------------------------------------- | --------------------------------------------- |
+| Scenos karkasas                               | `SceneFrame`                                  |
+| Scenos antraštė                               | `SceneHeadline` (`SceneFrame.tsx`)            |
+| Stagger laikas                                | `useSceneCues(motion)` → `cue(i)`             |
+| Vizualo įėjimas / išėjimas / dreifas / garsas | `AnimatedVisual`                              |
+| Vizualo įdėjimas į sceną                      | `content.visuals[]` įrašas per `VisualsLayer` |
+| Įėjimo / išėjimo kreivės                      | `motion/entrances.ts`, `motion/exits.ts`      |
+| Nepertraukiamas dreifas                       | `motion/kenBurns.ts`                          |
+| Teksto stiliai                                | `typography/Text.tsx` + `tokens.ts`           |
+| Žodžio paryškinimas                           | `pillClassName` (`Text.tsx`)                  |
+| Failas iš `public/`                           | `assetUrl()`                                  |
+| Vizualo dydis talpinimui                      | `naturalVisualSize` (`visualMetrics.ts`)      |
+| Projekto įkėlimas                             | `parseProject()`                              |
+| Kada sluoksnis tikrai baigiasi                | `layerExitFrame` (`utils/duration.ts`)        |
+| Rolė pagal scenos tipą                        | `planRoleFor` (`utils/normalizeProject.ts`)   |
+| Sluoksnio z-eilė                              | `timelineLayerZIndex(lane)`                   |
+| Turto pasirinkimas redaktoriuje               | `AssetSelect`                                 |
+| Vizualo judesio laukai                        | `VisualMotionEditor`                          |
+| Laiko juostos objekto trynimas                | `confirmDeleteTimelineObject`                 |
 
 **Nauja scena** pateisinama, kai **teksto** išdėstymas tikrai kitoks (palyginimo du stulpeliai,
 žingsnių sąrašas) — ne dėl kito vizualo, nes vizualas yra sluoksnis.
@@ -490,8 +494,9 @@ Niekada neįkoduoti scenos komponente:
 dekoratyviniai; geriau trumpesnis tekstas nei mažesnis šriftas.
 
 **Žodžio paryškinimas visada yra dėžutė (šviesus fonas, tamsus tekstas), niekada ne spalvos
-keitimas.** Dvi vietos, kur tai realizuojama: `renderHighlighted` (`Text.tsx`) — atskiriems
-žodžiams antraštėje, ir `line.pill` (`RichHeadline.tsx`) — visai eilutei. Eilutės `color`
+keitimas.** Dėžutės apipavidalinimas aprašytas vienoje vietoje — `pillClassName`
+(`Text.tsx`); ją naudoja `splitAnimate` atskiriems žodžiams ir `RichHeadline`
+visai eilutei per `line.pill`. Eilutės `color`
 laukas yra sąmoningam stiliui, o ne būdas apeiti šią taisyklę; nenustatytas jis pats
 pasirenka įskaitomą spalvą (tamsią `pill` viduje, `colors.textPrimary` išorėje).
 
@@ -515,17 +520,17 @@ klaida šiame repo.
 
 ## Komandos
 
-| Komanda | Ką daro |
-| --- | --- |
-| `npm run dev` | Redaktorius (Vite, portas 5173) |
-| `npm run studio` | Remotion Studio — render-tikslus patikrinimas |
-| `npm run render` | Renderina kompoziciją |
-| `npm run render:project -- projects/<f>.json out/<v>.mp4` | Renderina konkretų projektą |
-| `npm run assets:sync` | Vienkartinis turtų sinchronizavimas |
-| `npm run recordings:optimize` | Optimizuoja ekrano įrašus |
-| `npm run typecheck` | `tsc --noEmit` |
-| `npm test` / `npm run test:watch` | Vitest |
-| `npm run build` | Produkcijos build |
+| Komanda                                                   | Ką daro                                       |
+| --------------------------------------------------------- | --------------------------------------------- |
+| `npm run dev`                                             | Redaktorius (Vite, portas 5173)               |
+| `npm run studio`                                          | Remotion Studio — render-tikslus patikrinimas |
+| `npm run render`                                          | Renderina kompoziciją                         |
+| `npm run render:project -- projects/<f>.json out/<v>.mp4` | Renderina konkretų projektą                   |
+| `npm run assets:sync`                                     | Vienkartinis turtų sinchronizavimas           |
+| `npm run recordings:optimize`                             | Optimizuoja ekrano įrašus                     |
+| `npm run typecheck`                                       | `tsc --noEmit`                                |
+| `npm test` / `npm run test:watch`                         | Vitest                                        |
+| `npm run build`                                           | Produkcijos build                             |
 
 Windows PowerShell aplinkoje prireikus `npm.cmd`.
 
@@ -536,29 +541,6 @@ Windows PowerShell aplinkoje prireikus `npm.cmd`.
 Sąrašas sąmoningai laikomas dokumentacijoje, o ne nutylimas: skaitytojas turi žinoti, kuo
 kodu **negalima** pasitikėti.
 
-### Mirusios šakos
-
-- **Storyboard failų šaka.** `src/schema/storyboard.ts`, `src/utils/storyboardToProject.ts`
-  ir `storyboards/*.json` yra ankstesnės architektūros likutis, kai scenarijus gyveno
-  atskirame faile ir buvo verčiamas mygtuku „Generate Scenes". Nėra nei store, nei mygtuko;
-  vienintelis `storyboardToProject` kvietėjas yra jo paties testas. Scenarijaus vaidmenį
-  perėmė `scene.plan` + `project.storyPlan`. `beatRoleSchema` rolės **nesutampa** su
-  `scenePlanRoleSchema`.
-- **Legacy pagrindinio vizualo laukai.** `scene.visual` ir 12 `visual*` palydovų dar
-  priimami schemos ir suplokštinami įkeliant, bet **nė vienas `projects/*.json` jų
-  nebenaudoja**. Kartu mirę store veiksmai: `updateSceneVisualEntrance`, `...Exit`,
-  `...ExitDuration`, `...KenBurns`, `...Sfx`, `...ExitSfx`, `updateSceneHighlights` —
-  visi turi nulį kvietėjų.
-- **Nenaudojami eksportai:** `SCENE_OVERLAP_FRAMES` (= 0), `isOverlappingTransition`,
-  `resolveScenePlacement`, `voiceCutoffFrame`, `VOICE_DUCK_FADE_FRAMES`.
-  `resolveAudioClips` turi parametrą `isVoice`, kurį iškart `void`ina, ir grąžina `duckedBy`,
-  visada lygų `undefined` — balso „ducking" mechanika buvo pašalinta, karkasas liko.
-- **`src/templates/`: 12 iš 13 failų neimportuojami.** Naudojamas tik
-  `template-showcase.json` (kaip atsarginis pavyzdinis projektas). Šablonai redaktoriuje
-  ateina iš `library/templates/*.json`.
-- **`VisualLibrary.tsx`:** `const layersFull = false` ir `if (layersFull) return` — likutis iš
-  pašalinto sluoksnių limito.
-
 ### Atjungti saugikliai
 
 `pacingWarning` (`utils/pacing.ts`), `visualOverflowWarning` ir `layerOverflowWarning`
@@ -566,48 +548,38 @@ kodu **negalima** pasitikėti.
 įspėjimus redaktoriuje; laidai nutrūko per refaktoringą. **Nepasitikėk jais kaip apsauga** —
 kol neprijungti, perviršis ir per trumpa scena nepastebimi automatiškai.
 
-### Dvi teksto reprezentacijos
+Tai vienintelė likusi šio sąrašo skola, kurios dar niekas nesutvarkė.
 
-Įkeliant `legacyTextAsLines` verčia `content.eyebrow` ir `content.headline` į `richHeadline`,
-bet redaktoriaus „Scene text" panelė (`TimelineObjectPanel.tsx`) vis dar rašo į senuosius
-laukus. Todėl ta pati įvestis redagavimo sesijos metu atvaizduojama viena šaka
-(`<Title>` / `<HeroText>`), o po perkrovimo — kita (`RichHeadline`), ir redaguojama jau kitoje
-panelėje. Visos 7 scenos dėl to turi `richHeadline?.length ? ... : ...` šaką, o
-`renderHighlighted(content.headline, content.highlights)` po normalizavimo niekada negauna
-`highlights`.
+### Dvi laiko juostos
 
-Tvarkinga išeitis: panelė turi rašyti per `withOnScreenText` (`utils/projectStoryPlan.ts`),
-tada atsarginės šakos ir senieji laukai trinami.
+`buildSceneTimelineRows.ts` ir `buildFullTimelineRows.ts` (po ~565 eilutes) daro tą patį
+dviem mastelio lygiais; jų eilučių tipai `TimelineRow` ir `Row` sutampa maždaug 80 %.
+Dalis logikos jau bendrinama (`audioCueShape`, `useAudioWaveforms`, `visualTimelinePreview`,
+`groupDrag`, `sceneTimelineEnd`), bet pats eilučių konstravimas — ne.
 
-### Turinys transformacijos kode
+Sujungti verta, bet tai gyvas, sudėtingas kodas su pelės tempimu, todėl imtis tik
+turint tai dengiančius testus.
 
-`normalizeProject()` turi šaką konkrečiam projektui (`project-mtii3v8d`) su maždaug
-150 eilučių įkoduoto to projekto turinio — VO tekstų, rolių, net koordinačių ir spalvų.
-Tai duomenys grynos funkcijos viduje, vykdomi **kiekvienam** projektui įkeliant. Teisinga
-išeitis — vienkartinis migracijos skriptas, perrašantis `projects/project-mtii3v8d.json`,
-ir šakos ištrynimas.
+### Kas jau sutvarkyta
 
-### Tokenų reikšmės įkoduotos Tailwind klasėse
+Šie dalykai anksčiau buvo šiame sąraše ir yra pašalinti — vardai paliekami, kad
+skaitant senesnius commit'us būtų aišku, ko ieškoti:
 
-Perėjimas prie Tailwind įrašė tokenų **reikšmes** tiesiai į klases, nes Tailwind klasė negali
-perskaityti TypeScript objekto. Pavyzdžiai: `text-[#FF7024]`, `text-[#B8B8B8]`,
-`text-[42px]`, `text-[52px]` (`ClaudeCli.tsx`, `ToolLogo.tsx`, `Keycap.tsx`, `CodeDiff.tsx`),
-`bg-[#FFFFFF] text-[#171717]` pill'ui `Text.tsx`, `text-[104px]` `ImpactText` viduje.
-
-Tai prieštarauja pačios sistemos taisyklei „niekada neįkoduoti spalvų ir dydžių". Kol kas
-reikšmės **sutampa** su `tokens.ts` (`#FF7024` = `colors.accent`, 42 = `fontSizes.label`),
-bet tai jau dvi vietos, ir jos nukryps.
-
-Tvarkinga išeitis — paskelbti tokenus kaip Tailwind temos reikšmes (CSS kintamuosius), kad
-veiktų `text-accent` ir `text-label`, ir vėl liktų vienas šaltinis.
-
-### Dubliuota logika
-
-- „Efektyvus `exitAt`" varnelių sąrašui skaičiuojamas dviejose vietose:
-  `SceneRenderer.tsx` ir `utils/duration.ts`. Tai tiksliai tas nukrypimo atvejis, apie kurį
-  perspėja šis dokumentas.
-- `buildSceneTimelineRows.ts` ir `buildFullTimelineRows.ts` (po ~565 eilutes) daro tą patį
-  dviem mastelio lygiais; jų eilučių tipai `TimelineRow` ir `Row` sutampa maždaug 80 %.
+- **Storyboard failų šaka** (`schema/storyboard.ts`, `storyboardToProject.ts`,
+  `storyboards/`) — scenarijaus vaidmenį perėmė `scene.plan` + `project.storyPlan`.
+- **Legacy pagrindinio vizualo laukai** (`scene.visual` ir 12 `visual*` palydovų) su
+  `primaryVisualAsLayer`, `linkVisualToNextScene` ir septyniais store veiksmais.
+- **Nenaudojami eksportai**: `SCENE_OVERLAP_FRAMES`, `isOverlappingTransition`,
+  `resolveScenePlacement`, `voiceCutoffFrame`, balso „ducking" karkasas.
+- **Vieno projekto turinys `normalizeProject` viduje** — vienkartinis taisymas, seniai
+  pritaikytas ir įrašytas į diską.
+- **Dvi teksto reprezentacijos** — `content.eyebrow`/`headline`/`highlights` pašalinti iš
+  schemos; konversija iš seno JSON vyksta prieš validaciją, redaktorius rašo tik
+  `richHeadline`, o septynios scenos dalijasi vienu `SceneHeadline`.
+- **Dvi paryškinimo realizacijos** — liko viena `pillClassName`.
+- **Tokenų reikšmės Tailwind klasėse** — dabar temos vardai (`text-brand-accent`,
+  `text-headline`), o `tokens.test.ts` neleidžia abiem vietoms nukrypti.
+- **12 nepasiekiamų šablonų** ir visas `template` bibliotekos vamzdynas.
 
 ### Neatlikta (nedaryti, kol neprašyta)
 
