@@ -18,7 +18,7 @@ function Tab({ label, active }: TabProps) {
       className={`flex items-center gap-2.5 max-w-[260px] p-[10px_18px] rounded-[10px_10px_0_0] [font-family:ClashDisplay-Medium] text-[22px] whitespace-nowrap overflow-hidden text-ellipsis ${active ? "bg-[#3c3c40]" : "bg-transparent"} ${active ? "text-[#c9c9cf]" : "text-[#8a8a92]"}`}
     >
       <div
-        className={`w-4 h-4 rounded shrink-0 ${active ? "bg-[#FF7024]" : "bg-[#8a8a92]"}`}
+        className={`w-4 h-4 rounded shrink-0 ${active ? "bg-brand-accent" : "bg-[#8a8a92]"}`}
       />
       {label}
     </div>
@@ -35,7 +35,7 @@ export function BrowserMockup({
     title ?? (url ? url.replace(/^https?:\/\//, "").split("/")[0] : "New Tab");
   return (
     <div
-      className="rounded-[20px] overflow-hidden bg-[#222222] [box-shadow:0_40px_80px_rgba(0,0,0,0.45)] [border:1px_solid_rgba(255,255,255,0.10)]"
+      className="rounded-[20px] overflow-hidden bg-brand-surface [box-shadow:0_40px_80px_rgba(0,0,0,0.45)] [border:1px_solid_rgba(255,255,255,0.10)]"
       style={{
         width: 860 * scale,
       }}
@@ -74,7 +74,7 @@ export function BrowserMockup({
         </div>
       </div>
 
-      <div className="relative w-full [aspect-ratio:16_/_10] bg-[#171717]">
+      <div className="relative w-full [aspect-ratio:16_/_10] bg-brand-bg">
         {children}
       </div>
     </div>

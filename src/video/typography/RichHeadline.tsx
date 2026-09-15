@@ -72,7 +72,7 @@ function RichHeadlineLineRow({
         preset={line.animation}
         entranceDuration={line.splitDuration ?? line.entranceDuration}
         exit={resolvedExit}
-        className="inline-block bg-[#FFFFFF] text-[#171717] p-[0.12em_0.35em] rounded-[10px] [line-height:0.95]"
+        className="inline-block bg-brand-text text-brand-bg p-[0.12em_0.35em] rounded-[10px] [line-height:0.95]"
       >
         {content}
       </AnimatedBox>

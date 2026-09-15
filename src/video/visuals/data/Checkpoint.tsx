@@ -22,7 +22,7 @@ export function Checkpoint({
   const pill = variant === "pill";
   return (
     <div
-      className={`flex items-center box-border ${pill ? "w-[max-content]" : compact ? "w-[520px]" : "w-[680px]"} ${compact ? "gap-3.5" : "gap-5"} ${pill ? "p-[12px_22px]" : compact ? "p-[14px_20px]" : "p-[20px_26px]"} ${pill ? "rounded-[999px]" : variant === "outline" ? "rounded-[12px]" : "rounded-[16px]"} ${variant === "outline" ? "bg-transparent" : "bg-[#222222]"}`}
+      className={`flex items-center box-border ${pill ? "w-[max-content]" : compact ? "w-[520px]" : "w-[680px]"} ${compact ? "gap-3.5" : "gap-5"} ${pill ? "p-[12px_22px]" : compact ? "p-[14px_20px]" : "p-[20px_26px]"} ${pill ? "rounded-[999px]" : variant === "outline" ? "rounded-[12px]" : "rounded-[16px]"} ${variant === "outline" ? "bg-transparent" : "bg-brand-surface"}`}
       style={{
         minWidth: pill ? 280 : undefined,
         border: `2px solid ${variant === "outline" ? accent : colors.border}`,
@@ -42,12 +42,12 @@ export function Checkpoint({
       </div>
       <div className="min-w-0">
         <div
-          className={`[font-family:Tanker-Regular] text-[#FFFFFF] uppercase [line-height:1] ${compact ? "text-[52px]" : "text-[62px]"}`}
+          className={`[font-family:Tanker-Regular] text-brand-text uppercase [line-height:1] ${compact ? "text-body" : "text-body-large"}`}
         >
           {label}
         </div>
         {detail && !pill ? (
-          <div className="[font-family:ClashDisplay-Medium] text-[42px] text-[#B8B8B8] mt-1.5">
+          <div className="[font-family:ClashDisplay-Medium] text-label text-brand-muted mt-1.5">
             {detail}
           </div>
         ) : null}

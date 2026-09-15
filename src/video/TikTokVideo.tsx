@@ -13,7 +13,7 @@ export function TikTokVideo({ project }: TikTokVideoProps) {
   const duration = projectDurationInFrames(project);
   const resolved = resolveAudioClips(project.audioClips ?? [], duration);
   return (
-    <AbsoluteFill className="bg-[#171717]">
+    <AbsoluteFill className="bg-brand-bg">
       <SceneRenderer project={project} />
       {resolved.map(({ clip, from, durationInFrames, endAt }) => {
         const src = getSfx(clip.sfxId)?.src;

@@ -132,7 +132,7 @@ export function AnimatedUnit({
   });
   return (
     <span
-      className={`whitespace-pre ${highlighted ? "inline bg-[#FFFFFF] text-[#171717] p-[0.05em_0.18em] rounded-md [box-decoration-break:clone] [-webkit-box-decoration-break:clone]" : "inline-block"}`}
+      className={`whitespace-pre ${highlighted ? "inline bg-brand-text text-brand-bg p-[0.05em_0.18em] rounded-md [box-decoration-break:clone] [-webkit-box-decoration-break:clone]" : "inline-block"}`}
       style={{
         ...ownStyle,
         ...style,

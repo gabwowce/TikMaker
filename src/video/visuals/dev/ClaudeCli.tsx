@@ -59,7 +59,7 @@ export function ClaudeCli({
                 }}
               >
                 {line.kind === "user" ? (
-                  <span className="text-[#FF7024]">{"> "}</span>
+                  <span className="text-brand-accent">{"> "}</span>
                 ) : null}
                 {line.text}
               </div>
@@ -72,16 +72,16 @@ export function ClaudeCli({
         <Overlay overlay={overlay} frame={frame} />
       ) : (
         <div
-          className={`[border:2px_solid_rgba(255,255,255,0.10)] rounded-[14px] p-[26px_30px] bg-[#111111] whitespace-pre overflow-hidden ${input ? "text-[#FFFFFF]" : "text-[rgba(184,184,184,0.35)]"}`}
+          className={`[border:2px_solid_rgba(255,255,255,0.10)] rounded-[14px] p-[26px_30px] bg-[#111111] whitespace-pre overflow-hidden ${input ? "text-brand-text" : "text-[rgba(184,184,184,0.35)]"}`}
         >
-          <span className="text-[#FF7024]">{"> "}</span>
+          <span className="text-brand-accent">{"> "}</span>
           {input ?? 'try "how does auth work?"'}
         </div>
       )}
 
       {mode ? (
         <div
-          className={`pl-1.5 whitespace-pre ${modeActive ? "text-[#FF7024]" : "text-[rgba(184,184,184,0.5)]"}`}
+          className={`pl-1.5 whitespace-pre ${modeActive ? "text-brand-accent" : "text-[rgba(184,184,184,0.5)]"}`}
           style={{
             fontSize: MONO_SIZE * 0.85,
           }}
@@ -101,7 +101,7 @@ function Overlay({ overlay, frame }: OverlayProps) {
   return (
     <div className="[border:2px_solid_#FF7024] rounded-[14px] bg-[#141414] overflow-hidden [box-shadow:0_20px_50px_rgba(0,0,0,0.6)]">
       <div
-        className="p-[18px_30px] [border-bottom:1px_solid_rgba(255,255,255,0.10)] text-[#FF7024] whitespace-pre"
+        className="p-[18px_30px] [border-bottom:1px_solid_rgba(255,255,255,0.10)] text-brand-accent whitespace-pre"
         style={{
           fontSize: MONO_SIZE * 0.85,
         }}
@@ -121,7 +121,7 @@ function Overlay({ overlay, frame }: OverlayProps) {
         return (
           <div
             key={index}
-            className={`p-[14px_30px] ${item.selected ? "bg-[rgba(255,112,36,0.16)]" : "bg-transparent"} ${item.selected ? "text-[#FFFFFF]" : "text-[#B8B8B8]"} whitespace-pre`}
+            className={`p-[14px_30px] ${item.selected ? "bg-[rgba(255,112,36,0.16)]" : "bg-transparent"} ${item.selected ? "text-brand-text" : "text-brand-muted"} whitespace-pre`}
             style={{
               opacity,
             }}

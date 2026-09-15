@@ -22,7 +22,7 @@ export function ToolLogo({ tool, size = 220, showName }: ToolLogoProps) {
   return (
     <div className="flex flex-col items-center gap-4">
       {image}
-      <div className="[font-family:ClashDisplay-Medium] text-[42px] text-[#B8B8B8]">
+      <div className="[font-family:ClashDisplay-Medium] text-label text-brand-muted">
         {definition.name}
       </div>
     </div>

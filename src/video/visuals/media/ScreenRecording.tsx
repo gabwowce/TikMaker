@@ -33,7 +33,7 @@ export function ScreenRecording({
       : undefined;
   const videoNode =
     !src || failed ? (
-      <div className="w-full h-full flex items-center justify-center bg-[#222222] text-[#B8B8B8] [font-family:ClashDisplay-Medium] text-[28px] text-center p-6">
+      <div className="w-full h-full flex items-center justify-center bg-brand-surface text-brand-muted [font-family:ClashDisplay-Medium] text-[28px] text-center p-6">
         {src ? "Clip not found" : "No clip picked yet"}
       </div>
     ) : (

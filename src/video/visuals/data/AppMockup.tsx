@@ -18,10 +18,10 @@ type AppFrameProps = {
 };
 function AppFrame({ appTitle, children }: AppFrameProps) {
   return (
-    <div className="w-[640px] rounded-[28px] overflow-hidden bg-[#222222] [border:1px_solid_rgba(255,255,255,0.10)] [box-shadow:0_30px_60px_rgba(0,0,0,0.35)]">
+    <div className="w-[640px] rounded-[28px] overflow-hidden bg-brand-surface [border:1px_solid_rgba(255,255,255,0.10)] [box-shadow:0_30px_60px_rgba(0,0,0,0.35)]">
       <div className="p-[22px_28px] [border-bottom:1px_solid_rgba(255,255,255,0.10)] flex items-center gap-3">
-        <div className="w-3.5 h-3.5 rounded-[50%] bg-[#FF7024]" />
-        <div className="[font-family:ClashDisplay-Semibold] text-[52px] text-[#FFFFFF]">
+        <div className="w-3.5 h-3.5 rounded-[50%] bg-brand-accent" />
+        <div className="[font-family:ClashDisplay-Semibold] text-body text-brand-text">
           {appTitle}
         </div>
       </div>
@@ -38,7 +38,7 @@ function AppMockupList({ items }: AppMockupListProps) {
       {items.map((item, index) => (
         <div
           key={index}
-          className="p-[16px_20px] rounded-[14px] bg-[#292929] [font-family:ClashDisplay-Medium] text-[52px] text-[#FFFFFF]"
+          className="p-[16px_20px] rounded-[14px] bg-brand-surface-raised [font-family:ClashDisplay-Medium] text-body text-brand-text"
         >
           {item}
         </div>
@@ -55,10 +55,10 @@ type AppMockupStatProps = {
 function AppMockupStat({ stat }: AppMockupStatProps) {
   return (
     <div className="flex flex-col gap-2 items-start">
-      <div className="[font-family:ClashDisplay-Bold] text-[80px] text-[#FFFFFF]">
+      <div className="[font-family:ClashDisplay-Bold] text-title text-brand-text">
         {stat.value}
       </div>
-      <div className="[font-family:ClashDisplay-Medium] text-[42px] text-[#B8B8B8] uppercase [letter-spacing:2px]">
+      <div className="[font-family:ClashDisplay-Medium] text-label text-brand-muted uppercase [letter-spacing:2px]">
         {stat.label}
       </div>
     </div>
@@ -87,7 +87,7 @@ function AppMockupChart({ values }: AppMockupChartProps) {
         return (
           <div
             key={index}
-            className="flex-1 rounded-lg bg-[#FF7024]"
+            className="flex-1 rounded-lg bg-brand-accent"
             style={{
               height: `${height}%`,
             }}

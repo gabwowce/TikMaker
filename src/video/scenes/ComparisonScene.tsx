@@ -20,7 +20,7 @@ function Column({ side, delay, durationSeconds }: ColumnProps) {
     <EnterOnCue
       preset="slideUp"
       delay={delay}
-      className="flex-1 flex flex-col items-center gap-5 p-6 rounded-[24px] bg-[#222222] [border:1px_solid_rgba(255,255,255,0.10)]"
+      className="flex-1 flex flex-col items-center gap-5 p-6 rounded-[24px] bg-brand-surface [border:1px_solid_rgba(255,255,255,0.10)]"
     >
       {side?.label ? (
         <LabelText tone="accent" className="uppercase [letter-spacing:2px]">

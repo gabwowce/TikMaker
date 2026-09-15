@@ -37,9 +37,9 @@ export function StepsScene({
             key={index}
             preset="slideUp"
             delay={item.delay ?? cue(index + 1)}
-            className={`flex items-center gap-7 p-[24px_32px] rounded-[20px] bg-[#222222] [border:1px_solid_rgba(255,255,255,0.10)] ${item.exitAt === undefined || frame < item.exitAt ? "[visibility:visible]" : "[visibility:hidden]"}`}
+            className={`flex items-center gap-7 p-[24px_32px] rounded-[20px] bg-brand-surface [border:1px_solid_rgba(255,255,255,0.10)] ${item.exitAt === undefined || frame < item.exitAt ? "[visibility:visible]" : "[visibility:hidden]"}`}
           >
-            <div className="[font-family:Tanker-Regular] text-[80px] text-[#FF7024] min-w-22.5">
+            <div className="[font-family:Tanker-Regular] text-title text-brand-accent min-w-22.5">
               {String(index + 1).padStart(2, "0")}
             </div>
             <div className="flex flex-col gap-1">

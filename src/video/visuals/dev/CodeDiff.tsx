@@ -24,7 +24,7 @@ export function CodeDiff({ filename, lines }: CodeDiffProps) {
   return (
     <div className="w-[820px] rounded-[20px] overflow-hidden bg-[#0E0E0E] [border:1px_solid_rgba(255,255,255,0.10)] [box-shadow:0_24px_60px_rgba(0,0,0,0.55)]">
       {filename ? (
-        <div className="p-[18px_26px] bg-[#222222] [border-bottom:1px_solid_rgba(255,255,255,0.10)] [font-family:ClashDisplay-Medium] text-[28px] text-[#B8B8B8]">
+        <div className="p-[18px_26px] bg-brand-surface [border-bottom:1px_solid_rgba(255,255,255,0.10)] [font-family:ClashDisplay-Medium] text-[28px] text-brand-muted">
           {filename}
         </div>
       ) : null}

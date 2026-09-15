@@ -13,3 +13,21 @@
   --color-editor-muted: var(--editor-muted);
   --color-editor-accent: var(--editor-accent);
 }
+
+/* Video dizaino tokenai. Turi sutapti su src/video/typography/tokens.ts —
+   tai tikrina tokens.test.ts, kad dvi vietos nenukryptų. */
+@theme {
+  --color-brand-bg: #171717;
+  --color-brand-surface: #222222;
+  --color-brand-surface-raised: #292929;
+  --color-brand-text: #ffffff;
+  --color-brand-muted: #b8b8b8;
+  --color-brand-accent: #ff7024;
+
+  --text-hero: 136px;
+  --text-headline: 104px;
+  --text-title: 80px;
+  --text-body-large: 62px;
+  --text-body: 52px;
+  --text-label: 42px;
+}

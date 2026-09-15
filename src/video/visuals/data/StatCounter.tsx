@@ -40,13 +40,13 @@ export function StatCounter({
     : 0;
   return (
     <div className="flex flex-col items-center gap-4">
-      <div className="[font-family:ClashDisplay-Bold] text-[136px] text-[#FFFFFF] [line-height:1]">
+      <div className="[font-family:ClashDisplay-Bold] text-hero text-brand-text [line-height:1]">
         {prefix}
         {formatted}
         {suffix}
       </div>
       {label ? (
-        <div className="[font-family:ClashDisplay-Medium] text-[42px] text-[#B8B8B8] uppercase [letter-spacing:2px]">
+        <div className="[font-family:ClashDisplay-Medium] text-label text-brand-muted uppercase [letter-spacing:2px]">
           {label}
         </div>
       ) : null}

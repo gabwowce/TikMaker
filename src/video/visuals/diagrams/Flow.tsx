@@ -37,10 +37,10 @@ function NodeBox({ node, delay, animated }: NodeBoxProps) {
       {node.visual ? (
         <VisualRenderer visual={node.visual} />
       ) : (
-        <div className="w-[160px] h-[160px] rounded-[24px] bg-[#222222] [border:1px_solid_rgba(255,255,255,0.10)]" />
+        <div className="w-[160px] h-[160px] rounded-[24px] bg-brand-surface [border:1px_solid_rgba(255,255,255,0.10)]" />
       )}
       {node.label ? (
-        <div className="[font-family:ClashDisplay-Medium] text-[42px] text-[#B8B8B8] uppercase tracking-[1px]">
+        <div className="[font-family:ClashDisplay-Medium] text-label text-brand-muted uppercase tracking-[1px]">
           {node.label}
         </div>
       ) : null}
@@ -72,14 +72,14 @@ function Connector({ vertical, animated, delay, drawFrames }: ConnectorProps) {
       className={`relative bg-[rgba(255,255,255,0.10)] shrink-0 ${vertical ? "w-[3px]" : "w-16"} ${vertical ? "h-16" : "h-[3px]"}`}
     >
       <div
-        className={`absolute inset-0 bg-[#FF7024] ${vertical ? "[transform-origin:top]" : "[transform-origin:left]"}`}
+        className={`absolute inset-0 bg-brand-accent ${vertical ? "[transform-origin:top]" : "[transform-origin:left]"}`}
         style={{
           transform: vertical ? `scaleY(${draw})` : `scaleX(${draw})`,
         }}
       />
       {animated && framesSinceDrawn >= 0 ? (
         <div
-          className="absolute w-2.5 h-2.5 rounded-[50%] bg-[#FF7024]"
+          className="absolute w-2.5 h-2.5 rounded-[50%] bg-brand-accent"
           style={{
             left: vertical ? -3.5 : `${pulse * 100}%`,
             top: vertical ? `${pulse * 100}%` : -3.5,

@@ -59,7 +59,7 @@ const panels: Panel[] = [
 export function FloatingGlassLayers() {
   const frame = useCurrentFrame();
   return (
-    <div className="absolute inset-0 bg-[#171717] overflow-hidden">
+    <div className="absolute inset-0 bg-brand-bg overflow-hidden">
       {panels.map((panel, i) => {
         const x = interpolate(
           Math.sin((frame + panel.phase) / panel.period),

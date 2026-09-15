@@ -11,7 +11,7 @@ export function PhoneMockup({ children, scale = 1 }: PhoneMockupProps) {
         width: 420 * scale,
       }}
     >
-      <div className="relative w-full h-full rounded-[34px] overflow-hidden bg-[#171717]">
+      <div className="relative w-full h-full rounded-[34px] overflow-hidden bg-brand-bg">
         {children}
       </div>
     </div>

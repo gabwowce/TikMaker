@@ -45,7 +45,7 @@ export function Keycap({ keys, caption }: KeycapProps) {
         })}
       </div>
       {caption ? (
-        <div className="[font-family:ClashDisplay-Medium] text-[52px] text-[#B8B8B8] max-w-[820px] text-center">
+        <div className="[font-family:ClashDisplay-Medium] text-body text-brand-muted max-w-[820px] text-center">
           {caption}
         </div>
       ) : null}

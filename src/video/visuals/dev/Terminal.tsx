@@ -26,7 +26,7 @@ export function Terminal({
   const frame = useCurrentFrame();
   return (
     <div className="w-[820px] rounded-[20px] overflow-hidden bg-[#0E0E0E] [border:1px_solid_rgba(255,255,255,0.10)] [box-shadow:0_24px_60px_rgba(0,0,0,0.55)]">
-      <div className="flex items-center gap-3.5 p-[18px_24px] bg-[#222222] [border-bottom:1px_solid_rgba(255,255,255,0.10)]">
+      <div className="flex items-center gap-3.5 p-[18px_24px] bg-brand-surface [border-bottom:1px_solid_rgba(255,255,255,0.10)]">
         {["#FF5F57", "#FEBC2E", "#28C840"].map((dot) => (
           <div
             key={dot}
@@ -36,7 +36,7 @@ export function Terminal({
             }}
           />
         ))}
-        <div className="ml-2 [font-family:ClashDisplay-Medium] text-[28px] text-[#B8B8B8]">
+        <div className="ml-2 [font-family:ClashDisplay-Medium] text-[28px] text-brand-muted">
           {title}
         </div>
       </div>
@@ -64,12 +64,12 @@ export function Terminal({
               }}
             >
               {line.kind === "prompt" ? (
-                <span className="text-[#FF7024]">❯</span>
+                <span className="text-brand-accent">❯</span>
               ) : null}
               <span>{line.text}</span>
               {showCursor ? (
                 <span
-                  className="inline-block w-4.5 bg-[#FF7024]"
+                  className="inline-block w-4.5 bg-brand-accent"
                   style={{
                     height: MONO_SIZE * 0.9,
                   }}

@@ -66,7 +66,7 @@ export function ImpactText({
 }: BaseTextProps) {
   return (
     <div
-      className={`${className} [font-family:Tanker-Regular] text-[104px] [line-height:1] uppercase`}
+      className={`${className} [font-family:Tanker-Regular] text-headline [line-height:1] uppercase`}
       style={{
         color: toneColor[tone],
         textAlign: align,
@@ -92,7 +92,7 @@ export function renderHighlighted(
     highlights.some((h) => h.toLowerCase() === part.toLowerCase()) ? (
       <span
         key={index}
-        className="inline bg-[#FFFFFF] text-[#171717] p-[0.05em_0.18em] rounded-md [box-decoration-break:clone] [-webkit-box-decoration-break:clone]"
+        className="inline bg-brand-text text-brand-bg p-[0.05em_0.18em] rounded-md [box-decoration-break:clone] [-webkit-box-decoration-break:clone]"
       >
         {part}
       </span>

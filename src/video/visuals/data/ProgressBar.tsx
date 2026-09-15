@@ -16,13 +16,13 @@ export function ProgressBar({ value, max, label }: ProgressBarProps) {
   return (
     <div className="flex flex-col gap-4 w-[640px]">
       {label ? (
-        <div className="[font-family:ClashDisplay-Medium] text-[42px] text-[#B8B8B8]">
+        <div className="[font-family:ClashDisplay-Medium] text-label text-brand-muted">
           {label}
         </div>
       ) : null}
-      <div className="h-7 rounded-[999px] bg-[#222222] [border:1px_solid_rgba(255,255,255,0.10)] overflow-hidden">
+      <div className="h-7 rounded-[999px] bg-brand-surface [border:1px_solid_rgba(255,255,255,0.10)] overflow-hidden">
         <div
-          className="h-full rounded-[999px] bg-[#FF7024]"
+          className="h-full rounded-[999px] bg-brand-accent"
           style={{
             width: `${ratio * 100}%`,
           }}

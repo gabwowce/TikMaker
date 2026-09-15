@@ -54,19 +54,19 @@ export function Checklist({
         return (
           <div
             key={index}
-            className="flex items-center gap-5 p-[18px_24px] rounded-[16px] bg-[#222222] [border:1px_solid_rgba(255,255,255,0.10)]"
+            className="flex items-center gap-5 p-[18px_24px] rounded-[16px] bg-brand-surface [border:1px_solid_rgba(255,255,255,0.10)]"
             style={{
               opacity: opacity * exitOpacity,
               transform: `translateX(${translateX}px)`,
             }}
           >
             <div
-              className={`w-9 h-9 rounded-[50%] shrink-0 flex items-center justify-center text-[#FF7024] text-[20px] ${item.done === false ? "bg-transparent" : "bg-[rgba(255,_112,_36,_0.15)]"} ${item.done === false ? "[border:2px_solid_rgba(255,255,255,0.10)]" : "[border:2px_solid_#FF7024]"}`}
+              className={`w-9 h-9 rounded-[50%] shrink-0 flex items-center justify-center text-brand-accent text-[20px] ${item.done === false ? "bg-transparent" : "bg-[rgba(255,_112,_36,_0.15)]"} ${item.done === false ? "[border:2px_solid_rgba(255,255,255,0.10)]" : "[border:2px_solid_#FF7024]"}`}
             >
               {item.done === false ? "" : "✓"}
             </div>
             <div
-              className="text-[#FFFFFF]"
+              className="text-brand-text"
               style={{
                 fontFamily: family,
                 fontSize: fontSizes[size],
