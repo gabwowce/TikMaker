@@ -7,7 +7,6 @@ const LEGACY_KEYS: {
 }[] = [
   { key: "tikmaker.library", kind: "project", shape: "map" },
   { key: "tikmaker.savedScenes", kind: "scene", shape: "array" },
-  { key: "tikmaker.savedTemplates", kind: "template", shape: "array" },
   { key: "tikmaker.savedBackgrounds", kind: "background", shape: "array" },
 ];
 function entriesFrom(

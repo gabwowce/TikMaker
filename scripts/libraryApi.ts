@@ -4,7 +4,6 @@ import type { Plugin } from "vite";
 export const COLLECTIONS = {
   project: "projects",
   scene: "library/scenes",
-  template: "library/templates",
   background: "library/backgrounds",
   voiceVariant: "library/voice-variants",
 } as const;

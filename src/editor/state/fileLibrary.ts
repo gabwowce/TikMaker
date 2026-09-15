@@ -2,7 +2,6 @@ import { create } from "zustand";
 export type LibraryKind =
   | "project"
   | "scene"
-  | "template"
   | "background"
   | "voiceVariant";
 const globs: Record<
@@ -20,9 +19,6 @@ const globs: Record<
   scene: import.meta.glob<{
     default: unknown;
   }>("../../../library/scenes/*.json", { eager: true }),
-  template: import.meta.glob<{
-    default: unknown;
-  }>("../../../library/templates/*.json", { eager: true }),
   background: import.meta.glob<{
     default: unknown;
   }>("../../../library/backgrounds/*.json", { eager: true }),
@@ -35,7 +31,6 @@ const SAVE_JOURNAL_KEY = "tikmaker.pending-save-journal.v1";
 const ALL_KINDS: LibraryKind[] = [
   "project",
   "scene",
-  "template",
   "background",
   "voiceVariant",
 ];
@@ -264,7 +259,6 @@ if (typeof window !== "undefined") {
 }
 export type EditorPreferences = {
   hiddenSceneTypes: string[];
-  hiddenTemplateIds: string[];
   hiddenBackgroundIds: string[];
   voiceSpeed?: number;
   voiceStability?: number;
@@ -276,7 +270,6 @@ export type EditorPreferences = {
 };
 const DEFAULT_PREFERENCES: EditorPreferences = {
   hiddenSceneTypes: [],
-  hiddenTemplateIds: [],
   hiddenBackgroundIds: [],
 };
 const preferencesGlob = import.meta.glob<{
@@ -293,14 +286,13 @@ function readPreferencesFromDisk(): EditorPreferences {
     ...DEFAULT_PREFERENCES,
     ...raw,
     hiddenSceneTypes: raw.hiddenSceneTypes ?? [],
-    hiddenTemplateIds: raw.hiddenTemplateIds ?? [],
     hiddenBackgroundIds: raw.hiddenBackgroundIds ?? [],
   };
 }
 type PreferencesState = EditorPreferences & {
   set: (patch: Partial<EditorPreferences>) => void;
   toggleHidden: (
-    list: "hiddenSceneTypes" | "hiddenTemplateIds" | "hiddenBackgroundIds",
+    list: "hiddenSceneTypes" | "hiddenBackgroundIds",
     id: string,
   ) => void;
 };
