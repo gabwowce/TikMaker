@@ -1,12 +1,7 @@
 import { useCurrentFrame } from "remotion";
-import {
-  BodyLargeText,
-  LabelText,
-  renderHighlighted,
-  Title,
-} from "../typography/Text";
+import { BodyLargeText, LabelText } from "../typography/Text";
 import { EnterOnCue } from "./EnterOnCue";
-import { SceneCue, SceneFrame, useSceneCues } from "./SceneFrame";
+import { SceneFrame, SceneHeadline, useSceneCues } from "./SceneFrame";
 import type { SceneComponentProps } from "./types";
 export function StepsScene({
   content,
@@ -23,13 +18,11 @@ export function StepsScene({
       textZone="center"
       gap={48}
     >
-      {content.headline ? (
-        <SceneCue motion={motion} delay={cue(0)}>
-          <Title>
-            {renderHighlighted(content.headline, content.highlights)}
-          </Title>
-        </SceneCue>
-      ) : null}
+      <SceneHeadline
+        content={content}
+        motion={motion}
+        durationSeconds={durationSeconds}
+      />
 
       <div className="flex flex-col gap-6 w-full">
         {(content.items ?? []).map((item, index) => (

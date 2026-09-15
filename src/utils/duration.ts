@@ -1,6 +1,23 @@
 import type { VideoProject } from "../schema/project";
-import type { Scene } from "../schema/scene";
+import type { PositionedVisualEntry, Scene } from "../schema/scene";
 import { resolveSceneDuration } from "./pacing";
+
+// Varnelių sąrašo eilutės turi savo exitAt, todėl sluoksnis gali baigtis
+// vėliau nei jam nurodyta. Skaičiuojama vienoje vietoje, nes to reikia ir
+// video ilgiui, ir sprendimui, ar sluoksnį kelti iš scenos.
+export function layerExitFrame(
+  entry: PositionedVisualEntry,
+  sceneDurationInFrames: number,
+): number {
+  const own = entry.exitAt ?? sceneDurationInFrames;
+  if (entry.visual.type !== "checklist") return own;
+  return Math.max(
+    own,
+    ...entry.visual.items.map(
+      (item) => item.exitAt ?? entry.exitAt ?? sceneDurationInFrames,
+    ),
+  );
+}
 export type SceneTiming = {
   scene: Scene;
   from: number;
@@ -52,21 +69,11 @@ export function projectDurationInFrames(project: VideoProject): number {
         end,
         timing.from + (block.exitAt ?? timing.durationInFrames),
       );
-    for (const visual of content.visuals ?? []) {
+    for (const visual of content.visuals ?? [])
       end = Math.max(
         end,
-        timing.from + (visual.exitAt ?? timing.durationInFrames),
+        timing.from + layerExitFrame(visual, timing.durationInFrames),
       );
-      if (visual.visual.type === "checklist") {
-        for (const item of visual.visual.items) {
-          end = Math.max(
-            end,
-            timing.from +
-              (item.exitAt ?? visual.exitAt ?? timing.durationInFrames),
-          );
-        }
-      }
-    }
     for (const item of content.items ?? [])
       end = Math.max(
         end,

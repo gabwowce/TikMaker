@@ -17,8 +17,6 @@ export function voDurationSeconds(vo: string): number {
 function onScreenText(scene: Scene): string {
   const c = scene.content;
   const parts: string[] = [];
-  if (c.eyebrow) parts.push(c.eyebrow);
-  if (c.headline) parts.push(c.headline);
   for (const line of c.richHeadline ?? []) parts.push(line.text);
   for (const block of c.blocks ?? []) parts.push(block.text);
   for (const item of c.items ?? []) {

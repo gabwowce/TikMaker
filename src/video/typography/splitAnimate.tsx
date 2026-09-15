@@ -3,6 +3,7 @@ import { useCurrentFrame, useVideoConfig } from "remotion";
 import type { EntrancePreset, ExitPreset } from "../../schema/scene";
 import { enter } from "../motion/entrances";
 import { exitStyle as computeExitStyle } from "../motion/exits";
+import { pillClassName } from "./Text";
 
 export type SplitBy = "word" | "letter" | "line";
 export const WORD_STAGGER_FRAMES = 3;
@@ -132,7 +133,7 @@ export function AnimatedUnit({
   });
   return (
     <span
-      className={`whitespace-pre ${highlighted ? "inline bg-brand-text text-brand-bg p-[0.05em_0.18em] rounded-md [box-decoration-break:clone] [-webkit-box-decoration-break:clone]" : "inline-block"}`}
+      className={`whitespace-pre ${highlighted ? pillClassName : "inline-block"}`}
       style={{
         ...ownStyle,
         ...style,

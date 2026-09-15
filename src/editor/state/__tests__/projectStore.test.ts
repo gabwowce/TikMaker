@@ -24,7 +24,12 @@ beforeEach(() => {
     type: "visual-explainer",
     background: "solid-dark",
     vo: "Original narration",
-    content: { headline: "Original title", eyebrow: "Keep this eyebrow" },
+    content: {
+      richHeadline: [
+        { text: "Keep this eyebrow", size: "label" as const },
+        { text: "Original title", size: "headline" as const },
+      ],
+    },
     motion: { entrance: "fade", transition: "cut", sfx: "old-sound" },
   }));
   useProjectStore.getState().loadProject({
@@ -46,9 +51,8 @@ describe("scene updates", () => {
     actions.updateSceneEntrance("first", "slideUp");
     const [first, unchanged] = useProjectStore.getState().project.scenes;
     expect(first.content.visuals?.[0]).toMatchObject({ x: 25, y: 60 });
-    expect(first.content.headline).toBe("Original title");
-    expect(first.content.eyebrow).toBe("Keep this eyebrow");
     expect(first.content.richHeadline?.[0].text).toBe("New title");
+    expect(first.content.richHeadline).toHaveLength(1);
     expect(first.motion).toEqual({
       entrance: "slideUp",
       transition: "cut",

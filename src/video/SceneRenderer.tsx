@@ -3,7 +3,7 @@ import { AbsoluteFill, Sequence, useCurrentFrame } from "remotion";
 import { getSceneDefinition } from "../registries/sceneRegistry";
 import type { VideoProject } from "../schema/project";
 import type { Scene } from "../schema/scene";
-import { computeSceneTimings } from "../utils/duration";
+import { computeSceneTimings, layerExitFrame } from "../utils/duration";
 import {
   hoistedOwnership,
   resolveHoistedLinkGroups,
@@ -100,15 +100,7 @@ export function SceneRenderer({ project }: SceneRendererProps) {
     );
     const overflowVisuals = (scene.content.visuals ?? [])
       .map((visual) => {
-        const effectiveExit =
-          visual.visual.type === "checklist"
-            ? Math.max(
-                visual.exitAt ?? durationInFrames,
-                ...visual.visual.items.map(
-                  (item) => item.exitAt ?? visual.exitAt ?? durationInFrames,
-                ),
-              )
-            : (visual.exitAt ?? durationInFrames);
+        const effectiveExit = layerExitFrame(visual, durationInFrames);
         return effectiveExit === visual.exitAt
           ? visual
           : { ...visual, exitAt: effectiveExit };
@@ -211,7 +203,6 @@ export function SceneRenderer({ project }: SceneRendererProps) {
       const Component = getSceneDefinition(scene.type).component;
       const content: Scene["content"] = {
         ...scene.content,
-        headline: undefined,
         richHeadline: [],
         blocks: [],
         visuals: [],

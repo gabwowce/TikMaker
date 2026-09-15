@@ -59,35 +59,54 @@ const LEGACY_HEADLINE_SIZE: Record<string, RichHeadlineLine["size"]> = {
   comparison: "title",
   steps: "title",
 };
-export function legacyTextAsLines(scene: Scene): Scene {
-  const { eyebrow, headline, highlights, ...content } = scene.content;
-  if (!eyebrow && !headline) return scene;
-  if ((scene.content.richHeadline?.length ?? 0) > 0) {
-    return {
-      ...scene,
-      content: { ...content, richHeadline: scene.content.richHeadline },
+// Senas formatas laikė tekstą kaip content.eyebrow + content.headline.
+// Verčiama PRIEŠ validaciją, nes schemoje tų laukų nebėra ir Zod juos
+// nutylėdamas nuvalytų — senas projektas liktų be teksto.
+function legacyTextAsLines(json: unknown): unknown {
+  if (!json || typeof json !== "object") return json;
+  const project = json as { scenes?: unknown[] };
+  if (!Array.isArray(project.scenes)) return json;
+  for (const raw of project.scenes) {
+    if (!raw || typeof raw !== "object") continue;
+    const scene = raw as {
+      type?: unknown;
+      content?: {
+        eyebrow?: unknown;
+        headline?: unknown;
+        highlights?: unknown;
+        richHeadline?: unknown;
+      };
     };
+    const content = scene.content;
+    if (!content) continue;
+    const { eyebrow, headline, highlights } = content;
+    delete content.eyebrow;
+    delete content.headline;
+    delete content.highlights;
+    if (Array.isArray(content.richHeadline) && content.richHeadline.length)
+      continue;
+    const lines: RichHeadlineLine[] = [];
+    if (typeof eyebrow === "string" && eyebrow)
+      lines.push({
+        text: eyebrow,
+        size: "label",
+        color: colors.accent,
+        letterSpacing: 4,
+      });
+    if (typeof headline === "string" && headline)
+      lines.push({
+        text: headline,
+        size:
+          LEGACY_HEADLINE_SIZE[String(scene.type ?? "")] ?? "headline",
+        ...(Array.isArray(highlights) && highlights.length
+          ? { highlights: highlights as string[] }
+          : {}),
+      });
+    if (lines.length) content.richHeadline = lines;
   }
-  const lines: RichHeadlineLine[] = [];
-  if (eyebrow) {
-    lines.push({
-      text: eyebrow,
-      size: "label",
-      color: colors.accent,
-      letterSpacing: 4,
-    });
-  }
-  if (headline) {
-    lines.push({
-      text: headline,
-      size: LEGACY_HEADLINE_SIZE[scene.type] ?? "headline",
-      ...(highlights?.length ? { highlights } : {}),
-    });
-  }
-  return { ...scene, content: { ...content, richHeadline: lines } };
+  return json;
 }
-export function normalizeScene(rawScene: Scene): Scene {
-  const scene = legacyTextAsLines(rawScene);
+export function normalizeScene(scene: Scene): Scene {
   const existing = scene.content.visuals ?? [];
   const split = existing.flatMap(splitCornerProps);
   if (split.length === existing.length) return scene;
@@ -146,5 +165,7 @@ function clampPositions(json: unknown): unknown {
   return json;
 }
 export function parseProject(json: unknown): VideoProject {
-  return normalizeProject(videoProjectSchema.parse(clampPositions(json)));
+  return normalizeProject(
+    videoProjectSchema.parse(legacyTextAsLines(clampPositions(json))),
+  );
 }

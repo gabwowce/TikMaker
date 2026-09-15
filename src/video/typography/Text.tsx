@@ -77,27 +77,7 @@ export function ImpactText({
     </div>
   );
 }
-export function renderHighlighted(
-  text: string | undefined,
-  highlights?: string[],
-): ReactNode {
-  if (!text) return text;
-  if (!highlights || highlights.length === 0) return text;
-  const pattern = new RegExp(
-    `(${highlights.map((h) => h.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")).join("|")})`,
-    "gi",
-  );
-  const parts = text.split(pattern);
-  return parts.map((part, index) =>
-    highlights.some((h) => h.toLowerCase() === part.toLowerCase()) ? (
-      <span
-        key={index}
-        className="inline bg-brand-text text-brand-bg p-[0.05em_0.18em] rounded-md [box-decoration-break:clone] [-webkit-box-decoration-break:clone]"
-      >
-        {part}
-      </span>
-    ) : (
-      <Fragment key={index}>{part}</Fragment>
-    ),
-  );
-}
+// Žodžio paryškinimas visada yra dėžutė (šviesus fonas, tamsus tekstas),
+// niekada ne spalvos keitimas. Vienintelė vieta, kur tai aprašyta.
+export const pillClassName =
+  "inline bg-brand-text text-brand-bg p-[0.05em_0.18em] rounded-md [box-decoration-break:clone] [-webkit-box-decoration-break:clone]";

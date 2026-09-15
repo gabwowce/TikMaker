@@ -12,6 +12,10 @@ import {
   computeSceneTimings,
   projectDurationInFrames,
 } from "../../utils/duration";
+import {
+  sceneOnScreenText,
+  withOnScreenText,
+} from "../../utils/projectStoryPlan";
 import { resolveTextEntranceSfx } from "../../video/motion/sfxDefaults";
 import { fontSizes } from "../../video/typography/tokens";
 import { SfxSelect } from "../inspector/SfxSelect";
@@ -340,32 +344,16 @@ export function TimelineObjectPanel({
     basic = (
       <>
         <Fieldset legend="Content">
-          <Field label="Eyebrow">
-            <TextInput
-              className="w-full"
-              value={scene.content.eyebrow ?? ""}
-              onChange={(event) =>
-                updateScene(scene.id, {
-                  content: {
-                    ...scene.content,
-                    eyebrow: event.target.value || undefined,
-                  },
-                })
-              }
-            />
-          </Field>
-          <Field label="Headline">
+          <Field label="On-screen text">
             <Textarea
-              rows={3}
+              rows={4}
               className="w-full"
-              value={scene.content.headline ?? ""}
+              value={sceneOnScreenText(scene)}
               onChange={(event) =>
-                updateScene(scene.id, {
-                  content: {
-                    ...scene.content,
-                    headline: event.target.value || undefined,
-                  },
-                })
+                updateScene(
+                  scene.id,
+                  withOnScreenText(scene, event.target.value),
+                )
               }
             />
           </Field>

@@ -49,8 +49,12 @@ describe("resolveSceneDuration", () => {
     const wordy = resolveSceneDuration(
       scene({
         content: {
-          headline:
-            "keturi penki šeši septyni aštuoni devyni dešimt vienuolika dvylika trylika",
+          richHeadline: [
+            {
+              text: "keturi penki šeši septyni aštuoni devyni dešimt vienuolika dvylika trylika",
+              size: "headline",
+            },
+          ],
         },
       }),
     );

@@ -1,28 +1,22 @@
 import type { VideoProject } from "../schema/project";
 import type { RichHeadlineLine, Scene } from "../schema/scene";
 export function sceneOnScreenText(scene: Scene): string {
-  if (scene.content.richHeadline?.length)
-    return scene.content.richHeadline.map((line) => line.text).join("\n");
-  return scene.content.headline ?? "";
+  return (scene.content.richHeadline ?? [])
+    .map((line) => line.text)
+    .join("\n");
 }
 export function withOnScreenText(scene: Scene, value: string): Scene {
-  const lines = value.split("\n");
-  const existing = scene.content.richHeadline;
-  if (existing?.length) {
-    const fallback: RichHeadlineLine = existing[existing.length - 1];
-    const richHeadline = lines.map((text, index) => ({
-      ...(existing[index] ?? fallback),
-      text,
-    }));
-    return {
-      ...scene,
-      content: { ...scene.content, headline: undefined, richHeadline },
-    };
-  }
-  return {
-    ...scene,
-    content: { ...scene.content, headline: value || undefined },
+  const existing = scene.content.richHeadline ?? [];
+  // Nauja eilutė paveldi paskutinės stilių, todėl teksto redagavimas
+  // paprastame lauke nesunaikina eilučių apipavidalinimo.
+  const fallback: RichHeadlineLine = existing[existing.length - 1] ?? {
+    text: "",
+    size: "headline",
   };
+  const richHeadline = value
+    .split("\n")
+    .map((text, index) => ({ ...(existing[index] ?? fallback), text }));
+  return { ...scene, content: { ...scene.content, richHeadline } };
 }
 export function projectPlanJson(project: VideoProject): string {
   return JSON.stringify(

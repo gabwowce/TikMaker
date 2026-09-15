@@ -13,9 +13,7 @@ import {
 
 function describe(scene: ReturnType<typeof instantiateSavedScene>): string {
   const bits: string[] = [getSceneDefinition(scene.type).name];
-  const headline =
-    scene.content.headline ??
-    scene.content.richHeadline?.map((l) => l.text).join(" ");
+  const headline = scene.content.richHeadline?.map((l) => l.text).join(" ");
   if (headline)
     bits.push(`“${headline.slice(0, 40)}${headline.length > 40 ? "…" : ""}”`);
   const layers = scene.content.visuals?.length ?? 0;

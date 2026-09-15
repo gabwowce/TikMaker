@@ -1,14 +1,9 @@
 import type { SideContent } from "../../schema/scene";
 import { resolveExplicitSfx } from "../motion/sfxDefaults";
 import { AnimatedVisual } from "../typography/AnimatedVisual";
-import {
-  BodyText,
-  LabelText,
-  renderHighlighted,
-  Title,
-} from "../typography/Text";
+import { BodyText, LabelText, Title } from "../typography/Text";
 import { EnterOnCue } from "./EnterOnCue";
-import { SceneCue, SceneFrame, useSceneCues } from "./SceneFrame";
+import { SceneFrame, SceneHeadline, useSceneCues } from "./SceneFrame";
 import type { SceneComponentProps } from "./types";
 type ColumnProps = {
   side?: SideContent;
@@ -66,13 +61,11 @@ export function ComparisonScene({
       textZone="center"
       gap={40}
     >
-      {content.headline ? (
-        <SceneCue motion={motion} delay={cue(0)}>
-          <Title>
-            {renderHighlighted(content.headline, content.highlights)}
-          </Title>
-        </SceneCue>
-      ) : null}
+      <SceneHeadline
+        content={content}
+        motion={motion}
+        durationSeconds={durationSeconds}
+      />
 
       <div className="flex gap-6 w-full">
         <Column

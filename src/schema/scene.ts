@@ -273,9 +273,6 @@ const baseSceneFields = {
   notes: z.string().optional(),
   background: sceneBackgroundSchema,
   content: z.object({
-    eyebrow: z.string().optional(),
-    headline: z.string().optional(),
-    highlights: z.array(z.string()).optional(),
     left: sideContentSchema.optional(),
     right: sideContentSchema.optional(),
     items: z.array(stepItemSchema).optional(),

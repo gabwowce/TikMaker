@@ -260,7 +260,9 @@ export const useProjectStore = create<ProjectStore>((set, get) => ({
         plan: { role: planRoleFor(type), purpose: def.description },
         durationSeconds: undefined,
         background,
-        content: { headline: "New headline" },
+        content: {
+          richHeadline: [{ text: "New headline", size: "headline" }],
+        },
         motion: { entrance: "fade", transition: "cut" },
       };
       return {

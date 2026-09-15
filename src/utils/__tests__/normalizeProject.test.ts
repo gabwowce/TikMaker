@@ -123,7 +123,6 @@ describe("parseProject", () => {
     expect(project.scenes[0].content.richHeadline?.[0].highlights).toEqual([
       "greitai",
     ]);
-    expect(project.scenes[0].content.highlights).toBeUndefined();
   });
   it("leaves a scene that already uses text lines alone", () => {
     const project = parseProject({
@@ -143,7 +142,6 @@ describe("parseProject", () => {
     expect(project.scenes[0].content.richHeadline?.map((l) => l.text)).toEqual([
       "tikroji",
     ]);
-    expect(project.scenes[0].content.headline).toBeUndefined();
   });
   it("throws on genuinely malformed data rather than inventing a project", () => {
     expect(() => parseProject({ nope: true })).toThrow();

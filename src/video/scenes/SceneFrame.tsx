@@ -7,6 +7,7 @@ import {
 } from "../layout/layoutPresets";
 import { SceneSfx } from "../motion/SceneSfx";
 import { BlockLayer } from "../typography/BlockLayer";
+import { RichHeadline } from "../typography/RichHeadline";
 import { safeAreaPadding } from "../typography/SafeArea";
 import { VisualsLayer } from "../typography/VisualsLayer";
 import {
@@ -66,6 +67,30 @@ export function SceneFrame({
       />
       <SceneSfx motion={motion} durationSeconds={durationSeconds} />
     </AbsoluteFill>
+  );
+}
+// Scenos antraštė. Po parseProject visas tekstas yra richHeadline, todėl
+// atskiro content.headline kelio nebėra — septynios scenos piešė tą patį.
+export function SceneHeadline({
+  content,
+  motion,
+  durationSeconds,
+}: {
+  content: SceneComponentProps["content"];
+  motion: SceneComponentProps["motion"];
+  durationSeconds: number;
+}) {
+  if (!content.richHeadline?.length) return null;
+  return (
+    <RichHeadline
+      lines={content.richHeadline}
+      stagger={motion?.stagger}
+      baseDelay={sceneStartDelay(motion)}
+      motion={motion}
+      durationSeconds={durationSeconds}
+      x={content.richHeadlineX}
+      y={content.richHeadlineY}
+    />
   );
 }
 export function useSceneCues(motion: SceneComponentProps["motion"]) {
