@@ -17,22 +17,22 @@ const globs: Record<
 > = {
   project: import.meta.glob<{
     default: unknown;
-  }>("../../../projects/*.json", { eager: true }),
+  }>("../../../db/projects/*.json", { eager: true }),
   storyboard: import.meta.glob<{
     default: unknown;
-  }>("../../../storyboards/*.json", { eager: true }),
+  }>("../../../db/storyboards/*.json", { eager: true }),
   scene: import.meta.glob<{
     default: unknown;
-  }>("../../../library/scenes/*.json", { eager: true }),
+  }>("../../../db/scenes/*.json", { eager: true }),
   template: import.meta.glob<{
     default: unknown;
-  }>("../../../library/templates/*.json", { eager: true }),
+  }>("../../../db/templates/*.json", { eager: true }),
   background: import.meta.glob<{
     default: unknown;
-  }>("../../../library/backgrounds/*.json", { eager: true }),
+  }>("../../../db/backgrounds/*.json", { eager: true }),
   voiceVariant: import.meta.glob<{
     default: unknown;
-  }>("../../../library/voice-variants/*.json", { eager: true }),
+  }>("../../../db/voice-variants/*.json", { eager: true }),
 };
 const diskCache = new Map<LibraryKind, unknown[]>();
 const SAVE_JOURNAL_KEY = "tikmaker.pending-save-journal.v1";
@@ -190,6 +190,7 @@ async function writeEntry(
 }
 const timers = new Map<string, ReturnType<typeof setTimeout>>();
 const AUTOSAVE_DELAY = 400;
+
 export function scheduleSave(
   kind: LibraryKind,
   data: {
@@ -209,6 +210,7 @@ export function scheduleSave(
     }, AUTOSAVE_DELAY),
   );
 }
+
 export function saveNow(
   kind: LibraryKind,
   data: {
@@ -287,7 +289,7 @@ const DEFAULT_PREFERENCES: EditorPreferences = {
 };
 const preferencesGlob = import.meta.glob<{
   default: unknown;
-}>("../../../library/preferences.json", { eager: true });
+}>("../../../db/preferences.json", { eager: true });
 let primedPreferences: Partial<EditorPreferences> | null = null;
 function readPreferencesFromDisk(): EditorPreferences {
   const module = Object.values(preferencesGlob)[0];

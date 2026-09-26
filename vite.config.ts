@@ -13,12 +13,12 @@ import {
 import { voiceApiPlugin } from "./scripts/voiceApi";
 loadEnv({ path: path.resolve(__dirname, ".env.local") });
 const customAssetsDir = path.resolve(__dirname, "public/assets/custom");
-const manifestPath = path.join(customAssetsDir, "manifest.json");
+const manifestPath = path.resolve(__dirname, "db/custom-assets.json");
 const customSfxDir = path.resolve(__dirname, "public/assets/custom-sfx");
-const sfxManifestPath = path.resolve(__dirname, "src/config/customSfx.json");
+const sfxManifestPath = path.resolve(__dirname, "db/custom-sfx.json");
 const sfxOverridesPath = path.resolve(
   __dirname,
-  "src/config/sfxOverrides.json",
+  "db/sfx-overrides.json",
 );
 type CustomAsset = {
   id: string;
@@ -474,13 +474,11 @@ export default defineConfig({
   },
   server: {
     port: 5173,
+    proxy: { "/api": "http://localhost:3001" },
     watch: {
       ignored: [
-        path.resolve(__dirname, "projects") + "/**",
-        path.resolve(__dirname, "storyboards") + "/**",
-        path.resolve(__dirname, "library") + "/**",
+        path.resolve(__dirname, "db") + "/**",
         path.resolve(__dirname, "out") + "/**",
-        path.resolve(__dirname, "src/config/customSfx.json"),
       ],
     },
   },

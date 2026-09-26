@@ -4,7 +4,7 @@ import { fileURLToPath } from "node:url";
 import { isVideoFile, transcodeForScrubbing } from "./transcodeRecording";
 const ROOT = process.cwd();
 const CUSTOM_DIR = path.join(ROOT, "public", "assets", "custom");
-const MANIFEST = path.join(CUSTOM_DIR, "manifest.json");
+const MANIFEST = path.join(ROOT, "db", "custom-assets.json");
 type CustomAsset = {
   id: string;
   label: string;

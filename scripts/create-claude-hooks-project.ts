@@ -2,7 +2,7 @@ import fs from "node:fs";
 import path from "node:path";
 const root = process.cwd();
 const source = JSON.parse(
-  fs.readFileSync(path.join(root, "projects", "project-mtii3v8d.json"), "utf8"),
+  fs.readFileSync(path.join(root, "db", "projects", "project-mtii3v8d.json"), "utf8"),
 );
 const output = structuredClone(source);
 output.id = "claude-code-browser-acceptance-tests";
@@ -115,6 +115,7 @@ output.audioClips = (output.audioClips ?? []).filter(
 );
 const target = path.join(
   root,
+  "db",
   "projects",
   "claude-code-browser-acceptance-tests.json",
 );

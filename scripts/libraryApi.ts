@@ -2,15 +2,15 @@ import fs from "node:fs";
 import path from "node:path";
 import type { Plugin } from "vite";
 export const COLLECTIONS = {
-  project: "projects",
-  storyboard: "storyboards",
-  scene: "library/scenes",
-  template: "library/templates",
-  background: "library/backgrounds",
-  voiceVariant: "library/voice-variants",
+  project: "db/projects",
+  storyboard: "db/storyboards",
+  scene: "db/scenes",
+  template: "db/templates",
+  background: "db/backgrounds",
+  voiceVariant: "db/voice-variants",
 } as const;
 export type CollectionKind = keyof typeof COLLECTIONS;
-const PREFERENCES_FILE = "library/preferences.json";
+const PREFERENCES_FILE = "db/preferences.json";
 const HISTORY_LIMIT = 100;
 export function isCollectionKind(value: unknown): value is CollectionKind {
   return typeof value === "string" && value in COLLECTIONS;
@@ -77,7 +77,7 @@ export function createLibraryApi(root: string) {
     remove(kind: CollectionKind, id: string) {
       const target = fileFor(kind, id);
       if (!fs.existsSync(target)) return null;
-      const trash = path.resolve(root, "library/.trash", kind);
+      const trash = path.resolve(root, "db/.trash", kind);
       fs.mkdirSync(trash, { recursive: true });
       const destination = path.join(trash, `${Date.now()}-${slugify(id)}.json`);
       fs.renameSync(target, destination);
@@ -143,7 +143,7 @@ export function createLibraryApi(root: string) {
       return JSON.parse(fs.readFileSync(target, "utf-8"));
     },
     trash(kind: CollectionKind) {
-      const directory = path.resolve(root, "library/.trash", kind);
+      const directory = path.resolve(root, "db/.trash", kind);
       if (!fs.existsSync(directory)) return [];
       return fs
         .readdirSync(directory)
@@ -172,7 +172,7 @@ export function createLibraryApi(root: string) {
         .sort((a, b) => b.deletedAt - a.deletedAt);
     },
     restore(kind: CollectionKind, file: string) {
-      const directory = path.resolve(root, "library/.trash", kind);
+      const directory = path.resolve(root, "db/.trash", kind);
       const source = path.resolve(directory, file);
       if (!source.startsWith(path.resolve(directory) + path.sep))
         throw new Error("Invalid trash file");

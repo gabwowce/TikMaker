@@ -1,13 +1,7 @@
 import { create } from "zustand";
+import type { EntrancePreset, ExitPreset } from "../../schema/scene";
+import type { SfxOverrides } from "../../schema/sfxOverrides";
 import type { SfxDefaultKind } from "../../video/motion/sfxDefaults";
-type PresetMap = {
-  entrance?: Record<string, string>;
-  exit?: Record<string, string>;
-};
-export type SfxOverrides = {
-  content?: PresetMap;
-  visual?: PresetMap;
-};
 type SfxOverridesState = {
   overrides: SfxOverrides;
   loaded: boolean;
@@ -16,12 +10,12 @@ type SfxOverridesState = {
   load: () => Promise<void>;
   setEntranceDefault: (
     kind: SfxDefaultKind,
-    preset: string,
+    preset: EntrancePreset,
     sfxId: string | undefined,
   ) => Promise<void>;
   setExitDefault: (
     kind: SfxDefaultKind,
-    preset: string,
+    preset: ExitPreset,
     sfxId: string | undefined,
   ) => Promise<void>;
 };

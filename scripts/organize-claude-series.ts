@@ -1,8 +1,8 @@
 import fs from "node:fs";
 import path from "node:path";
 const root = process.cwd();
-const projects = path.resolve(root, "projects");
-const trash = path.resolve(root, "library", ".trash", "project");
+const projects = path.resolve(root, "db/projects");
+const trash = path.resolve(root, "db", ".trash", "project");
 if (!projects.startsWith(path.resolve(root) + path.sep))
   throw new Error("Invalid projects directory");
 if (!trash.startsWith(path.resolve(root) + path.sep))

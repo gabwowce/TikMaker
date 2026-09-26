@@ -8,7 +8,7 @@ if (!projectPathArg) {
     "Usage: npm run render:project -- <path-to-project.json> [output.mp4]",
   );
   console.error(
-    "Example: npm run render:project -- projects/template-showcase.json out/showcase.mp4",
+    "Example: npm run render:project -- db/projects/template-showcase.json out/showcase.mp4",
   );
   process.exit(1);
 }

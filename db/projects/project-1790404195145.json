@@ -1,0 +1,38 @@
+{
+  "id": "project-1790404195145",
+  "title": "new",
+  "fps": 30,
+  "width": 1080,
+  "height": 1920,
+  "scenes": [
+    {
+      "id": "scene-pik2gam",
+      "plan": {
+        "role": "hook",
+        "purpose": "Strong opening statement or question."
+      },
+      "durationSeconds": 2.033333333333333,
+      "background": "solid-dark",
+      "content": {
+        "richHeadline": [
+          {
+            "text": "New headline",
+            "size": "hero",
+            "delay": 0,
+            "exitAt": 61,
+            "exit": "fade",
+            "splitDuration": 25,
+            "lane": 0
+          }
+        ]
+      },
+      "motion": {
+        "entrance": "fade",
+        "transition": "cut"
+      },
+      "type": "hook-centered"
+    }
+  ],
+  "savedAt": 1790404330033,
+  "audioClips": []
+}

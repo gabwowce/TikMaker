@@ -5,6 +5,7 @@ import {
   type SfxDefinition,
   type SfxGroup,
 } from "../../registries/sfxRegistry";
+import type { EntrancePreset, ExitPreset } from "../../schema/scene";
 import type { SfxDefaultKind } from "../../video/motion/sfxDefaults";
 import { useCustomSfxStore } from "../state/customSfxStore";
 import { useProjectStore } from "../state/projectStore";
@@ -20,7 +21,7 @@ const sfxGroups: SfxGroup[] = [
   "success",
   "misc",
 ];
-const entrancePresets = [
+const entrancePresets: EntrancePreset[] = [
   "slideUp",
   "slideDown",
   "slideLeft",
@@ -29,7 +30,7 @@ const entrancePresets = [
   "pop",
   "fade",
 ];
-const exitPresets = [
+const exitPresets: ExitPreset[] = [
   "slideUp",
   "slideDown",
   "slideLeft",

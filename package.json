@@ -4,7 +4,6 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "vite",
     "build": "vite build",
     "studio": "remotion studio",
     "render": "remotion render",
@@ -13,13 +12,15 @@
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "test:watch": "vitest",
-    "recordings:optimize": "tsx scripts/optimizeRecordings.ts"
+    "recordings:optimize": "tsx scripts/optimizeRecordings.ts",
+    "dev": "concurrently -n web,api \"vite\" \"tsx watch server/index.ts\""
   },
   "dependencies": {
     "@mantine/core": "7.17.8",
     "@mantine/hooks": "7.17.8",
     "@remotion/cli": "4.0.290",
     "@remotion/player": "4.0.290",
+    "express": "^5.2.1",
     "react": "18.3.1",
     "react-dom": "18.3.1",
     "remotion": "4.0.290",
@@ -29,11 +30,15 @@
   "devDependencies": {
     "@remotion/tailwind-v4": "4.0.290",
     "@tailwindcss/postcss": "4.1.18",
+    "@types/express": "^5.0.6",
     "@types/react": "18.3.1",
     "@types/react-dom": "18.3.1",
+    "@types/supertest": "^7.2.1",
     "@vitejs/plugin-react": "^4.3.1",
+    "concurrently": "^10.0.5",
     "dotenv": "^16.4.5",
     "prettier": "3.8.1",
+    "supertest": "^7.3.0",
     "tailwindcss": "4.1.18",
     "tsx": "^4.16.2",
     "typescript": "5.5.4",

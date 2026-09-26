@@ -1,4 +1,5 @@
-import sfxOverrides from "../../config/sfxOverrides.json";
+import sfxOverrides from "../../../db/sfx-overrides.json";
+import { sfxOverridesSchema } from "../../schema/sfxOverrides";
 import { getSfx } from "../../registries/sfxRegistry";
 import type {
   EntrancePreset,
@@ -29,17 +30,9 @@ const visualEntranceDefaultsBase: Partial<Record<EntrancePreset, string>> = {
 const visualExitDefaultsBase: Partial<Record<ExitPreset, string>> = {
   ...contentExitDefaultsBase,
 };
-type SfxOverridesFile = {
-  content?: {
-    entrance?: Record<string, string>;
-    exit?: Record<string, string>;
-  };
-  visual?: {
-    entrance?: Record<string, string>;
-    exit?: Record<string, string>;
-  };
-};
-const overrides = sfxOverrides as SfxOverridesFile;
+// parse, not `as`: a stale key (an animation that was renamed) fails here
+// loudly instead of the sound silently never playing.
+const overrides = sfxOverridesSchema.parse(sfxOverrides);
 const entranceDefaultsByKind: Record<
   SfxDefaultKind,
   Partial<Record<EntrancePreset, string>>

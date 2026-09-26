@@ -3,7 +3,7 @@ import path from "node:path";
 const root = process.cwd();
 const source = JSON.parse(
   fs.readFileSync(
-    path.join(root, "projects", "claude-code-hooks.json"),
+    path.join(root, "db", "projects", "claude-code-hooks.json"),
     "utf8",
   ),
 );
@@ -107,6 +107,6 @@ output.scenes = output.scenes.map((scene: any, index: number) => {
 output.audioClips = (output.audioClips ?? []).filter(
   (clip: any) => !clip.sfxId.startsWith("vo-"),
 );
-const target = path.join(root, "projects", "claude-code-hooks-explained.json");
+const target = path.join(root, "db", "projects", "claude-code-hooks-explained.json");
 fs.writeFileSync(target, `${JSON.stringify(output, null, 2)}\n`);
 console.log(target);

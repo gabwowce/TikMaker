@@ -9,7 +9,5 @@ public/fonts
 *.log
 .render-props.tmp.json
 .DS_Store
-projects/.history/
-storyboards/.history/
-library/.history/
-library/.trash/
+db/**/.history/
+db/.trash/
