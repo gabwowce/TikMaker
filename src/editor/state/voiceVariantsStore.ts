@@ -1,26 +1,10 @@
-import { z } from "zod";
 import { create } from "zustand";
+import {
+  voiceVariantSchema,
+  type VoiceVariant,
+} from "../../schema/library";
 import { deleteEntry, readDisk, scheduleSave } from "./fileLibrary";
-export type VoiceVariant = {
-  id: string;
-  name: string;
-  sfxId: string;
-  startFrom?: number;
-  durationInFrames?: number;
-  volume?: number;
-  playbackRate?: number;
-  savedAt: number;
-};
-const voiceVariantSchema = z.object({
-  id: z.string(),
-  name: z.string(),
-  sfxId: z.string(),
-  startFrom: z.number().min(0).optional(),
-  durationInFrames: z.number().min(1).optional(),
-  volume: z.number().min(0).max(2).optional(),
-  playbackRate: z.number().min(0.25).max(4).optional(),
-  savedAt: z.number(),
-});
+export type { VoiceVariant };
 function parse(json: unknown): VoiceVariant | null {
   const result = voiceVariantSchema.safeParse(json);
   return result.success ? result.data : null;

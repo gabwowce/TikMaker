@@ -1,5 +1,8 @@
 import { MantineProvider } from "@mantine/core";
+import { QueryClientProvider } from "@tanstack/react-query";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { createRoot } from "react-dom/client";
+import { queryClient } from "./api/queryClient";
 import { mantineTheme } from "./editor/mantineTheme";
 import { primeDiskCache } from "./editor/state/fileLibrary";
 import { migrateLegacyStorage } from "./editor/state/migrateLegacyStorage";
@@ -22,7 +25,10 @@ async function main() {
 
   createRoot(document.getElementById("root")!).render(
     <MantineProvider theme={mantineTheme} forceColorScheme="dark">
-      <Editor />
+      <QueryClientProvider client={queryClient}>
+        <Editor />
+        <ReactQueryDevtools buttonPosition="bottom-left" />
+      </QueryClientProvider>
     </MantineProvider>,
   );
 }

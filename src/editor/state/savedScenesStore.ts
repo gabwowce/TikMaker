@@ -1,19 +1,11 @@
-import { z } from "zod";
 import { create } from "zustand";
-import { sceneSchema, type Scene } from "../../schema/scene";
+import {
+  savedSceneSchema,
+  type SavedScene,
+} from "../../schema/library";
+import type { Scene } from "../../schema/scene";
 import { deleteEntry, readDisk, scheduleSave } from "./fileLibrary";
-export type SavedScene = {
-  id: string;
-  name: string;
-  scene: Scene;
-  savedAt: number;
-};
-const savedSceneSchema = z.object({
-  id: z.string(),
-  name: z.string(),
-  scene: sceneSchema,
-  savedAt: z.number(),
-});
+export type { SavedScene };
 function parse(json: unknown): SavedScene | null {
   const result = savedSceneSchema.safeParse(json);
   return result.success ? result.data : null;

@@ -474,7 +474,10 @@ export default defineConfig({
   },
   server: {
     port: 5173,
-    proxy: { "/api": "http://localhost:3001" },
+    proxy: {
+      "/api": "http://localhost:3001",
+      "/trpc": "http://localhost:3001",
+    },
     watch: {
       ignored: [
         path.resolve(__dirname, "db") + "/**",

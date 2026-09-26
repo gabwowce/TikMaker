@@ -1,22 +1,11 @@
-import { z } from "zod";
 import { create } from "zustand";
 import {
-  customBackgroundSchema,
-  type CustomBackground,
-} from "../../schema/scene";
+  savedBackgroundSchema,
+  type SavedBackground,
+} from "../../schema/library";
+import type { CustomBackground } from "../../schema/scene";
 import { deleteEntry, readDisk, scheduleSave } from "./fileLibrary";
-export type SavedBackground = {
-  id: string;
-  name: string;
-  background: CustomBackground;
-  savedAt: number;
-};
-const savedBackgroundSchema = z.object({
-  id: z.string(),
-  name: z.string(),
-  background: customBackgroundSchema,
-  savedAt: z.number(),
-});
+export type { SavedBackground };
 function parse(json: unknown): SavedBackground | null {
   const result = savedBackgroundSchema.safeParse(json);
   return result.success ? result.data : null;

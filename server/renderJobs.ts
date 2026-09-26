@@ -1,14 +1,15 @@
-import express from "express";
 import { spawn } from "node:child_process";
 import fs from "node:fs";
 import path from "node:path";
-import { OUT_DIR, ROOT } from "../config.js";
-import { newId } from "../uploads.js";
+import type { VideoProject } from "../src/schema/project.js";
+import { OUT_DIR, ROOT } from "./config.js";
+import { newId } from "./uploads.js";
 
-// A render takes minutes, far longer than one HTTP request should stay open.
-// So POST only STARTS it and answers with a job id; the client then polls
-// GET /api/renders/:id for progress, and downloads /:id/file when it's done.
-type RenderJob = {
+// A render takes minutes — far longer than one request should stay open. So
+// starting one only launches `remotion render` in the background and hands
+// back a job id; the editor then polls the job for progress, and downloads
+// the MP4 once it's done.
+export type RenderJob = {
   id: string;
   status: "running" | "done" | "error";
   progress: number; // 0..1
@@ -17,9 +18,12 @@ type RenderJob = {
   error?: string;
 };
 
-// Jobs live in memory: restarting the server forgets them, but the finished
-// MP4s stay in out/.
+// In memory: restarting the server forgets the jobs, the MP4s stay in out/.
 const jobs = new Map<string, RenderJob>();
+
+export function getRenderJob(id: string): RenderJob | undefined {
+  return jobs.get(id);
+}
 
 // Remotion prints "Rendered 120/300" then "Stitched 300/300". Frames are ~85%
 // of the work, encoding the rest.
@@ -35,16 +39,9 @@ function readProgress(job: RenderJob, text: string) {
   }
 }
 
-export const renderRouter = express.Router();
-
-// POST /api/renders — start rendering { project }; answers 202 + { id }
-renderRouter.post("/", (request, response) => {
-  const project = request.body?.project;
-  if (!Array.isArray(project?.scenes) || project.scenes.length === 0) {
-    response.status(400).json({ error: "Project has no scenes" });
-    return;
-  }
-
+// Runs the same command you could type yourself:
+//   npx remotion render TikTokVideo out/<id>.mp4 --props=<project file>
+export function startRender(project: VideoProject): RenderJob {
   const id = newId(project.title || project.id || "video");
   const outputPath = path.join(OUT_DIR, `${id}.mp4`);
   const propsPath = path.join(OUT_DIR, `.${id}.props.json`);
@@ -75,26 +72,5 @@ renderRouter.post("/", (request, response) => {
       job.error = job.error ?? `Render exited with code ${code}`;
     }
   });
-
-  response.status(202).json({ id });
-});
-
-// GET /api/renders/:id — progress of one job
-renderRouter.get("/:id", (request, response) => {
-  const job = jobs.get(request.params.id);
-  if (!job) {
-    response.status(404).json({ error: "Unknown render job" });
-    return;
-  }
-  response.json(job);
-});
-
-// GET /api/renders/:id/file — download the finished MP4
-renderRouter.get("/:id/file", (request, response) => {
-  const job = jobs.get(request.params.id);
-  if (!job?.outputPath || !fs.existsSync(job.outputPath)) {
-    response.status(404).json({ error: "Render not finished" });
-    return;
-  }
-  response.download(job.outputPath);
-});
+  return job;
+}

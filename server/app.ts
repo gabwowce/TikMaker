@@ -1,52 +1,41 @@
+import { createExpressMiddleware } from "@trpc/server/adapters/express";
 import express, { type ErrorRequestHandler } from "express";
-import { sfxOverridesSchema } from "../src/schema/sfxOverrides.js";
-import { voiceSettingsSchema } from "../src/schema/voiceSettings.js";
-import { assetsRouter } from "./routes/assets.js";
-import { collectionRouter } from "./routes/collections.js";
-import { jsonFileRouter } from "./routes/jsonFile.js";
-import { renderRouter } from "./routes/render.js";
-import { sfxRouter } from "./routes/sfx.js";
-import { VOICE_SETTINGS, voiceRouter } from "./routes/voice.js";
+import fs from "node:fs";
+import { getRenderJob } from "./renderJobs.js";
+import { appRouter } from "./trpc/router.js";
 
-// Builds the app without starting it, so tests can call it directly
-// (supertest) while index.ts is the only place that listens on a port.
+// Builds the app without starting it, so tests can use it directly while
+// index.ts is the only place that listens on a port.
 export function createApp() {
   const app = express();
-  app.use(express.json({ limit: "500mb" }));
+  app.use(express.json({ limit: "500mb" })); // uploads arrive as base64 JSON
 
-  app.get("/api/health", (request, response) => {
-    response.json({ ok: true });
+  // Every call the editor makes: POST /trpc/assets.upload, GET /trpc/projects.list …
+  app.use(
+    "/trpc",
+    createExpressMiddleware({
+      router: appRouter,
+      onError({ error, path }) {
+        // a bad input is the caller's mistake; only log what broke on our side
+        if (error.code === "INTERNAL_SERVER_ERROR") console.error(`[trpc] ${path}:`, error);
+      },
+    }),
+  );
+
+  // The one thing tRPC can't do: answer with a file instead of JSON.
+  app.get("/api/renders/:id/file", (request, response) => {
+    const job = getRenderJob(request.params.id);
+    if (!job?.outputPath || !fs.existsSync(job.outputPath)) {
+      response.status(404).json({ error: "Render not finished" });
+      return;
+    }
+    response.download(job.outputPath);
   });
 
-  // db/<folder>/*.json — one file per entry
-  const COLLECTIONS = [
-    "projects",
-    "storyboards",
-    "scenes",
-    "templates",
-    "backgrounds",
-    "voice-variants",
-  ];
-  for (const folder of COLLECTIONS) {
-    app.use(`/api/${folder}`, collectionRouter(folder));
-  }
-
-  // db/<file>.json — one file read and replaced as a whole, validated by the
-  // same Zod schema the editor uses
-  app.use("/api/sfx-overrides", jsonFileRouter("sfx-overrides.json", sfxOverridesSchema));
-  app.use("/api/voice/settings", jsonFileRouter(VOICE_SETTINGS, voiceSettingsSchema));
-
-  // uploads (file in public/, entry in a db/ manifest) and long-running jobs
-  app.use("/api/assets", assetsRouter);
-  app.use("/api/sfx", sfxRouter);
-  app.use("/api/voice", voiceRouter);
-  app.use("/api/renders", renderRouter);
-
-  // Last, so it catches errors thrown by any route above. Errors that know
-  // their own status (express.json's 400 for broken JSON) keep it.
+  // Last: catches what fails before tRPC sees it, e.g. broken JSON (400).
   const errorHandler: ErrorRequestHandler = (error, request, response, next) => {
     const status = error.status ?? 500;
-    if (status >= 500) console.error(error); // a client's mistake isn't ours to log
+    if (status >= 500) console.error(error);
     response
       .status(status)
       .json({ error: error instanceof Error ? error.message : String(error) });
