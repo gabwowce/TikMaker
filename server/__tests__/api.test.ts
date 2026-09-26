@@ -11,12 +11,25 @@ import { voiceSettingsSchema } from "../../src/schema/voiceSettings";
 const root = fs.mkdtempSync(path.join(os.tmpdir(), "tikmaker-api-"));
 process.env.TIKMAKER_ROOT = root;
 const { createApp } = await import("../app.js");
+const { appRouter } = await import("../trpc/router.js");
+const { createCallerFactory } = await import("../trpc/init.js");
+
+// A caller runs procedures directly, the way the editor would over HTTP.
+const api = createCallerFactory(appRouter)({});
 const app = createApp();
 
-const PNG_BASE64 = Buffer.from("fake png bytes").toString("base64");
+const FAKE_BYTES = Buffer.from("fake file bytes").toString("base64");
 const exists = (...parts: string[]) => fs.existsSync(path.join(root, ...parts));
 const readDb = (file: string) =>
   JSON.parse(fs.readFileSync(path.join(root, "db", file), "utf-8"));
+const project = (id: string) => ({
+  id,
+  title: id,
+  fps: 30 as const,
+  width: 1080 as const,
+  height: 1920 as const,
+  scenes: [],
+});
 
 afterAll(() => fs.rmSync(root, { recursive: true, force: true }));
 afterEach(() => {
@@ -24,223 +37,219 @@ afterEach(() => {
   vi.unstubAllEnvs();
 });
 
-describe("collections (/api/projects and friends)", () => {
+describe("collections (projects, scenes, backgrounds, voiceVariants)", () => {
   it("lists nothing when the folder does not exist yet", async () => {
-    const response = await request(app).get("/api/projects");
-    expect(response.status).toBe(200);
-    expect(response.body).toEqual([]);
+    expect(await api.projects.list()).toEqual([]);
   });
 
-  it("PUT writes db/<folder>/<id>.json and GET returns it", async () => {
-    const project = { id: "my-video", title: "My video" };
-    const put = await request(app).put("/api/projects/my-video").send(project);
-    expect(put.status).toBe(200);
+  it("save writes db/<folder>/<id>.json and list returns it", async () => {
+    await api.projects.save(project("my-video"));
     expect(exists("db", "projects", "my-video.json")).toBe(true);
-
-    const list = await request(app).get("/api/projects");
-    expect(list.body).toEqual([project]);
+    expect(await api.projects.list()).toEqual([
+      expect.objectContaining({ id: "my-video", title: "my-video" }),
+    ]);
   });
 
-  it("rejects a body whose id does not match the URL", async () => {
-    const response = await request(app)
-      .put("/api/projects/one")
-      .send({ id: "two" });
-    expect(response.status).toBe(400);
-    expect(exists("db", "projects", "one.json")).toBe(false);
+  it("refuses a project that doesn't match the schema", async () => {
+    await expect(
+      api.projects.save({ id: "broken", title: "x" } as never),
+    ).rejects.toMatchObject({ code: "BAD_REQUEST" });
+    expect(exists("db", "projects", "broken.json")).toBe(false);
   });
 
-  it("DELETE removes the file", async () => {
-    await request(app).put("/api/templates/tpl").send({ id: "tpl" });
-    const response = await request(app).delete("/api/templates/tpl");
-    expect(response.status).toBe(204);
-    expect(exists("db", "templates", "tpl.json")).toBe(false);
+  it("skips an unreadable file instead of failing the whole list", async () => {
+    fs.writeFileSync(path.join(root, "db", "projects", "junk.json"), '{"nope":1}');
+    const ids = (await api.projects.list()).map((p) => p.id);
+    expect(ids).toEqual(["my-video"]);
+  });
+
+  it("remove deletes the file", async () => {
+    await api.projects.save(project("temp"));
+    await api.projects.remove("temp");
+    expect(exists("db", "projects", "temp.json")).toBe(false);
   });
 
   it("cannot escape db/ with ../ in the id", async () => {
     fs.writeFileSync(path.join(root, "package.json"), "{}");
-    await request(app).delete("/api/templates/..%2F..%2Fpackage");
+    await api.scenes.remove("../../package");
     expect(exists("package.json")).toBe(true);
   });
 
-  it("answers broken JSON with 400, not 500", async () => {
-    const response = await request(app)
-      .put("/api/projects/x")
-      .set("Content-Type", "application/json")
-      .send("{broken");
-    expect(response.status).toBe(400);
+  it("voiceVariants live in db/voice-variants", async () => {
+    await api.voiceVariants.save({ id: "vv-1", name: "Cut", sfxId: "vo-x", savedAt: 1 });
+    expect(exists("db", "voice-variants", "vv-1.json")).toBe(true);
   });
 });
 
-describe("sfx overrides (/api/sfx-overrides)", () => {
+describe("sfxOverrides", () => {
   it("is empty until something is saved", async () => {
-    const response = await request(app).get("/api/sfx-overrides");
-    expect(response.body).toEqual({});
+    expect(await api.sfxOverrides.get()).toEqual({});
   });
 
-  it("PUT replaces the whole file", async () => {
+  it("save replaces the whole file", async () => {
     const overrides = { content: { entrance: { pop: "d-pop" } } };
-    const put = await request(app).put("/api/sfx-overrides").send(overrides);
-    expect(put.status).toBe(200);
+    await api.sfxOverrides.save(overrides);
     expect(readDb("sfx-overrides.json")).toEqual(overrides);
-    const response = await request(app).get("/api/sfx-overrides");
-    expect(response.body).toEqual(overrides);
+    expect(await api.sfxOverrides.get()).toEqual(overrides);
   });
 
   it("rejects an animation name that does not exist", async () => {
-    const response = await request(app)
-      .put("/api/sfx-overrides")
-      .send({ content: { entrance: { slideFromBottom: "d-pop" } } });
-    expect(response.status).toBe(400);
+    await expect(
+      api.sfxOverrides.save({ content: { entrance: { slideFromBottom: "x" } } } as never),
+    ).rejects.toMatchObject({ code: "BAD_REQUEST" });
     expect(readDb("sfx-overrides.json")).toEqual({
       content: { entrance: { pop: "d-pop" } },
     });
   });
-
-  it("rejects an unknown section", async () => {
-    const response = await request(app)
-      .put("/api/sfx-overrides")
-      .send({ texts: {} });
-    expect(response.status).toBe(400);
-  });
 });
 
-describe("voice settings (/api/voice/settings)", () => {
-  it("returns every default when nothing is saved", async () => {
-    const response = await request(app).get("/api/voice/settings");
-    expect(response.body).toMatchObject({
-      voiceId: expect.any(String),
-      speed: 1.15,
-      speakerBoost: true,
-    });
-  });
-
-  it("PUT saves, filling in defaults for missing fields", async () => {
-    const response = await request(app)
-      .put("/api/voice/settings")
-      .send({ voiceId: "my-voice", speed: 1 });
-    expect(response.status).toBe(200);
-    expect(readDb("voice-settings.json")).toMatchObject({
-      voiceId: "my-voice",
-      speed: 1,
-      stability: 1,
-    });
-  });
-
-  it("rejects values outside what ElevenLabs accepts", async () => {
-    const response = await request(app)
-      .put("/api/voice/settings")
-      .send({ speed: 3 });
-    expect(response.status).toBe(400);
-  });
-});
-
-describe("assets (/api/assets)", () => {
-  it("requires a filename and data", async () => {
-    const response = await request(app).post("/api/assets").send({});
-    expect(response.status).toBe(400);
-  });
-
+describe("assets", () => {
   it("upload writes the file to public/ and an entry to the manifest", async () => {
-    const response = await request(app)
-      .post("/api/assets")
-      .send({ filename: "logo.png", label: "Logo", dataBase64: PNG_BASE64 });
-    expect(response.status).toBe(201);
-    expect(response.body).toMatchObject({ label: "Logo", kind: "image" });
-    expect(response.body.src).toMatch(/^\/assets\/custom\/logo-.+\.png$/);
-    expect(exists("public", response.body.src)).toBe(true);
-    expect(readDb("custom-assets.json")).toEqual([response.body]);
+    const asset = await api.assets.upload({
+      filename: "logo.png",
+      label: "Logo",
+      dataBase64: FAKE_BYTES,
+    });
+    expect(asset).toMatchObject({ label: "Logo", kind: "image" });
+    expect(asset.src).toMatch(/^\/assets\/custom\/logo-.+\.png$/);
+    expect(exists("public", asset.src)).toBe(true);
+    expect(await api.assets.list()).toEqual([asset]);
   });
 
-  it("delete removes both the file and the entry", async () => {
-    const upload = await request(app)
-      .post("/api/assets")
-      .send({ filename: "a.png", label: "A", dataBase64: PNG_BASE64 });
-    const response = await request(app).delete(`/api/assets/${upload.body.id}`);
-    expect(response.status).toBe(204);
-    expect(exists("public", upload.body.src)).toBe(false);
-    const ids = readDb("custom-assets.json").map((a: { id: string }) => a.id);
-    expect(ids).not.toContain(upload.body.id);
+  it("remove deletes both the file and the entry", async () => {
+    const asset = await api.assets.upload({ filename: "a.png", label: "A", dataBase64: FAKE_BYTES });
+    await api.assets.remove(asset.id);
+    expect(exists("public", asset.src)).toBe(false);
+    expect((await api.assets.list()).map((a) => a.id)).not.toContain(asset.id);
   });
 
-  it("delete of an unknown id is 404", async () => {
-    const response = await request(app).delete("/api/assets/nope");
-    expect(response.status).toBe(404);
+  it("remove of an unknown id is NOT_FOUND", async () => {
+    await expect(api.assets.remove("nope")).rejects.toMatchObject({ code: "NOT_FOUND" });
   });
-});
 
-describe("sound effects (/api/sfx)", () => {
-  it("upload, list and delete", async () => {
-    const upload = await request(app)
-      .post("/api/sfx")
-      .send({ filename: "boom.mp3", label: "Boom", group: "impact", dataBase64: PNG_BASE64 });
-    expect(upload.status).toBe(201);
-    expect(upload.body).toMatchObject({ label: "Boom", group: "impact" });
-    expect(exists("public", upload.body.src)).toBe(true);
-
-    const list = await request(app).get("/api/sfx");
-    expect(list.body).toContainEqual(upload.body);
-
-    const remove = await request(app).delete(`/api/sfx/${upload.body.id}`);
-    expect(remove.status).toBe(204);
-    expect(exists("public", upload.body.src)).toBe(false);
+  it("upload without data is BAD_REQUEST", async () => {
+    await expect(
+      api.assets.upload({ filename: "a.png", label: "", dataBase64: "" }),
+    ).rejects.toMatchObject({ code: "BAD_REQUEST" });
   });
 });
 
-describe("voice (/api/voice)", () => {
+describe("sfx", () => {
+  it("upload, list and remove", async () => {
+    const sfx = await api.sfx.upload({
+      filename: "boom.mp3",
+      label: "Boom",
+      group: "impact",
+      dataBase64: FAKE_BYTES,
+    });
+    expect(sfx).toMatchObject({ label: "Boom", group: "impact" });
+    expect(exists("public", sfx.src)).toBe(true);
+    expect(await api.sfx.list()).toContainEqual(sfx);
+
+    await api.sfx.remove(sfx.id);
+    expect(exists("public", sfx.src)).toBe(false);
+  });
+});
+
+describe("voice", () => {
   it("status says whether a key is configured", async () => {
     vi.stubEnv("ELEVENLABS_API_KEY", "");
-    const response = await request(app).get("/api/voice/status");
-    expect(response.body).toEqual({ configured: false });
+    expect(await api.voice.status()).toEqual({ configured: false });
   });
 
-  it("refuses to generate without a key", async () => {
+  it("settings come back complete even when nothing is saved", async () => {
+    expect(await api.voice.settings.get()).toMatchObject({ speed: 1.15, speakerBoost: true });
+  });
+
+  it("settings outside what ElevenLabs accepts are refused", async () => {
+    await expect(
+      api.voice.settings.save({ speed: 3 } as never),
+    ).rejects.toMatchObject({ code: "BAD_REQUEST" });
+  });
+
+  it("generate without a key is SERVICE_UNAVAILABLE", async () => {
     vi.stubEnv("ELEVENLABS_API_KEY", "");
-    const response = await request(app).post("/api/voice").send({ text: "Hi" });
-    expect(response.status).toBe(503);
+    await expect(api.voice.generate({ text: "Hi" })).rejects.toMatchObject({
+      code: "SERVICE_UNAVAILABLE",
+    });
   });
 
-  it("refuses empty text", async () => {
+  it("generate refuses empty text", async () => {
     vi.stubEnv("ELEVENLABS_API_KEY", "test-key");
-    const response = await request(app).post("/api/voice").send({ text: "  " });
-    expect(response.status).toBe(400);
+    await expect(api.voice.generate({ text: "  " })).rejects.toMatchObject({
+      code: "BAD_REQUEST",
+    });
   });
 
   it("saves the mp3 ElevenLabs returns and lists it as a voice sound", async () => {
     vi.stubEnv("ELEVENLABS_API_KEY", "test-key");
-    await request(app).put("/api/voice/settings").send({ voiceId: "voice-123" });
+    await api.voice.settings.save(voiceSettingsSchema.parse({ voiceId: "voice-123" }));
     const fakeFetch = vi.fn(async () => new Response(Buffer.from("mp3 bytes")));
     vi.stubGlobal("fetch", fakeFetch);
 
-    const response = await request(app)
-      .post("/api/voice")
-      .send({ text: "Hello world", label: "Greeting", speed: 0.9 });
+    const clip = await api.voice.generate({ text: "Hello world", label: "Greeting", speed: 0.9 });
 
-    expect(response.status).toBe(201);
-    expect(response.body).toMatchObject({ label: "Greeting", group: "voice" });
-    expect(fs.readFileSync(path.join(root, "public", response.body.src), "utf-8")).toBe(
-      "mp3 bytes",
-    );
-    expect(readDb("custom-sfx.json")).toContainEqual(response.body);
+    expect(clip).toMatchObject({ label: "Greeting", group: "voice" });
+    expect(fs.readFileSync(path.join(root, "public", clip.src), "utf-8")).toBe("mp3 bytes");
+    expect(await api.sfx.list()).toContainEqual(clip);
 
-    // voiceId comes from the saved settings, speed from this request
+    // voiceId comes from the saved settings, speed from this call
     const [url, init] = fakeFetch.mock.calls[0] as unknown as [string, RequestInit];
     expect(url).toContain("/text-to-speech/voice-123");
     expect((init.headers as Record<string, string>)["xi-api-key"]).toBe("test-key");
     expect(JSON.parse(String(init.body)).voice_settings.speed).toBe(0.9);
   });
 
-  it("passes an ElevenLabs failure on as 502", async () => {
+  it("an ElevenLabs failure is BAD_GATEWAY", async () => {
     vi.stubEnv("ELEVENLABS_API_KEY", "test-key");
     vi.stubGlobal("fetch", vi.fn(async () => new Response("quota", { status: 401 })));
-    const response = await request(app).post("/api/voice").send({ text: "Hi" });
-    expect(response.status).toBe(502);
-    expect(response.body.error).toContain("ElevenLabs 401");
+    await expect(api.voice.generate({ text: "Hi" })).rejects.toMatchObject({
+      code: "BAD_GATEWAY",
+      message: expect.stringContaining("ElevenLabs 401"),
+    });
+  });
+});
+
+describe("renders", () => {
+  it("refuses a project with no scenes", async () => {
+    await expect(api.renders.start({ project: project("p") })).rejects.toMatchObject({
+      code: "BAD_REQUEST",
+    });
+  });
+
+  it("an unknown job is NOT_FOUND", async () => {
+    await expect(api.renders.get("nope")).rejects.toMatchObject({ code: "NOT_FOUND" });
+  });
+});
+
+describe("over HTTP (what the browser actually sends)", () => {
+  it("a query is GET /trpc/<procedure>", async () => {
+    const response = await request(app).get("/trpc/voice.status");
+    expect(response.status).toBe(200);
+    expect(response.body.result.data).toHaveProperty("configured");
+  });
+
+  it("a mutation is POST /trpc/<procedure> with the input as JSON", async () => {
+    const response = await request(app)
+      .post("/trpc/sfxOverrides.save")
+      .send({ visual: { exit: { fade: "none" } } });
+    expect(response.status).toBe(200);
+    expect(readDb("sfx-overrides.json")).toEqual({ visual: { exit: { fade: "none" } } });
+  });
+
+  it("invalid input is a 400 with the reason", async () => {
+    const response = await request(app).post("/trpc/assets.remove").send({});
+    expect(response.status).toBe(400);
+  });
+
+  it("the finished MP4 comes from a plain route; unknown ids are 404", async () => {
+    expect((await request(app).get("/api/renders/nope/file")).status).toBe(404);
   });
 });
 
 describe("the real db/ files match their schemas", () => {
-  // The guard against renaming an animation in scene.ts and forgetting the
-  // saved file: this fails `npm test` instead of a sound silently vanishing.
+  // Guards against renaming an animation in scene.ts and forgetting the saved
+  // file: this fails `npm test` instead of a sound silently vanishing.
   const realDb = path.resolve(__dirname, "../../db");
   it.each([
     ["sfx-overrides.json", sfxOverridesSchema],
@@ -248,19 +257,5 @@ describe("the real db/ files match their schemas", () => {
   ] as const)("%s", (file, schema) => {
     const json = JSON.parse(fs.readFileSync(path.join(realDb, file), "utf-8"));
     expect(() => schema.parse(json)).not.toThrow();
-  });
-});
-
-describe("renders (/api/renders)", () => {
-  it("refuses a project with no scenes", async () => {
-    const response = await request(app)
-      .post("/api/renders")
-      .send({ project: { id: "p", scenes: [] } });
-    expect(response.status).toBe(400);
-  });
-
-  it("unknown jobs are 404", async () => {
-    expect((await request(app).get("/api/renders/nope")).status).toBe(404);
-    expect((await request(app).get("/api/renders/nope/file")).status).toBe(404);
   });
 });
