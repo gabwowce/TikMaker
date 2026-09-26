@@ -112,14 +112,10 @@ export function registerSfx(entry: {
   else sfxList[at] = definition;
   return definition;
 }
-export async function primeSfxRegistry(): Promise<void> {
-  try {
-    const response = await fetch("/api/custom-sfx");
-    if (!response.ok) return;
-    const entries = (await response.json()) as CustomSfxEntry[];
-    if (!Array.isArray(entries)) return;
-    for (const entry of entries) registerSfx(entry);
-  } catch {}
+export function unregisterSfx(id: string): void {
+  delete sfxRegistry[id];
+  const at = sfxList.findIndex((existing) => existing.id === id);
+  if (at !== -1) sfxList.splice(at, 1);
 }
 export function getSfx(id: string): SfxDefinition | undefined {
   return sfxRegistry[id];

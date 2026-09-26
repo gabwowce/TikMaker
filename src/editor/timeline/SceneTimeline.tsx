@@ -16,8 +16,8 @@ import {
   resolveEntranceSfx,
   resolveExitSfx,
 } from "../../video/motion/sfxDefaults";
-import { useCustomAssetsStore } from "../state/customAssetsStore";
-import { usePreferences } from "../state/fileLibrary";
+import { useCustomAssets } from "../../api/library";
+import { useEditorPrefs } from "../state/editorPrefs";
 import { useProjectStore } from "../state/projectStore";
 import { isAudioDrag, readAudioDragPayload } from "./audioDrag";
 import { buildSceneTimelineRows } from "./buildSceneTimelineRows";
@@ -90,8 +90,8 @@ function SceneTimelineScene({
     null,
   );
   const [clipboardReady, setClipboardReady] = useState(clipboardHas);
-  const storedPanelHeight = usePreferences((state) => state.timelineHeight);
-  const setPreferences = usePreferences((state) => state.set);
+  const storedPanelHeight = useEditorPrefs((state) => state.timelineHeight);
+  const setPreferences = useEditorPrefs((state) => state.set);
   const [panelHeight, setPanelHeight] = useState(() =>
     Number.isFinite(storedPanelHeight)
       ? clamp(storedPanelHeight as number, MIN_PANEL_HEIGHT, MAX_PANEL_HEIGHT)
@@ -119,8 +119,7 @@ function SceneTimelineScene({
   }
   const rulerRef = useRef<HTMLDivElement>(null);
   const viewportRef = useRef<HTMLDivElement>(null);
-  const customAssets = useCustomAssetsStore((state) => state.assets);
-  const loadCustomAssets = useCustomAssetsStore((state) => state.load);
+  const { assets: customAssets } = useCustomAssets();
   const project = useProjectStore((s) => s.project);
   const storedSelectedSceneId = useProjectStore((s) => s.selectedSceneId);
   const selectScene = useProjectStore((s) => s.selectScene);
@@ -145,9 +144,6 @@ function SceneTimelineScene({
     (s) => s.beginHistoryTransaction,
   );
   const endHistoryTransaction = useProjectStore((s) => s.endHistoryTransaction);
-  useEffect(() => {
-    loadCustomAssets();
-  }, [loadCustomAssets]);
   useTimelineWheelZoom(
     viewportRef,
     LABEL_WIDTH,

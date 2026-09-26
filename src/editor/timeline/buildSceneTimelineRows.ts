@@ -11,7 +11,7 @@ import {
 } from "../../video/motion/sfxDefaults";
 import { sceneStartDelay, staggerDelay } from "../../video/scenes/EnterOnCue";
 import { splitSpan } from "../../video/typography/splitAnimate";
-import type { CustomAsset } from "../state/customAssetsStore";
+import type { CustomAsset } from "../../api/library";
 import { useProjectStore } from "../state/projectStore";
 import { audioCueShape } from "./audioCueShape";
 import { TimelineRow } from "./sceneTimelineTypes";

@@ -1,6 +1,6 @@
 import { ActionIcon, UnstyledButton } from "@mantine/core";
 import { useProjectStore } from "../state/projectStore";
-import { useSavedBackgroundsStore } from "../state/savedBackgroundsStore";
+import { useSavedBackgrounds } from "../../api/library";
 import { BackgroundSwatch } from "./BackgroundSwatch";
 import { CustomBackgroundBuilder } from "./CustomBackgroundBuilder";
 export function BackgroundLibrary() {
@@ -8,8 +8,7 @@ export function BackgroundLibrary() {
   const updateSceneBackground = useProjectStore(
     (state) => state.updateSceneBackground,
   );
-  const backgrounds = useSavedBackgroundsStore((state) => state.backgrounds);
-  const removeBackground = useSavedBackgroundsStore((state) => state.remove);
+  const { backgrounds, remove: removeBackground } = useSavedBackgrounds();
   return (
     <div className="editor-ui flex flex-col gap-4">
       <h3 className="m-0 text-sm font-semibold">Your Backgrounds</h3>

@@ -16,16 +16,10 @@ import type {
 import type { VisualConfig } from "../../schema/visual";
 import { type KeyframeProperty } from "../../video/layout/visualKeyframes";
 export type VisualSlot = "main" | "left" | "right";
-export type LibraryEntry = {
-  id: string;
-  title: string;
-  collection?: string;
-};
 export type ProjectStore = {
   project: VideoProject;
   selectedSceneId: string | null;
   activeVisualSlot: VisualSlot;
-  libraryIndex: LibraryEntry[];
   canUndo: boolean;
   canRedo: boolean;
   playheadFrame: number;
@@ -47,15 +41,13 @@ export type ProjectStore = {
   removeAudioClip: (id: string) => void;
   createProject: (title: string) => void;
   loadProject: (project: VideoProject) => void;
-  saveProject: () => void;
   saveProjectAs: (title: string) => void;
   exportProjectJson: () => string;
   updateProjectTitle: (title: string) => void;
   updateProjectStoryPlan: (
     patch: Partial<NonNullable<VideoProject["storyPlan"]>>,
   ) => void;
-  openProject: (id: string) => void;
-  deleteProject: (id: string) => void;
+  openProject: (project: VideoProject) => void;
   addScene: (type: SceneType) => void;
   insertScene: (scene: Scene) => void;
   removeScene: (id: string) => void;

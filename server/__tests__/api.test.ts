@@ -237,6 +237,21 @@ describe("over HTTP (what the browser actually sends)", () => {
     expect(readDb("sfx-overrides.json")).toEqual({ visual: { exit: { fade: "none" } } });
   });
 
+  it("a mutation whose input is a bare string works (remove)", async () => {
+    await api.scenes.save({
+      id: "http-remove",
+      name: "x",
+      savedAt: 1,
+      scene: { id: "s", type: "hook-centered", background: "solid-dark", content: {} },
+    } as never);
+    const response = await request(app)
+      .post("/trpc/scenes.remove")
+      .set("Content-Type", "application/json")
+      .send(JSON.stringify("http-remove"));
+    expect(response.status).toBe(200);
+    expect(exists("db", "scenes", "http-remove.json")).toBe(false);
+  });
+
   it("invalid input is a 400 with the reason", async () => {
     const response = await request(app).post("/trpc/assets.remove").send({});
     expect(response.status).toBe(400);

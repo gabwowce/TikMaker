@@ -1,6 +1,6 @@
 import type { VisualConfig } from "../../schema/visual";
 import { buildAssetOptions } from "../inspector/AssetSelect";
-import type { CustomAsset } from "../state/customAssetsStore";
+import type { CustomAsset } from "../../api/library";
 export type TimelinePreview = {
   src?: string;
   video?: boolean;

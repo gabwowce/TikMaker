@@ -1,6 +1,5 @@
 import { NativeSelect, TextInput } from "@mantine/core";
-import { useEffect } from "react";
-import { assetKind, useCustomAssetsStore } from "../state/customAssetsStore";
+import { useCustomAssets } from "../../api/library";
 import { AssetImportButton } from "./AssetSelect";
 export type ImportPickerProps = {
   kind: "image" | "video";
@@ -9,12 +8,8 @@ export type ImportPickerProps = {
 };
 
 export function ImportPicker({ kind, src, onChange }: ImportPickerProps) {
-  const customAssets = useCustomAssetsStore((s) => s.assets);
-  const loadCustomAssets = useCustomAssetsStore((s) => s.load);
-  useEffect(() => {
-    loadCustomAssets();
-  }, [loadCustomAssets]);
-  const matching = customAssets.filter((a) => assetKind(a) === kind);
+  const { assets: customAssets } = useCustomAssets();
+  const matching = customAssets.filter((a) => a.kind === kind);
   const importButton = (
     <AssetImportButton
       accept={kind === "video" ? "video/*" : "image/*"}

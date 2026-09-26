@@ -2,12 +2,8 @@ import { Button, UnstyledButton } from "@mantine/core";
 import { useRef, useState } from "react";
 import { getSfx, sfxList } from "../../registries/sfxRegistry";
 import { projectDurationInFrames } from "../../utils/duration";
-import { useCustomSfxStore } from "../state/customSfxStore";
+import { useCustomSfx, useVoiceVariants, type VoiceVariant } from "../../api/library";
 import { useProjectStore } from "../state/projectStore";
-import {
-  useVoiceVariantsStore,
-  type VoiceVariant,
-} from "../state/voiceVariantsStore";
 import { setAudioDragPayload } from "../timeline/audioDrag";
 import { useAudioWaveforms } from "../timeline/useAudioWaveforms";
 
@@ -21,14 +17,16 @@ export function VoiceLibrary() {
   const addAudioClip = useProjectStore((s) => s.addAudioClip);
   const updateAudioClip = useProjectStore((s) => s.updateAudioClip);
   const selectObject = useProjectStore((s) => s.selectObject);
-  const uploadSfx = useCustomSfxStore((s) => s.upload);
+  const { upload: uploadSfx } = useCustomSfx();
   const [uploading, setUploading] = useState(false);
   const [uploadError, setUploadError] = useState<string | null>(null);
   const fileInput = useRef<HTMLInputElement>(null);
-  const variants = useVoiceVariantsStore((s) => s.variants);
-  const saveVariant = useVoiceVariantsStore((s) => s.save);
-  const renameVariant = useVoiceVariantsStore((s) => s.rename);
-  const removeVariant = useVoiceVariantsStore((s) => s.remove);
+  const {
+    variants,
+    save: saveVariant,
+    rename: renameVariant,
+    remove: removeVariant,
+  } = useVoiceVariants();
   const voices = sfxList.filter((entry) => entry.group === "voice");
   const waveforms = useAudioWaveforms(
     voices.map((entry) => entry.src),

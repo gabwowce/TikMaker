@@ -1,9 +1,14 @@
 import { ActionIcon, Button, Menu, NativeSelect, Tabs } from "@mantine/core";
 import { useState } from "react";
+import {
+  cachedProjects,
+  useDeleteProject,
+  useProjectList,
+  useSaveProject,
+} from "../api/projects";
 import { projectDurationInFrames } from "../utils/duration";
 import { parseProject } from "../utils/normalizeProject";
 import { ImportJsonDialog } from "./ImportJsonDialog";
-import { RecoveryDialog } from "./RecoveryDialog";
 import { RenderButton } from "./RenderButton";
 import { SaveStatusBadge } from "./SaveStatusBadge";
 import { useProjectStore } from "./state/projectStore";
@@ -15,11 +20,12 @@ type EditorToolbarProps = {
 
 export function EditorToolbar({ mode, onModeChange }: EditorToolbarProps) {
   const project = useProjectStore((state) => state.project);
-  const library = useProjectStore((state) => state.libraryIndex);
+  const library = useProjectList();
+  const { save } = useSaveProject();
+  const remove = useDeleteProject();
   const canUndo = useProjectStore((state) => state.canUndo);
   const canRedo = useProjectStore((state) => state.canRedo);
   const [importOpen, setImportOpen] = useState(false);
-  const [recoveryOpen, setRecoveryOpen] = useState(false);
   const actions = useProjectStore.getState();
 
   function createNewProject() {
@@ -39,8 +45,15 @@ export function EditorToolbar({ mode, onModeChange }: EditorToolbarProps) {
   }
 
   function deleteProject() {
-    if (window.confirm(`Delete "${project.title}"?`))
-      actions.deleteProject(project.id);
+    if (!window.confirm(`Delete "${project.title}"?`)) return;
+    remove.mutate(project.id, {
+      // then open another project, or start a fresh one if none is left
+      onSuccess: () => {
+        const next = cachedProjects()[0];
+        if (next) actions.openProject(next);
+        else actions.createProject("Untitled project");
+      },
+    });
   }
 
   function exportProject() {
@@ -75,9 +88,6 @@ export function EditorToolbar({ mode, onModeChange }: EditorToolbarProps) {
           <Menu.Dropdown className="editor-ui">
             <Menu.Item onClick={renameProject}>Rename project</Menu.Item>
             <Menu.Item onClick={duplicateProject}>Duplicate project</Menu.Item>
-            <Menu.Item onClick={() => setRecoveryOpen(true)}>
-              Recover project
-            </Menu.Item>
             <Menu.Divider />
             <Menu.Item onClick={() => setImportOpen(true)}>
               Import JSON
@@ -97,7 +107,10 @@ export function EditorToolbar({ mode, onModeChange }: EditorToolbarProps) {
             value: entry.id,
             label: entry.title,
           }))}
-          onChange={(event) => actions.openProject(event.currentTarget.value)}
+          onChange={(event) => {
+            const next = library.find((p) => p.id === event.currentTarget.value);
+            if (next) actions.openProject(next);
+          }}
         />
         <Button variant="default" onClick={createNewProject}>
           + New
@@ -133,7 +146,7 @@ export function EditorToolbar({ mode, onModeChange }: EditorToolbarProps) {
         </span>
         <div className="ml-auto flex items-center gap-2">
           <SaveStatusBadge />
-          <Button variant="default" onClick={actions.saveProject}>
+          <Button variant="default" onClick={() => save(project)}>
             Save
           </Button>
           <RenderButton />
@@ -145,9 +158,6 @@ export function EditorToolbar({ mode, onModeChange }: EditorToolbarProps) {
           onImport={importProject}
           onClose={() => setImportOpen(false)}
         />
-      ) : null}
-      {recoveryOpen ? (
-        <RecoveryDialog onClose={() => setRecoveryOpen(false)} />
       ) : null}
     </>
   );

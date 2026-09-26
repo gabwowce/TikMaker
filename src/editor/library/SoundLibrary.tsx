@@ -1,15 +1,18 @@
 import { ActionIcon, Button, NativeSelect, TextInput } from "@mantine/core";
-import { useEffect, useRef, useState } from "react";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { useRef, useState } from "react";
+import { queryClient } from "../../api/queryClient";
+import { trpc } from "../../api/trpc";
 import {
+  getSfx,
   sfxList,
   type SfxDefinition,
   type SfxGroup,
 } from "../../registries/sfxRegistry";
 import type { EntrancePreset, ExitPreset } from "../../schema/scene";
 import type { SfxDefaultKind } from "../../video/motion/sfxDefaults";
-import { useCustomSfxStore } from "../state/customSfxStore";
+import { useCustomSfx } from "../../api/library";
 import { useProjectStore } from "../state/projectStore";
-import { useSfxOverridesStore } from "../state/sfxOverridesStore";
 
 const sfxGroups: SfxGroup[] = [
   "voice",
@@ -54,14 +57,29 @@ function usePlayer() {
   return { play, playingId };
 }
 function DefaultsSection() {
-  const overrides = useSfxOverridesStore((s) => s.overrides);
-  const load = useSfxOverridesStore((s) => s.load);
-  const setEntranceDefault = useSfxOverridesStore((s) => s.setEntranceDefault);
-  const setExitDefault = useSfxOverridesStore((s) => s.setExitDefault);
+  const { data: overrides = {}, isLoading } = useQuery(
+    trpc.sfxOverrides.get.queryOptions(),
+  );
+  const save = useMutation(
+    trpc.sfxOverrides.save.mutationOptions({
+      onSuccess: (saved) => {
+        queryClient.setQueryData(trpc.sfxOverrides.get.queryKey(), saved);
+      },
+    }),
+  );
   const [kind, setKind] = useState<SfxDefaultKind>("content");
-  useEffect(() => {
-    load();
-  }, [load]);
+
+  function setSound(
+    phase: "entrance" | "exit",
+    preset: EntrancePreset | ExitPreset,
+    sfxId: string | undefined,
+  ) {
+    const bucket = overrides[kind] ?? {};
+    const sounds: Record<string, string> = { ...bucket[phase] };
+    if (sfxId) sounds[preset] = sfxId;
+    else delete sounds[preset];
+    save.mutate({ ...overrides, [kind]: { ...bucket, [phase]: sounds } });
+  }
   const sfxByGroupSorted = sfxGroups
     .map(
       (group) =>
@@ -97,11 +115,15 @@ function DefaultsSection() {
     );
   }
   const kindBucket = overrides[kind] ?? {};
+  if (isLoading) return <div className="text-[11px] text-editor-muted">Loading…</div>;
   return (
     <div>
       <div className="text-[11px] uppercase tracking-[1px] text-editor-muted m-[12px_0_6px]">
         Defaults
       </div>
+      {save.isError ? (
+        <div className="text-[11px] text-red-400 mb-2">{save.error.message}</div>
+      ) : null}
       <div className="flex gap-1 mb-2.5">
         {(
           [
@@ -130,7 +152,7 @@ function DefaultsSection() {
             <div className="flex-1">
               <Picker
                 value={kindBucket.entrance?.[preset]}
-                onChange={(v) => setEntranceDefault(kind, preset, v)}
+                onChange={(v) => setSound("entrance", preset, v)}
               />
             </div>
           </div>
@@ -147,7 +169,7 @@ function DefaultsSection() {
             <div className="flex-1">
               <Picker
                 value={kindBucket.exit?.[preset]}
-                onChange={(v) => setExitDefault(kind, preset, v)}
+                onChange={(v) => setSound("exit", preset, v)}
               />
             </div>
           </div>
@@ -157,7 +179,7 @@ function DefaultsSection() {
   );
 }
 function UploadForm() {
-  const upload = useCustomSfxStore((s) => s.upload);
+  const { upload } = useCustomSfx();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [file, setFile] = useState<File | null>(null);
   const [label, setLabel] = useState("");
@@ -263,15 +285,15 @@ function SfxRow({ sfx, playing, onPlay, onDelete, onAdd }: SfxRowProps) {
   );
 }
 export function SoundLibrary() {
-  const loadCustomSfx = useCustomSfxStore((s) => s.load);
-  const removeCustomSfx = useCustomSfxStore((s) => s.remove);
+  // useCustomSfx() re-renders this list whenever a sound is added or removed;
+  // the registry then supplies each one's playable definition.
+  const { sfx: customEntries, remove: removeCustomSfx } = useCustomSfx();
   const { play, playingId } = usePlayer();
   const addAudioClip = useProjectStore((s) => s.addAudioClip);
-  useEffect(() => {
-    loadCustomSfx();
-  }, [loadCustomSfx]);
   const builtIn = sfxList.filter((s) => !s.custom);
-  const custom = sfxList.filter((s) => s.custom);
+  const custom = customEntries
+    .map((entry) => getSfx(entry.id))
+    .filter((sfx): sfx is SfxDefinition => sfx !== undefined);
   return (
     <div>
       <DefaultsSection />
