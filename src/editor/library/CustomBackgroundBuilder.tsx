@@ -5,21 +5,18 @@ import {
   NumberInput,
   TextInput,
 } from "@mantine/core";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import type { BackgroundFill, CustomBackground } from "../../schema/scene";
-import { assetKind, useCustomAssetsStore } from "../state/customAssetsStore";
+import { useCustomAssets, useSavedBackgrounds } from "../../api/library";
 import { useProjectStore } from "../state/projectStore";
-import { useSavedBackgroundsStore } from "../state/savedBackgroundsStore";
 import { BackgroundSwatch } from "./BackgroundSwatch";
 export function CustomBackgroundBuilder({
   sceneId,
 }: {
   sceneId: string | null;
 }) {
-  const assets = useCustomAssetsStore((state) => state.assets);
-  const loadAssets = useCustomAssetsStore((state) => state.load);
-  const uploadAsset = useCustomAssetsStore((state) => state.upload);
-  const saveBackground = useSavedBackgroundsStore((state) => state.save);
+  const { assets, upload: uploadAsset } = useCustomAssets();
+  const { save: saveBackground } = useSavedBackgrounds();
   const updateSceneBackground = useProjectStore(
     (state) => state.updateSceneBackground,
   );
@@ -33,10 +30,7 @@ export function CustomBackgroundBuilder({
   const [name, setName] = useState("");
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState("");
-  const images = assets.filter((asset) => assetKind(asset) === "image");
-  useEffect(() => {
-    void loadAssets();
-  }, [loadAssets]);
+  const images = assets.filter((asset) => asset.kind === "image");
   function buildBackground(): CustomBackground | null {
     if (kind === "solid") return { type: "custom", fill: { kind, color }, grid };
     if (kind === "gradient") {

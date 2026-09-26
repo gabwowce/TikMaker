@@ -7,17 +7,11 @@ import { createEmptyProject } from "../../schema/project";
 import type { Scene, ScenePlanRole, SceneType } from "../../schema/scene";
 import { poseAtFrame } from "../../video/layout/visualKeyframes";
 import { cachedAudioDuration } from "../timeline/useAudioWaveforms";
-import { deleteEntry, saveNow } from "./fileLibrary";
-import {
-  libraryIndexFrom,
-  loadInitialState,
-  persist,
-  readLibrary,
-  rememberLastOpened,
-  writeLibrary,
-} from "./projectLibrary";
+import exampleProjectJson from "../../templates/template-showcase.json";
+import { parseProject } from "../../utils/normalizeProject";
+import { useEditorPrefs } from "./editorPrefs";
 import type { ProjectStore } from "./projectStoreTypes";
-export type { LibraryEntry, VisualSlot } from "./projectStoreTypes";
+export type { VisualSlot } from "./projectStoreTypes";
 
 function makeSceneId(): string {
   return `scene-${Math.random().toString(36).slice(2, 9)}`;
@@ -45,7 +39,6 @@ export const useProjectStore = create<ProjectStore>((set, get) => ({
   project: initialProject,
   selectedSceneId: null,
   activeVisualSlot: "main",
-  libraryIndex: [],
   canUndo: false,
   canRedo: false,
   playheadFrame: 0,
@@ -102,12 +95,7 @@ export const useProjectStore = create<ProjectStore>((set, get) => ({
     undoStack.push(before);
     if (undoStack.length > HISTORY_LIMIT) undoStack.shift();
     redoStack.length = 0;
-    const library = persist(project, readLibrary());
-    set({
-      canUndo: true,
-      canRedo: false,
-      libraryIndex: libraryIndexFrom(library),
-    });
+    set({ canUndo: true, canRedo: false });
   },
   setPlayheadFrame(playheadFrame) {
     return set({ playheadFrame: Math.max(0, Math.round(playheadFrame)) });
@@ -183,33 +171,14 @@ export const useProjectStore = create<ProjectStore>((set, get) => ({
       },
     }));
   },
+  // Each of these only changes which project is OPEN. Saving it to the
+  // server is <AutoSave />'s job, so none of them talk to the server.
   createProject(title) {
     const project = createEmptyProject(`project-${Date.now()}`, title);
-    const library = persist(project, readLibrary());
-    set({
-      project,
-      selectedSceneId: null,
-      libraryIndex: libraryIndexFrom(library),
-    });
+    set({ project, selectedSceneId: null });
   },
   loadProject(project) {
-    const library = persist(project, readLibrary());
-    set({
-      project,
-      selectedSceneId: project.scenes[0]?.id ?? null,
-      libraryIndex: libraryIndexFrom(library),
-    });
-  },
-  saveProject() {
-    const project = get().project;
-    const library = {
-      ...readLibrary(),
-      [project.id]: { ...project, savedAt: Date.now() },
-    };
-    writeLibrary(library);
-    void saveNow("project", library[project.id]);
-    rememberLastOpened(project.id);
-    set({ libraryIndex: libraryIndexFrom(library) });
+    set({ project, selectedSceneId: project.scenes[0]?.id ?? null });
   },
   saveProjectAs(title) {
     const project: VideoProject = {
@@ -217,8 +186,7 @@ export const useProjectStore = create<ProjectStore>((set, get) => ({
       id: `project-${Date.now().toString(36)}`,
       title,
     };
-    const library = persist(project, readLibrary());
-    set({ project, libraryIndex: libraryIndexFrom(library) });
+    set({ project });
   },
   exportProjectJson() {
     return JSON.stringify(get().project, null, 2);
@@ -234,27 +202,8 @@ export const useProjectStore = create<ProjectStore>((set, get) => ({
       },
     }));
   },
-  openProject(id) {
-    const library = readLibrary();
-    const project = library[id];
-    if (!project) return;
-    rememberLastOpened(id);
+  openProject(project) {
     set({ project, selectedSceneId: project.scenes[0]?.id ?? null });
-  },
-  deleteProject(id) {
-    const library = { ...readLibrary() };
-    delete library[id];
-    writeLibrary(library);
-    void deleteEntry("project", id).catch(() => undefined);
-    set({ libraryIndex: libraryIndexFrom(library) });
-    if (get().project.id === id) {
-      const remaining = Object.values(library)[0];
-      if (remaining) {
-        get().openProject(remaining.id);
-      } else {
-        get().createProject("Untitled project");
-      }
-    }
   },
   addScene(type) {
     const def = getSceneDefinition(type);
@@ -588,18 +537,14 @@ useProjectStore.subscribe((state, previous) => {
   useProjectStore.setState({ canUndo: true, canRedo: false });
 });
 
-if (typeof window !== "undefined") {
-  useProjectStore.subscribe((state, prevState) => {
-    if (state.project === prevState.project) return;
-    if (historyTransaction) return;
-    useProjectStore.setState({
-      libraryIndex: libraryIndexFrom(persist(state.project, readLibrary())),
-    });
-  });
-}
-
-export function initializeProjectStore() {
-  const { project, library } = loadInitialState();
+// Opens the project you had open last time (remembered in this browser),
+// else the first one, else the bundled example.
+export function initializeProjectStore(projects: VideoProject[]) {
+  const lastOpenedId = useEditorPrefs.getState().lastOpenedProjectId;
+  const project =
+    projects.find((p) => p.id === lastOpenedId) ??
+    projects[0] ??
+    parseProject(exampleProjectJson);
   undoStack.length = 0;
   redoStack.length = 0;
   historyTransaction = null;
@@ -607,7 +552,6 @@ export function initializeProjectStore() {
   useProjectStore.setState({
     project,
     selectedSceneId: project.scenes[0]?.id ?? null,
-    libraryIndex: libraryIndexFrom(persist(project, library)),
   });
   useProjectStore.setState({ canUndo: false, canRedo: false });
   applyingHistory = false;

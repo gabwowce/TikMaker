@@ -3,15 +3,6 @@ import { createEmptyProject } from "../../../schema/project";
 import type { Scene } from "../../../schema/scene";
 import { useProjectStore } from "../projectStore";
 
-vi.mock("../fileLibrary", () => ({ deleteEntry: vi.fn(), saveNow: vi.fn() }));
-vi.mock("../projectLibrary", () => ({
-  libraryIndexFrom: () => [],
-  loadInitialState: vi.fn(),
-  persist: vi.fn(),
-  readLibrary: () => ({}),
-  rememberLastOpened: vi.fn(),
-  writeLibrary: vi.fn(),
-}));
 vi.mock("../../timeline/useAudioWaveforms", () => ({
   cachedAudioDuration: vi.fn(),
 }));

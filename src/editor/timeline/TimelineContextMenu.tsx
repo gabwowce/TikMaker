@@ -1,7 +1,7 @@
 import { ActionIcon, Button, TextInput } from "@mantine/core";
 import { useEffect, useMemo, useState } from "react";
 import { AssetImportButton, buildAssetOptions } from "../inspector/AssetSelect";
-import { useCustomAssetsStore } from "../state/customAssetsStore";
+import { useCustomAssets } from "../../api/library";
 import {
   confirmDeleteTimelineObject,
   describeTimelineObject,
@@ -144,12 +144,8 @@ type AssetPickerProps = {
   onClose: () => void;
 };
 function AssetPicker({ onPick, onClose }: AssetPickerProps) {
-  const custom = useCustomAssetsStore((state) => state.assets);
-  const load = useCustomAssetsStore((state) => state.load);
+  const { assets: custom } = useCustomAssets();
   const [query, setQuery] = useState("");
-  useEffect(() => {
-    load();
-  }, [load]);
   const options = useMemo(() => buildAssetOptions(custom), [custom]);
   const filtered = query.trim()
     ? options.filter((option) =>

@@ -1,15 +1,36 @@
 import { Button, TextInput, UnstyledButton } from "@mantine/core";
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import { useSavedScenes, type SavedScene } from "../../api/library";
 import {
   getSceneDefinition,
   sceneRegistry,
 } from "../../registries/sceneRegistry";
-import { usePreferences } from "../state/fileLibrary";
+import type { Scene } from "../../schema/scene";
 import { useProjectStore } from "../state/projectStore";
-import {
-  instantiateSavedScene,
-  useSavedScenesStore,
-} from "../state/savedScenesStore";
+
+function newId(prefix: string): string {
+  return `${prefix}-${Math.random().toString(36).slice(2, 9)}`;
+}
+// A saved scene dropped into a project gets fresh ids for itself and every
+// block and layer, and loses its carries: a link only means something as a
+// run of adjacent scenes, so half of one would point at a missing group.
+function instantiateSavedScene(saved: SavedScene): Scene {
+  const scene = saved.scene;
+  return {
+    ...scene,
+    id: newId("scene"),
+    visualLink: undefined,
+    content: {
+      ...scene.content,
+      blocks: scene.content.blocks?.map((b) => ({ ...b, id: newId("block") })),
+      visuals: scene.content.visuals?.map((v) => ({
+        ...v,
+        id: newId("visual"),
+        link: undefined,
+      })),
+    },
+  };
+}
 
 function describe(scene: ReturnType<typeof instantiateSavedScene>): string {
   const bits: string[] = [getSceneDefinition(scene.type).name];
@@ -29,21 +50,13 @@ export function SceneLibrary() {
   const currentScene = useProjectStore((s) =>
     s.project.scenes.find((sc) => sc.id === s.selectedSceneId),
   );
-  const saved = useSavedScenesStore((s) => s.scenes);
-  const loadSaved = useSavedScenesStore((s) => s.load);
-  const saveScene = useSavedScenesStore((s) => s.save);
-  const removeSaved = useSavedScenesStore((s) => s.remove);
-  const renameSaved = useSavedScenesStore((s) => s.rename);
+  const {
+    scenes: saved,
+    save: saveScene,
+    remove: removeSaved,
+    rename: renameSaved,
+  } = useSavedScenes();
   const [name, setName] = useState("");
-  const [showHidden, setShowHidden] = useState(false);
-  const hidden = usePreferences((s) => s.hiddenSceneTypes);
-  const toggleHidden = usePreferences((s) => s.toggleHidden);
-  const visibleSceneTypes = showHidden
-    ? sceneRegistry
-    : sceneRegistry.filter((scene) => !hidden.includes(scene.type));
-  useEffect(() => {
-    loadSaved();
-  }, [loadSaved]);
   return (
     <div className="flex flex-col gap-4">
       <div>
@@ -125,49 +138,19 @@ export function SceneLibrary() {
       </div>
 
       <div>
-        <div className="flex items-baseline justify-between">
-          <div className="text-[11px] uppercase tracking-[1px] text-editor-muted m-[0_0_6px]">
-            Blank Scenes
-          </div>
-          {hidden.length ? (
-            <Button variant="default" onClick={() => setShowHidden((v) => !v)}>
-              {showHidden
-                ? "Hide hidden scenes"
-                : `Show hidden scenes (${hidden.length})`}
-            </Button>
-          ) : null}
+        <div className="text-[11px] uppercase tracking-[1px] text-editor-muted m-[0_0_6px]">
+          Blank Scenes
         </div>
         <div className="flex flex-col gap-2">
-          {visibleSceneTypes.map((scene) => {
-            const isHidden = hidden.includes(scene.type);
-            return (
-              <div
-                key={scene.type}
-                className={`relative ${isHidden ? "opacity-[0.45]" : "opacity-[1]"}`}
-              >
-                <UnstyledButton
-                  onClick={() => addScene(scene.type)}
-                  className="w-full block min-w-0 rounded-md p-2 text-left"
-                >
-                  <div className="text-[13px] font-semibold pr-6.5">
-                    {scene.name}
-                  </div>
-                </UnstyledButton>
-                <Button
-                  variant="default"
-                  className="absolute top-1.5 right-1.5"
-                  aria-label={
-                    isHidden
-                      ? "Restore to list"
-                      : "Hide from the list. Projects using this scene type will still work."
-                  }
-                  onClick={() => toggleHidden("hiddenSceneTypes", scene.type)}
-                >
-                  {isHidden ? "↺" : "✕"}
-                </Button>
-              </div>
-            );
-          })}
+          {sceneRegistry.map((scene) => (
+            <UnstyledButton
+              key={scene.type}
+              onClick={() => addScene(scene.type)}
+              className="w-full block min-w-0 rounded-md p-2 text-left"
+            >
+              <div className="text-[13px] font-semibold">{scene.name}</div>
+            </UnstyledButton>
+          ))}
         </div>
       </div>
     </div>

@@ -1,13 +1,9 @@
 import { Button, NativeSelect } from "@mantine/core";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { propList } from "../../registries/propRegistry";
 import { toolList } from "../../registries/toolRegistry";
 import { type VisualConfig } from "../../schema/visual";
-import {
-  assetKind,
-  useCustomAssetsStore,
-  type CustomAsset,
-} from "../state/customAssetsStore";
+import { useCustomAssets, type CustomAsset } from "../../api/library";
 
 export type AssetOption = {
   key: string;
@@ -34,7 +30,7 @@ const staticAssetOptions: AssetOption[] = [
 export const assetOptions = staticAssetOptions;
 
 export function customAssetToVisual(asset: CustomAsset): VisualConfig {
-  return assetKind(asset) === "video"
+  return asset.kind === "video"
     ? {
         type: "recording",
         src: asset.src,
@@ -82,7 +78,7 @@ export function AssetImportButton({
   accept = "image/*,video/*",
   label = "Import…",
 }: AssetImportButtonProps) {
-  const upload = useCustomAssetsStore((s) => s.upload);
+  const { upload } = useCustomAssets();
   const inputRef = useRef<HTMLInputElement>(null);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | undefined>();
@@ -135,11 +131,7 @@ type AssetSelectProps = {
 };
 
 export function AssetSelect({ value, allowNone, onChange }: AssetSelectProps) {
-  const customAssets = useCustomAssetsStore((s) => s.assets);
-  const loadCustomAssets = useCustomAssetsStore((s) => s.load);
-  useEffect(() => {
-    loadCustomAssets();
-  }, [loadCustomAssets]);
+  const { assets: customAssets } = useCustomAssets();
   const options = buildAssetOptions(customAssets);
   return (
     <div className="flex gap-1.5 items-start">

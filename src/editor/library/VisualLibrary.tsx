@@ -1,5 +1,5 @@
 import { Button, UnstyledButton } from "@mantine/core";
-import { Fragment, useEffect, useState } from "react";
+import { Fragment, useState } from "react";
 import { propList } from "../../registries/propRegistry";
 import { toolList } from "../../registries/toolRegistry";
 import {
@@ -8,7 +8,7 @@ import {
 } from "../../registries/visualTemplateRegistry";
 import type { VisualConfig } from "../../schema/visual";
 import { splitCornerProps } from "../../utils/normalizeProject";
-import { assetKind, useCustomAssetsStore } from "../state/customAssetsStore";
+import { useCustomAssets } from "../../api/library";
 import type { VisualSlot } from "../state/projectStore";
 import { useProjectStore } from "../state/projectStore";
 import { VisualThumb } from "./VisualThumb";
@@ -39,12 +39,8 @@ export function VisualLibrary() {
   const updateSceneVisuals = useProjectStore((s) => s.updateSceneVisuals);
   const activeVisualSlot = useProjectStore((s) => s.activeVisualSlot);
   const setActiveVisualSlot = useProjectStore((s) => s.setActiveVisualSlot);
-  const customAssets = useCustomAssetsStore((s) => s.assets);
-  const loadCustomAssets = useCustomAssetsStore((s) => s.load);
+  const { assets: customAssets } = useCustomAssets();
   const [target, setTarget] = useState<Target>("layer");
-  useEffect(() => {
-    loadCustomAssets();
-  }, [loadCustomAssets]);
   const disabled = !selectedSceneId;
   const isComparison = scene?.type === "comparison";
 
@@ -121,7 +117,7 @@ export function VisualLibrary() {
           </div>
           <div className="grid grid-cols-3 gap-1.5">
             {customAssets.map((asset) => {
-              const isVideo = assetKind(asset) === "video";
+              const isVideo = asset.kind === "video";
               return (
                 <UnstyledButton
                   className="grid min-w-0 justify-items-center gap-2 rounded-md border border-solid border-editor-border bg-editor-panel-raised px-2 py-3 text-center text-[10px] [overflow-wrap:anywhere]"

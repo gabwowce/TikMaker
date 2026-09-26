@@ -1,93 +1,63 @@
 import { ActionIcon, Button, Progress } from "@mantine/core";
-import { useEffect, useState } from "react";
-import type { VideoProject } from "../schema/project";
+import { skipToken, useMutation, useQuery } from "@tanstack/react-query";
+import { useState } from "react";
+import { renderFileUrl, trpc } from "../api/trpc";
 import { useProjectStore } from "./state/projectStore";
-type RenderJob = {
-  id: string;
-  status: "running" | "done" | "error";
-  progress: number;
-  phase: string;
-  outputPath?: string;
-  error?: string;
-};
+
 const POLL_MS = 700;
 
 export function RenderButton() {
-  const project = useProjectStore((s) => s.project) as VideoProject;
-  const [job, setJob] = useState<RenderJob | null>(null);
-  const [starting, setStarting] = useState(false);
-  const jobId = job?.status === "running" ? job.id : null;
-  useEffect(() => {
-    if (!jobId) return;
-    const timer = window.setInterval(async () => {
-      try {
-        const res = await fetch(
-          `/api/render-status?id=${encodeURIComponent(jobId)}`,
-        );
-        if (res.ok) setJob(await res.json());
-      } catch {}
-    }, POLL_MS);
-    return () => window.clearInterval(timer);
-  }, [jobId]);
-  async function startRender() {
-    setStarting(true);
-    setJob(null);
-    try {
-      const res = await fetch("/api/render", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ project }),
-      });
-      const body = await res.json();
-      if (!res.ok)
-        throw new Error(body.error ?? `Render failed to start (${res.status})`);
-      setJob({
-        id: body.id,
-        status: "running",
-        progress: 0,
-        phase: "Starting Remotion…",
-      });
-    } catch (err) {
-      setJob({
-        id: "",
-        status: "error",
-        progress: 0,
-        phase: "Failed",
-        error: String(err),
-      });
-    } finally {
-      setStarting(false);
-    }
-  }
-  const running = starting || job?.status === "running";
+  const project = useProjectStore((s) => s.project);
+  const [jobId, setJobId] = useState<string | null>(null);
+  const [panelOpen, setPanelOpen] = useState(false);
+
+  const start = useMutation(
+    trpc.renders.start.mutationOptions({ onSuccess: ({ id }) => setJobId(id) }),
+  );
+  // Polls the job while it runs; refetchInterval returning false stops it
+  // once the render is done or failed. skipToken = "no job yet, don't ask".
+  const { data: job } = useQuery(
+    trpc.renders.get.queryOptions(jobId ?? skipToken, {
+      refetchInterval: (query) =>
+        query.state.data?.status === "running" ? POLL_MS : false,
+    }),
+  );
+
+  const running = start.isPending || job?.status === "running";
   const percent = Math.round((job?.progress ?? 0) * 100);
+  const failed = start.isError || job?.status === "error";
+  const error = start.error?.message ?? job?.error;
+
   return (
     <div className="relative flex items-center gap-2">
-      <Button onClick={startRender} disabled={running}>
+      <Button
+        disabled={running}
+        onClick={() => {
+          setJobId(null);
+          setPanelOpen(true);
+          start.mutate({ project });
+        }}
+      >
         {running ? `Rendering ${percent}%` : "Render MP4"}
       </Button>
-      {job ? (
+      {panelOpen ? (
         <div className="absolute top-full right-0 z-50 mt-2 w-80 rounded border border-solid border-editor-border bg-editor-panel p-3 shadow-xl">
           <div className="mb-2 flex items-center justify-between gap-2">
-            <span className="text-xs">{job.phase}</span>
+            <span className="text-xs">
+              {failed ? "Failed" : (job?.phase ?? "Starting Remotion…")}
+            </span>
             <ActionIcon
               aria-label="Close render status"
-              onClick={() => setJob(null)}
+              onClick={() => setPanelOpen(false)}
             >
               ×
             </ActionIcon>
           </div>
-          <Progress
-            value={percent}
-            color={job.status === "error" ? "red" : "orange"}
-          />
-          {job.status === "done" && job.outputPath ? (
+          <Progress value={percent} color={failed ? "red" : "orange"} />
+          {job?.status === "done" && job.outputPath ? (
             <div className="mt-3 flex flex-col gap-2">
               <span className="break-all text-xs">{job.outputPath}</span>
-              <Button
-                component="a"
-                href={`/api/render-file?id=${encodeURIComponent(job.id)}`}
-              >
+              <Button component="a" href={renderFileUrl(job.id)}>
                 Download MP4
               </Button>
               <Button
@@ -100,12 +70,12 @@ export function RenderButton() {
               </Button>
             </div>
           ) : null}
-          {job.status === "error" ? (
+          {failed && error ? (
             <div
               role="alert"
               className="mt-2 max-h-40 overflow-auto text-xs text-red-400"
             >
-              {job.error}
+              {error}
             </div>
           ) : null}
         </div>

@@ -12,7 +12,7 @@ Use existing:
 - motion presets (`src/video/motion/`)
 - sound effects (`src/registries/sfxRegistry.ts`)
 
-A video project is primarily defined in `/projects/*.json` and validated against `src/schema/project.ts`.
+A video project is primarily defined in `db/projects/*.json` and validated against `src/schema/project.ts`.
 
 Never hardcode inside individual scene implementations:
 - font sizes — use `fontSizes` from `src/video/typography/tokens.ts`
@@ -35,66 +35,26 @@ Do not modify the global design system (`src/video/typography/tokens.ts`, `src/v
 1. Assets sync themselves. `props/`, `ai/`, `sfx/` and `fonts/` (paths overridable in `.env.local`) are the SOURCE of every prop, tool logo and sound; nothing reads them directly. `syncAssets` (`scripts/syncAssets.ts`) copies them into `public/` and regenerates `src/registries/assets.generated.ts`, which is what `propRegistry`/`toolRegistry`/`sfxRegistry` import and therefore what the editor's Visuals and Assets tabs list. The `asset-sync` plugin in `vite.config.ts` runs it when the dev server starts and again whenever one of those folders changes, so a file dropped into `props/` shows up in the running editor without a reload. `npm run assets:sync` runs the same function once, for a build or a cold checkout.
 
    Note it copies but never deletes: removing a file from `props/` drops it from the manifest (so it vanishes from the editor) while the copy under `public/assets/props/` stays, which is what keeps an older project that still references it from breaking.
-2. `npm run dev` opens the editor. It has two modes, switched at the far left of the header: **Storyboard** (write the script as beats — see the next section) and **Scenes** (scene library, visual library, background library, asset browser, Remotion Player preview, inspector, scene strip).
-3. Build the project as data in `projects/*.json`, or via the editor (Save writes to localStorage, Export JSON downloads the file).
+2. `npm run dev` starts two processes side by side (via `concurrently`): Vite serving the editor on :5173, and the Express API server (`server/`) on :3001 that Vite proxies `/trpc` and `/api` to. The editor has two modes, switched at the far left of the header: **Storyboard** (write the script as beats — see the next section) and **Scenes** (scene library, visual library, background library, asset browser, Remotion Player preview, inspector, scene strip).
+3. Build the project as data in `db/projects/*.json`, or in the editor, which saves every change to that same file (Export JSON downloads a copy).
 4. `npm run studio` opens Remotion Studio against the same composition for a render-accurate check.
 5. `npm run render` renders the composition to MP4.
 
-## Storyboard — the script layer, kept in its own file
+## Storyboard mode — the script, inside the project
 
-Before a project is a project it is a SCRIPT, and the script lives in its own
-shape: `storyboards/*.json`, validated by `src/schema/storyboard.ts`, edited in
-the editor's **Storyboard** mode (the toggle at the far left of the header).
-The authoring rules for that file live in `storyboards/README.md` — read it
-before writing a storyboard by hand.
-Nothing about it is shared with `projects/*.json` — different schema, different
-localStorage key (`tikmaker.storyboards`), different id space.
-
-**Why it's split.** A beat says WHAT this moment has to do (say this line, show
-this thing, for about this long); a scene says how it is drawn (layout, layers,
-motion, sfx). Merged, every wording change drags a pile of animation fields
-through the diff and every restack of layers looks like a script edit. Split,
-the script can be finished — and argued about — before a single visual exists.
-
-A **beat** is `{id, role, purpose, voiceover, onScreenText, visualPlaceholder,
-durationSeconds, notes}`. `role` is the only field with mechanical meaning: it
-is a closed enum (`hook`, `problem`, `solution`, `reveal`, `step`, `demo`,
-`proof`, `payoff`, `cta`) and `beatRoleRegistry` maps each one to the scene type
-it generates plus the default `purpose` it starts with. `visualPlaceholder` is
-deliberately PROSE, not a `VisualConfig`: at storyboard time you know what has
-to be shown long before you know which component shows it.
-
-**The crossing is one-way and happens once.** `storyboardToProject`
-(`src/utils/storyboardToProject.ts`), behind the **Generate Scenes** button,
-turns each beat into one placeholder scene — role's scene type, `onScreenText`
-as the headline, the role as the eyebrow, `voiceover` as `scene.vo`, and
-`visualPlaceholder`+`notes` as `scene.notes` (an author-only field, never
-rendered, surfaced in the Inspector's Content tab so the description of what the
-frame needs stays attached to the frame that needs it). It opens a NEW project
-rather than merging into the open one — regenerating over hand-edited scenes
-would silently discard the design work the handoff existed to enable. A
-storyboard is never regenerated FROM a project.
-
-Generation stays deliberately literal — it carries copy and pacing across and
-nothing else. It does follow the house motion rules (transitions cycled by scene
-index, `entrance: "none"` under every slide, `sfx: "none"` so the 3-5 beats that
-earn a cue stay a choice), because those are rules rather than design decisions.
-Picking layouts, visuals and layers is the editing pass that follows, and a
-generator guessing at them produces work to undo, not a starting point.
-
-**Durations are advisory.** A beat's `durationSeconds` is a plan typed weeks
-before the line was recorded, so a generated scene leaves `durationSeconds`
-UNSET whenever the beat has a voiceover and lets `resolveSceneDuration` pace it
-from the VO (see the pacing section). A beat with a duration and no voiceover
-has nothing to derive from, so that number is the only signal there is and it
-gets used. The same fallback drives the storyboard's own running total, which is
-compared against `targetDuration` in the header so an overrun is visible while
-writing rather than after rendering.
+The editor's **Storyboard** mode (`src/editor/storyboard/ProjectStoryboardView.tsx`)
+is a second view of the SAME open project, not a separate file: it edits the
+project's `storyPlan` (premise, audience, `targetDuration`) and each scene's
+`plan` plus its voiceover and on-screen text, and shows the running total
+against `targetDuration` so an overrun is visible while writing rather than
+after rendering. `projectPlanJson` (`src/utils/projectStoryPlan.ts`) exports
+that script on its own. The older standalone `storyboards/*.json` layer and its
+`storyboardToProject` generator were removed.
 
 ## Adding video content
 
 Real videos are authored by **filling config**, not writing components:
-1. Copy `projects/template-showcase.json` (or start a project in the editor) and swap in real copy/durations.
+1. Copy `src/templates/template-showcase.json` (or start a project in the editor) and swap in real copy/durations.
 2. Pick scenes from `src/registries/sceneRegistry.ts` and visuals from `src/registries/visualTemplateRegistry.ts` (the same list the editor's Visuals tab renders) — every entry there is generic and reusable across videos.
 3. Only add a new scene/visual component when a genuinely new *shape* is needed (not new content) — and it must consume `src/video/typography/tokens.ts`, `src/video/motion/*`, and `SafeArea` like every existing one.
 
@@ -109,7 +69,7 @@ a real drift in this repo, not a hypothetical.
 Before writing a component, check each rung. Only descend when the rung above
 genuinely cannot express what you need.
 
-1. **Project data** (`projects/*.json`). Most "new" things are new *content*,
+1. **Project data** (`db/projects/*.json`). Most "new" things are new *content*,
    not a new shape. A different headline, asset, layout, colour or timing is
    always data.
 2. **An existing preset.** `visualTemplateRegistry.ts` (the editor's Visuals
@@ -209,7 +169,7 @@ When a visual component's own hardcoded size changes, update its entry in
 instruction, the same words as a checklist row are just more body text. These
 are code-like and CLIP rather than wrap: keep lines under `MAX_LINE_CHARS`
 (`src/video/visuals/dev/devText.ts`, currently 35) or `overflowWarning` will
-flag them. `projects/template-dev-visuals.json` (Templates → "Patikra: Dev
+flag them. `src/templates/template-dev-visuals.json` (Templates → "Patikra: Dev
 vizualai") is the smoke test — open it after touching any of these components.
 
 **4. Side-safe margins are non-negotiable.** TikTok draws its own UI down both
@@ -255,7 +215,7 @@ elsewhere, unless a direction change is marking a real chapter break. The
 
 ## Generating a full script (multi-scene video)
 
-When asked to write a complete video's `projects/*.json` from a topic (not just edit one scene), follow this structure — it's the pattern validated across `projects/template-problem-payoff.json`, `template-curiosity-loop.json`, `vibe-coding-mvp-roadmap.json`, and `template-direction-demo.json`.
+When asked to write a complete video's `db/projects/*.json` from a topic (not just edit one scene), follow this structure — it's the pattern validated across `src/templates/template-problem-payoff.json`, `template-curiosity-loop.json`, `vibe-coding-mvp-roadmap.json`, and `template-direction-demo.json`.
 
 **Overall shape:** `hook-centered` (hook) → `hook-visual` (problem/pain) → optional `visual-explainer` (solution/agenda preview) → N **step-pairs** (see below, one pair per roadmap step / list item — do NOT use the `steps` scene type for anything with more than a couple items, it crams everything into one static frame) → `takeaway` (CTA). 4–8 top-level beats plus however many step-pairs the content actually needs; don't pad with filler steps to hit a round number.
 
@@ -407,7 +367,7 @@ In the editor, every one of these (blocks, visual layers, the rich-headline stac
 
 Scene content also supports: `badge`, `highlights` (words wrapped in a contrast pill box in the headline — never color, per design rule below), and — only on `comparison`/`steps` — `left`/`right`/`items`.
 
-`content.richHeadline` (optional, `hook-centered`/`hook-visual`/`takeaway` only) is a stack of independently-styled lines — each with its own `size` (hero/headline/title/bodyLarge/body/label token), `font` (tanker/clash), optional `pill` box, and its own entrance `animation`/`splitBy` (word/letter/line) — for CapCut-style multi-size hook captions. When present it replaces the plain `headline` for that scene; see `showcase-hook-centered` in `projects/template-showcase.json` for a worked example. Word/letter-level animation reuses the same 4 entrance presets (fade/slideUp/scaleIn/pop) — do not add a separate animation registry for this. A line also takes a `color` hex (same field and picker as `Block.color`); unset keeps the token default it would otherwise get — dark inside a `pill`, `colors.textPrimary` outside one — so a pill never needs a manual color to stay legible. That field is line-level styling and NOT a way around the pill rule below: recoloring a whole line for a deliberate look is fine, recoloring one to emphasize it is what `pill` is for. `sizePx` is the same kind of escape hatch for size — a raw px override of the `size` token, exactly as `Block.size` already is, because a hook caption is a typographic composition and the six tokens are rungs on a ladder rather than every size a line might want. Both are authored project DATA; scene components still read `fontSizes`/`colors` and must not hardcode either.
+`content.richHeadline` (optional, `hook-centered`/`hook-visual`/`takeaway` only) is a stack of independently-styled lines — each with its own `size` (hero/headline/title/bodyLarge/body/label token), `font` (tanker/clash), optional `pill` box, and its own entrance `animation`/`splitBy` (word/letter/line) — for CapCut-style multi-size hook captions. When present it replaces the plain `headline` for that scene; see `showcase-hook-centered` in `src/templates/template-showcase.json` for a worked example. Word/letter-level animation reuses the same 4 entrance presets (fade/slideUp/scaleIn/pop) — do not add a separate animation registry for this. A line also takes a `color` hex (same field and picker as `Block.color`); unset keeps the token default it would otherwise get — dark inside a `pill`, `colors.textPrimary` outside one — so a pill never needs a manual color to stay legible. That field is line-level styling and NOT a way around the pill rule below: recoloring a whole line for a deliberate look is fine, recoloring one to emphasize it is what `pill` is for. `sizePx` is the same kind of escape hatch for size — a raw px override of the `size` token, exactly as `Block.size` already is, because a hook caption is a typographic composition and the six tokens are rungs on a ladder rather than every size a line might want. Both are authored project DATA; scene components still read `fontSizes`/`colors` and must not hardcode either.
 
 **Placing the headline.** `content.richHeadlineX`/`richHeadlineY` position the WHOLE stack as percentages of the 1080x1920 canvas addressing its centre — the same convention (and the same drag-on-preview overlay) as a Block's x/y. Both unset leaves the stack in the scene's flex column, centred in whatever band the `layout` preset's `textZone` gives it; setting either lifts it out, which is how consecutive scenes stop all putting their headline on the same line. Leaving X unset keeps the stack spanning the safe-area column, which is the right default for a headline — an X pins it to a point instead. A LINE's own `x`/`y` is the different move: both set pulls that ONE line out of the stack to its own spot (requiring both keeps "positioned" unambiguous), while the stack controls move the stack and keep it a stack. Either way the entrance clock still walks every line in author order, so freeing one line never retimes its neighbours — and because array order IS both the stack order and the entrance order, the Inspector's per-line up/down arrows move a line in both at once. Positioning lives in `RichHeadline` itself, not in the three scene components, and free lines render as SIBLINGS of the stack so their percentages always address the canvas rather than being re-resolved against a positioned stack.
 
@@ -421,29 +381,44 @@ The `browser` frame (and `recording` with `frame: "browser"`) draws real browser
 
 Known editor gap: the Inspector has full field editing for the "simple" visual types (stat-counter, checklist, pricing-card, app-mockup, progress, keycap, image, recording) and for `browser`/`phone` (URL + a Content picker that swaps the on-screen visual, including an image or a recording) — but only a read-only summary for the remaining nested ones (flow, node-group, stack, transform), which are configured by picking a preset from the Visuals tab or editing the project JSON directly.
 
-**The library lives in two places, and the repo is one of them.** Every save
-writes the project to BOTH the browser's localStorage and `projects/<id>.json`
-on disk (`writeProjectFile` -> the dev server's `/api/save-json`), and those
-files are committed. On startup `projectStore` reads `projects/*.json` via
-`import.meta.glob` and merges them with localStorage — which is what makes a
-fresh clone open with the same videos the work was done on. Before this the
-editor only ever read localStorage, so pulling the repo on a second computer
-showed the bundled sample and none of your own work; the files were right there
-on disk and nothing looked at them.
+**Where everything is saved: the API server and `db/`.** The browser cannot
+write files, so a separate Express server (`server/`, port 3001, started by
+`npm run dev` next to Vite) owns every file the editor keeps. Everything it
+manages as data lives in `db/` and is committed:
 
-Reconciliation is by `savedAt` (ms, stamped in `persist`, the one function that
-writes): **the disk copy wins unless the local one is strictly newer.** A file
-you pulled is a deliberate act and localStorage is a cache that may predate it;
-the single case where local must win is a reload that beats the debounced disk
-write. Projects that exist only in localStorage are kept either way.
-`storyboardStore` does exactly the same with `storyboards/*.json`.
+- `db/projects/`, `db/scenes/` (Your Scenes), `db/backgrounds/`,
+  `db/voice-variants/` — one JSON file per entry
+- `db/sfx-overrides.json` (animation → sound rules), `db/voice-settings.json`
+  (ElevenLabs voice, model, speed…; `.env.local` keeps only the API key)
+- `db/custom-assets.json`, `db/custom-sfx.json` — manifests of uploads. The
+  uploaded FILES stay in `public/assets/…`, because that is where the editor
+  and the Remotion render can load them.
 
-`import.meta.glob` rather than an API call because it resolves in a production
-build too, and needs no request in flight before the library can be shown.
+The server exposes one **tRPC** router (`server/trpc/router.ts`, mounted at
+`/trpc`). Every procedure validates its input with a Zod schema from
+`src/schema/` — the same schemas the editor uses — and the editor imports only
+the router's TYPE (`src/api/trpc.ts`), so a changed input or output shape turns
+the calling code red instead of failing at runtime. The one plain Express route
+is `GET /api/renders/:id/file`, because tRPC answers with JSON, not files.
+`server/__tests__/api.test.ts` runs the whole API against a temporary folder.
 
-**Three ways to keep what you made**, because "Save" alone conflated them. `Save` writes the project back to its own library entry. `Save As…` (`saveProjectAs` in `projectStore`) mints a FRESH project id and keeps editing that copy, so branching a variant no longer overwrites the video it came from — the library is keyed by project id, which is exactly why reusing the old one would clobber it. `Save as Template…` (`src/editor/state/savedTemplatesStore.ts`) copies the whole project into the Templates tab as a reusable starting point and leaves the project you're editing alone; picking one opens it as a new project with a fresh id. The Templates tab shows **Tavo šablonai** above the built-in `scriptTemplates`, the same shape as Your Scenes below. Unlike `instantiateSavedScene`, a template does NOT re-mint scene/block/layer ids: those only have to be unique within a project, and a template produces a whole project rather than being inserted into one.
+On the editor side, **TanStack Query holds what lives on the server** (the
+project list, uploads, sounds, saved scenes…; hooks in `src/api/library.ts`
+and `src/api/projects.ts`) and **Zustand holds what is being edited** (the open
+project, selection, undo). No store talks to the server: `<AutoSave />`
+(`src/editor/AutoSave.tsx`) watches the open project and saves it 400 ms after
+the last change — but only when it differs from the server's copy, so merely
+opening a project never rewrites its file. New project, Duplicate and Import
+just change the open project; AutoSave writes them. Things about one browser
+rather than your work (last opened project, timeline height) live in
+localStorage via `src/editor/state/editorPrefs.ts`.
 
-The Scenes tab has **Your Scenes** above the blank scene types (`src/editor/state/savedScenesStore.ts`): a scene can be saved with a name and dropped into any project later, copy/visual/layers/animations intact. Inserting re-mints the scene's id plus every block and layer id, and strips each layer's `link` — a carry only means something as a run of adjacent scenes, so half of one would point at a group that isn't there.
+Vite ignores `db/` (a saved project must not reload the page) except
+`db/sfx-overrides.json`: `sfxDefaults.ts` imports it statically so the Remotion
+render has it, and reloading that module is how a changed sound rule reaches
+the preview.
+
+The Scenes tab has **Your Scenes** above the blank scene types (`useSavedScenes` in `src/api/library.ts`, `db/scenes/`): a scene can be saved with a name and dropped into any project later, copy/visual/layers/animations intact. Inserting re-mints the scene's id plus every block and layer id, and strips each layer's `link` — a carry only means something as a run of adjacent scenes, so half of one would point at a group that isn't there.
 
 **Split timing is one number, resolved in one place.** A text element's
 `splitBy` (word/letter/line) decides the unit and `splitDuration` how long the
@@ -571,7 +546,7 @@ The Inspector is split into three tabs — **Content** (copy, Rich Headline, Blo
 
 The Inspector's **Layers** section (with a count in its title) is where every visual in the scene is configured — one card each, listed bottom layer first, with ↑/↓ to restack. Every card is the same `PositionedVisualEntryCard`: asset (+ Import…), type-specific fields, position, scale, In/Out, Ken Burns, delay, sound and carry. A full-bleed layer hides the position/scale sliders (they do nothing for it) and says so instead. The Inspector's header and tabs are pinned; only the section list scrolls.
 
-Assets can be imported from the **Assets tab** or straight from any asset picker's **Import…** button (`AssetImportButton` inside `AssetSelect`), which uploads the file and switches that layer to it in one step. Both paths import stills and screen recordings (`.mp4`/`.mov`/`.webm`) — the dev-server upload API tags each entry with `kind` (`vite.config.ts`), and `customAssetToVisual` turns a video into a `recording` (browser frame, `fit: "cover"`) and a still into an `image`, everywhere an asset can be chosen. The Inspector's `recording` editor picks from the same imports instead of only accepting a hand-typed path, and previews the clip inline. Older manifest entries have no `kind` and fall back to the file extension (`assetKind` in `customAssetsStore.ts`).
+Assets can be imported from the **Assets tab** or straight from any asset picker's **Import…** button (`AssetImportButton` inside `AssetSelect`), which uploads the file and switches that layer to it in one step. Both paths import stills and screen recordings (`.mp4`/`.mov`/`.webm`) — the server tags each upload with `kind` (`server/trpc/assets.ts`) and re-encodes recordings for frame-accurate scrubbing, and `customAssetToVisual` turns a video into a `recording` (browser frame, `fit: "cover"`) and a still into an `image`, everywhere an asset can be chosen. The Inspector's `recording` editor picks from the same imports instead of only accepting a hand-typed path, and previews the clip inline.
 
 The editor's Visuals tab renders a **real rendered still of each preset** (`src/editor/library/VisualThumb.tsx`, a Remotion `Thumbnail` of the actual component — so the preview can never drift from what the visual really looks like) and groups presets by `category` (`visualTemplateCategories`). A click always appends a new layer to the stack; on `comparison` scenes a second target appears for the left/right columns, which are genuinely column-scoped. Each layer card has **"Carry this layer into the next scene →"** (`linkLayerToNextScene` in `projectStore`), which copies the layer onto the next scene and wires both sides of the group in one click — the correct-by-construction version of what a glide needs (same asset, same groupId, a pose on both, adjacency).
 
@@ -579,9 +554,9 @@ Deferred to later phases (do not build unless asked): terminal/code-editor/chat 
 
 ## Rendering to MP4
 
-The editor's **Render MP4** button (`src/editor/RenderButton.tsx` + the `render-api` plugin in `vite.config.ts`) runs the render from the UI: it POSTs the in-memory project to the dev server, which shells out to `remotion render`, reports progress parsed from Remotion's own output, and then shows the file's path on disk plus a download link. Renders land in `out/`.
+The editor's **Render MP4** button (`src/editor/RenderButton.tsx`) runs the render from the UI: `renders.start` sends the open project to the API server, which runs `npx remotion render` in the background (`server/renderJobs.ts`) and parses progress from Remotion's own output; the button polls `renders.get` until it is done, then offers the file's path on disk plus a download link. Renders land in `out/`.
 
-From the terminal it's `npm run render:project -- projects/<file>.json out/<name>.mp4` (`scripts/render-project.ts`) — same composition, same props mechanism. **Save** only persists the project to the browser's local library; **Export JSON** downloads the file the CLI takes.
+From the terminal it's `npm run render:project -- db/projects/<file>.json out/<name>.mp4` (`scripts/render-project.ts`) — same composition, same props mechanism.
 
 Every reference to a file in `public/` MUST go through `assetUrl` (`src/utils/assetUrl.ts`, wrapping Remotion's `staticFile`). A bare `/assets/...` string works in the editor — Vite serves `public/` at the web root — but in a render Remotion serves the BUNDLE root with `public/` one level inside it, so hardcoded absolute paths 404 and the render dies on the first missing font or sound. That was a real, total render failure in this repo; don't reintroduce a raw path.
 

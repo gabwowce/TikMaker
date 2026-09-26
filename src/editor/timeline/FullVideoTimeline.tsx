@@ -1,7 +1,6 @@
 import { groupDragPositions } from "./groupDrag";
 import { Button, Slider } from "@mantine/core";
 import {
-  useEffect,
   useRef,
   useState,
   type DragEvent as ReactDragEvent,
@@ -17,7 +16,7 @@ import {
   resolveEntranceSfx,
   resolveExitSfx,
 } from "../../video/motion/sfxDefaults";
-import { useCustomAssetsStore } from "../state/customAssetsStore";
+import { useCustomAssets } from "../../api/library";
 import { useProjectStore } from "../state/projectStore";
 import { isAudioDrag, readAudioDragPayload } from "./audioDrag";
 import { buildFullTimelineRows } from "./buildFullTimelineRows";
@@ -62,8 +61,7 @@ export function FullVideoTimeline({
   const [clipboardReady, setClipboardReady] = useState(clipboardHas);
   const rulerRef = useRef<HTMLDivElement>(null);
   const viewportRef = useRef<HTMLDivElement>(null);
-  const customAssets = useCustomAssetsStore((state) => state.assets);
-  const loadCustomAssets = useCustomAssetsStore((state) => state.load);
+  const { assets: customAssets } = useCustomAssets();
   const project = useProjectStore((state) => state.project);
   const selectedSceneId = useProjectStore((state) => state.selectedSceneId);
   const selectedObjectId = useProjectStore((state) => state.selectedObjectId);
@@ -85,9 +83,6 @@ export function FullVideoTimeline({
   const endHistoryTransaction = useProjectStore(
     (state) => state.endHistoryTransaction,
   );
-  useEffect(() => {
-    loadCustomAssets();
-  }, [loadCustomAssets]);
   useTimelineWheelZoom(viewportRef, LABEL, ppf, setPpf, MIN_ZOOM, MAX_ZOOM);
   const timings = computeSceneTimings(project);
 

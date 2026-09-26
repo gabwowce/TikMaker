@@ -1,116 +1,74 @@
 import { Button, Checkbox, Slider } from "@mantine/core";
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import { useVoice } from "../../api/library";
+import { voiceSettingsSchema } from "../../schema/voiceSettings";
 import { computeSceneTimings } from "../../utils/duration";
-import { usePreferences } from "../state/fileLibrary";
 import { useProjectStore } from "../state/projectStore";
-import { useVoiceStore } from "../state/voiceStore";
 
 function VoiceSettingsFields() {
-  const preferences = usePreferences();
-  const setPreferences = usePreferences((s) => s.set);
-  const defaults = useVoiceStore((s) => s.defaults);
+  const { settings, previewSettings, saveSettings } = useVoice();
   const [open, setOpen] = useState(false);
-  if (!defaults) return null;
+  if (!settings) return null;
   function slider(
     label: string,
-    value: number | undefined,
-    fallback: number,
+    field: "speed" | "stability" | "similarityBoost" | "style",
     min: number,
     max: number,
-    onChange: (value: number) => void,
   ) {
-    const resolved = value ?? fallback;
+    const value = settings![field];
     return (
       <div className="mb-2">
         <div className="flex justify-between text-[10px] text-editor-muted">
           <span>{label}</span>
-          <span className="text-editor-text">
-            {resolved.toFixed(2)}
-            {value === undefined ? " · default" : ""}
-          </span>
+          <span className="text-editor-text">{value.toFixed(2)}</span>
         </div>
         <Slider
           min={min}
           max={max}
           step={0.05}
-          value={resolved}
-          onChange={(value) => onChange(Number(value))}
+          value={value}
+          onChange={(next) => previewSettings({ [field]: Number(next) })}
+          onChangeEnd={(next) => saveSettings({ [field]: Number(next) })}
           className="w-full"
         />
       </div>
     );
   }
-  const overridden =
-    preferences.voiceSpeed !== undefined ||
-    preferences.voiceStability !== undefined ||
-    preferences.voiceSimilarity !== undefined ||
-    preferences.voiceStyle !== undefined ||
-    preferences.voiceSpeakerBoost !== undefined;
   return (
     <div className="mb-2.5 pb-2 border-0 border-b border-solid border-editor-border">
-      {slider(
-        "Speaking speed",
-        preferences.voiceSpeed,
-        defaults.speed,
-        0.7,
-        1.2,
-        (voiceSpeed) => setPreferences({ voiceSpeed }),
-      )}
+      {slider("Speaking speed", "speed", 0.7, 1.2)}
 
       <div className="flex gap-1.5">
         <Button variant="default" onClick={() => setOpen((value) => !value)}>
           {open ? "▾ Less" : "▸ More settings"}
         </Button>
-        {overridden ? (
-          <Button
-            variant="default"
-            aria-label="Restore server defaults"
-            onClick={() =>
-              setPreferences({
-                voiceSpeed: undefined,
-                voiceStability: undefined,
-                voiceSimilarity: undefined,
-                voiceStyle: undefined,
-                voiceSpeakerBoost: undefined,
-              })
-            }
-          >
-            ↺ Defaults
-          </Button>
-        ) : null}
+        <Button
+          variant="default"
+          aria-label="Restore the default voice settings"
+          onClick={() =>
+            // the schema's defaults, keeping which voice and model are used
+            saveSettings(
+              voiceSettingsSchema.parse({
+                voiceId: settings.voiceId,
+                modelId: settings.modelId,
+              }),
+            )
+          }
+        >
+          ↺ Defaults
+        </Button>
       </div>
 
       {open ? (
         <div className="mt-2">
-          {slider(
-            "Stability",
-            preferences.voiceStability,
-            defaults.stability,
-            0,
-            1,
-            (voiceStability) => setPreferences({ voiceStability }),
-          )}
-          {slider(
-            "Similarity",
-            preferences.voiceSimilarity,
-            defaults.similarityBoost,
-            0,
-            1,
-            (voiceSimilarity) => setPreferences({ voiceSimilarity }),
-          )}
-          {slider(
-            "Style exaggeration",
-            preferences.voiceStyle,
-            defaults.style,
-            0,
-            1,
-            (voiceStyle) => setPreferences({ voiceStyle }),
-          )}
+          {slider("Stability", "stability", 0, 1)}
+          {slider("Similarity", "similarityBoost", 0, 1)}
+          {slider("Style exaggeration", "style", 0, 1)}
           <label className="flex items-center gap-1.5 text-[10px] text-editor-muted">
             <Checkbox
-              checked={preferences.voiceSpeakerBoost ?? defaults.speakerBoost}
+              checked={settings.speakerBoost}
               onChange={(event) =>
-                setPreferences({ voiceSpeakerBoost: event.target.checked })
+                saveSettings({ speakerBoost: event.target.checked })
               }
             />
             Speaker boost
@@ -127,19 +85,14 @@ type VoiceoverGeneratorProps = {
 };
 
 export function VoiceoverGenerator({ sceneId, text }: VoiceoverGeneratorProps) {
-  const configured = useVoiceStore((s) => s.configured);
-  const checkStatus = useVoiceStore((s) => s.checkStatus);
-  const generate = useVoiceStore((s) => s.generate);
-  const generating = useVoiceStore((s) => s.generating.includes(sceneId));
-  const error = useVoiceStore((s) => s.error);
+  // Each scene's generator has its own mutation, so "Generating…" and any
+  // error belong to this scene only.
+  const { configured, generate } = useVoice();
+  const generating = generate.isPending;
   const project = useProjectStore((s) => s.project);
   const addAudioClip = useProjectStore((s) => s.addAudioClip);
   const updateAudioClip = useProjectStore((s) => s.updateAudioClip);
   const selectObject = useProjectStore((s) => s.selectObject);
-  const preferences = usePreferences();
-  useEffect(() => {
-    if (configured === null) void checkStatus();
-  }, [configured, checkStatus]);
   const sceneFrom =
     computeSceneTimings(project).find((entry) => entry.scene.id === sceneId)
       ?.from ?? 0;
@@ -158,18 +111,9 @@ export function VoiceoverGenerator({ sceneId, text }: VoiceoverGeneratorProps) {
         disabled={!text?.trim() || generating}
         onClick={async () => {
           if (!text?.trim()) return;
-          const clip = await generate({
-            text,
-            label: text.trim().slice(0, 40),
-            key: sceneId,
-            settings: {
-              speed: preferences.voiceSpeed,
-              stability: preferences.voiceStability,
-              similarityBoost: preferences.voiceSimilarity,
-              style: preferences.voiceStyle,
-              speakerBoost: preferences.voiceSpeakerBoost,
-            },
-          });
+          const clip = await generate
+            .mutateAsync({ text, label: text.trim().slice(0, 40) })
+            .catch(() => null); // the message is shown from generate.error
           if (!clip) return;
           addAudioClip(clip.id, sceneFrom);
           const clips = useProjectStore.getState().project.audioClips ?? [];
@@ -183,9 +127,9 @@ export function VoiceoverGenerator({ sceneId, text }: VoiceoverGeneratorProps) {
       >
         {generating ? "Generating…" : "🎙 Generate voiceover"}
       </Button>
-      {error ? (
+      {generate.error ? (
         <div className="text-[10px] text-[#ff8a65] mt-1.5 whitespace-pre-wrap">
-          {error}
+          {generate.error.message}
         </div>
       ) : null}
     </div>
