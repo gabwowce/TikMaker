@@ -8,6 +8,7 @@ vi.mock("../../timeline/useAudioWaveforms", () => ({
 }));
 
 let projectNumber = 0;
+const canUndo = () => useProjectStore.temporal.getState().pastStates.length > 0;
 
 beforeEach(() => {
   const scenes: Scene[] = ["first", "second"].map((id) => ({
@@ -57,12 +58,12 @@ describe("scene updates", () => {
   it("records one undo step for a delegated action", () => {
     const actions = useProjectStore.getState();
     actions.updateSceneTransition("first", "push");
-    expect(useProjectStore.getState().canUndo).toBe(true);
+    expect(canUndo()).toBe(true);
     actions.undo();
     expect(
       useProjectStore.getState().project.scenes[0].motion?.transition,
     ).toBe("cut");
-    expect(useProjectStore.getState().canUndo).toBe(false);
+    expect(canUndo()).toBe(false);
     actions.redo();
     expect(
       useProjectStore.getState().project.scenes[0].motion?.transition,
@@ -79,11 +80,46 @@ describe("scene updates", () => {
     expect(
       useProjectStore.getState().project.scenes[0].motion?.stagger,
     ).toBeUndefined();
-    expect(useProjectStore.getState().canUndo).toBe(false);
+    expect(canUndo()).toBe(false);
     actions.redo();
     expect(useProjectStore.getState().project.scenes[0].motion?.stagger).toBe(
       12,
     );
+  });
+});
+
+describe("undo history (zundo)", () => {
+  it("selecting a scene is not an undo step, but undo restores the selection", () => {
+    const actions = useProjectStore.getState();
+    actions.selectScene("second");
+    expect(canUndo()).toBe(false);
+    actions.updateSceneTransition("second", "push");
+    actions.selectScene("first");
+    actions.undo();
+    expect(useProjectStore.getState().selectedSceneId).toBe("second");
+  });
+
+  it("a drag that changed nothing adds no step", () => {
+    const actions = useProjectStore.getState();
+    actions.beginHistoryTransaction();
+    actions.endHistoryTransaction();
+    expect(canUndo()).toBe(false);
+  });
+
+  it("a new edit after undo drops the redo branch", () => {
+    const actions = useProjectStore.getState();
+    actions.updateSceneTransition("first", "push");
+    actions.undo();
+    actions.updateSceneStagger("first", 5);
+    expect(useProjectStore.temporal.getState().futureStates).toHaveLength(0);
+  });
+
+  it("opening another project starts with an empty history", () => {
+    const actions = useProjectStore.getState();
+    actions.updateSceneTransition("first", "push");
+    expect(canUndo()).toBe(true);
+    actions.openProject(createEmptyProject("other", "Other"));
+    expect(canUndo()).toBe(false);
   });
 });
 

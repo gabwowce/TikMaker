@@ -11,7 +11,11 @@ import { parseProject } from "../utils/normalizeProject";
 import { ImportJsonDialog } from "./ImportJsonDialog";
 import { RenderButton } from "./RenderButton";
 import { SaveStatusBadge } from "./SaveStatusBadge";
-import { useProjectStore } from "./state/projectStore";
+import {
+  useCanRedo,
+  useCanUndo,
+  useProjectStore,
+} from "./state/projectStore";
 
 type EditorToolbarProps = {
   mode: "scenes" | "storyboard";
@@ -23,8 +27,8 @@ export function EditorToolbar({ mode, onModeChange }: EditorToolbarProps) {
   const library = useProjectList();
   const { save } = useSaveProject();
   const remove = useDeleteProject();
-  const canUndo = useProjectStore((state) => state.canUndo);
-  const canRedo = useProjectStore((state) => state.canRedo);
+  const canUndo = useCanUndo();
+  const canRedo = useCanRedo();
   const [importOpen, setImportOpen] = useState(false);
   const actions = useProjectStore.getState();
 
