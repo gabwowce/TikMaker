@@ -20,8 +20,6 @@ export type ProjectStore = {
   project: VideoProject;
   selectedSceneId: string | null;
   activeVisualSlot: VisualSlot;
-  canUndo: boolean;
-  canRedo: boolean;
   playheadFrame: number;
   undo: () => void;
   redo: () => void;

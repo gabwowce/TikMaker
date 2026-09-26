@@ -1,5 +1,6 @@
 import { linkVisualToNextScene, linkLayerToNextScene } from "./linkScenes";
-import { create } from "zustand";
+import { temporal } from "zundo";
+import { create, useStore } from "zustand";
 import { getSceneDefinition } from "../../registries/sceneRegistry";
 import { getSfx } from "../../registries/sfxRegistry";
 import type { VideoProject } from "../../schema/project";
@@ -25,77 +26,56 @@ function planRoleForSceneType(type: SceneType): ScenePlanRole {
 }
 
 const initialProject = createEmptyProject("empty", "Empty Project");
-type HistorySnapshot = {
-  project: VideoProject;
-  selectedSceneId: string | null;
-};
-const HISTORY_LIMIT = 100;
-const undoStack: HistorySnapshot[] = [];
-const redoStack: HistorySnapshot[] = [];
-let applyingHistory = false;
-let historyTransaction: HistorySnapshot | null = null;
 
-export const useProjectStore = create<ProjectStore>((set, get) => ({
+// Undo/redo is zundo's `temporal` middleware: it records the part of the state
+// `partialize` picks every time `project` changes. Undo brings back the scene
+// that was selected too, but selecting a scene on its own is not a step.
+type HistoryEntry = { project: VideoProject; selectedSceneId: string | null };
+const HISTORY_LIMIT = 100;
+const history = () => useProjectStore.temporal;
+
+// A new or different project starts with an empty history.
+function clearHistory() {
+  history().getState().clear();
+}
+
+// Set while a drag is in progress (see beginHistoryTransaction).
+let transactionStart: HistoryEntry | null = null;
+
+export const useProjectStore = create<ProjectStore>()(
+  temporal(
+    (set, get) => ({
   project: initialProject,
   selectedSceneId: null,
   activeVisualSlot: "main",
-  canUndo: false,
-  canRedo: false,
   playheadFrame: 0,
   selectedObjectId: null,
   selectedObjectIds: [],
   undo() {
-    const previous = undoStack.pop();
-    if (!previous) return;
-    const current = get();
-    redoStack.push({
-      project: current.project,
-      selectedSceneId: current.selectedSceneId,
-    });
-    applyingHistory = true;
-    set({
-      project: previous.project,
-      selectedSceneId: previous.selectedSceneId,
-      canUndo: undoStack.length > 0,
-      canRedo: true,
-    });
-    applyingHistory = false;
+    history().getState().undo();
   },
   redo() {
-    const next = redoStack.pop();
-    if (!next) return;
-    const current = get();
-    undoStack.push({
-      project: current.project,
-      selectedSceneId: current.selectedSceneId,
-    });
-    applyingHistory = true;
-    set({
-      project: next.project,
-      selectedSceneId: next.selectedSceneId,
-      canUndo: true,
-      canRedo: redoStack.length > 0,
-    });
-    applyingHistory = false;
+    history().getState().redo();
   },
+  // A drag (slider, timeline clip) changes the project dozens of times but
+  // should be ONE undo step: stop recording while it lasts, then record the
+  // state from before it started as a single entry.
   beginHistoryTransaction() {
-    if (historyTransaction) return;
-    const state = get();
-    historyTransaction = {
-      project: state.project,
-      selectedSceneId: state.selectedSceneId,
-    };
+    if (transactionStart) return;
+    const { project, selectedSceneId } = get();
+    transactionStart = { project, selectedSceneId };
+    history().getState().pause();
   },
   endHistoryTransaction() {
-    if (!historyTransaction) return;
-    const before = historyTransaction;
-    historyTransaction = null;
-    const project = get().project;
-    if (before.project === project) return;
-    undoStack.push(before);
-    if (undoStack.length > HISTORY_LIMIT) undoStack.shift();
-    redoStack.length = 0;
-    set({ canUndo: true, canRedo: false });
+    if (!transactionStart) return;
+    const before = transactionStart;
+    transactionStart = null;
+    history().getState().resume();
+    if (before.project === get().project) return; // the drag changed nothing
+    history().setState(({ pastStates }) => ({
+      pastStates: [...pastStates, before].slice(-HISTORY_LIMIT),
+      futureStates: [],
+    }));
   },
   setPlayheadFrame(playheadFrame) {
     return set({ playheadFrame: Math.max(0, Math.round(playheadFrame)) });
@@ -176,9 +156,11 @@ export const useProjectStore = create<ProjectStore>((set, get) => ({
   createProject(title) {
     const project = createEmptyProject(`project-${Date.now()}`, title);
     set({ project, selectedSceneId: null });
+    clearHistory();
   },
   loadProject(project) {
     set({ project, selectedSceneId: project.scenes[0]?.id ?? null });
+    clearHistory();
   },
   saveProjectAs(title) {
     const project: VideoProject = {
@@ -187,6 +169,7 @@ export const useProjectStore = create<ProjectStore>((set, get) => ({
       title,
     };
     set({ project });
+    clearHistory();
   },
   exportProjectJson() {
     return JSON.stringify(get().project, null, 2);
@@ -204,6 +187,7 @@ export const useProjectStore = create<ProjectStore>((set, get) => ({
   },
   openProject(project) {
     set({ project, selectedSceneId: project.scenes[0]?.id ?? null });
+    clearHistory();
   },
   addScene(type) {
     const def = getSceneDefinition(type);
@@ -518,25 +502,17 @@ export const useProjectStore = create<ProjectStore>((set, get) => ({
   setActiveVisualSlot(slot) {
     return set({ activeVisualSlot: slot });
   },
-}));
-useProjectStore.subscribe((state, previous) => {
-  if (applyingHistory || state.project === previous.project) return;
-  if (historyTransaction) return;
-  if (state.project.id !== previous.project.id) {
-    undoStack.length = 0;
-    redoStack.length = 0;
-    useProjectStore.setState({ canUndo: false, canRedo: false });
-    return;
-  }
-  undoStack.push({
-    project: previous.project,
-    selectedSceneId: previous.selectedSceneId,
-  });
-  if (undoStack.length > HISTORY_LIMIT) undoStack.shift();
-  redoStack.length = 0;
-  useProjectStore.setState({ canUndo: true, canRedo: false });
-});
-
+    }),
+    {
+      partialize: ({ project, selectedSceneId }): HistoryEntry => ({
+        project,
+        selectedSceneId,
+      }),
+      equality: (past, current) => past.project === current.project,
+      limit: HISTORY_LIMIT,
+    },
+  ),
+);
 // Opens the project you had open last time (remembered in this browser),
 // else the first one, else the bundled example.
 export function initializeProjectStore(projects: VideoProject[]) {
@@ -545,14 +521,18 @@ export function initializeProjectStore(projects: VideoProject[]) {
     projects.find((p) => p.id === lastOpenedId) ??
     projects[0] ??
     parseProject(exampleProjectJson);
-  undoStack.length = 0;
-  redoStack.length = 0;
-  historyTransaction = null;
-  applyingHistory = true;
+  transactionStart = null;
   useProjectStore.setState({
     project,
     selectedSceneId: project.scenes[0]?.id ?? null,
   });
-  useProjectStore.setState({ canUndo: false, canRedo: false });
-  applyingHistory = false;
+  clearHistory();
+}
+
+// For components: whether there is anything to undo / redo.
+export function useCanUndo(): boolean {
+  return useStore(history(), (h) => h.pastStates.length > 0);
+}
+export function useCanRedo(): boolean {
+  return useStore(history(), (h) => h.futureStates.length > 0);
 }
