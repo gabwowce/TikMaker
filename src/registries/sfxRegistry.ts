@@ -1,4 +1,4 @@
-import customSfxManifest from "../config/customSfx.json";
+import customSfxManifest from "../../db/custom-sfx.json";
 import { assetUrl } from "../utils/assetUrl";
 import { generatedSfx } from "./assets.generated";
 export type SfxGroup =

@@ -49,7 +49,7 @@ function readBody(req: import("http").IncomingMessage): Promise<string> {
 }
 export function voiceApiPlugin(root: string): Plugin {
   const voiceDir = path.resolve(root, "public/assets/voice");
-  const manifestPath = path.resolve(root, "src/config/customSfx.json");
+  const manifestPath = path.resolve(root, "db/custom-sfx.json");
   function readManifest(): ManifestEntry[] {
     if (!fs.existsSync(manifestPath)) return [];
     try {

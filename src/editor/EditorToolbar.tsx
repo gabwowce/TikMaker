@@ -22,6 +22,12 @@ export function EditorToolbar({ mode, onModeChange }: EditorToolbarProps) {
   const [recoveryOpen, setRecoveryOpen] = useState(false);
   const actions = useProjectStore.getState();
 
+  function createNewProject() {
+    const title = window.prompt("Project name", "Untitled project");
+    if (title === null) return;
+    actions.createProject(title.trim() || "Untitled project");
+  }
+
   function renameProject() {
     const title = window.prompt("Project name", project.title);
     if (title?.trim()) actions.updateProjectTitle(title.trim());
@@ -93,10 +99,7 @@ export function EditorToolbar({ mode, onModeChange }: EditorToolbarProps) {
           }))}
           onChange={(event) => actions.openProject(event.currentTarget.value)}
         />
-        <Button
-          variant="default"
-          onClick={() => actions.createProject("Untitled project")}
-        >
+        <Button variant="default" onClick={createNewProject}>
           + New
         </Button>
         <Tabs

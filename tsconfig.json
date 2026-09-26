@@ -20,5 +20,5 @@
       "@/*": ["src/*"]
     }
   },
-  "include": ["src", "scripts", "remotion.config.ts", "vite.config.ts"]
+  "include": ["src", "scripts", "server", "remotion.config.ts", "vite.config.ts"]
 }
