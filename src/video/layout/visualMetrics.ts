@@ -109,6 +109,17 @@ export function naturalVisualSize(visual: VisualConfig): Size {
         ? { width: n * maxW + (n - 1) * 40, height: maxH }
         : { width: maxW, height: n * (maxH * 0.55) + maxH * 0.45 };
     }
+    case "grid": {
+      const cell = gridCell(visual.items);
+      const cols = Math.min(visual.columns ?? 2, visual.items.length);
+      const rows = Math.ceil(visual.items.length / cols);
+      return {
+        width: cols * cell.width + (cols - 1) * GRID_GAP,
+        height: rows * cell.height + (rows - 1) * GRID_GAP,
+      };
+    }
+    case "highlight":
+      return { width: visual.width, height: visual.height };
     case "transform": {
       const from = naturalVisualSize(visual.from);
       const to = naturalVisualSize(visual.to);
@@ -122,6 +133,16 @@ export function naturalVisualSize(visual: VisualConfig): Size {
     default:
       return { width: 400, height: 400 };
   }
+}
+// Grid cells are all the size of the largest item. Lives here (not in
+// Grid.tsx) because this module must stay React-free — see CLAUDE.md.
+export const GRID_GAP = 40;
+export function gridCell(items: VisualConfig[]): Size {
+  const sizes = items.map(naturalVisualSize);
+  return {
+    width: Math.max(...sizes.map((s) => s.width)),
+    height: Math.max(...sizes.map((s) => s.height)),
+  };
 }
 export function fitScale(size: Size, box: Size, maxScale = 2): number {
   if (size.width <= 0 || size.height <= 0) return 1;

@@ -19,6 +19,8 @@ import { PhoneMockup } from "./devices/PhoneMockup";
 import { ScreenFrame } from "./devices/ScreenFrame";
 import { CornerFloat } from "./diagrams/CornerFloat";
 import { Flow } from "./diagrams/Flow";
+import { Grid } from "./diagrams/Grid";
+import { Highlight } from "./diagrams/Highlight";
 import { NodeGroup } from "./diagrams/NodeGroup";
 import { Stack } from "./diagrams/Stack";
 import { Transform } from "./diagrams/Transform";
@@ -177,6 +179,23 @@ export function VisualRenderer({ visual }: VisualRendererProps) {
       );
     case "stack":
       return <Stack items={visual.items} direction={visual.direction} />;
+    case "grid":
+      return (
+        <Grid
+          items={visual.items}
+          columns={visual.columns}
+          stagger={visual.stagger}
+        />
+      );
+    case "highlight":
+      return (
+        <Highlight
+          width={visual.width}
+          height={visual.height}
+          shape={visual.shape}
+          delay={visual.delay}
+        />
+      );
     case "transform":
       return (
         <Transform

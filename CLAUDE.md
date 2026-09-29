@@ -53,6 +53,22 @@ that script on its own. The older standalone `storyboards/*.json` layer and its
 
 ## Adding video content
 
+**How a new video is planned** — one problem per video, shown rather than
+written, recordings from the user where showing is hard — is the
+`tiktok-video` skill (`.claude/skills/tiktok-video/`). `content/` holds the
+strategy, scripts, idea backlog and post log; `npm run video:check --
+db/projects/<file>.json` (`scripts/checkProject.ts`) reports per-scene length,
+margin overflow and recording placeholders still waiting for a clip.
+
+**Captions** are derived, never authored: `voice.generate` calls ElevenLabs'
+`/with-timestamps` endpoint and returns each word's time in the source audio
+(`src/utils/captionWords.ts`); the editor stores them as `audioClips[].words`,
+and `CaptionLayer` (`src/video/typography/CaptionLayer.tsx`) turns them into
+2–3-word chunks with the spoken word as the `Pill` via `captionTimeline`
+(`src/utils/captions.ts`) on every render — so moving or trimming a clip
+moves its captions. `project.captions` = `{ enabled?, y? }`; a clip generated
+before this has no words and shows no captions until regenerated.
+
 Real videos are authored by **filling config**, not writing components:
 1. Copy `src/templates/template-showcase.json` (or start a project in the editor) and swap in real copy/durations.
 2. Pick scenes from `src/registries/sceneRegistry.ts` and visuals from `src/registries/visualTemplateRegistry.ts` (the same list the editor's Visuals tab renders) — every entry there is generic and reusable across videos.
@@ -250,7 +266,7 @@ Visual primitives (`src/registries/visualTemplateRegistry.ts` for the insertable
 
 **Frames, and which claim each one makes.** `BrowserMockup`'s tab strip and address bar assert "this came from a website" — true for a web app, false for a terminal, a desktop app, or a photo, where it reads as a costume. `frame: "plain"` (and its wrapper twin, the `screen` visual type, which is to `browser` what a plain card is to a window) is that same rounded, shadowed card with the chrome removed: same width, same shadow, same border, so switching between them changes what the media SAYS without moving it in the layout. `frame: "none"` is different again — a raw rectangle with no card at all, for footage that should sit flat against the background. `ScreenFrame` takes an `aspect` (16:9 / 16:10 / 4:3 / 1:1 / 9:16, default 16:10) because a phone screenshot or a square crop otherwise letterboxes inside its own card; portrait ratios are sized by height so they can't overflow the 1920 canvas. Its pixel sizes live in `src/video/visuals/devices/screenFrameSize.ts`, a React-free leaf module, for the same reason `visualMetrics` is one — the auto-layout measures that box while a project is being normalized at import time, and reaching through the component would drag the whole `VisualRenderer` graph into that path.
 - data: stat-counter, checklist, pricing-card, app-mockup (list/stat/chart), progress
-- diagrams: flow (labeled nodes + animated connector), node-group (orbit/radial/one-to-many), stack (staggered pile), transform (crossfade reveal)
+- diagrams: flow (labeled nodes + animated connector), node-group (orbit/radial/one-to-many), stack (staggered pile), transform (crossfade reveal), grid (equal cells sized to the largest item, arriving one by one), highlight (an accent outline that draws itself on at its own `delay` in scene frames — layered over a recording to point at one region)
 
 Backgrounds: solid-dark, soft-grid, orange-glow, spotlight, perspective-data-grid, floating-glass-layers, dot-grid.
 Motion: `motion.entrance` (none/fade/slideUp/slideDown/slideLeft/slideRight/scaleIn/pop/zoomSettleRight/zoomSettleLeft/zoomSettleTop/zoomSettleBottom/zoomIn/blurIn/spinIn/flipIn/bounceIn/dropIn/rollIn) controls how badge/eyebrow/headline/visual/body come in, staggered by `motion.stagger` frames apart — it does NOT apply to Rich Headline lines or Blocks, which carry their own per-line/per-block `animation`. `motion.exit` (none/fade/slideUp/slideDown/slideLeft/slideRight/scaleOut/burstOut/zoomOut/blurOut/spinOut/flipOut/dropOut/rollOut, optional — unset = hard cut) animates the whole scene's content out together in the last `motion.exitDuration` frames (default 18) before the scene ends; implemented in `src/video/motion/exits.ts` + `useSceneExitStyle` in `src/video/scenes/EnterOnCue.tsx`, applied by merging its style into each scene's content `AbsoluteFill`. `"none"` is a real preset (not just omitting the field) — it means "no independent animation, only whatever the parent transform carries it with"; see the script-generation section below for when to use it. `zoomSettleRight`/`Left`/`Top`/`Bottom` fly in from that side, overshoot past their resting scale, then settle (`src/video/motion/entrances.ts`); `burstOut` punches up in scale + rotates while fading (`src/video/motion/exits.ts`) — both are OPACITY-based, so never pair them with a scene that also needs "fully leaves the frame" behavior (use `"none"` there instead, see below).
