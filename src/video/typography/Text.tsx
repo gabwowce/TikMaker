@@ -90,14 +90,19 @@ export function renderHighlighted(
   const parts = text.split(pattern);
   return parts.map((part, index) =>
     highlights.some((h) => h.toLowerCase() === part.toLowerCase()) ? (
-      <span
-        key={index}
-        className="inline bg-[#FFFFFF] text-[#171717] p-[0.05em_0.18em] rounded-md [box-decoration-break:clone] [-webkit-box-decoration-break:clone]"
-      >
-        {part}
-      </span>
+      <Pill key={index}>{part}</Pill>
     ) : (
       <Fragment key={index}>{part}</Fragment>
     ),
+  );
+}
+
+// The ONE highlight look (light box, dark text — never a colour change).
+// renderHighlighted and the caption's active word both draw through it.
+export function Pill({ children }: { children: ReactNode }) {
+  return (
+    <span className="inline bg-[#FFFFFF] text-[#171717] p-[0.05em_0.18em] rounded-md [box-decoration-break:clone] [-webkit-box-decoration-break:clone]">
+      {children}
+    </span>
   );
 }

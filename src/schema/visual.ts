@@ -180,6 +180,19 @@ export type VisualConfig =
       direction?: "vertical" | "horizontal";
     }
   | {
+      type: "grid";
+      items: VisualConfig[];
+      columns?: number;
+      stagger?: number;
+    }
+  | {
+      type: "highlight";
+      width: number;
+      height: number;
+      shape?: "box" | "circle";
+      delay?: number;
+    }
+  | {
       type: "transform";
       from: VisualConfig;
       to: VisualConfig;
@@ -401,6 +414,22 @@ export const visualConfigSchema: z.ZodType<VisualConfig> = z.discriminatedUnion(
         .min(1)
         .max(6),
       direction: z.enum(["vertical", "horizontal"]).optional(),
+    }),
+    z.object({
+      type: z.literal("grid"),
+      items: z
+        .array(z.lazy(() => visualConfigSchema))
+        .min(2)
+        .max(6),
+      columns: z.number().int().min(1).max(3).optional(),
+      stagger: z.number().min(0).max(60).optional(),
+    }),
+    z.object({
+      type: z.literal("highlight"),
+      width: z.number().min(40).max(1080),
+      height: z.number().min(40).max(1920),
+      shape: z.enum(["box", "circle"]).optional(),
+      delay: z.number().min(0).max(300).optional(),
     }),
     z.object({
       type: z.literal("transform"),

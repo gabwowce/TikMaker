@@ -4,6 +4,7 @@ import type { VideoProject } from "../schema/project";
 import { projectDurationInFrames } from "../utils/duration";
 import { resolveAudioClips } from "../utils/voiceClips";
 import { SceneRenderer } from "./SceneRenderer";
+import { CaptionLayer } from "./typography/CaptionLayer";
 import { ensureFontsLoaded } from "./typography/fonts";
 type TikTokVideoProps = {
   project: VideoProject;
@@ -15,6 +16,7 @@ export function TikTokVideo({ project }: TikTokVideoProps) {
   return (
     <AbsoluteFill className="bg-[#171717]">
       <SceneRenderer project={project} />
+      <CaptionLayer project={project} />
       {resolved.map(({ clip, from, durationInFrames, endAt }) => {
         const src = getSfx(clip.sfxId)?.src;
         if (!src) return null;

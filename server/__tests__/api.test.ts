@@ -184,18 +184,38 @@ describe("voice", () => {
   it("saves the mp3 ElevenLabs returns and lists it as a voice sound", async () => {
     vi.stubEnv("ELEVENLABS_API_KEY", "test-key");
     await api.voice.settings.save(voiceSettingsSchema.parse({ voiceId: "voice-123" }));
-    const fakeFetch = vi.fn(async () => new Response(Buffer.from("mp3 bytes")));
+    const chars = [..."Hi you"];
+    const fakeFetch = vi.fn(
+      async () =>
+        new Response(
+          JSON.stringify({
+            audio_base64: Buffer.from("mp3 bytes").toString("base64"),
+            alignment: {
+              characters: chars,
+              character_start_times_seconds: chars.map((_, i) => i * 0.1),
+              character_end_times_seconds: chars.map((_, i) => i * 0.1 + 0.1),
+            },
+          }),
+        ),
+    );
     vi.stubGlobal("fetch", fakeFetch);
 
-    const clip = await api.voice.generate({ text: "Hello world", label: "Greeting", speed: 0.9 });
+    const { words, ...clip } = await api.voice.generate({
+      text: "Hello world",
+      label: "Greeting",
+      speed: 0.9,
+    });
 
     expect(clip).toMatchObject({ label: "Greeting", group: "voice" });
     expect(fs.readFileSync(path.join(root, "public", clip.src), "utf-8")).toBe("mp3 bytes");
     expect(await api.sfx.list()).toContainEqual(clip);
+    // the alignment comes back as words, for captions
+    expect(words.map((w) => w.text)).toEqual(["Hi", "you"]);
+    expect(words[1].start).toBeCloseTo(0.3);
 
     // voiceId comes from the saved settings, speed from this call
     const [url, init] = fakeFetch.mock.calls[0] as unknown as [string, RequestInit];
-    expect(url).toContain("/text-to-speech/voice-123");
+    expect(url).toContain("/text-to-speech/voice-123/with-timestamps");
     expect((init.headers as Record<string, string>)["xi-api-key"]).toBe("test-key");
     expect(JSON.parse(String(init.body)).voice_settings.speed).toBe(0.9);
   });

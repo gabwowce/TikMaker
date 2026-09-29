@@ -119,7 +119,11 @@ export function VoiceoverGenerator({ sceneId, text }: VoiceoverGeneratorProps) {
           const clips = useProjectStore.getState().project.audioClips ?? [];
           const inserted = clips[clips.length - 1];
           if (inserted) {
-            updateAudioClip(inserted.id, { voiceText: text.trim() });
+            updateAudioClip(inserted.id, {
+              voiceText: text.trim(),
+              // word timings → captions (see utils/captions.ts)
+              ...(clip.words.length ? { words: clip.words } : {}),
+            });
             selectObject(`audio-clip-${inserted.id}`);
           }
         }}

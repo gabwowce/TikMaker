@@ -330,6 +330,29 @@ export const visualTemplateRegistry: VisualTemplateDefinition[] = [
     }),
   },
   {
+    id: "grid-compare",
+    category: "media",
+    label: "Grid of Screens",
+    description: "2x2 set of screenshots or recordings, arriving one by one — \"look, another one\".",
+    build: () => ({
+      type: "grid",
+      columns: 2,
+      items: [
+        { type: "screen", content: { type: "prop", asset: "document" } },
+        { type: "screen", content: { type: "prop", asset: "browser-window" } },
+        { type: "screen", content: { type: "prop", asset: "screen-panel" } },
+        { type: "screen", content: { type: "prop", asset: "question" } },
+      ],
+    }),
+  },
+  {
+    id: "highlight-box",
+    category: "media",
+    label: "Highlight Box",
+    description: "An accent outline that draws itself around one region of the layer under it.",
+    build: () => ({ type: "highlight", width: 420, height: 180 }),
+  },
+  {
     id: "transform-reveal",
     category: "diagrams",
     label: "Transform / Reveal",

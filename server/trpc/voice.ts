@@ -1,6 +1,10 @@
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 import { voiceSettingsSchema } from "../../src/schema/voiceSettings.js";
+import {
+  alignmentToWords,
+  type CharacterAlignment,
+} from "../../src/utils/captionWords.js";
 import { readJson, slugify, writeJson } from "../db.js";
 import { savePublicFile } from "../uploads.js";
 import { procedure, router } from "./init.js";
@@ -21,7 +25,12 @@ export const voiceRouter = router({
   // voice.settings.get / voice.settings.save — db/voice-settings.json
   settings: jsonFileRouter(VOICE_SETTINGS, voiceSettingsSchema),
 
-  // Text → mp3. Any setting sent here overrides the saved one for THIS clip.
+  // Text → mp3 + the time each word is spoken (for captions). Any setting
+  // sent here overrides the saved one for THIS clip. The /with-timestamps
+  // endpoint returns the audio base64-encoded inside JSON, next to a
+  // per-character alignment; the words are not saved in the manifest but
+  // returned for the editor to store on the project's audio clip, where the
+  // render can read them.
   generate: procedure
     .input(
       voiceSettingsSchema.partial().extend({
@@ -43,7 +52,7 @@ export const voiceRouter = router({
       const settings = { ...saved, ...overrides };
 
       const response = await fetch(
-        `https://api.elevenlabs.io/v1/text-to-speech/${settings.voiceId}?output_format=${OUTPUT_FORMAT}`,
+        `https://api.elevenlabs.io/v1/text-to-speech/${settings.voiceId}/with-timestamps?output_format=${OUTPUT_FORMAT}`,
         {
           method: "POST",
           headers: { "xi-api-key": apiKey, "Content-Type": "application/json" },
@@ -71,7 +80,12 @@ export const voiceRouter = router({
       const name = label?.trim() || text.slice(0, 40);
       const id = `vo-${slugify(name)}-${Date.now().toString(36)}`;
       const file = `${id}.mp3`;
-      await savePublicFile(FOLDER, file, Buffer.from(await response.arrayBuffer()));
+      const body = (await response.json()) as {
+        audio_base64: string;
+        alignment?: CharacterAlignment | null;
+      };
+      await savePublicFile(FOLDER, file, Buffer.from(body.audio_base64, "base64"));
+      const words = body.alignment ? alignmentToWords(body.alignment) : [];
 
       const clip: CustomSfx = {
         id,
@@ -81,6 +95,6 @@ export const voiceRouter = router({
         group: "voice",
       };
       await writeJson(SFX_MANIFEST, [...(await readSfxManifest()), clip]);
-      return clip;
+      return { ...clip, words };
     }),
 });
