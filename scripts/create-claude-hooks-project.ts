@@ -10,7 +10,6 @@ output.title = "Claude Code can test real user flows";
 output.collection = "Claude Code + Chrome";
 output.savedAt = Date.now();
 output.storyPlan = {
-  targetDuration: 30,
   premise:
     "Claude Code combines codebase context with a live Chrome session to verify complete user journeys.",
   audience: "Developers already using AI coding agents",

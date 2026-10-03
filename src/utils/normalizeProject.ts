@@ -223,7 +223,6 @@ export function normalizeProject(project: VideoProject): VideoProject {
       project.storyPlan ??
       (acceptedClaudeFlow
         ? {
-            targetDuration: 30,
             premise:
               "Claude Code can test a web app like a real user through Google Chrome.",
             audience: "Developers and AI app builders",

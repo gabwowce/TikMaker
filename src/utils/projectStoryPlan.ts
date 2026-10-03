@@ -30,7 +30,6 @@ export function projectPlanJson(project: VideoProject): string {
       format: "tikmaker-story-plan-v1",
       project: {
         title: project.title,
-        targetDuration: project.storyPlan?.targetDuration,
         premise: project.storyPlan?.premise,
         audience: project.storyPlan?.audience,
       },
