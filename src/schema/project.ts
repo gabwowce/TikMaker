@@ -18,7 +18,6 @@ export const videoProjectSchema = z.object({
   height: z.literal(1920),
   storyPlan: z
     .object({
-      targetDuration: z.number().positive().max(600).optional(),
       premise: z.string().optional(),
       audience: z.string().optional(),
     })

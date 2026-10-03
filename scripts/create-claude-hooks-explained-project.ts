@@ -13,7 +13,6 @@ output.title = "Claude Code Hooks explained simply";
 output.collection = "Claude Code + Chrome";
 output.savedAt = Date.now();
 output.storyPlan = {
-  targetDuration: 30,
   premise:
     "A Claude Code hook is a command that runs automatically at a chosen moment, for example to block a risky action or test an edit.",
   audience: "Developers who use Claude Code but do not know what hooks are",

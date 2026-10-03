@@ -50,10 +50,7 @@ for (const { scene, from, durationInFrames } of computeSceneTimings(project)) {
 }
 
 const total = end / 30;
-const target = project.storyPlan?.targetDuration;
-console.log(`\nTotal ~${total.toFixed(1)}s${target ? ` (target ${target}s)` : ""}`);
-if (target && total > target * 1.15)
-  console.log("⚠ Over target — cut a scene or tighten VO, don't shorten durations.");
+console.log(`\nTotal ~${total.toFixed(1)}s`);
 const voiced = (project.audioClips ?? []).filter((c) => c.words?.length).length;
 console.log(`Voiceover with captions: ${voiced} clip(s)`);
 if (pending.length) {
