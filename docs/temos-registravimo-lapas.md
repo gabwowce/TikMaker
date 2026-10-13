@@ -1,6 +1,9 @@
 # Baigiamojo darbo temos registravimo lapas: juodraštis
 
-Fakultetą, katedrą, studijų programą, grupę ir vadovą įrašyk pati.
+Suderinta su *Programų sistemų studijų programos BD rengimo ir gynimo
+metodiniais nurodymais* (EI V2-30, 2026). Fakultetas: Elektronikos ir
+informatikos; katedra: Programinės įrangos; programa: Programų sistemos
+(6531BX028). Grupę ir vadovą įrašyk pati.
 
 ## Tema
 
@@ -12,12 +15,6 @@ remiantis žinių baze ir dizaino taisyklėmis
 AI Agent for Creating Short-Form Vertical Videos Based on a Knowledge Base
 and Design Rules
 
-*Trumpesnės alternatyvos:*
-- *DI agentas trumpų vaizdo įrašų scenarijams ir maketams generuoti /
-  AI Agent for Generating Short-Form Video Scripts and Layouts*
-- *Žiniomis grįstas DI agentas socialinių tinklų vaizdo įrašams kurti /
-  Knowledge-Grounded AI Agent for Social Media Video Creation*
-
 ## Baigiamojo darbo problema
 
 Trumpų vertikalių vaizdo įrašų (TikTok, Instagram Reels, YouTube Shorts)
@@ -28,18 +25,31 @@ taisyklių ir neleidžia kūrėjui valdyti vaizdo įrašo struktūros bei stilia
 
 ## Baigiamojo darbo tikslas
 
-Sukurti dirbtinio intelekto agentą, kuris pagal vartotojo idėją ir
-pasirinktą temą, naudodamasis žinių baze (scenarijų šablonais, įtraukiančių
-pradžių formulėmis ir dizaino pavyzdžiais), sugeneruotų scenarijų ir
-redaguojamą vaizdo įrašo projektą, savarankiškai jį patikrintų pagal dizaino
-taisykles ir ištaisytų rastus trūkumus.
+Sukurti dirbtinio intelekto agentą, kuris pagal naudotojo idėją ir pasirinktą
+temą, naudodamasis žinių baze (scenarijų šablonais, įtraukiančių pradžių
+formulėmis ir dizaino pavyzdžiais), automatiškai sugeneruotų scenarijų ir
+dizaino taisykles atitinkantį, redaguojamą trumpo vaizdo įrašo projektą.
 
 ## Preliminarūs baigiamojo darbo uždaviniai
 
-1. Išanalizuoti esamus dirbtinio intelekto vaizdo įrašų kūrimo įrankius ir
-   sėkmingų trumpų vaizdo įrašų struktūras.
-2. Sudaryti žinių bazę (scenarijų šablonai, įtraukiančios pradžios,
-   dizaino pavyzdžiai) ir suprojektuoti agento architektūrą.
-3. Realizuoti agentą ir integruoti jį į vaizdo įrašų redagavimo sistemą.
-4. Eksperimentiškai įvertinti agento sukurtų projektų kokybę ir pateikti
-   išvadas.
+1. Išanalizuoti panašias dirbtinio intelekto vaizdo įrašų kūrimo sistemas
+   bei sėkmingų trumpų vaizdo įrašų struktūras ir suformuluoti agento
+   funkcinius bei nefunkcinius reikalavimus.
+2. Suprojektuoti agento architektūrą: žinių bazės duomenų modelį, agento
+   veikimo etapus, dizaino taisyklių patikros mechanizmą ir naudotojo sąsają.
+3. Realizuoti agentą: scenarijaus generavimą, kadrų išdėstymo kompiliatorių,
+   taisyklių patikrą ir automatinio taisymo ciklą, integruotus į vaizdo
+   įrašų redagavimo sistemą.
+4. Ištestuoti sukurtą sistemą ir įvertinti jos atitiktį reikalavimams bei
+   agento sugeneruotų projektų kokybę, vykdymo laiką ir kainą.
+
+### Kaip uždaviniai atitinka Aprašo skyrius
+
+| Uždavinys | Aprašo skyrius (metodiniai nurodymai) | Apimtis |
+|---|---|---|
+| 1 | Įvadas (panašių sistemų analizė) + Užduoties analizė (reikalavimai) | 3–5 + dalis ≥15 psl. |
+| 2 | Užduoties analizė (UML, ERD, architektūra, UI maketai) | ≥15 psl. |
+| 3 | Programinės sistemos realizacija | ≥15 psl. |
+| 4 | Programinės sistemos testavimas | 3–5 psl. |
+
+Išvadose kiekvienam uždaviniui reikia bent vienos išvados.
