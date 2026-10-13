@@ -27,8 +27,9 @@ taisyklių ir neleidžia kūrėjui valdyti vaizdo įrašo struktūros bei stilia
 
 Sukurti dirbtinio intelekto agentą, kuris pagal naudotojo idėją ir pasirinktą
 temą, naudodamasis žinių baze (scenarijų šablonais, įtraukiančių pradžių
-formulėmis ir dizaino pavyzdžiais), automatiškai sugeneruotų scenarijų ir
-dizaino taisykles atitinkantį, redaguojamą trumpo vaizdo įrašo projektą.
+formulėmis ir dizaino pavyzdžiais), automatiškai sugeneruotų scenarijų ir iš esamos vaizdinių komponentų
+bibliotekos, laikydamasis pasirinktos temos stiliaus ir dizaino taisyklių,
+sudarytų redaguojamą trumpo vaizdo įrašo projektą.
 
 ## Preliminarūs baigiamojo darbo uždaviniai
 
