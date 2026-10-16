@@ -44,7 +44,9 @@ Series ("Vibe coding trap 1/3") — the teaser is the CTA.
 
 ## Steps
 
-1. **Topic.** Mix: 50% `claude-code`, 25% `vibe-coding`, 25% AI news. For
+1. **Topic.** Mix per `content/strategy.md` (now 40% `claude-code`, 20%
+   `vibe-coding`, 20% `ship-and-sell`, 20% AI news; waitlist CTA rules are
+   there too). For
    news, search the web for releases from the last 48 hours and pick one you
    can SHOW. Check `content/log.md` so nothing repeats. For anything on screen
    about Claude Code, verify it against the current docs (the

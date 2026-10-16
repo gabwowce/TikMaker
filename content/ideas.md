@@ -3,7 +3,7 @@
 Pažymėk `[x]`, kai padaryta. Viena eilutė = vienas video apie VIENĄ bėdą.
 Formato žymės (`list`/`pain-fix`) — tik užuomina, iš kurios pusės žiūrėti.
 
-## claude-code (50 %)
+## claude-code (40 %)
 
 - [ ] 4 keyboard shortcuts that make Claude Code 2x faster — `list`
 - [ ] What to put in CLAUDE.md (and what not to) — `list`
@@ -21,7 +21,7 @@ Formato žymės (`list`/`pain-fix`) — tik užuomina, iš kurios pusės žiūr�
 - [ ] Permissions: stop clicking "allow" 50 times — `pain-fix`
 - [ ] 3 prompts I use in Claude Code every day — `list`
 
-## vibe-coding (25 %)
+## vibe-coding (20 %)
 
 - [x] Trap 1/3: every form is a different app (AI rebuilds forms/comboboxes each prompt)
 - [ ] Trap 2/3: AI moves faster than you can test (TESTING.md / plan file the AI writes for you)
@@ -43,7 +43,18 @@ Formato žymės (`list`/`pain-fix`) — tik užuomina, iš kurios pusės žiūr�
 - [ ] I automated my TikTok videos with Claude Code (TikMaker behind the scenes) — `list`
 - [ ] 3 mistakes I made building my first AI product — `pain-fix`
 
-## ai-tools / naujienos (25 %)
+## ship-and-sell (20 %)
+
+Kaip parduoti savo appsą per shorts. Čia tinka waitlist CTA.
+
+- [ ] TikTok hides your text (and you can't see it) — saugios zonos, 1/3 — `pain-fix`
+- [ ] Your cut lands before anyone can read it — tempas pagal VO, 2/3 — `pain-fix`
+- [ ] Text instead of a visual: why your short feels like a slide — 3/3 — `pain-fix`
+- [ ] You built an app with AI. Why is nobody using it? — `pain-fix`
+- [ ] 3 video formats that sell an app without your face — `list`
+- [ ] How to make 30 videos a week alone — `pain-fix`
+
+## ai-tools / naujienos (20 %)
 
 Naujienas Claude randa pats (paskutinės 48 h). Čia — tik amžinos temos tarpams.
 
