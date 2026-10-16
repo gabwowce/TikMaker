@@ -36,6 +36,8 @@ Formato žymės (`list`/`pain-fix`) — tik užuomina, iš kurios pusės žiūr�
 
 ## build-in-public (retkarčiais)
 
+- [x] I stopped letting AI design my videos (it fills a form instead) — `pain-fix`
+- [ ] How the AI writes the script (Claude Code + tiktok-video skill) — `pain-fix`
 - [ ] I'm building <product> with Claude Code — day 1 — `list`
 - [ ] What 100 followers taught me about AI content — `list`
 - [ ] I automated my TikTok videos with Claude Code (TikMaker behind the scenes) — `list`

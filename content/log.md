@@ -6,3 +6,4 @@ Stulpelis „Pamoka“ — viena eilutė: kas, tavo manymu, suveikė ar ne.
 | Data | Slug | Pillar | Formatas | Hook | Statusas | Views | Avg watch | Follows | Pamoka |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | 2026-09-26 | vibe-trap-01-forms | vibe-coding | trap 1/3 | Same form. 5 versions. | waiting for recordings | | | | |
+| 2026-10-16 | bip-01-ai-fills-a-form | build-in-public | bip 1 | Made with AI. At first: this. | script | | | | |
