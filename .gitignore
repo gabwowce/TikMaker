@@ -9,3 +9,7 @@ public/fonts
 *.log
 .render-props.tmp.json
 .DS_Store
+
+# AI assistant rules and settings (kept local only)
+CLAUDE.md
+.claude/
