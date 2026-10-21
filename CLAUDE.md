@@ -2,6 +2,16 @@
 
 This repository is a constrained video design system for producing 9:16 TikTok/Reels/Shorts videos with React + Remotion.
 
+## Git: no Claude attribution
+
+Every commit and PR in this repo is authored by gabwowce. Never add a
+`Co-Authored-By: Claude` trailer, a "Generated with Claude Code" line or a
+claude.ai link to a commit message or PR body, never commit as
+`Claude <noreply@anthropic.com>` (set `git config user.name gabwowce` and
+`user.email 134537965+gabwowce@users.noreply.github.com` first in a fresh/cloud checkout), and never
+name a branch `claude/...`. `.claude/settings.json` turns the automatic
+trailer off; this rule covers everything else.
+
 When creating videos, DO NOT design layouts from scratch.
 
 Use existing:
