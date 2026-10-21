@@ -9,6 +9,38 @@ Temos registravimo lapo tekstas yra `docs/temos-registravimo-lapas.md`.
 
 ---
 
+## Atitiktis metodiniams nurodymams (EI V2-30): rizikos ir ką daryti
+
+BD = **Programa** + **Aprašas**. Programos tinkamumas vertinamas kaip
+programų sistemos, ne kaip turinio kūrimo projekto. Iš nurodymų išplaukia:
+
+| Reikalavimas (nurodymai) | Rizika šiam darbui | Ką darome |
+|---|---|---|
+| Programa netinkama, jei esminę dalį realizuoja trečiųjų šalių API ar parengti modeliai, o studentas tik juos sujungia (1.1.3) | Agentas = „kviečia Claude API“ | Esminė dalis yra **sava logika**: etapų orkestravimas, žinių bazės modelis ir parinkimas, kadrų **kompiliatorius**, **taisyklių variklis**, taisymo ciklas su įrankiais, validacija. Aprašo realizacijos skyrius rodo būtent šias dalis, o LLM yra vienas komponentas |
+| Netinkama, jei pateikiamas anksčiau sukurtas darbas, aiškiai neatskiriant naujos dalies (1.1.3) | TikMaker sukurtas anksčiau | Visas agento kodas atskiruose aplankuose (`server/agent/`, `src/agent/`, `src/schema/knowledge.ts`, `knowledge/`, UI komponentai `src/editor/agent/`). Apraše TikMaker aprašomas kaip **esama platforma**, o indėlis įvardijamas aiškiai. Git istorija rodo, kas sukurta BD metu. **Suderinti su vadovu** |
+| ≥2000 savarankiškai parašyto kodo eilučių, be automatiškai sugeneruoto kodo (1.1.2) | Kodas rašomas su AI pagalba | DI kaip pagalbinė priemonė leidžiama (1 lent. 8 p.; DI gairės 14.1), bet **privaloma nurodyti Apraše**, ir studentė turi **gebėti paaiškinti ir modifikuoti** kiekvieną dalį (1 lent. 1 p.). Vesti DI naudojimo žurnalą; kiekvieną modulį perskaityti ir suprasti prieš kitą |
+| Savaime: Programa ne vien UI ir ne vien CRUD (1.1.3) | — | Tenkinama (orkestravimas, kompiliatorius, taisyklės) |
+| Funkciniai reikalavimai turi būti patikrinami (1 lent. 2, 9 p.) | LLM atsakymai nedeterministiniai | Testai su **užfiksuotais LLM atsakymais** (mock), kad testai būtų pakartojami; vienetų testai kompiliatoriui ir taisyklėms |
+| DI gairės: autorių teisės (10 p.) | Žinių bazei renkami kitų video kadrai | Naudojami tik analizei, šaltiniai nurodomi `sources.md` ir Apraše; jokie svetimi kadrai nepatenka į generuojamus video |
+| DI gairės: kritiškumas (8 p.) | — | Būtent tam yra patikros ciklas ir žmogaus patvirtinimo taškai, tai paminėti Apraše |
+
+### Aprašo struktūra pagal nurodymus
+
+| Skyrius | Apimtis | Ką rašyti |
+|---|---|---|
+| Įvadas | 3–5 psl. | Problema, panašių sistemų analizė (CapCut AI, InVideo, Pictory, Opus Clip, Submagic…), tikslas, uždaviniai, priemonės (TypeScript, React, Node/tRPC, Zod, Remotion, Claude API, ElevenLabs) ir kodėl |
+| Užduoties analizė | ≥15 psl. | Funkciniai ir nefunkciniai reikalavimai; panaudos atvejų diagrama; veiklos diagrama (agento eiga); ERD (žinių bazė, agento run'as, projektas); komponentų / klasių diagrama; UI maketai; žinių bazės sudarymo metodika |
+| Realizacija | ≥15 psl. | Moduliai; LLM sluoksnis (struktūrizuota išvestis, validacija, pakartojimai, kešavimas); žinių bazės parinkimas; kompiliatorius; taisyklių variklis; taisymo ciklas su įrankiais; vizualinė patikra; API (tRPC); kodo fragmentai (Courier New 10 pt, ≤ pusė puslapio) |
+| Testavimas | 3–5 psl. | Metodika; vienetų testai (kompiliatorius, taisyklės); integraciniai (agentas su mock LLM); funkcinių reikalavimų lentelė; nefunkciniai (laikas, kaina, pažeidimų dalis); **rezultatų įvertinimas** (8–10 idėjų: su taisymo ciklu ir be jo) |
+| Diegimo ir naudotojo instrukcija | 3–5 psl. | Priklausomybės, `.env.local` raktai, paleidimas, naudojimas, šalinimas |
+| Išvados | 1–2 psl. | Bent viena išvada kiekvienam uždaviniui |
+| Šaltiniai | ≥7 | APA; LLM agentų, RAG, LLM-as-judge straipsniai, įrankių dokumentacija (konkretūs puslapiai), trumpų video tyrimai |
+
+Gynimui taip pat reikia **vaizdo įrašo**, paaiškinančio Programos veikimą. Jį
+galima sukurti pačiu TikMaker.
+
+---
+
 ## Esmė: žinių bazė + agentas
 
 Agentas neanalizuoja rinkos kiekvieną kartą. **Analizė daroma vieną kartą**
@@ -283,7 +315,11 @@ taisymo ciklo ir kabliukų žingsnio.
       paveikslėliai
 - [ ] UI 4–5
 
-### Eksperimentas (7 sav.)
+### Testavimas ir rezultatų įvertinimas (7 sav.)
+
+Pagal nurodymus tai **Programinės sistemos testavimo** skyriaus dalis (3–5 psl.), todėl eksperimentas laikomas nedidelis.
+- Vienetų testai: kompiliatorius, taisyklės; integraciniai: visa agento eiga su užfiksuotais LLM atsakymais
+- Funkcinių reikalavimų patikros lentelė
 - 8–10 idėjų (daugiausia dev + 2–3 iš antros temos)
 - Kiekviena paleidžiama trimis režimais:
   - **A:** be žinių bazės (tik bendras prompt'as);
