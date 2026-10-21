@@ -13,3 +13,6 @@ public/fonts
 # AI assistant rules and settings (kept local only)
 CLAUDE.md
 .claude/
+
+# Thesis documents (kept local only)
+docs/
