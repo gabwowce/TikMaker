@@ -130,7 +130,7 @@ Ko **neimam**: Creatomate/Shotstack (mokama išorinė atvaizdavimo API — pakei
 | 07 Plečiamumas | Temos = `knowledge/` failai; taisyklės = `Rule` masyvas |
 | 08 Moduliškumas | Visas agentas: `server/agent/**`, `src/agent/**`, `src/schema/knowledge.ts`, `src/schema/agentRun.ts`, `src/editor/agent/**`, `knowledge/**` |
 | 09 Testai | `src/agent/__tests__/` (compile, rules, checkScript); `server/agent/__tests__/` — `llm.ts` priima `client` parametrą → testuose mock'as su `fixtures/*.json` |
-| 10 Raktai | `ANTHROPIC_API_KEY` tik `.env.local` (jau `.gitignore`?) — **patikrinti**; klientas kuriamas tik `server/` |
+| 10 Raktai | `ANTHROPIC_API_KEY` tik `.env.local` (jau `.gitignore`); klientas kuriamas tik `server/` |
 | 11 ≤3 sprendimai | UI eiga: forma → kabliukas → patvirtinimas |
 | 12 Konfigūracija | `db/agent-settings.json` (modelis, effort, max rounds) + `theme.rules` |
 | 13 Aplinka | README skyrius „AI agentas“ |
