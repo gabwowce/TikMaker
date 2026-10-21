@@ -182,6 +182,7 @@ projekto būsena (TanStack Query vs Zustand)? Kodėl?
 - [ ] `src/agent/sceneSpec.ts`: Zod schema; `templateId` = `z.enum(leidžiami)` (FR-11)
 - [ ] `server/agent/steps/layout.ts`
 - [ ] `src/agent/compileProject.ts` (FR-12, FR-13) + **daug testų**
+- [ ] Išteklių vietos (FR-22–FR-24): esamą REC vietą (`screen` + `checkpoint`) apibendrinti į REC / IMG / VID su `spec` ir `generationPrompt`; `scripts/checkProject.ts` atpažįsta visas tris; ataskaitoje gamybos planas
 
 **Patikra:** sugeneruotas projektas atsidaro redaktoriuje; testas
 `compile(x)` du kartus duoda lygiai tą patį (NFR-04); kiekvienas rezultatas
