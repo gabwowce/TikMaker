@@ -9,6 +9,7 @@
     "render": "remotion render",
     "render:project": "tsx scripts/render-project.ts",
     "video:check": "tsx scripts/checkProject.ts",
+    "analysis:stats": "tsx scripts/analysisStats.ts",
     "assets:sync": "tsx scripts/syncAssets.ts",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",

@@ -46,8 +46,10 @@ npx tsx scripts/kazkas.ts   # paleisti vieną TS failą
 **Tikslas:** aplinka paruošta, suprantu, kur kas yra.
 
 - [ ] `npx skills add remotion-dev/skills` (kad Claude Code geriau padėtų su Remotion)
-- [ ] `npm install @anthropic-ai/sdk`
-- [ ] `.env.local` įrašyti `ANTHROPIC_API_KEY=...` (failas jau `.gitignore`)
+- [ ] Gauti nemokamą Gemini API raktą: https://aistudio.google.com → „Get API key“
+- [ ] `npm install ai @ai-sdk/google zod` (Vercel AI SDK: vienas kodas, modelį galima keisti; vėliau `@ai-sdk/anthropic` Claude)
+- [ ] `.env.local` įrašyti `GOOGLE_GENERATIVE_AI_API_KEY=...` (failas jau `.gitignore`)
+- [ ] Modelio pavadinimas konfigūracijoje (`AGENT_MODEL`), ne kode
 - [ ] Sukurti `docs/di-zurnalas.md`
 
 **Pirma perskaityti** (tik suprasti, ne keisti):
@@ -87,7 +89,8 @@ kompiliuojant, o failai ir DI atsakymai ateina vykdymo metu.)
 ## 2 žingsnis. Pirmas DI kvietimas (1–2 dienos)
 
 **Tikslas:** iš skripto iškviečiu Claude ir gaunu schemą atitinkantį atsakymą.
-**Išmoksiu:** Anthropic SDK, `messages.parse` + `zodOutputFormat`, tokenai, `cache_control`.
+**Išmoksiu:** AI SDK `generateObject` (atsakymas pagal Zod schemą), tokenai, kaip keisti modelį be kodo keitimo.
+(Dabartinį API pasitikrinti https://ai-sdk.dev/docs — versijos keičiasi.)
 
 **Parašyti:**
 - [ ] `server/agent/llm.ts`: `callStructured(schema, { system, user })` → `{ data, usage, ms }`; jei `parsed_output == null`, iki 2 pakartojimų
@@ -95,7 +98,7 @@ kompiliuojant, o failai ir DI atsakymai ateina vykdymo metu.)
 
 **Patikra:** `npx tsx scripts/try-llm.ts` atspausdina objektą ir tokenų skaičių;
 antrą kartą paleidus su tuo pačiu `system`, `cache_read_input_tokens > 0`
-(jei `system` pakankamai ilgas).
+(jei `system` pakankamai ilgas; Gemini podėlį daro automatiškai, žiūrėti `usage`).
 
 **Gynimo klausimai:** kas yra struktūrizuota išvestis? Kas nutinka, jei
 modelis grąžina netinkamą JSON? Kas yra užklausų podėlis ir kodėl jis pigesnis?

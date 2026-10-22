@@ -5,6 +5,8 @@ Agento šablonai: `docs/bd/diagramos/agento-sablonai.png`.
 Fronto dizaino promptas: `docs/bd/dizaino-promptas.md`.
 
 Sprendimai:
+- DI kūrimui: Gemini API nemokamas lygis per Vercel AI SDK (`ai` + `@ai-sdk/google`); modelis konfigūruojamas,
+  galutiniam vertinimui galima perjungti į Claude (`@ai-sdk/anthropic`) ir palyginti.
 - Kompozicija gyvena tik generuojant: kompiliatorius ją paverčia į paprastą TikMaker sceną
   su aiškiai įrašytais efektais (`animation`, `entrance`...). Rankiniam redagavimui niekas
   nesikeičia; numatytieji efektai lieka tik ranka pridėtiems elementams. Scenos `plan`
@@ -54,8 +56,9 @@ Sprendimai:
 
 ## Aš paruošiu (iš tavo duomenų)
 
-1. Statistikos skriptas → skaičiai taisyklėms.
-2. 3 promptas atnaujintas (šablono formatas, kūrybinės vietos, tęstinumas) → šablonai.
+1. ✓ Statistikos skriptas: `npm run analysis:stats` → `docs/bd/analizes-statistika.md` (26 žodyno klaidos pataisytos).
+2. ✓ 3 promptas atnaujintas (šablonai su `userFacing`, `slots` fixed/creative, formulės iš KIEKVIENO kabliuko).
+   **Tau:** paleisti AI Studio su `analizes-rinkinys.json` + `analizes-statistika.json` → `knowledge/draft/knowledge-draft.json`.
 3. Kabliukų / CTA formulės iš surinktų kabliukų.
 4. Kompozicijų kalba + 15–20 pavyzdžių iš dizaino kadrų (DI kompozicijas kuria pats, pavyzdžiai jį moko).
 5. Tavo stiliaus aprašas iš `my-style/` kadrų.
