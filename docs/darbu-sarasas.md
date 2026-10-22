@@ -11,7 +11,19 @@ Sprendimai:
   pasižymi, iš kurios kompozicijos sukurta (`compositionId`).
 - Agentas = naujas modulis esamame serveryje (`server/agent/`) + tRPC maršrutai `agent.*`,
   ne naujas serveris.
-- Frontas: „Naujas video su DI“ langas (žr. žemiau, 12 punktas).
+- Frontas: „Naujas video su DI“ langas, 5 žingsniai: Idėja → Kampas (sprendimas 1) →
+  Scenarijus (sprendimas 2) → Kūrimas → Rezultatas. Pataisymų promptas: `docs/bd/dizaino-promptas.md` (Promptas 2).
+- Darbo vieta (workspace) pasirenkama prisijungus, ne formoje: vienas kanalas = brief, stilius, biblioteka, formatai.
+- Idėja 20–500 simb.; šaltinis: tekstas iki 15 000 simb. arba iki 3 nuorodų.
+- Šablono naudotojas nesirenka: DI siūlo 3 kampus (formatas + kabliukas + pirmo kadro eskizas).
+- Paieška internete tik su jungikliu (numatyta išjungta, jei yra šaltinis). Atskiro faktų žingsnio nėra:
+  faktai rodomi scenarijaus žingsnyje šoniniame skydelyje, prie scenų, kurios juos naudoja.
+- Scenarijus: kiekviena scena = balsas + tekstas ekrane + kompozicijos eskizas; galima taisyti, skaidyti, perrašyti.
+- Rezultatas: peržiūra + išteklių sąrašas pagal scenas (trumpas pavadinimas, „Details“, „Copy AI prompt“, „Later“).
+  Zoom vieta nustatoma iškart įkeliant įrašą, tame pačiame lange.
+- Įspėjimai: tik tai, ko taisymo ciklas nepataisė, ir tik tikros problemos (netelpa tekstas, už saugios zonos,
+  trūksta ištekliaus) su vienu veiksmu. Patarimų („skaidyk sceną“) rezultate nėra, jie scenarijaus žingsnyje.
+  Taisyklės iš dalies jau yra kode: `layerOverflowWarning`, `visualOverflowWarning`, `pacingWarning`.
 
 ## Tau patikrinti
 
