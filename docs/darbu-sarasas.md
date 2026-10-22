@@ -1,5 +1,44 @@
 # Darbų sąrašas
 
+## Dabar, eilės tvarka (be programavimo, galima daryti darbe)
+
+### A. Analizės → žinių bazė (3 etapai)
+
+Visi trys etapai aprašyti viename faile: **`docs/bd/video-analizes-promptas.md`**.
+
+| Etapas | Kas | Kur faile | Būsena |
+|---|---|---|---|
+| 1 | **1 promptas**: vieno video analizė (AI Studio, 1 video = 1 pokalbis) | skiltis „1 promptas. Vieno video analizė“ | ✓ 53 analizės `docs/bd/analizes/` |
+| 2 | **Skriptas** (ne promptas): žodyno patikra + skaičiai. `npm run analysis:stats` → `docs/bd/analizes-statistika.md`, `analizes-statistika.json`, `analizes-rinkinys.json` | skiltis „2 etapas. Skaičiai skriptu“; kodas `scripts/analysisStats.ts` | ✓ padaryta, klaidų 0 |
+| 3 | **3 promptas**: visos analizės → šablonai, kabliukų / CTA / pavadinimų formulės | skiltis „3 promptas. Apibendrinimas į žinių bazę“ | ☐ **tavo eilė** |
+
+3 etapo žingsniai:
+- [ ] `git pull origin main` (arba atsisiųsti 2 failus iš GitHub).
+- [ ] Google AI Studio → naujas pokalbis → prisegti `docs/bd/analizes-rinkinys.json` ir `docs/bd/analizes-statistika.json`.
+- [ ] Įklijuoti 3 promptą (blokas tarp ``` žymių).
+- [ ] Atsakymą išsaugoti `knowledge/draft/knowledge-draft.json` (jei per ilgas ir nutrūksta: paprašyti „continue“ ir sujungti).
+- [ ] Atsiųsti man → kartu peržiūrim šablonus ir formules, tada aš sudedu į `knowledge/`.
+- [ ] Jei pataisysi analizes ranka: vėl `npm run analysis:stats` ir 3 promptą iš naujo.
+
+### B. API raktas (5 min)
+
+- [ ] https://aistudio.google.com → „Get API key“ → išsaugoti saugiai (ne į GitHub).
+- [ ] AI Studio konsolėje pasižiūrėti savo nemokamus limitus (užklausos per minutę / dieną).
+
+### C. Fone, po truputį
+
+- [ ] **Kabliukai**: po 20–30 min per dieną pagal `docs/bd/kabliuku-rinkimas.md` (Promptas A arba B) → `docs/bd/kabliukai/`.
+- [ ] Analizių `manual.analyzedAt` ir `manual.model`.
+- [ ] Peržiūrėti agento šablonų diagramą (skiltis „Tau patikrinti“ žemiau).
+- [ ] Vėliau (prieš kompozicijas): `design-refs/`, `my-style/`, brief (skiltis „Tau surinkti“).
+
+### D. Kai galėsi programuoti
+
+`docs/mano-planas.md`: 0 žingsnis (paketai, raktas į `.env.local`) → 2 žingsnis (pirmas DI kvietimas)
+→ 1 žingsnis (žinių bazės schemos, kai jau bus šablonai iš A).
+
+---
+
 Eiga: `docs/bd/diagramos/agento-eiga.png` (+ paaiškinimas `agento-eiga.md`).
 Agento šablonai: `docs/bd/diagramos/agento-sablonai.png`.
 Fronto dizaino promptas: `docs/bd/dizaino-promptas.md`.
@@ -58,7 +97,7 @@ Sprendimai:
 
 1. ✓ Statistikos skriptas: `npm run analysis:stats` → `docs/bd/analizes-statistika.md` (26 žodyno klaidos pataisytos).
 2. ✓ 3 promptas atnaujintas (šablonai su `userFacing`, `slots` fixed/creative, formulės iš KIEKVIENO kabliuko).
-   **Tau:** paleisti AI Studio su `analizes-rinkinys.json` + `analizes-statistika.json` → `knowledge/draft/knowledge-draft.json`.
+   **Tau:** žr. „Dabar, eilės tvarka“ → A, 3 etapas.
 3. Kabliukų / CTA formulės iš surinktų kabliukų.
 4. Kompozicijų kalba + 15–20 pavyzdžių iš dizaino kadrų (DI kompozicijas kuria pats, pavyzdžiai jį moko).
 5. Tavo stiliaus aprašas iš `my-style/` kadrų.
@@ -69,7 +108,7 @@ Sprendimai:
 |---|---|---|
 | 1 | Žinių bazė | `knowledge/` failai + Zod schemos (šablonai, formulės, kompozicijos, stilius) |
 | 2 | Scenarijus | šablono parinkimas → 3 kabliukai (pasirinkimai tik kūrybinėms vietoms) → scenarijus |
-| 3 | Faktai | nebūtinas šaltinio laukas; Claude paieškos įrankis trūkstamiems faktams; faktų sąrašas su nuorodomis |
+| 3 | Faktai | nebūtinas šaltinio laukas; paieškos įrankis trūkstamiems faktams (tik jei įjungta); faktų sąrašas su nuorodomis |
 | 4 | Scenos plano plėtra | `scene.plan`: + `act`, `connectionToNext`, `transitionPhrase`, `continuity` |
 | 5 | Kompozicijos | DI pats kuria kadrą „kompozicijų kalba“ (zona, elemento tipas, akcento dydis); kompiliatorius paverčia į koordinates; pavyzdžiai iš `design-refs/` |
 | 6 | Judesys | DI kiekvienam elementui renkasi iš judesių žodyno: atsiradimas (pop, slideUp, scaleIn…), gyvumas (Ken Burns, lėtas zoom, bounce), išėjimas; kompiliatorius paverčia į esamus `entrance` / `kenBurns` / `keyframes` |
