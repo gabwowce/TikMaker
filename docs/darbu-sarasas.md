@@ -25,14 +25,64 @@ Visi trys etapai aprašyti viename faile: **`docs/bd/video-analizes-promptas.md`
 - [ ] https://aistudio.google.com → „Get API key“ → išsaugoti saugiai (ne į GitHub).
 - [ ] AI Studio konsolėje pasižiūrėti savo nemokamus limitus (užklausos per minutę / dieną).
 
-### C. Fone, po truputį
+### C. Kabliukai automatiškai (vietoj rankinių ekrano nuotraukų)
 
-- [ ] **Kabliukai**: po 20–30 min per dieną pagal `docs/bd/kabliuku-rinkimas.md` (Promptas A arba B) → `docs/bd/kabliukai/`.
+Kabliukas gali būti per kelis kadrus ir po vieną žodį, todėl ekrano nuotraukų neužtenka.
+Planas: skriptas `scripts/collectHooks.ts` (`npm run hooks:collect`), parašau aš:
+1. **Paieška**: YouTube Data API (nemokamas, ~10 000 vienetų per dieną) pagal raktinius žodžius
+   → Shorts, surikiuoti pagal peržiūras; + kanalo vidutinės peržiūros.
+2. **Analizė**: Gemini API (nemokamas lygis) gauna YouTube nuorodą ir žiūri tik **0–5 s ir paskutines 5 s**
+   (pigu) → kabliukas: balsas, visi ekrano tekstai pagal laiką (`onScreenSequence`), pirmas kadras,
+   tipas, formulė; CTA ir pavadinimo formulės.
+3. **Rezultatas**: `docs/bd/kabliukai/<data>.json`; jau analizuoti video praleidžiami.
+
+Tau (galima darbe):
+- [ ] Parašyti **raktinių žodžių sąrašą** → `docs/bd/kabliukai/raktazodziai.txt`, po vieną eilutėje,
+      įvairios nišos (pvz. `ai tools`, `coding tips`, `personal finance`, `history facts`, `true crime story`,
+      `how it works`, `productivity apps`, `psychology facts`). 15–30 eilučių.
+- [ ] Gauti **YouTube Data API raktą**: https://console.cloud.google.com → naujas projektas →
+      „YouTube Data API v3“ → Enable → Credentials → API key. (Gemini raktas iš B.)
+- [ ] Kai skriptas bus: paleisti namie `npm run hooks:collect` (raktai `.env.local`).
+
+### D. Dizaino kadrai (galima rinkti darbe)
+
+Kam jie reikalingi:
+- **Geri kadrai** → aš kiekvieną aprašau kompozicijų kalba (JSON) → tai **pavyzdžiai**, iš kurių DI mokosi
+  kurti kompozicijas (ir kuriuos gali paimti tiesiai).
+- **Blogi kadrai** → **neigiami pavyzdžiai** DI („taip nedaryti“) ir **patikros testas**: ar mūsų taisyklės /
+  vertinimas juos atpažįsta kaip blogus. Tai bus testavimo skyriuje.
+- **Su kuo lyginsim**: testavimo metu agento sugeneruotus kadrus lyginsim su gerais kadrais
+  (vertinimo lentelė: ar tvarkinga, ar aišku, ar atrodo kaip pavyzdžiai) ir tikrinsim, ar patikra
+  pagauna blogų kadrų klaidas.
+- **Tavo stilius** (`my-style/`) → iš jo aprašau spalvas, šriftus, akcentų būdą tavo darbo vietai.
+
+Kaip rinkti: atidaryti video (lengviausia iš 53 jau analizuotų, nuorodos analizių failuose arba
+`docs/bd/analizuoti-video.docx`), sustabdyti gražiame kadre, ekrano nuotrauka.
+Pavadinimas: `videoId-sekundė.png` (pvz. `g3Mh8Hws-jo-12.png`).
+
+- [ ] **Geri kadrai → `docs/bd/design-refs/`**, iš viso 25–35, kuo įvairesni. Po 3–5 kiekvieno tipo:
+  - kabliuko kadras (didelis tekstas, 1–2 žodžiai paryškinti);
+  - skaičius / statistika;
+  - sąrašas arba žingsniai;
+  - palyginimas (prieš / po, A vs B);
+  - ekrano įrašas ar ekrano nuotrauka + tekstas;
+  - tik vaizdas / video be teksto;
+  - personažas ar iliustracija + tekstas;
+  - diagrama ar schema;
+  - CTA kadras.
+- [ ] **Blogi kadrai → `docs/bd/design-refs/bad/`**, 8–12: per daug teksto, tekstas už ekrano krašto ar po
+      TikTok mygtukais, viskas vienodo dydžio, per daug elementų, neįskaitoma spalva, nesusiję vaizdai.
+      Gali būti iš savo senų video arba atsitiktinių nepopuliarių.
+- [ ] **Tavo stilius → `docs/bd/my-style/`**, 10–15 kadrų, kurie atrodo taip, kaip nori, kad atrodytų TAVO video.
+- [ ] Nebūtina, bet padeda: prie kadro failo `bad-3.txt` viena eilutė, kas blogai.
+
+### E. Fone, po truputį
+
 - [ ] Analizių `manual.analyzedAt` ir `manual.model`.
 - [ ] Peržiūrėti agento šablonų diagramą (skiltis „Tau patikrinti“ žemiau).
-- [ ] Vėliau (prieš kompozicijas): `design-refs/`, `my-style/`, brief (skiltis „Tau surinkti“).
+- [ ] Brief savo darbo vietai: kam video, tonas, ko vengti (pusė puslapio) → `knowledge/themes/dev/brief.md`.
 
-### D. Kai galėsi programuoti
+### F. Kai galėsi programuoti
 
 `docs/mano-planas.md`: 0 žingsnis (paketai, raktas į `.env.local`) → 2 žingsnis (pirmas DI kvietimas)
 → 1 žingsnis (žinių bazės schemos, kai jau bus šablonai iš A).
@@ -84,7 +134,7 @@ Sprendimai:
 ## Tau surinkti (prieš programuojant)
 
 1. **Analizės**: 53 yra ✓. Į kiekvieno failo `manual` įrašyk `analyzedAt` ir `model`.
-2. **Kabliukai**: 100+ pagal `docs/bd/kabliuku-rinkimas.md` → `docs/bd/kabliukai/`.
+2. **Kabliukai**: automatiškai, žr. „C. Kabliukai automatiškai“ viršuje.
 3. **Dizaino kadrai**: 20–30 ekrano nuotraukų gražiai sudėliotų kadrų (kuo įvairesnės
    kompozicijos) → `docs/bd/design-refs/` (pavadinimas `videoId-1.png`).
    Plius 5–10 blogų pavyzdžių (`bad-1.png`), gali būti iš savo senų video.
@@ -98,7 +148,7 @@ Sprendimai:
 1. ✓ Statistikos skriptas: `npm run analysis:stats` → `docs/bd/analizes-statistika.md` (26 žodyno klaidos pataisytos).
 2. ✓ 3 promptas atnaujintas (šablonai su `userFacing`, `slots` fixed/creative, formulės iš KIEKVIENO kabliuko).
    **Tau:** žr. „Dabar, eilės tvarka“ → A, 3 etapas.
-3. Kabliukų / CTA formulės iš surinktų kabliukų.
+3. Skriptas `scripts/collectHooks.ts` (YouTube Data API + Gemini) → kabliukų / CTA formulės.
 4. Kompozicijų kalba + 15–20 pavyzdžių iš dizaino kadrų (DI kompozicijas kuria pats, pavyzdžiai jį moko).
 5. Tavo stiliaus aprašas iš `my-style/` kadrų.
 
