@@ -1,5 +1,7 @@
 # Darbų sąrašas
 
+Eiga: `docs/bd/diagramos/agento-eiga.png` (+ paaiškinimas `agento-eiga.md`).
+
 ## Tau surinkti (prieš programuojant)
 
 1. **Analizės**: 53 yra ✓. Į kiekvieno failo `manual` įrašyk `analyzedAt` ir `model`.
@@ -35,7 +37,7 @@
 | 9 | Fokuso taškas (zoom į įrašo / nuotraukos dalį) | elemento laukas `focus` (x, y, didinimas, % nuo medijos); DI parenka zoną iš 3×3 tinklelio + aprašą („Settings mygtukas“); kompiliatorius → keyframes; redaktoriuje pataisymas vienu paspaudimu ant peržiūros + didinimo slankiklis |
 | 10 | Išteklių vietos | REC / IMG / VID su aprašymu; ataskaitoje gamybos planas |
 | 11 | Patikra | taisyklės su ribomis iš statistikos (pvz. vaizdas nejuda ilgiau nei N s); vertinimas iš kadrų 1–2 kartus per video |
-| 12 | Taisymo ciklas, UI, ataskaita | kaip `docs/mano-planas.md` |
+| 12 | Taisymo ciklas, UI, ataskaita | kaip `docs/mano-planas.md`; UI: fokuso taško nustatymas paspaudus ant peržiūros + didinimo slankiklis (be DI) |
 
 ## Jei spėsim
 
