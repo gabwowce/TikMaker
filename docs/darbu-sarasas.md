@@ -1,6 +1,8 @@
 # Darbų sąrašas
 
 Eiga: `docs/bd/diagramos/agento-eiga.png` (+ paaiškinimas `agento-eiga.md`).
+Agento šablonai: `docs/bd/diagramos/agento-sablonai.png`.
+Fronto dizaino promptas: `docs/bd/dizaino-promptas.md`.
 
 Sprendimai:
 - Kompozicija gyvena tik generuojant: kompiliatorius ją paverčia į paprastą TikMaker sceną
