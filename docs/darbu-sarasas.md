@@ -13,6 +13,21 @@ Sprendimai:
   ne naujas serveris.
 - Frontas: „Naujas video su DI“ langas (žr. žemiau, 12 punktas).
 
+## Tau patikrinti
+
+- [ ] **Agento šablonų diagrama**: [`docs/bd/diagramos/agento-sablonai.png`](bd/diagramos/agento-sablonai.png)
+  (paaiškinimas [`agento-eiga.md`](bd/diagramos/agento-eiga.md), skiltis „Agento šablonai“).
+  Eiti nuosekliai, blokas po bloko, ir pažymėti, kas neaišku:
+  1. Papildytas LLM (geltona pastaba viršuje): ką gauna kiekvienas kvietimas.
+  2. Maršrutizavimas: kaip parenkamas šablonas.
+  3. Faktų rinkimas: kada LLM ieško internete ir kada sustoja.
+  4. Grandinė: kabliukai → scenarijus → kompozicijos ir vartai (rausvi blokai).
+  5. Kodas (ne LLM): kas vyksta be DI.
+  6. Vertintojas–tobulintojas: patikros ir taisymo ciklas.
+  7. Legenda: kodėl nenaudojami kiti šablonai.
+  Palyginti su šaltiniu: https://www.anthropic.com/research/building-effective-agents.
+  Neaiškias vietas parašyti man → patobulinsim diagramą.
+
 ## Tau surinkti (prieš programuojant)
 
 1. **Analizės**: 53 yra ✓. Į kiekvieno failo `manual` įrašyk `analyzedAt` ir `model`.
