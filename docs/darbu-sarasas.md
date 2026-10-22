@@ -32,7 +32,7 @@
 | 6 | Judesys | DI kiekvienam elementui renkasi iš judesių žodyno: atsiradimas (pop, slideUp, scaleIn…), gyvumas (Ken Burns, lėtas zoom, bounce), išėjimas; kompiliatorius paverčia į esamus `entrance` / `kenBurns` / `keyframes` |
 | 7 | Tekstas pagal balsą | elementas atsiranda ant nurodyto balso žodžio (`appearsOnWord` → kadras iš ElevenLabs laikų) |
 | 8 | Tęstinumas | `continuity`: `new` / `carry:<elementas>` / `zoom-into:<taikinys>`; carry → kiti elementai dedami į laisvą zoną; zoom → keyframes |
-| 9 | Fokuso taškai (zoom į įrašą) | DI aprašo, kur priartinti („Settings mygtukas“); įkėlus įrašą DI iš kadro randa vietą (stačiakampį), tu patvirtini arba pastumi; kol įrašo nėra, zoom į zoną (pvz. viršus kairė) |
+| 9 | Fokuso taškas (zoom į įrašo / nuotraukos dalį) | elemento laukas `focus` (x, y, didinimas, % nuo medijos); DI parenka zoną iš 3×3 tinklelio + aprašą („Settings mygtukas“); kompiliatorius → keyframes; redaktoriuje pataisymas vienu paspaudimu ant peržiūros + didinimo slankiklis |
 | 10 | Išteklių vietos | REC / IMG / VID su aprašymu; ataskaitoje gamybos planas |
 | 11 | Patikra | taisyklės su ribomis iš statistikos (pvz. vaizdas nejuda ilgiau nei N s); vertinimas iš kadrų 1–2 kartus per video |
 | 12 | Taisymo ciklas, UI, ataskaita | kaip `docs/mano-planas.md` |
@@ -40,6 +40,7 @@
 ## Jei spėsim
 
 - Kadrų vertinimas su DI (jei ne, patikra tik taisyklėmis).
+- Fokuso taško paieška kadre su DI (įkėlus įrašą DI pats randa „Settings mygtuką“).
 - Antras projektas su kitu stiliumi (įrodo, kad sistema universali).
 
 ## Garso efektai (atskiras darbas, jei spėsim, kitaip po baigiamojo)
