@@ -19,7 +19,7 @@ const tokens = {
   hookType: ["contrarian", "pain-shown", "result-first", "curiosity-gap", "question", "list", "story", "pov", "news", "explained-in-time", "shock-fact", "other"],
   ctaType: ["follow", "comment-keyword", "lead-magnet", "next-part", "save-share", "link", "question", "other", "none"],
   background: ["solid", "gradient", "texture", "pattern", "photo", "video", "blurred", "illustrated-scene", "none", "other"],
-  elementKind: ["kinetic-text", "label", "photo", "illustration", "3d-object", "icon", "character", "diagram", "chart-stat", "screen-recording", "ui-mockup", "stock-footage", "movie-clip", "meme", "talking-head", "other"],
+  elementKind: ["kinetic-text", "label", "photo", "illustration", "3d-object", "icon", "character", "diagram", "chart-stat", "screen-recording", "screenshot", "ui-mockup", "stock-footage", "movie-clip", "meme", "talking-head", "other"],
   origin: ["ai-generated", "stock", "screenshot", "movie-tv", "hand-drawn", "3d-render", "brand-asset", "unknown"],
   motion: ["static", "zoom-in", "zoom-out", "pan", "pop-in", "slide-in", "fade-in", "rotate", "float", "shake", "typewriter", "draw-on", "character-animation", "other"],
   transition: ["cut", "slide", "zoom", "fade", "whip", "match-cut", "other"],
