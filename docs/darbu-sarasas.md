@@ -72,12 +72,12 @@ lentelė) ir tikrinsim, ar patikra pagauna blogų kadrų klaidas.
 Kai užpildysi (gali ir dalimis):
 - [ ] Įkelti užpildytą failą tuo pačiu vardu į `docs/bd/rinkimas/duomenu-rinkimas.docx` (GitHub → Add file → Upload, arba git).
 - [ ] Parašyti man → aš ištraukiu:
-  - nuorodas → `docs/bd/rinkimas/nauji-video.txt` (skriptui);
+  - nuorodas → `docs/bd/rinkimas/video-nuorodos.txt` (skriptui);
   - nuotraukas → `docs/bd/design-refs/`, `docs/bd/design-refs/bad/`, `docs/bd/my-style/`;
   - brief → `knowledge/themes/dev/brief.md`.
 
 Skriptas (parašau aš, paleisi namie): `npm run videos:analyze`
-- skaito `docs/bd/rinkimas/nauji-video.txt`;
+- skaito `docs/bd/rinkimas/video-nuorodos.txt`;
 - kiekvieną nuorodą siunčia Gemini API su **1 promptu** iš `docs/bd/video-analizes-promptas.md`;
 - išsaugo `docs/bd/analizes/<videoId>.json` (jau esami praleidžiami);
 - tada `npm run analysis:stats` ir 3 promptas iš naujo → daugiau šablonų ir formulių.
