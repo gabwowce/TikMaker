@@ -26,7 +26,7 @@ Planas: **`docs/bd/analizes-planas.md`**. Promptas: `docs/bd/video-analizes-prom
 - [ ] (tu) Rinkti 50–70 naujų nuorodų → `docs/bd/rinkimas/video-nuorodos.txt` (senos 53 jau įrašytos).
 - [ ] (aš) Skriptai `videos:analyze`, `videos:frames`.
 - [ ] (tu) Gemini raktas → `.env.local`, paleisti skriptus namie (visos ~110 video, ir senos).
-- [ ] (tu) Peržiūrėti ~30–45 atrinktų kadrų.
+- [ ] (tu) Peržiūrėti ~220 atsitiktinių kadrų: geri → `kadrai/geri/`, blogi → `kadrai/blogi/`, kiti – ištrinti.
 
 ## Dabar, eilės tvarka (be programavimo, galima daryti darbe)
 
