@@ -38,7 +38,7 @@ const tokens = {
   zone: ["top", "upper-middle", "middle", "lower-middle", "bottom", "full"],
   textSize: ["hero", "large", "medium", "small"],
   emphasisStyle: ["color", "box", "pill", "bigger", "bold", "underline", "glow", "none"],
-  visualEffect: ["glow", "shadow", "blur-background", "highlight-box", "outline", "shake", "flash", "color-shift", "grain", "vignette", "none", "other"],
+  visualEffect: ["glow", "shadow", "blur-background", "highlight-box", "outline", "flash", "color-shift", "grain", "vignette", "other"],
   compositionType: ["hook-text", "number-hero", "list", "comparison", "screen-with-text", "media-only", "character-with-text", "diagram", "quote", "cta", "other"],
 } as const;
 type TokenField = keyof typeof tokens;
@@ -155,6 +155,7 @@ for (const { id, data } of analyses) {
       check(id, `${at}.origin`, "origin", element.origin);
       check(id, `${at}.position`, "position", element.position);
       check(id, `${at}.screenShare`, "screenShare", element.screenShare);
+      check(id, `${at}.size`, "screenShare", (element as { size?: string }).size);
       check(id, `${at}.motion`, "motion", element.motion);
       count("elementKind", element.kind);
       count("origin", element.origin);
