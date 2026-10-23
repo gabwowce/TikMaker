@@ -40,7 +40,7 @@ for (const { id, url } of links) {
   const previous = existsSync(file) ? JSON.parse(readFileSync(file, "utf8")) : null;
   if (!force && previous?.manual?.promptVersion === PROMPT_VERSION) continue;
 
-  process.stdout.write(`${id} ... `);
+  console.log(`${id}: sending to ${model} (usually 1–2 min)...`);
   try {
     const analysis = await analyse(url);
     const manual = {
@@ -84,7 +84,10 @@ async function analyse(url: string): Promise<Record<string, unknown>> {
       return JSON.parse(text.replace(/^```(json)?\s*|\s*```$/g, ""));
     } catch (error) {
       lastError = error as Error;
+      console.log(`\n  attempt ${attempt} failed: ${lastError.message.slice(0, 300)}`);
+      if (attempt === 3) break;
       // 429 / 503: wait longer before the next attempt
+      console.log(`  waiting ${attempt * 30} s before retrying...`);
       await sleep(attempt * 30000);
     }
   }
