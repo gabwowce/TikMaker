@@ -9,7 +9,7 @@ Pergeneruoti: `python3 scripts/bd2docx.py <praktikos-ataskaita.docx> . docs/bd/B
 Kur kuris uždavinys:
 | Uždavinys | Aprašo vieta |
 |---|---|
-| 1. Analizė + reikalavimai | Įvadas (panašių sistemų santrauka, privaloma) + 1.1 palyginimas + 1.2 video analizė (~2 psl., detalės 7 priede) + 1.3 FR + 1.4 NFR |
+| 1. Analizė + reikalavimai | Įvadas (trumpa apžvalga, privaloma) + 1.1 panašių sistemų analizė (plačiau) + 1.2 video analizė (ką rinkome, kaip, kur naudosime) + 1.3 FR + 1.4 NFR |
 | 2. Projektavimas | 1.5 panaudos atvejai, 1.6 etapai, 1.7 žinių bazė, 1.8 kompozicijos, 1.9 patikra, 1.10 architektūra, 1.11 maketai |
 | 3. Realizacija | 2 skyrius |
 | 4. Testavimas | 3 skyrius |
