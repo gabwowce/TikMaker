@@ -20,6 +20,14 @@ Kur kuris uždavinys:
 - [ ] Nauji video (C skiltis) → `videos:analyze` → `analysis:stats` → pergeneruoti karkasą (1.2 ir 7 priedo lentelės atsinaujina pačios).
 - [ ] 3 promptas → šablonai (A skiltis) → 1.2 išvadas papildyti šablonų sąrašu.
 
+## 1 etapas: video analizė iš naujo (DABAR)
+
+Planas: **`docs/bd/analizes-planas.md`**. Promptas: `docs/bd/video-analizes-promptas.md` (1 promptas v2).
+- [ ] (tu) Rinkti 50–70 nuorodų → `docs/bd/rinkimas/nauji-video.txt` (tik nuorodos).
+- [ ] (aš) Skriptai `videos:meta`, `videos:analyze`, `videos:frames`.
+- [ ] (tu) Gemini raktas → `.env.local`, paleisti skriptus namie (visos ~110 video, ir senos).
+- [ ] (tu) Peržiūrėti ~30–45 atrinktų kadrų.
+
 ## Dabar, eilės tvarka (be programavimo, galima daryti darbe)
 
 ### A. Analizės → žinių bazė (3 etapai)
