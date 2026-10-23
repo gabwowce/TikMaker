@@ -17,6 +17,7 @@ const linksFile = "docs/bd/rinkimas/video-nuorodos.txt";
 const promptFile = "docs/bd/video-analizes-promptas.md";
 const outDir = "docs/bd/analizes";
 const pauseMs = Number(process.env.GEMINI_PAUSE_MS ?? 8000); // free tier: few requests per minute
+const requestTimeoutMs = Number(process.env.GEMINI_TIMEOUT_MS ?? 240000);
 
 loadEnvLocal();
 const apiKey = process.env.GEMINI_API_KEY;
@@ -24,7 +25,7 @@ if (!apiKey) {
   console.error("Missing GEMINI_API_KEY in .env.local");
   process.exit(1);
 }
-const models = (process.env.GEMINI_MODELS ?? process.env.GEMINI_MODEL ?? "gemini-flash-latest,gemini-2.5-flash,gemini-2.5-flash-lite")
+const models = (process.env.GEMINI_MODELS ?? process.env.GEMINI_MODEL ?? "gemini-3.8-flash,gemini-flash-latest,gemini-flash-lite-latest")
   .split(",")
   .map((m) => m.trim())
   .filter(Boolean);
@@ -73,6 +74,8 @@ async function analyse(url: string): Promise<{ analysis: Record<string, unknown>
     for (const model of [...models]) {
       try {
         console.log(`  trying ${model}...`);
+        const started = Date.now();
+        const ticker = setInterval(() => console.log(`    still waiting (${Math.round((Date.now() - started) / 1000)} s)...`), 30000);
         const response = await ai.models.generateContent({
           model,
           contents: [
@@ -84,8 +87,9 @@ async function analyse(url: string): Promise<{ analysis: Record<string, unknown>
               ],
             },
           ],
-          config: { responseMimeType: "application/json", temperature: 0.2 },
-        });
+          // give up on a hanging request and try the next model
+          config: { responseMimeType: "application/json", temperature: 0.2, httpOptions: { timeout: requestTimeoutMs } },
+        }).finally(() => clearInterval(ticker));
         const text = response.text ?? "";
         return { analysis: JSON.parse(text.replace(/^```(json)?\s*|\s*```$/g, "")), model };
       } catch (error) {
