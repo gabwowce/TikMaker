@@ -78,6 +78,20 @@ Skriptas (parašau aš, paleisi namie): `npm run videos:analyze`
 Kabliukų atskirai rinkti nebereikia: 1 promptas kabliuką, CTA ir pavadinimą jau ištraukia.
 (`docs/bd/kabliuku-rinkimas.md` lieka atsarginiam variantui.)
 
+### C2. Kadrai automatiškai (vietoj rankinių ekrano nuotraukų)
+
+1 promptas jau grąžina kiekvienos scenos `startSeconds` / `endSeconds`, todėl kadrus galima ištraukti skriptu:
+- [ ] (aš) `scripts/extractFrames.ts`: atsisiunčia video (yt-dlp, tik analizei, nepublikuojama) ir ffmpeg ištraukia
+      po 1 kadrą iš kiekvienos scenos vidurio → `docs/bd/kadrai/<videoId>/<scena>.jpg`.
+- [ ] (aš) 4 promptas: kadras → kompozicija kompozicijų kalba (zonos, elementai, akcentų dydžiai, tekstas)
+      + įvertinimas (ar tvarkingas, kas blogai). Rezultatas → kompozicijų pavyzdžiai žinių bazei.
+- [ ] (tu) peržiūrėti kadrus ir pažymėti gerus / blogus (užtenka ištrinti netinkamus ar perkelti į `bad/`).
+- Rankinių nuotraukų Word faile tada reikia tik blogiems kadrams iš kitur ir tavo stiliui.
+
+### C3. Testinis idėjų rinkinys (4 uždaviniui)
+
+- [ ] (tu) 10–20 idėjų, kurias agentas turės paversti video (skirtingi formatai, su šaltiniu ir be) → `docs/bd/testai/idejos.md`.
+
 ### D. Fone, po truputį
 
 - [ ] Analizių `manual.analyzedAt` ir `manual.model`.
