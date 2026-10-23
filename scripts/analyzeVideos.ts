@@ -92,7 +92,7 @@ async function analyse(url: string): Promise<Record<string, unknown>> {
 }
 
 function readPrompt(): string {
-  const md = readFileSync(promptFile, "utf8");
+  const md = readFileSync(promptFile, "utf8").replace(/\r\n/g, "\n");
   const section = md.slice(md.indexOf("## 1 promptas"));
   const match = section.match(/```\n([\s\S]*?)```/);
   if (!match) throw new Error(`"1 promptas" code block not found in ${promptFile}`);
@@ -102,7 +102,7 @@ function readPrompt(): string {
 function readLinks(): { id: string; url: string }[] {
   const seen = new Set<string>();
   const out: { id: string; url: string }[] = [];
-  for (const raw of readFileSync(linksFile, "utf8").split("\n")) {
+  for (const raw of readFileSync(linksFile, "utf8").split(/\r?\n/)) {
     const url = raw.split("#")[0].trim();
     if (!/^https?:\/\//.test(url)) continue;
     const id = videoId(url);
@@ -124,7 +124,7 @@ function videoId(url: string): string {
 
 function loadEnvLocal() {
   if (!existsSync(".env.local")) return;
-  for (const line of readFileSync(".env.local", "utf8").split("\n")) {
+  for (const line of readFileSync(".env.local", "utf8").split(/\r?\n/)) {
     const m = line.match(/^\s*([A-Z0-9_]+)\s*=\s*(.*)\s*$/);
     if (m && !process.env[m[1]]) process.env[m[1]] = m[2].replace(/^["']|["']$/g, "");
   }
