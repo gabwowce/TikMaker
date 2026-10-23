@@ -9,6 +9,8 @@
     "render": "remotion render",
     "render:project": "tsx scripts/render-project.ts",
     "video:check": "tsx scripts/checkProject.ts",
+    "videos:analyze": "tsx scripts/analyzeVideos.ts",
+    "videos:frames": "tsx scripts/extractFrames.ts",
     "analysis:stats": "tsx scripts/analysisStats.ts",
     "assets:sync": "tsx scripts/syncAssets.ts",
     "typecheck": "tsc --noEmit",
@@ -35,6 +37,7 @@
     "zustand": "^4.5.2"
   },
   "devDependencies": {
+    "@google/genai": "^2.31.0",
     "@remotion/tailwind-v4": "4.0.290",
     "@tailwindcss/postcss": "4.1.18",
     "@tanstack/react-query-devtools": "^5.104.0",

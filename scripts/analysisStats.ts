@@ -33,16 +33,25 @@ const tokens = {
   syncedTo: ["transition", "text-appears", "element-appears", "number-reveal", "punchline", "emphasis-word", "scene-start", "other"],
   confidence: ["high", "medium", "low"],
   captionStyle: ["word-by-word", "phrase", "full-sentence", "none"],
+  // prompt v2
+  continuity: ["new-scene", "same-subject-zoom", "carry-element", "match-cut", "same-frame-update", "none"],
+  zone: ["top", "upper-middle", "middle", "lower-middle", "bottom", "full"],
+  textSize: ["hero", "large", "medium", "small"],
+  emphasisStyle: ["color", "box", "pill", "bigger", "bold", "underline", "glow", "none"],
+  visualEffect: ["glow", "shadow", "blur-background", "highlight-box", "outline", "shake", "flash", "color-shift", "grain", "vignette", "none", "other"],
+  compositionType: ["hook-text", "number-hero", "list", "comparison", "screen-with-text", "media-only", "character-with-text", "diagram", "quote", "cta", "other"],
 } as const;
 type TokenField = keyof typeof tokens;
 
 type Sfx = { type?: string; group?: string; atSeconds?: number; syncedTo?: string; confidence?: string };
-type Element = { kind?: string; origin?: string; position?: string; screenShare?: string; motion?: string; recreate?: { essence?: string; matchesNarration?: boolean } };
+type Element = { kind?: string; origin?: string; position?: string; zone?: string; screenShare?: string; motion?: string; during?: string; visualEffects?: string[]; recreate?: { essence?: string; matchesNarration?: boolean } };
+type TextBlock = { zone?: string; size?: string; emphasisStyle?: string; text?: string };
 type Beat = {
   role?: string; startSeconds?: number; endSeconds?: number; voiceover?: string; onScreenText?: string;
   background?: { type?: string; recreate?: { essence?: string; matchesNarration?: boolean } };
   elements?: Element[]; simultaneousElements?: number; transitionIn?: string; emphasis?: string;
-  act?: string; connectionToNext?: string; soundEffects?: Sfx[];
+  act?: string; connectionToNext?: string; continuityToNext?: string; soundEffects?: Sfx[];
+  composition?: { type?: string; textBlocks?: TextBlock[]; whitespace?: string };
 };
 type Analysis = {
   url?: string; durationSeconds?: number; format?: string;
@@ -116,6 +125,21 @@ for (const { id, data } of analyses) {
     count("connection", beat.connectionToNext);
     count("background", beat.background?.type);
     count("act", beat.act);
+    check(id, `${where}.continuityToNext`, "continuity", beat.continuityToNext);
+    check(id, `${where}.composition.type`, "compositionType", beat.composition?.type);
+    count("continuity", beat.continuityToNext);
+    count("compositionType", beat.composition?.type);
+    count("whitespace", beat.composition?.whitespace);
+    (beat.composition?.textBlocks ?? []).forEach((block, t) => {
+      const at = `${where}.composition.textBlocks[${t}]`;
+      check(id, `${at}.zone`, "zone", block.zone);
+      check(id, `${at}.size`, "textSize", block.size);
+      check(id, `${at}.emphasisStyle`, "emphasisStyle", block.emphasisStyle);
+      count("textSize", block.size);
+      count("emphasisStyle", block.emphasisStyle);
+      count("textZone", block.zone);
+    });
+    if (beat.composition) add("textBlocksPerBeat", beat.composition.textBlocks?.length ?? 0);
     if (beat.background?.recreate?.matchesNarration !== undefined)
       count("backgroundMatchesNarration", beat.background.recreate.matchesNarration);
     const length = (beat.endSeconds ?? NaN) - (beat.startSeconds ?? NaN);
@@ -135,6 +159,14 @@ for (const { id, data } of analyses) {
       count("elementKind", element.kind);
       count("origin", element.origin);
       count("motion", element.motion);
+      check(id, `${at}.zone`, "zone", element.zone);
+      check(id, `${at}.during`, "motion", element.during);
+      count("elementZone", element.zone);
+      count("during", element.during);
+      for (const effect of element.visualEffects ?? []) {
+        check(id, `${at}.visualEffects`, "visualEffect", effect);
+        count("visualEffect", effect);
+      }
       count("position", element.position);
       count("screenShare", element.screenShare);
       count(`motion@${element.kind}`, element.motion);

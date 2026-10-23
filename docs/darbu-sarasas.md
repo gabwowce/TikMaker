@@ -24,7 +24,7 @@ Kur kuris uždavinys:
 
 Planas: **`docs/bd/analizes-planas.md`**. Promptas: `docs/bd/video-analizes-promptas.md` (1 promptas v2).
 - [ ] (tu) Rinkti 50–70 naujų nuorodų → `docs/bd/rinkimas/video-nuorodos.txt` (senos 53 jau įrašytos).
-- [ ] (aš) Skriptai `videos:analyze`, `videos:frames`.
+- [x] (aš) Skriptai `videos:analyze`, `videos:frames` (paleidimas: `docs/bd/analizes-planas.md`, „Kaip paleisti namie“).
 - [ ] (tu) Gemini raktas → `.env.local`, paleisti skriptus namie (visos ~110 video, ir senos).
 - [ ] (tu) Peržiūrėti ~220 atsitiktinių kadrų: geri → `kadrai/geri/`, blogi → `kadrai/blogi/`, kiti – ištrinti.
 
@@ -117,6 +117,7 @@ Agento šablonai: `docs/bd/diagramos/agento-sablonai.png`.
 Fronto dizaino promptas: `docs/bd/dizaino-promptas.md`.
 
 Sprendimai:
+- Baigiamajame tik **faceless** video: agentas nesiūlo filmuoti veido ar talking-head; išteklių vietos tik ekrano įrašams, nuotraukoms, video be veido.
 - DI kūrimui: Gemini API nemokamas lygis per Vercel AI SDK (`ai` + `@ai-sdk/google`); modelis konfigūruojamas,
   galutiniam vertinimui galima perjungti į Claude (`@ai-sdk/anthropic`) ir palyginti.
 - Kompozicija gyvena tik generuojant: kompiliatorius ją paverčia į paprastą TikMaker sceną
@@ -235,5 +236,7 @@ Ką daryti:
 - Keli stiliai: kiekvienam projektui savas (spalvos, šriftai pagal projektą).
 - Nuotraukų ir video generavimas per API (promptai jau bus).
 - Agentas, kuris kuria naujus komponentus.
+- Darbo vietos nustatymas „pasirodymas kadre“: faceless / filmuoju save / personažas – agentas pagal tai siūlo išteklius.
+- Muzikos pasiūlymai: nuotaika, žanras, tempas pagal sceną (analizėje jau renkama `audio.music`, `musicMood`); vėliau – populiarių garsų platformose pasiūlymai (atsižvelgiant į autorių teises).
 - Ekrano įrašymas su pelės sekimu → automatinis zoom ten, kur paspausta (kaip Screen Studio).
 - Serijų gamyba (daug video iš vieno sąrašo).
