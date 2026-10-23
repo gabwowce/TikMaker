@@ -9,7 +9,8 @@ import { GoogleGenAI } from "@google/genai";
 // from docs/bd/video-analizes-promptas.md and saves the JSON answer as
 // docs/bd/analizes/<videoId>.json. Links already analysed with the current
 // prompt version are skipped, so the script can be re-run after a failure.
-// Needs GEMINI_API_KEY in .env.local; GEMINI_MODEL overrides the model.
+// Needs GEMINI_API_KEY in .env.local. GEMINI_MODELS (comma separated) sets the
+// models to try in order: if one is overloaded or missing, the next is used.
 
 const PROMPT_VERSION = "v2";
 const linksFile = "docs/bd/rinkimas/video-nuorodos.txt";
@@ -23,7 +24,10 @@ if (!apiKey) {
   console.error("Missing GEMINI_API_KEY in .env.local");
   process.exit(1);
 }
-const model = process.env.GEMINI_MODEL ?? "gemini-flash-latest";
+const models = (process.env.GEMINI_MODELS ?? process.env.GEMINI_MODEL ?? "gemini-flash-latest,gemini-2.5-flash,gemini-2.5-flash-lite")
+  .split(",")
+  .map((m) => m.trim())
+  .filter(Boolean);
 const force = process.argv.includes("--force");
 const only = argValue("--only");
 
@@ -40,9 +44,9 @@ for (const { id, url } of links) {
   const previous = existsSync(file) ? JSON.parse(readFileSync(file, "utf8")) : null;
   if (!force && previous?.manual?.promptVersion === PROMPT_VERSION) continue;
 
-  console.log(`${id}: sending to ${model} (usually 1–2 min)...`);
+  console.log(`${id}: analysing (usually 1–2 min)...`);
   try {
-    const analysis = await analyse(url);
+    const { analysis, model } = await analyse(url);
     const manual = {
       ...(previous?.manual ?? {}),
       analyzedAt: new Date().toISOString().slice(0, 10),
@@ -51,7 +55,7 @@ for (const { id, url } of links) {
     };
     writeFileSync(file, JSON.stringify({ ...analysis, url, manual }, null, 2) + "\n");
     done += 1;
-    console.log("ok");
+    console.log(`  ok (${model})`);
   } catch (error) {
     failed.push(`${id}: ${(error as Error).message}`);
     console.log("FAILED");
@@ -63,32 +67,40 @@ console.log(`\n${done} analysed, ${failed.length} failed`);
 if (failed.length) console.log(failed.join("\n"));
 console.log("Next: npm run analysis:stats");
 
-async function analyse(url: string): Promise<Record<string, unknown>> {
+async function analyse(url: string): Promise<{ analysis: Record<string, unknown>; model: string }> {
   let lastError: Error | undefined;
-  for (let attempt = 1; attempt <= 3; attempt++) {
-    try {
-      const response = await ai.models.generateContent({
-        model,
-        contents: [
-          {
-            role: "user",
-            parts: [
-              { fileData: { fileUri: url, mimeType: "video/*" } },
-              { text: prompt.replace("<URL>", url) },
-            ],
-          },
-        ],
-        config: { responseMimeType: "application/json", temperature: 0.2 },
-      });
-      const text = response.text ?? "";
-      return JSON.parse(text.replace(/^```(json)?\s*|\s*```$/g, ""));
-    } catch (error) {
-      lastError = error as Error;
-      console.log(`\n  attempt ${attempt} failed: ${lastError.message.slice(0, 300)}`);
-      if (attempt === 3) break;
-      // 429 / 503: wait longer before the next attempt
-      console.log(`  waiting ${attempt * 30} s before retrying...`);
-      await sleep(attempt * 30000);
+  for (let round = 1; round <= 3; round++) {
+    for (const model of [...models]) {
+      try {
+        console.log(`  trying ${model}...`);
+        const response = await ai.models.generateContent({
+          model,
+          contents: [
+            {
+              role: "user",
+              parts: [
+                { fileData: { fileUri: url, mimeType: "video/*" } },
+                { text: prompt.replace("<URL>", url) },
+              ],
+            },
+          ],
+          config: { responseMimeType: "application/json", temperature: 0.2 },
+        });
+        const text = response.text ?? "";
+        return { analysis: JSON.parse(text.replace(/^```(json)?\s*|\s*```$/g, "")), model };
+      } catch (error) {
+        lastError = error as Error;
+        const message = lastError.message;
+        console.log(`  ${model} failed: ${message.slice(0, 200)}`);
+        // a model that does not exist will not appear later: drop it
+        if (/"code":\s*404|NOT_FOUND|not found/i.test(message)) models.splice(models.indexOf(model), 1);
+      }
+    }
+    if (models.length === 0) break;
+    if (round < 3) {
+      // all models busy (503 / 429): wait before the next round
+      console.log(`  all models failed, waiting ${round * 30} s...`);
+      await sleep(round * 30000);
     }
   }
   throw lastError ?? new Error("unknown error");
