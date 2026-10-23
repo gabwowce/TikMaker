@@ -1,5 +1,25 @@
 # Darbų sąrašas
 
+## Baigiamojo darbo Aprašas
+
+Karkasas: **`docs/bd/BD-aprasas-karkasas.docx`** (tavo praktikos ataskaitos stiliai, metodinių EI V2-30 struktūra,
+juodraščio tekstai, oranžinės „Gairė“ pastabos, geltoni [PAPILDYTI] / [PATIKRINTI], pilkos vietos paveikslams).
+Pergeneruoti: `python3 scripts/bd2docx.py <praktikos-ataskaita.docx> . docs/bd/BD-aprasas-karkasas.docx`.
+
+Kur kuris uždavinys:
+| Uždavinys | Aprašo vieta |
+|---|---|
+| 1. Analizė + reikalavimai | Įvadas (panašios sistemos) + 1.1 (53 video analizė) + 1.2 FR + 1.3 NFR |
+| 2. Projektavimas | 1.4 panaudos atvejai, 1.5 etapai, 1.6 žinių bazė, 1.7 kompozicijos, 1.8 patikra, 1.9 architektūra, 1.10 maketai |
+| 3. Realizacija | 2 skyrius |
+| 4. Testavimas | 3 skyrius |
+
+1 uždavinio užbaigimas (dabar):
+- [ ] Peržiūrėti Įvadą karkase (sutrumpintas iš `docs/bd/1-ivadas.md`), užpildyti [PATIKRINTI] šaltinius.
+- [ ] Peržiūrėti FR / NFR v2 (1.2, 1.3) – ar viskas atitinka norimą sistemą.
+- [ ] Nauji video (C skiltis) → `videos:analyze` → `analysis:stats` → pergeneruoti karkasą (1.1 lentelės atsinaujina pačios).
+- [ ] 3 promptas → šablonai (A skiltis) → 1.1.3 išvadas papildyti šablonų sąrašu.
+
 ## Dabar, eilės tvarka (be programavimo, galima daryti darbe)
 
 ### A. Analizės → žinių bazė (3 etapai)
