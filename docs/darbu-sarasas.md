@@ -9,14 +9,14 @@ Pergeneruoti: `python3 scripts/bd2docx.py <praktikos-ataskaita.docx> . docs/bd/B
 Kur kuris uždavinys:
 | Uždavinys | Aprašo vieta |
 |---|---|
-| 1. Analizė + reikalavimai | Įvadas (trumpa apžvalga, privaloma) + 1.1 panašių sistemų analizė (plačiau) + 1.2 video analizė (ką rinkome, kaip, kur naudosime) + 1.3 FR + 1.4 NFR |
-| 2. Projektavimas | 1.5 panaudos atvejai, 1.6 etapai, 1.7 žinių bazė, 1.8 kompozicijos, 1.9 patikra, 1.10 architektūra, 1.11 maketai |
-| 3. Realizacija | 2 skyrius |
-| 4. Testavimas | 3 skyrius |
+| 1. Analizė + reikalavimai | Įvadas (trumpa apžvalga, privaloma) + **1 skyrius**: 1.1 panašios sistemos, 1.2 video analizė, 1.3 FR, 1.4 NFR |
+| 2. Projektavimas | **2 skyrius**: 2.1 panaudos atvejai, 2.2 veiklos, 2.3 agento šablonai, 2.4 žinių bazė, 2.5 kompozicijos, 2.6 patikra, 2.7 architektūra, 2.8 maketai |
+| 3. Realizacija | **3 skyrius** |
+| 4. Testavimas | **4 skyrius** (5 – diegimo instrukcija, privaloma visiems) |
 
 1 uždavinio užbaigimas (dabar):
 - [ ] Peržiūrėti Įvadą karkase (sutrumpintas iš `docs/bd/1-ivadas.md`), užpildyti [PATIKRINTI] šaltinius.
-- [ ] Peržiūrėti FR / NFR v2 (1.3, 1.4) – ar viskas atitinka norimą sistemą.
+- [ ] Peržiūrėti FR / NFR v2 (1.3, 1.4); suderinti su vadove 1 ir 2 skyrių padalijimą – ar viskas atitinka norimą sistemą.
 - [ ] Nauji video (C skiltis) → `videos:analyze` → `analysis:stats` → pergeneruoti karkasą (1.2 ir 7 priedo lentelės atsinaujina pačios).
 - [ ] 3 promptas → šablonai (A skiltis) → 1.2 išvadas papildyti šablonų sąrašu.
 
