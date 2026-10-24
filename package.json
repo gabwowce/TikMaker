@@ -10,6 +10,7 @@
     "render:project": "tsx scripts/render-project.ts",
     "video:check": "tsx scripts/checkProject.ts",
     "videos:analyze": "tsx scripts/analyzeVideos.ts",
+    "videos:stats": "tsx scripts/fetchVideoStats.ts",
     "videos:frames": "tsx scripts/extractFrames.ts",
     "analysis:stats": "tsx scripts/analysisStats.ts",
     "assets:sync": "tsx scripts/syncAssets.ts",
