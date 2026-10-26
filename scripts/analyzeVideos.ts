@@ -14,8 +14,9 @@ import { GoogleGenAI } from "@google/genai";
 // it is overloaded the script waits and retries instead of switching to a
 // weaker model; when the daily quota is used up it stops (re-run tomorrow).
 
-const PROMPT_VERSION = "v4";
+const PROMPT_VERSION = "v5";
 class DailyQuotaError extends Error {}
+class WrongRoleError extends Error {}
 const linksFile = "docs/bd/rinkimas/video-nuorodos.txt";
 const promptFile = "docs/bd/video-analizes-promptas.md";
 const outDir = "docs/bd/analizes";
@@ -35,6 +36,7 @@ const only = argValue("--only");
 
 const ai = new GoogleGenAI({ apiKey });
 const prompt = readPrompt();
+const roles = readRoles(prompt);
 const links = readLinks();
 mkdirSync(outDir, { recursive: true });
 
@@ -76,6 +78,7 @@ if (failed.length) console.log(failed.join("\n"));
 console.log("Next: npm run analysis:stats");
 
 async function analyse(url: string): Promise<Record<string, unknown>> {
+  let wrongRoleRetries = 0;
   for (let attempt = 0; ; attempt++) {
     try {
       const started = Date.now();
@@ -94,9 +97,18 @@ async function analyse(url: string): Promise<Record<string, unknown>> {
         config: { responseMimeType: "application/json", temperature: 0.2, httpOptions: { timeout: requestTimeoutMs } },
       }).finally(() => clearInterval(ticker));
       const text = response.text ?? "";
-      return JSON.parse(text.replace(/^```(json)?\s*|\s*```$/g, ""));
+      const analysis = JSON.parse(text.replace(/^```(json)?\s*|\s*```$/g, ""));
+      const wrongRoles = (analysis.beats ?? []).map((beat: { role?: string }) => beat.role).filter((role: string) => !roles.includes(role));
+      if (wrongRoles.length) throw new WrongRoleError(`roles not in ROLES: ${wrongRoles.join(", ")}`);
+      return analysis;
     } catch (error) {
       const message = (error as Error).message;
+      // e.g. an ACT token (build, climax) put into "role": the beat's real role is lost, so ask again at once
+      if (error instanceof WrongRoleError && wrongRoleRetries++ < 2) {
+        console.log(`  ${message}, asking again...`);
+        attempt--;
+        continue;
+      }
       if (/PerDay/i.test(message)) throw new DailyQuotaError(message);
       if (/"code":\s*404|NOT_FOUND/i.test(message)) throw error; // wrong model name: retrying will not help
       if (attempt >= retryWaitsMs.length) throw error;
@@ -114,6 +126,12 @@ function readPrompt(): string {
   const match = section.match(/```\n([\s\S]*?)```/);
   if (!match) throw new Error(`"1 promptas" code block not found in ${promptFile}`);
   return match[1];
+}
+
+// role tokens from the "ROLES" list of the prompt, e.g. "- hook: ..."
+function readRoles(text: string): string[] {
+  const section = text.slice(text.indexOf("ROLES"), text.indexOf("HOOK TYPES"));
+  return [...section.matchAll(/^- ([a-z-]+):/gm)].map((match) => match[1]).concat("other");
 }
 
 function readLinks(): { id: string; url: string }[] {
