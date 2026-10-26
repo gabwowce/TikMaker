@@ -33,7 +33,7 @@ const tokens = {
   syncedTo: ["transition", "text-appears", "element-appears", "number-reveal", "punchline", "emphasis-word", "scene-start", "other"],
   confidence: ["high", "medium", "low"],
   captionStyle: ["word-by-word", "phrase", "full-sentence", "none"],
-  // prompt v2
+  // prompt v2+
   continuity: ["new-scene", "same-subject-zoom", "carry-element", "match-cut", "same-frame-update", "none"],
   zone: ["top", "upper-middle", "middle", "lower-middle", "bottom", "full"],
   textSize: ["hero", "large", "medium", "small"],

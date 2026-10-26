@@ -9,10 +9,13 @@ import { GoogleGenAI } from "@google/genai";
 // from docs/bd/video-analizes-promptas.md and saves the JSON answer as
 // docs/bd/analizes/<videoId>.json. Links already analysed with the current
 // prompt version are skipped, so the script can be re-run after a failure.
-// Needs GEMINI_API_KEY in .env.local. GEMINI_MODELS (comma separated) sets the
-// models to try in order: if one is overloaded or missing, the next is used.
+// Needs GEMINI_API_KEY in .env.local. All videos are analysed with one model
+// (GEMINI_MODEL, default gemini-3.8-flash) so the analyses stay comparable: if
+// it is overloaded the script waits and retries instead of switching to a
+// weaker model; when the daily quota is used up it stops (re-run tomorrow).
 
-const PROMPT_VERSION = "v2";
+const PROMPT_VERSION = "v3";
+class DailyQuotaError extends Error {}
 const linksFile = "docs/bd/rinkimas/video-nuorodos.txt";
 const promptFile = "docs/bd/video-analizes-promptas.md";
 const outDir = "docs/bd/analizes";
@@ -25,10 +28,8 @@ if (!apiKey) {
   console.error("Missing GEMINI_API_KEY in .env.local");
   process.exit(1);
 }
-const models = (process.env.GEMINI_MODELS ?? process.env.GEMINI_MODEL ?? "gemini-3.8-flash,gemini-flash-latest,gemini-flash-lite-latest")
-  .split(",")
-  .map((m) => m.trim())
-  .filter(Boolean);
+const model = process.env.GEMINI_MODEL ?? "gemini-3.8-flash";
+const retryWaitsMs = [60000, 120000, 300000, 600000]; // overloaded: wait, then try again
 const force = process.argv.includes("--force");
 const only = argValue("--only");
 
@@ -43,22 +44,28 @@ for (const { id, url } of links) {
   if (only && id !== only) continue;
   const file = join(outDir, `${id}.json`);
   const previous = existsSync(file) ? JSON.parse(readFileSync(file, "utf8")) : null;
-  if (!force && previous?.manual?.promptVersion === PROMPT_VERSION) continue;
+  if (!force && previous?.manual?.promptVersion === PROMPT_VERSION && previous?.manual?.model === model) continue;
 
   console.log(`${id}: analysing (usually 1–2 min)...`);
   try {
-    const { analysis, model } = await analyse(url);
+    const analysis = await analyse(url);
+    // a manual check belongs to the old analysis, not to the new one
+    const { checkedByAuthor: _, ...kept } = previous?.manual ?? {};
     const manual = {
-      ...(previous?.manual ?? {}),
+      ...kept,
       analyzedAt: new Date().toISOString().slice(0, 10),
       model,
       promptVersion: PROMPT_VERSION,
     };
     writeFileSync(file, JSON.stringify({ ...analysis, url, manual }, null, 2) + "\n");
     done += 1;
-    console.log(`  ok (${model})`);
+    console.log("  ok");
   } catch (error) {
-    failed.push(`${id}: ${(error as Error).message}`);
+    if (error instanceof DailyQuotaError) {
+      console.log(`\nDaily quota of ${model} used up. Run the same command again tomorrow: finished videos are skipped.`);
+      break;
+    }
+    failed.push(`${id}: ${(error as Error).message.slice(0, 300)}`);
     console.log("FAILED");
   }
   await sleep(pauseMs);
@@ -68,46 +75,37 @@ console.log(`\n${done} analysed, ${failed.length} failed`);
 if (failed.length) console.log(failed.join("\n"));
 console.log("Next: npm run analysis:stats");
 
-async function analyse(url: string): Promise<{ analysis: Record<string, unknown>; model: string }> {
-  let lastError: Error | undefined;
-  for (let round = 1; round <= 3; round++) {
-    for (const model of [...models]) {
-      try {
-        console.log(`  trying ${model}...`);
-        const started = Date.now();
-        const ticker = setInterval(() => console.log(`    still waiting (${Math.round((Date.now() - started) / 1000)} s)...`), 30000);
-        const response = await ai.models.generateContent({
-          model,
-          contents: [
-            {
-              role: "user",
-              parts: [
-                { fileData: { fileUri: url, mimeType: "video/*" } },
-                { text: prompt.replace("<URL>", url) },
-              ],
-            },
-          ],
-          // give up on a hanging request and try the next model
-          config: { responseMimeType: "application/json", temperature: 0.2, httpOptions: { timeout: requestTimeoutMs } },
-        }).finally(() => clearInterval(ticker));
-        const text = response.text ?? "";
-        return { analysis: JSON.parse(text.replace(/^```(json)?\s*|\s*```$/g, "")), model };
-      } catch (error) {
-        lastError = error as Error;
-        const message = lastError.message;
-        console.log(`  ${model} failed: ${message.slice(0, 200)}`);
-        // a model that does not exist will not appear later: drop it
-        if (/"code":\s*404|NOT_FOUND|not found/i.test(message)) models.splice(models.indexOf(model), 1);
-      }
-    }
-    if (models.length === 0) break;
-    if (round < 3) {
-      // all models busy (503 / 429): wait before the next round
-      console.log(`  all models failed, waiting ${round * 30} s...`);
-      await sleep(round * 30000);
+async function analyse(url: string): Promise<Record<string, unknown>> {
+  for (let attempt = 0; ; attempt++) {
+    try {
+      const started = Date.now();
+      const ticker = setInterval(() => console.log(`    still waiting (${Math.round((Date.now() - started) / 1000)} s)...`), 30000);
+      const response = await ai.models.generateContent({
+        model,
+        contents: [
+          {
+            role: "user",
+            parts: [
+              { fileData: { fileUri: url, mimeType: "video/*" } },
+              { text: prompt.replace("<URL>", url) },
+            ],
+          },
+        ],
+        config: { responseMimeType: "application/json", temperature: 0.2, httpOptions: { timeout: requestTimeoutMs } },
+      }).finally(() => clearInterval(ticker));
+      const text = response.text ?? "";
+      return JSON.parse(text.replace(/^```(json)?\s*|\s*```$/g, ""));
+    } catch (error) {
+      const message = (error as Error).message;
+      if (/PerDay/i.test(message)) throw new DailyQuotaError(message);
+      if (/"code":\s*404|NOT_FOUND/i.test(message)) throw error; // wrong model name: retrying will not help
+      if (attempt >= retryWaitsMs.length) throw error;
+      const wait = retryWaitsMs[attempt];
+      console.log(`  ${model} failed: ${message.slice(0, 160)}`);
+      console.log(`  waiting ${wait / 60000} min, then trying again...`);
+      await sleep(wait);
     }
   }
-  throw lastError ?? new Error("unknown error");
 }
 
 function readPrompt(): string {
