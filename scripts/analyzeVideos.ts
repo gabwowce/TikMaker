@@ -14,7 +14,7 @@ import { GoogleGenAI } from "@google/genai";
 // it is overloaded the script waits and retries instead of switching to a
 // weaker model; when the daily quota is used up it stops (re-run tomorrow).
 
-const PROMPT_VERSION = "v3";
+const PROMPT_VERSION = "v4";
 class DailyQuotaError extends Error {}
 const linksFile = "docs/bd/rinkimas/video-nuorodos.txt";
 const promptFile = "docs/bd/video-analizes-promptas.md";

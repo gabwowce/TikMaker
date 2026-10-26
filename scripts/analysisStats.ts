@@ -15,7 +15,7 @@ const outJson = "docs/bd/analizes-statistika.json";
 
 const tokens = {
   format: ["explainer", "story", "demo", "facts", "other"],
-  role: ["hook", "setup", "problem", "mechanism", "reveal", "demo", "proof", "benefit", "payoff", "cta", "bridge", "other"],
+  role: ["hook", "setup", "problem", "mechanism", "reveal", "demo", "proof", "benefit", "item", "payoff", "cta", "bridge", "other"],
   hookType: ["contrarian", "pain-shown", "result-first", "curiosity-gap", "question", "list", "story", "pov", "news", "explained-in-time", "shock-fact", "other"],
   ctaType: ["follow", "comment-keyword", "lead-magnet", "next-part", "save-share", "link", "question", "other", "none"],
   background: ["solid", "gradient", "texture", "pattern", "photo", "video", "blurred", "illustrated-scene", "none", "other"],
