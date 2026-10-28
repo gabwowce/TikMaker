@@ -4,6 +4,7 @@ import { DataFields } from "./DataFields";
 import { DeviceFields } from "./DeviceFields";
 import { DiagramFields } from "./DiagramFields";
 import { ListVisualFields } from "./ListVisualFields";
+import { readImageSize } from "../../utils/imageSize";
 import { ImageSrcField } from "./MediaInputs";
 import { RecordingFields } from "./RecordingFields";
 function summarizeVisual(visual: VisualConfig): string {
@@ -113,7 +114,12 @@ export function VisualFieldsEditor({
       return (
         <ImageSrcField
           src={visual.src}
-          onChange={(src) => onChange({ ...visual, src })}
+          onChange={(src) => {
+            onChange({ ...visual, src, width: undefined, height: undefined });
+            readImageSize(src)
+              .then((size) => onChange({ ...visual, src, ...size }))
+              .catch(() => {}); // not loadable yet: keeps the default 700 px box
+          }}
         />
       );
     case "recording":

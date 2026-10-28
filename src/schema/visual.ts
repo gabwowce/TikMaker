@@ -20,6 +20,8 @@ export type VisualConfig =
   | {
       type: "image";
       src: string;
+      width?: number;
+      height?: number;
     }
   | {
       type: "recording";
@@ -228,6 +230,9 @@ export const visualConfigSchema: z.ZodType<VisualConfig> = z.discriminatedUnion(
     z.object({
       type: z.literal("image"),
       src: z.string(),
+      // the picture's own size in px, so scale 1 shows it at its real size
+      width: z.number().positive().optional(),
+      height: z.number().positive().optional(),
     }),
     z.object({
       type: z.literal("recording"),

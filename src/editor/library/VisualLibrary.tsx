@@ -7,6 +7,7 @@ import {
   visualTemplateRegistry,
 } from "../../registries/visualTemplateRegistry";
 import type { VisualConfig } from "../../schema/visual";
+import { readImageSize } from "../../utils/imageSize";
 import { splitCornerProps } from "../../utils/normalizeProject";
 import { useCustomAssets } from "../../api/library";
 import type { VisualSlot } from "../state/projectStore";
@@ -127,19 +128,22 @@ export function VisualLibrary() {
                       ? "Screen recording — inserted in a browser frame"
                       : asset.label
                   }
-                  onClick={() =>
-                    assign(
-                      isVideo
-                        ? {
-                            type: "recording",
-                            src: asset.src,
-                            frame: "browser",
-                            fit: "cover",
-                            playbackRate: 1,
-                          }
-                        : { type: "image", src: asset.src },
-                    )
-                  }
+                  onClick={() => {
+                    if (isVideo) {
+                      assign({
+                        type: "recording",
+                        src: asset.src,
+                        frame: "browser",
+                        fit: "cover",
+                        playbackRate: 1,
+                      });
+                      return;
+                    }
+                    // store the picture's real size, so scale 1 = its own px
+                    readImageSize(asset.src)
+                      .then((size) => assign({ type: "image", src: asset.src, ...size }))
+                      .catch(() => assign({ type: "image", src: asset.src }));
+                  }}
                 >
                   {isVideo ? (
                     <video

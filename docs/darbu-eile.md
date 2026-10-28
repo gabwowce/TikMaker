@@ -29,7 +29,7 @@ Po kiekvieno punkto: papildyti `capabilities.ts` ir vertimo lentelę, paleisti `
 
 | # | Ką padaryti | Kodėl (analizė) | Dydis |
 |---|---|---|---|
-| - [ ] B1 | Patikrinti savų paveikslėlių importą (iliustracijos, nuotraukos) | iliustracijos 13 %, nuotraukos 5 % elementų | patikra |
+| - [x] B1 | Patikrinti savų paveikslėlių importą (iliustracijos, nuotraukos) | iliustracijos 13 %, nuotraukos 5 % elementų | patikra |
 | - [ ] B2 | Žodžio paryškinimas pusjuodžiu (`highlights` stilius: spalva / pusjuodis / pill) | pusjuodis 11 % teksto blokų | mažas |
 | - [ ] B3 | Video fonas (`custom` fonas + `video`) | video fone 20 % scenų | mažas |
 | - [ ] B4 | Efektai elementams: šešėlis / švytėjimas / kontūras | šešėlis 58 %, švytėjimas 13 %, kontūras 12 % efektų | vidutinis |

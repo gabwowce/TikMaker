@@ -18,7 +18,9 @@ export function naturalVisualSize(visual: VisualConfig): Size {
       return { width: n * 200 + (n - 1) * 70, height: 200 };
     }
     case "image":
-      return { width: 700, height: 700 };
+      return visual.width && visual.height
+        ? { width: visual.width, height: visual.height }
+        : { width: 700, height: 700 };
     case "recording":
       if (visual.frame === "phone") return { width: 460, height: 940 };
       if (visual.frame === "plain") return screenFrameSize(visual.aspect);

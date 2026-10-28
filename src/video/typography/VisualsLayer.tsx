@@ -177,6 +177,9 @@ function VisualLayerEntry({
         left: `${pose.x}%`,
         top: `${pose.y}%`,
         zIndex: timelineLayerZIndex(entry.lane),
+        // An image has no size of its own: give it its box, or it shrinks to
+        // the space left between its x and the frame edge.
+        ...(entry.visual.type === "image" ? naturalVisualSize(entry.visual) : {}),
       }}
     >
       {animated}
