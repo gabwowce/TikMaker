@@ -11,6 +11,7 @@ import type {
 } from "../schema/scene";
 import { safeAreaPercent } from "../video/typography/tokens";
 import { useProjectStore } from "./state/projectStore";
+import { objectIdOf, sceneIdOf } from "./timeline/selectionId";
 const VISUAL_MARKER_ID = "__visual__";
 const RICH_STACK_MARKER_ID = "__rich-stack__";
 const RICH_LINE_MARKER_PREFIX = "__rich-line__";
@@ -60,12 +61,19 @@ export function BlockPositionOverlay({
   const selectObject = useProjectStore((s) => s.selectObject);
   const containerRef = useRef<HTMLDivElement>(null);
   const [draggingId, setDraggingId] = useState<string | null>(null);
-  const [hoveredId, setHoveredId] = useState<string | null>(null);
   const [guides, setGuides] = useState<{
     x?: number;
     y?: number;
   }>({});
   const draggingIdRef = useRef<string | null>(null);
+  // where the drag started: pointer (px) and the element's anchor (%)
+  const dragStartRef = useRef<{
+    pointerX: number;
+    pointerY: number;
+    x: number;
+    y: number;
+  } | null>(null);
+  const selectedObjectId = useProjectStore((s) => s.selectedObjectId);
   useEffect(
     () => () => {
       if (draggingIdRef.current) {
@@ -123,20 +131,45 @@ export function BlockPositionOverlay({
     }
     return { x, y };
   }
-  function moveMarkerTo(markerId: string, clientX: number, clientY: number) {
+  // The marker (element anchor) the drag moves: the element selected in the
+  // timeline. A text line that is not placed on its own moves the whole text.
+  function selectedMarker(): { id: string; x: number; y: number } | null {
+    if (!selectedObjectId) return null;
+    // timeline ids look like "<scene id>::visual-<id>"; only this scene's count
+    if (sceneIdOf(selectedObjectId, selectedSceneId) !== selectedSceneId) return null;
+    const id = objectIdOf(selectedObjectId);
+    if (id.startsWith("visual-")) {
+      const visual = visuals.find((v) => `visual-${v.id}` === id);
+      return visual ? { id: visual.id, x: visual.x, y: visual.y } : null;
+    }
+    if (id.startsWith("block-")) {
+      const block = blocks.find((b) => `block-${b.id}` === id);
+      return block ? { id: block.id, x: block.x, y: block.y } : null;
+    }
+    if (id.startsWith("line-")) {
+      const free = freeLines.find(({ index }) => `line-${index}` === id);
+      if (free)
+        return {
+          id: `${RICH_LINE_MARKER_PREFIX}${free.index}`,
+          x: free.line.x!,
+          y: free.line.y!,
+        };
+    }
+    if ((id === "text-group" || id.startsWith("line-")) && lines.length > 0)
+      return {
+        id: RICH_STACK_MARKER_ID,
+        x: richHeadlineX ?? 50,
+        y: richHeadlineY ?? 50,
+      };
+    return null;
+  }
+  const marker = selectedMarker();
+  function moveMarkerTo(markerId: string, percentX: number, percentY: number) {
     const rect = containerRef.current?.getBoundingClientRect();
     if (!rect || !selectedSceneId) return;
     const targets = snapTargets(markerId);
-    const snappedX = snapTo(
-      ((clientX - rect.left) / rect.width) * 100,
-      targets.x,
-      rect.width,
-    );
-    const snappedY = snapTo(
-      ((clientY - rect.top) / rect.height) * 100,
-      targets.y,
-      rect.height,
-    );
+    const snappedX = snapTo(percentX, targets.x, rect.width);
+    const snappedY = snapTo(percentY, targets.y, rect.height);
     setGuides({ x: snappedX.hit, y: snappedY.hit });
     const rawX = snappedX.value;
     const rawY = snappedY.value;
@@ -206,112 +239,61 @@ export function BlockPositionOverlay({
       ),
     );
   }
-  function handlePointerDown(event: ReactPointerEvent, markerId: string) {
+  // Grab anywhere: the element moves by as much as the pointer moved, so it
+  // does not jump to the pointer.
+  function handlePointerDown(event: ReactPointerEvent) {
+    if (!marker) return;
     event.preventDefault();
     event.stopPropagation();
     (event.currentTarget as Element).setPointerCapture(event.pointerId);
     beginHistoryTransaction();
-    draggingIdRef.current = markerId;
-    setDraggingId(markerId);
+    draggingIdRef.current = marker.id;
+    dragStartRef.current = {
+      pointerX: event.clientX,
+      pointerY: event.clientY,
+      x: marker.x,
+      y: marker.y,
+    };
+    setDraggingId(marker.id);
   }
   function handlePointerMove(event: ReactPointerEvent) {
     const markerId = draggingIdRef.current;
-    if (markerId) moveMarkerTo(markerId, event.clientX, event.clientY);
+    const start = dragStartRef.current;
+    const rect = containerRef.current?.getBoundingClientRect();
+    if (!markerId || !start || !rect) return;
+    moveMarkerTo(
+      markerId,
+      start.x + ((event.clientX - start.pointerX) / rect.width) * 100,
+      start.y + ((event.clientY - start.pointerY) / rect.height) * 100,
+    );
   }
   function handlePointerUp() {
     if (!draggingIdRef.current) return;
     draggingIdRef.current = null;
+    dragStartRef.current = null;
     setDraggingId(null);
     setGuides({});
     endHistoryTransaction();
   }
-  function DragHandle({ id, x, y }: { id: string; x: number; y: number }) {
-    const active = draggingId === id;
-    const hovered = hoveredId === id;
-    const inspectorId =
-      id === RICH_STACK_MARKER_ID
-        ? "text-group"
-        : id.startsWith(RICH_LINE_MARKER_PREFIX)
-          ? `line-${id.slice(RICH_LINE_MARKER_PREFIX.length)}`
-          : visuals.some((visual) => visual.id === id)
-            ? `visual-${id}`
-            : blocks.some((block) => block.id === id)
-              ? `block-${id}`
-              : null;
-    return (
-      <div
-        onPointerDown={(event) => {
-          if (inspectorId) selectObject(inspectorId);
-          handlePointerDown(event, id);
-        }}
-        onPointerEnter={() => setHoveredId(id)}
-        onPointerLeave={() =>
-          setHoveredId((current) => (current === id ? null : current))
-        }
-        className={`absolute [transform:translate(-50%,_-50%)] w-7 h-7 grid place-items-center pointer-events-auto [touch-action:none] ${active ? "cursor-grabbing" : "cursor-grab"}`}
-        style={{
-          left: `${x}%`,
-          top: `${y}%`,
-        }}
-      >
-        <span
-          className={`rounded-[50%] box-border [transition:all_100ms_ease] ${active ? "w-3" : hovered ? "w-2.5" : "w-[7px]"} ${active ? "h-3" : hovered ? "h-2.5" : "h-[7px]"} ${active ? "bg-[rgba(255,255,255,.92)]" : hovered ? "bg-[rgba(255,255,255,.48)]" : "bg-[rgba(255,255,255,.2)]"} ${active ? "[box-shadow:0_0_0_3px_rgba(0,0,0,.32),_0_0_8px_rgba(255,255,255,.38)]" : "[box-shadow:0_1px_4px_rgba(0,0,0,.55)]"} ${active || hovered ? "opacity-[1]" : "opacity-[0.62]"}`}
-          style={{
-            border: `1px solid rgba(255,255,255,${active ? 0.95 : hovered ? 0.78 : 0.5})`,
-          }}
-        />
-      </div>
-    );
-  }
-  if (
-    blocks.length === 0 &&
-    visuals.length === 0 &&
-    !visualPosition &&
-    !stackPositioned &&
-    freeLines.length === 0
-  )
-    return null;
   return (
     <div
       ref={containerRef}
-      onPointerMove={handlePointerMove}
-      onPointerUp={handlePointerUp}
-      onPointerCancel={handlePointerUp}
-      className={`absolute inset-0 ${draggingId ? "pointer-events-auto" : "pointer-events-none"}`}
+      className="absolute inset-0 pointer-events-none"
       style={{
         width,
         height,
       }}
     >
-      {visualPosition ? (
-        <DragHandle
-          id={VISUAL_MARKER_ID}
-          x={visualPosition.x}
-          y={visualPosition.y}
+      {marker ? (
+        // the drag area: the whole frame except the player controls at the bottom
+        <div
+          onPointerDown={handlePointerDown}
+          onPointerMove={handlePointerMove}
+          onPointerUp={handlePointerUp}
+          onPointerCancel={handlePointerUp}
+          className={`absolute inset-x-0 top-0 bottom-16 pointer-events-auto [touch-action:none] ${draggingId ? "cursor-grabbing" : "cursor-grab"}`}
         />
       ) : null}
-      {visuals.map((visual) => (
-        <DragHandle key={visual.id} id={visual.id} x={visual.x} y={visual.y} />
-      ))}
-      {stackPositioned ? (
-        <DragHandle
-          id={RICH_STACK_MARKER_ID}
-          x={richHeadlineX ?? 50}
-          y={richHeadlineY ?? 50}
-        />
-      ) : null}
-      {freeLines.map(({ line, index }) => (
-        <DragHandle
-          key={`${RICH_LINE_MARKER_PREFIX}${index}`}
-          id={`${RICH_LINE_MARKER_PREFIX}${index}`}
-          x={line.x!}
-          y={line.y!}
-        />
-      ))}
-      {blocks.map((block) => (
-        <DragHandle key={block.id} id={block.id} x={block.x} y={block.y} />
-      ))}
-
       {draggingId && guides.x !== undefined ? (
         <div
           className="absolute bg-editor-accent pointer-events-none [z-index:5] top-0 bottom-0 w-[1px]"
