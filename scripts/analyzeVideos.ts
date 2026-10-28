@@ -1,6 +1,7 @@
+import { GoogleGenAI } from "@google/genai";
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
-import { GoogleGenAI } from "@google/genai";
+import { vocabulary } from "../src/knowledge/vocabulary";
 
 // Usage: npm run videos:analyze [-- --force] [-- --only <videoId>]
 //
@@ -29,14 +30,14 @@ if (!apiKey) {
   console.error("Missing GEMINI_API_KEY in .env.local");
   process.exit(1);
 }
-const model = process.env.GEMINI_MODEL ?? "gemini-3.8-flash";
+const model = process.env.GEMINI_MODEL ?? "gemini-pro-latest";
 const retryWaitsMs = [60000, 120000, 300000, 600000]; // overloaded: wait, then try again
 const force = process.argv.includes("--force");
 const only = argValue("--only");
 
 const ai = new GoogleGenAI({ apiKey });
 const prompt = readPrompt();
-const roles = readRoles(prompt);
+const roles: readonly string[] = vocabulary.role;
 const links = readLinks();
 mkdirSync(outDir, { recursive: true });
 
@@ -45,8 +46,15 @@ const failed: string[] = [];
 for (const { id, url } of links) {
   if (only && id !== only) continue;
   const file = join(outDir, `${id}.json`);
-  const previous = existsSync(file) ? JSON.parse(readFileSync(file, "utf8")) : null;
-  if (!force && previous?.manual?.promptVersion === PROMPT_VERSION && previous?.manual?.model === model) continue;
+  const previous = existsSync(file)
+    ? JSON.parse(readFileSync(file, "utf8"))
+    : null;
+  if (
+    !force &&
+    previous?.manual?.promptVersion === PROMPT_VERSION &&
+    previous?.manual?.model === model
+  )
+    continue;
 
   console.log(`${id}: analysing (usually 1–2 min)...`);
   try {
@@ -59,12 +67,17 @@ for (const { id, url } of links) {
       model,
       promptVersion: PROMPT_VERSION,
     };
-    writeFileSync(file, JSON.stringify({ ...analysis, url, manual }, null, 2) + "\n");
+    writeFileSync(
+      file,
+      JSON.stringify({ ...analysis, url, manual }, null, 2) + "\n",
+    );
     done += 1;
     console.log("  ok");
   } catch (error) {
     if (error instanceof DailyQuotaError) {
-      console.log(`\nDaily quota of ${model} used up. Run the same command again tomorrow: finished videos are skipped.`);
+      console.log(
+        `\nDaily quota of ${model} used up. Run the same command again tomorrow: finished videos are skipped.`,
+      );
       break;
     }
     failed.push(`${id}: ${(error as Error).message.slice(0, 300)}`);
@@ -82,24 +95,41 @@ async function analyse(url: string): Promise<Record<string, unknown>> {
   for (let attempt = 0; ; attempt++) {
     try {
       const started = Date.now();
-      const ticker = setInterval(() => console.log(`    still waiting (${Math.round((Date.now() - started) / 1000)} s)...`), 30000);
-      const response = await ai.models.generateContent({
-        model,
-        contents: [
-          {
-            role: "user",
-            parts: [
-              { fileData: { fileUri: url, mimeType: "video/*" } },
-              { text: prompt.replace("<URL>", url) },
-            ],
+      const ticker = setInterval(
+        () =>
+          console.log(
+            `    still waiting (${Math.round((Date.now() - started) / 1000)} s)...`,
+          ),
+        30000,
+      );
+      const response = await ai.models
+        .generateContent({
+          model,
+          contents: [
+            {
+              role: "user",
+              parts: [
+                { fileData: { fileUri: url, mimeType: "video/*" } },
+                { text: prompt.replace("<URL>", url) },
+              ],
+            },
+          ],
+          config: {
+            responseMimeType: "application/json",
+            temperature: 0.2,
+            httpOptions: { timeout: requestTimeoutMs },
           },
-        ],
-        config: { responseMimeType: "application/json", temperature: 0.2, httpOptions: { timeout: requestTimeoutMs } },
-      }).finally(() => clearInterval(ticker));
+        })
+        .finally(() => clearInterval(ticker));
       const text = response.text ?? "";
       const analysis = JSON.parse(text.replace(/^```(json)?\s*|\s*```$/g, ""));
-      const wrongRoles = (analysis.beats ?? []).map((beat: { role?: string }) => beat.role).filter((role: string) => !roles.includes(role));
-      if (wrongRoles.length) throw new WrongRoleError(`roles not in ROLES: ${wrongRoles.join(", ")}`);
+      const wrongRoles = (analysis.beats ?? [])
+        .map((beat: { role?: string }) => beat.role)
+        .filter((role: string) => !roles.includes(role));
+      if (wrongRoles.length)
+        throw new WrongRoleError(
+          `roles not in ROLES: ${wrongRoles.join(", ")}`,
+        );
       return analysis;
     } catch (error) {
       const message = (error as Error).message;
@@ -124,14 +154,9 @@ function readPrompt(): string {
   const md = readFileSync(promptFile, "utf8").replace(/\r\n/g, "\n");
   const section = md.slice(md.indexOf("## 1 promptas"));
   const match = section.match(/```\n([\s\S]*?)```/);
-  if (!match) throw new Error(`"1 promptas" code block not found in ${promptFile}`);
+  if (!match)
+    throw new Error(`"1 promptas" code block not found in ${promptFile}`);
   return match[1];
-}
-
-// role tokens from the "ROLES" list of the prompt, e.g. "- hook: ..."
-function readRoles(text: string): string[] {
-  const section = text.slice(text.indexOf("ROLES"), text.indexOf("HOOK TYPES"));
-  return [...section.matchAll(/^- ([a-z-]+):/gm)].map((match) => match[1]).concat("other");
 }
 
 function readLinks(): { id: string; url: string }[] {
@@ -143,7 +168,12 @@ function readLinks(): { id: string; url: string }[] {
     const id = videoId(url);
     if (seen.has(id)) continue;
     seen.add(id);
-    out.push({ id, url: url.includes("youtube.com/shorts/") ? `https://www.youtube.com/shorts/${id}` : url });
+    out.push({
+      id,
+      url: url.includes("youtube.com/shorts/")
+        ? `https://www.youtube.com/shorts/${id}`
+        : url,
+    });
   }
   return out;
 }
@@ -161,7 +191,8 @@ function loadEnvLocal() {
   if (!existsSync(".env.local")) return;
   for (const line of readFileSync(".env.local", "utf8").split(/\r?\n/)) {
     const m = line.match(/^\s*([A-Z0-9_]+)\s*=\s*(.*)\s*$/);
-    if (m && !process.env[m[1]]) process.env[m[1]] = m[2].replace(/^["']|["']$/g, "");
+    if (m && !process.env[m[1]])
+      process.env[m[1]] = m[2].replace(/^["']|["']$/g, "");
   }
 }
 
