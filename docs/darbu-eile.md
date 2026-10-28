@@ -20,7 +20,7 @@ Kodėl pirmas: be jo neaišku, ko TikMaker trūksta, ir žinių bazė neturėtų
   Patikra: `npx tsc --noEmit` be naujų klaidų; storyboard lauke „Role“ 14 reikšmių.
 - [x] **A3. Ką moka TikMaker – vienoje vietoje.** Naujas `src/schema/capabilities.ts`: visi TikMaker sąrašai (fonai, atsiradimo / išėjimo animacijos, Ken Burns, perėjimai, išdėstymai, teksto dydžiai, šriftai, scenų tipai, vaizdinių tipai). `scene.ts` ir `visual.ts` juos importuoja iš čia.
   Patikra: `npx tsc --noEmit`, `npm test`, redaktorius veikia kaip anksčiau.
-- [ ] **A4. Vertimo lentelė ir spragų ataskaita – ATIDĖTA.** Kol kas spragos surašytos ranka (B dalis). Lentelės juodraštis jau yra (`knowledge/shared/analysis-to-tikmaker.json`, nenaudojamas); prireiks C3, kai žinių bazę versim į TikMaker žodžius. Ataskaitos skripto kodas – Claude pokalbyje, kai prireiks.
+- A4 (vertimo lentelė ir spragų ataskaita) perkeltas į „G. Po baigiamojo“.
 
 ## B. TikMaker spragos (iš analizės)
 
@@ -62,3 +62,8 @@ Išsamiau: `docs/mano-planas.md` 1 žingsnis (schemos), `docs/bd/sprendimai.md` 
 ## F. Diegimas (BD 5 skyrius)
 
 Desktop programa (Electron): langas + vietinis serveris, duomenys naudotojo aplanke (`TIKMAKER_ROOT`), atvaizdavimas per `@remotion/renderer` vietoj `npx remotion`, diegimo failas (`electron-builder`), DI raktai nustatymuose.
+
+## G. Po baigiamojo
+
+- [ ] **Automatinė analizė programoje.** Naudotojas įkelia video nuorodas → analizė (Gemini), statistika ir žinių bazės papildymas paleidžiami automatiškai.
+- [ ] **Vertimo lentelė ir spragų ataskaita** (buvęs A4). Reikalinga automatinei analizei: naujuose video atsiradus tam, ko TikMaker nemoka, ataskaita tai parodo. Lentelės juodraštis: `knowledge/shared/analysis-to-tikmaker.json`; ataskaitos skripto (`npm run tikmaker:gaps`) kodas – Claude pokalbyje 2026-10-28.
