@@ -250,16 +250,16 @@
   },
   "emphasisStyle": {
     "color": {
-      "status": "yes",
-      "tikmaker": "headline highlights"
+      "status": "no",
+      "todo": "B2"
     },
     "box": {
       "status": "partly",
-      "tikmaker": "headline pill (whole line)"
+      "tikmaker": "headline highlights pill"
     },
     "pill": {
       "status": "yes",
-      "tikmaker": "headline pill"
+      "tikmaker": "headline highlights (the only highlight look now)"
     },
     "bigger": {
       "status": "yes",
