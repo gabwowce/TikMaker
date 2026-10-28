@@ -34,7 +34,7 @@ Po kiekvieno punkto: papildyti `capabilities.ts` ir vertimo lentelę, paleisti `
 | - [ ] B2 | Žodžio paryškinimas pusjuodžiu (`highlights` stilius: spalva / pusjuodis / pill) | pusjuodis 11 % teksto blokų | mažas |
 | - [ ] B3 | Video fonas (`custom` fonas + `video`) | video fone 20 % scenų | mažas |
 | - [ ] B4 | Efektai elementams: šešėlis / švytėjimas / kontūras | šešėlis 58 %, švytėjimas 13 %, kontūras 12 % efektų | vidutinis |
-| - [ ] B5 | Kalbančios galvos komponentas: apskritimo rėmelis + padėtys (visas ekranas, pusė viršuje / apačioje, apskritimas 4 kampuose) | talking-head 4 % elementų | mažas–vidutinis |
+| - [ ] B5 | Kalbančios galvos komponentas: apskritimo rėmelis + padėtys (visas ekranas, pusė viršuje / apačioje, apskritimas 4 kampuose) | talking-head 4 % elementų; agentas siūlo, kai idėjoje pažymėta „Su veidu“ | mažas–vidutinis |
 | - [ ] B6 | „Draw-on“: linijos ir apibraukimai nusipiešia | draw-on 3 % atsiradimų (diagramos) | mažas |
 | - [ ] B7 | Subtitrų stiliai (šriftas, spalva, kontūras) | subtitrai 67 % video | mažas |
 | - [ ] B8 | `tool-logo` → bendras „ikona / logotipas“ su bibliotekos kategorijomis | ikonos 13 % elementų | mažas |
