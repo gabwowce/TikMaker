@@ -1,5 +1,7 @@
 import { z } from "zod";
+import { analysisVocabulary } from "../knowledge/analysisVocabulary";
 import { visualConfigSchema } from "./visual";
+
 export const backgroundIdSchema = z.enum([
   "solid-dark",
   "soft-grid",
@@ -9,18 +11,9 @@ export const backgroundIdSchema = z.enum([
   "dot-grid",
   "spotlight",
 ]);
-export const scenePlanRoleSchema = z.enum([
-  "hook",
-  "problem",
-  "reveal",
-  "benefit",
-  "mechanism",
-  "setup",
-  "demo",
-  "proof",
-  "payoff",
-  "cta",
-]);
+export const scenePlanRoleSchema = z.enum(
+  analysisVocabulary.role as [string, ...string[]],
+);
 export const scenePlanSchema = z.object({
   role: scenePlanRoleSchema,
   purpose: z.string().optional(),
