@@ -20,8 +20,7 @@ Kodėl pirmas: be jo neaišku, ko TikMaker trūksta, ir žinių bazė neturėtų
   Patikra: `npx tsc --noEmit` be naujų klaidų; storyboard lauke „Role“ 14 reikšmių.
 - [x] **A3. Ką moka TikMaker – vienoje vietoje.** Naujas `src/schema/capabilities.ts`: visi TikMaker sąrašai (fonai, atsiradimo / išėjimo animacijos, Ken Burns, perėjimai, išdėstymai, teksto dydžiai, šriftai, scenų tipai, vaizdinių tipai). `scene.ts` ir `visual.ts` juos importuoja iš čia.
   Patikra: `npx tsc --noEmit`, `npm test`, redaktorius veikia kaip anksčiau.
-- [ ] **A4. Vertimo lentelė ir spragų ataskaita.** `knowledge/shared/analysis-to-tikmaker.json` (kiekvienam analizės žodžiui – TikMaker atitikmuo arba `null`) + skriptas `npm run tikmaker:gaps` → `docs/bd/tikmaker-spragos.md` (surikiuota pagal dažnį, ✅ / ❌). Skriptas nepraleidžia, jei žodyne yra žodis be vertimo.
-  Patikra: ataskaitoje matosi tos pačios spragos kaip B sąraše.
+- [ ] **A4. Vertimo lentelė ir spragų ataskaita – ATIDĖTA.** Kol kas spragos surašytos ranka (B dalis). Lentelės juodraštis jau yra (`knowledge/shared/analysis-to-tikmaker.json`, nenaudojamas); prireiks C3, kai žinių bazę versim į TikMaker žodžius. Ataskaitos skripto kodas – Claude pokalbyje, kai prireiks.
 
 ## B. TikMaker spragos (iš analizės)
 
