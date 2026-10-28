@@ -1,9 +1,9 @@
 import { readdirSync, readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import {
-  vocabulary as tokens,
-  type VocabularyField as TokenField,
-} from "../src/knowledge/vocabulary.js";
+  analysisVocabulary as tokens,
+  type AnalysisVocabularyField as TokenField,
+} from "../src/knowledge/analysisVocabulary";
 
 // Usage: npm run analysis:stats
 //

@@ -1,8 +1,7 @@
 import { GoogleGenAI } from "@google/genai";
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
-import { vocabulary } from "../src/knowledge/vocabulary";
-
+import { analysisVocabulary } from "../src/knowledge/analysisVocabulary";
 // Usage: npm run videos:analyze [-- --force] [-- --only <videoId>]
 //
 // Stage 1 of docs/bd/analizes-planas.md: sends every link in
@@ -37,7 +36,7 @@ const only = argValue("--only");
 
 const ai = new GoogleGenAI({ apiKey });
 const prompt = readPrompt();
-const roles: readonly string[] = vocabulary.role;
+const roles: readonly string[] = analysisVocabulary.role;
 const links = readLinks();
 mkdirSync(outDir, { recursive: true });
 
