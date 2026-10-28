@@ -42,14 +42,15 @@ describe("parseProject", () => {
                 id: "v",
                 visual: { type: "prop", asset: "key" },
                 x: 50,
-                y: -10,
+                y: -150,
               },
             ],
           },
         },
       ],
     });
-    expect(project.scenes[0].content.visuals?.[0].y).toBeGreaterThanOrEqual(0);
+    // a visual may sit off the frame, but only down to -100 %
+    expect(project.scenes[0].content.visuals?.[0].y).toBe(-100);
   });
   it("splits corner-props into two independently controllable layers", () => {
     const project = parseProject({

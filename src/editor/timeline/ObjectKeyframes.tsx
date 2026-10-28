@@ -1,4 +1,5 @@
 import { Button, Fieldset, TextInput } from "@mantine/core";
+import { VISUAL_POSITION_MAX, VISUAL_POSITION_MIN } from "../../schema/capabilities";
 import type { PositionedVisualEntry } from "../../schema/scene";
 import {
   formatDuration,
@@ -85,6 +86,8 @@ export function VisualPoseFields({
         scaleMin={0.1}
         scaleMax={4}
         scaleLabel="Scale"
+        positionMin={VISUAL_POSITION_MIN}
+        positionMax={VISUAL_POSITION_MAX}
         onChange={apply}
       />
     </>

@@ -1,4 +1,5 @@
 import { videoProjectSchema, type VideoProject } from "../schema/project";
+import { VISUAL_POSITION_MAX, VISUAL_POSITION_MIN } from "../schema/capabilities";
 import type {
   PositionedVisualEntry,
   RichHeadlineLine,
@@ -298,10 +299,17 @@ function clampPositions(json: unknown): unknown {
     scenes?: unknown[];
   };
   if (!Array.isArray(project.scenes)) return json;
-  function clamp(value: unknown) {
+  function clamp(value: unknown, min = 0, max = 100) {
     return typeof value === "number" && Number.isFinite(value)
-      ? Math.min(100, Math.max(0, value))
+      ? Math.min(max, Math.max(min, value))
       : value;
+  }
+  function clampVisual(entry: unknown) {
+    if (!entry || typeof entry !== "object") return entry;
+    const positioned = entry as { x?: unknown; y?: unknown };
+    positioned.x = clamp(positioned.x, VISUAL_POSITION_MIN, VISUAL_POSITION_MAX);
+    positioned.y = clamp(positioned.y, VISUAL_POSITION_MIN, VISUAL_POSITION_MAX);
+    return entry;
   }
   function clampEntry(entry: unknown) {
     if (!entry || typeof entry !== "object") return entry;
@@ -324,11 +332,8 @@ function clampPositions(json: unknown): unknown {
       }
     )?.content;
     if (!content) continue;
-    for (const list of [
-      content.visuals,
-      content.blocks,
-      content.richHeadline,
-    ]) {
+    if (Array.isArray(content.visuals)) content.visuals.forEach(clampVisual);
+    for (const list of [content.blocks, content.richHeadline]) {
       if (Array.isArray(list)) list.forEach(clampEntry);
     }
   }

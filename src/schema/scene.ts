@@ -14,6 +14,8 @@ import {
   sceneTypeSchema,
   textCaseSchema,
   transitionPresetSchema,
+  VISUAL_POSITION_MAX,
+  VISUAL_POSITION_MIN,
 } from "./capabilities";
 import { visualConfigSchema } from "./visual";
 
@@ -100,8 +102,8 @@ const richHeadlineLineSchema = z.object({
 const positionedVisualSchema = z.object({
   id: z.string(),
   visual: visualConfigSchema,
-  x: z.number().min(0).max(100),
-  y: z.number().min(0).max(100),
+  x: z.number().min(VISUAL_POSITION_MIN).max(VISUAL_POSITION_MAX),
+  y: z.number().min(VISUAL_POSITION_MIN).max(VISUAL_POSITION_MAX),
   scale: z.number().positive().optional(),
   entrance: entrancePresetSchema.optional(),
   entranceDuration: z.number().min(1).max(60).optional(),
@@ -134,8 +136,8 @@ const positionedVisualSchema = z.object({
       z.object({
         id: z.string(),
         frame: z.number().min(0),
-        x: z.number().min(0).max(100).optional(),
-        y: z.number().min(0).max(100).optional(),
+        x: z.number().min(VISUAL_POSITION_MIN).max(VISUAL_POSITION_MAX).optional(),
+        y: z.number().min(VISUAL_POSITION_MIN).max(VISUAL_POSITION_MAX).optional(),
         scale: z.number().positive().optional(),
       }),
     )

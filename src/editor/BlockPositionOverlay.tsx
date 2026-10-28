@@ -9,6 +9,7 @@ import type {
   PositionedVisualEntry,
   RichHeadlineLine,
 } from "../schema/scene";
+import { VISUAL_POSITION_MAX, VISUAL_POSITION_MIN } from "../schema/capabilities";
 import { safeAreaPercent } from "../video/typography/tokens";
 import { useProjectStore } from "./state/projectStore";
 import { objectIdOf, sceneIdOf } from "./timeline/selectionId";
@@ -182,16 +183,8 @@ export function BlockPositionOverlay({
     }
     if (markerId === RICH_STACK_MARKER_ID) {
       updateSceneContent(selectedSceneId, {
-        richHeadlineX: clampPercent(
-          rawX,
-          safeAreaPercent.left,
-          safeAreaPercent.right,
-        ),
-        richHeadlineY: clampPercent(
-          rawY,
-          safeAreaPercent.top,
-          safeAreaPercent.bottom,
-        ),
+        richHeadlineX: clampPercent(rawX),
+        richHeadlineY: clampPercent(rawY),
       });
       return;
     }
@@ -203,16 +196,8 @@ export function BlockPositionOverlay({
           index === lineIndex
             ? {
                 ...line,
-                x: clampPercent(
-                  rawX,
-                  safeAreaPercent.left,
-                  safeAreaPercent.right,
-                ),
-                y: clampPercent(
-                  rawY,
-                  safeAreaPercent.top,
-                  safeAreaPercent.bottom,
-                ),
+                x: clampPercent(rawX),
+                y: clampPercent(rawY),
               }
             : line,
         ),
@@ -220,8 +205,8 @@ export function BlockPositionOverlay({
       return;
     }
     if (visuals.some((visual) => visual.id === markerId)) {
-      const x = clampPercent(rawX);
-      const y = clampPercent(rawY);
+      const x = clampPercent(rawX, VISUAL_POSITION_MIN, VISUAL_POSITION_MAX);
+      const y = clampPercent(rawY, VISUAL_POSITION_MIN, VISUAL_POSITION_MAX);
       updateSceneVisuals(
         selectedSceneId,
         visuals.map((visual) =>
@@ -230,8 +215,8 @@ export function BlockPositionOverlay({
       );
       return;
     }
-    const x = clampPercent(rawX, safeAreaPercent.left, safeAreaPercent.right);
-    const y = clampPercent(rawY, safeAreaPercent.top, safeAreaPercent.bottom);
+    const x = clampPercent(rawX);
+    const y = clampPercent(rawY);
     updateSceneBlocks(
       selectedSceneId,
       blocks.map((block) =>

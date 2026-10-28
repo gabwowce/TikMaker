@@ -109,6 +109,10 @@ export const sceneTypeSchema = z.enum([
   "comparison",
   "steps",
 ]);
+// Where a visual's centre may be, in % of the frame. Beyond 0–100 so a picture
+// can be pushed partly or fully off the frame; text stays inside 0–100.
+export const VISUAL_POSITION_MIN = -100;
+export const VISUAL_POSITION_MAX = 200;
 export const blockTypeSchema = z.enum(["text", "badge"]);
 export const screenAspectSchema = z.enum(["16:9", "16:10", "4:3", "1:1", "9:16"]);
 

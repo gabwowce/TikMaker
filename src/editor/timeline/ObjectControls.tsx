@@ -158,6 +158,9 @@ export type PositionFieldsProps = {
   scaleMin: number;
   scaleMax: number;
   scaleLabel: string;
+  // x / y range in %; visuals may go off the frame (capabilities.ts)
+  positionMin?: number;
+  positionMax?: number;
   onChange: (patch: { x?: number; y?: number; scale?: number }) => void;
 };
 
@@ -168,6 +171,8 @@ export function PositionFields({
   scaleMin,
   scaleMax,
   scaleLabel,
+  positionMin = 0,
+  positionMax = 100,
   onChange,
 }: PositionFieldsProps) {
   return (
@@ -175,8 +180,8 @@ export function PositionFields({
       <SliderField
         label="X"
         value={x}
-        min={0}
-        max={100}
+        min={positionMin}
+        max={positionMax}
         step={0.5}
         suffix="%"
         onChange={(value) => onChange({ x: value })}
@@ -184,8 +189,8 @@ export function PositionFields({
       <SliderField
         label="Y"
         value={y}
-        min={0}
-        max={100}
+        min={positionMin}
+        max={positionMax}
         step={0.5}
         suffix="%"
         onChange={(value) => onChange({ y: value })}
