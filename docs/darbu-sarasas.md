@@ -1,5 +1,7 @@
 # Darbų sąrašas
 
+> Eilė „ką daryti toliau“: `docs/darbu-eile.md`. Šis failas – fonui.
+
 ## Baigiamojo darbo Aprašas
 
 Karkasas: **`docs/bd/BD-aprasas-karkasas.docx`** (tavo praktikos ataskaitos stiliai, metodinių EI V2-30 struktūra,

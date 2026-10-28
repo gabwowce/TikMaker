@@ -1,5 +1,7 @@
 # Mano agento programavimo planas (mokymuisi)
 
+> Eilė „ką daryti toliau“: `docs/darbu-eile.md`. Šis failas – fonui.
+
 Tikslas: parašyti agentą **pačiai** ir suprasti kiekvieną eilutę, kad gynime
 galėčiau paaiškinti ir pakeisti bet kurią vietą.
 
