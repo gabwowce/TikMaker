@@ -185,6 +185,14 @@ export const useProjectStore = create<ProjectStore>()(
       },
     }));
   },
+  updateProjectCaptions(patch) {
+    set((state) => ({
+      project: {
+        ...state.project,
+        captions: { ...state.project.captions, ...patch },
+      },
+    }));
+  },
   openProject(project) {
     set({ project, selectedSceneId: project.scenes[0]?.id ?? null });
     clearHistory();

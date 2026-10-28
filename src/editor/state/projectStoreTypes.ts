@@ -45,6 +45,9 @@ export type ProjectStore = {
   updateProjectStoryPlan: (
     patch: Partial<NonNullable<VideoProject["storyPlan"]>>,
   ) => void;
+  updateProjectCaptions: (
+    patch: Partial<NonNullable<VideoProject["captions"]>>,
+  ) => void;
   openProject: (project: VideoProject) => void;
   addScene: (type: SceneType) => void;
   insertScene: (scene: Scene) => void;

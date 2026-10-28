@@ -93,6 +93,7 @@ export function VoiceoverGenerator({ sceneId, text }: VoiceoverGeneratorProps) {
   const addAudioClip = useProjectStore((s) => s.addAudioClip);
   const updateAudioClip = useProjectStore((s) => s.updateAudioClip);
   const selectObject = useProjectStore((s) => s.selectObject);
+  const updateProjectCaptions = useProjectStore((s) => s.updateProjectCaptions);
   const sceneFrom =
     computeSceneTimings(project).find((entry) => entry.scene.id === sceneId)
       ?.from ?? 0;
@@ -131,6 +132,15 @@ export function VoiceoverGenerator({ sceneId, text }: VoiceoverGeneratorProps) {
       >
         {generating ? "Generating…" : "🎙 Generate voiceover"}
       </Button>
+      <label className="flex items-center gap-1.5 mt-2 text-[10px] text-editor-muted">
+        <Checkbox
+          checked={project.captions?.enabled !== false}
+          onChange={(event) =>
+            updateProjectCaptions({ enabled: event.currentTarget.checked })
+          }
+        />
+        Show captions (whole video)
+      </label>
       {generate.error ? (
         <div className="text-[10px] text-[#ff8a65] mt-1.5 whitespace-pre-wrap">
           {generate.error.message}

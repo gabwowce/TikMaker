@@ -1,16 +1,22 @@
 import { z } from "zod";
 import { analysisVocabulary } from "../knowledge/analysisVocabulary";
+import {
+  backgroundGridSchema,
+  backgroundIdSchema,
+  blockTypeSchema,
+  entrancePresetSchema,
+  exitPresetSchema,
+  kenBurnsPresetSchema,
+  layoutIdSchema,
+  richTextFontSchema,
+  richTextSizeSchema,
+  richTextSplitBySchema,
+  sceneTypeSchema,
+  textCaseSchema,
+  transitionPresetSchema,
+} from "./capabilities";
 import { visualConfigSchema } from "./visual";
 
-export const backgroundIdSchema = z.enum([
-  "solid-dark",
-  "soft-grid",
-  "orange-glow",
-  "perspective-data-grid",
-  "floating-glass-layers",
-  "dot-grid",
-  "spotlight",
-]);
 export const scenePlanRoleSchema = z.enum(
   analysisVocabulary.role as [string, ...string[]],
 );
@@ -29,7 +35,7 @@ export const backgroundFillSchema = z.discriminatedUnion("kind", [
   }),
   z.object({ kind: z.literal("image"), src: z.string() }),
 ]);
-export const backgroundGridSchema = z.enum(["none", "lines", "dots"]);
+
 export const customBackgroundSchema = z.object({
   type: z.literal("custom"),
   fill: backgroundFillSchema,
@@ -39,100 +45,7 @@ export const sceneBackgroundSchema = z.union([
   backgroundIdSchema,
   customBackgroundSchema,
 ]);
-export const entrancePresetSchema = z.enum([
-  "none",
-  "fade",
-  "slideUp",
-  "slideDown",
-  "slideLeft",
-  "slideRight",
-  "scaleIn",
-  "pop",
-  "zoomSettleRight",
-  "zoomSettleLeft",
-  "zoomSettleTop",
-  "zoomSettleBottom",
-  "zoomIn",
-  "blurIn",
-  "spinIn",
-  "flipIn",
-  "bounceIn",
-  "dropIn",
-  "rollIn",
-]);
-export const exitPresetSchema = z.enum([
-  "none",
-  "fade",
-  "slideUp",
-  "slideDown",
-  "slideLeft",
-  "slideRight",
-  "scaleOut",
-  "burstOut",
-  "zoomOut",
-  "blurOut",
-  "spinOut",
-  "flipOut",
-  "dropOut",
-  "rollOut",
-]);
-export const kenBurnsPresetSchema = z.enum([
-  "zoomIn",
-  "zoomOut",
-  "panLeft",
-  "panRight",
-  "panUp",
-  "panDown",
-  "float",
-  "rotateCW",
-  "rotateCCW",
-]);
-export const layoutIdSchema = z.enum([
-  "visual-hero",
-  "visual-top",
-  "visual-bottom",
-  "icon-corner-tr",
-  "icon-corner-tl",
-  "icon-corner-br",
-  "icon-corner-bl",
-  "text-only",
-]);
-export const transitionPresetSchema = z.enum([
-  "cut",
-  "push",
-  "slideLeft",
-  "slideRight",
-  "slideUp",
-  "slideDown",
-]);
-export const richTextSizeSchema = z.enum([
-  "hero",
-  "headline",
-  "title",
-  "bodyLarge",
-  "body",
-  "label",
-]);
-export const richTextFontSchema = z.enum([
-  "tanker",
-  "clash",
-  "clashMedium",
-  "clashSemibold",
-  "clashBold",
-  "panchangMedium",
-  "panchangSemibold",
-]);
-export const textCaseSchema = z.enum(["upper", "lower", "none"]);
-export const richTextSplitBySchema = z.enum(["word", "letter", "line"]);
-export const sceneTypeSchema = z.enum([
-  "hook-centered",
-  "hook-visual",
-  "visual-explainer",
-  "screen-demo",
-  "takeaway",
-  "comparison",
-  "steps",
-]);
+
 const sideContentSchema = z.object({
   label: z.string().optional(),
   headline: z.string().optional(),
@@ -229,7 +142,7 @@ const positionedVisualSchema = z.object({
     .max(20)
     .optional(),
 });
-export const blockTypeSchema = z.enum(["text", "badge"]);
+
 const blockSchema = z.object({
   id: z.string(),
   type: blockTypeSchema,
