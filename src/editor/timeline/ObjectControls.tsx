@@ -1,4 +1,5 @@
 import { ActionIcon, Button, Fieldset, Slider, TextInput } from "@mantine/core";
+import { POSITION_MAX, POSITION_MIN } from "../../schema/capabilities";
 import { type ReactNode } from "react";
 import { frameStep, framesToSeconds } from "../../utils/timecode";
 import { SfxSelect } from "../inspector/SfxSelect";
@@ -158,9 +159,6 @@ export type PositionFieldsProps = {
   scaleMin: number;
   scaleMax: number;
   scaleLabel: string;
-  // x / y range in %; visuals may go off the frame (capabilities.ts)
-  positionMin?: number;
-  positionMax?: number;
   onChange: (patch: { x?: number; y?: number; scale?: number }) => void;
 };
 
@@ -171,8 +169,6 @@ export function PositionFields({
   scaleMin,
   scaleMax,
   scaleLabel,
-  positionMin = 0,
-  positionMax = 100,
   onChange,
 }: PositionFieldsProps) {
   return (
@@ -180,8 +176,8 @@ export function PositionFields({
       <SliderField
         label="X"
         value={x}
-        min={positionMin}
-        max={positionMax}
+        min={POSITION_MIN}
+        max={POSITION_MAX}
         step={0.5}
         suffix="%"
         onChange={(value) => onChange({ x: value })}
@@ -189,8 +185,8 @@ export function PositionFields({
       <SliderField
         label="Y"
         value={y}
-        min={positionMin}
-        max={positionMax}
+        min={POSITION_MIN}
+        max={POSITION_MAX}
         step={0.5}
         suffix="%"
         onChange={(value) => onChange({ y: value })}

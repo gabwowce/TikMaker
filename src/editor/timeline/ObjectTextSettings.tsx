@@ -6,7 +6,11 @@ import {
   TextInput,
 } from "@mantine/core";
 import type { RichTextFont, TextCase } from "../../schema/scene";
-import { richTextSplitBySchema } from "../../schema/capabilities";
+import {
+  POSITION_MAX,
+  POSITION_MIN,
+  richTextSplitBySchema,
+} from "../../schema/capabilities";
 import { formatDuration } from "../../utils/timecode";
 import { splitSpan, splitText } from "../../video/typography/splitAnimate";
 import {
@@ -181,8 +185,8 @@ export function TextPlacementFields({
           <SliderField
             label="X"
             value={x ?? 50}
-            min={0}
-            max={100}
+            min={POSITION_MIN}
+            max={POSITION_MAX}
             step={0.5}
             suffix="%"
             onChange={(value) => onChange({ x: value })}
@@ -190,8 +194,8 @@ export function TextPlacementFields({
           <SliderField
             label="Y"
             value={y ?? 50}
-            min={0}
-            max={100}
+            min={POSITION_MIN}
+            max={POSITION_MAX}
             step={0.5}
             suffix="%"
             onChange={(value) => onChange({ y: value })}

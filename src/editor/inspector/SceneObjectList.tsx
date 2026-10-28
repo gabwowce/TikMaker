@@ -1,4 +1,5 @@
 import { Button, Slider, UnstyledButton } from "@mantine/core";
+import { POSITION_MAX, POSITION_MIN } from "../../schema/capabilities";
 import { useProjectStore } from "../state/projectStore";
 import { qualifySelection } from "../timeline/selectionId";
 
@@ -136,8 +137,8 @@ export function StackPositionFields({
           </div>
           <div className="flex items-center gap-1.5">
             <Slider
-              min={0}
-              max={100}
+              min={POSITION_MIN}
+              max={POSITION_MAX}
               step={0.5}
               value={value ?? 50}
               onChange={(value) => set(Number(value))}

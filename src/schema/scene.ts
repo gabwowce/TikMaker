@@ -14,8 +14,8 @@ import {
   sceneTypeSchema,
   textCaseSchema,
   transitionPresetSchema,
-  VISUAL_POSITION_MAX,
-  VISUAL_POSITION_MIN,
+  POSITION_MAX,
+  POSITION_MIN,
 } from "./capabilities";
 import { visualConfigSchema } from "./visual";
 
@@ -82,8 +82,8 @@ const richHeadlineLineSchema = z.object({
   pill: z.boolean().optional(),
   color: z.string().optional(),
   highlights: z.array(z.string()).optional(),
-  x: z.number().min(0).max(100).optional(),
-  y: z.number().min(0).max(100).optional(),
+  x: z.number().min(POSITION_MIN).max(POSITION_MAX).optional(),
+  y: z.number().min(POSITION_MIN).max(POSITION_MAX).optional(),
   animation: entrancePresetSchema.optional(),
   entranceDuration: z.number().min(1).max(90).optional(),
   delay: z.number().min(0).optional(),
@@ -102,8 +102,8 @@ const richHeadlineLineSchema = z.object({
 const positionedVisualSchema = z.object({
   id: z.string(),
   visual: visualConfigSchema,
-  x: z.number().min(VISUAL_POSITION_MIN).max(VISUAL_POSITION_MAX),
-  y: z.number().min(VISUAL_POSITION_MIN).max(VISUAL_POSITION_MAX),
+  x: z.number().min(POSITION_MIN).max(POSITION_MAX),
+  y: z.number().min(POSITION_MIN).max(POSITION_MAX),
   scale: z.number().positive().optional(),
   entrance: entrancePresetSchema.optional(),
   entranceDuration: z.number().min(1).max(60).optional(),
@@ -136,8 +136,8 @@ const positionedVisualSchema = z.object({
       z.object({
         id: z.string(),
         frame: z.number().min(0),
-        x: z.number().min(VISUAL_POSITION_MIN).max(VISUAL_POSITION_MAX).optional(),
-        y: z.number().min(VISUAL_POSITION_MIN).max(VISUAL_POSITION_MAX).optional(),
+        x: z.number().min(POSITION_MIN).max(POSITION_MAX).optional(),
+        y: z.number().min(POSITION_MIN).max(POSITION_MAX).optional(),
         scale: z.number().positive().optional(),
       }),
     )
@@ -149,8 +149,8 @@ const blockSchema = z.object({
   id: z.string(),
   type: blockTypeSchema,
   text: z.string(),
-  x: z.number().min(0).max(100),
-  y: z.number().min(0).max(100),
+  x: z.number().min(POSITION_MIN).max(POSITION_MAX),
+  y: z.number().min(POSITION_MIN).max(POSITION_MAX),
   size: z.number().positive().optional(),
   color: z.string().optional(),
   font: richTextFontSchema.optional(),
@@ -189,8 +189,8 @@ const baseSceneFields = {
     right: sideContentSchema.optional(),
     items: z.array(stepItemSchema).optional(),
     richHeadline: z.array(richHeadlineLineSchema).max(6).optional(),
-    richHeadlineY: z.number().min(0).max(100).optional(),
-    richHeadlineX: z.number().min(0).max(100).optional(),
+    richHeadlineY: z.number().min(POSITION_MIN).max(POSITION_MAX).optional(),
+    richHeadlineX: z.number().min(POSITION_MIN).max(POSITION_MAX).optional(),
     blocks: z.array(blockSchema).max(8).optional(),
     visuals: z.array(positionedVisualSchema).optional(),
   }),
@@ -198,8 +198,8 @@ const baseSceneFields = {
   visual: visualConfigSchema.optional(),
   visualPosition: z
     .object({
-      x: z.number().min(0).max(100),
-      y: z.number().min(0).max(100),
+      x: z.number().min(POSITION_MIN).max(POSITION_MAX),
+      y: z.number().min(POSITION_MIN).max(POSITION_MAX),
     })
     .optional(),
   visualEntrance: entrancePresetSchema.optional(),

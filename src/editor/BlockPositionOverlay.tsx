@@ -9,7 +9,7 @@ import type {
   PositionedVisualEntry,
   RichHeadlineLine,
 } from "../schema/scene";
-import { VISUAL_POSITION_MAX, VISUAL_POSITION_MIN } from "../schema/capabilities";
+import { POSITION_MAX, POSITION_MIN } from "../schema/capabilities";
 import { safeAreaPercent } from "../video/typography/tokens";
 import { useProjectStore } from "./state/projectStore";
 import { objectIdOf, sceneIdOf } from "./timeline/selectionId";
@@ -84,7 +84,7 @@ export function BlockPositionOverlay({
     },
     [endHistoryTransaction],
   );
-  function clampPercent(value: number, min = 0, max = 100): number {
+  function clampPercent(value: number, min = POSITION_MIN, max = POSITION_MAX): number {
     return Math.max(min, Math.min(max, value));
   }
   const SNAP_PX = 7;
@@ -205,8 +205,8 @@ export function BlockPositionOverlay({
       return;
     }
     if (visuals.some((visual) => visual.id === markerId)) {
-      const x = clampPercent(rawX, VISUAL_POSITION_MIN, VISUAL_POSITION_MAX);
-      const y = clampPercent(rawY, VISUAL_POSITION_MIN, VISUAL_POSITION_MAX);
+      const x = clampPercent(rawX);
+      const y = clampPercent(rawY);
       updateSceneVisuals(
         selectedSceneId,
         visuals.map((visual) =>
