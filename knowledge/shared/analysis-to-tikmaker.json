@@ -1,0 +1,461 @@
+{
+  "_about": "What TikMaker does for each word of knowledge/shared/analysis-vocabulary.json. status: yes = TikMaker has it, partly = only partly or needs the user's file, no = missing, skip = decided not to build (docs/bd/sprendimai.md). todo = item in docs/darbu-eile.md. Only fields that TikMaker has to draw are here; roles, acts, hook and CTA types are content for the knowledge base. Positions (zone) are not mapped: TikMaker places elements freely by x/y.",
+  "elementKind": {
+    "kinetic-text": {
+      "status": "yes",
+      "tikmaker": "headline lines and text blocks (entrance, splitBy word / letter)"
+    },
+    "label": {
+      "status": "yes",
+      "tikmaker": "text block type badge; visual checkpoint"
+    },
+    "photo": {
+      "status": "partly",
+      "tikmaker": "visual image (own file)",
+      "todo": "B1"
+    },
+    "illustration": {
+      "status": "partly",
+      "tikmaker": "visual image or prop (library or own file)",
+      "todo": "B1"
+    },
+    "3d-object": {
+      "status": "partly",
+      "tikmaker": "visual image (a rendered picture, no real 3D)",
+      "todo": "B1"
+    },
+    "icon": {
+      "status": "yes",
+      "tikmaker": "visual tool-logo or prop",
+      "todo": "B8"
+    },
+    "character": {
+      "status": "partly",
+      "tikmaker": "visual image (drawn character as a picture, not animated)",
+      "todo": "B1"
+    },
+    "diagram": {
+      "status": "yes",
+      "tikmaker": "visual flow / node-group / stack / grid / transform"
+    },
+    "chart-stat": {
+      "status": "yes",
+      "tikmaker": "visual stat-counter / progress"
+    },
+    "screen-recording": {
+      "status": "yes",
+      "tikmaker": "visual recording (+ browser / screen / phone frame)"
+    },
+    "screenshot": {
+      "status": "yes",
+      "tikmaker": "visual image (+ device frame)"
+    },
+    "ui-mockup": {
+      "status": "yes",
+      "tikmaker": "visual app-mockup / pricing-card / terminal / claude-cli / code-diff"
+    },
+    "stock-footage": {
+      "status": "partly",
+      "tikmaker": "visual recording (any own video file)"
+    },
+    "movie-clip": {
+      "status": "partly",
+      "tikmaker": "visual recording (any own video file)"
+    },
+    "meme": {
+      "status": "partly",
+      "tikmaker": "visual image (own file)",
+      "todo": "B1"
+    },
+    "talking-head": {
+      "status": "no",
+      "todo": "B5"
+    },
+    "video": {
+      "status": "partly",
+      "tikmaker": "visual recording (any own video file)"
+    },
+    "other": {
+      "status": "skip"
+    }
+  },
+  "motion": {
+    "static": {
+      "status": "yes",
+      "tikmaker": "entrance none"
+    },
+    "zoom-in": {
+      "status": "yes",
+      "tikmaker": "entrance zoomIn; kenBurns zoomIn"
+    },
+    "zoom-out": {
+      "status": "yes",
+      "tikmaker": "exit zoomOut; kenBurns zoomOut"
+    },
+    "pan": {
+      "status": "yes",
+      "tikmaker": "kenBurns panLeft / panRight / panUp / panDown"
+    },
+    "pop-in": {
+      "status": "yes",
+      "tikmaker": "entrance pop / scaleIn / bounceIn"
+    },
+    "slide-in": {
+      "status": "yes",
+      "tikmaker": "entrance slideUp / slideDown / slideLeft / slideRight"
+    },
+    "fade-in": {
+      "status": "yes",
+      "tikmaker": "entrance fade / blurIn"
+    },
+    "rotate": {
+      "status": "yes",
+      "tikmaker": "entrance spinIn; kenBurns rotateCW / rotateCCW"
+    },
+    "float": {
+      "status": "yes",
+      "tikmaker": "kenBurns float"
+    },
+    "shake": {
+      "status": "no"
+    },
+    "typewriter": {
+      "status": "yes",
+      "tikmaker": "text splitBy letter"
+    },
+    "draw-on": {
+      "status": "no",
+      "todo": "B6"
+    },
+    "character-animation": {
+      "status": "skip"
+    },
+    "other": {
+      "status": "skip"
+    }
+  },
+  "background": {
+    "solid": {
+      "status": "yes",
+      "tikmaker": "solid-dark; custom solid"
+    },
+    "gradient": {
+      "status": "yes",
+      "tikmaker": "custom gradient; orange-glow, spotlight"
+    },
+    "texture": {
+      "status": "no"
+    },
+    "pattern": {
+      "status": "yes",
+      "tikmaker": "soft-grid, dot-grid, perspective-data-grid; custom grid lines / dots"
+    },
+    "photo": {
+      "status": "yes",
+      "tikmaker": "custom image"
+    },
+    "video": {
+      "status": "no",
+      "todo": "B3"
+    },
+    "blurred": {
+      "status": "no"
+    },
+    "illustrated-scene": {
+      "status": "partly",
+      "tikmaker": "custom image (own picture)",
+      "todo": "B1"
+    },
+    "screen-recording": {
+      "status": "partly",
+      "tikmaker": "visual recording over the whole frame"
+    },
+    "none": {
+      "status": "yes",
+      "tikmaker": "an element fills the frame"
+    },
+    "other": {
+      "status": "skip"
+    }
+  },
+  "transition": {
+    "cut": {
+      "status": "yes",
+      "tikmaker": "cut"
+    },
+    "slide": {
+      "status": "yes",
+      "tikmaker": "slideLeft / slideRight / slideUp / slideDown, push"
+    },
+    "zoom": {
+      "status": "skip"
+    },
+    "fade": {
+      "status": "skip"
+    },
+    "whip": {
+      "status": "skip"
+    },
+    "match-cut": {
+      "status": "skip"
+    },
+    "none": {
+      "status": "yes",
+      "tikmaker": "next scene keeps the same layout, only content changes"
+    },
+    "other": {
+      "status": "skip"
+    }
+  },
+  "visualEffect": {
+    "glow": {
+      "status": "partly",
+      "tikmaker": "only as background (orange-glow), not on elements",
+      "todo": "B4"
+    },
+    "shadow": {
+      "status": "partly",
+      "tikmaker": "built into some visuals, cannot be set",
+      "todo": "B4"
+    },
+    "blur-background": {
+      "status": "no"
+    },
+    "highlight-box": {
+      "status": "yes",
+      "tikmaker": "visual highlight (box / circle)"
+    },
+    "outline": {
+      "status": "no",
+      "todo": "B4"
+    },
+    "flash": {
+      "status": "no"
+    },
+    "color-shift": {
+      "status": "no"
+    },
+    "grain": {
+      "status": "no"
+    },
+    "vignette": {
+      "status": "no"
+    },
+    "glitch": {
+      "status": "no"
+    },
+    "other": {
+      "status": "skip"
+    }
+  },
+  "emphasisStyle": {
+    "color": {
+      "status": "yes",
+      "tikmaker": "headline highlights"
+    },
+    "box": {
+      "status": "partly",
+      "tikmaker": "headline pill (whole line)"
+    },
+    "pill": {
+      "status": "yes",
+      "tikmaker": "headline pill"
+    },
+    "bigger": {
+      "status": "yes",
+      "tikmaker": "separate line with a bigger size"
+    },
+    "bold": {
+      "status": "no",
+      "todo": "B2"
+    },
+    "underline": {
+      "status": "no"
+    },
+    "glow": {
+      "status": "no",
+      "todo": "B4"
+    },
+    "outline": {
+      "status": "no",
+      "todo": "B4"
+    },
+    "none": {
+      "status": "yes",
+      "tikmaker": "plain text"
+    }
+  },
+  "textSize": {
+    "hero": {
+      "status": "yes",
+      "tikmaker": "richTextSize hero"
+    },
+    "large": {
+      "status": "yes",
+      "tikmaker": "richTextSize headline"
+    },
+    "medium": {
+      "status": "yes",
+      "tikmaker": "richTextSize title / bodyLarge"
+    },
+    "small": {
+      "status": "yes",
+      "tikmaker": "richTextSize body / label"
+    }
+  },
+  "sfxType": {
+    "whoosh": {
+      "status": "yes",
+      "tikmaker": "soft-whoosh, whoop-click"
+    },
+    "pop": {
+      "status": "yes",
+      "tikmaker": "d-pop"
+    },
+    "click": {
+      "status": "yes",
+      "tikmaker": "d-tick, d-select, check"
+    },
+    "typing": {
+      "status": "yes",
+      "tikmaker": "type-word, d-word"
+    },
+    "ding": {
+      "status": "yes",
+      "tikmaker": "d-ping, d-done"
+    },
+    "notification": {
+      "status": "yes",
+      "tikmaker": "msg-in, d-msg-in"
+    },
+    "riser": {
+      "status": "yes",
+      "tikmaker": "riser"
+    },
+    "impact": {
+      "status": "yes",
+      "tikmaker": "d-enter, d-break"
+    },
+    "bass-drop": {
+      "status": "no"
+    },
+    "glitch": {
+      "status": "no"
+    },
+    "swipe": {
+      "status": "yes",
+      "tikmaker": "paper-slide"
+    },
+    "camera-shutter": {
+      "status": "no"
+    },
+    "cash": {
+      "status": "no"
+    },
+    "record-scratch": {
+      "status": "no"
+    },
+    "reaction": {
+      "status": "no"
+    },
+    "ambient": {
+      "status": "no"
+    },
+    "musical": {
+      "status": "no"
+    },
+    "other": {
+      "status": "skip"
+    }
+  },
+  "captionStyle": {
+    "word-by-word": {
+      "status": "yes",
+      "tikmaker": "captions: 1–3 words, the spoken word as a pill",
+      "todo": "B7"
+    },
+    "phrase": {
+      "status": "partly",
+      "tikmaker": "captions: chunks of up to 3 words",
+      "todo": "B7"
+    },
+    "full-sentence": {
+      "status": "no"
+    },
+    "none": {
+      "status": "yes",
+      "tikmaker": "captions.enabled = false"
+    }
+  },
+  "continuity": {
+    "new-scene": {
+      "status": "yes",
+      "tikmaker": "next scene"
+    },
+    "same-subject-zoom": {
+      "status": "partly",
+      "tikmaker": "keyframes (scale) on one element"
+    },
+    "carry-element": {
+      "status": "yes",
+      "tikmaker": "linked visual glides into the next scene (link)"
+    },
+    "match-cut": {
+      "status": "skip"
+    },
+    "same-frame-update": {
+      "status": "yes",
+      "tikmaker": "next scene with the same layout"
+    },
+    "none": {
+      "status": "yes",
+      "tikmaker": "last scene"
+    }
+  },
+  "compositionType": {
+    "hook-text": {
+      "status": "yes",
+      "tikmaker": "layout text-only; scene type hook-centered"
+    },
+    "number-hero": {
+      "status": "yes",
+      "tikmaker": "visual stat-counter"
+    },
+    "list": {
+      "status": "yes",
+      "tikmaker": "visual checklist; scene type steps"
+    },
+    "comparison": {
+      "status": "yes",
+      "tikmaker": "scene type comparison"
+    },
+    "screen-with-text": {
+      "status": "yes",
+      "tikmaker": "layout visual-top / visual-bottom + recording"
+    },
+    "media-only": {
+      "status": "yes",
+      "tikmaker": "layout visual-hero"
+    },
+    "character-with-text": {
+      "status": "partly",
+      "tikmaker": "image + headline",
+      "todo": "B1"
+    },
+    "diagram": {
+      "status": "yes",
+      "tikmaker": "visual flow / node-group / stack"
+    },
+    "quote": {
+      "status": "yes",
+      "tikmaker": "layout text-only"
+    },
+    "cta": {
+      "status": "yes",
+      "tikmaker": "headline + icon"
+    },
+    "other": {
+      "status": "skip"
+    }
+  }
+}
