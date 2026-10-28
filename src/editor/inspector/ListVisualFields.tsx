@@ -5,7 +5,7 @@ import {
   TextInput,
   Textarea,
 } from "@mantine/core";
-import { richTextSizeSchema } from "../../schema/scene";
+import { richTextSizeSchema } from "../../schema/capabilities";
 import { type VisualConfig } from "../../schema/visual";
 import { SfxSelect } from "./SfxSelect";
 import { SecondsSlider } from "./controls";

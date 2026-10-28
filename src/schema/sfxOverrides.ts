@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { entrancePresetSchema, exitPresetSchema } from "./scene";
+import { entrancePresetSchema, exitPresetSchema } from "./capabilities";
 
 // Which sound plays when an animation happens, e.g. { slideUp: "d-word" }.
 // The KEYS are the real animation names from scene.ts, so renaming a preset

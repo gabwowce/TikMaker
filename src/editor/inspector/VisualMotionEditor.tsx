@@ -8,7 +8,7 @@ import {
   entrancePresetSchema,
   exitPresetSchema,
   kenBurnsPresetSchema,
-} from "../../schema/scene";
+} from "../../schema/capabilities";
 import { DistanceControl, SecondsSlider } from "./controls";
 import { SfxSelect } from "./SfxSelect";
 

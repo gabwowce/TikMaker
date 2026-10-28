@@ -6,7 +6,7 @@ import {
   TextInput,
 } from "@mantine/core";
 import type { RichTextFont, TextCase } from "../../schema/scene";
-import { richTextSplitBySchema } from "../../schema/scene";
+import { richTextSplitBySchema } from "../../schema/capabilities";
 import { formatDuration } from "../../utils/timecode";
 import { splitSpan, splitText } from "../../video/typography/splitAnimate";
 import {

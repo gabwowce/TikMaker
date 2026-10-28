@@ -4,7 +4,7 @@ import {
   entrancePresetSchema,
   exitPresetSchema,
   transitionPresetSchema,
-} from "../../schema/scene";
+} from "../../schema/capabilities";
 import { resolveSceneDuration } from "../../utils/pacing";
 import { useProjectStore } from "../state/projectStore";
 import { DistanceControl, SecondsSlider } from "./controls";

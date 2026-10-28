@@ -1,4 +1,5 @@
-import { layoutIdSchema, type LayoutId, type Scene } from "../../schema/scene";
+import { layoutIdSchema } from "../../schema/capabilities";
+import type { LayoutId, Scene } from "../../schema/scene";
 import type { VisualConfig } from "../../schema/visual";
 import { safeArea } from "../typography/tokens";
 import { MAX_LINE_CHARS } from "../visuals/dev/devText";

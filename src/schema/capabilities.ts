@@ -110,31 +110,19 @@ export const sceneTypeSchema = z.enum([
   "steps",
 ]);
 export const blockTypeSchema = z.enum(["text", "badge"]);
-// Every visual TikMaker can draw (the "type" of VisualConfig in visual.ts).
-export const visualTypeSchema = z.enum([
-  "tool-logo",
-  "tool-flow",
-  "prop",
-  "image",
-  "recording",
-  "browser",
-  "screen",
-  "phone",
-  "stat-counter",
-  "checklist",
-  "checkpoint",
-  "pricing-card",
-  "app-mockup",
-  "progress",
-  "keycap",
-  "claude-cli",
-  "terminal",
-  "code-diff",
-  "flow",
-  "node-group",
-  "stack",
-  "grid",
-  "highlight",
-  "transform",
-  "corner-props",
-]);
+export const screenAspectSchema = z.enum(["16:9", "16:10", "4:3", "1:1", "9:16"]);
+
+// Every visual element TikMaker can put into a scene: the "type" field of a
+// visual in visual.ts. Grouped like the folders in src/video/visuals/, so each
+// group says what kind of element it is.
+export const visualTypesByGroup = {
+  assets: ["tool-logo", "tool-flow", "prop", "image"], // logos, library pictures, own images
+  media: ["recording"], // own video or screen recording
+  devices: ["browser", "screen", "phone"], // a frame around other content
+  data: ["stat-counter", "checklist", "checkpoint", "pricing-card", "app-mockup", "progress"],
+  dev: ["keycap", "claude-cli", "terminal", "code-diff"],
+  diagrams: ["flow", "node-group", "stack", "grid", "highlight", "transform", "corner-props"],
+} as const;
+export const visualTypeSchema = z.enum(
+  Object.values(visualTypesByGroup).flat() as [string, ...string[]],
+);

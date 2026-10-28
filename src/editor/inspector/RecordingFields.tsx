@@ -1,5 +1,6 @@
 import { NativeSelect, TextInput } from "@mantine/core";
-import { screenAspectSchema, type VisualConfig } from "../../schema/visual";
+import { screenAspectSchema } from "../../schema/capabilities";
+import type { VisualConfig } from "../../schema/visual";
 import { ImportPicker } from "./MediaInputs";
 type Props = { visual: VisualConfig; onChange: (visual: VisualConfig) => void };
 export function RecordingFields({ visual, onChange }: Props) {

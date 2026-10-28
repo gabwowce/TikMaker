@@ -1,14 +1,8 @@
 import { z } from "zod";
+import { screenAspectSchema } from "./capabilities";
 import type { ScreenAspect } from "../video/visuals/devices/screenFrameSize";
 export const toolIdSchema = z.string();
 export const propIdSchema = z.string();
-export const screenAspectSchema = z.enum([
-  "16:9",
-  "16:10",
-  "4:3",
-  "1:1",
-  "9:16",
-]);
 export type VisualConfig =
   | {
       type: "tool-logo";

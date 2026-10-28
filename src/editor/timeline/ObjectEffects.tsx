@@ -3,9 +3,11 @@ import {
   entrancePresetSchema,
   exitPresetSchema,
   kenBurnsPresetSchema,
-  type EntrancePreset,
-  type ExitPreset,
-  type KenBurnsPreset,
+} from "../../schema/capabilities";
+import type {
+  EntrancePreset,
+  ExitPreset,
+  KenBurnsPreset,
 } from "../../schema/scene";
 import { DurationSlider, SliderField } from "./ObjectControls";
 

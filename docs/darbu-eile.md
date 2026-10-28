@@ -14,11 +14,11 @@ tada patikra. Kiekvienas punktas – atskiras commitas.
 Kodėl pirmas: be jo neaišku, ko TikMaker trūksta, ir žinių bazė neturėtų kuo remtis.
 
 - [x] **A0. Analizės žodynas vienoje vietoje.** `knowledge/shared/vocabulary.json`, skaito `analysisStats.ts` ir `analyzeVideos.ts`.
-- [ ] **A1. Aiškūs pavadinimai.** `vocabulary.json` → `analysis-vocabulary.json`, `src/knowledge/vocabulary.ts` → `analysisVocabulary.ts` (`analysisVocabulary`, `AnalysisVocabularyField`), pataisyti importus abiejuose skriptuose.
+- [x] **A1. Aiškūs pavadinimai.** `vocabulary.json` → `analysis-vocabulary.json`, `src/knowledge/vocabulary.ts` → `analysisVocabulary.ts` (`analysisVocabulary`, `AnalysisVocabularyField`), pataisyti importus abiejuose skriptuose.
   Patikra: `npm run analysis:stats` → 0 klaidų; `npx tsx scripts/analyzeVideos.ts` → `0 analysed`.
-- [ ] **A2. Redaktoriaus vaidmenys iš analizės žodyno.** `src/schema/scene.ts`: `scenePlanRoleSchema` = `analysisVocabulary.role`.
+- [x] **A2. Redaktoriaus vaidmenys iš analizės žodyno.** `src/schema/scene.ts`: `scenePlanRoleSchema` = `analysisVocabulary.role`.
   Patikra: `npx tsc --noEmit` be naujų klaidų; storyboard lauke „Role“ 14 reikšmių.
-- [ ] **A3. Ką moka TikMaker – vienoje vietoje.** Naujas `src/schema/capabilities.ts`: visi TikMaker sąrašai (fonai, atsiradimo / išėjimo animacijos, Ken Burns, perėjimai, išdėstymai, teksto dydžiai, šriftai, scenų tipai, vaizdinių tipai). `scene.ts` ir `visual.ts` juos importuoja iš čia.
+- [x] **A3. Ką moka TikMaker – vienoje vietoje.** Naujas `src/schema/capabilities.ts`: visi TikMaker sąrašai (fonai, atsiradimo / išėjimo animacijos, Ken Burns, perėjimai, išdėstymai, teksto dydžiai, šriftai, scenų tipai, vaizdinių tipai). `scene.ts` ir `visual.ts` juos importuoja iš čia.
   Patikra: `npx tsc --noEmit`, `npm test`, redaktorius veikia kaip anksčiau.
 - [ ] **A4. Vertimo lentelė ir spragų ataskaita.** `knowledge/shared/analysis-to-tikmaker.json` (kiekvienam analizės žodžiui – TikMaker atitikmuo arba `null`) + skriptas `npm run tikmaker:gaps` → `docs/bd/tikmaker-spragos.md` (surikiuota pagal dažnį, ✅ / ❌). Skriptas nepraleidžia, jei žodyne yra žodis be vertimo.
   Patikra: ataskaitoje matosi tos pačios spragos kaip B sąraše.
