@@ -99,8 +99,9 @@ kompiliuojant, o failai ir DI atsakymai ateina vykdymo metu.)
 (Dabartinį API pasitikrinti https://ai-sdk.dev/docs — versijos keičiasi.)
 
 **Parašyti:**
-- [ ] `server/agent/llm.ts`: `callStructured(schema, { system, user })` → `{ data, usage, ms }`; jei `parsed_output == null`, iki 2 pakartojimų
-- [ ] `scripts/try-llm.ts`: pabandyti su mažyte schema (pvz. `{ title: string, scenes: string[] }`)
+- [x] `server/agent/llm.ts`: `callStructured(schema, { system, user })` → `{ data, usage, ms, attempts }`; AI SDK v7 `generateText` + `Output.object` (ne pasenęs `generateObject`); neatitinkantis schemos atsakymas – iki 3 bandymų
+- [x] `scripts/try-llm.ts`: pabandyti su mažyte schema (pvz. `{ title: string, scenes: string[] }`)
+- [x] Modelis ir mąstymas iš `.env.local` (`AGENT_MODEL`, `AGENT_THINKING`). Matavimas: Flash be mąstymo nemokamame plane 110–145 s, Flash-Lite su `minimal` 4–8 s ir ~6 kartus mažiau išvesties tokenų, todėl numatytasis – `gemini-flash-lite-latest`
 
 **Patikra:** `npx tsx scripts/try-llm.ts` atspausdina objektą ir tokenų skaičių;
 antrą kartą paleidus su tuo pačiu `system`, `cache_read_input_tokens > 0`
