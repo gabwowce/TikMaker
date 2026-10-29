@@ -82,8 +82,8 @@
           {
             "id": "primary-why",
             "visual": {
-              "type": "tool-flow",
-              "tools": [
+              "type": "logo-flow",
+              "logos": [
                 "chatgpt",
                 "claude",
                 "github"

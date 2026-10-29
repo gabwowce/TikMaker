@@ -2,17 +2,17 @@ import { z } from "zod";
 import { screenAspectSchema, talkingHeadPlacementSchema } from "./capabilities";
 import type { ScreenAspect } from "../video/visuals/devices/screenFrameSize";
 export type TalkingHeadPlacement = z.infer<typeof talkingHeadPlacementSchema>;
-export const toolIdSchema = z.string();
+export const logoIdSchema = z.string();
 export const propIdSchema = z.string();
 export type VisualConfig =
   | {
-      type: "tool-logo";
-      tool: string;
+      type: "logo";
+      logo: string;
       showName?: boolean;
     }
   | {
-      type: "tool-flow";
-      tools: string[];
+      type: "logo-flow";
+      logos: string[];
     }
   | {
       type: "prop";
@@ -236,13 +236,13 @@ export const visualConfigSchema: z.ZodType<VisualConfig> = z.discriminatedUnion(
   "type",
   [
     z.object({
-      type: z.literal("tool-logo"),
-      tool: toolIdSchema,
+      type: z.literal("logo"),
+      logo: logoIdSchema,
       showName: z.boolean().optional(),
     }),
     z.object({
-      type: z.literal("tool-flow"),
-      tools: z.array(toolIdSchema).min(2).max(4),
+      type: z.literal("logo-flow"),
+      logos: z.array(logoIdSchema).min(2).max(4),
     }),
     z.object({
       type: z.literal("prop"),

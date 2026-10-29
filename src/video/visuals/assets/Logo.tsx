@@ -1,12 +1,12 @@
 import { Img } from "remotion";
-import { getTool } from "../../../registries/toolRegistry";
-type ToolLogoProps = {
-  tool: string;
+import { getLogo } from "../../../registries/logoRegistry";
+type LogoProps = {
+  logo: string;
   size?: number;
   showName?: boolean;
 };
-export function ToolLogo({ tool, size = 220, showName }: ToolLogoProps) {
-  const definition = getTool(tool);
+export function Logo({ logo, size = 220, showName }: LogoProps) {
+  const definition = getLogo(logo);
   if (!definition) return null;
   const image = (
     <Img

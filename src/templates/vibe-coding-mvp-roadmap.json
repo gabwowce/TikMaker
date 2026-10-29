@@ -94,8 +94,8 @@
         },
         "nodes": [
           {
-            "type": "tool-logo",
-            "tool": "claude"
+            "type": "logo",
+            "logo": "claude"
           },
           {
             "type": "prop",
@@ -173,8 +173,8 @@
           {
             "id": "v1",
             "visual": {
-              "type": "tool-flow",
-              "tools": [
+              "type": "logo-flow",
+              "logos": [
                 "claude",
                 "chatgpt",
                 "github"

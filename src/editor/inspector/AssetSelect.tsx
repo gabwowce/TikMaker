@@ -1,7 +1,7 @@
 import { Button, NativeSelect } from "@mantine/core";
 import { useRef, useState } from "react";
 import { propList } from "../../registries/propRegistry";
-import { toolList } from "../../registries/toolRegistry";
+import { logoList } from "../../registries/logoRegistry";
 import { type VisualConfig } from "../../schema/visual";
 import { useCustomAssets, type CustomAsset } from "../../api/library";
 
@@ -19,11 +19,11 @@ const staticAssetOptions: AssetOption[] = [
     src: prop.src,
     toVisual: (): VisualConfig => ({ type: "prop", asset: prop.id }),
   })),
-  ...toolList.map((tool) => ({
-    key: `tool:${tool.id}`,
-    label: tool.name,
-    src: tool.src,
-    toVisual: (): VisualConfig => ({ type: "tool-logo", tool: tool.id }),
+  ...logoList.map((logo) => ({
+    key: `logo:${logo.id}`,
+    label: logo.name,
+    src: logo.src,
+    toVisual: (): VisualConfig => ({ type: "logo", logo: logo.id }),
   })),
 ];
 
@@ -59,7 +59,7 @@ function assetKeyOf(
 ): string {
   if (!visual) return "";
   if (visual.type === "prop") return `prop:${visual.asset}`;
-  if (visual.type === "tool-logo") return `tool:${visual.tool}`;
+  if (visual.type === "logo") return `logo:${visual.logo}`;
   if (
     visual.type === "image" ||
     visual.type === "recording" ||
@@ -171,9 +171,9 @@ export function AssetSelect({ value, allowNone, onChange }: AssetSelectProps) {
               </option>
             ))}
         </optgroup>
-        <optgroup label="Tool Logos">
+        <optgroup label="Logos">
           {options
-            .filter((a) => a.key.startsWith("tool:"))
+            .filter((a) => a.key.startsWith("logo:"))
             .map((a) => (
               <option key={a.key} value={a.key}>
                 {a.label}

@@ -45,8 +45,8 @@
           {
             "id": "hook-corner-0",
             "visual": {
-              "type": "tool-logo",
-              "tool": "claude-ai-symbol"
+              "type": "logo",
+              "logo": "claude-ai-symbol"
             },
             "x": 13.94,
             "y": 10.69,
@@ -58,8 +58,8 @@
           {
             "id": "hook-corner-1",
             "visual": {
-              "type": "tool-logo",
-              "tool": "claude-ai-symbol"
+              "type": "logo",
+              "logo": "claude-ai-symbol"
             },
             "x": 86.11,
             "y": 80.21,
@@ -522,8 +522,8 @@
           {
             "id": "cta-corner-0",
             "visual": {
-              "type": "tool-logo",
-              "tool": "claude-ai-symbol"
+              "type": "logo",
+              "logo": "claude-ai-symbol"
             },
             "x": 13.94,
             "y": 10.69,
@@ -534,8 +534,8 @@
           {
             "id": "cta-corner-1",
             "visual": {
-              "type": "tool-logo",
-              "tool": "claude-ai-symbol"
+              "type": "logo",
+              "logo": "claude-ai-symbol"
             },
             "x": 86.11,
             "y": 80.21,

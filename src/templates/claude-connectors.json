@@ -15,8 +15,8 @@
           {
             "id": "primary-hook",
             "visual": {
-              "type": "tool-logo",
-              "tool": "claude"
+              "type": "logo",
+              "logo": "claude"
             },
             "x": 50,
             "y": 57,
@@ -40,8 +40,8 @@
           {
             "id": "primary-flow",
             "visual": {
-              "type": "tool-flow",
-              "tools": [
+              "type": "logo-flow",
+              "logos": [
                 "github",
                 "claude",
                 "supabase"

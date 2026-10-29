@@ -35,8 +35,8 @@
           {
             "id": "primary-hook-corner-0",
             "visual": {
-              "type": "tool-logo",
-              "tool": "claude"
+              "type": "logo",
+              "logo": "claude"
             },
             "x": 13.88888888888889,
             "y": 17.708333333333336,
@@ -48,8 +48,8 @@
           {
             "id": "primary-hook-corner-1",
             "visual": {
-              "type": "tool-logo",
-              "tool": "claude"
+              "type": "logo",
+              "logo": "claude"
             },
             "x": 86.11111111111111,
             "y": 80.20833333333334,
@@ -422,8 +422,8 @@
           {
             "id": "primary-cta-corner-0",
             "visual": {
-              "type": "tool-logo",
-              "tool": "claude"
+              "type": "logo",
+              "logo": "claude"
             },
             "x": 86.11111111111111,
             "y": 17.708333333333336,
@@ -434,8 +434,8 @@
           {
             "id": "primary-cta-corner-1",
             "visual": {
-              "type": "tool-logo",
-              "tool": "claude"
+              "type": "logo",
+              "logo": "claude"
             },
             "x": 13.88888888888889,
             "y": 80.20833333333334,

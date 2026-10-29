@@ -1,7 +1,7 @@
 import { Button, UnstyledButton } from "@mantine/core";
 import { Fragment, useState } from "react";
 import { propList } from "../../registries/propRegistry";
-import { toolList } from "../../registries/toolRegistry";
+import { logoCategories, logoList } from "../../registries/logoRegistry";
 import {
   visualTemplateCategories,
   visualTemplateRegistry,
@@ -141,7 +141,9 @@ export function VisualLibrary() {
                     }
                     // store the picture's real size, so scale 1 = its own px
                     readImageSize(asset.src)
-                      .then((size) => assign({ type: "image", src: asset.src, ...size }))
+                      .then((size) =>
+                        assign({ type: "image", src: asset.src, ...size }),
+                      )
                       .catch(() => assign({ type: "image", src: asset.src }));
                   }}
                 >
@@ -168,25 +170,33 @@ export function VisualLibrary() {
         </>
       ) : null}
 
-      <div className="text-[11px] uppercase tracking-[1px] text-editor-muted m-[12px_0_6px]">
-        Tool Logos
-      </div>
-      <div className="grid grid-cols-3 gap-1.5">
-        {toolList.map((tool) => (
-          <UnstyledButton
-            className="grid min-w-0 justify-items-center gap-2 rounded-md border border-solid border-editor-border bg-editor-panel-raised px-2 py-3 text-center text-[10px] [overflow-wrap:anywhere]"
-            key={tool.id}
-            onClick={() => assign({ type: "tool-logo", tool: tool.id })}
-          >
-            <img
-              src={tool.src}
-              alt={tool.name}
-              className="w-7 h-7 object-contain"
-            />
-            {tool.name}
-          </UnstyledButton>
-        ))}
-      </div>
+      {logoCategories.map((category) => {
+        const logos = logoList.filter((logo) => logo.category === category.id);
+        if (logos.length === 0) return null;
+        return (
+          <Fragment key={category.id}>
+            <div className="text-[11px] uppercase tracking-[1px] text-editor-muted m-[12px_0_6px]">
+              Logos · {category.label}
+            </div>
+            <div className="grid grid-cols-3 gap-1.5">
+              {logos.map((logo) => (
+                <UnstyledButton
+                  className="grid min-w-0 justify-items-center gap-2 rounded-md border border-solid border-editor-border bg-editor-panel-raised px-2 py-3 text-center text-[10px] [overflow-wrap:anywhere]"
+                  key={logo.id}
+                  onClick={() => assign({ type: "logo", logo: logo.id })}
+                >
+                  <img
+                    src={logo.src}
+                    alt={logo.name}
+                    className="w-7 h-7 object-contain"
+                  />
+                  {logo.name}
+                </UnstyledButton>
+              ))}
+            </div>
+          </Fragment>
+        );
+      })}
 
       <div className="text-[11px] uppercase tracking-[1px] text-editor-muted m-[12px_0_6px]">
         Props
