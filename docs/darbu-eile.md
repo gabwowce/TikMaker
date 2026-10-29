@@ -50,7 +50,7 @@ Išsamiau: `docs/mano-planas.md` 1 žingsnis (schemos), `docs/bd/sprendimai.md` 
 - [x] **C2. Juodraštis.** `knowledge/draft/proposal.json` (grupavimas ir formuluotės; pirmąjį sudarė Claude Code pagal 3 prompto taisykles) → `npm run knowledge:draft` suskaičiuoja scenas, trukmes ir pavyzdžius → `knowledge/draft/shared/`. 3 promptas paruoštas pakartojimui (Gemini AI Studio), dar nepaleistas.
 - [x] **C3. Perkėlimas** → `knowledge/shared/` (20 šablonų, formulės, frazės). Išsami peržiūra atidėta: šablonai taisomi tada, kai generuojant video kas nors netinka (`proposal.json` → `npm run knowledge:draft` → kopija į `knowledge/shared/`). Vertimas į TikMaker žodį (A4 lentelė) reikalingas tik išdėstymams (C4).
 - [ ] **C4. Kadrai** (`npm run videos:frames`, tavo kompiuteryje) → tu atrenki gerus / blogus → `LayoutExample`.
-- [ ] **C5. Taisyklės** iš statistikos (p90) → `DesignRule`, `SoundRule`.
+- [x] **C5. Taisyklės** iš statistikos (p90) → `knowledge/shared/design-rules.json` (6 įspėjimai: žodžiai ekrane, scenos ir kabliuko trukmė, garsų tankis, kalbėjimo greitis, vaizdo pasikeitimas); patikros kodas `src/agent/rules/` (`runRules`). Video trukmė ir elementai vienu metu sąmoningai netikrinami; `SoundRule` atidėtas (agentas garsų nedėlioja).
 
 ## D. Agentas
 

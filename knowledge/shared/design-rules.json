@@ -1,0 +1,28 @@
+[
+  {
+    "id": "on-screen-words",
+    "check": "onScreenWordsPerScene",
+    "max": 15,
+    "level": "warning"
+  },
+  {
+    "id": "scene-length",
+    "check": "sceneSeconds",
+    "max": 9,
+    "level": "warning"
+  },
+  { "id": "hook-length", "check": "hookSeconds", "max": 5, "level": "warning" },
+  { "id": "sfx-density", "check": "sfxPer10s", "max": 3, "level": "warning" },
+  {
+    "id": "speech-rate",
+    "check": "voiceWordsPerSecond",
+    "max": 3.4,
+    "level": "warning"
+  },
+  {
+    "id": "visual-change",
+    "check": "secondsWithoutChange",
+    "max": 5,
+    "level": "warning"
+  }
+]
