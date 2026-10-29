@@ -10,8 +10,10 @@ import type {
   ExitPreset,
   KenBurnsPreset,
   VisualEffect,
+  VisualEffectType,
 } from "../../schema/scene";
-import { DurationSlider, SliderField } from "./ObjectControls";
+import { EFFECT_DEFAULTS } from "../../video/visuals/visualEffects";
+import { ColorField, DurationSlider, SliderField } from "./ObjectControls";
 
 export type EffectPatch = {
   entrance?: EntrancePreset;
@@ -128,27 +130,60 @@ export function VisualEffectsEditor({
   effects?: VisualEffect[];
   onChange: (patch: { effects?: VisualEffect[] }) => void;
 }) {
+  const list = effects ?? [];
+  function save(next: VisualEffect[]) {
+    onChange({ effects: next.length ? next : undefined });
+  }
+  function change(type: VisualEffectType, patch: Partial<VisualEffect>) {
+    save(
+      list.map((item) => (item.type === type ? { ...item, ...patch } : item)),
+    );
+  }
   return (
-    <Checkbox.Group
-      label="Look"
-      value={effects ?? []}
-      onChange={(value) =>
-        onChange({
-          effects: value.length ? (value as VisualEffect[]) : undefined,
-        })
-      }
-      className="mb-3"
-    >
-      <div className="flex gap-3 mt-1">
-        {visualEffectSchema.options.map((effect) => (
-          <Checkbox
-            key={effect}
-            value={effect}
-            label={friendlyEffect(effect)}
-          />
-        ))}
+    <div className="mb-3">
+      <div className="text-[10px] text-editor-muted uppercase [letter-spacing:.05em] mb-1.5">
+        Look
       </div>
-    </Checkbox.Group>
+      {visualEffectSchema.options.map((type) => {
+        const effect = list.find((item) => item.type === type);
+        const defaults = EFFECT_DEFAULTS[type];
+        return (
+          <div key={type} className="mb-2">
+            <Checkbox
+              label={friendlyEffect(type)}
+              checked={Boolean(effect)}
+              onChange={(event) =>
+                save(
+                  event.currentTarget.checked
+                    ? [...list, { type }]
+                    : list.filter((item) => item.type !== type),
+                )
+              }
+            />
+            {effect ? (
+              <div className="pl-6 pt-2">
+                <ColorField
+                  label="Color"
+                  value={effect.color}
+                  placeholder={`auto · ${defaults.color}`}
+                  onChange={(color) => change(type, { color })}
+                />
+                <SliderField
+                  label="Opacity"
+                  value={Math.round((effect.opacity ?? defaults.opacity) * 100)}
+                  min={0}
+                  max={100}
+                  step={1}
+                  decimals={0}
+                  suffix="%"
+                  onChange={(value) => change(type, { opacity: value / 100 })}
+                />
+              </div>
+            ) : null}
+          </div>
+        );
+      })}
+    </div>
   );
 }
 export const CYCLIC_KEN_BURNS = new Set<string>([

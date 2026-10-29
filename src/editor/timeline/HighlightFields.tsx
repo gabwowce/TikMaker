@@ -1,7 +1,7 @@
 import { Button, UnstyledButton } from "@mantine/core";
 import { highlightStyleSchema } from "../../schema/capabilities";
 import type { HighlightStyle } from "../../schema/scene";
-import { TEXT_COLOR_SWATCHES } from "./ObjectTextSettings";
+import { COLOR_SWATCHES } from "./ObjectControls";
 
 type HighlightFieldsProps = {
   text: string;
@@ -82,7 +82,7 @@ export function HighlightFields({
           >
             ×
           </button>
-          {TEXT_COLOR_SWATCHES.map((swatch) => (
+          {COLOR_SWATCHES.map((swatch) => (
             <button
               type="button"
               key={swatch}

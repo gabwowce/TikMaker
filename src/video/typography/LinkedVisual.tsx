@@ -14,7 +14,7 @@ import { exitStyle as computeExitStyle } from "../motion/exits";
 import { kenBurns as computeKenBurns } from "../motion/kenBurns";
 import { SFX_VOLUME, resolveEntranceSfx } from "../motion/sfxDefaults";
 import { VisualRenderer } from "../visuals/VisualRenderer";
-import { effectsFilter } from "../visuals/visualEffects";
+import { useVisualEffects } from "../visuals/visualEffects";
 const GLIDE_FRAMES = 18;
 const CUE_WINDOW_FRAMES = 30;
 function lerpPose(from: VisualPose, to: VisualPose, t: number): VisualPose {
@@ -51,6 +51,7 @@ export function LinkedVisual({ group }: LinkedVisualProps) {
   const { fps } = useVideoConfig();
   const { durationInFrames, motion, visual } = group;
   const pose = poseAt(group, frame);
+  const look = useVisualEffects(motion.effects, pose.scale);
   const entranceStyle = enter(motion.entrance ?? "fade", {
     frame,
     fps,
@@ -86,7 +87,7 @@ export function LinkedVisual({ group }: LinkedVisualProps) {
           left: `${pose.x}%`,
           top: `${pose.y}%`,
           opacity,
-          filter: effectsFilter(motion.effects, pose.scale),
+          filter: look.filter,
           transform: [
             "translate(-50%, -50%)",
             entranceStyle.transform ?? "",
@@ -98,6 +99,7 @@ export function LinkedVisual({ group }: LinkedVisualProps) {
             .join(" "),
         }}
       >
+        {look.defs}
         <VisualRenderer visual={visual} />
       </div>
       {sfxSrc ? (
