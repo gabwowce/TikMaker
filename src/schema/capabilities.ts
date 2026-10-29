@@ -4,6 +4,10 @@ import { z } from "zod";
 // and the agent choose only from these lists. What we SAW in the analysed videos
 // is a different list: src/knowledge/analysisVocabulary.ts.
 
+// A scene background is one of two things (scene.ts → sceneBackgroundSchema):
+// 1) a ready-made one, by name: backgroundIdSchema
+// 2) your own ("custom"): a fill of one of backgroundFillKindSchema,
+//    optionally with a grid (backgroundGridSchema) on top
 export const backgroundIdSchema = z.enum([
   "solid-dark",
   "soft-grid",
@@ -15,6 +19,12 @@ export const backgroundIdSchema = z.enum([
 ]);
 
 export const backgroundGridSchema = z.enum(["none", "lines", "dots"]);
+export const backgroundFillKindSchema = z.enum([
+  "solid",
+  "gradient",
+  "image",
+  "video",
+]);
 export const entrancePresetSchema = z.enum([
   "none",
   "fade",

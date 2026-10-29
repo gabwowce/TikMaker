@@ -21,5 +21,7 @@ export function backgroundFillStyle(fill: BackgroundFill): CSSProperties {
         backgroundPosition: "center",
         backgroundColor: colors.background,
       };
+    case "video":
+      return { backgroundColor: colors.background }; // the video itself is drawn by CustomBackground
   }
 }

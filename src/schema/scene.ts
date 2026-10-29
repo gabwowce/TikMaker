@@ -29,6 +29,13 @@ export const scenePlanSchema = z.object({
   purpose: z.string().optional(),
   visualBrief: z.string().optional(),
 });
+// For a picture or video that is not 9:16: which part stays in view and how
+// close. focus 0 = left / top edge, 50 = middle, 100 = right / bottom edge.
+const mediaFramingFields = {
+  focusX: z.number().min(0).max(100).optional(),
+  focusY: z.number().min(0).max(100).optional(),
+  zoom: z.number().min(1).max(4).optional(), // 1 = just fills the frame
+};
 export const backgroundFillSchema = z.discriminatedUnion("kind", [
   z.object({ kind: z.literal("solid"), color: z.string() }),
   z.object({
@@ -37,7 +44,9 @@ export const backgroundFillSchema = z.discriminatedUnion("kind", [
     angle: z.number().min(0).max(360).optional(),
     shape: z.enum(["linear", "radial"]).optional(),
   }),
-  z.object({ kind: z.literal("image"), src: z.string() }),
+  z.object({ kind: z.literal("image"), src: z.string(), ...mediaFramingFields }),
+  // own video file: fills the frame, plays muted and loops
+  z.object({ kind: z.literal("video"), src: z.string(), ...mediaFramingFields }),
 ]);
 
 export const customBackgroundSchema = z.object({

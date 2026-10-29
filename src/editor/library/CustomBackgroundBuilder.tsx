@@ -9,6 +9,7 @@ import { useState } from "react";
 import type { BackgroundFill, CustomBackground } from "../../schema/scene";
 import { useCustomAssets, useSavedBackgrounds } from "../../api/library";
 import { useProjectStore } from "../state/projectStore";
+import { SliderField } from "../timeline/ObjectControls";
 import { BackgroundSwatch } from "./BackgroundSwatch";
 export function CustomBackgroundBuilder({
   sceneId,
@@ -25,14 +26,17 @@ export function CustomBackgroundBuilder({
   const [secondColor, setSecondColor] = useState("#FF7024");
   const [shape, setShape] = useState<"linear" | "radial">("linear");
   const [angle, setAngle] = useState(135);
-  const [imageSrc, setImageSrc] = useState("");
+  const [mediaSrc, setMediaSrc] = useState(""); // picture or video file
+  const [focusX, setFocusX] = useState(50);
+  const [focusY, setFocusY] = useState(50);
+  const [zoom, setZoom] = useState(1);
   const [grid, setGrid] = useState<CustomBackground["grid"]>("none");
   const [name, setName] = useState("");
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState("");
-  const images = assets.filter((asset) => asset.kind === "image");
   function buildBackground(): CustomBackground | null {
-    if (kind === "solid") return { type: "custom", fill: { kind, color }, grid };
+    if (kind === "solid")
+      return { type: "custom", fill: { kind, color }, grid };
     if (kind === "gradient") {
       return {
         type: "custom",
@@ -40,8 +44,12 @@ export function CustomBackgroundBuilder({
         grid,
       };
     }
-    if (imageSrc)
-      return { type: "custom", fill: { kind: "image", src: imageSrc }, grid };
+    if (mediaSrc && (kind === "image" || kind === "video"))
+      return {
+        type: "custom",
+        fill: { kind, src: mediaSrc, focusX, focusY, zoom },
+        grid,
+      };
     return null;
   }
   const background = buildBackground();
@@ -54,15 +62,18 @@ export function CustomBackgroundBuilder({
     applyBackground();
     setName("");
   }
-  async function uploadImage(file: File | null) {
+  // uploads a picture or a video (whichever kind is picked) and selects it
+  async function uploadMedia(file: File | null) {
     if (!file) return;
     setUploading(true);
     setError("");
     try {
       const asset = await uploadAsset(file, file.name);
-      setImageSrc(asset.src);
+      setMediaSrc(asset.src);
     } catch {
-      setError("Image upload failed.");
+      setError(
+        kind === "video" ? "Video upload failed." : "Image upload failed.",
+      );
     } finally {
       setUploading(false);
     }
@@ -91,9 +102,16 @@ export function CustomBackgroundBuilder({
         >
           Image
         </Button>
+        <Button
+          fullWidth
+          variant={kind === "video" ? "filled" : "default"}
+          onClick={() => setKind("video")}
+        >
+          Video
+        </Button>
       </div>
 
-      {kind !== "image" ? (
+      {kind === "solid" || kind === "gradient" ? (
         <TextInput
           type="color"
           label="Color"
@@ -133,24 +151,29 @@ export function CustomBackgroundBuilder({
           ) : null}
         </>
       ) : null}
-      {kind === "image" ? (
+      {kind === "image" || kind === "video" ? (
         <>
           <NativeSelect
-            label="Image"
+            label={kind === "video" ? "Video" : "Image"}
             data={[
-              { value: "", label: "Select image" },
-              ...images.map((image) => ({
-                value: image.src,
-                label: image.label,
-              })),
+              {
+                value: "",
+                label: kind === "video" ? "Select video" : "Select image",
+              },
+              ...assets
+                .filter((asset) => asset.kind === kind)
+                .map((asset) => ({ value: asset.src, label: asset.label })),
             ]}
-            value={imageSrc}
-            onChange={(event) => setImageSrc(event.currentTarget.value)}
+            value={mediaSrc}
+            onChange={(event) => setMediaSrc(event.currentTarget.value)}
           />
-          <FileButton accept="image/*" onChange={uploadImage}>
+          <FileButton
+            accept={kind === "video" ? "video/*" : "image/*"}
+            onChange={uploadMedia}
+          >
             {(props) => (
               <Button {...props} variant="default" loading={uploading}>
-                Upload image
+                {kind === "video" ? "Upload video" : "Upload image"}
               </Button>
             )}
           </FileButton>
@@ -159,6 +182,34 @@ export function CustomBackgroundBuilder({
               {error}
             </div>
           ) : null}
+          {/* which part of a wide picture / video stays in the 9:16 frame */}
+          <SliderField
+            label="Focus X"
+            value={focusX}
+            min={0}
+            max={100}
+            step={1}
+            suffix="%"
+            onChange={setFocusX}
+          />
+          <SliderField
+            label="Focus Y"
+            value={focusY}
+            min={0}
+            max={100}
+            step={1}
+            suffix="%"
+            onChange={setFocusY}
+          />
+          <SliderField
+            label="Zoom"
+            value={zoom}
+            min={1}
+            max={4}
+            step={0.05}
+            suffix="×"
+            onChange={setZoom}
+          />
         </>
       ) : null}
 
