@@ -44,9 +44,17 @@ export const backgroundFillSchema = z.discriminatedUnion("kind", [
     angle: z.number().min(0).max(360).optional(),
     shape: z.enum(["linear", "radial"]).optional(),
   }),
-  z.object({ kind: z.literal("image"), src: z.string(), ...mediaFramingFields }),
+  z.object({
+    kind: z.literal("image"),
+    src: z.string(),
+    ...mediaFramingFields,
+  }),
   // own video file: fills the frame, plays muted and loops
-  z.object({ kind: z.literal("video"), src: z.string(), ...mediaFramingFields }),
+  z.object({
+    kind: z.literal("video"),
+    src: z.string(),
+    ...mediaFramingFields,
+  }),
 ]);
 
 export const customBackgroundSchema = z.object({
@@ -189,6 +197,9 @@ const blockSchema = z.object({
 const baseSceneFields = {
   id: z.string(),
   plan: scenePlanSchema.optional(),
+  // The knowledge-base LayoutExample this scene was laid out from, for
+  // statistics only. Not `layout`, the TikMaker preset the scene renders with.
+  layoutExampleId: z.string().optional(),
   storyboardBeatId: z.string().optional(),
   durationSeconds: z.number().positive().optional(),
   timelineRange: z

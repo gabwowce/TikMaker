@@ -74,13 +74,17 @@ npx tsx scripts/kazkas.ts   # paleisti vieną TS failą
 `src/schema/scene.ts` (`scenePlanSchema`, `scenePlanRoleSchema`).
 
 **Parašyti:**
-- [ ] `src/schema/knowledge.ts`: `themeSchema`, `templateSchema`, `hookSchema`, `designRefSchema` + tipai per `z.infer`
-- [ ] `knowledge/themes/dev/theme.json`, `brief.md`, `templates/problem-fix.json`, `templates/curiosity-loop.json`, `hooks.json` (5 formulės)
-- [ ] `server/agent/knowledge.ts`: `loadKnowledge(dir): { themes, errors }`
-- [ ] Projekto schemoje (`src/schema/project.ts`): `theme?: string`, `storyPlan.targetDuration?: number`
-- [ ] Testas `server/agent/__tests__/knowledge.test.ts`: geras failas įsikelia, blogas grąžina klaidą su keliu
+- [x] `src/schema/knowledge.ts`: `Workspace`, `WorkspaceStyle`, `VideoTemplate` → `ActTemplate` → `SceneTemplate` → `SceneSlot`, `HookFormula`, `CtaFormula`, `TitleFormula`, `TransitionPhrase`, `LayoutExample` (+ `LayoutElement`, `LayoutText`), `DesignRule`, `SoundRule` + tipai per `z.infer`; be `other`, formulės su `id`
+- [x] `server/agent/knowledge.ts`: `loadKnowledge(dir): { knowledge, errors }`
+- [x] Pavyzdžiai testui: `server/agent/__tests__/fixtures/knowledge/`
+- [x] Projekto schemoje: `workspaceId?`, `videoTemplateId?`; scenoje `layoutExampleId?`
+- [x] Testas `server/agent/__tests__/knowledge.test.ts`: geras failas įsikelia, blogas grąžina klaidą su keliu (9 testai)
 
-**Patikra:** `npm test` žalias; sugadinus `hooks.json` lauką, klaidoje matosi failas ir laukas.
+Smulkiai: `docs/c1-planas.md`. Senieji pavadinimai (`themeSchema`, `hookSchema`,
+`knowledge/themes/dev/…`) buvo sugalvoti prieš diagramą; `storyPlan.targetDuration`
+projekte jau yra.
+
+**Patikra:** `npm test` žalias; sugadinus fixture `hook-formulas.json` lauką, klaidoje matosi failas ir laukas.
 
 **Gynimo klausimai:** kuo skiriasi `parse` ir `safeParse`? Kodėl schema
 reikalinga, jei TypeScript jau turi tipus? (Atsakymas: tipai tikrinami
@@ -184,7 +188,7 @@ projekto būsena (TanStack Query vs Zustand)? Kodėl?
 
 **Parašyti:**
 - [ ] `server/agent/catalog.ts`: trumpas katalogas iš registrų pagal `theme.json` (FR-11)
-- [ ] `src/agent/sceneSpec.ts`: Zod schema; `templateId` = `z.enum(leidžiami)` (FR-11)
+- [ ] `src/agent/sceneSpec.ts`: Zod schema; `videoTemplateId` = `z.enum(leidžiami)` (FR-11)
 - [ ] `server/agent/steps/layout.ts`
 - [ ] `src/agent/compileProject.ts` (FR-12, FR-13) + **daug testų**
 - [ ] Išteklių vietos (FR-22–FR-24): esamą REC vietą (`screen` + `checkpoint`) apibendrinti į REC / IMG / VID su `spec` ir `generationPrompt`; `scripts/checkProject.ts` atpažįsta visas tris; ataskaitoje gamybos planas

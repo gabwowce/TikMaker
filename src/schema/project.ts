@@ -14,6 +14,10 @@ export const videoProjectSchema = z.object({
   id: z.string(),
   title: z.string(),
   collection: z.string().optional(),
+  // Set when the agent built the video (D): the channel it was made for and
+  // the knowledge-base VideoTemplate it followed. Absent for a hand-made video.
+  workspaceId: z.string().optional(),
+  videoTemplateId: z.string().optional(),
   fps: z.literal(30),
   width: z.literal(1080),
   height: z.literal(1920),

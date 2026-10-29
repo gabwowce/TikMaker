@@ -46,7 +46,7 @@ Jei laiko trūks: B9, B3, B4 svarbiausi; kitus galima daryti po to, kai agentas 
 
 Išsamiau: `docs/mano-planas.md` 1 žingsnis (schemos), `docs/bd/sprendimai.md` „Žinių bazė“.
 
-- [ ] **C1. Žinių bazės schemos** (`VideoTemplate`, `SceneTemplate`, `HookFormula`, `CtaFormula`, `TitleFormula`, `TransitionPhrase`, `LayoutExample`, `DesignRule`, `SoundRule`) pagal `docs/bd/diagramos/ziniu-baze.puml` + įkėlimas ir testas.
+- [x] **C1. Žinių bazės schemos** (`VideoTemplate`, `SceneTemplate`, `HookFormula`, `CtaFormula`, `TitleFormula`, `TransitionPhrase`, `LayoutExample`, `DesignRule`, `SoundRule`) pagal `docs/bd/diagramos/ziniu-baze.puml` + įkėlimas ir testas.
 - [ ] **C2. 3 promptas** pataisytas pagal schemas ir žodyną → paleistas → `knowledge/draft/` → patikra schemomis.
 - [ ] **C3. Peržiūra** (tu) → `knowledge/shared/`. Vertimas į TikMaker žodį (A4 lentelė) daromas čia, skriptu.
 - [ ] **C4. Kadrai** (`npm run videos:frames`, tavo kompiuteryje) → tu atrenki gerus / blogus → `LayoutExample`.

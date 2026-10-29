@@ -1,0 +1,9 @@
+{
+  "backgrounds": ["soft-grid", "orange-glow"],
+  "surface": "#171717",
+  "textPrimary": "#FFFFFF",
+  "textSecondary": "#A3A3A3",
+  "accent": "#FF7024",
+  "headlineFont": "tanker",
+  "bodyFont": "clash"
+}

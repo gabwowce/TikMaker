@@ -1,0 +1,10 @@
+[
+  {
+    "id": "still-by-hand",
+    "type": "pain-shown",
+    "formula": "Still doing ___ by hand?",
+    "examples": ["Still renaming files by hand?"],
+    "fits": ["explainer", "demo"],
+    "basedOnAnalysisIds": []
+  }
+]

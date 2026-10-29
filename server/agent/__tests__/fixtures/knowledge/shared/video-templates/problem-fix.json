@@ -1,0 +1,58 @@
+{
+  "id": "problem-fix",
+  "format": "explainer",
+  "name": "Problem → fix",
+  "oneLine": "Show what goes wrong, then the one change that fixes it.",
+  "whenToUse": "A single, concrete pain the viewer recognises.",
+  "seconds": { "min": 20, "max": 45 },
+  "hookTypes": ["pain-shown", "result-first"],
+  "ctaTypes": ["follow", "comment-keyword"],
+  "acts": [
+    {
+      "act": "opening",
+      "scenes": [
+        {
+          "role": "hook",
+          "purpose": "Show the broken state in the first second.",
+          "seconds": { "min": 1.5, "max": 3 },
+          "repeatable": false,
+          "optional": false,
+          "connectionToNext": "question-answer",
+          "slots": [{ "name": "pain", "kind": "fixed" }]
+        }
+      ]
+    },
+    {
+      "act": "core",
+      "scenes": [
+        {
+          "role": "demo",
+          "purpose": "The fix, shown as its result.",
+          "seconds": { "min": 3, "max": 6 },
+          "repeatable": true,
+          "optional": false,
+          "connectionToNext": "sequence",
+          "slots": [
+            { "name": "step", "kind": "fixed" },
+            { "name": "visual", "kind": "creative" }
+          ]
+        }
+      ]
+    },
+    {
+      "act": "close",
+      "scenes": [
+        {
+          "role": "cta",
+          "purpose": "One clear next action.",
+          "seconds": { "min": 1.5, "max": 3 },
+          "repeatable": false,
+          "optional": false,
+          "connectionToNext": "none",
+          "slots": [{ "name": "cta", "kind": "creative" }]
+        }
+      ]
+    }
+  ],
+  "basedOnAnalysisIds": []
+}
