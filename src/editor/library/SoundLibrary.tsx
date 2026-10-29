@@ -367,13 +367,12 @@ export function SoundLibrary() {
     .filter((sfx): sfx is SfxDefinition => sfx !== undefined);
   return (
     <div>
-      <MusicSection />
-      <DefaultsSection />
-
       <div className="text-[11px] uppercase tracking-[1px] text-editor-muted m-[12px_0_6px]">
         Import sound
       </div>
       <UploadForm />
+      <MusicSection />
+      <DefaultsSection />
 
       <div className="text-[11px] uppercase tracking-[1px] text-editor-muted m-[12px_0_6px]">
         Custom ({custom.length})
