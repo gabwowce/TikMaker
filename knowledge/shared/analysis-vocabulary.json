@@ -14,6 +14,7 @@
     "payoff",
     "cta",
     "bridge",
+    "escalation",
     "other"
   ],
   "hookType": [
@@ -28,6 +29,8 @@
     "news",
     "explained-in-time",
     "shock-fact",
+    "how-to",
+    "visual-first",
     "other"
   ],
   "ctaType": [
