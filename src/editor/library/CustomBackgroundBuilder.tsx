@@ -5,7 +5,7 @@ import {
   NumberInput,
   TextInput,
 } from "@mantine/core";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import type { BackgroundFill, CustomBackground } from "../../schema/scene";
 import { useCustomAssets, useSavedBackgrounds } from "../../api/library";
 import { useProjectStore } from "../state/projectStore";
@@ -56,6 +56,13 @@ export function CustomBackgroundBuilder({
   function applyBackground() {
     if (sceneId && background) updateSceneBackground(sceneId, background);
   }
+  // A picture or video background is applied as soon as a file is picked and
+  // again on every Focus / Zoom / Grid change, so the preview shows the
+  // framing while you adjust it (no need to press Apply).
+  const liveMedia = (kind === "image" || kind === "video") && mediaSrc !== "";
+  useEffect(() => {
+    if (liveMedia) applyBackground();
+  }, [liveMedia, kind, mediaSrc, focusX, focusY, zoom, grid, sceneId]);
   function save() {
     if (!background || !name.trim()) return;
     saveBackground(name, background);
