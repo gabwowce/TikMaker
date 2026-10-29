@@ -1,0 +1,30 @@
+{
+  "id": "demo-06",
+  "role": "demo",
+  "arrangement": "corner",
+  "anchor": "center",
+  "elements": [
+    {
+      "kind": "recording",
+      "x": 50,
+      "y": 50,
+      "w": 100,
+      "h": 100,
+      "order": 0,
+      "note": "The tool's screen, full frame: a prompt in the tool's input, highlighted word by word in yellow-green as the voiceover reads it."
+    },
+    {
+      "kind": "talking-head",
+      "x": 76.5,
+      "y": 82.5,
+      "w": 38,
+      "h": 21.5,
+      "order": 1,
+      "note": "The presenter in a circle in the bottom-right corner (placement circle-br), explaining what is on screen."
+    }
+  ],
+  "textBlocks": [],
+  "captionsY": 82,
+  "frame": "docs/bd/kadrai/geri/demo-06.png",
+  "note": "Screen explained by a face: the screen gets the frame, the person shrinks to a corner circle, so the viewer gets both the thing and the human. Captions are one word at a time in a white box with black text on the left, level with the circle, so they sit in the empty bottom-left instead of over the screen."
+}

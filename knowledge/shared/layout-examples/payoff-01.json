@@ -1,0 +1,21 @@
+{
+  "id": "payoff-01",
+  "role": "payoff",
+  "arrangement": "overlay",
+  "anchor": "center",
+  "elements": [
+    {
+      "kind": "recording",
+      "x": 50,
+      "y": 50,
+      "w": 100,
+      "h": 100,
+      "order": 0,
+      "note": "Phone footage of the real laptop screen showing the finished website, filmed close and a little tilted, so it is clearly a real result on a real computer, not a mock-up. A hand comes in from the bottom right with a thumbs-up (part of the footage), its thumb at about x 77, y 79."
+    }
+  ],
+  "textBlocks": [],
+  "captionsY": 75,
+  "frame": "docs/bd/kadrai/geri/payoff-01.webp",
+  "note": "The payoff closes the promise: the finished result on screen, a human gesture of approval, and a short verdict in the captions (\"GOOD TO GO.\", big white bold with a dark outline). Filmed footage instead of a clean recording makes it feel like proof that it really works."
+}

@@ -4,12 +4,16 @@ import {
   type AnalysisVocabularyField,
 } from "../knowledge/analysisVocabulary";
 import {
+  backgroundFillKindSchema,
   backgroundIdSchema,
   entrancePresetSchema,
   highlightStyleSchema,
   kenBurnsPresetSchema,
+  POSITION_MAX,
+  POSITION_MIN,
   richTextFontSchema,
   richTextSizeSchema,
+  visualEffectSchema,
   visualTypeSchema,
 } from "./capabilities";
 import { scenePlanRoleSchema } from "./scene";
@@ -152,23 +156,44 @@ export const transitionPhraseSchema = z
   })
   .strict();
 
-// A layout in words, never pixels: the layout compiler (D) turns it into x/y.
+// Where something sits, measured on a real frame: the box's CENTRE and its
+// width and height, all in percent of the 1080x1920 canvas — the same
+// convention as a TikMaker layer's x/y. The layout compiler (D) puts the real
+// element into this box (auto-fit), so the example leaves little to guess.
+// Like a layer, a box may reach past the frame (a window zoomed in on purpose).
+const percent = z.number().min(0).max(100);
+const position = z.number().min(POSITION_MIN).max(POSITION_MAX);
+const extent = z.number().positive().max(300);
+const boxFields = { x: position, y: position, w: extent, h: extent };
+
+// Elements are listed bottom first, like content.visuals: the array order is
+// the z-order. `order` is when it appears (0 = first).
 export const layoutElementSchema = z
   .object({
     kind: visualTypeSchema,
+    ...boxFields,
     order: z.number().int().min(0),
-    size: vocabulary("screenShare"),
-    enter: entrancePresetSchema,
+    // Unknown from a still frame, so optional.
+    enter: entrancePresetSchema.optional(),
     // Unset = the element holds still once it has arrived.
     alive: kenBurnsPresetSchema.optional(),
+    effects: z.array(visualEffectSchema).optional(),
+    note: z.string().optional(),
   })
   .strict();
 
 export const layoutTextSchema = z
   .object({
+    ...boxFields,
     order: z.number().int().min(0),
     size: richTextSizeSchema,
+    lines: z.number().int().min(1),
+    // The whole line in a box (a rich-headline `pill`), not one word.
+    pill: z.boolean().optional(),
+    // One highlighted word inside the line.
     emphasis: highlightStyleSchema.optional(),
+    effects: z.array(visualEffectSchema).optional(),
+    note: z.string().optional(),
   })
   .strict();
 
@@ -179,11 +204,20 @@ export const layoutExampleSchema = z
     role: knowledgeRoleSchema,
     arrangement: z.enum(["stack", "side-by-side", "overlay", "corner"]),
     anchor: z.enum(["center", "left", "right", "top", "bottom"]),
+    // What fills the frame behind everything. Unset when an element (a
+    // full-frame talking head or recording) is itself the background.
+    background: backgroundFillKindSchema.optional(),
     elements: z.array(layoutElementSchema),
     textBlocks: z.array(layoutTextSchema),
+    // Where the captions sit (centre, % of the height), when the frame has
+    // them. Captions are drawn from the voiceover, so they are not a text
+    // block; this is the project's captions.y.
+    captionsY: percent.optional(),
     continuity: z.string().optional(),
     // Path to the frame this example was taken from (C4).
     frame: z.string().optional(),
+    // Why the frame works, and anything the fields above cannot say.
+    note: z.string().optional(),
   })
   .strict();
 

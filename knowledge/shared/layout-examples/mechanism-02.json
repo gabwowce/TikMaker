@@ -1,0 +1,35 @@
+{
+  "id": "mechanism-02",
+  "role": "mechanism",
+  "arrangement": "stack",
+  "anchor": "top",
+  "background": "solid",
+  "elements": [
+    {
+      "kind": "checklist",
+      "x": 50,
+      "y": 53.5,
+      "w": 57,
+      "h": 20,
+      "order": 1,
+      "note": "Two rows: a property on the left in big white text (\"Passive\", \"Access to tools\"), a red circle with a white ✗ on the right. Rows far apart, the ✗ marks in one column."
+    }
+  ],
+  "textBlocks": [
+    {
+      "x": 50,
+      "y": 18.5,
+      "w": 57,
+      "h": 9,
+      "order": 0,
+      "size": "headline",
+      "lines": 2,
+      "emphasis": "color",
+      "effects": ["glow"],
+      "note": "The same item title as mechanism-01, unchanged in place."
+    }
+  ],
+  "frame": "docs/bd/kadrai/geri/mechanism-02.png",
+  "continuity": "Same item as mechanism-01: the title holds, the diagram is replaced by this list.",
+  "note": "After how it works, what it can and cannot do: a short property list with ✗/✓ marks reads at a glance. Keeping the title still while the lower half changes tells the viewer they are still on the same item."
+}

@@ -1,0 +1,51 @@
+{
+  "id": "demo-08",
+  "role": "demo",
+  "arrangement": "stack",
+  "anchor": "top",
+  "background": "solid",
+  "elements": [
+    {
+      "kind": "phone",
+      "x": 50,
+      "y": 68.5,
+      "w": 94,
+      "h": 90,
+      "order": 1,
+      "note": "The app on a phone, almost full width, its top at about y 24 and its bottom cut off by the frame, so the screen is big enough to read. The screen is slightly dimmed except for the spotlight."
+    },
+    {
+      "kind": "highlight",
+      "x": 81,
+      "y": 41,
+      "w": 23,
+      "h": 13,
+      "order": 2,
+      "note": "A white circle over the one button the feature is about (bookmark), sharp and bright on the dimmed screen, like a magnifier. TikMaker's highlight draws an outline; this round spotlight would be a new effect (see mechanism-06)."
+    }
+  ],
+  "textBlocks": [
+    {
+      "x": 50,
+      "y": 14.5,
+      "w": 55,
+      "h": 3,
+      "order": 0,
+      "size": "title",
+      "lines": 1,
+      "note": "\"Follow & Bookmark your\", regular, in a lighter shade of the brand colour."
+    },
+    {
+      "x": 50,
+      "y": 19.5,
+      "w": 55,
+      "h": 4.3,
+      "order": 0,
+      "size": "headline",
+      "lines": 1,
+      "note": "\"Favorite Expert\", bold, the dark brand colour: the feature's name."
+    }
+  ],
+  "frame": "docs/bd/kadrai/geri/demo-08.png",
+  "note": "One feature per frame: its name on top in two lines (light then bold, both in the brand colour), the app on a big phone below, and a circle spotlight on the exact button. Pale brand-tinted background."
+}

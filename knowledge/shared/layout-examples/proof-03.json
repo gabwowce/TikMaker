@@ -1,0 +1,53 @@
+{
+  "id": "proof-03",
+  "role": "proof",
+  "arrangement": "stack",
+  "anchor": "center",
+  "background": "solid",
+  "elements": [
+    {
+      "kind": "screen",
+      "x": 49.5,
+      "y": 34,
+      "w": 81.5,
+      "h": 25,
+      "order": 1,
+      "effects": ["shadow"],
+      "note": "BEFORE: the rough version in a rounded card with a deep shadow (here a wireframe with grid lines and selection handles)."
+    },
+    {
+      "kind": "screen",
+      "x": 49.5,
+      "y": 67,
+      "w": 81.5,
+      "h": 25,
+      "order": 3,
+      "effects": ["shadow"],
+      "note": "AFTER: the same thing finished, in an identical card directly below, so the eye compares straight down."
+    }
+  ],
+  "textBlocks": [
+    {
+      "x": 36.5,
+      "y": 17,
+      "w": 38.5,
+      "h": 4,
+      "order": 0,
+      "size": "title",
+      "lines": 1,
+      "note": "Label of the first card (\"wireframe\"), bold black lower case, left of centre, right above its card."
+    },
+    {
+      "x": 27.5,
+      "y": 51.5,
+      "w": 16,
+      "h": 3.6,
+      "order": 2,
+      "size": "title",
+      "lines": 1,
+      "note": "Label of the second card (\"final\"), same style, right above its card."
+    }
+  ],
+  "frame": "docs/bd/kadrai/geri/proof-03.png",
+  "note": "Before / after stacked vertically: two identical cards, one word above each, white background, nothing else. Same size and position for both is what makes the change obvious. TikMaker's comparison scene puts the two side by side; on 9:16 stacking gives each card more width."
+}

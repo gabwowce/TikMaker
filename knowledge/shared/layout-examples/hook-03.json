@@ -1,0 +1,31 @@
+{
+  "id": "hook-03",
+  "role": "hook",
+  "arrangement": "stack",
+  "anchor": "center",
+  "background": "solid",
+  "elements": [
+    {
+      "kind": "recording",
+      "x": 50,
+      "y": 24,
+      "w": 100,
+      "h": 48,
+      "order": 0,
+      "note": "Top half: the tool's own screen (a dark terminal app), shown flat with no frame. The tool's logo and prompt sit small in the middle of it."
+    },
+    {
+      "kind": "talking-head",
+      "x": 50,
+      "y": 74,
+      "w": 100,
+      "h": 51,
+      "order": 0,
+      "note": "Bottom half (placement bottom): the presenter speaking to camera, face in the upper part of the half."
+    }
+  ],
+  "textBlocks": [],
+  "captionsY": 48,
+  "frame": "docs/bd/kadrai/geri/hook-03.png",
+  "note": "Split screen for a hook that is said out loud: what the video is about on top, the person saying it below, captions on the seam between the halves so the eye moves between both."
+}

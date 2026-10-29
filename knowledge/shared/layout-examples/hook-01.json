@@ -1,0 +1,43 @@
+{
+  "id": "hook-01",
+  "role": "hook",
+  "arrangement": "overlay",
+  "anchor": "top",
+  "elements": [
+    {
+      "kind": "talking-head",
+      "x": 50,
+      "y": 50,
+      "w": 100,
+      "h": 100,
+      "order": 0,
+      "note": "Full frame. The person does not speak (the voiceover does): they point up at the headline, which sends the viewer's eye to it."
+    }
+  ],
+  "textBlocks": [
+    {
+      "x": 50,
+      "y": 25,
+      "w": 64,
+      "h": 10,
+      "order": 0,
+      "size": "bodyLarge",
+      "lines": 2,
+      "pill": true,
+      "note": "White box, black text; the hook itself."
+    },
+    {
+      "x": 52,
+      "y": 32,
+      "w": 11,
+      "h": 2,
+      "order": 1,
+      "size": "label",
+      "lines": 1,
+      "effects": ["outline"],
+      "note": "Small white series label (\"Part 1\") right under the headline."
+    }
+  ],
+  "frame": "docs/bd/kadrai/geri/hook-01.png",
+  "note": "For a channel with a face but no own voice: the face fills the frame, the text sits in the empty upper third above the head, and the gesture points at it."
+}

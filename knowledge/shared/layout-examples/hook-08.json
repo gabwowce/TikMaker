@@ -1,0 +1,42 @@
+{
+  "id": "hook-08",
+  "role": "hook",
+  "arrangement": "overlay",
+  "anchor": "center",
+  "background": "image",
+  "elements": [
+    {
+      "kind": "image",
+      "x": 50,
+      "y": 50,
+      "w": 97.5,
+      "h": 56,
+      "order": 0,
+      "note": "A landscape photo of the place where the story happens, sharp, across the middle band of the frame, with a thin dark top edge."
+    },
+    {
+      "kind": "image",
+      "x": 28,
+      "y": 60.5,
+      "w": 53.5,
+      "h": 34.5,
+      "order": 1,
+      "note": "A crying meme character (cut-out drawing) in the lower-left of the photo, overlapping its bottom edge: the emotion of the story."
+    }
+  ],
+  "textBlocks": [
+    {
+      "x": 50.5,
+      "y": 36,
+      "w": 68.5,
+      "h": 10,
+      "order": 2,
+      "size": "title",
+      "lines": 2,
+      "effects": ["outline"],
+      "note": "A dramatic quote from the story as the hook, white bold condensed italic with a thick black outline, on the sky of the photo."
+    }
+  ],
+  "frame": "docs/bd/kadrai/geri/hook-08.webp",
+  "note": "How to use landscape material in 9:16: the sharp photo across the middle, and behind it the same photo zoomed to fill the frame and heavily blurred, so there are no black bars and the colours match. A meme character adds the emotion; the quote is the hook."
+}

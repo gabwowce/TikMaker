@@ -1,0 +1,39 @@
+{
+  "id": "cta-01",
+  "role": "cta",
+  "arrangement": "stack",
+  "anchor": "center",
+  "background": "video",
+  "elements": [
+    {
+      "kind": "prop",
+      "x": 50.5,
+      "y": 41.5,
+      "w": 17,
+      "h": 9,
+      "order": 0,
+      "note": "A white thumbs-up icon, right above the button."
+    },
+    {
+      "kind": "prop",
+      "x": 50,
+      "y": 50,
+      "w": 38.5,
+      "h": 6.5,
+      "order": 1,
+      "note": "A red SUBSCRIBE button (white bold text), dead centre."
+    },
+    {
+      "kind": "prop",
+      "x": 56,
+      "y": 53.5,
+      "w": 11,
+      "h": 7,
+      "order": 2,
+      "note": "A white hand cursor that moves onto the button and clicks it."
+    }
+  ],
+  "textBlocks": [],
+  "frame": "docs/bd/kadrai/geri/cta-01.png",
+  "note": "The CTA is a small animated sticker over the story, not a separate end card: the footage keeps playing behind it, darkened. Thumbs-up, button, then the cursor clicking it: the viewer is shown the action, not told. The line of text at the bottom of the original frame is the player's own captions, not part of the video."
+}

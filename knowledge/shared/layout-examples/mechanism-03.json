@@ -1,0 +1,43 @@
+{
+  "id": "mechanism-03",
+  "role": "mechanism",
+  "arrangement": "overlay",
+  "anchor": "center",
+  "background": "solid",
+  "elements": [
+    {
+      "kind": "image",
+      "x": 50,
+      "y": 40.5,
+      "w": 63,
+      "h": 42,
+      "order": 0,
+      "note": "The same cartoon world after the change: a green island, a palm with only one banana left, and three gorillas instead of one."
+    }
+  ],
+  "textBlocks": [
+    {
+      "x": 62.5,
+      "y": 33,
+      "w": 29,
+      "h": 2.7,
+      "order": 1,
+      "size": "body",
+      "lines": 1,
+      "note": "A short label right next to what it describes (\"less bananas\" beside the almost empty palm)."
+    },
+    {
+      "x": 50,
+      "y": 65.5,
+      "w": 28,
+      "h": 2.7,
+      "order": 2,
+      "size": "body",
+      "lines": 1,
+      "note": "Second label under the gorillas (\"more gorillas\")."
+    }
+  ],
+  "frame": "docs/bd/kadrai/geri/mechanism-03.png",
+  "continuity": "Follows setup-02: same style, the world has changed.",
+  "note": "The consequence shown, not told: the drawing changes and two tiny labels sit on the parts that changed, instead of a headline over the frame."
+}

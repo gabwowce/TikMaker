@@ -1,0 +1,22 @@
+{
+  "id": "demo-05",
+  "role": "demo",
+  "arrangement": "overlay",
+  "anchor": "center",
+  "background": "image",
+  "elements": [
+    {
+      "kind": "browser",
+      "x": 50,
+      "y": 50,
+      "w": 110,
+      "h": 76,
+      "order": 0,
+      "note": "The tool's start page in a browser, zoomed so it is wider than the frame (cut off left and right): the heading, the prompt box with a prompt being typed, and the option buttons are big enough to read."
+    }
+  ],
+  "textBlocks": [],
+  "frame": "docs/bd/kadrai/geri/demo-05.png",
+  "continuity": "Follows proof-02.",
+  "note": "How you use it: the input step. Zooming the browser past the frame's sides makes the prompt readable on a phone; a blurred colourful wallpaper shows above and below."
+}

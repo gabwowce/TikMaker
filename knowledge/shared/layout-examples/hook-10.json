@@ -1,0 +1,28 @@
+{
+  "id": "hook-10",
+  "role": "hook",
+  "arrangement": "stack",
+  "anchor": "left",
+  "background": "solid",
+  "elements": [
+    {
+      "kind": "logo",
+      "x": 38.5,
+      "y": 47,
+      "w": 48.5,
+      "h": 8.5,
+      "order": 4,
+      "note": "The brand's own wordmark (\"Google\" in its colours) used as one line of the title."
+    }
+  ],
+  "textBlocks": [
+    { "x": 38, "y": 25, "w": 49, "h": 3.6, "order": 0, "size": "bodyLarge", "lines": 1, "effects": ["glow"], "note": "\"How to build\", left-aligned." },
+    { "x": 25, "y": 29, "w": 22, "h": 3.2, "order": 1, "size": "bodyLarge", "lines": 1, "effects": ["glow"], "note": "\"a real\", left-aligned." },
+    { "x": 38, "y": 34.5, "w": 49, "h": 5, "order": 2, "size": "headline", "lines": 1, "effects": ["glow"], "note": "\"AI Agent\": the key words, bigger." },
+    { "x": 52.5, "y": 40, "w": 20, "h": 3.4, "order": 3, "size": "bodyLarge", "lines": 1, "effects": ["glow"], "note": "\"using\", right-aligned to the block's edge." },
+    { "x": 28.5, "y": 54, "w": 29, "h": 6, "order": 5, "size": "hero", "lines": 1, "effects": ["glow"], "note": "\"ADK\": the product, biggest." },
+    { "x": 61.5, "y": 71, "w": 50, "h": 11, "order": 6, "size": "headline", "lines": 2, "effects": ["glow"], "note": "\"—in 60 seconds\" on its own, lower and right-aligned: the promise." }
+  ],
+  "frame": "docs/bd/kadrai/geri/hook-10.png",
+  "note": "Text-only hook as a typographic composition: one sentence broken into lines of different sizes, key words biggest, lines left- and right-aligned in turn, the brand as its own logo line, the time promise set apart lower right. White with a soft glow on black. TikMaker: a rich headline with per-line size, alignment and position."
+}

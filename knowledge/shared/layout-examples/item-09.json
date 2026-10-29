@@ -1,0 +1,17 @@
+{
+  "id": "item-09",
+  "role": "item",
+  "arrangement": "stack",
+  "anchor": "center",
+  "background": "solid",
+  "elements": [
+    { "kind": "logo", "x": 20.5, "y": 55.5, "w": 13.5, "h": 7.5, "order": 1, "note": "The item's logo in a dark rounded tile at the left end of the name plate." }
+  ],
+  "textBlocks": [
+    { "x": 50, "y": 44.5, "w": 38.5, "h": 6.5, "order": 0, "size": "hero", "lines": 1, "note": "\"First is\": the ordinal as words, big bold, instead of a number." },
+    { "x": 50, "y": 55.5, "w": 75.5, "h": 9, "order": 1, "size": "title", "lines": 1, "pill": true, "effects": ["shadow"], "note": "The item's name (\"PERPLEXITY MCP\") on a raised light plate like a 3D button, the logo tile inside its left end, a long soft shadow below." }
+  ],
+  "frame": "docs/bd/kadrai/geri/item-09.png",
+  "continuity": "Each item opens like this; its explanation follows (benefit-03, mechanism-07).",
+  "note": "Item title card, nothing else on the plain light background: the ordinal on top, the name plate under it. The hook's decorations are gone so the name stands alone."
+}

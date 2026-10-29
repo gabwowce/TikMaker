@@ -1,0 +1,47 @@
+{
+  "id": "demo-02",
+  "role": "demo",
+  "arrangement": "stack",
+  "anchor": "center",
+  "background": "gradient",
+  "elements": [
+    {
+      "kind": "prop",
+      "x": 50,
+      "y": 50,
+      "w": 34,
+      "h": 18,
+      "order": 1,
+      "alive": "rotateCW",
+      "note": "The tool's spinner (an asterisk in the accent colour, softly blurred) spinning in the centre: the tool is working."
+    }
+  ],
+  "textBlocks": [
+    {
+      "x": 51,
+      "y": 19.5,
+      "w": 76,
+      "h": 8,
+      "order": 0,
+      "size": "body",
+      "lines": 3,
+      "pill": true,
+      "effects": ["shadow"],
+      "emphasis": "color",
+      "note": "The prompt the user types, as a light card with a border and shadow; the tool's name inside it is in the accent colour."
+    },
+    {
+      "x": 50,
+      "y": 63.5,
+      "w": 17,
+      "h": 2,
+      "order": 2,
+      "size": "label",
+      "lines": 1,
+      "note": "Status word under the spinner (\"interrogating...\"), small and italic."
+    }
+  ],
+  "frame": "docs/bd/kadrai/geri/demo-02.png",
+  "continuity": "Follows item-02: the number is gone, the prompt card takes the top, the spinner the middle.",
+  "note": "Shows the action as input → working: what you type on top, the tool thinking in the middle. Nothing is shown before it is needed."
+}

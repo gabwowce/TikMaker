@@ -1,0 +1,64 @@
+{
+  "id": "cta-04",
+  "role": "cta",
+  "arrangement": "stack",
+  "anchor": "center",
+  "background": "solid",
+  "elements": [
+    {
+      "kind": "image",
+      "x": 50,
+      "y": 50,
+      "w": 65,
+      "h": 27,
+      "order": 2,
+      "effects": ["shadow"],
+      "note": "The free resource as an object: a 3D render of the e-book, tilted, with a soft shadow, on a patch of small '+' grid marks."
+    }
+  ],
+  "textBlocks": [
+    {
+      "x": 48.5,
+      "y": 13.5,
+      "w": 36,
+      "h": 3.8,
+      "order": 0,
+      "size": "title",
+      "lines": 1,
+      "note": "\"Comment\", bold italic: the action."
+    },
+    {
+      "x": 48.5,
+      "y": 21.5,
+      "w": 64,
+      "h": 6.4,
+      "order": 1,
+      "size": "hero",
+      "lines": 1,
+      "note": "The keyword in quotes (\"HUMAN\"), the biggest thing on screen, bold uppercase black."
+    },
+    {
+      "x": 48.5,
+      "y": 70.5,
+      "w": 70,
+      "h": 3.7,
+      "order": 3,
+      "size": "title",
+      "lines": 1,
+      "emphasis": "bold",
+      "note": "\"And i'll send you my e-book\", regular, \"e-book\" bold italic: what you get."
+    },
+    {
+      "x": 47.5,
+      "y": 79.5,
+      "w": 72,
+      "h": 11.5,
+      "order": 4,
+      "size": "headline",
+      "lines": 2,
+      "note": "The resource's title in quotes, big bold condensed."
+    }
+  ],
+  "frame": "docs/bd/kadrai/geri/cta-04.png",
+  "note": "Comment-keyword / lead-magnet CTA: the keyword is the largest text, the reward is shown as a real object, and its title is spelled out below. Top to bottom it reads as one sentence: comment HUMAN, get this book. White background, the channel watermark under it."
+}

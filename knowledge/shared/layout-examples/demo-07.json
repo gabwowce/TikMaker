@@ -1,0 +1,30 @@
+{
+  "id": "demo-07",
+  "role": "demo",
+  "arrangement": "stack",
+  "anchor": "center",
+  "elements": [
+    {
+      "kind": "recording",
+      "x": 50,
+      "y": 25,
+      "w": 100,
+      "h": 50,
+      "order": 0,
+      "note": "Top half: the tool's screen recording (here a deploy settings page), cropped to the part being used, the cursor on the button."
+    },
+    {
+      "kind": "talking-head",
+      "x": 50,
+      "y": 75,
+      "w": 100,
+      "h": 50,
+      "order": 0,
+      "note": "Bottom half (placement bottom): the presenter talking to camera."
+    }
+  ],
+  "textBlocks": [],
+  "captionsY": 49,
+  "frame": "docs/bd/kadrai/geri/demo-07.png",
+  "note": "Split screen during a walkthrough, the same layout as hook-03: screen on top, presenter below, captions on the seam. Here the captions are one or two words in a light-grey box with black text, which reads well over both halves."
+}

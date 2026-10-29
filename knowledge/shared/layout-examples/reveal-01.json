@@ -1,0 +1,22 @@
+{
+  "id": "reveal-01",
+  "role": "reveal",
+  "arrangement": "overlay",
+  "anchor": "left",
+  "background": "image",
+  "elements": [
+    {
+      "kind": "browser",
+      "x": 68.5,
+      "y": 67.5,
+      "w": 110,
+      "h": 75,
+      "order": 0,
+      "effects": ["shadow"],
+      "note": "The website in real browser chrome (tab, address bar with the URL), pushed to the lower right so it runs past the right and bottom edges. Its top-left corner sits at about x 13.5, y 30; the address bar (about y 37) is big enough to read: the URL is the information."
+    }
+  ],
+  "textBlocks": [],
+  "frame": "docs/bd/kadrai/geri/reveal-01.png",
+  "note": "Shows WHERE to go. Cropping the browser lets the tab and address bar fill the frame instead of a small whole window. A colourful, blurred desktop wallpaper behind it says 'this is a real computer' and stands apart from the dark site."
+}

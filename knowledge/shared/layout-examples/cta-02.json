@@ -1,0 +1,53 @@
+{
+  "id": "cta-02",
+  "role": "cta",
+  "arrangement": "stack",
+  "anchor": "center",
+  "background": "solid",
+  "elements": [
+    {
+      "kind": "logo",
+      "x": 50,
+      "y": 11,
+      "w": 31.5,
+      "h": 17.5,
+      "order": 0,
+      "effects": ["glow"],
+      "note": "The pulsing logo, top centre, as in benefit-02."
+    },
+    {
+      "kind": "image",
+      "x": 50,
+      "y": 53.5,
+      "w": 100,
+      "h": 32,
+      "order": 2,
+      "note": "The same card carousel, moved on by one card."
+    },
+    {
+      "kind": "phone",
+      "x": 50,
+      "y": 51.5,
+      "w": 36,
+      "h": 41.5,
+      "order": 3,
+      "note": "The same upright phone in front."
+    }
+  ],
+  "textBlocks": [
+    {
+      "x": 50,
+      "y": 24,
+      "w": 41,
+      "h": 3.6,
+      "order": 1,
+      "size": "title",
+      "lines": 1,
+      "note": "Where to get it (\"App Stores\"), bold black."
+    }
+  ],
+  "captionsY": 88.5,
+  "frame": "docs/bd/kadrai/geri/cta-02.webp",
+  "continuity": "Last frame of the promo; reuses benefit-02's layout so the CTA does not need a new scene.",
+  "note": "Product CTA: the voice says 'try it today' (captions, the last word in yellow) while the frame keeps the product in view and names where to get it. A 'try the product' CTA, which the analysis vocabulary has no word for yet."
+}

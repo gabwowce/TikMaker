@@ -1,0 +1,32 @@
+{
+  "id": "hook-09",
+  "role": "hook",
+  "arrangement": "stack",
+  "anchor": "bottom",
+  "background": "solid",
+  "elements": [
+    {
+      "kind": "image",
+      "x": 48,
+      "y": 73,
+      "w": 66,
+      "h": 48,
+      "order": 1,
+      "note": "A flat vector illustration of a person at a desk with a laptop, standing on the bottom of the frame. In TikMaker keep its feet above the bottom safe margin (about y 70 instead of 73)."
+    }
+  ],
+  "textBlocks": [
+    {
+      "x": 50.5,
+      "y": 23.5,
+      "w": 82,
+      "h": 5,
+      "order": 0,
+      "size": "title",
+      "lines": 1,
+      "note": "The question the video answers (\"How does AI work?\"), regular weight, black, one line, in the upper quarter."
+    }
+  ],
+  "frame": "docs/bd/kadrai/geri/hook-09.png",
+  "note": "Calm explainer hook: a plain question on top, a friendly flat illustration of someone like the viewer below, a lot of empty pastel space between them. No effects, no emphasis: the question itself is the hook."
+}

@@ -1,0 +1,44 @@
+{
+  "id": "hook-12",
+  "role": "hook",
+  "arrangement": "overlay",
+  "anchor": "right",
+  "background": "solid",
+  "elements": [
+    {
+      "kind": "phone",
+      "x": 50,
+      "y": 63.5,
+      "w": 100,
+      "h": 73,
+      "order": 0,
+      "note": "Four phones with the app's screens, all tilted about 30° the same way, overlapping and running off the right and bottom edges: a lot of product at once."
+    },
+    {
+      "kind": "logo",
+      "x": 79,
+      "y": 13,
+      "w": 34,
+      "h": 16,
+      "order": 1,
+      "effects": ["glow"],
+      "note": "The app's round logo in the top-right corner with soft pulsing rings around it."
+    }
+  ],
+  "textBlocks": [
+    {
+      "x": 24.5,
+      "y": 33,
+      "w": 43,
+      "h": 8,
+      "order": 2,
+      "size": "title",
+      "lines": 2,
+      "note": "\"PROMOTE / YOUR APP\", left-aligned in the empty top-left: first line in the brand purple, second in grey."
+    }
+  ],
+  "captionsY": 87,
+  "frame": "docs/bd/kadrai/geri/hook-12.webp",
+  "continuity": "Promo video: benefit-01, reveal-02, benefit-02 and cta-02 keep the same logo, colours and caption style.",
+  "note": "Product-promo hook: light grey background with big purple gradient circles in the corners, the product shown many times over on tilted phones, the logo pulsing in a corner, a short title in the free space. Captions: bold rounded white words with the active word in yellow."
+}

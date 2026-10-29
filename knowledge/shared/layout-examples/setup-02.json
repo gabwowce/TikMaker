@@ -1,0 +1,51 @@
+{
+  "id": "setup-02",
+  "role": "setup",
+  "arrangement": "stack",
+  "anchor": "center",
+  "background": "solid",
+  "elements": [
+    {
+      "kind": "prop",
+      "x": 49,
+      "y": 37,
+      "w": 23.5,
+      "h": 11,
+      "order": 1,
+      "note": "A hand-drawn bunch of bananas: the thing that moves (the imported goods)."
+    },
+    {
+      "kind": "line",
+      "x": 57,
+      "y": 50.5,
+      "w": 7,
+      "h": 14,
+      "order": 2,
+      "note": "A curved hand-drawn arrow that draws itself on from the bananas down to the island: shows the movement."
+    },
+    {
+      "kind": "image",
+      "x": 49,
+      "y": 62.5,
+      "w": 63,
+      "h": 32.5,
+      "order": 0,
+      "note": "The analogy world as one funny drawing: a banana-shaped island with a palm tree and a gorilla. Could also be built from separate props (island, palm, gorilla)."
+    }
+  ],
+  "textBlocks": [
+    {
+      "x": 50,
+      "y": 24.5,
+      "w": 32.5,
+      "h": 6.5,
+      "order": 0,
+      "size": "headline",
+      "lines": 1,
+      "note": "Just the term being explained (\"Tariff\"), plain black on white."
+    }
+  ],
+  "frame": "docs/bd/kadrai/geri/setup-02.png",
+  "continuity": "The same drawing style carries into the next frame (mechanism-03), where the world changes.",
+  "note": "A dry concept made into a silly, simple picture: the term on top, the drawing under it, an arrow showing what moves. White background and outlined cartoon art keep it readable at a glance."
+}

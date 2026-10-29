@@ -1,0 +1,42 @@
+{
+  "id": "hook-07",
+  "role": "hook",
+  "arrangement": "stack",
+  "anchor": "center",
+  "background": "solid",
+  "elements": [
+    {
+      "kind": "image",
+      "x": 54,
+      "y": 53.5,
+      "w": 83,
+      "h": 31,
+      "order": 1,
+      "note": "One absurd cut-out photo in the middle: a round white duck holding two spoons out to its sides. The odd, cute picture is what stops the scroll."
+    }
+  ],
+  "textBlocks": [
+    {
+      "x": 50,
+      "y": 25.5,
+      "w": 90,
+      "h": 6,
+      "order": 0,
+      "size": "headline",
+      "lines": 1,
+      "note": "The topic (\"The Spoon Theory\"), black on white in a rounded, handwritten-looking font, almost full width."
+    },
+    {
+      "x": 49.5,
+      "y": 76,
+      "w": 81,
+      "h": 5,
+      "order": 2,
+      "size": "title",
+      "lines": 1,
+      "note": "The twist in brackets under the picture (\"(explained by ducks)\"), same font, a bit smaller."
+    }
+  ],
+  "frame": "docs/bd/kadrai/geri/hook-07.png",
+  "note": "Topic on top, a funny picture in the middle, the twist below: the same sandwich as hook-02 but light and playful. A serious topic plus a silly promise ('explained by ducks') is the curiosity gap. Plain white background, nothing else."
+}

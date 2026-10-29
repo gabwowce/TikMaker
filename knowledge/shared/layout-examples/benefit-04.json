@@ -1,0 +1,32 @@
+{
+  "id": "benefit-04",
+  "role": "benefit",
+  "arrangement": "overlay",
+  "anchor": "bottom",
+  "elements": [
+    {
+      "kind": "recording",
+      "x": 50,
+      "y": 50,
+      "w": 100,
+      "h": 100,
+      "order": 0,
+      "note": "The spreadsheet app's screen recording, zoomed so cells and the code in the formula bar are big, cut off on both sides: the change happens right there (the chart type word is highlighted in the code)."
+    }
+  ],
+  "textBlocks": [
+    {
+      "x": 50,
+      "y": 78.5,
+      "w": 74,
+      "h": 10.5,
+      "order": 1,
+      "size": "title",
+      "lines": 2,
+      "pill": true,
+      "note": "The benefit as a sentence (\"Now you can easily change the chart type!\") in dark brown on a rounded mustard-yellow box, over the lower part of the recording."
+    }
+  ],
+  "frame": "docs/bd/kadrai/geri/benefit-04.png",
+  "note": "Benefit stated on top of the action that delivers it: the full-frame zoomed recording shows the change, one yellow text box says what you gain. The box sits low, over rows that do not matter, so the important part of the screen stays clear."
+}

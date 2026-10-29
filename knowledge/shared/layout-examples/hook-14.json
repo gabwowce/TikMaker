@@ -1,0 +1,21 @@
+{
+  "id": "hook-14",
+  "role": "hook",
+  "arrangement": "stack",
+  "anchor": "center",
+  "background": "solid",
+  "elements": [
+    { "kind": "logo", "x": 28.5, "y": 18.5, "w": 31, "h": 17.5, "order": 0, "effects": ["shadow"], "note": "Asterisk disc, top left (the discs swap corners from hook-13)." },
+    { "kind": "prop", "x": 85, "y": 11, "w": 35, "h": 23, "order": 0, "note": "Big asterisk shape, top-right corner." },
+    { "kind": "logo", "x": 68.5, "y": 81, "w": 31, "h": 17.5, "order": 0, "effects": ["shadow"], "note": "Asterisk disc, bottom right." },
+    { "kind": "prop", "x": 18, "y": 88, "w": 40, "h": 24, "order": 0, "note": "Big asterisk shape, bottom-left corner." }
+  ],
+  "textBlocks": [
+    { "x": 50, "y": 40.5, "w": 42, "h": 3.2, "order": 1, "size": "body", "lines": 1, "note": "\"these are the\", light." },
+    { "x": 50, "y": 46.5, "w": 77, "h": 5, "order": 2, "size": "headline", "lines": 1, "note": "\"5 MCP Servers\", big bold black: the number and the subject." },
+    { "x": 50, "y": 55, "w": 77.5, "h": 7, "order": 3, "size": "title", "lines": 1, "pill": true, "note": "\"you need right now\" in white on a solid black box (an inverted pill): the urgency." }
+  ],
+  "frame": "docs/bd/kadrai/geri/hook-14.png",
+  "continuity": "Second half of the hook after hook-13: same decorations in swapped corners.",
+  "note": "List hook as three stacked lines in three weights: light lead-in, bold promise, black-box urgency. Same light dotted-grid style as hook-13."
+}

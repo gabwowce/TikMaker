@@ -1,0 +1,31 @@
+{
+  "id": "mechanism-06",
+  "role": "mechanism",
+  "arrangement": "overlay",
+  "anchor": "center",
+  "elements": [
+    {
+      "kind": "recording",
+      "x": 50,
+      "y": 50,
+      "w": 100,
+      "h": 100,
+      "order": 0,
+      "note": "The whole tool screen (a workflow canvas), darkened and blurred."
+    },
+    {
+      "kind": "highlight",
+      "x": 39.5,
+      "y": 56,
+      "w": 50,
+      "h": 27.5,
+      "order": 1,
+      "effects": ["glow"],
+      "note": "Spotlight: the one element being explained (a node of the workflow) stays sharp and bright, a little enlarged, with a soft white glow around its box, while everything else is dimmed and blurred. TikMaker's highlight only draws an outline; a spotlight (dim + blur outside a box) would be a new effect."
+    }
+  ],
+  "textBlocks": [],
+  "captionsY": 78,
+  "frame": "docs/bd/kadrai/geri/mechanism-06.png",
+  "note": "Explaining one part of a busy screen: dim and blur the rest, keep the part sharp and glowing. Captions under it in heavy white italic with a black outline, the key word in glowing green."
+}

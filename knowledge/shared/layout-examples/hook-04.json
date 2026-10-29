@@ -1,0 +1,60 @@
+{
+  "id": "hook-04",
+  "role": "hook",
+  "arrangement": "stack",
+  "anchor": "top",
+  "background": "gradient",
+  "elements": [
+    {
+      "kind": "recording",
+      "x": 50,
+      "y": 27.5,
+      "w": 100,
+      "h": 30,
+      "order": 0,
+      "note": "The finished result first: the website that was built, edge to edge, no browser chrome."
+    },
+    {
+      "kind": "logo",
+      "x": 22.5,
+      "y": 62.5,
+      "w": 34,
+      "h": 9.5,
+      "order": 2,
+      "note": "First tool logo, left."
+    },
+    {
+      "kind": "logo",
+      "x": 71,
+      "y": 71.5,
+      "w": 36,
+      "h": 20.5,
+      "order": 3,
+      "note": "Second tool logo, right and lower, the biggest of the three."
+    },
+    {
+      "kind": "logo",
+      "x": 27.5,
+      "y": 87.5,
+      "w": 32,
+      "h": 18,
+      "order": 4,
+      "note": "Third tool logo, back on the left, lowest. In TikMaker keep it above the bottom safe margin (move up to about y 80)."
+    }
+  ],
+  "textBlocks": [
+    {
+      "x": 50,
+      "y": 50,
+      "w": 84,
+      "h": 10,
+      "order": 1,
+      "size": "headline",
+      "lines": 2,
+      "effects": ["shadow"],
+      "note": "White, soft shadow, sits right on the seam under the result: names what the lower half is."
+    }
+  ],
+  "frame": "docs/bd/kadrai/geri/hook-04.png",
+  "note": "Result on top, how it was made below. The tool logos zigzag left, right, left at different sizes instead of sitting in a row, which keeps the lower half lively; they are the list the video will go through."
+}

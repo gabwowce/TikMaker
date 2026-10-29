@@ -1,0 +1,23 @@
+{
+  "id": "setup-01",
+  "role": "setup",
+  "arrangement": "overlay",
+  "anchor": "left",
+  "background": "gradient",
+  "elements": [
+    {
+      "kind": "screen",
+      "x": 67,
+      "y": 49,
+      "w": 110,
+      "h": 66,
+      "order": 0,
+      "effects": ["shadow"],
+      "note": "The same screen from the hook, zoomed in with keyframes onto the part that matters (the prompt), so it runs past the right edge on purpose. Inside: the tool's title, the prompt being typed and its output."
+    }
+  ],
+  "textBlocks": [],
+  "frame": "docs/bd/kadrai/geri/setup-01.png",
+  "continuity": "Continues hook-05: a keyframe zoom from the whole laptop into one part of its screen.",
+  "note": "No separate text: the prompt inside the screen is the text. Zooming in instead of cutting keeps it one continuous object and points at what to read."
+}
