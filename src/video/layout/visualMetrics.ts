@@ -12,10 +12,10 @@ export function naturalVisualSize(visual: VisualConfig): Size {
   switch (visual.type) {
     case "prop":
       return { width: 260, height: 260 };
-    case "tool-logo":
+    case "logo":
       return { width: 220, height: visual.showName ? 300 : 220 };
-    case "tool-flow": {
-      const n = visual.tools.length;
+    case "logo-flow": {
+      const n = visual.logos.length;
       return { width: n * 200 + (n - 1) * 70, height: 200 };
     }
     case "image":

@@ -18,13 +18,13 @@ describe("parseProject", () => {
           type: "hook-centered",
           background: "solid-dark",
           content: {},
-          visual: { type: "tool-logo", tool: "claude" },
+          visual: { type: "logo", logo: "claude" },
         },
       ],
     });
     const layers = project.scenes[0].content.visuals ?? [];
     expect(layers).toHaveLength(1);
-    expect(layers[0].visual).toEqual({ type: "tool-logo", tool: "claude" });
+    expect(layers[0].visual).toEqual({ type: "logo", logo: "claude" });
     expect(typeof layers[0].x).toBe("number");
     expect(typeof layers[0].y).toBe("number");
   });
@@ -167,5 +167,39 @@ describe("parseProject", () => {
   });
   it("throws on genuinely malformed data rather than inventing a project", () => {
     expect(() => parseProject({ nope: true })).toThrow();
+  });
+  it("renames logos saved before B8 (tool-logo, tool-flow)", () => {
+    const project = parseProject({
+      ...base,
+      scenes: [
+        {
+          id: "s",
+          type: "hook-centered",
+          background: "solid-dark",
+          content: {
+            visuals: [
+              {
+                id: "a",
+                visual: { type: "tool-logo", tool: "claude" },
+                x: 50,
+                y: 50,
+              },
+              {
+                id: "b",
+                visual: { type: "tool-flow", tools: ["claude", "github"] },
+                x: 50,
+                y: 70,
+              },
+            ],
+          },
+        },
+      ],
+    });
+    const visuals = project.scenes[0].content.visuals ?? [];
+    expect(visuals[0].visual).toEqual({ type: "logo", logo: "claude" });
+    expect(visuals[1].visual).toEqual({
+      type: "logo-flow",
+      logos: ["claude", "github"],
+    });
   });
 });

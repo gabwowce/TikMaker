@@ -1,6 +1,6 @@
 import { Img } from "remotion";
 import { getProp } from "../../../registries/propRegistry";
-import { getTool } from "../../../registries/toolRegistry";
+import { getLogo } from "../../../registries/logoRegistry";
 import type { VisualConfig } from "../../../schema/visual";
 import { VisualRenderer } from "../VisualRenderer";
 type BareAssetProps = {
@@ -8,8 +8,8 @@ type BareAssetProps = {
   size: number;
 };
 export function BareAsset({ visual, size }: BareAssetProps) {
-  if (visual.type === "tool-logo") {
-    const tool = getTool(visual.tool);
+  if (visual.type === "logo") {
+    const tool = getLogo(visual.logo);
     if (!tool) return null;
     return (
       <Img

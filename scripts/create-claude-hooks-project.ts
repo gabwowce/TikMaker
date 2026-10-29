@@ -89,9 +89,9 @@ output.scenes = output.scenes.map((scene: any, index: number) => {
       if (
         index === 3 &&
         visualIndex === 1 &&
-        visual.visual?.type === "tool-logo"
+        visual.visual?.type === "logo"
       ) {
-        return { ...visual, visual: { ...visual.visual, tool: "vs-code" } };
+        return { ...visual, visual: { ...visual.visual, logo: "vs-code" } };
       }
       return visual;
     },

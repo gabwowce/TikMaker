@@ -148,7 +148,7 @@ export const talkingHeadPlacementSchema = z.enum([
 // visual in visual.ts. Grouped like the folders in src/video/visuals/, so each
 // group says what kind of element it is.
 export const visualTypesByGroup = {
-  assets: ["tool-logo", "tool-flow", "prop", "image"], // logos, library pictures, own images
+  assets: ["logo", "logo-flow", "prop", "image"], // logos, library pictures, own images
   media: ["recording", "talking-head"], // own video or screen recording, own face
   devices: ["browser", "screen", "phone"], // a frame around other content
   data: [

@@ -1,7 +1,8 @@
 import { spawnSync } from "node:child_process";
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import path from "node:path";
-import { videoProjectSchema } from "../src/schema/project";
+import type { VideoProject } from "../src/schema/project";
+import { parseProject } from "../src/utils/normalizeProject";
 const [, , projectPathArg, outputPathArg] = process.argv;
 if (!projectPathArg) {
   console.error(
@@ -23,13 +24,15 @@ try {
   );
   process.exit(1);
 }
-const parseResult = videoProjectSchema.safeParse(raw);
-if (!parseResult.success) {
+// parseProject also upgrades projects saved in an older format
+let project: VideoProject;
+try {
+  project = parseProject(raw);
+} catch (err) {
   console.error(`"${projectPathArg}" does not match the project schema:`);
-  console.error(parseResult.error.format());
+  console.error(err instanceof Error ? err.message : err);
   process.exit(1);
 }
-const project = parseResult.data;
 const outputPath = outputPathArg
   ? path.resolve(process.cwd(), outputPathArg)
   : path.resolve(process.cwd(), "out", `${project.id}.mp4`);

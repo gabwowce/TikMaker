@@ -3,8 +3,8 @@ import type { VisualConfig } from "../../schema/visual";
 import { assetUrl } from "../../utils/assetUrl";
 import { naturalVisualSize } from "../layout/visualMetrics";
 import { PropAsset } from "./assets/PropAsset";
-import { ToolFlow } from "./assets/ToolFlow";
-import { ToolLogo } from "./assets/ToolLogo";
+import { LogoFlow } from "./assets/LogoFlow";
+import { Logo } from "./assets/Logo";
 import { AppMockup } from "./data/AppMockup";
 import { Checklist } from "./data/Checklist";
 import { Checkpoint } from "./data/Checkpoint";
@@ -42,10 +42,10 @@ type VisualRendererProps = {
 };
 export function VisualRenderer({ visual }: VisualRendererProps) {
   switch (visual.type) {
-    case "tool-logo":
-      return <ToolLogo tool={visual.tool} showName={visual.showName} />;
-    case "tool-flow":
-      return <ToolFlow tools={visual.tools} />;
+    case "logo":
+      return <Logo logo={visual.logo} showName={visual.showName} />;
+    case "logo-flow":
+      return <LogoFlow logos={visual.logos} />;
     case "prop":
       return <PropAsset name={visual.asset} />;
     case "image":

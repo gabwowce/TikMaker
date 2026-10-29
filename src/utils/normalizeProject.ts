@@ -325,12 +325,36 @@ function clampPositions(json: unknown): unknown {
       }
     )?.content;
     if (!content) continue;
-    for (const list of [content.visuals, content.blocks, content.richHeadline]) {
+    for (const list of [
+      content.visuals,
+      content.blocks,
+      content.richHeadline,
+    ]) {
       if (Array.isArray(list)) list.forEach(clampEntry);
     }
   }
   return json;
 }
+// Projects saved before B8 call a logo "tool-logo" (field `tool`) and a row of
+// logos "tool-flow" (field `tools`). Renamed here, anywhere in the project.
+export function renameToolLogos(json: unknown): unknown {
+  if (Array.isArray(json)) return json.map(renameToolLogos);
+  if (!json || typeof json !== "object") return json;
+  const entry: Record<string, unknown> = Object.fromEntries(
+    Object.entries(json).map(([key, value]) => [key, renameToolLogos(value)]),
+  );
+  if (entry.type === "tool-logo") {
+    const { tool, ...rest } = entry;
+    return { ...rest, type: "logo", logo: tool };
+  }
+  if (entry.type === "tool-flow") {
+    const { tools, ...rest } = entry;
+    return { ...rest, type: "logo-flow", logos: tools };
+  }
+  return entry;
+}
 export function parseProject(json: unknown): VideoProject {
-  return normalizeProject(videoProjectSchema.parse(clampPositions(json)));
+  return normalizeProject(
+    videoProjectSchema.parse(clampPositions(renameToolLogos(json))),
+  );
 }

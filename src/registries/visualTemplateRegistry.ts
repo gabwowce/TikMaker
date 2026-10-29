@@ -1,5 +1,5 @@
 import type { VisualConfig } from "../schema/visual";
-import { toolList } from "./toolRegistry";
+import { logoList } from "./logoRegistry";
 export type VisualTemplateCategory =
   | "media"
   | "data"
@@ -23,16 +23,16 @@ export type VisualTemplateDefinition = {
   category: VisualTemplateCategory;
   build: () => VisualConfig;
 };
-function firstTools(count: number) {
-  return toolList.slice(0, count).map((t) => t.id);
+function firstLogos(count: number) {
+  return logoList.slice(0, count).map((t) => t.id);
 }
 export const visualTemplateRegistry: VisualTemplateDefinition[] = [
   {
-    id: "tool-flow",
+    id: "logo-flow",
     category: "diagrams",
     label: "Tool Flow",
-    description: "A row of tool logos connected by arrows.",
-    build: () => ({ type: "tool-flow", tools: firstTools(3) }),
+    description: "A row of logos connected by arrows.",
+    build: () => ({ type: "logo-flow", logos: firstLogos(3) }),
   },
   {
     id: "recording-browser",
@@ -298,10 +298,10 @@ export const visualTemplateRegistry: VisualTemplateDefinition[] = [
     category: "diagrams",
     label: "Orbit Ring (Big, No Center)",
     description:
-      "Tool logos on a large ring framing your headline — no center graphic.",
+      "Logos on a large ring framing your headline — no center graphic.",
     build: () => ({
       type: "node-group",
-      nodes: firstTools(4).map((id) => ({ type: "tool-logo", tool: id })),
+      nodes: firstLogos(4).map((id) => ({ type: "logo", logo: id })),
       layout: "orbit",
       radius: 480,
     }),

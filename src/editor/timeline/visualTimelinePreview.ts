@@ -13,9 +13,9 @@ export function visualTimelinePreview(
   if (visual.type === "image") return { src: visual.src, label: "image" };
   if (visual.type === "recording" || visual.type === "talking-head")
     return { src: visual.src, video: true, label: visual.type };
-  if (visual.type === "prop" || visual.type === "tool-logo") {
+  if (visual.type === "prop" || visual.type === "logo") {
     const key =
-      visual.type === "prop" ? `prop:${visual.asset}` : `tool:${visual.tool}`;
+      visual.type === "prop" ? `prop:${visual.asset}` : `logo:${visual.logo}`;
     const match = buildAssetOptions(custom).find((asset) => asset.key === key);
     return { src: match?.src, label: match?.label ?? visual.type };
   }
@@ -25,11 +25,11 @@ export function visualTimelinePreview(
     visual.type === "phone"
   )
     return visualTimelinePreview(visual.content, custom);
-  if (visual.type === "tool-flow") {
+  if (visual.type === "logo-flow") {
     const match = buildAssetOptions(custom).find(
-      (asset) => asset.key === `tool:${visual.tools[0]}`,
+      (asset) => asset.key === `logo:${visual.logos[0]}`,
     );
-    return { src: match?.src, label: visual.tools.join(" → ") };
+    return { src: match?.src, label: visual.logos.join(" → ") };
   }
   if (visual.type === "corner-props" && visual.assets[0])
     return visualTimelinePreview(visual.assets[0], custom);
