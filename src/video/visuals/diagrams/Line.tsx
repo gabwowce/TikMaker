@@ -40,11 +40,15 @@ export function Line({
   const end = { x: box.pad + length, y: mid };
   // the bend: a control point above (curve > 0) or below the middle
   const control = { x: box.pad + length / 2, y: mid - curve * length };
-  const path = `M ${start.x} ${start.y} Q ${control.x} ${control.y} ${end.x} ${end.y}`;
-  const head = thickness * 2.6; // arrowhead size
-  // arrowheads point along the line at its ends; they appear once the line reaches them
-  const endHead = arrowHead(end, control, head);
-  const startHead = arrowHead(start, control, head);
+  // arrowhead: a triangle whose tip is the line's end. The line itself stops
+  // inside the triangle, so its round cap never pokes out past the tip.
+  const headLength = Math.max(18, thickness * 3);
+  const headWidth = Math.max(12, thickness * 2); // half of the base
+  const endHead = arrowHead(end, control, headLength, headWidth);
+  const startHead = arrowHead(start, control, headLength, headWidth);
+  const lineEnd = arrow !== "none" ? endHead.inside : end;
+  const lineStart = arrow === "both" ? startHead.inside : start;
+  const path = `M ${lineStart.x} ${lineStart.y} Q ${control.x} ${control.y} ${lineEnd.x} ${lineEnd.y}`;
   return (
     <svg
       width={box.width}
@@ -76,10 +80,14 @@ export function Line({
         </mask>
       ) : null}
       {arrow !== "none" ? (
-        <path d={endHead} fill={color} opacity={progress > 0.92 ? 1 : 0} />
+        <path d={endHead.path} fill={color} opacity={progress > 0.92 ? 1 : 0} />
       ) : null}
       {arrow === "both" ? (
-        <path d={startHead} fill={color} opacity={progress > 0.05 ? 1 : 0} />
+        <path
+          d={startHead.path}
+          fill={color}
+          opacity={progress > 0.05 ? 1 : 0}
+        />
       ) : null}
     </svg>
   );
@@ -104,16 +112,33 @@ export function lineBox({
   };
 }
 
-// A filled triangle at `tip`, pointing away from `from`.
+// A filled triangle with its tip at `tip`, pointing away from `from`, and the
+// point where the line should stop so it ends inside the triangle.
 function arrowHead(
   tip: { x: number; y: number },
   from: { x: number; y: number },
-  size: number,
-): string {
-  const angle = Math.atan2(tip.y - from.y, tip.x - from.x);
-  const left = angle + Math.PI * 0.82;
-  const right = angle - Math.PI * 0.82;
-  return `M ${tip.x + Math.cos(angle) * size * 0.3} ${tip.y + Math.sin(angle) * size * 0.3}
-    L ${tip.x + Math.cos(left) * size} ${tip.y + Math.sin(left) * size}
-    L ${tip.x + Math.cos(right) * size} ${tip.y + Math.sin(right) * size} Z`;
+  length: number,
+  halfWidth: number,
+): { path: string; inside: { x: number; y: number } } {
+  const dx = tip.x - from.x;
+  const dy = tip.y - from.y;
+  const norm = Math.hypot(dx, dy) || 1;
+  const along = { x: dx / norm, y: dy / norm }; // direction the arrow points
+  const across = { x: -along.y, y: along.x };
+  const base = { x: tip.x - along.x * length, y: tip.y - along.y * length };
+  const left = {
+    x: base.x + across.x * halfWidth,
+    y: base.y + across.y * halfWidth,
+  };
+  const right = {
+    x: base.x - across.x * halfWidth,
+    y: base.y - across.y * halfWidth,
+  };
+  return {
+    path: `M ${tip.x} ${tip.y} L ${left.x} ${left.y} L ${right.x} ${right.y} Z`,
+    inside: {
+      x: tip.x - along.x * length * 0.6,
+      y: tip.y - along.y * length * 0.6,
+    },
+  };
 }
