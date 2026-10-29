@@ -2,6 +2,7 @@ import type { VisualConfig } from "../../schema/visual";
 import { fontSizes } from "../typography/tokens";
 import { MONO_SIZE } from "../visuals/dev/devText";
 import { screenFrameSize } from "../visuals/devices/screenFrameSize";
+import { lineBox } from "../visuals/diagrams/Line";
 export const TRANSFORM_ZOOM = 1.04;
 export type Size = {
   width: number;
@@ -122,6 +123,17 @@ export function naturalVisualSize(visual: VisualConfig): Size {
     }
     case "highlight":
       return { width: visual.width, height: visual.height };
+    case "line": {
+      // the line's box, turned by its angle
+      const box = lineBox(visual);
+      const turn = ((visual.angle ?? 0) * Math.PI) / 180;
+      const cos = Math.abs(Math.cos(turn));
+      const sin = Math.abs(Math.sin(turn));
+      return {
+        width: box.width * cos + box.height * sin,
+        height: box.width * sin + box.height * cos,
+      };
+    }
     case "transform": {
       const from = naturalVisualSize(visual.from);
       const to = naturalVisualSize(visual.to);

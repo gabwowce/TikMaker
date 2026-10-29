@@ -166,6 +166,7 @@ export const visualTypesByGroup = {
     "stack",
     "grid",
     "highlight",
+    "line",
     "transform",
     "corner-props",
   ],

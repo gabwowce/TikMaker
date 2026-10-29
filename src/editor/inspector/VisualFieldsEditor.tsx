@@ -3,6 +3,7 @@ import { type VisualConfig } from "../../schema/visual";
 import { DataFields } from "./DataFields";
 import { DeviceFields } from "./DeviceFields";
 import { DiagramFields } from "./DiagramFields";
+import { HighlightBoxFields, LineFields } from "./LineFields";
 import { ListVisualFields } from "./ListVisualFields";
 import { readImageSize } from "../../utils/imageSize";
 import { ImageSrcField } from "./MediaInputs";
@@ -146,6 +147,10 @@ export function VisualFieldsEditor({
     case "node-group":
     case "keycap":
       return <DiagramFields visual={visual} onChange={onChange} />;
+    case "line":
+      return <LineFields visual={visual} onChange={onChange} />;
+    case "highlight":
+      return <HighlightBoxFields visual={visual} onChange={onChange} />;
     default:
       return (
         <div className="text-xs text-editor-muted">

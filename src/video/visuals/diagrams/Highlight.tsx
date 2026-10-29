@@ -1,6 +1,7 @@
-import { interpolate, useCurrentFrame } from "remotion";
+import { interpolate } from "remotion";
 import { standardEasing } from "../../motion/easing";
 import { colors } from "../../typography/tokens";
+import { useVisualFrame } from "../visualStart";
 
 type HighlightProps = {
   width: number;
@@ -14,10 +15,15 @@ const DRAW_FRAMES = 14;
 
 // A marker drawn around one region of whatever sits under it — the "look
 // HERE" of a screen recording. The stroke draws itself on at `delay`
-// (scene frames), which is the point of it: a box that is simply there reads
+// (frames after the layer appears), which is the point of it: a box that is simply there reads
 // as part of the UI, a box that draws itself reads as the narrator pointing.
-export function Highlight({ width, height, shape = "box", delay = 0 }: HighlightProps) {
-  const frame = useCurrentFrame();
+export function Highlight({
+  width,
+  height,
+  shape = "box",
+  delay = 0,
+}: HighlightProps) {
+  const frame = useVisualFrame();
   const progress = interpolate(frame - delay, [0, DRAW_FRAMES], [0, 1], {
     extrapolateLeft: "clamp",
     extrapolateRight: "clamp",
@@ -28,7 +34,9 @@ export function Highlight({ width, height, shape = "box", delay = 0 }: Highlight
   const h = height - STROKE;
   const perimeter =
     shape === "circle"
-      ? Math.PI * (3 * (w / 2 + h / 2) - Math.sqrt((3 * w) / 2 + h / 2) * Math.sqrt(w / 2 + (3 * h) / 2))
+      ? Math.PI *
+        (3 * (w / 2 + h / 2) -
+          Math.sqrt((3 * w) / 2 + h / 2) * Math.sqrt(w / 2 + (3 * h) / 2))
       : 2 * (w + h);
   return (
     <svg

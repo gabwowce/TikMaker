@@ -124,8 +124,8 @@
       "tikmaker": "text splitBy letter"
     },
     "draw-on": {
-      "status": "no",
-      "todo": "B6"
+      "status": "yes",
+      "tikmaker": "visual line (line / arrow / underline / curve) and highlight draw themselves on when the layer appears"
     },
     "character-animation": {
       "status": "skip"
