@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { highlightStyleSchema, richTextFontSchema } from "./capabilities";
 import { sceneSchema } from "./scene";
 // One spoken word and when it is said, in seconds of the SOURCE audio file
 // (before the clip's startFrom/playbackRate). Written by voice.generate from
@@ -30,6 +31,13 @@ export const videoProjectSchema = z.object({
     .object({
       enabled: z.boolean().optional(),
       y: z.number().min(0).max(100).optional(),
+      // look (B7); every field unset = the original Tanker, white, pill look
+      font: richTextFontSchema.optional(),
+      size: z.number().min(24).max(200).optional(), // px
+      color: z.string().optional(), // the words
+      outline: z.boolean().optional(), // dark outline around the letters
+      activeStyle: highlightStyleSchema.optional(), // how the spoken word stands out
+      activeColor: z.string().optional(), // its box (pill) or text (color) colour
     })
     .optional(),
   savedAt: z.number().optional(),

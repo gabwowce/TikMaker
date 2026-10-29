@@ -35,7 +35,7 @@ Po kiekvieno punkto: papildyti `capabilities.ts` ir vertimo lentelę, paleisti `
 | - [x] B4 | Efektai elementams: šešėlis / švytėjimas / kontūras | šešėlis 58 %, švytėjimas 13 %, kontūras 12 % efektų | vidutinis |
 | - [x] B5 | Kalbančios galvos komponentas: apskritimo rėmelis + padėtys (visas ekranas, pusė viršuje / apačioje, apskritimas 4 kampuose) | talking-head 4 % elementų; agentas siūlo, kai idėjoje pažymėta „Su veidu“ | mažas–vidutinis |
 | - [ ] B6 | „Draw-on“: linijos ir apibraukimai nusipiešia | draw-on 3 % atsiradimų (diagramos) | mažas |
-| - [ ] B7 | Subtitrų stiliai (šriftas, spalva, kontūras) | subtitrai 67 % video | mažas |
+| - [x] B7 | Subtitrų stiliai (šriftas, spalva, kontūras) | subtitrai 67 % video | mažas |
 | - [ ] B8 | `tool-logo` → bendras „ikona / logotipas“ su bibliotekos kategorijomis | ikonos 13 % elementų | mažas |
 | - [ ] B9 | Foninė muzika: biblioteka / įkėlimas, pritaikymas prie ilgio, patylinimas kalbant | muzika 80 iš 88 video | vidutinis |
 | - [x] B10 | Redaktorius: pasirinktą (laiko juostoje) elementą tempti peržiūroje už bet kurios vietos, ne tik už mažo taškiuko | taškiukai susipainioja, neaišku, kurį elementą pagriebsi | mažas–vidutinis |
