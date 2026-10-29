@@ -1,0 +1,115 @@
+{
+  "id": "software-tutorial",
+  "format": "explainer",
+  "name": "Software how-to",
+  "oneLine": "A finished result first, then the steps to make it in the software",
+  "whenToUse": "An idea that is a specific thing to make in a common program (PowerPoint, GitHub, a no-code tool).",
+  "seconds": {
+    "min": 14,
+    "max": 53
+  },
+  "hookTypes": [
+    "result-first",
+    "how-to"
+  ],
+  "ctaTypes": [
+    "save-share",
+    "none",
+    "follow"
+  ],
+  "acts": [
+    {
+      "act": "opening",
+      "scenes": [
+        {
+          "role": "hook",
+          "purpose": "Shows or promises the result.",
+          "connectionToNext": "sequence",
+          "slots": [
+            {
+              "name": "result",
+              "kind": "fixed"
+            },
+            {
+              "name": "software",
+              "kind": "fixed"
+            }
+          ],
+          "seconds": {
+            "min": 2,
+            "max": 3.4
+          },
+          "repeatable": false,
+          "optional": false
+        }
+      ]
+    },
+    {
+      "act": "core",
+      "scenes": [
+        {
+          "role": "item",
+          "purpose": "Names one step.",
+          "connectionToNext": "sequence",
+          "slots": [
+            {
+              "name": "step",
+              "kind": "fixed"
+            }
+          ],
+          "seconds": {
+            "min": 7.8,
+            "max": 11
+          },
+          "repeatable": true,
+          "optional": true
+        },
+        {
+          "role": "demo",
+          "purpose": "Shows one step on screen.",
+          "connectionToNext": "sequence",
+          "slots": [
+            {
+              "name": "screen-recording",
+              "kind": "fixed"
+            }
+          ],
+          "seconds": {
+            "min": 2.8,
+            "max": 7.2
+          },
+          "repeatable": true,
+          "optional": true
+        }
+      ]
+    },
+    {
+      "act": "close",
+      "scenes": [
+        {
+          "role": "cta",
+          "purpose": "Asks to save or follow for more.",
+          "connectionToNext": "none",
+          "slots": [
+            {
+              "name": "cta-line",
+              "kind": "creative"
+            }
+          ],
+          "seconds": {
+            "min": 2.4,
+            "max": 4.8
+          },
+          "repeatable": false,
+          "optional": true
+        }
+      ]
+    }
+  ],
+  "basedOnAnalysisIds": [
+    "3UNxrQZ4Evk",
+    "XR8tSw727dE",
+    "n8JpwbyxmHM",
+    "aV_yI1oV5vU"
+  ]
+}

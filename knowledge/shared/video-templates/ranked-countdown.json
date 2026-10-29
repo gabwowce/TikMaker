@@ -1,0 +1,130 @@
+{
+  "id": "ranked-countdown",
+  "format": "facts",
+  "name": "Top N countdown",
+  "oneLine": "Ranked items counted down to number one",
+  "whenToUse": "An idea that ranks a set of things by some measure.",
+  "seconds": {
+    "min": 25,
+    "max": 60
+  },
+  "hookTypes": [
+    "list"
+  ],
+  "ctaTypes": [
+    "follow",
+    "question",
+    "none"
+  ],
+  "acts": [
+    {
+      "act": "opening",
+      "scenes": [
+        {
+          "role": "hook",
+          "purpose": "Announces the ranking and what is being ranked.",
+          "connectionToNext": "sequence",
+          "slots": [
+            {
+              "name": "rank-count",
+              "kind": "fixed"
+            },
+            {
+              "name": "ranked-thing",
+              "kind": "fixed"
+            },
+            {
+              "name": "teaser",
+              "kind": "creative"
+            }
+          ],
+          "seconds": {
+            "min": 4.2,
+            "max": 9.8
+          },
+          "repeatable": false,
+          "optional": false
+        }
+      ]
+    },
+    {
+      "act": "build",
+      "scenes": [
+        {
+          "role": "cta",
+          "purpose": "Asks for a comment early, before the countdown.",
+          "connectionToNext": "sequence",
+          "slots": [
+            {
+              "name": "question",
+              "kind": "creative"
+            }
+          ],
+          "seconds": {
+            "min": 5.3,
+            "max": 7.7
+          },
+          "repeatable": false,
+          "optional": true
+        }
+      ]
+    },
+    {
+      "act": "core",
+      "scenes": [
+        {
+          "role": "item",
+          "purpose": "Reveals one place in the ranking, with its details.",
+          "connectionToNext": "sequence",
+          "slots": [
+            {
+              "name": "rank-number",
+              "kind": "fixed"
+            },
+            {
+              "name": "item-name",
+              "kind": "fixed"
+            },
+            {
+              "name": "item-detail",
+              "kind": "fixed"
+            }
+          ],
+          "seconds": {
+            "min": 1,
+            "max": 9.6
+          },
+          "repeatable": true,
+          "optional": false
+        }
+      ]
+    },
+    {
+      "act": "close",
+      "scenes": [
+        {
+          "role": "cta",
+          "purpose": "Asks the viewer to follow or pick a favourite.",
+          "connectionToNext": "none",
+          "slots": [
+            {
+              "name": "cta-line",
+              "kind": "creative"
+            }
+          ],
+          "seconds": {
+            "min": 5.3,
+            "max": 7.7
+          },
+          "repeatable": false,
+          "optional": true
+        }
+      ]
+    }
+  ],
+  "basedOnAnalysisIds": [
+    "96bqVLNjnDE",
+    "BUIZnq_U8go",
+    "K_U4Hd0AvjI"
+  ]
+}

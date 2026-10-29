@@ -47,8 +47,8 @@ Jei laiko trūks: B9, B3, B4 svarbiausi; kitus galima daryti po to, kai agentas 
 Išsamiau: `docs/mano-planas.md` 1 žingsnis (schemos), `docs/bd/sprendimai.md` „Žinių bazė“.
 
 - [x] **C1. Žinių bazės schemos** (`VideoTemplate`, `SceneTemplate`, `HookFormula`, `CtaFormula`, `TitleFormula`, `TransitionPhrase`, `LayoutExample`, `DesignRule`, `SoundRule`) pagal `docs/bd/diagramos/ziniu-baze.puml` + įkėlimas ir testas.
-- [ ] **C2. 3 promptas** pataisytas pagal schemas ir žodyną → paleistas → `knowledge/draft/` → patikra schemomis.
-- [ ] **C3. Peržiūra** (tu) → `knowledge/shared/`. Vertimas į TikMaker žodį (A4 lentelė) daromas čia, skriptu.
+- [x] **C2. Juodraštis.** `knowledge/draft/proposal.json` (grupavimas ir formuluotės; pirmąjį sudarė Claude Code pagal 3 prompto taisykles) → `npm run knowledge:draft` suskaičiuoja scenas, trukmes ir pavyzdžius → `knowledge/draft/shared/`. 3 promptas paruoštas pakartojimui (Gemini AI Studio), dar nepaleistas.
+- [x] **C3. Perkėlimas** → `knowledge/shared/` (20 šablonų, formulės, frazės). Išsami peržiūra atidėta: šablonai taisomi tada, kai generuojant video kas nors netinka (`proposal.json` → `npm run knowledge:draft` → kopija į `knowledge/shared/`). Vertimas į TikMaker žodį (A4 lentelė) reikalingas tik išdėstymams (C4).
 - [ ] **C4. Kadrai** (`npm run videos:frames`, tavo kompiuteryje) → tu atrenki gerus / blogus → `LayoutExample`.
 - [ ] **C5. Taisyklės** iš statistikos (p90) → `DesignRule`, `SoundRule`.
 

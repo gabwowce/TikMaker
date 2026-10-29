@@ -1,0 +1,259 @@
+{
+  "id": "brand-origin",
+  "format": "story",
+  "name": "Rise of a brand",
+  "oneLine": "From a humble start, through hardship, to a big brand",
+  "whenToUse": "An idea that is the history of a brand, product or founder.",
+  "seconds": {
+    "min": 43,
+    "max": 80
+  },
+  "hookTypes": [
+    "story",
+    "curiosity-gap"
+  ],
+  "ctaTypes": [
+    "none",
+    "question"
+  ],
+  "acts": [
+    {
+      "act": "opening",
+      "scenes": [
+        {
+          "role": "hook",
+          "purpose": "Opens on the year or the size of the success.",
+          "connectionToNext": "sequence",
+          "slots": [
+            {
+              "name": "year-or-result",
+              "kind": "fixed"
+            },
+            {
+              "name": "brand",
+              "kind": "fixed"
+            }
+          ],
+          "seconds": {
+            "min": 1.6,
+            "max": 7.2
+          },
+          "repeatable": false,
+          "optional": false
+        },
+        {
+          "role": "setup",
+          "purpose": "Introduces the founder.",
+          "connectionToNext": "sequence",
+          "slots": [
+            {
+              "name": "founder",
+              "kind": "fixed"
+            }
+          ],
+          "seconds": {
+            "min": 2,
+            "max": 7.5
+          },
+          "repeatable": false,
+          "optional": false
+        }
+      ]
+    },
+    {
+      "act": "build",
+      "scenes": [
+        {
+          "role": "setup",
+          "purpose": "Shows the humble start.",
+          "connectionToNext": "contrast",
+          "slots": [
+            {
+              "name": "start",
+              "kind": "fixed"
+            }
+          ],
+          "seconds": {
+            "min": 2,
+            "max": 7.5
+          },
+          "repeatable": false,
+          "optional": false
+        },
+        {
+          "role": "problem",
+          "purpose": "Shows the hardships.",
+          "connectionToNext": "escalation",
+          "slots": [
+            {
+              "name": "hardship",
+              "kind": "fixed"
+            }
+          ],
+          "seconds": {
+            "min": 4,
+            "max": 7.6
+          },
+          "repeatable": true,
+          "optional": false
+        },
+        {
+          "role": "item",
+          "purpose": "Shows an early product or attempt.",
+          "connectionToNext": "cause-effect",
+          "slots": [
+            {
+              "name": "milestone",
+              "kind": "fixed"
+            }
+          ],
+          "seconds": {
+            "min": 2.7,
+            "max": 19.4
+          },
+          "repeatable": true,
+          "optional": true
+        },
+        {
+          "role": "mechanism",
+          "purpose": "Explains how the product works.",
+          "connectionToNext": "cause-effect",
+          "slots": [
+            {
+              "name": "how-it-works",
+              "kind": "fixed"
+            }
+          ],
+          "seconds": {
+            "min": 6.1,
+            "max": 6.9
+          },
+          "repeatable": false,
+          "optional": true
+        }
+      ]
+    },
+    {
+      "act": "core",
+      "scenes": [
+        {
+          "role": "bridge",
+          "purpose": "Moves the story forward in time.",
+          "connectionToNext": "sequence",
+          "slots": [
+            {
+              "name": "time-jump",
+              "kind": "fixed"
+            }
+          ],
+          "seconds": {
+            "min": 2,
+            "max": 4
+          },
+          "repeatable": true,
+          "optional": false
+        },
+        {
+          "role": "item",
+          "purpose": "Shows one milestone.",
+          "connectionToNext": "sequence",
+          "slots": [
+            {
+              "name": "milestone",
+              "kind": "fixed"
+            }
+          ],
+          "seconds": {
+            "min": 2.7,
+            "max": 19.4
+          },
+          "repeatable": true,
+          "optional": true
+        },
+        {
+          "role": "benefit",
+          "purpose": "Shows what made it win.",
+          "connectionToNext": "sequence",
+          "slots": [
+            {
+              "name": "advantage",
+              "kind": "fixed"
+            }
+          ],
+          "seconds": {
+            "min": 3.4,
+            "max": 5.8
+          },
+          "repeatable": true,
+          "optional": true
+        }
+      ]
+    },
+    {
+      "act": "climax",
+      "scenes": [
+        {
+          "role": "reveal",
+          "purpose": "Shows the breakthrough.",
+          "connectionToNext": "sequence",
+          "slots": [
+            {
+              "name": "breakthrough",
+              "kind": "fixed"
+            }
+          ],
+          "seconds": {
+            "min": 2.9,
+            "max": 10.1
+          },
+          "repeatable": false,
+          "optional": true
+        },
+        {
+          "role": "proof",
+          "purpose": "Shows the size of the success.",
+          "connectionToNext": "bridge",
+          "slots": [
+            {
+              "name": "result-number",
+              "kind": "fixed"
+            }
+          ],
+          "seconds": {
+            "min": 2.6,
+            "max": 6.6
+          },
+          "repeatable": false,
+          "optional": false
+        }
+      ]
+    },
+    {
+      "act": "close",
+      "scenes": [
+        {
+          "role": "cta",
+          "purpose": "Asks the viewer a question about the brand.",
+          "connectionToNext": "none",
+          "slots": [
+            {
+              "name": "question",
+              "kind": "creative"
+            }
+          ],
+          "seconds": {
+            "min": 3,
+            "max": 3
+          },
+          "repeatable": false,
+          "optional": true
+        }
+      ]
+    }
+  ],
+  "basedOnAnalysisIds": [
+    "A4gshIyrNNU",
+    "x7iYFWYxmbQ",
+    "zIdkkPSldcs"
+  ]
+}

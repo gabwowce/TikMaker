@@ -1,0 +1,223 @@
+{
+  "id": "question-answered",
+  "format": "explainer",
+  "name": "Big question answered",
+  "oneLine": "A why or how question, answered step by step with diagrams",
+  "whenToUse": "An idea that is a question the audience has wondered about.",
+  "seconds": {
+    "min": 43,
+    "max": 71
+  },
+  "hookTypes": [
+    "question"
+  ],
+  "ctaTypes": [
+    "none",
+    "question"
+  ],
+  "acts": [
+    {
+      "act": "opening",
+      "scenes": [
+        {
+          "role": "hook",
+          "purpose": "Asks the question.",
+          "connectionToNext": "question-answer",
+          "slots": [
+            {
+              "name": "question",
+              "kind": "fixed"
+            }
+          ],
+          "seconds": {
+            "min": 1.5,
+            "max": 5.5
+          },
+          "repeatable": false,
+          "optional": false
+        },
+        {
+          "role": "setup",
+          "purpose": "Gives the first piece of the answer.",
+          "connectionToNext": "sequence",
+          "slots": [
+            {
+              "name": "starting-fact",
+              "kind": "fixed"
+            }
+          ],
+          "seconds": {
+            "min": 3,
+            "max": 7
+          },
+          "repeatable": false,
+          "optional": true
+        }
+      ]
+    },
+    {
+      "act": "build",
+      "scenes": [
+        {
+          "role": "setup",
+          "purpose": "Lays out the background.",
+          "connectionToNext": "sequence",
+          "slots": [
+            {
+              "name": "background",
+              "kind": "fixed"
+            }
+          ],
+          "seconds": {
+            "min": 3,
+            "max": 7
+          },
+          "repeatable": false,
+          "optional": true
+        },
+        {
+          "role": "problem",
+          "purpose": "Names the problem behind the question.",
+          "connectionToNext": "cause-effect",
+          "slots": [
+            {
+              "name": "problem",
+              "kind": "fixed"
+            }
+          ],
+          "seconds": {
+            "min": 4.7,
+            "max": 8.2
+          },
+          "repeatable": false,
+          "optional": true
+        },
+        {
+          "role": "mechanism",
+          "purpose": "Explains how it works, one step per scene.",
+          "connectionToNext": "sequence",
+          "slots": [
+            {
+              "name": "step",
+              "kind": "fixed"
+            }
+          ],
+          "seconds": {
+            "min": 4,
+            "max": 9.6
+          },
+          "repeatable": true,
+          "optional": true
+        }
+      ]
+    },
+    {
+      "act": "core",
+      "scenes": [
+        {
+          "role": "mechanism",
+          "purpose": "Continues the explanation to the key point.",
+          "connectionToNext": "cause-effect",
+          "slots": [
+            {
+              "name": "step",
+              "kind": "fixed"
+            }
+          ],
+          "seconds": {
+            "min": 4,
+            "max": 9.6
+          },
+          "repeatable": true,
+          "optional": true
+        },
+        {
+          "role": "item",
+          "purpose": "Names one stage or part.",
+          "connectionToNext": "example",
+          "slots": [
+            {
+              "name": "stage",
+              "kind": "fixed"
+            }
+          ],
+          "seconds": {
+            "min": 5,
+            "max": 6.4
+          },
+          "repeatable": true,
+          "optional": true
+        }
+      ]
+    },
+    {
+      "act": "climax",
+      "scenes": [
+        {
+          "role": "problem",
+          "purpose": "Shows the escalating consequences.",
+          "connectionToNext": "escalation",
+          "slots": [
+            {
+              "name": "consequence",
+              "kind": "fixed"
+            }
+          ],
+          "seconds": {
+            "min": 4.7,
+            "max": 8.2
+          },
+          "repeatable": false,
+          "optional": true
+        }
+      ]
+    },
+    {
+      "act": "close",
+      "scenes": [
+        {
+          "role": "payoff",
+          "purpose": "Wraps the answer in one line.",
+          "connectionToNext": "none",
+          "slots": [
+            {
+              "name": "answer-line",
+              "kind": "creative"
+            }
+          ],
+          "seconds": {
+            "min": 5.4,
+            "max": 7
+          },
+          "repeatable": false,
+          "optional": true
+        },
+        {
+          "role": "cta",
+          "purpose": "Asks what to explain next.",
+          "connectionToNext": "none",
+          "slots": [
+            {
+              "name": "question",
+              "kind": "creative"
+            }
+          ],
+          "seconds": {
+            "min": 3.2,
+            "max": 4.8
+          },
+          "repeatable": false,
+          "optional": true
+        }
+      ]
+    }
+  ],
+  "basedOnAnalysisIds": [
+    "KTu2V65Iiho",
+    "MYWpaNYAo0o",
+    "_j_j89V7Q0w",
+    "u1UXDgodUP4",
+    "mytYzlemg-s",
+    "kYOkrswU1KE"
+  ]
+}

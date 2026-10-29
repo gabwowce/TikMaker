@@ -1,0 +1,99 @@
+{
+  "id": "rapid-facts",
+  "format": "facts",
+  "name": "Rapid-fire facts",
+  "oneLine": "Many short facts in a row, one per scene, with the strongest kept for last",
+  "whenToUse": "An idea that is a collection of short surprising facts around one theme.",
+  "seconds": {
+    "min": 40,
+    "max": 56
+  },
+  "hookTypes": [
+    "curiosity-gap",
+    "shock-fact",
+    "list"
+  ],
+  "ctaTypes": [
+    "follow",
+    "none"
+  ],
+  "acts": [
+    {
+      "act": "opening",
+      "scenes": [
+        {
+          "role": "hook",
+          "purpose": "Opens with a strange command or promise of surprising facts.",
+          "connectionToNext": "sequence",
+          "slots": [
+            {
+              "name": "theme",
+              "kind": "fixed"
+            },
+            {
+              "name": "opening-line",
+              "kind": "creative"
+            }
+          ],
+          "seconds": {
+            "min": 1.5,
+            "max": 3.5
+          },
+          "repeatable": false,
+          "optional": false
+        }
+      ]
+    },
+    {
+      "act": "core",
+      "scenes": [
+        {
+          "role": "item",
+          "purpose": "States one fact.",
+          "connectionToNext": "sequence",
+          "slots": [
+            {
+              "name": "fact",
+              "kind": "fixed"
+            }
+          ],
+          "seconds": {
+            "min": 2,
+            "max": 6
+          },
+          "repeatable": true,
+          "optional": false
+        }
+      ]
+    },
+    {
+      "act": "close",
+      "scenes": [
+        {
+          "role": "cta",
+          "purpose": "Asks for a like and follow, often as a joke fact.",
+          "connectionToNext": "none",
+          "slots": [
+            {
+              "name": "cta-line",
+              "kind": "creative"
+            }
+          ],
+          "seconds": {
+            "min": 4.1,
+            "max": 4.9
+          },
+          "repeatable": false,
+          "optional": true
+        }
+      ]
+    }
+  ],
+  "basedOnAnalysisIds": [
+    "0Mz2fqwCb-8",
+    "J9yGsD4FZq4",
+    "BmezElWWNU0",
+    "RL28tOO8Ov4",
+    "o5CjuDDPXxk"
+  ]
+}

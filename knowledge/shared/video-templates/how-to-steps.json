@@ -1,0 +1,169 @@
+{
+  "id": "how-to-steps",
+  "format": "demo",
+  "name": "How-to steps",
+  "oneLine": "A how-to promise followed by numbered steps on screen",
+  "whenToUse": "An idea that is a concrete task the viewer wants to do with a tool, in a few steps.",
+  "seconds": {
+    "min": 32,
+    "max": 43
+  },
+  "hookTypes": [
+    "how-to"
+  ],
+  "ctaTypes": [
+    "none",
+    "link",
+    "comment-keyword"
+  ],
+  "acts": [
+    {
+      "act": "opening",
+      "scenes": [
+        {
+          "role": "hook",
+          "purpose": "States the task and the tool.",
+          "connectionToNext": "sequence",
+          "slots": [
+            {
+              "name": "task",
+              "kind": "fixed"
+            },
+            {
+              "name": "tool-name",
+              "kind": "fixed"
+            }
+          ],
+          "seconds": {
+            "min": 2.4,
+            "max": 4
+          },
+          "repeatable": false,
+          "optional": false
+        }
+      ]
+    },
+    {
+      "act": "build",
+      "scenes": [
+        {
+          "role": "demo",
+          "purpose": "Shows the first actions in the tool.",
+          "connectionToNext": "sequence",
+          "slots": [
+            {
+              "name": "screen-recording",
+              "kind": "fixed"
+            }
+          ],
+          "seconds": {
+            "min": 2.4,
+            "max": 5.6
+          },
+          "repeatable": true,
+          "optional": true
+        }
+      ]
+    },
+    {
+      "act": "core",
+      "scenes": [
+        {
+          "role": "item",
+          "purpose": "Shows one step.",
+          "connectionToNext": "sequence",
+          "slots": [
+            {
+              "name": "step",
+              "kind": "fixed"
+            }
+          ],
+          "seconds": {
+            "min": 2.8,
+            "max": 7.2
+          },
+          "repeatable": true,
+          "optional": true
+        },
+        {
+          "role": "demo",
+          "purpose": "Shows the tool doing the work.",
+          "connectionToNext": "cause-effect",
+          "slots": [
+            {
+              "name": "screen-recording",
+              "kind": "fixed"
+            }
+          ],
+          "seconds": {
+            "min": 2.4,
+            "max": 5.6
+          },
+          "repeatable": true,
+          "optional": true
+        },
+        {
+          "role": "benefit",
+          "purpose": "States what a step makes possible.",
+          "connectionToNext": "example",
+          "slots": [
+            {
+              "name": "benefit",
+              "kind": "fixed"
+            }
+          ],
+          "seconds": {
+            "min": 2,
+            "max": 2.8
+          },
+          "repeatable": true,
+          "optional": true
+        }
+      ]
+    },
+    {
+      "act": "close",
+      "scenes": [
+        {
+          "role": "benefit",
+          "purpose": "States the gain in one line.",
+          "connectionToNext": "bridge",
+          "slots": [
+            {
+              "name": "gain",
+              "kind": "creative"
+            }
+          ],
+          "seconds": {
+            "min": 2,
+            "max": 2.8
+          },
+          "repeatable": true,
+          "optional": true
+        },
+        {
+          "role": "cta",
+          "purpose": "Offers more or the full version.",
+          "connectionToNext": "none",
+          "slots": [
+            {
+              "name": "cta-line",
+              "kind": "creative"
+            }
+          ],
+          "seconds": {
+            "min": 3,
+            "max": 3
+          },
+          "repeatable": false,
+          "optional": true
+        }
+      ]
+    }
+  ],
+  "basedOnAnalysisIds": [
+    "Mw6LtvmHyfc",
+    "Oy47yb7WGCk",
+    "ej5PdsstQrI"
+  ]
+}

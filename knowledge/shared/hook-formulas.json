@@ -1,0 +1,1126 @@
+[
+  {
+    "id": "facts-you-didnt-know",
+    "type": "curiosity-gap",
+    "formula": "[Adjective] Facts YOU Didn't Know About [emoji] Part [N]",
+    "basedOnAnalysisIds": [
+      "-7eQdRhsCpA"
+    ],
+    "examples": [
+      "Scary Facts YOU Didn't Know About 😨 Part 1"
+    ],
+    "fits": [
+      "facts"
+    ]
+  },
+  {
+    "id": "subject-in-time-spoiler",
+    "type": "explained-in-time",
+    "formula": "[Episode or subject] in [time]. Spoiler warning.",
+    "basedOnAnalysisIds": [
+      "-CQ_-6AzF9Q"
+    ],
+    "examples": [
+      "Dispatch episode one in 60 seconds. Spoiler warning."
+    ],
+    "fits": [
+      "story"
+    ]
+  },
+  {
+    "id": "n-skills-make-you-look-like",
+    "type": "list",
+    "formula": "[N] [tool] skills that make you look like a [desired role] overnight.",
+    "basedOnAnalysisIds": [
+      "0JZtdAtJiyk"
+    ],
+    "examples": [
+      "3 Claude Code skills that make you look like a designer overnight."
+    ],
+    "fits": [
+      "facts"
+    ]
+  },
+  {
+    "id": "big-number-tools",
+    "type": "list",
+    "formula": "[Big number] [adjective] [topic] tools",
+    "basedOnAnalysisIds": [
+      "0MQEf_7qk4s"
+    ],
+    "examples": [
+      "120 MIND-BLOWING AI TOOLS"
+    ],
+    "fits": [
+      "facts"
+    ]
+  },
+  {
+    "id": "dont-do-random-facts",
+    "type": "curiosity-gap",
+    "formula": "Don't [everyday action]. Random facts. The last fact is [adjective].",
+    "basedOnAnalysisIds": [
+      "0Mz2fqwCb-8"
+    ],
+    "examples": [
+      "Don't sleep with a chair near your bed."
+    ],
+    "fits": [
+      "facts"
+    ]
+  },
+  {
+    "id": "dont-do-shock-facts",
+    "type": "shock-fact",
+    "formula": "Don't [everyday action]. Random facts. The last fact is [adjective].",
+    "basedOnAnalysisIds": [
+      "J9yGsD4FZq4"
+    ],
+    "examples": [
+      "Don't sleep with a mirror in your room. Random facts. The last fact is shocking."
+    ],
+    "fits": [
+      "facts"
+    ]
+  },
+  {
+    "id": "free-alternative-to",
+    "type": "news",
+    "formula": "This is a free and [quality] alternative to [popular tool].",
+    "basedOnAnalysisIds": [
+      "1C_0WaKKCPw"
+    ],
+    "examples": [
+      "This is a free and open source alternative to Claude Code"
+    ],
+    "fits": [
+      "demo"
+    ]
+  },
+  {
+    "id": "did-you-know-you-can-in-tool",
+    "type": "question",
+    "formula": "Did you know that you can [desired result] directly in [tool]?",
+    "basedOnAnalysisIds": [
+      "3O6BFlOiFRg"
+    ],
+    "examples": [
+      "Did you know that you can visualize data structures directly in VS Code?"
+    ],
+    "fits": [
+      "demo"
+    ]
+  },
+  {
+    "id": "you-asked-here-you-are",
+    "type": "result-first",
+    "formula": "Many of you asked me for [this tutorial]. Here you are.",
+    "basedOnAnalysisIds": [
+      "3UNxrQZ4Evk"
+    ],
+    "examples": [
+      "Many of you asked me for this tutorial. Here you are."
+    ],
+    "fits": [
+      "explainer"
+    ]
+  },
+  {
+    "id": "every-tool-i-used",
+    "type": "result-first",
+    "formula": "Here is every tool I used to build [result] in just [time].",
+    "basedOnAnalysisIds": [
+      "3m0Am0VuBtU"
+    ],
+    "examples": [
+      "Here is every tool that I used to build this website in just four hours."
+    ],
+    "fits": [
+      "demo"
+    ]
+  },
+  {
+    "id": "build-in-under-time",
+    "type": "result-first",
+    "formula": "Here's how to build a [thing] in under [time].",
+    "basedOnAnalysisIds": [
+      "4Kg_H7EOnz4"
+    ],
+    "examples": [
+      "Here's how to build a website in under 30 seconds."
+    ],
+    "fits": [
+      "demo"
+    ]
+  },
+  {
+    "id": "everyone-uses-it-wrong",
+    "type": "pain-shown",
+    "formula": "Everyone's using [tool] like [wrong analogy].",
+    "basedOnAnalysisIds": [
+      "5G9PAIUs5Pk"
+    ],
+    "examples": [
+      "Everyone's using Claude Code like it's a magic wand."
+    ],
+    "fits": [
+      "explainer"
+    ]
+  },
+  {
+    "id": "got-something-to",
+    "type": "question",
+    "formula": "Got [something] to [action]? [Second question]?",
+    "basedOnAnalysisIds": [
+      "5jly-UeJcDw"
+    ],
+    "examples": [
+      "Got something to create?"
+    ],
+    "fits": [
+      "demo"
+    ]
+  },
+  {
+    "id": "topic-for-unlikely-audience",
+    "type": "explained-in-time",
+    "formula": "[Complex topic] for [unlikely audience] in [time].",
+    "basedOnAnalysisIds": [
+      "7c-vPPWaRdw",
+      "vFVv_-gcW50"
+    ],
+    "examples": [
+      "Nukes for cavemen in 60 seconds. Me explain",
+      "Antimatter bombs for cavemen"
+    ],
+    "fits": [
+      "explainer"
+    ]
+  },
+  {
+    "id": "if-tool-keeps-n-tricks",
+    "type": "list",
+    "formula": "If your [tool] keeps [pain], here are [N] tricks to [benefit].",
+    "basedOnAnalysisIds": [
+      "8BZupIIVhjs"
+    ],
+    "examples": [
+      "If your Claude Code keeps hitting usage limits, here are three tricks to make it run more efficiently."
+    ],
+    "fits": [
+      "facts"
+    ]
+  },
+  {
+    "id": "powerful-things-you-should-know",
+    "type": "list",
+    "formula": "Powerful [category] you should know, part [N].",
+    "basedOnAnalysisIds": [
+      "8Qxqi4hDTnk",
+      "PYV4cGkwwLk",
+      "ZbMXwVVBdmM"
+    ],
+    "examples": [
+      "Powerful AI tools you should know, part 83.",
+      "Powerful websites you should know, part eight eighteen.",
+      "Powerful websites you should know."
+    ],
+    "fits": [
+      "demo"
+    ]
+  },
+  {
+    "id": "top-n-secret-things",
+    "type": "list",
+    "formula": "Here are the top [N] secret [items] in [topic] that you probably didn't know about.",
+    "basedOnAnalysisIds": [
+      "96bqVLNjnDE"
+    ],
+    "examples": [
+      "Here are the top three secret dialogues in Poppy Playtime that you probably didn't know about."
+    ],
+    "fits": [
+      "facts"
+    ]
+  },
+  {
+    "id": "in-year-subject-did",
+    "type": "story",
+    "formula": "In [year or era], [subject] [did something].",
+    "basedOnAnalysisIds": [
+      "A4gshIyrNNU",
+      "cBr5ea6LRNE"
+    ],
+    "examples": [
+      "In 1946, four brothers named Kashio",
+      "In the 70s parents hired a clown for birthday parties"
+    ],
+    "fits": [
+      "story"
+    ]
+  },
+  {
+    "id": "topic-in-n-steps",
+    "type": "explained-in-time",
+    "formula": "[Topic] explained in [N] simple steps.",
+    "basedOnAnalysisIds": [
+      "BF2k_fKuCVM"
+    ],
+    "examples": [
+      "AI agents explained in three simple steps."
+    ],
+    "fits": [
+      "explainer"
+    ]
+  },
+  {
+    "id": "top-n-who",
+    "type": "list",
+    "formula": "These are the top [N] [subjects] who [notable thing].",
+    "basedOnAnalysisIds": [
+      "BUIZnq_U8go"
+    ],
+    "examples": [
+      "These are the top 5 singers who are no longer with us but whose songs went viral on YouTube Shorts and TikTok in 2026. And the last singer on this list has a song with over 2.2 billion views on YouTube."
+    ],
+    "fits": [
+      "facts"
+    ]
+  },
+  {
+    "id": "today-i-found-out",
+    "type": "curiosity-gap",
+    "formula": "Today I found out that a free [product] that almost everyone uses makes [result].",
+    "basedOnAnalysisIds": [
+      "Bd-wV1nGrd0"
+    ],
+    "examples": [
+      "Today I found out that a free extension that almost everyone uses makes $90 million in revenue."
+    ],
+    "fits": [
+      "explainer"
+    ]
+  },
+  {
+    "id": "facts-that-mess-with",
+    "type": "list",
+    "formula": "Crazy facts that will mess with your perception of [topic].",
+    "basedOnAnalysisIds": [
+      "BmezElWWNU0"
+    ],
+    "examples": [
+      "Crazy facts that will mess with your perception of time."
+    ],
+    "fits": [
+      "facts"
+    ]
+  },
+  {
+    "id": "a-vs-b-side-by-side",
+    "type": "visual-first",
+    "formula": "[Subject A] vs [Subject B], shown side by side with no words",
+    "basedOnAnalysisIds": [
+      "DEAlXN7rciM",
+      "yn2bjNiy4a0"
+    ],
+    "examples": [
+      "MESSI RONALDO",
+      "Gasoline Diesel"
+    ],
+    "fits": [
+      "facts",
+      "explainer"
+    ]
+  },
+  {
+    "id": "saw-someone-doing-it-like-this",
+    "type": "pain-shown",
+    "formula": "Saw [someone] [doing a task] like this",
+    "basedOnAnalysisIds": [
+      "EmxXYzX6iEs"
+    ],
+    "examples": [
+      "Saw the intern visualizing his data like this"
+    ],
+    "fits": [
+      "demo"
+    ]
+  },
+  {
+    "id": "everyone-uses-but",
+    "type": "contrarian",
+    "formula": "Everyone's using [trending tool] to [goal], but [pain].",
+    "basedOnAnalysisIds": [
+      "FX8eD_qN_qU"
+    ],
+    "examples": [
+      "Everyone's using Claude Code to build AI agents"
+    ],
+    "fits": [
+      "demo"
+    ]
+  },
+  {
+    "id": "characters-live-in-two-places",
+    "type": "story",
+    "formula": "[Characters] live in two [places]: [A] and [B].",
+    "basedOnAnalysisIds": [
+      "GndFJU8kYeY"
+    ],
+    "examples": [
+      "Gorillas live in two countries"
+    ],
+    "fits": [
+      "explainer"
+    ]
+  },
+  {
+    "id": "concept-explained-by-characters",
+    "type": "explained-in-time",
+    "formula": "[Concept], explained by [cute characters].",
+    "basedOnAnalysisIds": [
+      "H7vaUGOMQrI"
+    ],
+    "examples": [
+      "The Spoon Theory, explained by ducks."
+    ],
+    "fits": [
+      "explainer"
+    ]
+  },
+  {
+    "id": "did-you-know-spooky-place",
+    "type": "story",
+    "formula": "Did you know that in [spooky place]...",
+    "basedOnAnalysisIds": [
+      "HTRuojtV0pw"
+    ],
+    "examples": [
+      "Did you know that in an old house on the outskirts of Hiroshima..."
+    ],
+    "fits": [
+      "story"
+    ]
+  },
+  {
+    "id": "more-perfect-than-leader",
+    "type": "curiosity-gap",
+    "formula": "A more perfect [product type] than [market leader]",
+    "basedOnAnalysisIds": [
+      "ImBlE96dOlM"
+    ],
+    "examples": [
+      "A more perfect music player than spotify"
+    ],
+    "fits": [
+      "demo"
+    ]
+  },
+  {
+    "id": "how-topic-really-works-in-time",
+    "type": "explained-in-time",
+    "formula": "Here's how [topic] really works in [time]. Let's go.",
+    "basedOnAnalysisIds": [
+      "JfhrLak5KFo"
+    ],
+    "examples": [
+      "Here's how music theory really works in 60 seconds. Let's go."
+    ],
+    "fits": [
+      "explainer"
+    ]
+  },
+  {
+    "id": "why-does-feel-so-good",
+    "type": "question",
+    "formula": "Why does [subject] feel so good? Let's try it so you don't have to.",
+    "basedOnAnalysisIds": [
+      "KTu2V65Iiho"
+    ],
+    "examples": [
+      "Why does cocaine feel so good? Let's try it so you don't have to."
+    ],
+    "fits": [
+      "explainer"
+    ]
+  },
+  {
+    "id": "ranking-top-n",
+    "type": "list",
+    "formula": "Ranking top [N] [topic]",
+    "basedOnAnalysisIds": [
+      "K_U4Hd0AvjI"
+    ],
+    "examples": [
+      "Ranking Top 5 Bruh Moments 1. 2. ball vs balls 💀 3. 4. 5."
+    ],
+    "fits": [
+      "facts"
+    ]
+  },
+  {
+    "id": "dramatic-quote",
+    "type": "story",
+    "formula": "\"[The most dramatic line spoken in the story]\"",
+    "basedOnAnalysisIds": [
+      "LRoevZc_LJk"
+    ],
+    "examples": [
+      "Why did you kill my wife and daughter ?"
+    ],
+    "fits": [
+      "story"
+    ]
+  },
+  {
+    "id": "i-switched-from",
+    "type": "story",
+    "formula": "I switched from [tool A] to [tool B].",
+    "basedOnAnalysisIds": [
+      "Ll1UyM8kBNc"
+    ],
+    "examples": [
+      "I switched from Cursor to Claude Code."
+    ],
+    "fits": [
+      "demo"
+    ]
+  },
+  {
+    "id": "everyone-without-is-wasting",
+    "type": "contrarian",
+    "formula": "Everyone using [tool] without [feature] is just wasting their [resource].",
+    "basedOnAnalysisIds": [
+      "MBAwGQTOOe4"
+    ],
+    "examples": [
+      "Everyone using Claude without skills is just wasting their tokens."
+    ],
+    "fits": [
+      "facts"
+    ]
+  },
+  {
+    "id": "how-does-topic-work",
+    "type": "question",
+    "formula": "How does [topic] work?",
+    "basedOnAnalysisIds": [
+      "MYWpaNYAo0o",
+      "mytYzlemg-s"
+    ],
+    "examples": [
+      "How does AI work?",
+      "How does money laundering work?"
+    ],
+    "fits": [
+      "explainer"
+    ]
+  },
+  {
+    "id": "if-you-want-follow-my-steps",
+    "type": "how-to",
+    "formula": "If you want to [result] using [tool], then follow my steps.",
+    "basedOnAnalysisIds": [
+      "Mw6LtvmHyfc"
+    ],
+    "examples": [
+      "If you want to upload your project on GitHub using Visual Studio Code, then follow my steps."
+    ],
+    "fits": [
+      "demo"
+    ]
+  },
+  {
+    "id": "how-to-build-using-in-time",
+    "type": "explained-in-time",
+    "formula": "How to build a [desirable outcome] using [new tool] in [time].",
+    "basedOnAnalysisIds": [
+      "NvKowH8PnaA"
+    ],
+    "examples": [
+      "How to build a real AI agent using Google's new agent development kit in 60 seconds."
+    ],
+    "fits": [
+      "demo"
+    ]
+  },
+  {
+    "id": "open-app-do-this",
+    "type": "how-to",
+    "formula": "Open [app], [do the first action]...",
+    "basedOnAnalysisIds": [
+      "Oy47yb7WGCk"
+    ],
+    "examples": [
+      "Open the Claude desktop app, switch to Cowork mode"
+    ],
+    "fits": [
+      "demo"
+    ]
+  },
+  {
+    "id": "facts-that-may-surprise",
+    "type": "list",
+    "formula": "Facts about [topic] that may surprise you.",
+    "basedOnAnalysisIds": [
+      "RL28tOO8Ov4"
+    ],
+    "examples": [
+      "Facts about the world that may surprise you."
+    ],
+    "fits": [
+      "facts"
+    ]
+  },
+  {
+    "id": "if-youve-watched",
+    "type": "curiosity-gap",
+    "formula": "If you've watched [movie], then you've probably seen [detail].",
+    "basedOnAnalysisIds": [
+      "RjX0cRL0Mqs"
+    ],
+    "examples": [
+      "If you've watched Cars 2 then you've probably seen this scene of the Car Pope."
+    ],
+    "fits": [
+      "explainer"
+    ]
+  },
+  {
+    "id": "now-you-can-for-free",
+    "type": "result-first",
+    "formula": "Now you can [result] for free with zero [obstacle].",
+    "basedOnAnalysisIds": [
+      "RshyfhbaNHA"
+    ],
+    "examples": [
+      "Now you can build websites like this one for free with zero coding experience."
+    ],
+    "fits": [
+      "demo"
+    ]
+  },
+  {
+    "id": "top-n-best-category",
+    "type": "list",
+    "formula": "TOP [N] BEST [category] TOOL",
+    "basedOnAnalysisIds": [
+      "Rthn9xKsr2M"
+    ],
+    "examples": [
+      "TOP 5 BEST AI TOOL"
+    ],
+    "fits": [
+      "facts"
+    ]
+  },
+  {
+    "id": "n-free-apps-for-device",
+    "type": "list",
+    "formula": "[N] FREE APPS YOU NEED ON YOUR [device]",
+    "basedOnAnalysisIds": [
+      "SMdcwr1VgWQ"
+    ],
+    "examples": [
+      "2 FREE APPS YOU NEED ON YOUR IPAD"
+    ],
+    "fits": [
+      "demo"
+    ]
+  },
+  {
+    "id": "turning-boring-into-this",
+    "type": "result-first",
+    "formula": "Turning the boring [item] into this one in [time].",
+    "basedOnAnalysisIds": [
+      "XR8tSw727dE"
+    ],
+    "examples": [
+      "Turning the boring chart into this one in 30 seconds."
+    ],
+    "fits": [
+      "explainer"
+    ]
+  },
+  {
+    "id": "you-are-the-only",
+    "type": "contrarian",
+    "formula": "You are the only [statement that sounds impossible].",
+    "basedOnAnalysisIds": [
+      "XT4y1fGB6CE"
+    ],
+    "examples": [
+      "You are the only person alive."
+    ],
+    "fits": [
+      "explainer"
+    ]
+  },
+  {
+    "id": "want-to-next-level",
+    "type": "question",
+    "formula": "Want to [goal] and take your [project] to the next level?",
+    "basedOnAnalysisIds": [
+      "XgM2_m2I6sE"
+    ],
+    "examples": [
+      "Want to promote your app and take your mobile app promo to the next level?"
+    ],
+    "fits": [
+      "demo"
+    ]
+  },
+  {
+    "id": "did-you-know-this-resource",
+    "type": "question",
+    "formula": "Did you know if you go to this [resource], you'll find [valuable items]?",
+    "basedOnAnalysisIds": [
+      "ZB_QwIE1Ris"
+    ],
+    "examples": [
+      "Did you know if you go to this GitHub repo, you'll find a huge library of APIs by category, including sports and fitness, entertainment, and everything else."
+    ],
+    "fits": [
+      "demo"
+    ]
+  },
+  {
+    "id": "things-every-audience-needs",
+    "type": "list",
+    "formula": "[Items] that every [audience] needs",
+    "basedOnAnalysisIds": [
+      "ZS35BpmxJ7g"
+    ],
+    "examples": [
+      "Apps that every teenager needs"
+    ],
+    "fits": [
+      "facts"
+    ]
+  },
+  {
+    "id": "lets-get-started-in-tool",
+    "type": "result-first",
+    "formula": "Alright, so let's get started in [tool].",
+    "basedOnAnalysisIds": [
+      "ZcP4BwY9rHw"
+    ],
+    "examples": [
+      "Alright so let's get started in n8n."
+    ],
+    "fits": [
+      "demo"
+    ]
+  },
+  {
+    "id": "why-does-entity-have-anomaly",
+    "type": "question",
+    "formula": "Why does [entity] have [anomaly]?",
+    "basedOnAnalysisIds": [
+      "_j_j89V7Q0w"
+    ],
+    "examples": [
+      "Why does Florida have this panhandle? Why does it end here and not here? Or why isn't it part of Alabama?"
+    ],
+    "fits": [
+      "explainer"
+    ]
+  },
+  {
+    "id": "you-might-think",
+    "type": "contrarian",
+    "formula": "When you [everyday action], you might think [misconception]...",
+    "basedOnAnalysisIds": [
+      "_yr-VNLW9nU"
+    ],
+    "examples": [
+      "When you visit a website, you might think that your computer is connecting with"
+    ],
+    "fits": [
+      "explainer"
+    ]
+  },
+  {
+    "id": "could-this-beat-leader",
+    "type": "question",
+    "formula": "Could this be the [thing] that finally beats [market leader]?",
+    "basedOnAnalysisIds": [
+      "aLo8oxI-F1E"
+    ],
+    "examples": [
+      "Could this be the AI that finally beats ChatGPT?"
+    ],
+    "fits": [
+      "explainer"
+    ]
+  },
+  {
+    "id": "anyone-can-now-without",
+    "type": "result-first",
+    "formula": "Anyone can now [result] without [obstacle].",
+    "basedOnAnalysisIds": [
+      "aV_yI1oV5vU"
+    ],
+    "examples": [
+      "Anyone can now build SaaS applications without writing a single line of code."
+    ],
+    "fits": [
+      "explainer"
+    ]
+  },
+  {
+    "id": "if-you-use-these-n-you-need",
+    "type": "list",
+    "formula": "If you use [tool], these are the [N] [add-ons] you need right now.",
+    "basedOnAnalysisIds": [
+      "aX7QAfld7hs"
+    ],
+    "examples": [
+      "If you use Claude Code, these are the 5 MCP servers you need right now."
+    ],
+    "fits": [
+      "facts"
+    ]
+  },
+  {
+    "id": "you-wont-believe",
+    "type": "curiosity-gap",
+    "formula": "You won't believe what [subject] did to [target]. Let me explain.",
+    "basedOnAnalysisIds": [
+      "axfQIwjAZjk"
+    ],
+    "examples": [
+      "You won't believe what this guy did to people. Let me explain."
+    ],
+    "fits": [
+      "story"
+    ]
+  },
+  {
+    "id": "did-you-know-short",
+    "type": "question",
+    "formula": "Did you know [a common assumption is wrong]?",
+    "basedOnAnalysisIds": [
+      "cK_Q496wow8"
+    ],
+    "examples": [
+      "Did you know"
+    ],
+    "fits": [
+      "facts"
+    ]
+  },
+  {
+    "id": "heres-how-i-use-tool",
+    "type": "how-to",
+    "formula": "Here's how I use [tool] to do [task].",
+    "basedOnAnalysisIds": [
+      "ej5PdsstQrI"
+    ],
+    "examples": [
+      "Here's how I use Claude to do technical analysis, and it's a game changer."
+    ],
+    "fits": [
+      "demo"
+    ]
+  },
+  {
+    "id": "so-you-want",
+    "type": "question",
+    "formula": "So, you want [desired result]...",
+    "basedOnAnalysisIds": [
+      "evXxJa0DsAA"
+    ],
+    "examples": [
+      "So, you want a clean motion ad for your product,"
+    ],
+    "fits": [
+      "demo"
+    ]
+  },
+  {
+    "id": "characters-on-a-job",
+    "type": "story",
+    "formula": "Alright guys, we've got a [job] to do. Where's the [problem] this time?",
+    "basedOnAnalysisIds": [
+      "fgJdRiPct60"
+    ],
+    "examples": [
+      "Alright guys, we've got a job to do. Where's the pain this time?"
+    ],
+    "fits": [
+      "story"
+    ]
+  },
+  {
+    "id": "imagine-you-have",
+    "type": "story",
+    "formula": "Imagine you have [valuable thing] in your [place].",
+    "basedOnAnalysisIds": [
+      "fjet5EE2iBI"
+    ],
+    "examples": [
+      "Imagine you have ten thousand dollars"
+    ],
+    "fits": [
+      "explainer"
+    ]
+  },
+  {
+    "id": "build-your-first-in-time",
+    "type": "explained-in-time",
+    "formula": "Here's how to build your first [outcome] in less than [time] with zero [skill] experience.",
+    "basedOnAnalysisIds": [
+      "g1t_hmndPdo"
+    ],
+    "examples": [
+      "Here's how to build your first AI agent in less than 1 minute with zero coding experience."
+    ],
+    "fits": [
+      "demo"
+    ]
+  },
+  {
+    "id": "credible-person-released",
+    "type": "news",
+    "formula": "This [credible person] just released their entire [asset] for free.",
+    "basedOnAnalysisIds": [
+      "g3Mh8Hws-jo"
+    ],
+    "examples": [
+      "This Anthropic hackathon winner just released his entire Claude Code setup for free."
+    ],
+    "fits": [
+      "demo"
+    ]
+  },
+  {
+    "id": "company-just-launched",
+    "type": "news",
+    "formula": "[Company] just launched a [adjective] [category] tool that lets you [benefit] without [pain].",
+    "basedOnAnalysisIds": [
+      "hu3fjVm4sB4"
+    ],
+    "examples": [
+      "Google just launched a free AI coding tool that lets you vibe code full mobile apps without writing a single line of code."
+    ],
+    "fits": [
+      "demo"
+    ]
+  },
+  {
+    "id": "topic-is-definition",
+    "type": "explained-in-time",
+    "formula": "[Topic] is [one-sentence definition].",
+    "basedOnAnalysisIds": [
+      "ilDOvMsxMws"
+    ],
+    "examples": [
+      "Socialism is an economic and political system where the community or state owns"
+    ],
+    "fits": [
+      "explainer"
+    ]
+  },
+  {
+    "id": "free-apps-shouldnt-be-this-good",
+    "type": "list",
+    "formula": "[N] free [category] apps that should not be this good.",
+    "basedOnAnalysisIds": [
+      "incL6fhurqk",
+      "xpTmAbqAuMY"
+    ],
+    "examples": [
+      "5 free iPhone apps that should not be this good.",
+      "Four free iPhone apps that should not be this good."
+    ],
+    "fits": [
+      "facts"
+    ]
+  },
+  {
+    "id": "what-why-what-can-you-do",
+    "type": "question",
+    "formula": "[Topic]. What is it? Why does it happen? And what can you do?",
+    "basedOnAnalysisIds": [
+      "kYOkrswU1KE"
+    ],
+    "examples": [
+      "Around one in three of you could suffer from a panic attack"
+    ],
+    "fits": [
+      "explainer"
+    ]
+  },
+  {
+    "id": "app-in-motion",
+    "type": "visual-first",
+    "formula": "[App] shown moving, with a one-word action on screen",
+    "basedOnAnalysisIds": [
+      "kaGP7tuTmeE"
+    ],
+    "examples": [
+      "Пополняйте"
+    ],
+    "fits": [
+      "demo"
+    ]
+  },
+  {
+    "id": "this-is-a-map-of",
+    "type": "curiosity-gap",
+    "formula": "This right here is a map of [unexpected thing].",
+    "basedOnAnalysisIds": [
+      "lylaitbZB70"
+    ],
+    "examples": [
+      "This right here is a map of the internet."
+    ],
+    "fits": [
+      "explainer"
+    ]
+  },
+  {
+    "id": "extreme-but-scared",
+    "type": "curiosity-gap",
+    "formula": "This [character] literally [extreme action] but is too scared to [relatable action] because...",
+    "basedOnAnalysisIds": [
+      "mfl6Fhi-LTk"
+    ],
+    "examples": [
+      "This character literally trains with bears but is too scared to marry his crush because"
+    ],
+    "fits": [
+      "story"
+    ]
+  },
+  {
+    "id": "how-to-action",
+    "type": "how-to",
+    "formula": "How to [action] [object or platform]",
+    "basedOnAnalysisIds": [
+      "n8JpwbyxmHM",
+      "vTVJJ06rcDg"
+    ],
+    "examples": [
+      "How to upload a project to GitHub",
+      "How to watch Beauty EXPERT'S TUTORIALS"
+    ],
+    "fits": [
+      "explainer",
+      "demo"
+    ]
+  },
+  {
+    "id": "this-map-traces",
+    "type": "curiosity-gap",
+    "formula": "This map here traces [subject]'s [journey].",
+    "basedOnAnalysisIds": [
+      "nELGzUrsQko"
+    ],
+    "examples": [
+      "This map here traces King Odysseus's ten year journey home, as told in Homer's epic poem, The Odyssey."
+    ],
+    "fits": [
+      "story"
+    ]
+  },
+  {
+    "id": "did-you-know-there-is-a-place",
+    "type": "question",
+    "formula": "Did you know in [location] there's a [place] where [something happened]?",
+    "basedOnAnalysisIds": [
+      "nWf7huAPCsw"
+    ],
+    "examples": [
+      "Did you know in the United States there's a bridge where a man"
+    ],
+    "fits": [
+      "story"
+    ]
+  },
+  {
+    "id": "facts-you-could-live-without",
+    "type": "list",
+    "formula": "[N] interesting facts you could have lived without knowing.",
+    "basedOnAnalysisIds": [
+      "o5CjuDDPXxk"
+    ],
+    "examples": [
+      "Three interesting facts you could have lived without knowing."
+    ],
+    "fits": [
+      "facts"
+    ]
+  },
+  {
+    "id": "tool-gaining-momentum",
+    "type": "news",
+    "formula": "[Tool] has been gaining so much momentum in how [audience] are using it to [benefit].",
+    "basedOnAnalysisIds": [
+      "p7U_98jWqWo"
+    ],
+    "examples": [
+      "Claude Code has been gaining so much momentum in how companies are using it to automate their operations."
+    ],
+    "fits": [
+      "explainer"
+    ]
+  },
+  {
+    "id": "why-does-use-n",
+    "type": "question",
+    "formula": "Why does [subject] use [N] [items]? Not [x], not [y], [N].",
+    "basedOnAnalysisIds": [
+      "u1UXDgodUP4"
+    ],
+    "examples": [
+      "Why does Western music use twelve notes? Not ten, not twenty, twelve."
+    ],
+    "fits": [
+      "explainer"
+    ]
+  },
+  {
+    "id": "brands-wouldnt-exist",
+    "type": "curiosity-gap",
+    "formula": "[Big brands] wouldn't exist today if [unlikely person] hadn't started [this brand].",
+    "basedOnAnalysisIds": [
+      "x7iYFWYxmbQ"
+    ],
+    "examples": [
+      "Campa Jeera, Lahori Jeera, ye sabhi bade brands aaj market mein dikhai bhi nahi dete agar Bengaluru ke is auto driver ne apne is brand ki shuruat na ki hoti."
+    ],
+    "fits": [
+      "story"
+    ]
+  },
+  {
+    "id": "product-name-reveal",
+    "type": "news",
+    "formula": "[Product name], typed or revealed letter by letter",
+    "basedOnAnalysisIds": [
+      "y0DMsRT2U1U"
+    ],
+    "examples": [
+      "G P T - 5"
+    ],
+    "fits": [
+      "demo"
+    ]
+  },
+  {
+    "id": "how-lowly-built-massive",
+    "type": "curiosity-gap",
+    "formula": "How a [humble person] built a [huge result].",
+    "basedOnAnalysisIds": [
+      "zIdkkPSldcs"
+    ],
+    "examples": [
+      "Aakhir kaise hotel mein jhoothe bartan dhone wale ladke ne khadi kar di 30 crore ki company"
+    ],
+    "fits": [
+      "story"
+    ]
+  }
+]

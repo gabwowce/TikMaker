@@ -1,0 +1,185 @@
+{
+  "id": "plot-recap",
+  "format": "story",
+  "name": "Story recap",
+  "oneLine": "A plot, journey or character backstory retold event by event",
+  "whenToUse": "An idea that recaps an episode, myth, game lore or a character's story.",
+  "seconds": {
+    "min": 48,
+    "max": 181
+  },
+  "hookTypes": [
+    "explained-in-time",
+    "curiosity-gap"
+  ],
+  "ctaTypes": [
+    "none"
+  ],
+  "acts": [
+    {
+      "act": "opening",
+      "scenes": [
+        {
+          "role": "hook",
+          "purpose": "Names the story and promises it in short.",
+          "connectionToNext": "sequence",
+          "slots": [
+            {
+              "name": "story-name",
+              "kind": "fixed"
+            },
+            {
+              "name": "promise",
+              "kind": "creative"
+            }
+          ],
+          "seconds": {
+            "min": 2.4,
+            "max": 7.2
+          },
+          "repeatable": false,
+          "optional": false
+        }
+      ]
+    },
+    {
+      "act": "build",
+      "scenes": [
+        {
+          "role": "setup",
+          "purpose": "Introduces the world and the hero.",
+          "connectionToNext": "sequence",
+          "slots": [
+            {
+              "name": "setting",
+              "kind": "fixed"
+            }
+          ],
+          "seconds": {
+            "min": 5.4,
+            "max": 13.6
+          },
+          "repeatable": true,
+          "optional": false
+        },
+        {
+          "role": "problem",
+          "purpose": "States the hero's problem.",
+          "connectionToNext": "cause-effect",
+          "slots": [
+            {
+              "name": "problem",
+              "kind": "fixed"
+            }
+          ],
+          "seconds": {
+            "min": 5.2,
+            "max": 6.8
+          },
+          "repeatable": false,
+          "optional": true
+        },
+        {
+          "role": "item",
+          "purpose": "Shows one trait or event.",
+          "connectionToNext": "sequence",
+          "slots": [
+            {
+              "name": "event",
+              "kind": "fixed"
+            }
+          ],
+          "seconds": {
+            "min": 4,
+            "max": 18
+          },
+          "repeatable": true,
+          "optional": true
+        }
+      ]
+    },
+    {
+      "act": "core",
+      "scenes": [
+        {
+          "role": "item",
+          "purpose": "Retells one event.",
+          "connectionToNext": "sequence",
+          "slots": [
+            {
+              "name": "event",
+              "kind": "fixed"
+            }
+          ],
+          "seconds": {
+            "min": 4,
+            "max": 18
+          },
+          "repeatable": true,
+          "optional": true
+        },
+        {
+          "role": "escalation",
+          "purpose": "Raises the stakes.",
+          "connectionToNext": "sequence",
+          "slots": [
+            {
+              "name": "stake",
+              "kind": "fixed"
+            }
+          ],
+          "seconds": {
+            "min": 5.5,
+            "max": 13.4
+          },
+          "repeatable": true,
+          "optional": true
+        }
+      ]
+    },
+    {
+      "act": "close",
+      "scenes": [
+        {
+          "role": "payoff",
+          "purpose": "Ends on how it all turns out.",
+          "connectionToNext": "bridge",
+          "slots": [
+            {
+              "name": "ending",
+              "kind": "fixed"
+            }
+          ],
+          "seconds": {
+            "min": 6.2,
+            "max": 14.2
+          },
+          "repeatable": false,
+          "optional": false
+        },
+        {
+          "role": "cta",
+          "purpose": "Asks the viewer to follow for more, if the video needs a call to action.",
+          "connectionToNext": "none",
+          "slots": [
+            {
+              "name": "cta-line",
+              "kind": "creative"
+            }
+          ],
+          "seconds": {
+            "min": 2,
+            "max": 8.1
+          },
+          "repeatable": false,
+          "optional": true
+        }
+      ]
+    }
+  ],
+  "basedOnAnalysisIds": [
+    "-CQ_-6AzF9Q",
+    "nELGzUrsQko",
+    "mfl6Fhi-LTk"
+  ]
+}

@@ -1,0 +1,165 @@
+[
+  {
+    "connection": "sequence",
+    "phrases": [
+      "First,",
+      "Second,",
+      "Third,",
+      "First is",
+      "Second is",
+      "Third is",
+      "Fourth is",
+      "Fifth is",
+      "Next,",
+      "And then",
+      "After that",
+      "And last,",
+      "And finally,",
+      "Finally,",
+      "Now that everything is set up",
+      "So let's start with",
+      "Alright, once you finish",
+      "All you need to do",
+      "You can also",
+      "Starting off at number one",
+      "Coming in at number two",
+      "And finally at number three",
+      "Moreover",
+      "And what's surprising is that",
+      "In the distant past",
+      "Over the decades",
+      "A few years later",
+      "Later",
+      "This is how.",
+      "That's it.",
+      "here are three tricks",
+      "What comes next",
+      "But anyways,",
+      "Uske baad",
+      "Phir"
+    ]
+  },
+  {
+    "connection": "cause-effect",
+    "phrases": [
+      "So",
+      "As a result",
+      "And since",
+      "In other words,",
+      "You see,",
+      "And look",
+      "After a few minutes",
+      "From this point on",
+      "So they decided to",
+      "And all this is possible because...",
+      "which causes",
+      "So what if,",
+      "So we cheat.",
+      "and suddenly...",
+      "Well for some reason",
+      "Kyunki"
+    ]
+  },
+  {
+    "connection": "contrast",
+    "phrases": [
+      "But",
+      "Instead",
+      "Instead of just",
+      "But instead,",
+      "but in reality,",
+      "but that's not how",
+      "Unlike most AIs,",
+      "But here's where it gets crazy.",
+      "Well most people thought",
+      "but it was later confirmed",
+      "It's quite common to think...",
+      "Everything looks good, but",
+      "Though",
+      "Until",
+      "But despite",
+      "Lekin"
+    ]
+  },
+  {
+    "connection": "escalation",
+    "phrases": [
+      "And it gets even better",
+      "But that's not all.",
+      "Plus",
+      "Plus, you still get",
+      "and here you get",
+      "that lets you",
+      "The worst part?",
+      "Most importantly",
+      "In extreme cases",
+      "And believe me,",
+      "One night",
+      "But the story of how they scaled",
+      "Aur sabse khatarnak baat"
+    ]
+  },
+  {
+    "connection": "bridge",
+    "phrases": [
+      "So if you want",
+      "So just",
+      "To get the full",
+      "For a PDF",
+      "So want to try it for yourself?",
+      "Now you might be wondering...",
+      "Before going to",
+      "You just found",
+      "Now make sure",
+      "Anyways,",
+      "You've probably heard",
+      "And if you are",
+      "I've recorded",
+      "We're not here"
+    ]
+  },
+  {
+    "connection": "example",
+    "phrases": [
+      "Here's another example",
+      "They say",
+      "Anytime",
+      "In many cases,",
+      "That's like",
+      "You can see",
+      "That's the equivalent",
+      "On one extreme...",
+      "because"
+    ]
+  },
+  {
+    "connection": "open-loop-payoff",
+    "phrases": [
+      "It's called",
+      "You have probably heard of",
+      "Here's the easiest way",
+      "All roads lead to Rome...",
+      "And that's why...",
+      "Anthropic just dropped",
+      "Back in 1996,"
+    ]
+  },
+  {
+    "connection": "question-answer",
+    "phrases": [
+      "The answer is",
+      "It's because of",
+      "Well,",
+      "But how do",
+      "Did you know",
+      "So where did the ROAD part come from?",
+      "With CreateStudio"
+    ]
+  },
+  {
+    "connection": "callback",
+    "phrases": [
+      "See back in 2010"
+    ]
+  }
+]
