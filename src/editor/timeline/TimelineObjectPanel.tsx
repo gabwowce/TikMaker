@@ -441,6 +441,7 @@ export function TimelineObjectPanel({
             text={line.text}
             highlights={line.highlights}
             highlightStyle={line.highlightStyle}
+            highlightColor={line.highlightColor}
             onChange={update}
           />
         </Fieldset>

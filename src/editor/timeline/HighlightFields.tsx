@@ -1,14 +1,17 @@
 import { Button, UnstyledButton } from "@mantine/core";
 import { highlightStyleSchema } from "../../schema/capabilities";
 import type { HighlightStyle } from "../../schema/scene";
+import { TEXT_COLOR_SWATCHES } from "./ObjectTextSettings";
 
 type HighlightFieldsProps = {
   text: string;
   highlights?: string[];
   highlightStyle?: HighlightStyle;
+  highlightColor?: string;
   onChange: (patch: {
     highlights?: string[];
     highlightStyle?: HighlightStyle;
+    highlightColor?: string;
   }) => void;
 };
 
@@ -17,8 +20,10 @@ export function HighlightFields({
   text,
   highlights,
   highlightStyle,
+  highlightColor,
   onChange,
 }: HighlightFieldsProps) {
+  const current = highlightStyle ?? "pill";
   const words = text.split(/\s+/).filter(Boolean);
   const chosen = new Set((highlights ?? []).map((word) => word.toLowerCase()));
   function toggle(word: string) {
@@ -51,7 +56,7 @@ export function HighlightFields({
       {chosen.size > 0 ? (
         <div className="flex gap-1.5">
           {highlightStyleSchema.options.map((style) => {
-            const active = (highlightStyle ?? "pill") === style;
+            const active = current === style;
             return (
               <Button
                 variant="default"
@@ -63,6 +68,30 @@ export function HighlightFields({
               </Button>
             );
           })}
+        </div>
+      ) : null}
+      {chosen.size > 0 && current !== "bold" ? (
+        // small colour dots; the first one goes back to the default
+        <div className="flex gap-1 items-center">
+          <button
+            type="button"
+            aria-label="Default highlight colour"
+            title="Default"
+            onClick={() => onChange({ highlightColor: undefined })}
+            className={`w-4 h-4 rounded-full text-[9px] leading-none text-editor-muted bg-transparent cursor-pointer ${highlightColor ? "[border:1px_solid_rgba(255,255,255,0.18)]" : "[border:1px_solid_#FF7024]"}`}
+          >
+            ×
+          </button>
+          {TEXT_COLOR_SWATCHES.map((swatch) => (
+            <button
+              type="button"
+              key={swatch}
+              aria-label={swatch}
+              onClick={() => onChange({ highlightColor: swatch })}
+              className={`w-4 h-4 rounded-full cursor-pointer ${highlightColor?.toUpperCase() === swatch ? "[border:2px_solid_#FF7024]" : "[border:1px_solid_rgba(255,255,255,0.18)]"}`}
+              style={{ background: swatch }}
+            />
+          ))}
         </div>
       ) : null}
     </div>

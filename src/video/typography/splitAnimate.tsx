@@ -107,9 +107,13 @@ function useEnterExitStyle(args: {
 // How a highlighted word is drawn (B2): a light box, the accent colour or a bolder font.
 const PILL_CLASS =
   "inline bg-[#FFFFFF] text-[#171717] p-[0.05em_0.18em] rounded-md [box-decoration-break:clone] [-webkit-box-decoration-break:clone]";
-function highlightLook(highlight: HighlightStyle): { className?: string; style?: CSSProperties } {
-  if (highlight === "pill") return { className: PILL_CLASS };
-  if (highlight === "color") return { style: { color: colors.accent } };
+function highlightLook(
+  highlight: HighlightStyle,
+  color?: string,
+): { className?: string; style?: CSSProperties } {
+  if (highlight === "pill")
+    return { className: PILL_CLASS, style: color ? { background: color } : undefined };
+  if (highlight === "color") return { style: { color: color ?? colors.accent } };
   return { style: { fontFamily: fontFamilies.clashBold } };
 }
 
@@ -128,6 +132,7 @@ export function highlightMask(text: string, highlights?: string[]): boolean[] {
 
 type AnimatedUnitProps = {
   highlight?: HighlightStyle; // unset = plain
+  highlightColor?: string;
   children?: ReactNode; // drawn instead of text (a whole line with highlighted words inside)
   text: string;
   delay: number;
@@ -145,6 +150,7 @@ export function AnimatedUnit({
   entranceDuration,
   style: ownStyle,
   highlight,
+  highlightColor,
   children,
   exit,
 }: AnimatedUnitProps) {
@@ -155,7 +161,7 @@ export function AnimatedUnit({
     entranceDuration,
     exit,
   });
-  const look = highlight ? highlightLook(highlight) : {};
+  const look = highlight ? highlightLook(highlight, highlightColor) : {};
   return (
     <span
       className={`whitespace-pre ${look.className ?? "inline-block"}`}
@@ -179,6 +185,7 @@ type AnimatedSplitTextProps = {
   splitDuration?: number;
   highlights?: string[];
   highlightStyle?: HighlightStyle;
+  highlightColor?: string;
   exit?: ExitConfig;
 };
 export function AnimatedSplitText({
@@ -191,6 +198,7 @@ export function AnimatedSplitText({
   splitDuration,
   highlights,
   highlightStyle = "pill",
+  highlightColor,
   exit,
 }: AnimatedSplitTextProps) {
   const units = splitText(text, splitBy);
@@ -220,10 +228,16 @@ export function AnimatedSplitText({
               ? highlightStyle
               : undefined
           }
+          highlightColor={highlightColor}
           exit={exit}
         >
           {splitBy === "line" ? (
-            <HighlightedText text={unit} mask={mask} style={highlightStyle} />
+            <HighlightedText
+              text={unit}
+              mask={mask}
+              style={highlightStyle}
+              color={highlightColor}
+            />
           ) : undefined}
         </AnimatedUnit>
       ))}
@@ -235,10 +249,12 @@ function HighlightedText({
   text,
   mask,
   style,
+  color,
 }: {
   text: string;
   mask: boolean[];
   style: HighlightStyle;
+  color?: string;
 }) {
   const parts: { text: string; on: boolean }[] = [];
   [...text].forEach((char, index) => {
@@ -251,7 +267,7 @@ function HighlightedText({
     <>
       {parts.map((part, index) => {
         if (!part.on) return <Fragment key={index}>{part.text}</Fragment>;
-        const look = highlightLook(style);
+        const look = highlightLook(style, color);
         return (
           <span key={index} className={look.className} style={look.style}>
             {part.text}
