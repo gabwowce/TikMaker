@@ -1,0 +1,186 @@
+{
+  "id": "analogy-explainer",
+  "format": "explainer",
+  "name": "Explained with characters",
+  "oneLine": "A concept explained through a small invented world or everyday analogy",
+  "whenToUse": "An idea that is an abstract concept (economics, health, finance) that becomes clear as a story.",
+  "seconds": {
+    "min": 26,
+    "max": 63
+  },
+  "hookTypes": [
+    "story",
+    "explained-in-time"
+  ],
+  "ctaTypes": [
+    "none"
+  ],
+  "acts": [
+    {
+      "act": "opening",
+      "scenes": [
+        {
+          "role": "setup",
+          "purpose": "Sets up the analogy world.",
+          "connectionToNext": "cause-effect",
+          "slots": [
+            {
+              "name": "analogy",
+              "kind": "creative"
+            }
+          ],
+          "seconds": {
+            "min": 2.6,
+            "max": 5.4
+          },
+          "repeatable": true,
+          "optional": false
+        }
+      ]
+    },
+    {
+      "act": "build",
+      "scenes": [
+        {
+          "role": "setup",
+          "purpose": "Adds the rules of the analogy.",
+          "connectionToNext": "sequence",
+          "slots": [
+            {
+              "name": "rule",
+              "kind": "creative"
+            }
+          ],
+          "seconds": {
+            "min": 2.6,
+            "max": 5.4
+          },
+          "repeatable": true,
+          "optional": false
+        },
+        {
+          "role": "problem",
+          "purpose": "Introduces the problem in the analogy.",
+          "connectionToNext": "cause-effect",
+          "slots": [
+            {
+              "name": "problem",
+              "kind": "fixed"
+            }
+          ],
+          "seconds": {
+            "min": 3.4,
+            "max": 5.6
+          },
+          "repeatable": true,
+          "optional": false
+        },
+        {
+          "role": "mechanism",
+          "purpose": "Shows how the concept works in the analogy.",
+          "connectionToNext": "cause-effect",
+          "slots": [
+            {
+              "name": "step",
+              "kind": "fixed"
+            }
+          ],
+          "seconds": {
+            "min": 2.7,
+            "max": 8
+          },
+          "repeatable": true,
+          "optional": false
+        }
+      ]
+    },
+    {
+      "act": "core",
+      "scenes": [
+        {
+          "role": "reveal",
+          "purpose": "Names the real concept behind the analogy.",
+          "connectionToNext": "sequence",
+          "slots": [
+            {
+              "name": "concept-term",
+              "kind": "fixed"
+            }
+          ],
+          "seconds": {
+            "min": 2.8,
+            "max": 5.6
+          },
+          "repeatable": true,
+          "optional": false
+        },
+        {
+          "role": "mechanism",
+          "purpose": "Applies the analogy to real cases.",
+          "connectionToNext": "example",
+          "slots": [
+            {
+              "name": "real-case",
+              "kind": "fixed"
+            }
+          ],
+          "seconds": {
+            "min": 2.7,
+            "max": 8
+          },
+          "repeatable": true,
+          "optional": false
+        }
+      ]
+    },
+    {
+      "act": "climax",
+      "scenes": [
+        {
+          "role": "reveal",
+          "purpose": "Delivers the main lesson.",
+          "connectionToNext": "sequence",
+          "slots": [
+            {
+              "name": "lesson",
+              "kind": "fixed"
+            }
+          ],
+          "seconds": {
+            "min": 2.8,
+            "max": 5.6
+          },
+          "repeatable": true,
+          "optional": false
+        }
+      ]
+    },
+    {
+      "act": "close",
+      "scenes": [
+        {
+          "role": "payoff",
+          "purpose": "Ends on the consequence or moral.",
+          "connectionToNext": "none",
+          "slots": [
+            {
+              "name": "closing-line",
+              "kind": "creative"
+            }
+          ],
+          "seconds": {
+            "min": 3.3,
+            "max": 5.7
+          },
+          "repeatable": false,
+          "optional": true
+        }
+      ]
+    }
+  ],
+  "basedOnAnalysisIds": [
+    "GndFJU8kYeY",
+    "fjet5EE2iBI",
+    "H7vaUGOMQrI"
+  ]
+}

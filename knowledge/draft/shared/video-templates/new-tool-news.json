@@ -1,0 +1,197 @@
+{
+  "id": "new-tool-news",
+  "format": "demo",
+  "name": "New tool news",
+  "oneLine": "A just-released free tool, its benefits, a quick demo and a comment-keyword offer",
+  "whenToUse": "An idea that is news about a newly released or newly free tool.",
+  "seconds": {
+    "min": 30,
+    "max": 107
+  },
+  "hookTypes": [
+    "news"
+  ],
+  "ctaTypes": [
+    "comment-keyword"
+  ],
+  "acts": [
+    {
+      "act": "opening",
+      "scenes": [
+        {
+          "role": "hook",
+          "purpose": "Announces who released what, and that it is free.",
+          "connectionToNext": "sequence",
+          "slots": [
+            {
+              "name": "who-released",
+              "kind": "fixed"
+            },
+            {
+              "name": "tool-name",
+              "kind": "fixed"
+            },
+            {
+              "name": "headline-benefit",
+              "kind": "creative"
+            }
+          ],
+          "seconds": {
+            "min": 2.4,
+            "max": 4.8
+          },
+          "repeatable": false,
+          "optional": false
+        }
+      ]
+    },
+    {
+      "act": "build",
+      "scenes": [
+        {
+          "role": "setup",
+          "purpose": "Gives context about the source or the tool.",
+          "connectionToNext": "sequence",
+          "slots": [
+            {
+              "name": "context",
+              "kind": "fixed"
+            }
+          ],
+          "seconds": {
+            "min": 3,
+            "max": 5.4
+          },
+          "repeatable": true,
+          "optional": true
+        },
+        {
+          "role": "benefit",
+          "purpose": "States the first benefit.",
+          "connectionToNext": "open-loop-payoff",
+          "slots": [
+            {
+              "name": "benefit",
+              "kind": "fixed"
+            }
+          ],
+          "seconds": {
+            "min": 5.2,
+            "max": 10
+          },
+          "repeatable": true,
+          "optional": false
+        }
+      ]
+    },
+    {
+      "act": "core",
+      "scenes": [
+        {
+          "role": "reveal",
+          "purpose": "Names the tool.",
+          "connectionToNext": "escalation",
+          "slots": [
+            {
+              "name": "tool-name",
+              "kind": "fixed"
+            }
+          ],
+          "seconds": {
+            "min": 2.9,
+            "max": 10.1
+          },
+          "repeatable": false,
+          "optional": true
+        },
+        {
+          "role": "benefit",
+          "purpose": "Adds benefits one after another.",
+          "connectionToNext": "escalation",
+          "slots": [
+            {
+              "name": "benefit",
+              "kind": "fixed"
+            }
+          ],
+          "seconds": {
+            "min": 5.2,
+            "max": 10
+          },
+          "repeatable": true,
+          "optional": false
+        },
+        {
+          "role": "demo",
+          "purpose": "Shows how to start using it.",
+          "connectionToNext": "sequence",
+          "slots": [
+            {
+              "name": "screen-recording",
+              "kind": "fixed"
+            }
+          ],
+          "seconds": {
+            "min": 6,
+            "max": 6
+          },
+          "repeatable": false,
+          "optional": true
+        }
+      ]
+    },
+    {
+      "act": "climax",
+      "scenes": [
+        {
+          "role": "reveal",
+          "purpose": "Reveals the strongest part of the release.",
+          "connectionToNext": "bridge",
+          "slots": [
+            {
+              "name": "best-part",
+              "kind": "fixed"
+            }
+          ],
+          "seconds": {
+            "min": 2.9,
+            "max": 10.1
+          },
+          "repeatable": false,
+          "optional": true
+        }
+      ]
+    },
+    {
+      "act": "close",
+      "scenes": [
+        {
+          "role": "cta",
+          "purpose": "Asks for a comment keyword to get the link.",
+          "connectionToNext": "none",
+          "slots": [
+            {
+              "name": "keyword",
+              "kind": "fixed"
+            },
+            {
+              "name": "resource",
+              "kind": "fixed"
+            }
+          ],
+          "seconds": {
+            "min": 3.2,
+            "max": 12.8
+          },
+          "repeatable": false,
+          "optional": false
+        }
+      ]
+    }
+  ],
+  "basedOnAnalysisIds": [
+    "1C_0WaKKCPw",
+    "hu3fjVm4sB4",
+    "g3Mh8Hws-jo"
+  ]
+}

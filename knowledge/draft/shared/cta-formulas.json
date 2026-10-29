@@ -1,0 +1,173 @@
+[
+  {
+    "id": "subscribe",
+    "type": "follow",
+    "formula": "Subscribe",
+    "examples": [
+      "Subscribe",
+      "SUBSCRIBE"
+    ]
+  },
+  {
+    "id": "like-and-subscribe",
+    "type": "follow",
+    "formula": "Like and subscribe",
+    "examples": [
+      "like and subscribe",
+      "Like & Subscribe"
+    ]
+  },
+  {
+    "id": "subscribe-for-more-topic",
+    "type": "follow",
+    "formula": "Subscribe for more [topic]",
+    "examples": [
+      "Subscribe for more!",
+      "Subscribe for more.",
+      "Subscribe for more crazy stories like this",
+      "Follow for more AI coding tutorials"
+    ]
+  },
+  {
+    "id": "like-if-it-helped",
+    "type": "follow",
+    "formula": "Like this if it helped and follow for more",
+    "examples": [
+      "Like this if it helped and follow for more"
+    ]
+  },
+  {
+    "id": "subscribe-as-a-fact",
+    "type": "follow",
+    "formula": "Studies show you should like and subscribe as [joke benefit].",
+    "examples": [
+      "Studies show you should like and subscribe as you may become smarter."
+    ]
+  },
+  {
+    "id": "subscribe-or-else",
+    "type": "follow",
+    "formula": "And if you don't [joke threat], unless you like and subscribe",
+    "examples": [
+      "unless you like and subscribe"
+    ]
+  },
+  {
+    "id": "comment-keyword-get-resource",
+    "type": "comment-keyword",
+    "formula": "Comment [KEYWORD] and I'll send you [the link / my ebook].",
+    "examples": [
+      "Comment HUMAN and I'll send you my ebook",
+      "Comment build with AI and I'll send you the access link.",
+      "So just comment Claude and I'll send you guys the link",
+      "just comment 'coding' and I'll send you the link directly.",
+      "Just comment 'Coding' down below and I'll send you the link directly."
+    ]
+  },
+  {
+    "id": "comment-keyword-then-follow",
+    "type": "comment-keyword",
+    "formula": "Comment [KEYWORD] and I'll send you [resource]. Make sure you follow [channel].",
+    "examples": [
+      "Comment HUMAN and I'll send you my ebook. Make sure you follow InsiderForce."
+    ]
+  },
+  {
+    "id": "comment-if-you-want-more",
+    "type": "comment-keyword",
+    "formula": "Drop a comment if you want more [topic] with [tool].",
+    "examples": [
+      "Drop a comment if you want more trading ideas with Claude."
+    ]
+  },
+  {
+    "id": "head-here",
+    "type": "link",
+    "formula": "Head [here / to this website] if you want [benefit].",
+    "examples": [
+      "Head to this website right here",
+      "Head here if you want access to this library."
+    ]
+  },
+  {
+    "id": "domain-end-card",
+    "type": "link",
+    "formula": "[domain]",
+    "examples": [
+      "artinals.com"
+    ]
+  },
+  {
+    "id": "available-now",
+    "type": "link",
+    "formula": "Available now",
+    "examples": [
+      "Available now"
+    ]
+  },
+  {
+    "id": "link-in-description",
+    "type": "link",
+    "formula": "To get the full [resource], check the link in the description.",
+    "examples": [
+      "To get the full setup guide, check the link in the description."
+    ]
+  },
+  {
+    "id": "full-video",
+    "type": "link",
+    "formula": "Unlock more [benefit] in the full video.",
+    "examples": [
+      "Unlock more superpowers in the full video."
+    ]
+  },
+  {
+    "id": "which-is-your-favourite",
+    "type": "question",
+    "formula": "Which [item] is your favourite? Tell us in the comments.",
+    "examples": [
+      "Drop a comment and tell us which singer is your favorite and which of their songs was your favorite.",
+      "इनमे से कौन सा Best हैं Comment मे जरूर बताये?"
+    ]
+  },
+  {
+    "id": "what-next",
+    "type": "question",
+    "formula": "What should I explain next? Leave an idea in the comments.",
+    "examples": [
+      "What should I explain next? Leave an idea in the comments"
+    ]
+  },
+  {
+    "id": "do-you-like-it-too",
+    "type": "question",
+    "formula": "Do you like [topic] too? Tell me in the comments.",
+    "examples": [
+      "Do you like dosa too? Comment mein batayein."
+    ]
+  },
+  {
+    "id": "pdf-in-notes",
+    "type": "lead-magnet",
+    "formula": "For a PDF with [these diagrams], see the link in the video notes.",
+    "examples": [
+      "For a PDF with these diagrams, see the link in the video notes."
+    ]
+  },
+  {
+    "id": "guide-in-comments",
+    "type": "lead-magnet",
+    "formula": "I'll send you a full guide in the comments.",
+    "examples": [
+      "I'll send you a full guide in the comments."
+    ]
+  },
+  {
+    "id": "save-and-follow",
+    "type": "save-share",
+    "formula": "Save this video and follow me for more.",
+    "examples": [
+      "Save this video and follow me for more."
+    ]
+  }
+]

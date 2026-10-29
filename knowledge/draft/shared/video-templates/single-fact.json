@@ -1,0 +1,97 @@
+{
+  "id": "single-fact",
+  "format": "facts",
+  "name": "One surprising fact",
+  "oneLine": "One fact built up line by line to a short reveal",
+  "whenToUse": "An idea that is a single surprising or eerie fact that fits in under 20 seconds.",
+  "seconds": {
+    "min": 7,
+    "max": 16
+  },
+  "hookTypes": [
+    "curiosity-gap",
+    "question",
+    "list"
+  ],
+  "ctaTypes": [
+    "follow",
+    "none"
+  ],
+  "acts": [
+    {
+      "act": "opening",
+      "scenes": [
+        {
+          "role": "hook",
+          "purpose": "Promises a fact the viewer does not know.",
+          "connectionToNext": "open-loop-payoff",
+          "slots": [
+            {
+              "name": "topic",
+              "kind": "fixed"
+            },
+            {
+              "name": "teaser",
+              "kind": "creative"
+            }
+          ],
+          "seconds": {
+            "min": 1.2,
+            "max": 2.8
+          },
+          "repeatable": false,
+          "optional": false
+        }
+      ]
+    },
+    {
+      "act": "build",
+      "scenes": [
+        {
+          "role": "setup",
+          "purpose": "Gives the everyday situation the fact is about.",
+          "connectionToNext": "sequence",
+          "slots": [
+            {
+              "name": "situation",
+              "kind": "fixed"
+            }
+          ],
+          "seconds": {
+            "min": 2,
+            "max": 5.6
+          },
+          "repeatable": false,
+          "optional": true
+        }
+      ]
+    },
+    {
+      "act": "climax",
+      "scenes": [
+        {
+          "role": "reveal",
+          "purpose": "Delivers the fact itself.",
+          "connectionToNext": "bridge",
+          "slots": [
+            {
+              "name": "fact",
+              "kind": "fixed"
+            }
+          ],
+          "seconds": {
+            "min": 3.2,
+            "max": 4.8
+          },
+          "repeatable": false,
+          "optional": true
+        }
+      ]
+    }
+  ],
+  "basedOnAnalysisIds": [
+    "-7eQdRhsCpA",
+    "cK_Q496wow8",
+    "0MQEf_7qk4s"
+  ]
+}

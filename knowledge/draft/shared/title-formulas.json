@@ -1,0 +1,576 @@
+[
+  {
+    "id": "facts-you-didnt-know",
+    "formula": "[Adjective] Facts YOU Didn't Know About [emoji] Part [N]",
+    "examples": [
+      "Scary Facts YOU Didn't Know About 😨 Part 1"
+    ],
+    "fits": [
+      "facts"
+    ]
+  },
+  {
+    "id": "episode-in-time",
+    "formula": "[Show] Episode [N] in [time]",
+    "examples": [
+      "Dispatch Episode 1 in 60 Seconds"
+    ],
+    "fits": [
+      "story"
+    ]
+  },
+  {
+    "id": "n-addons-for-tool",
+    "formula": "[N] [add-ons] for [tool]",
+    "examples": [
+      "3 Claude Code Skills",
+      "5 MCP Servers for Claude Code"
+    ],
+    "fits": [
+      "facts"
+    ]
+  },
+  {
+    "id": "n-adjective-tools",
+    "formula": "[N] [Adjective] [Topic] Tools",
+    "examples": [
+      "120 Mind-Blowing AI Tools"
+    ],
+    "fits": [
+      "facts"
+    ]
+  },
+  {
+    "id": "topic-facts",
+    "formula": "[Adjective] Facts",
+    "examples": [
+      "Random Facts"
+    ],
+    "fits": [
+      "facts"
+    ]
+  },
+  {
+    "id": "free-alternative-to",
+    "formula": "Free [Adjective] Alternative to [Popular Tool]",
+    "examples": [
+      "Free Open Source Alternative to Claude Code"
+    ],
+    "fits": [
+      "demo"
+    ]
+  },
+  {
+    "id": "visualize-in-tool",
+    "formula": "Visualize [Topic] in [Tool]",
+    "examples": [
+      "Visualize Data Structures in VS Code"
+    ],
+    "fits": [
+      "demo"
+    ]
+  },
+  {
+    "id": "topic-software-tutorial",
+    "formula": "[Topic] [Software] Tutorial",
+    "examples": [
+      "Infographic PowerPoint Tutorial"
+    ],
+    "fits": [
+      "explainer"
+    ]
+  },
+  {
+    "id": "all-the-tools-i-used",
+    "formula": "All the tools I used to build [project] in [time]",
+    "examples": [
+      "All the tools I used to build this website in 4 hours"
+    ],
+    "fits": [
+      "demo"
+    ]
+  },
+  {
+    "id": "build-in-time",
+    "formula": "Build [a thing] in [time]!",
+    "examples": [
+      "Build a website in 30 seconds!",
+      "Build an AI Agent in 1 Minute"
+    ],
+    "fits": [
+      "demo"
+    ]
+  },
+  {
+    "id": "how-to-actually-use",
+    "formula": "How to actually use [Tool]",
+    "examples": [
+      "How to actually use Claude Code"
+    ],
+    "fits": [
+      "explainer"
+    ]
+  },
+  {
+    "id": "product-promo",
+    "formula": "[Product] Promo",
+    "examples": [
+      "Artinals Protocol Promo",
+      "Sber App Promo"
+    ],
+    "fits": [
+      "demo"
+    ]
+  },
+  {
+    "id": "topic-for-cavemen",
+    "formula": "[Complex topic] for [unlikely audience] in [time]",
+    "examples": [
+      "Nukes for cavemen in 60 seconds",
+      "Antimatter bombs for cavemen in 60 seconds"
+    ],
+    "fits": [
+      "explainer"
+    ]
+  },
+  {
+    "id": "n-tricks-to-cut",
+    "formula": "[N] Tricks To Cut [Tool] [Pain]",
+    "examples": [
+      "3 Tricks To Cut CLAUDE USAGE"
+    ],
+    "fits": [
+      "facts"
+    ]
+  },
+  {
+    "id": "powerful-things-you-should-know",
+    "formula": "Powerful [category] you should know (Part [N])",
+    "examples": [
+      "Powerful AI tools you should know part 83",
+      "Powerful Websites You Should Know (Part 818)",
+      "Powerful websites you should know"
+    ],
+    "fits": [
+      "demo"
+    ]
+  },
+  {
+    "id": "top-n",
+    "formula": "Top [N] [items] [qualifier]",
+    "examples": [
+      "Top 3 Secret Dialogues in Poppy Playtime",
+      "Top 5 Dead Singers Viral Songs",
+      "TOP 5 BEST AI TOOL",
+      "Ranking Top 5 Bruh Moments"
+    ],
+    "fits": [
+      "facts"
+    ]
+  },
+  {
+    "id": "history-of-brand",
+    "formula": "The [History / Untold Story] of [Brand]",
+    "examples": [
+      "The History of Casio G-Shock",
+      "The Untold Story of Bindu Jeera"
+    ],
+    "fits": [
+      "story"
+    ]
+  },
+  {
+    "id": "explained-in-n-steps",
+    "formula": "[Topic] Explained (in [N] simple steps)",
+    "examples": [
+      "AI Agents Explained (in 3 simple steps)"
+    ],
+    "fits": [
+      "explainer"
+    ]
+  },
+  {
+    "id": "a-vs-b",
+    "formula": "[Subject A] vs [Subject B] [what is compared]",
+    "examples": [
+      "Messi vs Ronaldo Trophies",
+      "Gasoline vs Diesel Engine Animation"
+    ],
+    "fits": [
+      "facts",
+      "explainer"
+    ]
+  },
+  {
+    "id": "concept-explained-by",
+    "formula": "[Concept] (explained by [cute characters])",
+    "examples": [
+      "The Spoon Theory (explained by ducks)"
+    ],
+    "fits": [
+      "explainer"
+    ]
+  },
+  {
+    "id": "more-perfect-than",
+    "formula": "A more perfect [product type] than [market leader]",
+    "examples": [
+      "A more perfect music player than spotify"
+    ],
+    "fits": [
+      "demo"
+    ]
+  },
+  {
+    "id": "how-topic-really-works",
+    "formula": "Here's how [topic] really works in [time].",
+    "examples": [
+      "Here's how music theory really works in 60 seconds."
+    ],
+    "fits": [
+      "explainer"
+    ]
+  },
+  {
+    "id": "why-does",
+    "formula": "Why does [subject] [surprising thing]?",
+    "examples": [
+      "Why Does Cocaine Feel So Good?",
+      "Why does Florida have this panhandle?",
+      "Why does Western music use 12 notes?"
+    ],
+    "fits": [
+      "explainer"
+    ]
+  },
+  {
+    "id": "i-switched-from",
+    "formula": "I switched from [Tool A] to [Tool B]",
+    "examples": [
+      "I switched from Cursor to Claude Code"
+    ],
+    "fits": [
+      "demo"
+    ]
+  },
+  {
+    "id": "how-does-work",
+    "formula": "How does [topic] work?",
+    "examples": [
+      "How does AI work?",
+      "How does money laundering work?"
+    ],
+    "fits": [
+      "explainer"
+    ]
+  },
+  {
+    "id": "how-to-action",
+    "formula": "How to [action] [object or platform]",
+    "examples": [
+      "How to upload your project on GitHub using VS Code",
+      "How to upload a project to GitHub",
+      "How to watch Beauty EXPERT'S TUTORIALS"
+    ],
+    "fits": [
+      "demo",
+      "explainer"
+    ]
+  },
+  {
+    "id": "how-to-build-using-in-time",
+    "formula": "How to build a [outcome] using [tool] in [time]",
+    "examples": [
+      "How to build a real AI Agent using Google ADK in 60 seconds"
+    ],
+    "fits": [
+      "demo"
+    ]
+  },
+  {
+    "id": "tool-plus-tool",
+    "formula": "[TOOL 1] + [TOOL 2] (IN [time])",
+    "examples": [
+      "OBSIDIAN + CLAUDE (IN >1 MINUTE)"
+    ],
+    "fits": [
+      "demo"
+    ]
+  },
+  {
+    "id": "facts-may-surprise",
+    "formula": "Facts About [Topic] That May Surprise You",
+    "examples": [
+      "Facts About the World That May Surprise You"
+    ],
+    "fits": [
+      "facts"
+    ]
+  },
+  {
+    "id": "saying-in-movie",
+    "formula": "[Saying]... in [Movie]",
+    "examples": [
+      "All Roads Lead to Rome... in Cars"
+    ],
+    "fits": [
+      "explainer"
+    ]
+  },
+  {
+    "id": "build-without",
+    "formula": "Build [a thing] [for free / without coding]",
+    "examples": [
+      "Build AI Websites for Free",
+      "Build a SaaS App Without Coding"
+    ],
+    "fits": [
+      "demo",
+      "explainer"
+    ]
+  },
+  {
+    "id": "n-free-apps-for-device",
+    "formula": "[N] FREE APPS YOU NEED ON YOUR [DEVICE]",
+    "examples": [
+      "2 FREE APPS YOU NEED ON YOUR IPAD"
+    ],
+    "fits": [
+      "demo"
+    ]
+  },
+  {
+    "id": "boring-into-result",
+    "formula": "Turning a boring [item] into [result] in [software]",
+    "examples": [
+      "Turning a boring chart into a 3D can chart in PowerPoint"
+    ],
+    "fits": [
+      "explainer"
+    ]
+  },
+  {
+    "id": "concept-explained",
+    "formula": "[Concept] Explained",
+    "examples": [
+      "The Egg Theory Explained",
+      "Liquidity Explained",
+      "Panic Attacks Explained",
+      "Claude Code Explained"
+    ],
+    "fits": [
+      "explainer"
+    ]
+  },
+  {
+    "id": "video-template",
+    "formula": "[Topic] Video Template ([Tool])",
+    "examples": [
+      "App Promo Video Template (CreateStudio)"
+    ],
+    "fits": [
+      "demo"
+    ]
+  },
+  {
+    "id": "resource-repo",
+    "formula": "[Resource] [Platform] Repo",
+    "examples": [
+      "Public APIs GitHub Repo"
+    ],
+    "fits": [
+      "demo"
+    ]
+  },
+  {
+    "id": "apps-every-audience-needs",
+    "formula": "Apps that every [audience] needs",
+    "examples": [
+      "Apps that every teenager needs"
+    ],
+    "fits": [
+      "facts"
+    ]
+  },
+  {
+    "id": "build-app-in-tool",
+    "formula": "Build an [app] in [tool]",
+    "examples": [
+      "Build an AI Email Agent in n8n"
+    ],
+    "fits": [
+      "demo"
+    ]
+  },
+  {
+    "id": "how-system-actually-works",
+    "formula": "How the [System] Actually Works",
+    "examples": [
+      "How the Internet Actually Works"
+    ],
+    "fits": [
+      "explainer"
+    ]
+  },
+  {
+    "id": "could-this-beat",
+    "formula": "Could this be the [thing] that finally beats [leader]?",
+    "examples": [
+      "Could this be the AI that finally beats ChatGPT?"
+    ],
+    "fits": [
+      "explainer"
+    ]
+  },
+  {
+    "id": "you-wont-believe",
+    "formula": "You won't believe what [subject] did to [target]",
+    "examples": [
+      "You won't believe what this guy did to people"
+    ],
+    "fits": [
+      "story"
+    ]
+  },
+  {
+    "id": "ending-is-emotion",
+    "formula": "The ending is [emotion] [emoji]",
+    "examples": [
+      "The ending is shocking 😳"
+    ],
+    "fits": [
+      "story"
+    ]
+  },
+  {
+    "id": "did-you-know-fact",
+    "formula": "Did you know [surprising fact]?",
+    "examples": [
+      "Did you know our planet doesn't get heavier with buildings?"
+    ],
+    "fits": [
+      "facts"
+    ]
+  },
+  {
+    "id": "task-with-tool",
+    "formula": "[Task] with [Tool]",
+    "examples": [
+      "Technical Analysis with Claude"
+    ],
+    "fits": [
+      "demo"
+    ]
+  },
+  {
+    "id": "how-product-works",
+    "formula": "How [Product] Works",
+    "examples": [
+      "How Dexibuprofen Works"
+    ],
+    "fits": [
+      "story"
+    ]
+  },
+  {
+    "id": "credible-person-released",
+    "formula": "This [credible person] Just Released [their] Entire [asset] For Free",
+    "examples": [
+      "This Anthropic Hackathon Winner Just Released His Entire Claude Code Setup For Free"
+    ],
+    "fits": [
+      "demo"
+    ]
+  },
+  {
+    "id": "company-just-launched",
+    "formula": "[Company] just launched a [adjective] [category] tool",
+    "examples": [
+      "Google just launched a free AI coding tool"
+    ],
+    "fits": [
+      "demo"
+    ]
+  },
+  {
+    "id": "simply-explained",
+    "formula": "Simply Explained: [Topic]",
+    "examples": [
+      "Simply Explained: Socialism"
+    ],
+    "fits": [
+      "explainer"
+    ]
+  },
+  {
+    "id": "apps-shouldnt-be-free",
+    "formula": "[N] [device] apps that shouldn't be [free / this good]",
+    "examples": [
+      "5 IPHONE APPS That Shouldn't Be Free",
+      "4 free iPhone apps that shouldn't be this good"
+    ],
+    "fits": [
+      "facts"
+    ]
+  },
+  {
+    "id": "map-of-system",
+    "formula": "Map of the [System]",
+    "examples": [
+      "Map of the Internet"
+    ],
+    "fits": [
+      "explainer"
+    ]
+  },
+  {
+    "id": "character-weakness",
+    "formula": "[Character]'s Awkward Weakness",
+    "examples": [
+      "Zangief's Awkward Weakness"
+    ],
+    "fits": [
+      "story"
+    ]
+  },
+  {
+    "id": "urban-legend",
+    "formula": "The [Subject] Urban Legend",
+    "examples": [
+      "The Bunny Man Urban Legend"
+    ],
+    "fits": [
+      "story"
+    ]
+  },
+  {
+    "id": "facts-could-live-without",
+    "formula": "[N] interesting facts you could have lived without knowing",
+    "examples": [
+      "3 interesting facts you could have lived without knowing"
+    ],
+    "fits": [
+      "facts"
+    ]
+  },
+  {
+    "id": "product-announcement",
+    "formula": "[Product Name] Announcement",
+    "examples": [
+      "GPT-5 Announcement"
+    ],
+    "fits": [
+      "demo"
+    ]
+  },
+  {
+    "id": "from-low-to-high",
+    "formula": "From [humble start] to [big result]",
+    "examples": [
+      "From Washing Plates to 30 Cr Company"
+    ],
+    "fits": [
+      "story"
+    ]
+  }
+]

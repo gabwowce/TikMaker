@@ -1,0 +1,176 @@
+{
+  "id": "tool-tips-keyword",
+  "format": "facts",
+  "name": "Tool tips list",
+  "oneLine": "Numbered tips for one tool, each named and then shown working, ending with a comment-keyword offer",
+  "whenToUse": "An idea that is a handful of concrete tips, skills or add-ons for one tool the audience already uses.",
+  "seconds": {
+    "min": 47,
+    "max": 88
+  },
+  "hookTypes": [
+    "list",
+    "contrarian"
+  ],
+  "ctaTypes": [
+    "comment-keyword"
+  ],
+  "acts": [
+    {
+      "act": "opening",
+      "scenes": [
+        {
+          "role": "hook",
+          "purpose": "Names the tool, the number of tips and the result they give.",
+          "connectionToNext": "sequence",
+          "slots": [
+            {
+              "name": "tool-name",
+              "kind": "fixed"
+            },
+            {
+              "name": "tip-count",
+              "kind": "fixed"
+            },
+            {
+              "name": "desired-result",
+              "kind": "creative"
+            }
+          ],
+          "seconds": {
+            "min": 2.3,
+            "max": 4
+          },
+          "repeatable": false,
+          "optional": false
+        },
+        {
+          "role": "setup",
+          "purpose": "Shows the pain the tips solve so the list feels needed.",
+          "connectionToNext": "sequence",
+          "slots": [
+            {
+              "name": "pain",
+              "kind": "fixed"
+            }
+          ],
+          "seconds": {
+            "min": 2.1,
+            "max": 2.9
+          },
+          "repeatable": false,
+          "optional": true
+        },
+        {
+          "role": "bridge",
+          "purpose": "Hands over from the pain to the first tip.",
+          "connectionToNext": "sequence",
+          "slots": [
+            {
+              "name": "bridge-line",
+              "kind": "creative"
+            }
+          ],
+          "seconds": {
+            "min": 3,
+            "max": 21
+          },
+          "repeatable": true,
+          "optional": true
+        }
+      ]
+    },
+    {
+      "act": "core",
+      "scenes": [
+        {
+          "role": "item",
+          "purpose": "Names one tip with its number.",
+          "connectionToNext": "cause-effect",
+          "slots": [
+            {
+              "name": "tip-number",
+              "kind": "fixed"
+            },
+            {
+              "name": "tip-name",
+              "kind": "fixed"
+            }
+          ],
+          "seconds": {
+            "min": 6.9,
+            "max": 12.4
+          },
+          "repeatable": true,
+          "optional": false
+        },
+        {
+          "role": "bridge",
+          "purpose": "Plugs the channel or the next part before moving on.",
+          "connectionToNext": "sequence",
+          "slots": [
+            {
+              "name": "bridge-line",
+              "kind": "creative"
+            }
+          ],
+          "seconds": {
+            "min": 3,
+            "max": 21
+          },
+          "repeatable": true,
+          "optional": true
+        }
+      ]
+    },
+    {
+      "act": "close",
+      "scenes": [
+        {
+          "role": "bridge",
+          "purpose": "Leads from the last tip to the offer.",
+          "connectionToNext": "bridge",
+          "slots": [
+            {
+              "name": "bridge-line",
+              "kind": "creative"
+            }
+          ],
+          "seconds": {
+            "min": 3,
+            "max": 21
+          },
+          "repeatable": true,
+          "optional": true
+        },
+        {
+          "role": "cta",
+          "purpose": "Asks for a comment keyword in exchange for a resource, then a follow.",
+          "connectionToNext": "none",
+          "slots": [
+            {
+              "name": "keyword",
+              "kind": "fixed"
+            },
+            {
+              "name": "resource",
+              "kind": "fixed"
+            }
+          ],
+          "seconds": {
+            "min": 4.7,
+            "max": 9
+          },
+          "repeatable": true,
+          "optional": false
+        }
+      ]
+    }
+  ],
+  "basedOnAnalysisIds": [
+    "0JZtdAtJiyk",
+    "8BZupIIVhjs",
+    "MBAwGQTOOe4",
+    "aX7QAfld7hs"
+  ]
+}

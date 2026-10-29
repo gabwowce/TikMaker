@@ -1,0 +1,172 @@
+{
+  "id": "myth-vs-reality",
+  "format": "explainer",
+  "name": "Myth vs reality",
+  "oneLine": "What people think, then how it really works, with the proof",
+  "whenToUse": "An idea that corrects a common belief or reveals a hidden side of something familiar.",
+  "seconds": {
+    "min": 26,
+    "max": 59
+  },
+  "hookTypes": [
+    "contrarian",
+    "curiosity-gap"
+  ],
+  "ctaTypes": [
+    "none",
+    "follow"
+  ],
+  "acts": [
+    {
+      "act": "opening",
+      "scenes": [
+        {
+          "role": "hook",
+          "purpose": "States the surprising claim or the common belief.",
+          "connectionToNext": "contrast",
+          "slots": [
+            {
+              "name": "claim",
+              "kind": "fixed"
+            }
+          ],
+          "seconds": {
+            "min": 1.3,
+            "max": 4.1
+          },
+          "repeatable": false,
+          "optional": true
+        },
+        {
+          "role": "setup",
+          "purpose": "Spells out what people usually think.",
+          "connectionToNext": "contrast",
+          "slots": [
+            {
+              "name": "belief",
+              "kind": "fixed"
+            }
+          ],
+          "seconds": {
+            "min": 2.6,
+            "max": 7.2
+          },
+          "repeatable": false,
+          "optional": false
+        }
+      ]
+    },
+    {
+      "act": "build",
+      "scenes": [
+        {
+          "role": "setup",
+          "purpose": "Gives the background.",
+          "connectionToNext": "contrast",
+          "slots": [
+            {
+              "name": "background",
+              "kind": "fixed"
+            }
+          ],
+          "seconds": {
+            "min": 2.6,
+            "max": 7.2
+          },
+          "repeatable": false,
+          "optional": false
+        }
+      ]
+    },
+    {
+      "act": "core",
+      "scenes": [
+        {
+          "role": "reveal",
+          "purpose": "Shows how it really is.",
+          "connectionToNext": "escalation",
+          "slots": [
+            {
+              "name": "reality",
+              "kind": "fixed"
+            }
+          ],
+          "seconds": {
+            "min": 3.5,
+            "max": 6
+          },
+          "repeatable": false,
+          "optional": false
+        },
+        {
+          "role": "mechanism",
+          "purpose": "Explains how it works.",
+          "connectionToNext": "cause-effect",
+          "slots": [
+            {
+              "name": "step",
+              "kind": "fixed"
+            }
+          ],
+          "seconds": {
+            "min": 3,
+            "max": 9
+          },
+          "repeatable": true,
+          "optional": false
+        }
+      ]
+    },
+    {
+      "act": "climax",
+      "scenes": [
+        {
+          "role": "reveal",
+          "purpose": "Delivers the final twist.",
+          "connectionToNext": "cause-effect",
+          "slots": [
+            {
+              "name": "twist",
+              "kind": "fixed"
+            }
+          ],
+          "seconds": {
+            "min": 3.5,
+            "max": 6
+          },
+          "repeatable": false,
+          "optional": false
+        }
+      ]
+    },
+    {
+      "act": "close",
+      "scenes": [
+        {
+          "role": "payoff",
+          "purpose": "Ties the reality back to the claim.",
+          "connectionToNext": "none",
+          "slots": [
+            {
+              "name": "closing-line",
+              "kind": "creative"
+            }
+          ],
+          "seconds": {
+            "min": 4,
+            "max": 10.2
+          },
+          "repeatable": false,
+          "optional": true
+        }
+      ]
+    }
+  ],
+  "basedOnAnalysisIds": [
+    "_yr-VNLW9nU",
+    "XT4y1fGB6CE",
+    "lylaitbZB70",
+    "RjX0cRL0Mqs",
+    "Bd-wV1nGrd0"
+  ]
+}

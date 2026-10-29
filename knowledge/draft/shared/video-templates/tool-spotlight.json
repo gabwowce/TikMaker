@@ -1,0 +1,147 @@
+{
+  "id": "tool-spotlight",
+  "format": "demo",
+  "name": "Tool spotlight",
+  "oneLine": "One website or tool shown working, often as a numbered series part",
+  "whenToUse": "An idea that is a single useful website, repo or tool the viewer probably has not seen.",
+  "seconds": {
+    "min": 10,
+    "max": 56
+  },
+  "hookTypes": [
+    "list",
+    "question",
+    "curiosity-gap"
+  ],
+  "ctaTypes": [
+    "none",
+    "link"
+  ],
+  "acts": [
+    {
+      "act": "opening",
+      "scenes": [
+        {
+          "role": "hook",
+          "purpose": "Promises a useful tool, often as part N of a series.",
+          "connectionToNext": "open-loop-payoff",
+          "slots": [
+            {
+              "name": "tool-category",
+              "kind": "fixed"
+            },
+            {
+              "name": "series-part",
+              "kind": "fixed"
+            },
+            {
+              "name": "promise",
+              "kind": "creative"
+            }
+          ],
+          "seconds": {
+            "min": 1.5,
+            "max": 5.5
+          },
+          "repeatable": false,
+          "optional": false
+        }
+      ]
+    },
+    {
+      "act": "build",
+      "scenes": [
+        {
+          "role": "setup",
+          "purpose": "Shows where the tool lives or what it needs.",
+          "connectionToNext": "sequence",
+          "slots": [
+            {
+              "name": "tool-name",
+              "kind": "fixed"
+            },
+            {
+              "name": "where",
+              "kind": "fixed"
+            }
+          ],
+          "seconds": {
+            "min": 2.6,
+            "max": 5.8
+          },
+          "repeatable": false,
+          "optional": true
+        }
+      ]
+    },
+    {
+      "act": "core",
+      "scenes": [
+        {
+          "role": "demo",
+          "purpose": "Shows the tool doing its job.",
+          "connectionToNext": "sequence",
+          "slots": [
+            {
+              "name": "screen-recording",
+              "kind": "fixed"
+            }
+          ],
+          "seconds": {
+            "min": 4.4,
+            "max": 13.1
+          },
+          "repeatable": false,
+          "optional": false
+        },
+        {
+          "role": "proof",
+          "purpose": "Shows the finished result.",
+          "connectionToNext": "sequence",
+          "slots": [
+            {
+              "name": "result-shot",
+              "kind": "fixed"
+            }
+          ],
+          "seconds": {
+            "min": 1.7,
+            "max": 4.7
+          },
+          "repeatable": false,
+          "optional": true
+        }
+      ]
+    },
+    {
+      "act": "close",
+      "scenes": [
+        {
+          "role": "benefit",
+          "purpose": "States what the viewer gains.",
+          "connectionToNext": "none",
+          "slots": [
+            {
+              "name": "gain",
+              "kind": "creative"
+            }
+          ],
+          "seconds": {
+            "min": 2.8,
+            "max": 6.4
+          },
+          "repeatable": false,
+          "optional": true
+        }
+      ]
+    }
+  ],
+  "basedOnAnalysisIds": [
+    "8Qxqi4hDTnk",
+    "PYV4cGkwwLk",
+    "ZbMXwVVBdmM",
+    "ZB_QwIE1Ris",
+    "ImBlE96dOlM",
+    "3O6BFlOiFRg"
+  ]
+}

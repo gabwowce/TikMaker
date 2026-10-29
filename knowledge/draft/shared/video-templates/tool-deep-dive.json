@@ -1,0 +1,148 @@
+{
+  "id": "tool-deep-dive",
+  "format": "explainer",
+  "name": "Tool explained",
+  "oneLine": "What a tool is, how it differs, and what it really does",
+  "whenToUse": "An idea that explains one popular tool or model and how to think about it.",
+  "seconds": {
+    "min": 49,
+    "max": 78
+  },
+  "hookTypes": [
+    "news",
+    "question",
+    "pain-shown"
+  ],
+  "ctaTypes": [
+    "none",
+    "follow"
+  ],
+  "acts": [
+    {
+      "act": "opening",
+      "scenes": [
+        {
+          "role": "hook",
+          "purpose": "States the news or the common misuse.",
+          "connectionToNext": "sequence",
+          "slots": [
+            {
+              "name": "tool-name",
+              "kind": "fixed"
+            },
+            {
+              "name": "angle",
+              "kind": "creative"
+            }
+          ],
+          "seconds": {
+            "min": 1.2,
+            "max": 2.8
+          },
+          "repeatable": false,
+          "optional": false
+        }
+      ]
+    },
+    {
+      "act": "build",
+      "scenes": [
+        {
+          "role": "setup",
+          "purpose": "Gives context about the tool.",
+          "connectionToNext": "contrast",
+          "slots": [
+            {
+              "name": "context",
+              "kind": "fixed"
+            }
+          ],
+          "seconds": {
+            "min": 3.2,
+            "max": 11.9
+          },
+          "repeatable": true,
+          "optional": true
+        },
+        {
+          "role": "mechanism",
+          "purpose": "Explains what makes it different.",
+          "connectionToNext": "contrast",
+          "slots": [
+            {
+              "name": "difference",
+              "kind": "fixed"
+            }
+          ],
+          "seconds": {
+            "min": 3.2,
+            "max": 8
+          },
+          "repeatable": true,
+          "optional": false
+        },
+        {
+          "role": "example",
+          "purpose": "Gives an analogy or example.",
+          "connectionToNext": "contrast",
+          "slots": [
+            {
+              "name": "example",
+              "kind": "creative"
+            }
+          ],
+          "seconds": {
+            "min": 8.3,
+            "max": 50.7
+          },
+          "repeatable": false,
+          "optional": true
+        }
+      ]
+    },
+    {
+      "act": "core",
+      "scenes": [
+        {
+          "role": "bridge",
+          "purpose": "Moves from context to the main point.",
+          "connectionToNext": "sequence",
+          "slots": [
+            {
+              "name": "bridge-line",
+              "kind": "creative"
+            }
+          ],
+          "seconds": {
+            "min": 2.1,
+            "max": 2.9
+          },
+          "repeatable": false,
+          "optional": true
+        },
+        {
+          "role": "reveal",
+          "purpose": "States the main point.",
+          "connectionToNext": "sequence",
+          "slots": [
+            {
+              "name": "main-point",
+              "kind": "fixed"
+            }
+          ],
+          "seconds": {
+            "min": 6.2,
+            "max": 14.2
+          },
+          "repeatable": false,
+          "optional": false
+        }
+      ]
+    }
+  ],
+  "basedOnAnalysisIds": [
+    "p7U_98jWqWo",
+    "aLo8oxI-F1E",
+    "5G9PAIUs5Pk"
+  ]
+}

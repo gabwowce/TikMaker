@@ -1,0 +1,105 @@
+{
+  "id": "app-list",
+  "format": "facts",
+  "name": "Free apps list",
+  "oneLine": "A quick list of apps, one per scene, each shown on screen",
+  "whenToUse": "An idea that recommends several apps or tools for one device or audience.",
+  "seconds": {
+    "min": 14,
+    "max": 62
+  },
+  "hookTypes": [
+    "list"
+  ],
+  "ctaTypes": [
+    "follow",
+    "question",
+    "none"
+  ],
+  "acts": [
+    {
+      "act": "opening",
+      "scenes": [
+        {
+          "role": "hook",
+          "purpose": "Promises a number of apps for a device or audience.",
+          "connectionToNext": "sequence",
+          "slots": [
+            {
+              "name": "app-count",
+              "kind": "fixed"
+            },
+            {
+              "name": "device-or-audience",
+              "kind": "fixed"
+            },
+            {
+              "name": "promise",
+              "kind": "creative"
+            }
+          ],
+          "seconds": {
+            "min": 1.7,
+            "max": 7.6
+          },
+          "repeatable": false,
+          "optional": false
+        }
+      ]
+    },
+    {
+      "act": "core",
+      "scenes": [
+        {
+          "role": "item",
+          "purpose": "Shows one app and what it does.",
+          "connectionToNext": "sequence",
+          "slots": [
+            {
+              "name": "app-name",
+              "kind": "fixed"
+            },
+            {
+              "name": "app-feature",
+              "kind": "fixed"
+            }
+          ],
+          "seconds": {
+            "min": 1,
+            "max": 11.6
+          },
+          "repeatable": true,
+          "optional": false
+        }
+      ]
+    },
+    {
+      "act": "close",
+      "scenes": [
+        {
+          "role": "cta",
+          "purpose": "Asks the viewer to follow or name their favourite.",
+          "connectionToNext": "none",
+          "slots": [
+            {
+              "name": "cta-line",
+              "kind": "creative"
+            }
+          ],
+          "seconds": {
+            "min": 3,
+            "max": 3.8
+          },
+          "repeatable": false,
+          "optional": true
+        }
+      ]
+    }
+  ],
+  "basedOnAnalysisIds": [
+    "incL6fhurqk",
+    "xpTmAbqAuMY",
+    "Rthn9xKsr2M",
+    "ZS35BpmxJ7g"
+  ]
+}

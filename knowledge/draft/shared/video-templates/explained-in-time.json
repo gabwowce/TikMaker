@@ -1,0 +1,179 @@
+{
+  "id": "explained-in-time",
+  "format": "explainer",
+  "name": "Explained in 60 seconds",
+  "oneLine": "A complex topic explained in a promised short time, often to an unlikely audience",
+  "whenToUse": "An idea that is a complex topic the viewer finds hard and wants explained quickly.",
+  "seconds": {
+    "min": 35,
+    "max": 54
+  },
+  "hookTypes": [
+    "explained-in-time"
+  ],
+  "ctaTypes": [
+    "none",
+    "lead-magnet"
+  ],
+  "acts": [
+    {
+      "act": "opening",
+      "scenes": [
+        {
+          "role": "hook",
+          "purpose": "Names the topic and the time promise.",
+          "connectionToNext": "sequence",
+          "slots": [
+            {
+              "name": "topic",
+              "kind": "fixed"
+            },
+            {
+              "name": "time",
+              "kind": "fixed"
+            },
+            {
+              "name": "unlikely-audience",
+              "kind": "creative"
+            }
+          ],
+          "seconds": {
+            "min": 2.3,
+            "max": 3.4
+          },
+          "repeatable": false,
+          "optional": true
+        },
+        {
+          "role": "setup",
+          "purpose": "Defines the topic in one line.",
+          "connectionToNext": "sequence",
+          "slots": [
+            {
+              "name": "definition",
+              "kind": "fixed"
+            }
+          ],
+          "seconds": {
+            "min": 3.3,
+            "max": 6.1
+          },
+          "repeatable": false,
+          "optional": true
+        }
+      ]
+    },
+    {
+      "act": "build",
+      "scenes": [
+        {
+          "role": "item",
+          "purpose": "Introduces one ingredient or step.",
+          "connectionToNext": "sequence",
+          "slots": [
+            {
+              "name": "ingredient",
+              "kind": "fixed"
+            }
+          ],
+          "seconds": {
+            "min": 4.9,
+            "max": 12.4
+          },
+          "repeatable": true,
+          "optional": true
+        },
+        {
+          "role": "mechanism",
+          "purpose": "Explains how one part works.",
+          "connectionToNext": "sequence",
+          "slots": [
+            {
+              "name": "step",
+              "kind": "fixed"
+            }
+          ],
+          "seconds": {
+            "min": 4,
+            "max": 10.6
+          },
+          "repeatable": true,
+          "optional": true
+        }
+      ]
+    },
+    {
+      "act": "core",
+      "scenes": [
+        {
+          "role": "mechanism",
+          "purpose": "Explains the core process.",
+          "connectionToNext": "sequence",
+          "slots": [
+            {
+              "name": "step",
+              "kind": "fixed"
+            }
+          ],
+          "seconds": {
+            "min": 4,
+            "max": 10.6
+          },
+          "repeatable": true,
+          "optional": true
+        }
+      ]
+    },
+    {
+      "act": "climax",
+      "scenes": [
+        {
+          "role": "item",
+          "purpose": "Shows the last ingredient.",
+          "connectionToNext": "cause-effect",
+          "slots": [
+            {
+              "name": "ingredient",
+              "kind": "fixed"
+            }
+          ],
+          "seconds": {
+            "min": 4.9,
+            "max": 12.4
+          },
+          "repeatable": true,
+          "optional": true
+        }
+      ]
+    },
+    {
+      "act": "close",
+      "scenes": [
+        {
+          "role": "payoff",
+          "purpose": "Ends on the big consequence or joke.",
+          "connectionToNext": "none",
+          "slots": [
+            {
+              "name": "closing-line",
+              "kind": "creative"
+            }
+          ],
+          "seconds": {
+            "min": 5.2,
+            "max": 7.6
+          },
+          "repeatable": false,
+          "optional": true
+        }
+      ]
+    }
+  ],
+  "basedOnAnalysisIds": [
+    "7c-vPPWaRdw",
+    "vFVv_-gcW50",
+    "BF2k_fKuCVM",
+    "JfhrLak5KFo",
+    "ilDOvMsxMws"
+  ]
+}

@@ -1,0 +1,109 @@
+{
+  "id": "build-it-fast",
+  "format": "demo",
+  "name": "Build it fast",
+  "oneLine": "Show the finished thing, then every step that built it",
+  "whenToUse": "An idea where the viewer can build something real in minutes with a tool.",
+  "seconds": {
+    "min": 20,
+    "max": 51
+  },
+  "hookTypes": [
+    "result-first",
+    "explained-in-time"
+  ],
+  "ctaTypes": [
+    "none",
+    "link",
+    "lead-magnet",
+    "comment-keyword"
+  ],
+  "acts": [
+    {
+      "act": "opening",
+      "scenes": [
+        {
+          "role": "hook",
+          "purpose": "Shows or names the result and how little time it takes.",
+          "connectionToNext": "sequence",
+          "slots": [
+            {
+              "name": "result",
+              "kind": "fixed"
+            },
+            {
+              "name": "time",
+              "kind": "fixed"
+            },
+            {
+              "name": "tool-name",
+              "kind": "fixed"
+            }
+          ],
+          "seconds": {
+            "min": 2,
+            "max": 5
+          },
+          "repeatable": false,
+          "optional": false
+        }
+      ]
+    },
+    {
+      "act": "core",
+      "scenes": [
+        {
+          "role": "demo",
+          "purpose": "Shows one build step on screen.",
+          "connectionToNext": "sequence",
+          "slots": [
+            {
+              "name": "step",
+              "kind": "fixed"
+            },
+            {
+              "name": "screen-recording",
+              "kind": "fixed"
+            }
+          ],
+          "seconds": {
+            "min": 4,
+            "max": 8
+          },
+          "repeatable": true,
+          "optional": false
+        }
+      ]
+    },
+    {
+      "act": "climax",
+      "scenes": [
+        {
+          "role": "proof",
+          "purpose": "Shows the finished thing working.",
+          "connectionToNext": "sequence",
+          "slots": [
+            {
+              "name": "result-shot",
+              "kind": "fixed"
+            }
+          ],
+          "seconds": {
+            "min": 3.4,
+            "max": 5.8
+          },
+          "repeatable": false,
+          "optional": true
+        }
+      ]
+    }
+  ],
+  "basedOnAnalysisIds": [
+    "3m0Am0VuBtU",
+    "4Kg_H7EOnz4",
+    "NvKowH8PnaA",
+    "RshyfhbaNHA",
+    "ZcP4BwY9rHw",
+    "g1t_hmndPdo"
+  ]
+}

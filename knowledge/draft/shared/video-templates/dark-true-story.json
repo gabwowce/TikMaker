@@ -1,0 +1,155 @@
+{
+  "id": "dark-true-story",
+  "format": "story",
+  "name": "Creepy true story",
+  "oneLine": "A dark or strange true story told step by step to a shocking ending",
+  "whenToUse": "An idea that is a real crime, legend or eerie event.",
+  "seconds": {
+    "min": 15,
+    "max": 51
+  },
+  "hookTypes": [
+    "story",
+    "curiosity-gap",
+    "question"
+  ],
+  "ctaTypes": [
+    "none",
+    "follow"
+  ],
+  "acts": [
+    {
+      "act": "opening",
+      "scenes": [
+        {
+          "role": "hook",
+          "purpose": "Opens on the strangest detail of the story.",
+          "connectionToNext": "sequence",
+          "slots": [
+            {
+              "name": "place-or-person",
+              "kind": "fixed"
+            },
+            {
+              "name": "opening-detail",
+              "kind": "creative"
+            }
+          ],
+          "seconds": {
+            "min": 1.5,
+            "max": 2.5
+          },
+          "repeatable": false,
+          "optional": false
+        }
+      ]
+    },
+    {
+      "act": "build",
+      "scenes": [
+        {
+          "role": "setup",
+          "purpose": "Tells how it started.",
+          "connectionToNext": "sequence",
+          "slots": [
+            {
+              "name": "event",
+              "kind": "fixed"
+            }
+          ],
+          "seconds": {
+            "min": 2,
+            "max": 6.8
+          },
+          "repeatable": true,
+          "optional": false
+        },
+        {
+          "role": "bridge",
+          "purpose": "Signals that it gets worse.",
+          "connectionToNext": "escalation",
+          "slots": [
+            {
+              "name": "bridge-line",
+              "kind": "creative"
+            }
+          ],
+          "seconds": {
+            "min": 1.2,
+            "max": 2.8
+          },
+          "repeatable": false,
+          "optional": true
+        },
+        {
+          "role": "escalation",
+          "purpose": "Adds a darker detail.",
+          "connectionToNext": "escalation",
+          "slots": [
+            {
+              "name": "detail",
+              "kind": "fixed"
+            }
+          ],
+          "seconds": {
+            "min": 1.6,
+            "max": 3.8
+          },
+          "repeatable": true,
+          "optional": true
+        }
+      ]
+    },
+    {
+      "act": "climax",
+      "scenes": [
+        {
+          "role": "reveal",
+          "purpose": "Reveals the shocking truth.",
+          "connectionToNext": "escalation",
+          "slots": [
+            {
+              "name": "truth",
+              "kind": "fixed"
+            }
+          ],
+          "seconds": {
+            "min": 1.4,
+            "max": 9.2
+          },
+          "repeatable": false,
+          "optional": true
+        }
+      ]
+    },
+    {
+      "act": "close",
+      "scenes": [
+        {
+          "role": "payoff",
+          "purpose": "Ends on what happened after.",
+          "connectionToNext": "none",
+          "slots": [
+            {
+              "name": "ending",
+              "kind": "fixed"
+            }
+          ],
+          "seconds": {
+            "min": 2,
+            "max": 3
+          },
+          "repeatable": false,
+          "optional": false
+        }
+      ]
+    }
+  ],
+  "basedOnAnalysisIds": [
+    "HTRuojtV0pw",
+    "LRoevZc_LJk",
+    "axfQIwjAZjk",
+    "cBr5ea6LRNE",
+    "nWf7huAPCsw"
+  ]
+}

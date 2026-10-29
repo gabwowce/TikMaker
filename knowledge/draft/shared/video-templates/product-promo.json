@@ -1,0 +1,140 @@
+{
+  "id": "product-promo",
+  "format": "demo",
+  "name": "Product promo",
+  "oneLine": "A product's benefits shown one by one through its interface, ending on where to get it",
+  "whenToUse": "An idea that promotes one product or service.",
+  "seconds": {
+    "min": 11,
+    "max": 30
+  },
+  "hookTypes": [
+    "question",
+    "visual-first",
+    "how-to",
+    "news"
+  ],
+  "ctaTypes": [
+    "link",
+    "none"
+  ],
+  "acts": [
+    {
+      "act": "opening",
+      "scenes": [
+        {
+          "role": "hook",
+          "purpose": "Asks what the viewer wants, or shows the product.",
+          "connectionToNext": "question-answer",
+          "slots": [
+            {
+              "name": "desire",
+              "kind": "creative"
+            },
+            {
+              "name": "product-name",
+              "kind": "fixed"
+            }
+          ],
+          "seconds": {
+            "min": 1.8,
+            "max": 4.5
+          },
+          "repeatable": false,
+          "optional": false
+        }
+      ]
+    },
+    {
+      "act": "build",
+      "scenes": [
+        {
+          "role": "benefit",
+          "purpose": "States a benefit.",
+          "connectionToNext": "escalation",
+          "slots": [
+            {
+              "name": "benefit",
+              "kind": "fixed"
+            }
+          ],
+          "seconds": {
+            "min": 2,
+            "max": 5
+          },
+          "repeatable": true,
+          "optional": true
+        }
+      ]
+    },
+    {
+      "act": "core",
+      "scenes": [
+        {
+          "role": "demo",
+          "purpose": "Shows the product in use.",
+          "connectionToNext": "sequence",
+          "slots": [
+            {
+              "name": "screen-recording",
+              "kind": "fixed"
+            }
+          ],
+          "seconds": {
+            "min": 2,
+            "max": 3
+          },
+          "repeatable": true,
+          "optional": true
+        },
+        {
+          "role": "benefit",
+          "purpose": "Adds benefits one after another.",
+          "connectionToNext": "sequence",
+          "slots": [
+            {
+              "name": "benefit",
+              "kind": "fixed"
+            }
+          ],
+          "seconds": {
+            "min": 2,
+            "max": 5
+          },
+          "repeatable": true,
+          "optional": true
+        }
+      ]
+    },
+    {
+      "act": "close",
+      "scenes": [
+        {
+          "role": "cta",
+          "purpose": "Says where to get it.",
+          "connectionToNext": "none",
+          "slots": [
+            {
+              "name": "link-target",
+              "kind": "fixed"
+            }
+          ],
+          "seconds": {
+            "min": 2,
+            "max": 3.6
+          },
+          "repeatable": false,
+          "optional": true
+        }
+      ]
+    }
+  ],
+  "basedOnAnalysisIds": [
+    "5jly-UeJcDw",
+    "XgM2_m2I6sE",
+    "evXxJa0DsAA",
+    "kaGP7tuTmeE",
+    "vTVJJ06rcDg",
+    "y0DMsRT2U1U"
+  ]
+}

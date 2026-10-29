@@ -1,0 +1,4434 @@
+{
+  "templates": [
+    {
+      "id": "tool-tips-keyword",
+      "format": "facts",
+      "name": "Tool tips list",
+      "oneLine": "Numbered tips for one tool, each named and then shown working, ending with a comment-keyword offer",
+      "whenToUse": "An idea that is a handful of concrete tips, skills or add-ons for one tool the audience already uses.",
+      "basedOnAnalysisIds": [
+        "0JZtdAtJiyk",
+        "8BZupIIVhjs",
+        "MBAwGQTOOe4",
+        "aX7QAfld7hs"
+      ],
+      "acts": [
+        {
+          "act": "opening",
+          "scenes": [
+            {
+              "role": "hook",
+              "purpose": "Names the tool, the number of tips and the result they give.",
+              "connectionToNext": "sequence",
+              "slots": [
+                {
+                  "name": "tool-name",
+                  "kind": "fixed"
+                },
+                {
+                  "name": "tip-count",
+                  "kind": "fixed"
+                },
+                {
+                  "name": "desired-result",
+                  "kind": "creative"
+                }
+              ]
+            },
+            {
+              "role": "setup",
+              "purpose": "Shows the pain the tips solve so the list feels needed.",
+              "connectionToNext": "sequence",
+              "slots": [
+                {
+                  "name": "pain",
+                  "kind": "fixed"
+                }
+              ]
+            },
+            {
+              "role": "bridge",
+              "purpose": "Hands over from the pain to the first tip.",
+              "connectionToNext": "sequence",
+              "slots": [
+                {
+                  "name": "bridge-line",
+                  "kind": "creative"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "act": "core",
+          "scenes": [
+            {
+              "role": "item",
+              "purpose": "Names one tip with its number.",
+              "connectionToNext": "cause-effect",
+              "slots": [
+                {
+                  "name": "tip-number",
+                  "kind": "fixed"
+                },
+                {
+                  "name": "tip-name",
+                  "kind": "fixed"
+                }
+              ]
+            },
+            {
+              "role": "mechanism",
+              "purpose": "Shows what the tip does on screen.",
+              "connectionToNext": "sequence",
+              "slots": [
+                {
+                  "name": "tip-effect",
+                  "kind": "fixed"
+                },
+                {
+                  "name": "screen-shot",
+                  "kind": "creative"
+                }
+              ]
+            },
+            {
+              "role": "demo",
+              "purpose": "Shows the tip being used in the tool.",
+              "connectionToNext": "sequence",
+              "slots": [
+                {
+                  "name": "screen-recording",
+                  "kind": "fixed"
+                }
+              ]
+            },
+            {
+              "role": "proof",
+              "purpose": "Shows evidence that the tip works.",
+              "connectionToNext": "bridge",
+              "slots": [
+                {
+                  "name": "proof-shot",
+                  "kind": "fixed"
+                }
+              ]
+            },
+            {
+              "role": "bridge",
+              "purpose": "Plugs the channel or the next part before moving on.",
+              "connectionToNext": "sequence",
+              "slots": [
+                {
+                  "name": "bridge-line",
+                  "kind": "creative"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "act": "climax",
+          "scenes": [
+            {
+              "role": "benefit",
+              "purpose": "Sums up what the viewer gains from all tips together.",
+              "connectionToNext": "bridge",
+              "slots": [
+                {
+                  "name": "total-gain",
+                  "kind": "creative"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "act": "close",
+          "scenes": [
+            {
+              "role": "bridge",
+              "purpose": "Leads from the last tip to the offer.",
+              "connectionToNext": "bridge",
+              "slots": [
+                {
+                  "name": "bridge-line",
+                  "kind": "creative"
+                }
+              ]
+            },
+            {
+              "role": "cta",
+              "purpose": "Asks for a comment keyword in exchange for a resource, then a follow.",
+              "connectionToNext": "none",
+              "slots": [
+                {
+                  "name": "keyword",
+                  "kind": "fixed"
+                },
+                {
+                  "name": "resource",
+                  "kind": "fixed"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "app-list",
+      "format": "facts",
+      "name": "Free apps list",
+      "oneLine": "A quick list of apps, one per scene, each shown on screen",
+      "whenToUse": "An idea that recommends several apps or tools for one device or audience.",
+      "basedOnAnalysisIds": [
+        "incL6fhurqk",
+        "xpTmAbqAuMY",
+        "Rthn9xKsr2M",
+        "ZS35BpmxJ7g"
+      ],
+      "acts": [
+        {
+          "act": "opening",
+          "scenes": [
+            {
+              "role": "hook",
+              "purpose": "Promises a number of apps for a device or audience.",
+              "connectionToNext": "sequence",
+              "slots": [
+                {
+                  "name": "app-count",
+                  "kind": "fixed"
+                },
+                {
+                  "name": "device-or-audience",
+                  "kind": "fixed"
+                },
+                {
+                  "name": "promise",
+                  "kind": "creative"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "act": "core",
+          "scenes": [
+            {
+              "role": "item",
+              "purpose": "Shows one app and what it does.",
+              "connectionToNext": "sequence",
+              "slots": [
+                {
+                  "name": "app-name",
+                  "kind": "fixed"
+                },
+                {
+                  "name": "app-feature",
+                  "kind": "fixed"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "act": "close",
+          "scenes": [
+            {
+              "role": "cta",
+              "purpose": "Asks the viewer to follow or name their favourite.",
+              "connectionToNext": "none",
+              "slots": [
+                {
+                  "name": "cta-line",
+                  "kind": "creative"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ranked-countdown",
+      "format": "facts",
+      "name": "Top N countdown",
+      "oneLine": "Ranked items counted down to number one",
+      "whenToUse": "An idea that ranks a set of things by some measure.",
+      "basedOnAnalysisIds": [
+        "96bqVLNjnDE",
+        "BUIZnq_U8go",
+        "K_U4Hd0AvjI"
+      ],
+      "acts": [
+        {
+          "act": "opening",
+          "scenes": [
+            {
+              "role": "hook",
+              "purpose": "Announces the ranking and what is being ranked.",
+              "connectionToNext": "sequence",
+              "slots": [
+                {
+                  "name": "rank-count",
+                  "kind": "fixed"
+                },
+                {
+                  "name": "ranked-thing",
+                  "kind": "fixed"
+                },
+                {
+                  "name": "teaser",
+                  "kind": "creative"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "act": "build",
+          "scenes": [
+            {
+              "role": "cta",
+              "purpose": "Asks for a comment early, before the countdown.",
+              "connectionToNext": "sequence",
+              "slots": [
+                {
+                  "name": "question",
+                  "kind": "creative"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "act": "core",
+          "scenes": [
+            {
+              "role": "item",
+              "purpose": "Reveals one place in the ranking, with its details.",
+              "connectionToNext": "sequence",
+              "slots": [
+                {
+                  "name": "rank-number",
+                  "kind": "fixed"
+                },
+                {
+                  "name": "item-name",
+                  "kind": "fixed"
+                },
+                {
+                  "name": "item-detail",
+                  "kind": "fixed"
+                }
+              ]
+            },
+            {
+              "role": "demo",
+              "purpose": "Plays the item itself (clip, screen).",
+              "connectionToNext": "sequence",
+              "slots": [
+                {
+                  "name": "clip",
+                  "kind": "fixed"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "act": "close",
+          "scenes": [
+            {
+              "role": "cta",
+              "purpose": "Asks the viewer to follow or pick a favourite.",
+              "connectionToNext": "none",
+              "slots": [
+                {
+                  "name": "cta-line",
+                  "kind": "creative"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "rapid-facts",
+      "format": "facts",
+      "name": "Rapid-fire facts",
+      "oneLine": "Many short facts in a row, one per scene, with the strongest kept for last",
+      "whenToUse": "An idea that is a collection of short surprising facts around one theme.",
+      "basedOnAnalysisIds": [
+        "0Mz2fqwCb-8",
+        "J9yGsD4FZq4",
+        "BmezElWWNU0",
+        "RL28tOO8Ov4",
+        "o5CjuDDPXxk"
+      ],
+      "acts": [
+        {
+          "act": "opening",
+          "scenes": [
+            {
+              "role": "hook",
+              "purpose": "Opens with a strange command or promise of surprising facts.",
+              "connectionToNext": "sequence",
+              "slots": [
+                {
+                  "name": "theme",
+                  "kind": "fixed"
+                },
+                {
+                  "name": "opening-line",
+                  "kind": "creative"
+                }
+              ]
+            },
+            {
+              "role": "setup",
+              "purpose": "Frames the series of facts.",
+              "connectionToNext": "sequence",
+              "slots": [
+                {
+                  "name": "frame-line",
+                  "kind": "creative"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "act": "core",
+          "scenes": [
+            {
+              "role": "item",
+              "purpose": "States one fact.",
+              "connectionToNext": "sequence",
+              "slots": [
+                {
+                  "name": "fact",
+                  "kind": "fixed"
+                }
+              ]
+            },
+            {
+              "role": "reveal",
+              "purpose": "Turns a fact around with a surprising detail.",
+              "connectionToNext": "escalation",
+              "slots": [
+                {
+                  "name": "twist",
+                  "kind": "fixed"
+                }
+              ]
+            },
+            {
+              "role": "proof",
+              "purpose": "Shows the evidence behind a fact.",
+              "connectionToNext": "sequence",
+              "slots": [
+                {
+                  "name": "proof-shot",
+                  "kind": "fixed"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "act": "climax",
+          "scenes": [
+            {
+              "role": "payoff",
+              "purpose": "Delivers the promised last, strongest fact.",
+              "connectionToNext": "none",
+              "slots": [
+                {
+                  "name": "final-fact",
+                  "kind": "fixed"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "act": "close",
+          "scenes": [
+            {
+              "role": "cta",
+              "purpose": "Asks for a like and follow, often as a joke fact.",
+              "connectionToNext": "none",
+              "slots": [
+                {
+                  "name": "cta-line",
+                  "kind": "creative"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "single-fact",
+      "format": "facts",
+      "name": "One surprising fact",
+      "oneLine": "One fact built up line by line to a short reveal",
+      "whenToUse": "An idea that is a single surprising or eerie fact that fits in under 20 seconds.",
+      "basedOnAnalysisIds": [
+        "-7eQdRhsCpA",
+        "cK_Q496wow8",
+        "0MQEf_7qk4s"
+      ],
+      "acts": [
+        {
+          "act": "opening",
+          "scenes": [
+            {
+              "role": "hook",
+              "purpose": "Promises a fact the viewer does not know.",
+              "connectionToNext": "open-loop-payoff",
+              "slots": [
+                {
+                  "name": "topic",
+                  "kind": "fixed"
+                },
+                {
+                  "name": "teaser",
+                  "kind": "creative"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "act": "build",
+          "scenes": [
+            {
+              "role": "setup",
+              "purpose": "Gives the everyday situation the fact is about.",
+              "connectionToNext": "sequence",
+              "slots": [
+                {
+                  "name": "situation",
+                  "kind": "fixed"
+                }
+              ]
+            },
+            {
+              "role": "escalation",
+              "purpose": "Adds tension right before the answer.",
+              "connectionToNext": "escalation",
+              "slots": [
+                {
+                  "name": "tension-line",
+                  "kind": "creative"
+                }
+              ]
+            },
+            {
+              "role": "mechanism",
+              "purpose": "Explains why the fact is true.",
+              "connectionToNext": "contrast",
+              "slots": [
+                {
+                  "name": "reason",
+                  "kind": "fixed"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "act": "climax",
+          "scenes": [
+            {
+              "role": "reveal",
+              "purpose": "Delivers the fact itself.",
+              "connectionToNext": "bridge",
+              "slots": [
+                {
+                  "name": "fact",
+                  "kind": "fixed"
+                }
+              ]
+            },
+            {
+              "role": "payoff",
+              "purpose": "Ends on the consequence of the fact.",
+              "connectionToNext": "none",
+              "slots": [
+                {
+                  "name": "consequence",
+                  "kind": "fixed"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "act": "close",
+          "scenes": [
+            {
+              "role": "cta",
+              "purpose": "Asks the viewer to subscribe.",
+              "connectionToNext": "none",
+              "slots": [
+                {
+                  "name": "cta-line",
+                  "kind": "creative"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "tool-spotlight",
+      "format": "demo",
+      "name": "Tool spotlight",
+      "oneLine": "One website or tool shown working, often as a numbered series part",
+      "whenToUse": "An idea that is a single useful website, repo or tool the viewer probably has not seen.",
+      "basedOnAnalysisIds": [
+        "8Qxqi4hDTnk",
+        "PYV4cGkwwLk",
+        "ZbMXwVVBdmM",
+        "ZB_QwIE1Ris",
+        "ImBlE96dOlM",
+        "3O6BFlOiFRg"
+      ],
+      "acts": [
+        {
+          "act": "opening",
+          "scenes": [
+            {
+              "role": "hook",
+              "purpose": "Promises a useful tool, often as part N of a series.",
+              "connectionToNext": "open-loop-payoff",
+              "slots": [
+                {
+                  "name": "tool-category",
+                  "kind": "fixed"
+                },
+                {
+                  "name": "series-part",
+                  "kind": "fixed"
+                },
+                {
+                  "name": "promise",
+                  "kind": "creative"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "act": "build",
+          "scenes": [
+            {
+              "role": "setup",
+              "purpose": "Shows where the tool lives or what it needs.",
+              "connectionToNext": "sequence",
+              "slots": [
+                {
+                  "name": "tool-name",
+                  "kind": "fixed"
+                },
+                {
+                  "name": "where",
+                  "kind": "fixed"
+                }
+              ]
+            },
+            {
+              "role": "reveal",
+              "purpose": "Names the tool.",
+              "connectionToNext": "sequence",
+              "slots": [
+                {
+                  "name": "tool-name",
+                  "kind": "fixed"
+                }
+              ]
+            },
+            {
+              "role": "mechanism",
+              "purpose": "Explains what the tool does in one line.",
+              "connectionToNext": "example",
+              "slots": [
+                {
+                  "name": "what-it-does",
+                  "kind": "fixed"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "act": "core",
+          "scenes": [
+            {
+              "role": "demo",
+              "purpose": "Shows the tool doing its job.",
+              "connectionToNext": "sequence",
+              "slots": [
+                {
+                  "name": "screen-recording",
+                  "kind": "fixed"
+                }
+              ]
+            },
+            {
+              "role": "proof",
+              "purpose": "Shows the finished result.",
+              "connectionToNext": "sequence",
+              "slots": [
+                {
+                  "name": "result-shot",
+                  "kind": "fixed"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "act": "close",
+          "scenes": [
+            {
+              "role": "benefit",
+              "purpose": "States what the viewer gains.",
+              "connectionToNext": "none",
+              "slots": [
+                {
+                  "name": "gain",
+                  "kind": "creative"
+                }
+              ]
+            },
+            {
+              "role": "cta",
+              "purpose": "Points to where the tool can be found.",
+              "connectionToNext": "none",
+              "slots": [
+                {
+                  "name": "link-target",
+                  "kind": "fixed"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "new-tool-news",
+      "format": "demo",
+      "name": "New tool news",
+      "oneLine": "A just-released free tool, its benefits, a quick demo and a comment-keyword offer",
+      "whenToUse": "An idea that is news about a newly released or newly free tool.",
+      "basedOnAnalysisIds": [
+        "1C_0WaKKCPw",
+        "hu3fjVm4sB4",
+        "g3Mh8Hws-jo"
+      ],
+      "acts": [
+        {
+          "act": "opening",
+          "scenes": [
+            {
+              "role": "hook",
+              "purpose": "Announces who released what, and that it is free.",
+              "connectionToNext": "sequence",
+              "slots": [
+                {
+                  "name": "who-released",
+                  "kind": "fixed"
+                },
+                {
+                  "name": "tool-name",
+                  "kind": "fixed"
+                },
+                {
+                  "name": "headline-benefit",
+                  "kind": "creative"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "act": "build",
+          "scenes": [
+            {
+              "role": "setup",
+              "purpose": "Gives context about the source or the tool.",
+              "connectionToNext": "sequence",
+              "slots": [
+                {
+                  "name": "context",
+                  "kind": "fixed"
+                }
+              ]
+            },
+            {
+              "role": "benefit",
+              "purpose": "States the first benefit.",
+              "connectionToNext": "open-loop-payoff",
+              "slots": [
+                {
+                  "name": "benefit",
+                  "kind": "fixed"
+                }
+              ]
+            },
+            {
+              "role": "proof",
+              "purpose": "Shows why the source is credible.",
+              "connectionToNext": "contrast",
+              "slots": [
+                {
+                  "name": "credential",
+                  "kind": "fixed"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "act": "core",
+          "scenes": [
+            {
+              "role": "reveal",
+              "purpose": "Names the tool.",
+              "connectionToNext": "escalation",
+              "slots": [
+                {
+                  "name": "tool-name",
+                  "kind": "fixed"
+                }
+              ]
+            },
+            {
+              "role": "benefit",
+              "purpose": "Adds benefits one after another.",
+              "connectionToNext": "escalation",
+              "slots": [
+                {
+                  "name": "benefit",
+                  "kind": "fixed"
+                }
+              ]
+            },
+            {
+              "role": "item",
+              "purpose": "Lists what is inside the release.",
+              "connectionToNext": "sequence",
+              "slots": [
+                {
+                  "name": "component",
+                  "kind": "fixed"
+                }
+              ]
+            },
+            {
+              "role": "demo",
+              "purpose": "Shows how to start using it.",
+              "connectionToNext": "sequence",
+              "slots": [
+                {
+                  "name": "screen-recording",
+                  "kind": "fixed"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "act": "climax",
+          "scenes": [
+            {
+              "role": "payoff",
+              "purpose": "Shows the finished result.",
+              "connectionToNext": "bridge",
+              "slots": [
+                {
+                  "name": "result-shot",
+                  "kind": "fixed"
+                }
+              ]
+            },
+            {
+              "role": "reveal",
+              "purpose": "Reveals the strongest part of the release.",
+              "connectionToNext": "bridge",
+              "slots": [
+                {
+                  "name": "best-part",
+                  "kind": "fixed"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "act": "close",
+          "scenes": [
+            {
+              "role": "cta",
+              "purpose": "Asks for a comment keyword to get the link.",
+              "connectionToNext": "none",
+              "slots": [
+                {
+                  "name": "keyword",
+                  "kind": "fixed"
+                },
+                {
+                  "name": "resource",
+                  "kind": "fixed"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "build-it-fast",
+      "format": "demo",
+      "name": "Build it fast",
+      "oneLine": "Show the finished thing, then every step that built it",
+      "whenToUse": "An idea where the viewer can build something real in minutes with a tool.",
+      "basedOnAnalysisIds": [
+        "3m0Am0VuBtU",
+        "4Kg_H7EOnz4",
+        "NvKowH8PnaA",
+        "RshyfhbaNHA",
+        "ZcP4BwY9rHw",
+        "g1t_hmndPdo"
+      ],
+      "acts": [
+        {
+          "act": "opening",
+          "scenes": [
+            {
+              "role": "hook",
+              "purpose": "Shows or names the result and how little time it takes.",
+              "connectionToNext": "sequence",
+              "slots": [
+                {
+                  "name": "result",
+                  "kind": "fixed"
+                },
+                {
+                  "name": "time",
+                  "kind": "fixed"
+                },
+                {
+                  "name": "tool-name",
+                  "kind": "fixed"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "act": "build",
+          "scenes": [
+            {
+              "role": "setup",
+              "purpose": "Shows the starting point and what is being built.",
+              "connectionToNext": "sequence",
+              "slots": [
+                {
+                  "name": "starting-point",
+                  "kind": "fixed"
+                }
+              ]
+            },
+            {
+              "role": "reveal",
+              "purpose": "States the goal of the build.",
+              "connectionToNext": "sequence",
+              "slots": [
+                {
+                  "name": "goal",
+                  "kind": "fixed"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "act": "core",
+          "scenes": [
+            {
+              "role": "demo",
+              "purpose": "Shows one build step on screen.",
+              "connectionToNext": "sequence",
+              "slots": [
+                {
+                  "name": "step",
+                  "kind": "fixed"
+                },
+                {
+                  "name": "screen-recording",
+                  "kind": "fixed"
+                }
+              ]
+            },
+            {
+              "role": "item",
+              "purpose": "Names one step when steps are listed.",
+              "connectionToNext": "sequence",
+              "slots": [
+                {
+                  "name": "step",
+                  "kind": "fixed"
+                }
+              ]
+            },
+            {
+              "role": "mechanism",
+              "purpose": "Explains what a step does under the hood.",
+              "connectionToNext": "sequence",
+              "slots": [
+                {
+                  "name": "explanation",
+                  "kind": "fixed"
+                }
+              ]
+            },
+            {
+              "role": "bridge",
+              "purpose": "Links the steps to the outcome.",
+              "connectionToNext": "cause-effect",
+              "slots": [
+                {
+                  "name": "bridge-line",
+                  "kind": "creative"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "act": "climax",
+          "scenes": [
+            {
+              "role": "proof",
+              "purpose": "Shows the finished thing working.",
+              "connectionToNext": "sequence",
+              "slots": [
+                {
+                  "name": "result-shot",
+                  "kind": "fixed"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "act": "close",
+          "scenes": [
+            {
+              "role": "payoff",
+              "purpose": "Ends on the result.",
+              "connectionToNext": "none",
+              "slots": [
+                {
+                  "name": "result-shot",
+                  "kind": "fixed"
+                }
+              ]
+            },
+            {
+              "role": "cta",
+              "purpose": "Offers the link or guide.",
+              "connectionToNext": "none",
+              "slots": [
+                {
+                  "name": "resource",
+                  "kind": "fixed"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "how-to-steps",
+      "format": "demo",
+      "name": "How-to steps",
+      "oneLine": "A how-to promise followed by numbered steps on screen",
+      "whenToUse": "An idea that is a concrete task the viewer wants to do with a tool, in a few steps.",
+      "basedOnAnalysisIds": [
+        "Mw6LtvmHyfc",
+        "Oy47yb7WGCk",
+        "ej5PdsstQrI"
+      ],
+      "acts": [
+        {
+          "act": "opening",
+          "scenes": [
+            {
+              "role": "hook",
+              "purpose": "States the task and the tool.",
+              "connectionToNext": "sequence",
+              "slots": [
+                {
+                  "name": "task",
+                  "kind": "fixed"
+                },
+                {
+                  "name": "tool-name",
+                  "kind": "fixed"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "act": "build",
+          "scenes": [
+            {
+              "role": "demo",
+              "purpose": "Shows the first actions in the tool.",
+              "connectionToNext": "sequence",
+              "slots": [
+                {
+                  "name": "screen-recording",
+                  "kind": "fixed"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "act": "core",
+          "scenes": [
+            {
+              "role": "item",
+              "purpose": "Shows one step.",
+              "connectionToNext": "sequence",
+              "slots": [
+                {
+                  "name": "step",
+                  "kind": "fixed"
+                }
+              ]
+            },
+            {
+              "role": "demo",
+              "purpose": "Shows the tool doing the work.",
+              "connectionToNext": "cause-effect",
+              "slots": [
+                {
+                  "name": "screen-recording",
+                  "kind": "fixed"
+                }
+              ]
+            },
+            {
+              "role": "benefit",
+              "purpose": "States what a step makes possible.",
+              "connectionToNext": "example",
+              "slots": [
+                {
+                  "name": "benefit",
+                  "kind": "fixed"
+                }
+              ]
+            },
+            {
+              "role": "proof",
+              "purpose": "Shows that it worked.",
+              "connectionToNext": "escalation",
+              "slots": [
+                {
+                  "name": "result-shot",
+                  "kind": "fixed"
+                }
+              ]
+            },
+            {
+              "role": "bridge",
+              "purpose": "Moves from the first result to the next steps.",
+              "connectionToNext": "sequence",
+              "slots": [
+                {
+                  "name": "bridge-line",
+                  "kind": "creative"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "act": "climax",
+          "scenes": [
+            {
+              "role": "reveal",
+              "purpose": "Shows the surprising result.",
+              "connectionToNext": "escalation",
+              "slots": [
+                {
+                  "name": "result-shot",
+                  "kind": "fixed"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "act": "close",
+          "scenes": [
+            {
+              "role": "payoff",
+              "purpose": "Shows the task done.",
+              "connectionToNext": "none",
+              "slots": [
+                {
+                  "name": "result-shot",
+                  "kind": "fixed"
+                }
+              ]
+            },
+            {
+              "role": "benefit",
+              "purpose": "States the gain in one line.",
+              "connectionToNext": "bridge",
+              "slots": [
+                {
+                  "name": "gain",
+                  "kind": "creative"
+                }
+              ]
+            },
+            {
+              "role": "cta",
+              "purpose": "Offers more or the full version.",
+              "connectionToNext": "none",
+              "slots": [
+                {
+                  "name": "cta-line",
+                  "kind": "creative"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "pain-to-fix",
+      "format": "demo",
+      "name": "Problem then fix",
+      "oneLine": "The broken or painful way first, then the tool that fixes it, shown working",
+      "whenToUse": "An idea where a tool fixes a pain the audience recognises.",
+      "basedOnAnalysisIds": [
+        "EmxXYzX6iEs",
+        "FX8eD_qN_qU",
+        "Ll1UyM8kBNc"
+      ],
+      "acts": [
+        {
+          "act": "opening",
+          "scenes": [
+            {
+              "role": "hook",
+              "purpose": "Shows or states the wrong way people do it.",
+              "connectionToNext": "contrast",
+              "slots": [
+                {
+                  "name": "pain",
+                  "kind": "fixed"
+                },
+                {
+                  "name": "who",
+                  "kind": "creative"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "act": "build",
+          "scenes": [
+            {
+              "role": "setup",
+              "purpose": "Sets the scene of the task.",
+              "connectionToNext": "sequence",
+              "slots": [
+                {
+                  "name": "task",
+                  "kind": "fixed"
+                }
+              ]
+            },
+            {
+              "role": "problem",
+              "purpose": "Names what goes wrong.",
+              "connectionToNext": "open-loop-payoff",
+              "slots": [
+                {
+                  "name": "problem",
+                  "kind": "fixed"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "act": "core",
+          "scenes": [
+            {
+              "role": "reveal",
+              "purpose": "Names the fix.",
+              "connectionToNext": "sequence",
+              "slots": [
+                {
+                  "name": "tool-name",
+                  "kind": "fixed"
+                }
+              ]
+            },
+            {
+              "role": "bridge",
+              "purpose": "Leads from the fix's name into its steps.",
+              "connectionToNext": "sequence",
+              "slots": [
+                {
+                  "name": "bridge-line",
+                  "kind": "creative"
+                }
+              ]
+            },
+            {
+              "role": "item",
+              "purpose": "Names one step of the fix.",
+              "connectionToNext": "sequence",
+              "slots": [
+                {
+                  "name": "step",
+                  "kind": "fixed"
+                }
+              ]
+            },
+            {
+              "role": "demo",
+              "purpose": "Shows the fix working on screen.",
+              "connectionToNext": "sequence",
+              "slots": [
+                {
+                  "name": "screen-recording",
+                  "kind": "fixed"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "act": "climax",
+          "scenes": [
+            {
+              "role": "benefit",
+              "purpose": "States what changed.",
+              "connectionToNext": "bridge",
+              "slots": [
+                {
+                  "name": "gain",
+                  "kind": "fixed"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "act": "close",
+          "scenes": [
+            {
+              "role": "cta",
+              "purpose": "Points to the full guide.",
+              "connectionToNext": "none",
+              "slots": [
+                {
+                  "name": "resource",
+                  "kind": "fixed"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "product-promo",
+      "format": "demo",
+      "name": "Product promo",
+      "oneLine": "A product's benefits shown one by one through its interface, ending on where to get it",
+      "whenToUse": "An idea that promotes one product or service.",
+      "basedOnAnalysisIds": [
+        "5jly-UeJcDw",
+        "XgM2_m2I6sE",
+        "evXxJa0DsAA",
+        "kaGP7tuTmeE",
+        "vTVJJ06rcDg",
+        "y0DMsRT2U1U"
+      ],
+      "acts": [
+        {
+          "act": "opening",
+          "scenes": [
+            {
+              "role": "hook",
+              "purpose": "Asks what the viewer wants, or shows the product.",
+              "connectionToNext": "question-answer",
+              "slots": [
+                {
+                  "name": "desire",
+                  "kind": "creative"
+                },
+                {
+                  "name": "product-name",
+                  "kind": "fixed"
+                }
+              ]
+            },
+            {
+              "role": "reveal",
+              "purpose": "Names the product.",
+              "connectionToNext": "escalation",
+              "slots": [
+                {
+                  "name": "product-name",
+                  "kind": "fixed"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "act": "build",
+          "scenes": [
+            {
+              "role": "problem",
+              "purpose": "Names what the viewer struggles with.",
+              "connectionToNext": "question-answer",
+              "slots": [
+                {
+                  "name": "pain",
+                  "kind": "fixed"
+                }
+              ]
+            },
+            {
+              "role": "benefit",
+              "purpose": "States a benefit.",
+              "connectionToNext": "escalation",
+              "slots": [
+                {
+                  "name": "benefit",
+                  "kind": "fixed"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "act": "core",
+          "scenes": [
+            {
+              "role": "demo",
+              "purpose": "Shows the product in use.",
+              "connectionToNext": "sequence",
+              "slots": [
+                {
+                  "name": "screen-recording",
+                  "kind": "fixed"
+                }
+              ]
+            },
+            {
+              "role": "benefit",
+              "purpose": "Adds benefits one after another.",
+              "connectionToNext": "sequence",
+              "slots": [
+                {
+                  "name": "benefit",
+                  "kind": "fixed"
+                }
+              ]
+            },
+            {
+              "role": "mechanism",
+              "purpose": "Explains how the product does it.",
+              "connectionToNext": "escalation",
+              "slots": [
+                {
+                  "name": "how-it-works",
+                  "kind": "fixed"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "act": "close",
+          "scenes": [
+            {
+              "role": "payoff",
+              "purpose": "Ends on the product's result.",
+              "connectionToNext": "bridge",
+              "slots": [
+                {
+                  "name": "result-shot",
+                  "kind": "fixed"
+                }
+              ]
+            },
+            {
+              "role": "cta",
+              "purpose": "Says where to get it.",
+              "connectionToNext": "none",
+              "slots": [
+                {
+                  "name": "link-target",
+                  "kind": "fixed"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "question-answered",
+      "format": "explainer",
+      "name": "Big question answered",
+      "oneLine": "A why or how question, answered step by step with diagrams",
+      "whenToUse": "An idea that is a question the audience has wondered about.",
+      "basedOnAnalysisIds": [
+        "KTu2V65Iiho",
+        "MYWpaNYAo0o",
+        "_j_j89V7Q0w",
+        "u1UXDgodUP4",
+        "mytYzlemg-s",
+        "kYOkrswU1KE"
+      ],
+      "acts": [
+        {
+          "act": "opening",
+          "scenes": [
+            {
+              "role": "hook",
+              "purpose": "Asks the question.",
+              "connectionToNext": "question-answer",
+              "slots": [
+                {
+                  "name": "question",
+                  "kind": "fixed"
+                }
+              ]
+            },
+            {
+              "role": "setup",
+              "purpose": "Gives the first piece of the answer.",
+              "connectionToNext": "sequence",
+              "slots": [
+                {
+                  "name": "starting-fact",
+                  "kind": "fixed"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "act": "build",
+          "scenes": [
+            {
+              "role": "setup",
+              "purpose": "Lays out the background.",
+              "connectionToNext": "sequence",
+              "slots": [
+                {
+                  "name": "background",
+                  "kind": "fixed"
+                }
+              ]
+            },
+            {
+              "role": "problem",
+              "purpose": "Names the problem behind the question.",
+              "connectionToNext": "cause-effect",
+              "slots": [
+                {
+                  "name": "problem",
+                  "kind": "fixed"
+                }
+              ]
+            },
+            {
+              "role": "mechanism",
+              "purpose": "Explains how it works, one step per scene.",
+              "connectionToNext": "sequence",
+              "slots": [
+                {
+                  "name": "step",
+                  "kind": "fixed"
+                }
+              ]
+            },
+            {
+              "role": "bridge",
+              "purpose": "Turns from the background to the answer.",
+              "connectionToNext": "question-answer",
+              "slots": [
+                {
+                  "name": "bridge-line",
+                  "kind": "creative"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "act": "core",
+          "scenes": [
+            {
+              "role": "mechanism",
+              "purpose": "Continues the explanation to the key point.",
+              "connectionToNext": "cause-effect",
+              "slots": [
+                {
+                  "name": "step",
+                  "kind": "fixed"
+                }
+              ]
+            },
+            {
+              "role": "item",
+              "purpose": "Names one stage or part.",
+              "connectionToNext": "example",
+              "slots": [
+                {
+                  "name": "stage",
+                  "kind": "fixed"
+                }
+              ]
+            },
+            {
+              "role": "example",
+              "purpose": "Gives a concrete example.",
+              "connectionToNext": "sequence",
+              "slots": [
+                {
+                  "name": "example",
+                  "kind": "fixed"
+                }
+              ]
+            },
+            {
+              "role": "reveal",
+              "purpose": "States the key answer.",
+              "connectionToNext": "sequence",
+              "slots": [
+                {
+                  "name": "answer",
+                  "kind": "fixed"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "act": "climax",
+          "scenes": [
+            {
+              "role": "problem",
+              "purpose": "Shows the escalating consequences.",
+              "connectionToNext": "escalation",
+              "slots": [
+                {
+                  "name": "consequence",
+                  "kind": "fixed"
+                }
+              ]
+            },
+            {
+              "role": "escalation",
+              "purpose": "Raises the stakes once more.",
+              "connectionToNext": "contrast",
+              "slots": [
+                {
+                  "name": "stake",
+                  "kind": "fixed"
+                }
+              ]
+            },
+            {
+              "role": "reveal",
+              "purpose": "Delivers the twist in the answer.",
+              "connectionToNext": "bridge",
+              "slots": [
+                {
+                  "name": "twist",
+                  "kind": "fixed"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "act": "close",
+          "scenes": [
+            {
+              "role": "payoff",
+              "purpose": "Wraps the answer in one line.",
+              "connectionToNext": "none",
+              "slots": [
+                {
+                  "name": "answer-line",
+                  "kind": "creative"
+                }
+              ]
+            },
+            {
+              "role": "cta",
+              "purpose": "Asks what to explain next.",
+              "connectionToNext": "none",
+              "slots": [
+                {
+                  "name": "question",
+                  "kind": "creative"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "explained-in-time",
+      "format": "explainer",
+      "name": "Explained in 60 seconds",
+      "oneLine": "A complex topic explained in a promised short time, often to an unlikely audience",
+      "whenToUse": "An idea that is a complex topic the viewer finds hard and wants explained quickly.",
+      "basedOnAnalysisIds": [
+        "7c-vPPWaRdw",
+        "vFVv_-gcW50",
+        "BF2k_fKuCVM",
+        "JfhrLak5KFo",
+        "ilDOvMsxMws"
+      ],
+      "acts": [
+        {
+          "act": "opening",
+          "scenes": [
+            {
+              "role": "hook",
+              "purpose": "Names the topic and the time promise.",
+              "connectionToNext": "sequence",
+              "slots": [
+                {
+                  "name": "topic",
+                  "kind": "fixed"
+                },
+                {
+                  "name": "time",
+                  "kind": "fixed"
+                },
+                {
+                  "name": "unlikely-audience",
+                  "kind": "creative"
+                }
+              ]
+            },
+            {
+              "role": "setup",
+              "purpose": "Defines the topic in one line.",
+              "connectionToNext": "sequence",
+              "slots": [
+                {
+                  "name": "definition",
+                  "kind": "fixed"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "act": "build",
+          "scenes": [
+            {
+              "role": "item",
+              "purpose": "Introduces one ingredient or step.",
+              "connectionToNext": "sequence",
+              "slots": [
+                {
+                  "name": "ingredient",
+                  "kind": "fixed"
+                }
+              ]
+            },
+            {
+              "role": "mechanism",
+              "purpose": "Explains how one part works.",
+              "connectionToNext": "sequence",
+              "slots": [
+                {
+                  "name": "step",
+                  "kind": "fixed"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "act": "core",
+          "scenes": [
+            {
+              "role": "mechanism",
+              "purpose": "Explains the core process.",
+              "connectionToNext": "sequence",
+              "slots": [
+                {
+                  "name": "step",
+                  "kind": "fixed"
+                }
+              ]
+            },
+            {
+              "role": "problem",
+              "purpose": "Names the downside or limit.",
+              "connectionToNext": "contrast",
+              "slots": [
+                {
+                  "name": "limit",
+                  "kind": "fixed"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "act": "climax",
+          "scenes": [
+            {
+              "role": "reveal",
+              "purpose": "Shows the result of the process.",
+              "connectionToNext": "cause-effect",
+              "slots": [
+                {
+                  "name": "result",
+                  "kind": "fixed"
+                }
+              ]
+            },
+            {
+              "role": "item",
+              "purpose": "Shows the last ingredient.",
+              "connectionToNext": "cause-effect",
+              "slots": [
+                {
+                  "name": "ingredient",
+                  "kind": "fixed"
+                }
+              ]
+            },
+            {
+              "role": "benefit",
+              "purpose": "States why knowing this helps.",
+              "connectionToNext": "bridge",
+              "slots": [
+                {
+                  "name": "gain",
+                  "kind": "creative"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "act": "close",
+          "scenes": [
+            {
+              "role": "payoff",
+              "purpose": "Ends on the big consequence or joke.",
+              "connectionToNext": "none",
+              "slots": [
+                {
+                  "name": "closing-line",
+                  "kind": "creative"
+                }
+              ]
+            },
+            {
+              "role": "cta",
+              "purpose": "Offers a resource with the diagrams.",
+              "connectionToNext": "none",
+              "slots": [
+                {
+                  "name": "resource",
+                  "kind": "fixed"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "myth-vs-reality",
+      "format": "explainer",
+      "name": "Myth vs reality",
+      "oneLine": "What people think, then how it really works, with the proof",
+      "whenToUse": "An idea that corrects a common belief or reveals a hidden side of something familiar.",
+      "basedOnAnalysisIds": [
+        "_yr-VNLW9nU",
+        "XT4y1fGB6CE",
+        "lylaitbZB70",
+        "RjX0cRL0Mqs",
+        "Bd-wV1nGrd0"
+      ],
+      "acts": [
+        {
+          "act": "opening",
+          "scenes": [
+            {
+              "role": "hook",
+              "purpose": "States the surprising claim or the common belief.",
+              "connectionToNext": "contrast",
+              "slots": [
+                {
+                  "name": "claim",
+                  "kind": "fixed"
+                }
+              ]
+            },
+            {
+              "role": "setup",
+              "purpose": "Spells out what people usually think.",
+              "connectionToNext": "contrast",
+              "slots": [
+                {
+                  "name": "belief",
+                  "kind": "fixed"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "act": "build",
+          "scenes": [
+            {
+              "role": "setup",
+              "purpose": "Gives the background.",
+              "connectionToNext": "contrast",
+              "slots": [
+                {
+                  "name": "background",
+                  "kind": "fixed"
+                }
+              ]
+            },
+            {
+              "role": "problem",
+              "purpose": "Raises the question the belief cannot answer.",
+              "connectionToNext": "question-answer",
+              "slots": [
+                {
+                  "name": "question",
+                  "kind": "fixed"
+                }
+              ]
+            },
+            {
+              "role": "bridge",
+              "purpose": "Leads into the real explanation.",
+              "connectionToNext": "sequence",
+              "slots": [
+                {
+                  "name": "bridge-line",
+                  "kind": "creative"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "act": "core",
+          "scenes": [
+            {
+              "role": "reveal",
+              "purpose": "Shows how it really is.",
+              "connectionToNext": "escalation",
+              "slots": [
+                {
+                  "name": "reality",
+                  "kind": "fixed"
+                }
+              ]
+            },
+            {
+              "role": "proof",
+              "purpose": "Shows evidence.",
+              "connectionToNext": "escalation",
+              "slots": [
+                {
+                  "name": "proof-shot",
+                  "kind": "fixed"
+                }
+              ]
+            },
+            {
+              "role": "mechanism",
+              "purpose": "Explains how it works.",
+              "connectionToNext": "cause-effect",
+              "slots": [
+                {
+                  "name": "step",
+                  "kind": "fixed"
+                }
+              ]
+            },
+            {
+              "role": "item",
+              "purpose": "Shows one part of the real picture.",
+              "connectionToNext": "example",
+              "slots": [
+                {
+                  "name": "part",
+                  "kind": "fixed"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "act": "climax",
+          "scenes": [
+            {
+              "role": "reveal",
+              "purpose": "Delivers the final twist.",
+              "connectionToNext": "cause-effect",
+              "slots": [
+                {
+                  "name": "twist",
+                  "kind": "fixed"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "act": "close",
+          "scenes": [
+            {
+              "role": "payoff",
+              "purpose": "Ties the reality back to the claim.",
+              "connectionToNext": "none",
+              "slots": [
+                {
+                  "name": "closing-line",
+                  "kind": "creative"
+                }
+              ]
+            },
+            {
+              "role": "cta",
+              "purpose": "Asks the viewer to subscribe.",
+              "connectionToNext": "none",
+              "slots": [
+                {
+                  "name": "cta-line",
+                  "kind": "creative"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "analogy-explainer",
+      "format": "explainer",
+      "name": "Explained with characters",
+      "oneLine": "A concept explained through a small invented world or everyday analogy",
+      "whenToUse": "An idea that is an abstract concept (economics, health, finance) that becomes clear as a story.",
+      "basedOnAnalysisIds": [
+        "GndFJU8kYeY",
+        "fjet5EE2iBI",
+        "H7vaUGOMQrI"
+      ],
+      "acts": [
+        {
+          "act": "opening",
+          "scenes": [
+            {
+              "role": "hook",
+              "purpose": "Names the concept and the characters explaining it.",
+              "connectionToNext": "sequence",
+              "slots": [
+                {
+                  "name": "concept",
+                  "kind": "fixed"
+                },
+                {
+                  "name": "characters",
+                  "kind": "creative"
+                }
+              ]
+            },
+            {
+              "role": "setup",
+              "purpose": "Sets up the analogy world.",
+              "connectionToNext": "cause-effect",
+              "slots": [
+                {
+                  "name": "analogy",
+                  "kind": "creative"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "act": "build",
+          "scenes": [
+            {
+              "role": "setup",
+              "purpose": "Adds the rules of the analogy.",
+              "connectionToNext": "sequence",
+              "slots": [
+                {
+                  "name": "rule",
+                  "kind": "creative"
+                }
+              ]
+            },
+            {
+              "role": "problem",
+              "purpose": "Introduces the problem in the analogy.",
+              "connectionToNext": "cause-effect",
+              "slots": [
+                {
+                  "name": "problem",
+                  "kind": "fixed"
+                }
+              ]
+            },
+            {
+              "role": "mechanism",
+              "purpose": "Shows how the concept works in the analogy.",
+              "connectionToNext": "cause-effect",
+              "slots": [
+                {
+                  "name": "step",
+                  "kind": "fixed"
+                }
+              ]
+            },
+            {
+              "role": "demo",
+              "purpose": "Plays out one situation.",
+              "connectionToNext": "contrast",
+              "slots": [
+                {
+                  "name": "situation",
+                  "kind": "creative"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "act": "core",
+          "scenes": [
+            {
+              "role": "reveal",
+              "purpose": "Names the real concept behind the analogy.",
+              "connectionToNext": "sequence",
+              "slots": [
+                {
+                  "name": "concept-term",
+                  "kind": "fixed"
+                }
+              ]
+            },
+            {
+              "role": "mechanism",
+              "purpose": "Applies the analogy to real cases.",
+              "connectionToNext": "example",
+              "slots": [
+                {
+                  "name": "real-case",
+                  "kind": "fixed"
+                }
+              ]
+            },
+            {
+              "role": "benefit",
+              "purpose": "Shows the upside.",
+              "connectionToNext": "contrast",
+              "slots": [
+                {
+                  "name": "upside",
+                  "kind": "fixed"
+                }
+              ]
+            },
+            {
+              "role": "item",
+              "purpose": "Gives one real example.",
+              "connectionToNext": "contrast",
+              "slots": [
+                {
+                  "name": "example",
+                  "kind": "fixed"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "act": "climax",
+          "scenes": [
+            {
+              "role": "bridge",
+              "purpose": "Turns the analogy toward its lesson.",
+              "connectionToNext": "sequence",
+              "slots": [
+                {
+                  "name": "bridge-line",
+                  "kind": "creative"
+                }
+              ]
+            },
+            {
+              "role": "reveal",
+              "purpose": "Delivers the main lesson.",
+              "connectionToNext": "sequence",
+              "slots": [
+                {
+                  "name": "lesson",
+                  "kind": "fixed"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "act": "close",
+          "scenes": [
+            {
+              "role": "payoff",
+              "purpose": "Ends on the consequence or moral.",
+              "connectionToNext": "none",
+              "slots": [
+                {
+                  "name": "closing-line",
+                  "kind": "creative"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "software-tutorial",
+      "format": "explainer",
+      "name": "Software how-to",
+      "oneLine": "A finished result first, then the steps to make it in the software",
+      "whenToUse": "An idea that is a specific thing to make in a common program (PowerPoint, GitHub, a no-code tool).",
+      "basedOnAnalysisIds": [
+        "3UNxrQZ4Evk",
+        "XR8tSw727dE",
+        "n8JpwbyxmHM",
+        "aV_yI1oV5vU"
+      ],
+      "acts": [
+        {
+          "act": "opening",
+          "scenes": [
+            {
+              "role": "hook",
+              "purpose": "Shows or promises the result.",
+              "connectionToNext": "sequence",
+              "slots": [
+                {
+                  "name": "result",
+                  "kind": "fixed"
+                },
+                {
+                  "name": "software",
+                  "kind": "fixed"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "act": "build",
+          "scenes": [
+            {
+              "role": "setup",
+              "purpose": "Shows the starting point.",
+              "connectionToNext": "sequence",
+              "slots": [
+                {
+                  "name": "starting-point",
+                  "kind": "fixed"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "act": "core",
+          "scenes": [
+            {
+              "role": "item",
+              "purpose": "Names one step.",
+              "connectionToNext": "sequence",
+              "slots": [
+                {
+                  "name": "step",
+                  "kind": "fixed"
+                }
+              ]
+            },
+            {
+              "role": "demo",
+              "purpose": "Shows one step on screen.",
+              "connectionToNext": "sequence",
+              "slots": [
+                {
+                  "name": "screen-recording",
+                  "kind": "fixed"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "act": "close",
+          "scenes": [
+            {
+              "role": "payoff",
+              "purpose": "Shows the finished result.",
+              "connectionToNext": "none",
+              "slots": [
+                {
+                  "name": "result-shot",
+                  "kind": "fixed"
+                }
+              ]
+            },
+            {
+              "role": "cta",
+              "purpose": "Asks to save or follow for more.",
+              "connectionToNext": "none",
+              "slots": [
+                {
+                  "name": "cta-line",
+                  "kind": "creative"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "tool-deep-dive",
+      "format": "explainer",
+      "name": "Tool explained",
+      "oneLine": "What a tool is, how it differs, and what it really does",
+      "whenToUse": "An idea that explains one popular tool or model and how to think about it.",
+      "basedOnAnalysisIds": [
+        "p7U_98jWqWo",
+        "aLo8oxI-F1E",
+        "5G9PAIUs5Pk"
+      ],
+      "acts": [
+        {
+          "act": "opening",
+          "scenes": [
+            {
+              "role": "hook",
+              "purpose": "States the news or the common misuse.",
+              "connectionToNext": "sequence",
+              "slots": [
+                {
+                  "name": "tool-name",
+                  "kind": "fixed"
+                },
+                {
+                  "name": "angle",
+                  "kind": "creative"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "act": "build",
+          "scenes": [
+            {
+              "role": "setup",
+              "purpose": "Gives context about the tool.",
+              "connectionToNext": "contrast",
+              "slots": [
+                {
+                  "name": "context",
+                  "kind": "fixed"
+                }
+              ]
+            },
+            {
+              "role": "problem",
+              "purpose": "Names the mistake people make.",
+              "connectionToNext": "contrast",
+              "slots": [
+                {
+                  "name": "mistake",
+                  "kind": "fixed"
+                }
+              ]
+            },
+            {
+              "role": "mechanism",
+              "purpose": "Explains what makes it different.",
+              "connectionToNext": "contrast",
+              "slots": [
+                {
+                  "name": "difference",
+                  "kind": "fixed"
+                }
+              ]
+            },
+            {
+              "role": "example",
+              "purpose": "Gives an analogy or example.",
+              "connectionToNext": "contrast",
+              "slots": [
+                {
+                  "name": "example",
+                  "kind": "creative"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "act": "core",
+          "scenes": [
+            {
+              "role": "bridge",
+              "purpose": "Moves from context to the main point.",
+              "connectionToNext": "sequence",
+              "slots": [
+                {
+                  "name": "bridge-line",
+                  "kind": "creative"
+                }
+              ]
+            },
+            {
+              "role": "reveal",
+              "purpose": "States the main point.",
+              "connectionToNext": "sequence",
+              "slots": [
+                {
+                  "name": "main-point",
+                  "kind": "fixed"
+                }
+              ]
+            },
+            {
+              "role": "item",
+              "purpose": "Gives one practice or use case.",
+              "connectionToNext": "cause-effect",
+              "slots": [
+                {
+                  "name": "practice",
+                  "kind": "fixed"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "act": "climax",
+          "scenes": [
+            {
+              "role": "demo",
+              "purpose": "Shows the tool doing the task.",
+              "connectionToNext": "escalation",
+              "slots": [
+                {
+                  "name": "screen-recording",
+                  "kind": "fixed"
+                }
+              ]
+            },
+            {
+              "role": "proof",
+              "purpose": "Shows benchmarks or results.",
+              "connectionToNext": "escalation",
+              "slots": [
+                {
+                  "name": "proof-shot",
+                  "kind": "fixed"
+                }
+              ]
+            },
+            {
+              "role": "payoff",
+              "purpose": "Delivers the verdict.",
+              "connectionToNext": "bridge",
+              "slots": [
+                {
+                  "name": "verdict",
+                  "kind": "creative"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "act": "close",
+          "scenes": [
+            {
+              "role": "benefit",
+              "purpose": "States what the viewer can do with it.",
+              "connectionToNext": "none",
+              "slots": [
+                {
+                  "name": "gain",
+                  "kind": "creative"
+                }
+              ]
+            },
+            {
+              "role": "cta",
+              "purpose": "Asks the viewer to subscribe.",
+              "connectionToNext": "none",
+              "slots": [
+                {
+                  "name": "cta-line",
+                  "kind": "creative"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "dark-true-story",
+      "format": "story",
+      "name": "Creepy true story",
+      "oneLine": "A dark or strange true story told step by step to a shocking ending",
+      "whenToUse": "An idea that is a real crime, legend or eerie event.",
+      "basedOnAnalysisIds": [
+        "HTRuojtV0pw",
+        "LRoevZc_LJk",
+        "axfQIwjAZjk",
+        "cBr5ea6LRNE",
+        "nWf7huAPCsw"
+      ],
+      "acts": [
+        {
+          "act": "opening",
+          "scenes": [
+            {
+              "role": "hook",
+              "purpose": "Opens on the strangest detail of the story.",
+              "connectionToNext": "sequence",
+              "slots": [
+                {
+                  "name": "place-or-person",
+                  "kind": "fixed"
+                },
+                {
+                  "name": "opening-detail",
+                  "kind": "creative"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "act": "build",
+          "scenes": [
+            {
+              "role": "setup",
+              "purpose": "Tells how it started.",
+              "connectionToNext": "sequence",
+              "slots": [
+                {
+                  "name": "event",
+                  "kind": "fixed"
+                }
+              ]
+            },
+            {
+              "role": "problem",
+              "purpose": "Shows when things went wrong.",
+              "connectionToNext": "cause-effect",
+              "slots": [
+                {
+                  "name": "turning-point",
+                  "kind": "fixed"
+                }
+              ]
+            },
+            {
+              "role": "bridge",
+              "purpose": "Signals that it gets worse.",
+              "connectionToNext": "escalation",
+              "slots": [
+                {
+                  "name": "bridge-line",
+                  "kind": "creative"
+                }
+              ]
+            },
+            {
+              "role": "escalation",
+              "purpose": "Adds a darker detail.",
+              "connectionToNext": "escalation",
+              "slots": [
+                {
+                  "name": "detail",
+                  "kind": "fixed"
+                }
+              ]
+            },
+            {
+              "role": "example",
+              "purpose": "Gives a witness account or example.",
+              "connectionToNext": "sequence",
+              "slots": [
+                {
+                  "name": "account",
+                  "kind": "fixed"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "act": "climax",
+          "scenes": [
+            {
+              "role": "reveal",
+              "purpose": "Reveals the shocking truth.",
+              "connectionToNext": "escalation",
+              "slots": [
+                {
+                  "name": "truth",
+                  "kind": "fixed"
+                }
+              ]
+            },
+            {
+              "role": "proof",
+              "purpose": "Shows the evidence.",
+              "connectionToNext": "sequence",
+              "slots": [
+                {
+                  "name": "evidence",
+                  "kind": "fixed"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "act": "close",
+          "scenes": [
+            {
+              "role": "payoff",
+              "purpose": "Ends on what happened after.",
+              "connectionToNext": "none",
+              "slots": [
+                {
+                  "name": "ending",
+                  "kind": "fixed"
+                }
+              ]
+            },
+            {
+              "role": "cta",
+              "purpose": "Asks for a follow for more stories.",
+              "connectionToNext": "none",
+              "slots": [
+                {
+                  "name": "cta-line",
+                  "kind": "creative"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "brand-origin",
+      "format": "story",
+      "name": "Rise of a brand",
+      "oneLine": "From a humble start, through hardship, to a big brand",
+      "whenToUse": "An idea that is the history of a brand, product or founder.",
+      "basedOnAnalysisIds": [
+        "A4gshIyrNNU",
+        "x7iYFWYxmbQ",
+        "zIdkkPSldcs"
+      ],
+      "acts": [
+        {
+          "act": "opening",
+          "scenes": [
+            {
+              "role": "hook",
+              "purpose": "Opens on the year or the size of the success.",
+              "connectionToNext": "sequence",
+              "slots": [
+                {
+                  "name": "year-or-result",
+                  "kind": "fixed"
+                },
+                {
+                  "name": "brand",
+                  "kind": "fixed"
+                }
+              ]
+            },
+            {
+              "role": "setup",
+              "purpose": "Introduces the founder.",
+              "connectionToNext": "sequence",
+              "slots": [
+                {
+                  "name": "founder",
+                  "kind": "fixed"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "act": "build",
+          "scenes": [
+            {
+              "role": "setup",
+              "purpose": "Shows the humble start.",
+              "connectionToNext": "contrast",
+              "slots": [
+                {
+                  "name": "start",
+                  "kind": "fixed"
+                }
+              ]
+            },
+            {
+              "role": "problem",
+              "purpose": "Shows the hardships.",
+              "connectionToNext": "escalation",
+              "slots": [
+                {
+                  "name": "hardship",
+                  "kind": "fixed"
+                }
+              ]
+            },
+            {
+              "role": "item",
+              "purpose": "Shows an early product or attempt.",
+              "connectionToNext": "cause-effect",
+              "slots": [
+                {
+                  "name": "milestone",
+                  "kind": "fixed"
+                }
+              ]
+            },
+            {
+              "role": "mechanism",
+              "purpose": "Explains how the product works.",
+              "connectionToNext": "cause-effect",
+              "slots": [
+                {
+                  "name": "how-it-works",
+                  "kind": "fixed"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "act": "core",
+          "scenes": [
+            {
+              "role": "bridge",
+              "purpose": "Moves the story forward in time.",
+              "connectionToNext": "sequence",
+              "slots": [
+                {
+                  "name": "time-jump",
+                  "kind": "fixed"
+                }
+              ]
+            },
+            {
+              "role": "item",
+              "purpose": "Shows one milestone.",
+              "connectionToNext": "sequence",
+              "slots": [
+                {
+                  "name": "milestone",
+                  "kind": "fixed"
+                }
+              ]
+            },
+            {
+              "role": "demo",
+              "purpose": "Shows the product being made.",
+              "connectionToNext": "sequence",
+              "slots": [
+                {
+                  "name": "process",
+                  "kind": "fixed"
+                }
+              ]
+            },
+            {
+              "role": "benefit",
+              "purpose": "Shows what made it win.",
+              "connectionToNext": "sequence",
+              "slots": [
+                {
+                  "name": "advantage",
+                  "kind": "fixed"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "act": "climax",
+          "scenes": [
+            {
+              "role": "reveal",
+              "purpose": "Shows the breakthrough.",
+              "connectionToNext": "sequence",
+              "slots": [
+                {
+                  "name": "breakthrough",
+                  "kind": "fixed"
+                }
+              ]
+            },
+            {
+              "role": "proof",
+              "purpose": "Shows the size of the success.",
+              "connectionToNext": "bridge",
+              "slots": [
+                {
+                  "name": "result-number",
+                  "kind": "fixed"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "act": "close",
+          "scenes": [
+            {
+              "role": "payoff",
+              "purpose": "Ends on the lesson or where it is now.",
+              "connectionToNext": "none",
+              "slots": [
+                {
+                  "name": "ending",
+                  "kind": "creative"
+                }
+              ]
+            },
+            {
+              "role": "cta",
+              "purpose": "Asks the viewer a question about the brand.",
+              "connectionToNext": "none",
+              "slots": [
+                {
+                  "name": "question",
+                  "kind": "creative"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "plot-recap",
+      "format": "story",
+      "name": "Story recap",
+      "oneLine": "A plot, journey or character backstory retold event by event",
+      "whenToUse": "An idea that recaps an episode, myth, game lore or a character's story.",
+      "basedOnAnalysisIds": [
+        "-CQ_-6AzF9Q",
+        "nELGzUrsQko",
+        "mfl6Fhi-LTk"
+      ],
+      "acts": [
+        {
+          "act": "opening",
+          "scenes": [
+            {
+              "role": "hook",
+              "purpose": "Names the story and promises it in short.",
+              "connectionToNext": "sequence",
+              "slots": [
+                {
+                  "name": "story-name",
+                  "kind": "fixed"
+                },
+                {
+                  "name": "promise",
+                  "kind": "creative"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "act": "build",
+          "scenes": [
+            {
+              "role": "setup",
+              "purpose": "Introduces the world and the hero.",
+              "connectionToNext": "sequence",
+              "slots": [
+                {
+                  "name": "setting",
+                  "kind": "fixed"
+                }
+              ]
+            },
+            {
+              "role": "problem",
+              "purpose": "States the hero's problem.",
+              "connectionToNext": "cause-effect",
+              "slots": [
+                {
+                  "name": "problem",
+                  "kind": "fixed"
+                }
+              ]
+            },
+            {
+              "role": "item",
+              "purpose": "Shows one trait or event.",
+              "connectionToNext": "sequence",
+              "slots": [
+                {
+                  "name": "event",
+                  "kind": "fixed"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "act": "core",
+          "scenes": [
+            {
+              "role": "item",
+              "purpose": "Retells one event.",
+              "connectionToNext": "sequence",
+              "slots": [
+                {
+                  "name": "event",
+                  "kind": "fixed"
+                }
+              ]
+            },
+            {
+              "role": "escalation",
+              "purpose": "Raises the stakes.",
+              "connectionToNext": "sequence",
+              "slots": [
+                {
+                  "name": "stake",
+                  "kind": "fixed"
+                }
+              ]
+            },
+            {
+              "role": "mechanism",
+              "purpose": "Explains how a key thing works.",
+              "connectionToNext": "sequence",
+              "slots": [
+                {
+                  "name": "explanation",
+                  "kind": "fixed"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "act": "climax",
+          "scenes": [
+            {
+              "role": "reveal",
+              "purpose": "Delivers the twist.",
+              "connectionToNext": "contrast",
+              "slots": [
+                {
+                  "name": "twist",
+                  "kind": "fixed"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "act": "close",
+          "scenes": [
+            {
+              "role": "payoff",
+              "purpose": "Ends on how it all turns out.",
+              "connectionToNext": "none",
+              "slots": [
+                {
+                  "name": "ending",
+                  "kind": "fixed"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "hookFormulas": [
+    {
+      "id": "facts-you-didnt-know",
+      "type": "curiosity-gap",
+      "formula": "[Adjective] Facts YOU Didn't Know About [emoji] Part [N]",
+      "basedOnAnalysisIds": [
+        "-7eQdRhsCpA"
+      ]
+    },
+    {
+      "id": "subject-in-time-spoiler",
+      "type": "explained-in-time",
+      "formula": "[Episode or subject] in [time]. Spoiler warning.",
+      "basedOnAnalysisIds": [
+        "-CQ_-6AzF9Q"
+      ]
+    },
+    {
+      "id": "n-skills-make-you-look-like",
+      "type": "list",
+      "formula": "[N] [tool] skills that make you look like a [desired role] overnight.",
+      "basedOnAnalysisIds": [
+        "0JZtdAtJiyk"
+      ]
+    },
+    {
+      "id": "big-number-tools",
+      "type": "list",
+      "formula": "[Big number] [adjective] [topic] tools",
+      "basedOnAnalysisIds": [
+        "0MQEf_7qk4s"
+      ]
+    },
+    {
+      "id": "dont-do-random-facts",
+      "type": "curiosity-gap",
+      "formula": "Don't [everyday action]. Random facts. The last fact is [adjective].",
+      "basedOnAnalysisIds": [
+        "0Mz2fqwCb-8"
+      ]
+    },
+    {
+      "id": "dont-do-shock-facts",
+      "type": "shock-fact",
+      "formula": "Don't [everyday action]. Random facts. The last fact is [adjective].",
+      "basedOnAnalysisIds": [
+        "J9yGsD4FZq4"
+      ]
+    },
+    {
+      "id": "free-alternative-to",
+      "type": "news",
+      "formula": "This is a free and [quality] alternative to [popular tool].",
+      "basedOnAnalysisIds": [
+        "1C_0WaKKCPw"
+      ]
+    },
+    {
+      "id": "did-you-know-you-can-in-tool",
+      "type": "question",
+      "formula": "Did you know that you can [desired result] directly in [tool]?",
+      "basedOnAnalysisIds": [
+        "3O6BFlOiFRg"
+      ]
+    },
+    {
+      "id": "you-asked-here-you-are",
+      "type": "result-first",
+      "formula": "Many of you asked me for [this tutorial]. Here you are.",
+      "basedOnAnalysisIds": [
+        "3UNxrQZ4Evk"
+      ]
+    },
+    {
+      "id": "every-tool-i-used",
+      "type": "result-first",
+      "formula": "Here is every tool I used to build [result] in just [time].",
+      "basedOnAnalysisIds": [
+        "3m0Am0VuBtU"
+      ]
+    },
+    {
+      "id": "build-in-under-time",
+      "type": "result-first",
+      "formula": "Here's how to build a [thing] in under [time].",
+      "basedOnAnalysisIds": [
+        "4Kg_H7EOnz4"
+      ]
+    },
+    {
+      "id": "everyone-uses-it-wrong",
+      "type": "pain-shown",
+      "formula": "Everyone's using [tool] like [wrong analogy].",
+      "basedOnAnalysisIds": [
+        "5G9PAIUs5Pk"
+      ]
+    },
+    {
+      "id": "got-something-to",
+      "type": "question",
+      "formula": "Got [something] to [action]? [Second question]?",
+      "basedOnAnalysisIds": [
+        "5jly-UeJcDw"
+      ]
+    },
+    {
+      "id": "topic-for-unlikely-audience",
+      "type": "explained-in-time",
+      "formula": "[Complex topic] for [unlikely audience] in [time].",
+      "basedOnAnalysisIds": [
+        "7c-vPPWaRdw",
+        "vFVv_-gcW50"
+      ]
+    },
+    {
+      "id": "if-tool-keeps-n-tricks",
+      "type": "list",
+      "formula": "If your [tool] keeps [pain], here are [N] tricks to [benefit].",
+      "basedOnAnalysisIds": [
+        "8BZupIIVhjs"
+      ]
+    },
+    {
+      "id": "powerful-things-you-should-know",
+      "type": "list",
+      "formula": "Powerful [category] you should know, part [N].",
+      "basedOnAnalysisIds": [
+        "8Qxqi4hDTnk",
+        "PYV4cGkwwLk",
+        "ZbMXwVVBdmM"
+      ]
+    },
+    {
+      "id": "top-n-secret-things",
+      "type": "list",
+      "formula": "Here are the top [N] secret [items] in [topic] that you probably didn't know about.",
+      "basedOnAnalysisIds": [
+        "96bqVLNjnDE"
+      ]
+    },
+    {
+      "id": "in-year-subject-did",
+      "type": "story",
+      "formula": "In [year or era], [subject] [did something].",
+      "basedOnAnalysisIds": [
+        "A4gshIyrNNU",
+        "cBr5ea6LRNE"
+      ]
+    },
+    {
+      "id": "topic-in-n-steps",
+      "type": "explained-in-time",
+      "formula": "[Topic] explained in [N] simple steps.",
+      "basedOnAnalysisIds": [
+        "BF2k_fKuCVM"
+      ]
+    },
+    {
+      "id": "top-n-who",
+      "type": "list",
+      "formula": "These are the top [N] [subjects] who [notable thing].",
+      "basedOnAnalysisIds": [
+        "BUIZnq_U8go"
+      ]
+    },
+    {
+      "id": "today-i-found-out",
+      "type": "curiosity-gap",
+      "formula": "Today I found out that a free [product] that almost everyone uses makes [result].",
+      "basedOnAnalysisIds": [
+        "Bd-wV1nGrd0"
+      ]
+    },
+    {
+      "id": "facts-that-mess-with",
+      "type": "list",
+      "formula": "Crazy facts that will mess with your perception of [topic].",
+      "basedOnAnalysisIds": [
+        "BmezElWWNU0"
+      ]
+    },
+    {
+      "id": "a-vs-b-side-by-side",
+      "type": "visual-first",
+      "formula": "[Subject A] vs [Subject B], shown side by side with no words",
+      "basedOnAnalysisIds": [
+        "DEAlXN7rciM",
+        "yn2bjNiy4a0"
+      ]
+    },
+    {
+      "id": "saw-someone-doing-it-like-this",
+      "type": "pain-shown",
+      "formula": "Saw [someone] [doing a task] like this",
+      "basedOnAnalysisIds": [
+        "EmxXYzX6iEs"
+      ]
+    },
+    {
+      "id": "everyone-uses-but",
+      "type": "contrarian",
+      "formula": "Everyone's using [trending tool] to [goal], but [pain].",
+      "basedOnAnalysisIds": [
+        "FX8eD_qN_qU"
+      ]
+    },
+    {
+      "id": "same-thing-across-years",
+      "type": "visual-first",
+      "formula": "[Subject] in ([year]) ([year]) ([year]), shown side by side",
+      "basedOnAnalysisIds": [
+        "G92WG-qwFvQ"
+      ]
+    },
+    {
+      "id": "characters-live-in-two-places",
+      "type": "story",
+      "formula": "[Characters] live in two [places]: [A] and [B].",
+      "basedOnAnalysisIds": [
+        "GndFJU8kYeY"
+      ]
+    },
+    {
+      "id": "concept-explained-by-characters",
+      "type": "explained-in-time",
+      "formula": "[Concept], explained by [cute characters].",
+      "basedOnAnalysisIds": [
+        "H7vaUGOMQrI"
+      ]
+    },
+    {
+      "id": "did-you-know-spooky-place",
+      "type": "story",
+      "formula": "Did you know that in [spooky place]...",
+      "basedOnAnalysisIds": [
+        "HTRuojtV0pw"
+      ]
+    },
+    {
+      "id": "more-perfect-than-leader",
+      "type": "curiosity-gap",
+      "formula": "A more perfect [product type] than [market leader]",
+      "basedOnAnalysisIds": [
+        "ImBlE96dOlM"
+      ]
+    },
+    {
+      "id": "how-topic-really-works-in-time",
+      "type": "explained-in-time",
+      "formula": "Here's how [topic] really works in [time]. Let's go.",
+      "basedOnAnalysisIds": [
+        "JfhrLak5KFo"
+      ]
+    },
+    {
+      "id": "why-does-feel-so-good",
+      "type": "question",
+      "formula": "Why does [subject] feel so good? Let's try it so you don't have to.",
+      "basedOnAnalysisIds": [
+        "KTu2V65Iiho"
+      ]
+    },
+    {
+      "id": "ranking-top-n",
+      "type": "list",
+      "formula": "Ranking top [N] [topic]",
+      "basedOnAnalysisIds": [
+        "K_U4Hd0AvjI"
+      ]
+    },
+    {
+      "id": "dramatic-quote",
+      "type": "story",
+      "formula": "\"[The most dramatic line spoken in the story]\"",
+      "basedOnAnalysisIds": [
+        "LRoevZc_LJk"
+      ]
+    },
+    {
+      "id": "i-switched-from",
+      "type": "story",
+      "formula": "I switched from [tool A] to [tool B].",
+      "basedOnAnalysisIds": [
+        "Ll1UyM8kBNc"
+      ]
+    },
+    {
+      "id": "everyone-without-is-wasting",
+      "type": "contrarian",
+      "formula": "Everyone using [tool] without [feature] is just wasting their [resource].",
+      "basedOnAnalysisIds": [
+        "MBAwGQTOOe4"
+      ]
+    },
+    {
+      "id": "how-does-topic-work",
+      "type": "question",
+      "formula": "How does [topic] work?",
+      "basedOnAnalysisIds": [
+        "MYWpaNYAo0o",
+        "mytYzlemg-s"
+      ]
+    },
+    {
+      "id": "if-you-want-follow-my-steps",
+      "type": "how-to",
+      "formula": "If you want to [result] using [tool], then follow my steps.",
+      "basedOnAnalysisIds": [
+        "Mw6LtvmHyfc"
+      ]
+    },
+    {
+      "id": "how-to-build-using-in-time",
+      "type": "explained-in-time",
+      "formula": "How to build a [desirable outcome] using [new tool] in [time].",
+      "basedOnAnalysisIds": [
+        "NvKowH8PnaA"
+      ]
+    },
+    {
+      "id": "open-app-do-this",
+      "type": "how-to",
+      "formula": "Open [app], [do the first action]...",
+      "basedOnAnalysisIds": [
+        "Oy47yb7WGCk"
+      ]
+    },
+    {
+      "id": "facts-that-may-surprise",
+      "type": "list",
+      "formula": "Facts about [topic] that may surprise you.",
+      "basedOnAnalysisIds": [
+        "RL28tOO8Ov4"
+      ]
+    },
+    {
+      "id": "if-youve-watched",
+      "type": "curiosity-gap",
+      "formula": "If you've watched [movie], then you've probably seen [detail].",
+      "basedOnAnalysisIds": [
+        "RjX0cRL0Mqs"
+      ]
+    },
+    {
+      "id": "now-you-can-for-free",
+      "type": "result-first",
+      "formula": "Now you can [result] for free with zero [obstacle].",
+      "basedOnAnalysisIds": [
+        "RshyfhbaNHA"
+      ]
+    },
+    {
+      "id": "top-n-best-category",
+      "type": "list",
+      "formula": "TOP [N] BEST [category] TOOL",
+      "basedOnAnalysisIds": [
+        "Rthn9xKsr2M"
+      ]
+    },
+    {
+      "id": "n-free-apps-for-device",
+      "type": "list",
+      "formula": "[N] FREE APPS YOU NEED ON YOUR [device]",
+      "basedOnAnalysisIds": [
+        "SMdcwr1VgWQ"
+      ]
+    },
+    {
+      "id": "turning-boring-into-this",
+      "type": "result-first",
+      "formula": "Turning the boring [item] into this one in [time].",
+      "basedOnAnalysisIds": [
+        "XR8tSw727dE"
+      ]
+    },
+    {
+      "id": "you-are-the-only",
+      "type": "contrarian",
+      "formula": "You are the only [statement that sounds impossible].",
+      "basedOnAnalysisIds": [
+        "XT4y1fGB6CE"
+      ]
+    },
+    {
+      "id": "want-to-next-level",
+      "type": "question",
+      "formula": "Want to [goal] and take your [project] to the next level?",
+      "basedOnAnalysisIds": [
+        "XgM2_m2I6sE"
+      ]
+    },
+    {
+      "id": "did-you-know-this-resource",
+      "type": "question",
+      "formula": "Did you know if you go to this [resource], you'll find [valuable items]?",
+      "basedOnAnalysisIds": [
+        "ZB_QwIE1Ris"
+      ]
+    },
+    {
+      "id": "things-every-audience-needs",
+      "type": "list",
+      "formula": "[Items] that every [audience] needs",
+      "basedOnAnalysisIds": [
+        "ZS35BpmxJ7g"
+      ]
+    },
+    {
+      "id": "lets-get-started-in-tool",
+      "type": "result-first",
+      "formula": "Alright, so let's get started in [tool].",
+      "basedOnAnalysisIds": [
+        "ZcP4BwY9rHw"
+      ]
+    },
+    {
+      "id": "why-does-entity-have-anomaly",
+      "type": "question",
+      "formula": "Why does [entity] have [anomaly]?",
+      "basedOnAnalysisIds": [
+        "_j_j89V7Q0w"
+      ]
+    },
+    {
+      "id": "you-might-think",
+      "type": "contrarian",
+      "formula": "When you [everyday action], you might think [misconception]...",
+      "basedOnAnalysisIds": [
+        "_yr-VNLW9nU"
+      ]
+    },
+    {
+      "id": "could-this-beat-leader",
+      "type": "question",
+      "formula": "Could this be the [thing] that finally beats [market leader]?",
+      "basedOnAnalysisIds": [
+        "aLo8oxI-F1E"
+      ]
+    },
+    {
+      "id": "anyone-can-now-without",
+      "type": "result-first",
+      "formula": "Anyone can now [result] without [obstacle].",
+      "basedOnAnalysisIds": [
+        "aV_yI1oV5vU"
+      ]
+    },
+    {
+      "id": "if-you-use-these-n-you-need",
+      "type": "list",
+      "formula": "If you use [tool], these are the [N] [add-ons] you need right now.",
+      "basedOnAnalysisIds": [
+        "aX7QAfld7hs"
+      ]
+    },
+    {
+      "id": "you-wont-believe",
+      "type": "curiosity-gap",
+      "formula": "You won't believe what [subject] did to [target]. Let me explain.",
+      "basedOnAnalysisIds": [
+        "axfQIwjAZjk"
+      ]
+    },
+    {
+      "id": "did-you-know-short",
+      "type": "question",
+      "formula": "Did you know [a common assumption is wrong]?",
+      "basedOnAnalysisIds": [
+        "cK_Q496wow8"
+      ]
+    },
+    {
+      "id": "heres-how-i-use-tool",
+      "type": "how-to",
+      "formula": "Here's how I use [tool] to do [task].",
+      "basedOnAnalysisIds": [
+        "ej5PdsstQrI"
+      ]
+    },
+    {
+      "id": "so-you-want",
+      "type": "question",
+      "formula": "So, you want [desired result]...",
+      "basedOnAnalysisIds": [
+        "evXxJa0DsAA"
+      ]
+    },
+    {
+      "id": "characters-on-a-job",
+      "type": "story",
+      "formula": "Alright guys, we've got a [job] to do. Where's the [problem] this time?",
+      "basedOnAnalysisIds": [
+        "fgJdRiPct60"
+      ]
+    },
+    {
+      "id": "imagine-you-have",
+      "type": "story",
+      "formula": "Imagine you have [valuable thing] in your [place].",
+      "basedOnAnalysisIds": [
+        "fjet5EE2iBI"
+      ]
+    },
+    {
+      "id": "build-your-first-in-time",
+      "type": "explained-in-time",
+      "formula": "Here's how to build your first [outcome] in less than [time] with zero [skill] experience.",
+      "basedOnAnalysisIds": [
+        "g1t_hmndPdo"
+      ]
+    },
+    {
+      "id": "credible-person-released",
+      "type": "news",
+      "formula": "This [credible person] just released their entire [asset] for free.",
+      "basedOnAnalysisIds": [
+        "g3Mh8Hws-jo"
+      ]
+    },
+    {
+      "id": "company-just-launched",
+      "type": "news",
+      "formula": "[Company] just launched a [adjective] [category] tool that lets you [benefit] without [pain].",
+      "basedOnAnalysisIds": [
+        "hu3fjVm4sB4"
+      ]
+    },
+    {
+      "id": "topic-is-definition",
+      "type": "explained-in-time",
+      "formula": "[Topic] is [one-sentence definition].",
+      "basedOnAnalysisIds": [
+        "ilDOvMsxMws"
+      ]
+    },
+    {
+      "id": "free-apps-shouldnt-be-this-good",
+      "type": "list",
+      "formula": "[N] free [category] apps that should not be this good.",
+      "basedOnAnalysisIds": [
+        "incL6fhurqk",
+        "xpTmAbqAuMY"
+      ]
+    },
+    {
+      "id": "what-why-what-can-you-do",
+      "type": "question",
+      "formula": "[Topic]. What is it? Why does it happen? And what can you do?",
+      "basedOnAnalysisIds": [
+        "kYOkrswU1KE"
+      ]
+    },
+    {
+      "id": "app-in-motion",
+      "type": "visual-first",
+      "formula": "[App] shown moving, with a one-word action on screen",
+      "basedOnAnalysisIds": [
+        "kaGP7tuTmeE"
+      ]
+    },
+    {
+      "id": "this-is-a-map-of",
+      "type": "curiosity-gap",
+      "formula": "This right here is a map of [unexpected thing].",
+      "basedOnAnalysisIds": [
+        "lylaitbZB70"
+      ]
+    },
+    {
+      "id": "extreme-but-scared",
+      "type": "curiosity-gap",
+      "formula": "This [character] literally [extreme action] but is too scared to [relatable action] because...",
+      "basedOnAnalysisIds": [
+        "mfl6Fhi-LTk"
+      ]
+    },
+    {
+      "id": "how-to-action",
+      "type": "how-to",
+      "formula": "How to [action] [object or platform]",
+      "basedOnAnalysisIds": [
+        "n8JpwbyxmHM",
+        "vTVJJ06rcDg"
+      ]
+    },
+    {
+      "id": "this-map-traces",
+      "type": "curiosity-gap",
+      "formula": "This map here traces [subject]'s [journey].",
+      "basedOnAnalysisIds": [
+        "nELGzUrsQko"
+      ]
+    },
+    {
+      "id": "did-you-know-there-is-a-place",
+      "type": "question",
+      "formula": "Did you know in [location] there's a [place] where [something happened]?",
+      "basedOnAnalysisIds": [
+        "nWf7huAPCsw"
+      ]
+    },
+    {
+      "id": "facts-you-could-live-without",
+      "type": "list",
+      "formula": "[N] interesting facts you could have lived without knowing.",
+      "basedOnAnalysisIds": [
+        "o5CjuDDPXxk"
+      ]
+    },
+    {
+      "id": "tool-gaining-momentum",
+      "type": "news",
+      "formula": "[Tool] has been gaining so much momentum in how [audience] are using it to [benefit].",
+      "basedOnAnalysisIds": [
+        "p7U_98jWqWo"
+      ]
+    },
+    {
+      "id": "why-does-use-n",
+      "type": "question",
+      "formula": "Why does [subject] use [N] [items]? Not [x], not [y], [N].",
+      "basedOnAnalysisIds": [
+        "u1UXDgodUP4"
+      ]
+    },
+    {
+      "id": "brands-wouldnt-exist",
+      "type": "curiosity-gap",
+      "formula": "[Big brands] wouldn't exist today if [unlikely person] hadn't started [this brand].",
+      "basedOnAnalysisIds": [
+        "x7iYFWYxmbQ"
+      ]
+    },
+    {
+      "id": "product-name-reveal",
+      "type": "news",
+      "formula": "[Product name], typed or revealed letter by letter",
+      "basedOnAnalysisIds": [
+        "y0DMsRT2U1U"
+      ]
+    },
+    {
+      "id": "how-lowly-built-massive",
+      "type": "curiosity-gap",
+      "formula": "How a [humble person] built a [huge result].",
+      "basedOnAnalysisIds": [
+        "zIdkkPSldcs"
+      ]
+    }
+  ],
+  "ctaFormulas": [
+    {
+      "id": "subscribe",
+      "type": "follow",
+      "formula": "Subscribe",
+      "basedOnAnalysisIds": [
+        "-7eQdRhsCpA",
+        "SMdcwr1VgWQ",
+        "n8JpwbyxmHM"
+      ]
+    },
+    {
+      "id": "like-and-subscribe",
+      "type": "follow",
+      "formula": "Like and subscribe",
+      "basedOnAnalysisIds": [
+        "0Mz2fqwCb-8",
+        "xpTmAbqAuMY"
+      ]
+    },
+    {
+      "id": "subscribe-for-more-topic",
+      "type": "follow",
+      "formula": "Subscribe for more [topic]",
+      "basedOnAnalysisIds": [
+        "aLo8oxI-F1E",
+        "lylaitbZB70",
+        "axfQIwjAZjk",
+        "aV_yI1oV5vU"
+      ]
+    },
+    {
+      "id": "like-if-it-helped",
+      "type": "follow",
+      "formula": "Like this if it helped and follow for more",
+      "basedOnAnalysisIds": [
+        "incL6fhurqk"
+      ]
+    },
+    {
+      "id": "subscribe-as-a-fact",
+      "type": "follow",
+      "formula": "Studies show you should like and subscribe as [joke benefit].",
+      "basedOnAnalysisIds": [
+        "J9yGsD4FZq4"
+      ]
+    },
+    {
+      "id": "subscribe-or-else",
+      "type": "follow",
+      "formula": "And if you don't [joke threat], unless you like and subscribe",
+      "basedOnAnalysisIds": [
+        "96bqVLNjnDE"
+      ]
+    },
+    {
+      "id": "comment-keyword-get-resource",
+      "type": "comment-keyword",
+      "formula": "Comment [KEYWORD] and I'll send you [the link / my ebook].",
+      "basedOnAnalysisIds": [
+        "0JZtdAtJiyk",
+        "g3Mh8Hws-jo",
+        "g1t_hmndPdo",
+        "8BZupIIVhjs",
+        "1C_0WaKKCPw",
+        "hu3fjVm4sB4"
+      ]
+    },
+    {
+      "id": "comment-keyword-then-follow",
+      "type": "comment-keyword",
+      "formula": "Comment [KEYWORD] and I'll send you [resource]. Make sure you follow [channel].",
+      "basedOnAnalysisIds": [
+        "MBAwGQTOOe4",
+        "aX7QAfld7hs"
+      ]
+    },
+    {
+      "id": "comment-if-you-want-more",
+      "type": "comment-keyword",
+      "formula": "Drop a comment if you want more [topic] with [tool].",
+      "basedOnAnalysisIds": [
+        "ej5PdsstQrI"
+      ]
+    },
+    {
+      "id": "head-here",
+      "type": "link",
+      "formula": "Head [here / to this website] if you want [benefit].",
+      "basedOnAnalysisIds": [
+        "4Kg_H7EOnz4",
+        "ZB_QwIE1Ris"
+      ]
+    },
+    {
+      "id": "domain-end-card",
+      "type": "link",
+      "formula": "[domain]",
+      "basedOnAnalysisIds": [
+        "5jly-UeJcDw"
+      ]
+    },
+    {
+      "id": "available-now",
+      "type": "link",
+      "formula": "Available now",
+      "basedOnAnalysisIds": [
+        "y0DMsRT2U1U"
+      ]
+    },
+    {
+      "id": "link-in-description",
+      "type": "link",
+      "formula": "To get the full [resource], check the link in the description.",
+      "basedOnAnalysisIds": [
+        "FX8eD_qN_qU"
+      ]
+    },
+    {
+      "id": "full-video",
+      "type": "link",
+      "formula": "Unlock more [benefit] in the full video.",
+      "basedOnAnalysisIds": [
+        "Oy47yb7WGCk"
+      ]
+    },
+    {
+      "id": "which-is-your-favourite",
+      "type": "question",
+      "formula": "Which [item] is your favourite? Tell us in the comments.",
+      "basedOnAnalysisIds": [
+        "BUIZnq_U8go",
+        "Rthn9xKsr2M"
+      ]
+    },
+    {
+      "id": "what-next",
+      "type": "question",
+      "formula": "What should I explain next? Leave an idea in the comments.",
+      "basedOnAnalysisIds": [
+        "u1UXDgodUP4"
+      ]
+    },
+    {
+      "id": "do-you-like-it-too",
+      "type": "question",
+      "formula": "Do you like [topic] too? Tell me in the comments.",
+      "basedOnAnalysisIds": [
+        "zIdkkPSldcs"
+      ]
+    },
+    {
+      "id": "pdf-in-notes",
+      "type": "lead-magnet",
+      "formula": "For a PDF with [these diagrams], see the link in the video notes.",
+      "basedOnAnalysisIds": [
+        "JfhrLak5KFo"
+      ]
+    },
+    {
+      "id": "guide-in-comments",
+      "type": "lead-magnet",
+      "formula": "I'll send you a full guide in the comments.",
+      "basedOnAnalysisIds": [
+        "RshyfhbaNHA"
+      ]
+    },
+    {
+      "id": "save-and-follow",
+      "type": "save-share",
+      "formula": "Save this video and follow me for more.",
+      "basedOnAnalysisIds": [
+        "3UNxrQZ4Evk"
+      ]
+    }
+  ],
+  "titleFormulas": [
+    {
+      "id": "facts-you-didnt-know",
+      "formula": "[Adjective] Facts YOU Didn't Know About [emoji] Part [N]",
+      "basedOnAnalysisIds": [
+        "-7eQdRhsCpA"
+      ]
+    },
+    {
+      "id": "episode-in-time",
+      "formula": "[Show] Episode [N] in [time]",
+      "basedOnAnalysisIds": [
+        "-CQ_-6AzF9Q"
+      ]
+    },
+    {
+      "id": "n-addons-for-tool",
+      "formula": "[N] [add-ons] for [tool]",
+      "basedOnAnalysisIds": [
+        "0JZtdAtJiyk",
+        "aX7QAfld7hs"
+      ]
+    },
+    {
+      "id": "n-adjective-tools",
+      "formula": "[N] [Adjective] [Topic] Tools",
+      "basedOnAnalysisIds": [
+        "0MQEf_7qk4s"
+      ]
+    },
+    {
+      "id": "topic-facts",
+      "formula": "[Adjective] Facts",
+      "basedOnAnalysisIds": [
+        "0Mz2fqwCb-8",
+        "J9yGsD4FZq4"
+      ]
+    },
+    {
+      "id": "free-alternative-to",
+      "formula": "Free [Adjective] Alternative to [Popular Tool]",
+      "basedOnAnalysisIds": [
+        "1C_0WaKKCPw"
+      ]
+    },
+    {
+      "id": "visualize-in-tool",
+      "formula": "Visualize [Topic] in [Tool]",
+      "basedOnAnalysisIds": [
+        "3O6BFlOiFRg"
+      ]
+    },
+    {
+      "id": "topic-software-tutorial",
+      "formula": "[Topic] [Software] Tutorial",
+      "basedOnAnalysisIds": [
+        "3UNxrQZ4Evk"
+      ]
+    },
+    {
+      "id": "all-the-tools-i-used",
+      "formula": "All the tools I used to build [project] in [time]",
+      "basedOnAnalysisIds": [
+        "3m0Am0VuBtU"
+      ]
+    },
+    {
+      "id": "build-in-time",
+      "formula": "Build [a thing] in [time]!",
+      "basedOnAnalysisIds": [
+        "4Kg_H7EOnz4",
+        "g1t_hmndPdo"
+      ]
+    },
+    {
+      "id": "how-to-actually-use",
+      "formula": "How to actually use [Tool]",
+      "basedOnAnalysisIds": [
+        "5G9PAIUs5Pk"
+      ]
+    },
+    {
+      "id": "product-promo",
+      "formula": "[Product] Promo",
+      "basedOnAnalysisIds": [
+        "5jly-UeJcDw",
+        "kaGP7tuTmeE"
+      ]
+    },
+    {
+      "id": "topic-for-cavemen",
+      "formula": "[Complex topic] for [unlikely audience] in [time]",
+      "basedOnAnalysisIds": [
+        "7c-vPPWaRdw",
+        "vFVv_-gcW50"
+      ]
+    },
+    {
+      "id": "n-tricks-to-cut",
+      "formula": "[N] Tricks To Cut [Tool] [Pain]",
+      "basedOnAnalysisIds": [
+        "8BZupIIVhjs"
+      ]
+    },
+    {
+      "id": "powerful-things-you-should-know",
+      "formula": "Powerful [category] you should know (Part [N])",
+      "basedOnAnalysisIds": [
+        "8Qxqi4hDTnk",
+        "PYV4cGkwwLk",
+        "ZbMXwVVBdmM"
+      ]
+    },
+    {
+      "id": "top-n",
+      "formula": "Top [N] [items] [qualifier]",
+      "basedOnAnalysisIds": [
+        "96bqVLNjnDE",
+        "BUIZnq_U8go",
+        "Rthn9xKsr2M",
+        "K_U4Hd0AvjI"
+      ]
+    },
+    {
+      "id": "history-of-brand",
+      "formula": "The [History / Untold Story] of [Brand]",
+      "basedOnAnalysisIds": [
+        "A4gshIyrNNU",
+        "x7iYFWYxmbQ"
+      ]
+    },
+    {
+      "id": "explained-in-n-steps",
+      "formula": "[Topic] Explained (in [N] simple steps)",
+      "basedOnAnalysisIds": [
+        "BF2k_fKuCVM"
+      ]
+    },
+    {
+      "id": "a-vs-b",
+      "formula": "[Subject A] vs [Subject B] [what is compared]",
+      "basedOnAnalysisIds": [
+        "DEAlXN7rciM",
+        "yn2bjNiy4a0"
+      ]
+    },
+    {
+      "id": "subject-evolution",
+      "formula": "[Subject] [Feature] Evolution",
+      "basedOnAnalysisIds": [
+        "G92WG-qwFvQ"
+      ]
+    },
+    {
+      "id": "concept-explained-by",
+      "formula": "[Concept] (explained by [cute characters])",
+      "basedOnAnalysisIds": [
+        "H7vaUGOMQrI"
+      ]
+    },
+    {
+      "id": "more-perfect-than",
+      "formula": "A more perfect [product type] than [market leader]",
+      "basedOnAnalysisIds": [
+        "ImBlE96dOlM"
+      ]
+    },
+    {
+      "id": "how-topic-really-works",
+      "formula": "Here's how [topic] really works in [time].",
+      "basedOnAnalysisIds": [
+        "JfhrLak5KFo"
+      ]
+    },
+    {
+      "id": "why-does",
+      "formula": "Why does [subject] [surprising thing]?",
+      "basedOnAnalysisIds": [
+        "KTu2V65Iiho",
+        "_j_j89V7Q0w",
+        "u1UXDgodUP4"
+      ]
+    },
+    {
+      "id": "i-switched-from",
+      "formula": "I switched from [Tool A] to [Tool B]",
+      "basedOnAnalysisIds": [
+        "Ll1UyM8kBNc"
+      ]
+    },
+    {
+      "id": "how-does-work",
+      "formula": "How does [topic] work?",
+      "basedOnAnalysisIds": [
+        "MYWpaNYAo0o",
+        "mytYzlemg-s"
+      ]
+    },
+    {
+      "id": "how-to-action",
+      "formula": "How to [action] [object or platform]",
+      "basedOnAnalysisIds": [
+        "Mw6LtvmHyfc",
+        "n8JpwbyxmHM",
+        "vTVJJ06rcDg"
+      ]
+    },
+    {
+      "id": "how-to-build-using-in-time",
+      "formula": "How to build a [outcome] using [tool] in [time]",
+      "basedOnAnalysisIds": [
+        "NvKowH8PnaA"
+      ]
+    },
+    {
+      "id": "tool-plus-tool",
+      "formula": "[TOOL 1] + [TOOL 2] (IN [time])",
+      "basedOnAnalysisIds": [
+        "Oy47yb7WGCk"
+      ]
+    },
+    {
+      "id": "facts-may-surprise",
+      "formula": "Facts About [Topic] That May Surprise You",
+      "basedOnAnalysisIds": [
+        "RL28tOO8Ov4"
+      ]
+    },
+    {
+      "id": "saying-in-movie",
+      "formula": "[Saying]... in [Movie]",
+      "basedOnAnalysisIds": [
+        "RjX0cRL0Mqs"
+      ]
+    },
+    {
+      "id": "build-without",
+      "formula": "Build [a thing] [for free / without coding]",
+      "basedOnAnalysisIds": [
+        "RshyfhbaNHA",
+        "aV_yI1oV5vU"
+      ]
+    },
+    {
+      "id": "n-free-apps-for-device",
+      "formula": "[N] FREE APPS YOU NEED ON YOUR [DEVICE]",
+      "basedOnAnalysisIds": [
+        "SMdcwr1VgWQ"
+      ]
+    },
+    {
+      "id": "boring-into-result",
+      "formula": "Turning a boring [item] into [result] in [software]",
+      "basedOnAnalysisIds": [
+        "XR8tSw727dE"
+      ]
+    },
+    {
+      "id": "concept-explained",
+      "formula": "[Concept] Explained",
+      "basedOnAnalysisIds": [
+        "XT4y1fGB6CE",
+        "fjet5EE2iBI",
+        "kYOkrswU1KE",
+        "p7U_98jWqWo"
+      ]
+    },
+    {
+      "id": "video-template",
+      "formula": "[Topic] Video Template ([Tool])",
+      "basedOnAnalysisIds": [
+        "XgM2_m2I6sE"
+      ]
+    },
+    {
+      "id": "resource-repo",
+      "formula": "[Resource] [Platform] Repo",
+      "basedOnAnalysisIds": [
+        "ZB_QwIE1Ris"
+      ]
+    },
+    {
+      "id": "apps-every-audience-needs",
+      "formula": "Apps that every [audience] needs",
+      "basedOnAnalysisIds": [
+        "ZS35BpmxJ7g"
+      ]
+    },
+    {
+      "id": "build-app-in-tool",
+      "formula": "Build an [app] in [tool]",
+      "basedOnAnalysisIds": [
+        "ZcP4BwY9rHw"
+      ]
+    },
+    {
+      "id": "how-system-actually-works",
+      "formula": "How the [System] Actually Works",
+      "basedOnAnalysisIds": [
+        "_yr-VNLW9nU"
+      ]
+    },
+    {
+      "id": "could-this-beat",
+      "formula": "Could this be the [thing] that finally beats [leader]?",
+      "basedOnAnalysisIds": [
+        "aLo8oxI-F1E"
+      ]
+    },
+    {
+      "id": "you-wont-believe",
+      "formula": "You won't believe what [subject] did to [target]",
+      "basedOnAnalysisIds": [
+        "axfQIwjAZjk"
+      ]
+    },
+    {
+      "id": "ending-is-emotion",
+      "formula": "The ending is [emotion] [emoji]",
+      "basedOnAnalysisIds": [
+        "cBr5ea6LRNE"
+      ]
+    },
+    {
+      "id": "did-you-know-fact",
+      "formula": "Did you know [surprising fact]?",
+      "basedOnAnalysisIds": [
+        "cK_Q496wow8"
+      ]
+    },
+    {
+      "id": "task-with-tool",
+      "formula": "[Task] with [Tool]",
+      "basedOnAnalysisIds": [
+        "ej5PdsstQrI"
+      ]
+    },
+    {
+      "id": "how-product-works",
+      "formula": "How [Product] Works",
+      "basedOnAnalysisIds": [
+        "fgJdRiPct60"
+      ]
+    },
+    {
+      "id": "credible-person-released",
+      "formula": "This [credible person] Just Released [their] Entire [asset] For Free",
+      "basedOnAnalysisIds": [
+        "g3Mh8Hws-jo"
+      ]
+    },
+    {
+      "id": "company-just-launched",
+      "formula": "[Company] just launched a [adjective] [category] tool",
+      "basedOnAnalysisIds": [
+        "hu3fjVm4sB4"
+      ]
+    },
+    {
+      "id": "simply-explained",
+      "formula": "Simply Explained: [Topic]",
+      "basedOnAnalysisIds": [
+        "ilDOvMsxMws"
+      ]
+    },
+    {
+      "id": "apps-shouldnt-be-free",
+      "formula": "[N] [device] apps that shouldn't be [free / this good]",
+      "basedOnAnalysisIds": [
+        "incL6fhurqk",
+        "xpTmAbqAuMY"
+      ]
+    },
+    {
+      "id": "map-of-system",
+      "formula": "Map of the [System]",
+      "basedOnAnalysisIds": [
+        "lylaitbZB70"
+      ]
+    },
+    {
+      "id": "character-weakness",
+      "formula": "[Character]'s Awkward Weakness",
+      "basedOnAnalysisIds": [
+        "mfl6Fhi-LTk"
+      ]
+    },
+    {
+      "id": "urban-legend",
+      "formula": "The [Subject] Urban Legend",
+      "basedOnAnalysisIds": [
+        "nWf7huAPCsw"
+      ]
+    },
+    {
+      "id": "facts-could-live-without",
+      "formula": "[N] interesting facts you could have lived without knowing",
+      "basedOnAnalysisIds": [
+        "o5CjuDDPXxk"
+      ]
+    },
+    {
+      "id": "product-announcement",
+      "formula": "[Product Name] Announcement",
+      "basedOnAnalysisIds": [
+        "y0DMsRT2U1U"
+      ]
+    },
+    {
+      "id": "from-low-to-high",
+      "formula": "From [humble start] to [big result]",
+      "basedOnAnalysisIds": [
+        "zIdkkPSldcs"
+      ]
+    }
+  ],
+  "transitionPhrases": [
+    {
+      "connection": "sequence",
+      "phrases": [
+        "First,",
+        "Second,",
+        "Third,",
+        "First is",
+        "Second is",
+        "Third is",
+        "Fourth is",
+        "Fifth is",
+        "Next,",
+        "And then",
+        "After that",
+        "And last,",
+        "And finally,",
+        "Finally,",
+        "Now that everything is set up",
+        "So let's start with",
+        "Alright, once you finish",
+        "All you need to do",
+        "You can also",
+        "Starting off at number one",
+        "Coming in at number two",
+        "And finally at number three",
+        "Moreover",
+        "And what's surprising is that",
+        "In the distant past",
+        "Over the decades",
+        "A few years later",
+        "Later",
+        "This is how.",
+        "That's it.",
+        "here are three tricks",
+        "What comes next",
+        "But anyways,",
+        "Uske baad",
+        "Phir"
+      ]
+    },
+    {
+      "connection": "cause-effect",
+      "phrases": [
+        "So",
+        "As a result",
+        "And since",
+        "In other words,",
+        "You see,",
+        "And look",
+        "After a few minutes",
+        "From this point on",
+        "So they decided to",
+        "And all this is possible because...",
+        "which causes",
+        "So what if,",
+        "So we cheat.",
+        "and suddenly...",
+        "Well for some reason",
+        "Kyunki"
+      ]
+    },
+    {
+      "connection": "contrast",
+      "phrases": [
+        "But",
+        "Instead",
+        "Instead of just",
+        "But instead,",
+        "but in reality,",
+        "but that's not how",
+        "Unlike most AIs,",
+        "But here's where it gets crazy.",
+        "Well most people thought",
+        "but it was later confirmed",
+        "It's quite common to think...",
+        "Everything looks good, but",
+        "Though",
+        "Until",
+        "But despite",
+        "Lekin"
+      ]
+    },
+    {
+      "connection": "escalation",
+      "phrases": [
+        "And it gets even better",
+        "But that's not all.",
+        "Plus",
+        "Plus, you still get",
+        "and here you get",
+        "that lets you",
+        "The worst part?",
+        "Most importantly",
+        "In extreme cases",
+        "And believe me,",
+        "One night",
+        "But the story of how they scaled",
+        "Aur sabse khatarnak baat"
+      ]
+    },
+    {
+      "connection": "bridge",
+      "phrases": [
+        "So if you want",
+        "So just",
+        "To get the full",
+        "For a PDF",
+        "So want to try it for yourself?",
+        "Now you might be wondering...",
+        "Before going to",
+        "You just found",
+        "Now make sure",
+        "Anyways,",
+        "You've probably heard",
+        "And if you are",
+        "I've recorded",
+        "We're not here"
+      ]
+    },
+    {
+      "connection": "example",
+      "phrases": [
+        "Here's another example",
+        "They say",
+        "Anytime",
+        "In many cases,",
+        "That's like",
+        "You can see",
+        "That's the equivalent",
+        "On one extreme...",
+        "because"
+      ]
+    },
+    {
+      "connection": "open-loop-payoff",
+      "phrases": [
+        "It's called",
+        "You have probably heard of",
+        "Here's the easiest way",
+        "All roads lead to Rome...",
+        "And that's why...",
+        "Anthropic just dropped",
+        "Back in 1996,"
+      ]
+    },
+    {
+      "connection": "question-answer",
+      "phrases": [
+        "The answer is",
+        "It's because of",
+        "Well,",
+        "But how do",
+        "Did you know",
+        "So where did the ROAD part come from?",
+        "With CreateStudio"
+      ]
+    },
+    {
+      "connection": "callback",
+      "phrases": [
+        "See back in 2010"
+      ]
+    }
+  ]
+}

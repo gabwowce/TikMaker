@@ -1,0 +1,153 @@
+{
+  "id": "pain-to-fix",
+  "format": "demo",
+  "name": "Problem then fix",
+  "oneLine": "The broken or painful way first, then the tool that fixes it, shown working",
+  "whenToUse": "An idea where a tool fixes a pain the audience recognises.",
+  "seconds": {
+    "min": 30,
+    "max": 40
+  },
+  "hookTypes": [
+    "pain-shown",
+    "contrarian",
+    "story"
+  ],
+  "ctaTypes": [
+    "none",
+    "link"
+  ],
+  "acts": [
+    {
+      "act": "opening",
+      "scenes": [
+        {
+          "role": "hook",
+          "purpose": "Shows or states the wrong way people do it.",
+          "connectionToNext": "contrast",
+          "slots": [
+            {
+              "name": "pain",
+              "kind": "fixed"
+            },
+            {
+              "name": "who",
+              "kind": "creative"
+            }
+          ],
+          "seconds": {
+            "min": 2,
+            "max": 2.8
+          },
+          "repeatable": false,
+          "optional": false
+        }
+      ]
+    },
+    {
+      "act": "build",
+      "scenes": [
+        {
+          "role": "setup",
+          "purpose": "Sets the scene of the task.",
+          "connectionToNext": "sequence",
+          "slots": [
+            {
+              "name": "task",
+              "kind": "fixed"
+            }
+          ],
+          "seconds": {
+            "min": 2.4,
+            "max": 4
+          },
+          "repeatable": false,
+          "optional": false
+        },
+        {
+          "role": "problem",
+          "purpose": "Names what goes wrong.",
+          "connectionToNext": "open-loop-payoff",
+          "slots": [
+            {
+              "name": "problem",
+              "kind": "fixed"
+            }
+          ],
+          "seconds": {
+            "min": 3,
+            "max": 7
+          },
+          "repeatable": true,
+          "optional": true
+        }
+      ]
+    },
+    {
+      "act": "core",
+      "scenes": [
+        {
+          "role": "reveal",
+          "purpose": "Names the fix.",
+          "connectionToNext": "sequence",
+          "slots": [
+            {
+              "name": "tool-name",
+              "kind": "fixed"
+            }
+          ],
+          "seconds": {
+            "min": 2.2,
+            "max": 4.6
+          },
+          "repeatable": true,
+          "optional": true
+        },
+        {
+          "role": "demo",
+          "purpose": "Shows the fix working on screen.",
+          "connectionToNext": "sequence",
+          "slots": [
+            {
+              "name": "screen-recording",
+              "kind": "fixed"
+            }
+          ],
+          "seconds": {
+            "min": 3,
+            "max": 7
+          },
+          "repeatable": true,
+          "optional": false
+        }
+      ]
+    },
+    {
+      "act": "climax",
+      "scenes": [
+        {
+          "role": "benefit",
+          "purpose": "States what changed.",
+          "connectionToNext": "bridge",
+          "slots": [
+            {
+              "name": "gain",
+              "kind": "fixed"
+            }
+          ],
+          "seconds": {
+            "min": 3.4,
+            "max": 6.6
+          },
+          "repeatable": false,
+          "optional": true
+        }
+      ]
+    }
+  ],
+  "basedOnAnalysisIds": [
+    "EmxXYzX6iEs",
+    "FX8eD_qN_qU",
+    "Ll1UyM8kBNc"
+  ]
+}
