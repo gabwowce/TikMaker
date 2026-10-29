@@ -25,6 +25,7 @@ import { NodeGroup } from "./diagrams/NodeGroup";
 import { Stack } from "./diagrams/Stack";
 import { Transform } from "./diagrams/Transform";
 import { ScreenRecording } from "./media/ScreenRecording";
+import { TalkingHead } from "./media/TalkingHead";
 type FrameContentProps = {
   visual: VisualConfig;
 };
@@ -82,6 +83,16 @@ export function VisualRenderer({ visual }: VisualRendererProps) {
         <div className="w-[860px] [aspect-ratio:16_/_10]">{recording}</div>
       );
     }
+    case "talking-head":
+      return (
+        <TalkingHead
+          src={visual.src}
+          placement={visual.placement}
+          startFrom={visual.startFrom}
+          endAt={visual.endAt}
+          playbackRate={visual.playbackRate}
+        />
+      );
     case "browser":
       return (
         <BrowserMockup url={visual.url} title={visual.title} tabs={visual.tabs}>

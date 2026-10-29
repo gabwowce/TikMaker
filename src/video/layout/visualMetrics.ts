@@ -131,6 +131,7 @@ export function naturalVisualSize(visual: VisualConfig): Size {
       };
     }
     case "corner-props":
+    case "talking-head":
       return { width: 1080, height: 1920 };
     default:
       return { width: 400, height: 400 };

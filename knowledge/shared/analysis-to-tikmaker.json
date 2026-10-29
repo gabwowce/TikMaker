@@ -68,8 +68,8 @@
       "todo": "B1"
     },
     "talking-head": {
-      "status": "no",
-      "todo": "B5"
+      "status": "partly",
+      "tikmaker": "visual talking-head (own video: full, top/bottom half, circle in a corner)"
     },
     "video": {
       "status": "partly",

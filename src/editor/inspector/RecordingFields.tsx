@@ -1,5 +1,8 @@
 import { NativeSelect, TextInput } from "@mantine/core";
-import { screenAspectSchema } from "../../schema/capabilities";
+import {
+  screenAspectSchema,
+  talkingHeadPlacementSchema,
+} from "../../schema/capabilities";
 import type { VisualConfig } from "../../schema/visual";
 import { ImportPicker } from "./MediaInputs";
 type Props = { visual: VisualConfig; onChange: (visual: VisualConfig) => void };
@@ -170,5 +173,43 @@ export function RecordingFields({ visual, onChange }: Props) {
       </div>
     );
   }
+  if (visual.type === "talking-head") {
+    return (
+      <div className="flex flex-col gap-2">
+        <ImportPicker
+          kind="video"
+          src={visual.src}
+          onChange={(src) => onChange({ ...visual, src })}
+        />
+        <div className="text-[10px] text-editor-muted">Where the face sits</div>
+        <NativeSelect
+          className="w-full"
+          value={visual.placement}
+          onChange={(e) =>
+            onChange({
+              ...visual,
+              placement: e.target.value as typeof visual.placement,
+            })
+          }
+        >
+          {talkingHeadPlacementSchema.options.map((placement) => (
+            <option key={placement} value={placement}>
+              {PLACEMENT_LABELS[placement]}
+            </option>
+          ))}
+        </NativeSelect>
+      </div>
+    );
+  }
   return null;
 }
+
+const PLACEMENT_LABELS: Record<string, string> = {
+  full: "full screen",
+  top: "top half",
+  bottom: "bottom half",
+  "circle-tl": "circle · top left",
+  "circle-tr": "circle · top right",
+  "circle-bl": "circle · bottom left",
+  "circle-br": "circle · bottom right (under TikTok buttons)",
+};

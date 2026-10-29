@@ -60,7 +60,11 @@ function assetKeyOf(
   if (!visual) return "";
   if (visual.type === "prop") return `prop:${visual.asset}`;
   if (visual.type === "tool-logo") return `tool:${visual.tool}`;
-  if (visual.type === "image" || visual.type === "recording") {
+  if (
+    visual.type === "image" ||
+    visual.type === "recording" ||
+    visual.type === "talking-head"
+  ) {
     const match = custom.find((a) => a.src === visual.src);
     if (match) return `custom:${match.id}`;
   }
