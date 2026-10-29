@@ -158,6 +158,23 @@
           },
           "repeatable": false,
           "optional": true
+        },
+        {
+          "role": "cta",
+          "purpose": "Asks the viewer to subscribe.",
+          "connectionToNext": "none",
+          "slots": [
+            {
+              "name": "cta-line",
+              "kind": "creative"
+            }
+          ],
+          "seconds": {
+            "min": 2,
+            "max": 2
+          },
+          "repeatable": false,
+          "optional": true
         }
       ]
     }

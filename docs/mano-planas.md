@@ -143,7 +143,9 @@ Nupiešk paleidimo būsenų diagramą (tai bus ir UML būsenų diagrama Apraše)
 **Parašyti:**
 - [ ] `server/agent/steps/pickTemplate.ts` (FR-04, FR-05)
 - [ ] `server/agent/steps/hooks.ts` (FR-06) + kodo patikra „bent 2 iš bazės“
-- [ ] `server/agent/steps/script.ts` (FR-08)
+- [ ] `server/agent/steps/script.ts` (FR-08). Šablonas yra gairė, ne narvas:
+  `optional` scenas (įskaitant `hook` ir `cta`) agentas įtraukia arba praleidžia
+  pagal idėją ir kanalą, o praleistą sceną užrašo paleidimo žurnale su priežastimi
 - [ ] `src/agent/checkScript.ts` (FR-09) + testai
 - [ ] `runs.ts`: sujungti žingsnius; po kabliukų būsena `awaiting_hook`
 
@@ -216,9 +218,16 @@ poziciją ir dydį? Kodėl kompiliatoriuje nėra DI?
 - [ ] 3 taisyklės, apgaubiančios esamas funkcijas + 3 naujos (FR-14), po testą kiekvienai
 - [ ] `scripts/checkProject.ts` perjungti į `runRules`
 - [ ] `server/agent/steps/revise.ts` su `toolRunner` + `betaZodTool` (FR-16)
+- [ ] **Taškinis taisymas pagal naudotojo prašymą.** Prašymas tekstu (pvz.
+  „pridėk CTA“) keičia tik tai, ko prašoma: tie patys įrankiai kaip FR-16
+  (pridėti / keisti / šalinti sceną), o ne viso projekto kūrimas iš naujo.
+  Naujai scenai agentas ima šablono (`videoTemplateId`) tos rolės sceną:
+  vietą akte, paskirtį ir „skyles“. Kitos scenos lieka nepaliestos.
 
 **Patikra:** projektas su sąmoningai per ilga antrašte → ciklas ją sutrumpina
-ir pažeidimų sumažėja; žurnale matosi kiekvienas ratas.
+ir pažeidimų sumažėja; žurnale matosi kiekvienas ratas. Prašymas „pridėk CTA“
+projektui be CTA → gale atsiranda viena `cta` scena, kitų scenų `id` ir turinys
+nepasikeitę.
 
 **Gynimo klausimai:** kuo skiriasi taisyklė kodu ir DI vertinimas? Kada
 ciklas sustoja ir kodėl būtinas limitas?

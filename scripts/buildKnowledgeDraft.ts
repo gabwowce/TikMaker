@@ -40,6 +40,12 @@ const proposalFile = process.argv[2] ?? join(draftDir, "proposal.json");
 // scene optional (142 of 194), which tells the agent nothing.
 const SCENE_MIN_SHARE = 0.5;
 
+// Never dropped, only marked optional: the agent decides per video whether it
+// needs a hook or a CTA, and needs the template's slot for one (its place and
+// purpose) to add it later without rebuilding the video. Rare in the data is
+// not the same as unwanted — many analysed videos simply end without a CTA.
+const ALWAYS_KEPT_ROLES = new Set(["hook", "cta"]);
+
 // ---- the proposal: the knowledge-base shapes minus what is computed ---------
 
 const proposalSceneSchema = sceneTemplateSchema.omit({
@@ -168,14 +174,23 @@ for (const template of proposal.templates) {
           ([, a]) => a.beats.filter((b) => b.role === scene.role),
         );
         const present = perAnalysis.filter((beats) => beats.length > 0);
-        if (present.length < n * SCENE_MIN_SHARE) {
+        const rare = present.length < n * SCENE_MIN_SHARE;
+        if (rare && !ALWAYS_KEPT_ROLES.has(scene.role)) {
           report.push(
             `- dropped ${act}/${scene.role}: in ${present.length} of ${n} analyses`,
           );
           return [];
         }
-        const lengths = present
-          .flat()
+        if (rare)
+          report.push(
+            `- kept ${act}/${scene.role} as optional: in ${present.length} of ${n} analyses`,
+          );
+        // A kept role no analysis of this template has falls back to its
+        // length across all analyses.
+        const source = present.length
+          ? present.flat()
+          : [...analyses.values()].flatMap((a) => a.beats.filter((b) => b.role === scene.role));
+        const lengths = source
           .map((b) => (b.endSeconds ?? NaN) - (b.startSeconds ?? NaN))
           .filter((length) => length > 0);
         const repeating = present.filter((beats) => beats.length > 1).length;

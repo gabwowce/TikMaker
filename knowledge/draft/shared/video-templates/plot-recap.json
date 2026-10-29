@@ -143,7 +143,7 @@
         {
           "role": "payoff",
           "purpose": "Ends on how it all turns out.",
-          "connectionToNext": "none",
+          "connectionToNext": "bridge",
           "slots": [
             {
               "name": "ending",
@@ -156,6 +156,23 @@
           },
           "repeatable": false,
           "optional": false
+        },
+        {
+          "role": "cta",
+          "purpose": "Asks the viewer to follow for more, if the video needs a call to action.",
+          "connectionToNext": "none",
+          "slots": [
+            {
+              "name": "cta-line",
+              "kind": "creative"
+            }
+          ],
+          "seconds": {
+            "min": 2,
+            "max": 8.1
+          },
+          "repeatable": false,
+          "optional": true
         }
       ]
     }

@@ -165,6 +165,23 @@
           },
           "repeatable": false,
           "optional": true
+        },
+        {
+          "role": "cta",
+          "purpose": "Offers a resource with the diagrams.",
+          "connectionToNext": "none",
+          "slots": [
+            {
+              "name": "resource",
+              "kind": "fixed"
+            }
+          ],
+          "seconds": {
+            "min": 4.5,
+            "max": 4.5
+          },
+          "repeatable": false,
+          "optional": true
         }
       ]
     }

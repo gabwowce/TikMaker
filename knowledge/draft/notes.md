@@ -65,7 +65,11 @@ Promo", "Sber App Promo"). They are kept, because they are in the data.
 - **Which scenes stay** (script): a scene stays when its role is in at least
   half of the template's analyses. The first draft kept every role any
   analysis used, which made 142 of 194 scenes optional; the dropped ones are
-  listed in `build-report.md`.
+  listed in `build-report.md`. `hook` and `cta` are never dropped, only marked
+  optional: the agent decides per video whether it needs them, and needs the
+  template's scene to add one later without rebuilding the video. The
+  proposal got a closing `cta` scene for `analogy-explainer` and `plot-recap`,
+  which had none.
 - **Scene `seconds`** (script) = p10 to p90 of that role's beats in THIS
   template's analyses, not across all 88, so a list item in a facts template
   and an item in a story no longer share one 1.1–11 s range.

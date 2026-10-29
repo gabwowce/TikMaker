@@ -20,6 +20,27 @@
       "act": "opening",
       "scenes": [
         {
+          "role": "hook",
+          "purpose": "Names the concept and the characters explaining it.",
+          "connectionToNext": "sequence",
+          "slots": [
+            {
+              "name": "concept",
+              "kind": "fixed"
+            },
+            {
+              "name": "characters",
+              "kind": "creative"
+            }
+          ],
+          "seconds": {
+            "min": 2,
+            "max": 2
+          },
+          "repeatable": false,
+          "optional": true
+        },
+        {
           "role": "setup",
           "purpose": "Sets up the analogy world.",
           "connectionToNext": "cause-effect",
@@ -161,7 +182,7 @@
         {
           "role": "payoff",
           "purpose": "Ends on the consequence or moral.",
-          "connectionToNext": "none",
+          "connectionToNext": "bridge",
           "slots": [
             {
               "name": "closing-line",
@@ -171,6 +192,23 @@
           "seconds": {
             "min": 3.3,
             "max": 5.7
+          },
+          "repeatable": false,
+          "optional": true
+        },
+        {
+          "role": "cta",
+          "purpose": "Asks the viewer to follow for more, if the video needs a call to action.",
+          "connectionToNext": "none",
+          "slots": [
+            {
+              "name": "cta-line",
+              "kind": "creative"
+            }
+          ],
+          "seconds": {
+            "min": 2,
+            "max": 8.1
           },
           "repeatable": false,
           "optional": true

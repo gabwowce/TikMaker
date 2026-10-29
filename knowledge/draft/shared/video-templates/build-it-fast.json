@@ -96,6 +96,28 @@
           "optional": true
         }
       ]
+    },
+    {
+      "act": "close",
+      "scenes": [
+        {
+          "role": "cta",
+          "purpose": "Offers the link or guide.",
+          "connectionToNext": "none",
+          "slots": [
+            {
+              "name": "resource",
+              "kind": "fixed"
+            }
+          ],
+          "seconds": {
+            "min": 9,
+            "max": 9
+          },
+          "repeatable": false,
+          "optional": true
+        }
+      ]
     }
   ],
   "basedOnAnalysisIds": [

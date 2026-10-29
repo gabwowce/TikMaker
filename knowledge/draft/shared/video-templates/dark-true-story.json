@@ -141,6 +141,23 @@
           },
           "repeatable": false,
           "optional": false
+        },
+        {
+          "role": "cta",
+          "purpose": "Asks for a follow for more stories.",
+          "connectionToNext": "none",
+          "slots": [
+            {
+              "name": "cta-line",
+              "kind": "creative"
+            }
+          ],
+          "seconds": {
+            "min": 5,
+            "max": 5
+          },
+          "repeatable": false,
+          "optional": true
         }
       ]
     }

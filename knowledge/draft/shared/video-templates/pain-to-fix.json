@@ -143,6 +143,28 @@
           "optional": true
         }
       ]
+    },
+    {
+      "act": "close",
+      "scenes": [
+        {
+          "role": "cta",
+          "purpose": "Points to the full guide.",
+          "connectionToNext": "none",
+          "slots": [
+            {
+              "name": "resource",
+              "kind": "fixed"
+            }
+          ],
+          "seconds": {
+            "min": 3,
+            "max": 3
+          },
+          "repeatable": false,
+          "optional": true
+        }
+      ]
     }
   ],
   "basedOnAnalysisIds": [

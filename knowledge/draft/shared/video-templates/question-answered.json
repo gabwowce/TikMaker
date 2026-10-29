@@ -191,6 +191,23 @@
           },
           "repeatable": false,
           "optional": true
+        },
+        {
+          "role": "cta",
+          "purpose": "Asks what to explain next.",
+          "connectionToNext": "none",
+          "slots": [
+            {
+              "name": "question",
+              "kind": "creative"
+            }
+          ],
+          "seconds": {
+            "min": 3.2,
+            "max": 4.8
+          },
+          "repeatable": false,
+          "optional": true
         }
       ]
     }

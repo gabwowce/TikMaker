@@ -227,6 +227,28 @@
           "optional": false
         }
       ]
+    },
+    {
+      "act": "close",
+      "scenes": [
+        {
+          "role": "cta",
+          "purpose": "Asks the viewer a question about the brand.",
+          "connectionToNext": "none",
+          "slots": [
+            {
+              "name": "question",
+              "kind": "creative"
+            }
+          ],
+          "seconds": {
+            "min": 3,
+            "max": 3
+          },
+          "repeatable": false,
+          "optional": true
+        }
+      ]
     }
   ],
   "basedOnAnalysisIds": [

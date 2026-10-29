@@ -132,6 +132,23 @@
           },
           "repeatable": false,
           "optional": true
+        },
+        {
+          "role": "cta",
+          "purpose": "Points to where the tool can be found.",
+          "connectionToNext": "none",
+          "slots": [
+            {
+              "name": "link-target",
+              "kind": "fixed"
+            }
+          ],
+          "seconds": {
+            "min": 2,
+            "max": 2
+          },
+          "repeatable": false,
+          "optional": true
         }
       ]
     }

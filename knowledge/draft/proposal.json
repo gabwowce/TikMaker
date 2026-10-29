@@ -2231,10 +2231,21 @@
             {
               "role": "payoff",
               "purpose": "Ends on the consequence or moral.",
-              "connectionToNext": "none",
+              "connectionToNext": "bridge",
               "slots": [
                 {
                   "name": "closing-line",
+                  "kind": "creative"
+                }
+              ]
+            },
+            {
+              "role": "cta",
+              "purpose": "Asks the viewer to follow for more, if the video needs a call to action.",
+              "connectionToNext": "none",
+              "slots": [
+                {
+                  "name": "cta-line",
                   "kind": "creative"
                 }
               ]
@@ -3011,11 +3022,22 @@
             {
               "role": "payoff",
               "purpose": "Ends on how it all turns out.",
-              "connectionToNext": "none",
+              "connectionToNext": "bridge",
               "slots": [
                 {
                   "name": "ending",
                   "kind": "fixed"
+                }
+              ]
+            },
+            {
+              "role": "cta",
+              "purpose": "Asks the viewer to follow for more, if the video needs a call to action.",
+              "connectionToNext": "none",
+              "slots": [
+                {
+                  "name": "cta-line",
+                  "kind": "creative"
                 }
               ]
             }

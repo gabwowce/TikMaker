@@ -65,6 +65,28 @@
           "optional": false
         }
       ]
+    },
+    {
+      "act": "close",
+      "scenes": [
+        {
+          "role": "cta",
+          "purpose": "Asks for a like and follow, often as a joke fact.",
+          "connectionToNext": "none",
+          "slots": [
+            {
+              "name": "cta-line",
+              "kind": "creative"
+            }
+          ],
+          "seconds": {
+            "min": 4.1,
+            "max": 4.9
+          },
+          "repeatable": false,
+          "optional": true
+        }
+      ]
     }
   ],
   "basedOnAnalysisIds": [
