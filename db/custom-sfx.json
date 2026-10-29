@@ -145,5 +145,12 @@
     "file": "metalic-riser-mtmuvwqs.mp3",
     "src": "/assets/custom-sfx/metalic-riser-mtmuvwqs.mp3",
     "group": "misc"
+  },
+  {
+    "id": "aetheric-snap-crackle-mvt7k2ts",
+    "label": "Aetheric - Snap Crackle",
+    "file": "aetheric-snap-crackle-mvt7k2ts.mp3",
+    "src": "/assets/custom-sfx/aetheric-snap-crackle-mvt7k2ts.mp3",
+    "group": "music"
   }
 ]

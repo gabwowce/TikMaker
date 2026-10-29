@@ -1,4 +1,3 @@
-import { linkVisualToNextScene, linkLayerToNextScene } from "./linkScenes";
 import { temporal } from "zundo";
 import { create, useStore } from "zustand";
 import { getSceneDefinition } from "../../registries/sceneRegistry";
@@ -6,11 +5,12 @@ import { getSfx } from "../../registries/sfxRegistry";
 import type { VideoProject } from "../../schema/project";
 import { createEmptyProject } from "../../schema/project";
 import type { Scene, ScenePlanRole, SceneType } from "../../schema/scene";
-import { poseAtFrame } from "../../video/layout/visualKeyframes";
-import { cachedAudioDuration } from "../timeline/useAudioWaveforms";
 import exampleProjectJson from "../../templates/template-showcase.json";
 import { parseProject } from "../../utils/normalizeProject";
+import { poseAtFrame } from "../../video/layout/visualKeyframes";
+import { cachedAudioDuration } from "../timeline/useAudioWaveforms";
 import { useEditorPrefs } from "./editorPrefs";
+import { linkLayerToNextScene, linkVisualToNextScene } from "./linkScenes";
 import type { ProjectStore } from "./projectStoreTypes";
 export type { VisualSlot } from "./projectStoreTypes";
 
@@ -45,471 +45,494 @@ let transactionStart: HistoryEntry | null = null;
 export const useProjectStore = create<ProjectStore>()(
   temporal(
     (set, get) => ({
-  project: initialProject,
-  selectedSceneId: null,
-  activeVisualSlot: "main",
-  playheadFrame: 0,
-  selectedObjectId: null,
-  selectedObjectIds: [],
-  undo() {
-    history().getState().undo();
-  },
-  redo() {
-    history().getState().redo();
-  },
-  // A drag (slider, timeline clip) changes the project dozens of times but
-  // should be ONE undo step: stop recording while it lasts, then record the
-  // state from before it started as a single entry.
-  beginHistoryTransaction() {
-    if (transactionStart) return;
-    const { project, selectedSceneId } = get();
-    transactionStart = { project, selectedSceneId };
-    history().getState().pause();
-  },
-  endHistoryTransaction() {
-    if (!transactionStart) return;
-    const before = transactionStart;
-    transactionStart = null;
-    history().getState().resume();
-    if (before.project === get().project) return; // the drag changed nothing
-    history().setState(({ pastStates }) => ({
-      pastStates: [...pastStates, before].slice(-HISTORY_LIMIT),
-      futureStates: [],
-    }));
-  },
-  setPlayheadFrame(playheadFrame) {
-    return set({ playheadFrame: Math.max(0, Math.round(playheadFrame)) });
-  },
-  addAudioClip(sfxId, from) {
-    return set((state) => ({
-      project: {
-        ...state.project,
-        audioClips: [
-          ...(state.project.audioClips ?? []),
-          {
-            id: `audio-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 6)}`,
-            sfxId,
-            from: Math.max(0, Math.round(from ?? state.playheadFrame)),
-            volume: 1,
-            durationInFrames: cachedAudioDuration(getSfx(sfxId)?.src),
+      project: initialProject,
+      selectedSceneId: null,
+      activeVisualSlot: "main",
+      playheadFrame: 0,
+      selectedObjectId: null,
+      selectedObjectIds: [],
+      undo() {
+        history().getState().undo();
+      },
+      redo() {
+        history().getState().redo();
+      },
+      // A drag (slider, timeline clip) changes the project dozens of times but
+      // should be ONE undo step: stop recording while it lasts, then record the
+      // state from before it started as a single entry.
+      beginHistoryTransaction() {
+        if (transactionStart) return;
+        const { project, selectedSceneId } = get();
+        transactionStart = { project, selectedSceneId };
+        history().getState().pause();
+      },
+      endHistoryTransaction() {
+        if (!transactionStart) return;
+        const before = transactionStart;
+        transactionStart = null;
+        history().getState().resume();
+        if (before.project === get().project) return; // the drag changed nothing
+        history().setState(({ pastStates }) => ({
+          pastStates: [...pastStates, before].slice(-HISTORY_LIMIT),
+          futureStates: [],
+        }));
+      },
+      setPlayheadFrame(playheadFrame) {
+        return set({ playheadFrame: Math.max(0, Math.round(playheadFrame)) });
+      },
+      addAudioClip(sfxId, from) {
+        return set((state) => ({
+          project: {
+            ...state.project,
+            audioClips: [
+              ...(state.project.audioClips ?? []),
+              {
+                id: `audio-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 6)}`,
+                sfxId,
+                from: Math.max(0, Math.round(from ?? state.playheadFrame)),
+                volume: 1,
+                durationInFrames: cachedAudioDuration(getSfx(sfxId)?.src),
+              },
+            ],
           },
-        ],
+        }));
       },
-    }));
-  },
-  updateAudioClip(id, patch) {
-    return set((state) => ({
-      project: {
-        ...state.project,
-        audioClips: (state.project.audioClips ?? []).map((clip) =>
-          clip.id === id ? { ...clip, ...patch } : clip,
-        ),
+      updateAudioClip(id, patch) {
+        return set((state) => ({
+          project: {
+            ...state.project,
+            audioClips: (state.project.audioClips ?? []).map((clip) =>
+              clip.id === id ? { ...clip, ...patch } : clip,
+            ),
+          },
+        }));
       },
-    }));
-  },
-  splitAudioClip(id, at, resolvedDuration) {
-    const state = get();
-    const clip = (state.project.audioClips ?? []).find(
-      (entry) => entry.id === id,
-    );
-    if (!clip) return null;
-    const offset = Math.round(at - clip.from);
-    const duration = Math.max(
-      1,
-      Math.round(clip.durationInFrames ?? resolvedDuration),
-    );
-    if (offset <= 0 || offset >= duration) return null;
-    const nextId = `audio-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 6)}`;
-    set({
-      project: {
-        ...state.project,
-        audioClips: (state.project.audioClips ?? []).flatMap((entry) =>
-          entry.id === id
-            ? [
-                { ...entry, durationInFrames: offset },
-                {
-                  ...entry,
-                  id: nextId,
-                  from: Math.round(at),
-                  startFrom: (entry.startFrom ?? 0) + offset,
-                  durationInFrames: duration - offset,
-                },
-              ]
-            : [entry],
-        ),
+      splitAudioClip(id, at, resolvedDuration) {
+        const state = get();
+        const clip = (state.project.audioClips ?? []).find(
+          (entry) => entry.id === id,
+        );
+        if (!clip) return null;
+        const offset = Math.round(at - clip.from);
+        const duration = Math.max(
+          1,
+          Math.round(clip.durationInFrames ?? resolvedDuration),
+        );
+        if (offset <= 0 || offset >= duration) return null;
+        const nextId = `audio-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 6)}`;
+        set({
+          project: {
+            ...state.project,
+            audioClips: (state.project.audioClips ?? []).flatMap((entry) =>
+              entry.id === id
+                ? [
+                    { ...entry, durationInFrames: offset },
+                    {
+                      ...entry,
+                      id: nextId,
+                      from: Math.round(at),
+                      startFrom: (entry.startFrom ?? 0) + offset,
+                      durationInFrames: duration - offset,
+                    },
+                  ]
+                : [entry],
+            ),
+          },
+        });
+        return nextId;
       },
-    });
-    return nextId;
-  },
-  removeAudioClip(id) {
-    return set((state) => ({
-      project: {
-        ...state.project,
-        audioClips: (state.project.audioClips ?? []).filter(
-          (clip) => clip.id !== id,
-        ),
+      removeAudioClip(id) {
+        return set((state) => ({
+          project: {
+            ...state.project,
+            audioClips: (state.project.audioClips ?? []).filter(
+              (clip) => clip.id !== id,
+            ),
+          },
+        }));
       },
-    }));
-  },
-  // Each of these only changes which project is OPEN. Saving it to the
-  // server is <AutoSave />'s job, so none of them talk to the server.
-  createProject(title) {
-    const project = createEmptyProject(`project-${Date.now()}`, title);
-    set({ project, selectedSceneId: null });
-    clearHistory();
-  },
-  loadProject(project) {
-    set({ project, selectedSceneId: project.scenes[0]?.id ?? null });
-    clearHistory();
-  },
-  saveProjectAs(title) {
-    const project: VideoProject = {
-      ...get().project,
-      id: `project-${Date.now().toString(36)}`,
-      title,
-    };
-    set({ project });
-    clearHistory();
-  },
-  exportProjectJson() {
-    return JSON.stringify(get().project, null, 2);
-  },
-  updateProjectTitle(title) {
-    set((state) => ({ project: { ...state.project, title } }));
-  },
-  updateProjectStoryPlan(patch) {
-    set((state) => ({
-      project: {
-        ...state.project,
-        storyPlan: { ...state.project.storyPlan, ...patch },
+      // Each of these only changes which project is OPEN. Saving it to the
+      // server is <AutoSave />'s job, so none of them talk to the server.
+      createProject(title) {
+        const project = createEmptyProject(`project-${Date.now()}`, title);
+        set({ project, selectedSceneId: null });
+        clearHistory();
       },
-    }));
-  },
-  updateProjectCaptions(patch) {
-    set((state) => ({
-      project: {
-        ...state.project,
-        captions: { ...state.project.captions, ...patch },
+      loadProject(project) {
+        set({ project, selectedSceneId: project.scenes[0]?.id ?? null });
+        clearHistory();
       },
-    }));
-  },
-  openProject(project) {
-    set({ project, selectedSceneId: project.scenes[0]?.id ?? null });
-    clearHistory();
-  },
-  addScene(type) {
-    const def = getSceneDefinition(type);
-    set((state) => {
-      const background = state.project.scenes[0]?.background ?? "solid-dark";
-      const newScene: Scene = {
-        id: makeSceneId(),
-        type,
-        plan: { role: planRoleForSceneType(type), purpose: def.description },
-        durationSeconds: undefined,
-        background,
-        content: { headline: "New headline" },
-        motion: { entrance: "fade", transition: "cut" },
-      };
-      return {
-        project: {
-          ...state.project,
-          scenes: [...state.project.scenes, newScene],
-        },
-        selectedSceneId: newScene.id,
-      };
-    });
-  },
-  insertScene(scene) {
-    set((state) => {
-      const scenes = [...state.project.scenes];
-      const at = scenes.findIndex((s) => s.id === state.selectedSceneId);
-      const index = at === -1 ? scenes.length : at + 1;
-      const inserted = scene.plan
-        ? scene
-        : { ...scene, plan: { role: planRoleForSceneType(scene.type) } };
-      scenes.splice(index, 0, inserted);
-      return {
-        project: { ...state.project, scenes },
-        selectedSceneId: inserted.id,
-      };
-    });
-  },
-  removeScene(id) {
-    set((state) => {
-      return {
-        project: {
-          ...state.project,
-          scenes: state.project.scenes.filter((s) => s.id !== id),
-        },
-        selectedSceneId:
-          state.selectedSceneId === id ? null : state.selectedSceneId,
-      };
-    });
-  },
-  duplicateScene(id) {
-    set((state) => {
-      const index = state.project.scenes.findIndex((s) => s.id === id);
-      if (index === -1) return state;
-      const source = state.project.scenes[index];
-      const clone: Scene = {
-        ...source,
-        id: makeSceneId(),
-        storyboardBeatId: undefined,
-      };
-      const scenes = [...state.project.scenes];
-      scenes.splice(index + 1, 0, clone);
-      return {
-        project: { ...state.project, scenes },
-        selectedSceneId: clone.id,
-      };
-    });
-  },
-  moveScene(id, direction) {
-    set((state) => {
-      const scenes = [...state.project.scenes];
-      const index = scenes.findIndex((s) => s.id === id);
-      const targetIndex = direction === "up" ? index - 1 : index + 1;
-      if (index === -1 || targetIndex < 0 || targetIndex >= scenes.length)
-        return state;
-      [scenes[index], scenes[targetIndex]] = [
-        scenes[targetIndex],
-        scenes[index],
-      ];
-      return { project: { ...state.project, scenes } };
-    });
-  },
-  updateScene(id, patch) {
-    set((state) => ({
-      project: {
-        ...state.project,
-        scenes: state.project.scenes.map((s) =>
-          s.id === id ? { ...s, ...patch } : s,
-        ),
+      saveProjectAs(title) {
+        const project: VideoProject = {
+          ...get().project,
+          id: `project-${Date.now().toString(36)}`,
+          title,
+        };
+        set({ project });
+        clearHistory();
       },
-    }));
-  },
-  updateSceneContent(id, contentPatch) {
-    set((state) => ({
-      project: {
-        ...state.project,
-        scenes: state.project.scenes.map((s) =>
-          s.id === id
-            ? { ...s, content: { ...s.content, ...contentPatch } }
-            : s,
-        ),
+      exportProjectJson() {
+        return JSON.stringify(get().project, null, 2);
       },
-    }));
-  },
-  updateSceneVisual(id, visual) {
-    const slot = get().activeVisualSlot;
-    set((state) => ({
-      project: {
-        ...state.project,
-        scenes: state.project.scenes.map((s) => {
-          if (s.id !== id) return s;
-          if (slot === "main") return { ...s, visual };
-          const sideKey = slot;
-          return {
-            ...s,
-            content: {
-              ...s.content,
-              [sideKey]: { ...s.content[sideKey], visual },
+      updateProjectTitle(title) {
+        set((state) => ({ project: { ...state.project, title } }));
+      },
+      updateProjectStoryPlan(patch) {
+        set((state) => ({
+          project: {
+            ...state.project,
+            storyPlan: { ...state.project.storyPlan, ...patch },
+          },
+        }));
+      },
+      updateProjectCaptions(patch) {
+        set((state) => ({
+          project: {
+            ...state.project,
+            captions: { ...state.project.captions, ...patch },
+          },
+        }));
+      },
+      updateProjectMusic(music) {
+        set((state) => ({
+          project: { ...state.project, music },
+        }));
+      },
+      openProject(project) {
+        set({ project, selectedSceneId: project.scenes[0]?.id ?? null });
+        clearHistory();
+      },
+      addScene(type) {
+        const def = getSceneDefinition(type);
+        set((state) => {
+          const background =
+            state.project.scenes[0]?.background ?? "solid-dark";
+          const newScene: Scene = {
+            id: makeSceneId(),
+            type,
+            plan: {
+              role: planRoleForSceneType(type),
+              purpose: def.description,
             },
+            durationSeconds: undefined,
+            background,
+            content: { headline: "New headline" },
+            motion: { entrance: "fade", transition: "cut" },
           };
-        }),
+          return {
+            project: {
+              ...state.project,
+              scenes: [...state.project.scenes, newScene],
+            },
+            selectedSceneId: newScene.id,
+          };
+        });
       },
-    }));
-  },
-  updateSceneVisualPosition(id, position) {
-    get().updateScene(id, { visualPosition: position });
-  },
-  updateSceneVisualEntrance(id, entrance) {
-    get().updateScene(id, { visualEntrance: entrance });
-  },
-  updateSceneVisualExit(id, exit) {
-    get().updateScene(id, { visualExit: exit });
-  },
-  updateSceneVisualExitDuration(id, exitDuration) {
-    get().updateScene(id, { visualExitDuration: exitDuration });
-  },
-  updateSceneVisualKenBurns(id, kenBurns) {
-    get().updateScene(id, { visualKenBurns: kenBurns });
-  },
-  updateSceneVisualSfx(id, sfx) {
-    get().updateScene(id, { visualSfx: sfx });
-  },
-  updateSceneVisualExitSfx(id, sfx) {
-    get().updateScene(id, { visualExitSfx: sfx });
-  },
-  updateSceneBackground(id, background) {
-    get().updateScene(id, { background: background });
-  },
-  updateAllScenesBackground(background) {
-    set((state) => ({
-      project: {
-        ...state.project,
-        scenes: state.project.scenes.map((s) => ({ ...s, background })),
+      insertScene(scene) {
+        set((state) => {
+          const scenes = [...state.project.scenes];
+          const at = scenes.findIndex((s) => s.id === state.selectedSceneId);
+          const index = at === -1 ? scenes.length : at + 1;
+          const inserted = scene.plan
+            ? scene
+            : { ...scene, plan: { role: planRoleForSceneType(scene.type) } };
+          scenes.splice(index, 0, inserted);
+          return {
+            project: { ...state.project, scenes },
+            selectedSceneId: inserted.id,
+          };
+        });
       },
-    }));
-  },
-  updateSceneEntrance(id, entrance) {
-    get().updateSceneMotion(id, { entrance: entrance });
-  },
-  updateSceneTransition(id, transition) {
-    get().updateSceneMotion(id, { transition: transition });
-  },
-  updateSceneExit(id, exit) {
-    get().updateSceneMotion(id, { exit: exit });
-  },
-  updateSceneExitDuration(id, exitDuration) {
-    get().updateSceneMotion(id, { exitDuration: exitDuration });
-  },
-  updateSceneMotion(id, patch) {
-    set((state) => ({
-      project: {
-        ...state.project,
-        scenes: state.project.scenes.map((s) =>
-          s.id === id ? { ...s, motion: { ...s.motion, ...patch } } : s,
-        ),
+      removeScene(id) {
+        set((state) => {
+          return {
+            project: {
+              ...state.project,
+              scenes: state.project.scenes.filter((s) => s.id !== id),
+            },
+            selectedSceneId:
+              state.selectedSceneId === id ? null : state.selectedSceneId,
+          };
+        });
       },
-    }));
-  },
-  updateSceneSfx(id, sfx) {
-    get().updateSceneMotion(id, { sfx: sfx });
-  },
-  updateSceneExitSfx(id, sfx) {
-    get().updateSceneMotion(id, { exitSfx: sfx });
-  },
-  updateSceneStagger(id, stagger) {
-    get().updateSceneMotion(id, { stagger: stagger });
-  },
-  updateSceneHighlights(id, highlights) {
-    get().updateSceneContent(id, { highlights: highlights });
-  },
-  updateSceneLeftRight(id, side, patch) {
-    set((state) => ({
-      project: {
-        ...state.project,
-        scenes: state.project.scenes.map((s) =>
-          s.id === id
-            ? {
+      duplicateScene(id) {
+        set((state) => {
+          const index = state.project.scenes.findIndex((s) => s.id === id);
+          if (index === -1) return state;
+          const source = state.project.scenes[index];
+          const clone: Scene = {
+            ...source,
+            id: makeSceneId(),
+            storyboardBeatId: undefined,
+          };
+          const scenes = [...state.project.scenes];
+          scenes.splice(index + 1, 0, clone);
+          return {
+            project: { ...state.project, scenes },
+            selectedSceneId: clone.id,
+          };
+        });
+      },
+      moveScene(id, direction) {
+        set((state) => {
+          const scenes = [...state.project.scenes];
+          const index = scenes.findIndex((s) => s.id === id);
+          const targetIndex = direction === "up" ? index - 1 : index + 1;
+          if (index === -1 || targetIndex < 0 || targetIndex >= scenes.length)
+            return state;
+          [scenes[index], scenes[targetIndex]] = [
+            scenes[targetIndex],
+            scenes[index],
+          ];
+          return { project: { ...state.project, scenes } };
+        });
+      },
+      updateScene(id, patch) {
+        set((state) => ({
+          project: {
+            ...state.project,
+            scenes: state.project.scenes.map((s) =>
+              s.id === id ? { ...s, ...patch } : s,
+            ),
+          },
+        }));
+      },
+      updateSceneContent(id, contentPatch) {
+        set((state) => ({
+          project: {
+            ...state.project,
+            scenes: state.project.scenes.map((s) =>
+              s.id === id
+                ? { ...s, content: { ...s.content, ...contentPatch } }
+                : s,
+            ),
+          },
+        }));
+      },
+      updateSceneVisual(id, visual) {
+        const slot = get().activeVisualSlot;
+        set((state) => ({
+          project: {
+            ...state.project,
+            scenes: state.project.scenes.map((s) => {
+              if (s.id !== id) return s;
+              if (slot === "main") return { ...s, visual };
+              const sideKey = slot;
+              return {
                 ...s,
                 content: {
                   ...s.content,
-                  [side]: { ...s.content[side], ...patch },
+                  [sideKey]: { ...s.content[sideKey], visual },
                 },
-              }
-            : s,
-        ),
+              };
+            }),
+          },
+        }));
       },
-    }));
-  },
-  updateSceneItems(id, items) {
-    get().updateSceneContent(id, { items: items });
-  },
-  updateSceneRichHeadline(id, lines) {
-    get().updateSceneContent(id, { richHeadline: lines });
-  },
-  updateSceneBlocks(id, blocks) {
-    get().updateSceneContent(id, { blocks: blocks });
-  },
-  linkVisualToNextScene(id) {
-    set((state) => ({ project: linkVisualToNextScene(state.project, id) }));
-  },
-  linkLayerToNextScene(sceneId, entryId) {
-    set((state) => ({
-      project: linkLayerToNextScene(state.project, sceneId, entryId),
-    }));
-  },
-  addVisualKeyframe(sceneId, entryId, frame, property, pose) {
-    const scene = get().project.scenes.find((scene) => scene.id === sceneId);
-    if (!scene?.content.visuals?.some((entry) => entry.id === entryId)) return;
+      updateSceneVisualPosition(id, position) {
+        get().updateScene(id, { visualPosition: position });
+      },
+      updateSceneVisualEntrance(id, entrance) {
+        get().updateScene(id, { visualEntrance: entrance });
+      },
+      updateSceneVisualExit(id, exit) {
+        get().updateScene(id, { visualExit: exit });
+      },
+      updateSceneVisualExitDuration(id, exitDuration) {
+        get().updateScene(id, { visualExitDuration: exitDuration });
+      },
+      updateSceneVisualKenBurns(id, kenBurns) {
+        get().updateScene(id, { visualKenBurns: kenBurns });
+      },
+      updateSceneVisualSfx(id, sfx) {
+        get().updateScene(id, { visualSfx: sfx });
+      },
+      updateSceneVisualExitSfx(id, sfx) {
+        get().updateScene(id, { visualExitSfx: sfx });
+      },
+      updateSceneBackground(id, background) {
+        get().updateScene(id, { background: background });
+      },
+      updateAllScenesBackground(background) {
+        set((state) => ({
+          project: {
+            ...state.project,
+            scenes: state.project.scenes.map((s) => ({ ...s, background })),
+          },
+        }));
+      },
+      updateSceneEntrance(id, entrance) {
+        get().updateSceneMotion(id, { entrance: entrance });
+      },
+      updateSceneTransition(id, transition) {
+        get().updateSceneMotion(id, { transition: transition });
+      },
+      updateSceneExit(id, exit) {
+        get().updateSceneMotion(id, { exit: exit });
+      },
+      updateSceneExitDuration(id, exitDuration) {
+        get().updateSceneMotion(id, { exitDuration: exitDuration });
+      },
+      updateSceneMotion(id, patch) {
+        set((state) => ({
+          project: {
+            ...state.project,
+            scenes: state.project.scenes.map((s) =>
+              s.id === id ? { ...s, motion: { ...s.motion, ...patch } } : s,
+            ),
+          },
+        }));
+      },
+      updateSceneSfx(id, sfx) {
+        get().updateSceneMotion(id, { sfx: sfx });
+      },
+      updateSceneExitSfx(id, sfx) {
+        get().updateSceneMotion(id, { exitSfx: sfx });
+      },
+      updateSceneStagger(id, stagger) {
+        get().updateSceneMotion(id, { stagger: stagger });
+      },
+      updateSceneHighlights(id, highlights) {
+        get().updateSceneContent(id, { highlights: highlights });
+      },
+      updateSceneLeftRight(id, side, patch) {
+        set((state) => ({
+          project: {
+            ...state.project,
+            scenes: state.project.scenes.map((s) =>
+              s.id === id
+                ? {
+                    ...s,
+                    content: {
+                      ...s.content,
+                      [side]: { ...s.content[side], ...patch },
+                    },
+                  }
+                : s,
+            ),
+          },
+        }));
+      },
+      updateSceneItems(id, items) {
+        get().updateSceneContent(id, { items: items });
+      },
+      updateSceneRichHeadline(id, lines) {
+        get().updateSceneContent(id, { richHeadline: lines });
+      },
+      updateSceneBlocks(id, blocks) {
+        get().updateSceneContent(id, { blocks: blocks });
+      },
+      linkVisualToNextScene(id) {
+        set((state) => ({ project: linkVisualToNextScene(state.project, id) }));
+      },
+      linkLayerToNextScene(sceneId, entryId) {
+        set((state) => ({
+          project: linkLayerToNextScene(state.project, sceneId, entryId),
+        }));
+      },
+      addVisualKeyframe(sceneId, entryId, frame, property, pose) {
+        const scene = get().project.scenes.find(
+          (scene) => scene.id === sceneId,
+        );
+        if (!scene?.content.visuals?.some((entry) => entry.id === entryId))
+          return;
 
-    const visuals = scene.content.visuals.map((entry) => {
-      if (entry.id !== entryId) return entry;
-      const current = poseAtFrame(entry, frame);
-      const pinned =
-        property === "scale"
-          ? { scale: pose?.scale ?? current.scale ?? entry.scale ?? 1 }
-          : { x: pose?.x ?? current.x, y: pose?.y ?? current.y };
-      const keyframes = [...(entry.keyframes ?? [])];
-      const index = keyframes.findIndex((keyframe) => keyframe.frame === frame);
-      if (index === -1) {
-        keyframes.push({
-          id: `kf-${Math.random().toString(36).slice(2, 9)}`,
-          frame,
-          ...pinned,
+        const visuals = scene.content.visuals.map((entry) => {
+          if (entry.id !== entryId) return entry;
+          const current = poseAtFrame(entry, frame);
+          const pinned =
+            property === "scale"
+              ? { scale: pose?.scale ?? current.scale ?? entry.scale ?? 1 }
+              : { x: pose?.x ?? current.x, y: pose?.y ?? current.y };
+          const keyframes = [...(entry.keyframes ?? [])];
+          const index = keyframes.findIndex(
+            (keyframe) => keyframe.frame === frame,
+          );
+          if (index === -1) {
+            keyframes.push({
+              id: `kf-${Math.random().toString(36).slice(2, 9)}`,
+              frame,
+              ...pinned,
+            });
+          } else {
+            keyframes[index] = { ...keyframes[index], ...pinned };
+          }
+          keyframes.sort((a, b) => a.frame - b.frame);
+          return { ...entry, keyframes };
         });
-      } else {
-        keyframes[index] = { ...keyframes[index], ...pinned };
-      }
-      keyframes.sort((a, b) => a.frame - b.frame);
-      return { ...entry, keyframes };
-    });
-    get().updateSceneVisuals(sceneId, visuals);
-  },
-  updateVisualKeyframe(sceneId, entryId, keyframeId, patch) {
-    const scene = get().project.scenes.find((scene) => scene.id === sceneId);
-    if (!scene?.content.visuals?.some((entry) => entry.id === entryId)) return;
+        get().updateSceneVisuals(sceneId, visuals);
+      },
+      updateVisualKeyframe(sceneId, entryId, keyframeId, patch) {
+        const scene = get().project.scenes.find(
+          (scene) => scene.id === sceneId,
+        );
+        if (!scene?.content.visuals?.some((entry) => entry.id === entryId))
+          return;
 
-    const visuals = scene.content.visuals.map((entry) => {
-      if (entry.id !== entryId) return entry;
-      const keyframes = (entry.keyframes ?? [])
-        .map((keyframe) =>
-          keyframe.id === keyframeId ? { ...keyframe, ...patch } : keyframe,
-        )
-        .sort((a, b) => a.frame - b.frame);
-      return { ...entry, keyframes };
-    });
-    get().updateSceneVisuals(sceneId, visuals);
-  },
-  removeVisualKeyframe(sceneId, entryId, keyframeId) {
-    const scene = get().project.scenes.find((scene) => scene.id === sceneId);
-    if (!scene?.content.visuals?.some((entry) => entry.id === entryId)) return;
+        const visuals = scene.content.visuals.map((entry) => {
+          if (entry.id !== entryId) return entry;
+          const keyframes = (entry.keyframes ?? [])
+            .map((keyframe) =>
+              keyframe.id === keyframeId ? { ...keyframe, ...patch } : keyframe,
+            )
+            .sort((a, b) => a.frame - b.frame);
+          return { ...entry, keyframes };
+        });
+        get().updateSceneVisuals(sceneId, visuals);
+      },
+      removeVisualKeyframe(sceneId, entryId, keyframeId) {
+        const scene = get().project.scenes.find(
+          (scene) => scene.id === sceneId,
+        );
+        if (!scene?.content.visuals?.some((entry) => entry.id === entryId))
+          return;
 
-    const visuals = scene.content.visuals.map((entry) => {
-      if (entry.id !== entryId) return entry;
-      const keyframes = (entry.keyframes ?? []).filter(
-        (keyframe) => keyframe.id !== keyframeId,
-      );
-      return { ...entry, keyframes: keyframes.length ? keyframes : undefined };
-    });
-    get().updateSceneVisuals(sceneId, visuals);
-  },
-  updateSceneVisuals(id, visuals) {
-    get().updateSceneContent(id, { visuals });
-  },
-  selectObject(id) {
-    return set({ selectedObjectId: id, selectedObjectIds: id ? [id] : [] });
-  },
-  toggleObjectSelection(id) {
-    return set((state) => {
-      const has = state.selectedObjectIds.includes(id);
-      const next = has
-        ? state.selectedObjectIds.filter((entry) => entry !== id)
-        : [...state.selectedObjectIds, id];
-      return {
-        selectedObjectIds: next,
-        selectedObjectId: has ? (next[next.length - 1] ?? null) : id,
-      };
-    });
-  },
-  selectObjects(ids) {
-    return set({
-      selectedObjectIds: ids,
-      selectedObjectId: ids[ids.length - 1] ?? null,
-    });
-  },
-  selectScene(id) {
-    return set({
-      selectedSceneId: id,
-      selectedObjectId: null,
-      selectedObjectIds: [],
-    });
-  },
-  setActiveVisualSlot(slot) {
-    return set({ activeVisualSlot: slot });
-  },
+        const visuals = scene.content.visuals.map((entry) => {
+          if (entry.id !== entryId) return entry;
+          const keyframes = (entry.keyframes ?? []).filter(
+            (keyframe) => keyframe.id !== keyframeId,
+          );
+          return {
+            ...entry,
+            keyframes: keyframes.length ? keyframes : undefined,
+          };
+        });
+        get().updateSceneVisuals(sceneId, visuals);
+      },
+      updateSceneVisuals(id, visuals) {
+        get().updateSceneContent(id, { visuals });
+      },
+      selectObject(id) {
+        return set({ selectedObjectId: id, selectedObjectIds: id ? [id] : [] });
+      },
+      toggleObjectSelection(id) {
+        return set((state) => {
+          const has = state.selectedObjectIds.includes(id);
+          const next = has
+            ? state.selectedObjectIds.filter((entry) => entry !== id)
+            : [...state.selectedObjectIds, id];
+          return {
+            selectedObjectIds: next,
+            selectedObjectId: has ? (next[next.length - 1] ?? null) : id,
+          };
+        });
+      },
+      selectObjects(ids) {
+        return set({
+          selectedObjectIds: ids,
+          selectedObjectId: ids[ids.length - 1] ?? null,
+        });
+      },
+      selectScene(id) {
+        return set({
+          selectedSceneId: id,
+          selectedObjectId: null,
+          selectedObjectIds: [],
+        });
+      },
+      setActiveVisualSlot(slot) {
+        return set({ activeVisualSlot: slot });
+      },
     }),
     {
       partialize: ({ project, selectedSceneId }): HistoryEntry => ({

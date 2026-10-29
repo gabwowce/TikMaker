@@ -37,7 +37,7 @@ Po kiekvieno punkto: papildyti `capabilities.ts` ir vertimo lentelę, paleisti `
 | - [ ] B6 | „Draw-on“: linijos ir apibraukimai nusipiešia | draw-on 3 % atsiradimų (diagramos) | mažas |
 | - [ ] B7 | Subtitrų stiliai (šriftas, spalva, kontūras) | subtitrai 67 % video | mažas |
 | - [ ] B8 | `tool-logo` → bendras „ikona / logotipas“ su bibliotekos kategorijomis | ikonos 13 % elementų | mažas |
-| - [ ] B9 | Foninė muzika: biblioteka / įkėlimas, pritaikymas prie ilgio, patylinimas kalbant | muzika 80 iš 88 video | vidutinis |
+| - [x] B9 | Foninė muzika: biblioteka / įkėlimas, pritaikymas prie ilgio, patylinimas kalbant | muzika 80 iš 88 video | vidutinis |
 | - [x] B10 | Redaktorius: pasirinktą (laiko juostoje) elementą tempti peržiūroje už bet kurios vietos, ne tik už mažo taškiuko | taškiukai susipainioja, neaišku, kurį elementą pagriebsi | mažas–vidutinis |
 
 Jei laiko trūks: B9, B3, B4 svarbiausi; kitus galima daryti po to, kai agentas veiks.

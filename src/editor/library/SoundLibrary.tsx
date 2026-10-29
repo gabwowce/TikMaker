@@ -1,6 +1,14 @@
-import { ActionIcon, Button, NativeSelect, TextInput } from "@mantine/core";
+import { MUSIC_DEFAULTS } from "@/utils/music";
+import {
+  ActionIcon,
+  Button,
+  NativeSelect,
+  Slider,
+  TextInput,
+} from "@mantine/core";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useRef, useState } from "react";
+import { useCustomSfx } from "../../api/library";
 import { queryClient } from "../../api/queryClient";
 import { trpc } from "../../api/trpc";
 import {
@@ -11,11 +19,11 @@ import {
 } from "../../registries/sfxRegistry";
 import type { EntrancePreset, ExitPreset } from "../../schema/scene";
 import type { SfxDefaultKind } from "../../video/motion/sfxDefaults";
-import { useCustomSfx } from "../../api/library";
 import { useProjectStore } from "../state/projectStore";
 
 const sfxGroups: SfxGroup[] = [
   "voice",
+  "music",
   "impact",
   "reveal",
   "transition",
@@ -115,14 +123,17 @@ function DefaultsSection() {
     );
   }
   const kindBucket = overrides[kind] ?? {};
-  if (isLoading) return <div className="text-[11px] text-editor-muted">Loading…</div>;
+  if (isLoading)
+    return <div className="text-[11px] text-editor-muted">Loading…</div>;
   return (
     <div>
       <div className="text-[11px] uppercase tracking-[1px] text-editor-muted m-[12px_0_6px]">
         Defaults
       </div>
       {save.isError ? (
-        <div className="text-[11px] text-red-400 mb-2">{save.error.message}</div>
+        <div className="text-[11px] text-red-400 mb-2">
+          {save.error.message}
+        </div>
       ) : null}
       <div className="flex gap-1 mb-2.5">
         {(
@@ -175,6 +186,66 @@ function DefaultsSection() {
           </div>
         ))}
       </div>
+    </div>
+  );
+}
+function MusicSection() {
+  const music = useProjectStore((s) => s.project.music);
+  const updateProjectMusic = useProjectStore((s) => s.updateProjectMusic);
+  // Re-renders when a track is uploaded; the registry holds the playable list.
+  useCustomSfx();
+  const tracks = sfxList.filter((s) => s.group === "music");
+
+  function slider(label: string, field: "volume" | "duckVolume") {
+    if (!music) return null;
+    const value = music[field] ?? MUSIC_DEFAULTS[field];
+    return (
+      <div className="mb-2">
+        <div className="flex justify-between text-[10px] text-editor-muted">
+          <span>{label}</span>
+          <span className="text-editor-text">{Math.round(value * 100)}%</span>
+        </div>
+        <Slider
+          min={0}
+          max={1}
+          step={0.01}
+          value={value}
+          onChange={(next) =>
+            updateProjectMusic({ ...music, [field]: Number(next) })
+          }
+          className="w-full"
+        />
+      </div>
+    );
+  }
+
+  return (
+    <div>
+      <div className="text-[11px] uppercase tracking-[1px] text-editor-muted m-[12px_0_6px]">
+        Background music
+      </div>
+      <NativeSelect
+        className="w-full mb-2"
+        value={music?.sfxId ?? ""}
+        onChange={(e) => {
+          const sfxId = e.target.value;
+          updateProjectMusic(sfxId ? { ...music, sfxId } : undefined);
+        }}
+      >
+        <option value="">No music</option>
+        {tracks.map((track) => (
+          <option key={track.id} value={track.id}>
+            {track.label}
+          </option>
+        ))}
+      </NativeSelect>
+      {tracks.length === 0 ? (
+        <div className="text-[11px] text-editor-muted mb-2">
+          Import a sound below with the group “music”.
+        </div>
+      ) : null}
+      {slider("Volume", "volume")}
+      {slider("Under the voice", "duckVolume")}
     </div>
   );
 }
@@ -296,6 +367,7 @@ export function SoundLibrary() {
     .filter((sfx): sfx is SfxDefinition => sfx !== undefined);
   return (
     <div>
+      <MusicSection />
       <DefaultsSection />
 
       <div className="text-[11px] uppercase tracking-[1px] text-editor-muted m-[12px_0_6px]">

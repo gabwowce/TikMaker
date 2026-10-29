@@ -48,6 +48,7 @@ export type ProjectStore = {
   updateProjectCaptions: (
     patch: Partial<NonNullable<VideoProject["captions"]>>,
   ) => void;
+  updateProjectMusic: (music: VideoProject["music"]) => void;
   openProject: (project: VideoProject) => void;
   addScene: (type: SceneType) => void;
   insertScene: (scene: Scene) => void;

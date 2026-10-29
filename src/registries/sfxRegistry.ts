@@ -9,6 +9,7 @@ export type SfxGroup =
   | "reveal"
   | "success"
   | "voice"
+  | "music"
   | "misc";
 const groupByFileId: Record<string, SfxGroup> = {
   "d-tick": "ui",

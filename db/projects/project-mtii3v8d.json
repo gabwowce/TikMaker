@@ -33,8 +33,7 @@
           {
             "text": "Tired of testing apps",
             "size": "headline",
-            "pill": true,
-            "color": "#171717",
+            "color": "#FFFFFF",
             "highlightStyle": "bold",
             "x": 52.58426966292134,
             "y": 40.581542351453855,
@@ -727,7 +726,12 @@
   "captions": {
     "enabled": false
   },
-  "savedAt": 1793252347978,
+  "music": {
+    "sfxId": "aetheric-snap-crackle-mvt7k2ts",
+    "volume": 0.58,
+    "duckVolume": 0.2
+  },
+  "savedAt": 1793258127418,
   "audioClips": [
     {
       "id": "audio-mtimh5cl-pd7k",

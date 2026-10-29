@@ -32,6 +32,16 @@ export const videoProjectSchema = z.object({
       y: z.number().min(0).max(100).optional(),
     })
     .optional(),
+  music: z
+    .object({
+      sfxId: z.string(),
+      volume: z.number().min(0).max(1).optional(),
+      duckVolume: z.number().min(0).max(1).optional(),
+      startFrom: z.number().min(0).optional(),
+      fadeInFrames: z.number().int().min(0).optional(),
+      fadeOutFrames: z.number().int().min(0).optional(),
+    })
+    .optional(),
   savedAt: z.number().optional(),
   audioClips: z
     .array(
