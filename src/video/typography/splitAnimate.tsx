@@ -107,7 +107,7 @@ function useEnterExitStyle(args: {
 // How a highlighted word is drawn (B2): a light box, the accent colour or a bolder font.
 const PILL_CLASS =
   "inline bg-[#FFFFFF] text-[#171717] p-[0.05em_0.18em] rounded-md [box-decoration-break:clone] [-webkit-box-decoration-break:clone]";
-function highlightLook(
+export function highlightLook(
   highlight: HighlightStyle,
   color?: string,
 ): { className?: string; style?: CSSProperties } {

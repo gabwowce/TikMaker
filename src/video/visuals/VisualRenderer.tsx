@@ -22,6 +22,7 @@ import { CornerFloat } from "./diagrams/CornerFloat";
 import { Flow } from "./diagrams/Flow";
 import { Grid } from "./diagrams/Grid";
 import { Highlight } from "./diagrams/Highlight";
+import { Line } from "./diagrams/Line";
 import { NodeGroup } from "./diagrams/NodeGroup";
 import { Stack } from "./diagrams/Stack";
 import { Transform } from "./diagrams/Transform";
@@ -198,6 +199,18 @@ export function VisualRenderer({ visual }: VisualRendererProps) {
           items={visual.items}
           columns={visual.columns}
           stagger={visual.stagger}
+        />
+      );
+    case "line":
+      return (
+        <Line
+          length={visual.length}
+          angle={visual.angle}
+          curve={visual.curve}
+          thickness={visual.thickness}
+          color={visual.color}
+          arrow={visual.arrow}
+          dashed={visual.dashed}
         />
       );
     case "highlight":

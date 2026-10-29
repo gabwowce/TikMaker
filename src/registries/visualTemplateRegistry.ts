@@ -345,7 +345,8 @@ export const visualTemplateRegistry: VisualTemplateDefinition[] = [
     id: "grid-compare",
     category: "media",
     label: "Grid of Screens",
-    description: "2x2 set of screenshots or recordings, arriving one by one — \"look, another one\".",
+    description:
+      '2x2 set of screenshots or recordings, arriving one by one — "look, another one".',
     build: () => ({
       type: "grid",
       columns: 2,
@@ -361,8 +362,33 @@ export const visualTemplateRegistry: VisualTemplateDefinition[] = [
     id: "highlight-box",
     category: "media",
     label: "Highlight Box",
-    description: "An accent outline that draws itself around one region of the layer under it.",
+    description:
+      "An accent outline that draws itself around one region of the layer under it.",
     build: () => ({ type: "highlight", width: 420, height: 180 }),
+  },
+  {
+    id: "line-arrow",
+    category: "diagrams",
+    label: "Arrow",
+    description:
+      "An arrow that draws itself on when it appears — point at something.",
+    build: () => ({ type: "line", length: 420, arrow: "end" }),
+  },
+  {
+    id: "line-curved-arrow",
+    category: "diagrams",
+    label: "Curved Arrow",
+    description:
+      "A bent arrow that draws itself on — a route from one thing to another.",
+    build: () => ({ type: "line", length: 520, curve: 0.4, arrow: "end" }),
+  },
+  {
+    id: "line-underline",
+    category: "diagrams",
+    label: "Underline",
+    description:
+      "A line that draws itself under a word — move it below the text.",
+    build: () => ({ type: "line", length: 480, thickness: 12 }),
   },
   {
     id: "transform-reveal",

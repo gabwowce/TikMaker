@@ -20,6 +20,7 @@ import { enter } from "../motion/entrances";
 import { exitStyle as computeExitStyle } from "../motion/exits";
 import { kenBurns as computeKenBurns } from "../motion/kenBurns";
 import { SFX_VOLUME } from "../motion/sfxDefaults";
+import { VisualStartContext } from "../visuals/visualStart";
 import { VisualRenderer } from "../visuals/VisualRenderer";
 import { useVisualEffects } from "../visuals/visualEffects";
 type AnimatedVisualProps = {
@@ -239,7 +240,9 @@ export function AnimatedVisual({
       }}
     >
       {look.defs}
-      <VisualRenderer visual={visual} />
+      <VisualStartContext.Provider value={entranceDelay}>
+        <VisualRenderer visual={visual} />
+      </VisualStartContext.Provider>
       {sfxSrc ? (
         <Sequence
           from={entranceSfxFrame}

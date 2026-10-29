@@ -200,6 +200,16 @@ export type VisualConfig =
       delay?: number;
     }
   | {
+      type: "line";
+      length: number;
+      angle?: number;
+      curve?: number;
+      thickness?: number;
+      color?: string;
+      arrow?: "none" | "end" | "both";
+      dashed?: boolean;
+    }
+  | {
       type: "transform";
       from: VisualConfig;
       to: VisualConfig;
@@ -450,6 +460,18 @@ export const visualConfigSchema: z.ZodType<VisualConfig> = z.discriminatedUnion(
       height: z.number().min(40).max(1920),
       shape: z.enum(["box", "circle"]).optional(),
       delay: z.number().min(0).max(300).optional(),
+    }),
+    // A line, arrow or underline that draws itself on when its layer appears
+    // (B6, "draw-on" in the analysis).
+    z.object({
+      type: z.literal("line"),
+      length: z.number().min(40).max(2000), // px
+      angle: z.number().min(-180).max(180).optional(), // degrees, 0 = to the right
+      curve: z.number().min(-1).max(1).optional(), // 0 = straight, ±1 = a half circle
+      thickness: z.number().min(2).max(60).optional(), // px
+      color: z.string().optional(), // unset = accent orange
+      arrow: z.enum(["none", "end", "both"]).optional(),
+      dashed: z.boolean().optional(),
     }),
     z.object({
       type: z.literal("transform"),

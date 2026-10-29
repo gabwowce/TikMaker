@@ -4,6 +4,7 @@ import { useVoice } from "../../api/library";
 import { voiceSettingsSchema } from "../../schema/voiceSettings";
 import { computeSceneTimings } from "../../utils/duration";
 import { useProjectStore } from "../state/projectStore";
+import { CaptionStyleFields } from "./CaptionStyleFields";
 
 function VoiceSettingsFields() {
   const { settings, previewSettings, saveSettings } = useVoice();
@@ -141,6 +142,7 @@ export function VoiceoverGenerator({ sceneId, text }: VoiceoverGeneratorProps) {
         />
         Show captions (whole video)
       </label>
+      {project.captions?.enabled !== false ? <CaptionStyleFields /> : null}
       {generate.error ? (
         <div className="text-[10px] text-[#ff8a65] mt-1.5 whitespace-pre-wrap">
           {generate.error.message}
