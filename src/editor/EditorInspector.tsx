@@ -2,7 +2,7 @@ import { Button } from "@mantine/core";
 import { useEffect, useState } from "react";
 import { InspectorPanel } from "./panels/InspectorPanel";
 import { useProjectStore } from "./state/projectStore";
-import { TimelineObjectPanel } from "./timeline/TimelineObjectPanel";
+import { ObjectPanel } from "./inspector/object/ObjectPanel";
 
 export function EditorInspector() {
   const selectedObjectId = useProjectStore((state) => state.selectedObjectId);
@@ -31,7 +31,7 @@ export function EditorInspector() {
         </Button>
       </div>
       {tab === "object" ? (
-        <TimelineObjectPanel
+        <ObjectPanel
           selectionId={selectedObjectId}
           onClose={() => selectObject(null)}
         />
