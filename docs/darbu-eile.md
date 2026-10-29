@@ -1,7 +1,8 @@
 # Darbų eilė
 
 Vienintelis sąrašas „ką daryti toliau“. Darai iš viršaus į apačią; baigtą punktą pažymi `[x]`.
-Kaip daryti (sprendimai) – `docs/bd/sprendimai.md`. Agento žingsnių smulkmenos – `docs/mano-planas.md`.
+Kaip daryti (sprendimai) – `docs/bd/sprendimai.md`. Agentas ir jo sąsaja žingsnis po žingsnio –
+**`docs/d-planas.md`** (būsena, failai, darbo taisyklės); „Išmoksiu“ ir gynimo klausimai – `docs/mano-planas.md`.
 Kiti planai (`darbu-sarasas.md`, `ai-agentas-planas.md`, `igyvendinimas.md`) – tik fonui, ne eilei.
 
 Kiekvieną punktą darai pati su Claude pagalba: pirma paaiškinimas (kur kode, kodėl), tada rašai,
@@ -54,7 +55,12 @@ Išsamiau: `docs/mano-planas.md` 1 žingsnis (schemos), `docs/bd/sprendimai.md` 
 
 ## D. Agentas
 
-`docs/mano-planas.md` 2–9 žingsniai: pirmas DI kvietimas → paleidimas fone → šablonas, kabliukai, scenarijus → sąsaja → išdėstymai ir kompiliatorius → taisyklės ir taisymo ciklas → kadrų vertinimas → ataskaita.
+**`docs/d-planas.md`** – kiekvienas žingsnis su serverio ir sąsajos dalimi:
+- [x] D2. Pirmas DI kvietimas (`server/agent/llm.ts`)
+- [ ] D3. Paleidimas fone + sąsajos karkasas („New video with AI“)
+- [ ] D4. Šablono parinkimas · D5. Kabliukai · D6. Scenarijus
+- [ ] D7. Išdėstymas ir kompiliatorius · D8. Taisyklės ir taisymo ciklas
+- [ ] D9. Kadrų vertinimas (nebūtinas) · D10. Įgarsinimas, ataskaita, rezultatas
 
 ## E. Testavimas (BD 4 skyrius)
 
