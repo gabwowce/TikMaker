@@ -1,11 +1,10 @@
-import { sceneTimelineEnd } from "./sceneTimelineEnd";
 import {
   ActionIcon,
   Checkbox,
   Fieldset,
   Tabs,
-  TextInput,
   Textarea,
+  TextInput,
 } from "@mantine/core";
 import { useEffect, useState, type ReactNode } from "react";
 import {
@@ -17,6 +16,7 @@ import { fontSizes } from "../../video/typography/tokens";
 import { SfxSelect } from "../inspector/SfxSelect";
 import { VisualFieldsEditor } from "../inspector/VisualFieldsEditor";
 import { useProjectStore } from "../state/projectStore";
+import { HighlightFields } from "./HighlightFields";
 import {
   AudioPair,
   DeleteObjectButton,
@@ -33,6 +33,7 @@ import {
   EffectsEditor,
   LoopEffectEditor,
   renameEntranceField,
+  VisualEffectsEditor,
 } from "./ObjectEffects";
 import { KeyframeFields, VisualPoseFields } from "./ObjectKeyframes";
 import {
@@ -40,6 +41,7 @@ import {
   TextPlacementFields,
   TypographyFields,
 } from "./ObjectTextSettings";
+import { sceneTimelineEnd } from "./sceneTimelineEnd";
 import { parseSelection } from "./selectionId";
 
 type InspectorTab = "basic" | "effects" | "audio";
@@ -435,6 +437,12 @@ export function TimelineObjectPanel({
             />
             Pill (light background, dark text)
           </label>
+          <HighlightFields
+            text={line.text}
+            highlights={line.highlights}
+            highlightStyle={line.highlightStyle}
+            onChange={update}
+          />
         </Fieldset>
         <TypographyFields
           font={line.font}
@@ -666,6 +674,7 @@ export function TimelineObjectPanel({
           kenBurnsSpeed={visual.kenBurnsSpeed}
           onChange={update}
         />
+        <VisualEffectsEditor effects={visual.effects} onChange={update} />
       </>
     );
     audio = (

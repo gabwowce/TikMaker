@@ -1,11 +1,14 @@
 import { z } from "zod";
 import { analysisVocabulary } from "../knowledge/analysisVocabulary";
 import {
+  POSITION_MAX,
+  POSITION_MIN,
   backgroundGridSchema,
   backgroundIdSchema,
   blockTypeSchema,
   entrancePresetSchema,
   exitPresetSchema,
+  highlightStyleSchema,
   kenBurnsPresetSchema,
   layoutIdSchema,
   richTextFontSchema,
@@ -14,8 +17,7 @@ import {
   sceneTypeSchema,
   textCaseSchema,
   transitionPresetSchema,
-  POSITION_MAX,
-  POSITION_MIN,
+  visualEffectSchema,
 } from "./capabilities";
 import { visualConfigSchema } from "./visual";
 
@@ -82,6 +84,7 @@ const richHeadlineLineSchema = z.object({
   pill: z.boolean().optional(),
   color: z.string().optional(),
   highlights: z.array(z.string()).optional(),
+  highlightStyle: highlightStyleSchema.optional(),
   x: z.number().min(POSITION_MIN).max(POSITION_MAX).optional(),
   y: z.number().min(POSITION_MIN).max(POSITION_MAX).optional(),
   animation: entrancePresetSchema.optional(),
@@ -130,6 +133,7 @@ const positionedVisualSchema = z.object({
     .optional(),
   kenBurns: kenBurnsPresetSchema.optional(),
   kenBurnsSpeed: z.number().min(0.1).max(5).optional(),
+  effects: z.array(visualEffectSchema).max(3).optional(),
   lane: z.number().int().min(0).max(24).optional(),
   keyframes: z
     .array(
@@ -185,6 +189,7 @@ const baseSceneFields = {
     eyebrow: z.string().optional(),
     headline: z.string().optional(),
     highlights: z.array(z.string()).optional(),
+    highlightStyle: highlightStyleSchema.optional(),
     left: sideContentSchema.optional(),
     right: sideContentSchema.optional(),
     items: z.array(stepItemSchema).optional(),
@@ -256,12 +261,14 @@ export type LayoutId = z.infer<typeof layoutIdSchema>;
 export type SideContent = z.infer<typeof sideContentSchema>;
 export type StepItem = z.infer<typeof stepItemSchema>;
 export type RichHeadlineLine = z.infer<typeof richHeadlineLineSchema>;
+export type HighlightStyle = z.infer<typeof highlightStyleSchema>;
 export type RichTextSize = z.infer<typeof richTextSizeSchema>;
 export type RichTextFont = z.infer<typeof richTextFontSchema>;
 export type TextCase = z.infer<typeof textCaseSchema>;
 export type RichTextSplitBy = z.infer<typeof richTextSplitBySchema>;
 export type Block = z.infer<typeof blockSchema>;
 export type BlockType = z.infer<typeof blockTypeSchema>;
+export type VisualEffect = z.infer<typeof visualEffectSchema>;
 export type VisualPosition = {
   x: number;
   y: number;

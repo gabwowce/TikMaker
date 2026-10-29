@@ -63,6 +63,7 @@ export const kenBurnsPresetSchema = z.enum([
   "rotateCW",
   "rotateCCW",
 ]);
+export const visualEffectSchema = z.enum(["shadow", "glow", "outline"]);
 export const layoutIdSchema = z.enum([
   "visual-hero",
   "visual-top",
@@ -100,6 +101,7 @@ export const richTextFontSchema = z.enum([
 ]);
 export const textCaseSchema = z.enum(["upper", "lower", "none"]);
 export const richTextSplitBySchema = z.enum(["word", "letter", "line"]);
+export const highlightStyleSchema = z.enum(["pill", "color", "bold"]);
 export const sceneTypeSchema = z.enum([
   "hook-centered",
   "hook-visual",
@@ -114,7 +116,13 @@ export const sceneTypeSchema = z.enum([
 export const POSITION_MIN = -100;
 export const POSITION_MAX = 200;
 export const blockTypeSchema = z.enum(["text", "badge"]);
-export const screenAspectSchema = z.enum(["16:9", "16:10", "4:3", "1:1", "9:16"]);
+export const screenAspectSchema = z.enum([
+  "16:9",
+  "16:10",
+  "4:3",
+  "1:1",
+  "9:16",
+]);
 
 // Every visual element TikMaker can put into a scene: the "type" field of a
 // visual in visual.ts. Grouped like the folders in src/video/visuals/, so each
@@ -123,9 +131,24 @@ export const visualTypesByGroup = {
   assets: ["tool-logo", "tool-flow", "prop", "image"], // logos, library pictures, own images
   media: ["recording"], // own video or screen recording
   devices: ["browser", "screen", "phone"], // a frame around other content
-  data: ["stat-counter", "checklist", "checkpoint", "pricing-card", "app-mockup", "progress"],
+  data: [
+    "stat-counter",
+    "checklist",
+    "checkpoint",
+    "pricing-card",
+    "app-mockup",
+    "progress",
+  ],
   dev: ["keycap", "claude-cli", "terminal", "code-diff"],
-  diagrams: ["flow", "node-group", "stack", "grid", "highlight", "transform", "corner-props"],
+  diagrams: [
+    "flow",
+    "node-group",
+    "stack",
+    "grid",
+    "highlight",
+    "transform",
+    "corner-props",
+  ],
 } as const;
 export const visualTypeSchema = z.enum(
   Object.values(visualTypesByGroup).flat() as [string, ...string[]],

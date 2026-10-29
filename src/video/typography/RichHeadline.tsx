@@ -61,6 +61,7 @@ function RichHeadlineLineRow({
         entranceDuration={line.entranceDuration}
         splitDuration={line.splitDuration}
         highlights={line.highlights}
+        highlightStyle={line.highlightStyle}
         exit={resolvedExit}
       />
     </div>

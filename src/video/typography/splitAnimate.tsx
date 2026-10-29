@@ -1,8 +1,9 @@
-import { type CSSProperties, type ReactNode } from "react";
+import { Fragment, type CSSProperties, type ReactNode } from "react";
 import { useCurrentFrame, useVideoConfig } from "remotion";
-import type { EntrancePreset, ExitPreset } from "../../schema/scene";
+import type { EntrancePreset, ExitPreset, HighlightStyle } from "../../schema/scene";
 import { enter } from "../motion/entrances";
 import { exitStyle as computeExitStyle } from "../motion/exits";
+import { colors, fontFamilies } from "./tokens";
 
 export type SplitBy = "word" | "letter" | "line";
 export const WORD_STAGGER_FRAMES = 3;
@@ -103,8 +104,31 @@ function useEnterExitStyle(args: {
       undefined,
   };
 }
+// How a highlighted word is drawn (B2): a light box, the accent colour or a bolder font.
+const PILL_CLASS =
+  "inline bg-[#FFFFFF] text-[#171717] p-[0.05em_0.18em] rounded-md [box-decoration-break:clone] [-webkit-box-decoration-break:clone]";
+function highlightLook(highlight: HighlightStyle): { className?: string; style?: CSSProperties } {
+  if (highlight === "pill") return { className: PILL_CLASS };
+  if (highlight === "color") return { style: { color: colors.accent } };
+  return { style: { fontFamily: fontFamilies.clashBold } };
+}
+
+// Which characters of the text belong to a highlighted word. Case and
+// punctuation around a word are ignored: "apps!" matches the highlight "apps".
+export function highlightMask(text: string, highlights?: string[]): boolean[] {
+  const clean = (word: string) => word.toLowerCase().replace(/^[^\p{L}\p{N}]+|[^\p{L}\p{N}]+$/gu, "");
+  const wanted = new Set((highlights ?? []).map(clean).filter(Boolean));
+  const mask = new Array<boolean>(text.length).fill(false);
+  for (const match of text.matchAll(/\S+/g)) {
+    if (wanted.has(clean(match[0])))
+      mask.fill(true, match.index, match.index + match[0].length);
+  }
+  return mask;
+}
+
 type AnimatedUnitProps = {
-  highlighted?: boolean;
+  highlight?: HighlightStyle; // unset = plain
+  children?: ReactNode; // drawn instead of text (a whole line with highlighted words inside)
   text: string;
   delay: number;
   preset?: EntrancePreset;
@@ -120,7 +144,8 @@ export function AnimatedUnit({
   entranceDistance,
   entranceDuration,
   style: ownStyle,
-  highlighted = false,
+  highlight,
+  children,
   exit,
 }: AnimatedUnitProps) {
   const style = useEnterExitStyle({
@@ -130,15 +155,17 @@ export function AnimatedUnit({
     entranceDuration,
     exit,
   });
+  const look = highlight ? highlightLook(highlight) : {};
   return (
     <span
-      className={`whitespace-pre ${highlighted ? "inline bg-[#FFFFFF] text-[#171717] p-[0.05em_0.18em] rounded-md [box-decoration-break:clone] [-webkit-box-decoration-break:clone]" : "inline-block"}`}
+      className={`whitespace-pre ${look.className ?? "inline-block"}`}
       style={{
         ...ownStyle,
         ...style,
+        ...look.style,
       }}
     >
-      {text}
+      {children ?? text}
     </span>
   );
 }
@@ -151,6 +178,7 @@ type AnimatedSplitTextProps = {
   entranceDuration?: number;
   splitDuration?: number;
   highlights?: string[];
+  highlightStyle?: HighlightStyle;
   exit?: ExitConfig;
 };
 export function AnimatedSplitText({
@@ -162,13 +190,14 @@ export function AnimatedSplitText({
   entranceDuration,
   splitDuration,
   highlights,
+  highlightStyle = "pill",
   exit,
 }: AnimatedSplitTextProps) {
   const units = splitText(text, splitBy);
-  const pilled = new Set(
-    (splitBy === "word" ? (highlights ?? []) : []).map((word) =>
-      word.trim().toLowerCase(),
-    ),
+  const mask = highlightMask(text, highlights);
+  // where each unit starts in the text (units are consecutive pieces of it)
+  const starts = units.map((_, index) =>
+    units.slice(0, index).reduce((sum, unit) => sum + unit.length, 0),
   );
   const timing = splitTiming(
     splitBy,
@@ -186,10 +215,49 @@ export function AnimatedSplitText({
           preset={preset}
           entranceDistance={entranceDistance}
           entranceDuration={timing.unitEntrance}
-          highlighted={pilled.has(unit.trim().toLowerCase())}
+          highlight={
+            splitBy !== "line" && unit.trim() && mask[starts[index]]
+              ? highlightStyle
+              : undefined
+          }
           exit={exit}
-        />
+        >
+          {splitBy === "line" ? (
+            <HighlightedText text={unit} mask={mask} style={highlightStyle} />
+          ) : undefined}
+        </AnimatedUnit>
       ))}
+    </>
+  );
+}
+// A whole line drawn at once, with its highlighted words styled inside it.
+function HighlightedText({
+  text,
+  mask,
+  style,
+}: {
+  text: string;
+  mask: boolean[];
+  style: HighlightStyle;
+}) {
+  const parts: { text: string; on: boolean }[] = [];
+  [...text].forEach((char, index) => {
+    const on = mask[index] && char.trim() !== "";
+    const last = parts[parts.length - 1];
+    if (last && last.on === on) last.text += char;
+    else parts.push({ text: char, on });
+  });
+  return (
+    <>
+      {parts.map((part, index) => {
+        if (!part.on) return <Fragment key={index}>{part.text}</Fragment>;
+        const look = highlightLook(style);
+        return (
+          <span key={index} className={look.className} style={look.style}>
+            {part.text}
+          </span>
+        );
+      })}
     </>
   );
 }
