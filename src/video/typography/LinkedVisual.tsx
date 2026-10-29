@@ -14,6 +14,7 @@ import { exitStyle as computeExitStyle } from "../motion/exits";
 import { kenBurns as computeKenBurns } from "../motion/kenBurns";
 import { SFX_VOLUME, resolveEntranceSfx } from "../motion/sfxDefaults";
 import { VisualRenderer } from "../visuals/VisualRenderer";
+import { talkingHeadClipPath } from "../layout/talkingHeadMask";
 import { useVisualEffects } from "../visuals/visualEffects";
 const GLIDE_FRAMES = 18;
 const CUE_WINDOW_FRAMES = 30;
@@ -80,7 +81,15 @@ export function LinkedVisual({ group }: LinkedVisualProps) {
     return id ? getSfx(id)?.src : undefined;
   })();
   return (
-    <AbsoluteFill className="pointer-events-none">
+    <AbsoluteFill
+      className="pointer-events-none"
+      style={{
+        clipPath:
+          visual.type === "talking-head"
+            ? talkingHeadClipPath(visual.placement)
+            : undefined,
+      }}
+    >
       <div
         className={`absolute`}
         style={{

@@ -2,6 +2,7 @@ import { AbsoluteFill, useCurrentFrame } from "remotion";
 import type { PositionedVisualEntry } from "../../schema/scene";
 import { timelineLayerZIndex } from "../layout/layerOrder";
 import { fitPositionedVisual } from "../layout/layoutPresets";
+import { talkingHeadClipPath } from "../layout/talkingHeadMask";
 import { poseAtFrame } from "../layout/visualKeyframes";
 import { naturalVisualSize } from "../layout/visualMetrics";
 import { resolveExplicitSfx } from "../motion/sfxDefaults";
@@ -171,7 +172,7 @@ function VisualLayerEntry({
         {animated}
       </AbsoluteFill>
     );
-  return (
+  const placed = (
     <div
       className="absolute [transform:translate(-50%,_-50%)]"
       style={{
@@ -187,5 +188,19 @@ function VisualLayerEntry({
     >
       {animated}
     </div>
+  );
+  // A talking head is seen through its mask: a fixed region of the frame,
+  // so the clip moves and scales while the mask stays put.
+  const mask =
+    entry.visual.type === "talking-head"
+      ? talkingHeadClipPath(entry.visual.placement)
+      : undefined;
+  if (!mask) return placed;
+  return (
+    <AbsoluteFill
+      style={{ clipPath: mask, zIndex: timelineLayerZIndex(entry.lane) }}
+    >
+      {placed}
+    </AbsoluteFill>
   );
 }

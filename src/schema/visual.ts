@@ -47,6 +47,8 @@ export type VisualConfig =
       type: "talking-head";
       src: string;
       placement: TalkingHeadPlacement;
+      width?: number;
+      height?: number;
       startFrom?: number;
       endAt?: number;
       playbackRate?: number;
@@ -260,7 +262,9 @@ export const visualConfigSchema: z.ZodType<VisualConfig> = z.discriminatedUnion(
     z.object({
       type: z.literal("talking-head"),
       src: z.string(),
-      placement: talkingHeadPlacementSchema.default("circle-bl"),
+      placement: talkingHeadPlacementSchema.default("full"),
+      width: z.number().positive().optional(),
+      height: z.number().positive().optional(),
       startFrom: z.number().min(0).optional(),
       endAt: z.number().min(0).optional(),
       playbackRate: z.number().positive().optional(),

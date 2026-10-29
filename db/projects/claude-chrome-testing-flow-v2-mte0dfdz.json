@@ -179,7 +179,7 @@
             "exit": "fade",
             "delay": 61,
             "exitAt": 159,
-            "lane": 0
+            "lane": 2
           },
           {
             "id": "visual-mte153mc-checkpoint-1-mte4auna",
@@ -194,7 +194,7 @@
             "exit": "fade",
             "delay": 93,
             "exitAt": 159,
-            "lane": 2
+            "lane": 3
           },
           {
             "id": "visual-mte153mc-checkpoint-2-mte4auna",
@@ -228,7 +228,7 @@
             "exitDistance": 1280,
             "delay": 61,
             "exitAt": 95,
-            "lane": 1
+            "lane": 4
           },
           {
             "id": "visual-mtec98ik",
@@ -243,7 +243,7 @@
             "exit": "rollOut",
             "delay": 93,
             "exitAt": 127,
-            "lane": 3
+            "lane": 5
           },
           {
             "id": "visual-2ejpbti",
@@ -258,7 +258,7 @@
             "exit": "rollOut",
             "delay": 125,
             "exitAt": 159,
-            "lane": 1
+            "lane": 6
           },
           {
             "id": "visual-v9if2vx",
@@ -275,7 +275,7 @@
             "exitDuration": 28,
             "delay": 157,
             "exitAt": 191,
-            "lane": 5
+            "lane": 1
           }
         ]
       },
@@ -500,11 +500,13 @@
             "text": "DEMO",
             "size": "label",
             "letterSpacing": 4,
-            "color": "#FF7024"
+            "color": "#FF7024",
+            "lane": 0
           },
           {
             "text": "Test the signup flow\nand tell me what breaks.",
-            "size": "title"
+            "size": "title",
+            "lane": 1
           }
         ]
       },
@@ -594,7 +596,7 @@
   "captions": {
     "enabled": true
   },
-  "savedAt": 1791447796590,
+  "savedAt": 1793252669016,
   "audioClips": [
     {
       "id": "audio-mtfmk42a-v4xm",

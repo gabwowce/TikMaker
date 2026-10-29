@@ -82,5 +82,19 @@
     "file": "parduotuve-ir-apskaita-mvse8uuc.png",
     "src": "/assets/custom/parduotuve-ir-apskaita-mvse8uuc.png",
     "kind": "image"
+  },
+  {
+    "id": "mirelo-generation-1-variation-1-mix-video-mvt5axr1",
+    "label": "mirelo-generation-1-variation-1-mix-video",
+    "file": "mirelo-generation-1-variation-1-mix-video-mvt5axr1.mp4",
+    "src": "/assets/custom/mirelo-generation-1-variation-1-mix-video-mvt5axr1.mp4",
+    "kind": "video"
+  },
+  {
+    "id": "mirelo-generation-1-variation-1-mix-video-mvt5kaoq",
+    "label": "mirelo-generation-1-variation-1-mix-video",
+    "file": "mirelo-generation-1-variation-1-mix-video-mvt5kaoq.mp4",
+    "src": "/assets/custom/mirelo-generation-1-variation-1-mix-video-mvt5kaoq.mp4",
+    "kind": "video"
   }
 ]

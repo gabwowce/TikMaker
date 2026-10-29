@@ -1,5 +1,5 @@
 import type { VisualConfig } from "../../schema/visual";
-import { fontSizes } from "../typography/tokens";
+import { fontSizes, videoDefaults } from "../typography/tokens";
 import { MONO_SIZE } from "../visuals/dev/devText";
 import { screenFrameSize } from "../visuals/devices/screenFrameSize";
 export const TRANSFORM_ZOOM = 1.04;
@@ -21,6 +21,11 @@ export function naturalVisualSize(visual: VisualConfig): Size {
       return visual.width && visual.height
         ? { width: visual.width, height: visual.height }
         : { width: 700, height: 700 };
+    case "talking-head":
+      // The clip's own size, like an image; a face clip is usually 9:16.
+      return visual.width && visual.height
+        ? { width: visual.width, height: visual.height }
+        : { width: videoDefaults.width, height: videoDefaults.height };
     case "recording":
       if (visual.frame === "phone") return { width: 460, height: 940 };
       if (visual.frame === "plain") return screenFrameSize(visual.aspect);
@@ -131,7 +136,6 @@ export function naturalVisualSize(visual: VisualConfig): Size {
       };
     }
     case "corner-props":
-    case "talking-head":
       return { width: 1080, height: 1920 };
     default:
       return { width: 400, height: 400 };

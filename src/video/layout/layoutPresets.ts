@@ -3,6 +3,7 @@ import type { LayoutId, Scene } from "../../schema/scene";
 import type { VisualConfig } from "../../schema/visual";
 import { safeArea } from "../typography/tokens";
 import { MAX_LINE_CHARS } from "../visuals/dev/devText";
+import { talkingHeadCoverPose } from "./talkingHeadMask";
 import { fitScale, naturalVisualSize, type Size } from "./visualMetrics";
 export type TextZone = "top" | "center" | "bottom";
 export const SAFE_CONTENT_WIDTH = 1080 - safeArea.left - safeArea.right;
@@ -97,6 +98,8 @@ export function fitPositionedVisual(
 ): number {
   if (typeof explicitScale === "number") return explicitScale;
   const size = naturalVisualSize(visual);
+  if (visual.type === "talking-head")
+    return talkingHeadCoverPose(visual.placement, size).scale;
   return Math.min(1, SAFE_CONTENT_WIDTH / size.width);
 }
 export function autoScale(visual: VisualConfig, preset: LayoutPreset): number {

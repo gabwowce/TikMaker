@@ -4,6 +4,7 @@ import {
   talkingHeadPlacementSchema,
 } from "../../schema/capabilities";
 import type { VisualConfig } from "../../schema/visual";
+import { readVideoSize } from "../../utils/imageSize";
 import { ImportPicker } from "./MediaInputs";
 type Props = { visual: VisualConfig; onChange: (visual: VisualConfig) => void };
 export function RecordingFields({ visual, onChange }: Props) {
@@ -179,9 +180,17 @@ export function RecordingFields({ visual, onChange }: Props) {
         <ImportPicker
           kind="video"
           src={visual.src}
-          onChange={(src) => onChange({ ...visual, src })}
+          onChange={(src) => {
+            onChange({ ...visual, src, width: undefined, height: undefined });
+            readVideoSize(src)
+              .then((size) => onChange({ ...visual, src, ...size }))
+              .catch(() => {}); // not loadable yet: keeps the 9:16 default box
+          }}
         />
-        <div className="text-[10px] text-editor-muted">Where the face sits</div>
+        <div className="text-[10px] text-editor-muted">
+          Mask — the part of the frame the video shows through. Move and scale
+          the video itself with Position below.
+        </div>
         <NativeSelect
           className="w-full"
           value={visual.placement}
@@ -205,7 +214,7 @@ export function RecordingFields({ visual, onChange }: Props) {
 }
 
 const PLACEMENT_LABELS: Record<string, string> = {
-  full: "full screen",
+  full: "no mask · full screen",
   top: "top half",
   bottom: "bottom half",
   "circle-tl": "circle · top left",

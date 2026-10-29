@@ -1,6 +1,7 @@
 import { Img } from "remotion";
 import type { VisualConfig } from "../../schema/visual";
 import { assetUrl } from "../../utils/assetUrl";
+import { naturalVisualSize } from "../layout/visualMetrics";
 import { PropAsset } from "./assets/PropAsset";
 import { ToolFlow } from "./assets/ToolFlow";
 import { ToolLogo } from "./assets/ToolLogo";
@@ -25,7 +26,6 @@ import { NodeGroup } from "./diagrams/NodeGroup";
 import { Stack } from "./diagrams/Stack";
 import { Transform } from "./diagrams/Transform";
 import { ScreenRecording } from "./media/ScreenRecording";
-import { TalkingHead } from "./media/TalkingHead";
 type FrameContentProps = {
   visual: VisualConfig;
 };
@@ -85,13 +85,15 @@ export function VisualRenderer({ visual }: VisualRendererProps) {
     }
     case "talking-head":
       return (
-        <TalkingHead
-          src={visual.src}
-          placement={visual.placement}
-          startFrom={visual.startFrom}
-          endAt={visual.endAt}
-          playbackRate={visual.playbackRate}
-        />
+        // The clip at its own size; its mask is applied by the layer.
+        <div style={naturalVisualSize(visual)}>
+          <ScreenRecording
+            src={visual.src}
+            startFrom={visual.startFrom}
+            endAt={visual.endAt}
+            playbackRate={visual.playbackRate}
+          />
+        </div>
       );
     case "browser":
       return (

@@ -24,7 +24,10 @@ export function ScreenRecording({
   crop,
 }: ScreenRecordingProps) {
   const { fps } = useVideoConfig();
-  const [failed, setFailed] = useState(false);
+  // Remembers WHICH clip failed, not just that one did: picking or uploading
+  // another file must try again, without reloading the editor.
+  const [failedSrc, setFailedSrc] = useState<string>();
+  const failed = failedSrc === src;
   const startFromFrames = Math.round(startFrom * fps);
   const endAtFramesRaw = endAt ? Math.round(endAt * fps) : undefined;
   const endAtFrames =
@@ -39,7 +42,7 @@ export function ScreenRecording({
     ) : (
       <OffthreadVideo
         src={assetUrl(src)}
-        onError={() => setFailed(true)}
+        onError={() => setFailedSrc(src)}
         startFrom={startFromFrames}
         endAt={endAtFrames}
         playbackRate={playbackRate}

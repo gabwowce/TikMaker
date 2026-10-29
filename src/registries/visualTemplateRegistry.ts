@@ -80,11 +80,11 @@ export const visualTemplateRegistry: VisualTemplateDefinition[] = [
     category: "media",
     label: "Talking Head",
     description:
-      "Your face on camera — full screen, half the frame, or a circle in a corner.",
+      "Your face on camera, seen through a mask — full screen, half the frame, or a circle in a corner.",
     build: () => ({
       type: "talking-head",
       src: "assets/recordings/placeholder.mp4",
-      placement: "circle-bl",
+      placement: "full",
     }),
   },
   {

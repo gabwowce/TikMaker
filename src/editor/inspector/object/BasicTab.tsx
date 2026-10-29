@@ -1,6 +1,10 @@
 import { Checkbox, Fieldset, Textarea, TextInput } from "@mantine/core";
 import { projectDurationInFrames } from "../../../utils/duration";
 import { fontSizes } from "../../../video/typography/tokens";
+import type { VisualConfig } from "../../../schema/visual";
+import { talkingHeadCoverPose } from "../../../video/layout/talkingHeadMask";
+import { naturalVisualSize } from "../../../video/layout/visualMetrics";
+import { isFullBleedVisual } from "../../../video/visuals/isFullBleed";
 import { useProjectStore } from "../../state/projectStore";
 import { HighlightFields } from "../../timeline/HighlightFields";
 import {
@@ -158,6 +162,28 @@ function TextBlockBasic({ object }: Of<"text-block">) {
   );
 }
 
+// A new mask (or a newly read clip size) re-centres a talking head on its mask
+// and lets auto-fit cover it again; otherwise the clip would stay where the
+// old mask was and show through the new one off-centre or not at all.
+function reframeTalkingHead(
+  previous: VisualConfig,
+  next: VisualConfig,
+): { x?: number; y?: number; scale?: undefined } {
+  if (previous.type !== "talking-head" || next.type !== "talking-head")
+    return {};
+  if (
+    previous.placement === next.placement &&
+    previous.width === next.width &&
+    previous.height === next.height
+  )
+    return {};
+  const { x, y } = talkingHeadCoverPose(
+    next.placement,
+    naturalVisualSize(next),
+  );
+  return { x, y, scale: undefined };
+}
+
 // Visual: … (picture, logo, recording, diagram …)
 function VisualBasic({ object }: Of<"visual">) {
   const { visual, update, scene, sceneFrom, sceneEnd, max } = object;
@@ -166,21 +192,35 @@ function VisualBasic({ object }: Of<"visual">) {
       <Fieldset legend="Content">
         <VisualFieldsEditor
           visual={visual.visual}
-          onChange={(nextVisual) => update({ visual: nextVisual })}
+          onChange={(nextVisual) =>
+            update({
+              visual: nextVisual,
+              ...reframeTalkingHead(visual.visual, nextVisual),
+            })
+          }
         />
       </Fieldset>
-      <VisualPoseFields
-        sceneId={scene.id}
-        entry={visual}
-        sceneFrom={sceneFrom}
-        onChange={(patch) => update(patch)}
-      />
-      <KeyframeFields
-        sceneId={scene.id}
-        entry={visual}
-        sceneFrom={sceneFrom}
-        max={max}
-      />
+      {isFullBleedVisual(visual.visual) ? (
+        <div className="text-[11px] text-editor-muted mb-3">
+          This visual places itself against the whole frame, so it has no
+          position or scale of its own.
+        </div>
+      ) : (
+        <>
+          <VisualPoseFields
+            sceneId={scene.id}
+            entry={visual}
+            sceneFrom={sceneFrom}
+            onChange={(patch) => update(patch)}
+          />
+          <KeyframeFields
+            sceneId={scene.id}
+            entry={visual}
+            sceneFrom={sceneFrom}
+            max={max}
+          />
+        </>
+      )}
       <TimingFields
         start={visual.delay ?? 0}
         end={visual.exitAt ?? sceneEnd}
