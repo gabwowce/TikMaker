@@ -3,6 +3,7 @@ import type {
   ExitPreset,
   KenBurnsPreset,
   Scene,
+  VisualEffect,
 } from "../schema/scene";
 import type { VisualConfig } from "../schema/visual";
 import { fitPositionedVisual } from "../video/layout/layoutPresets";
@@ -22,6 +23,7 @@ export type LinkMotion = {
   entranceDistance?: number;
   kenBurns?: KenBurnsPreset;
   kenBurnsSpeed?: number;
+  effects?: VisualEffect[];
   sfx?: string;
   exit?: ExitPreset;
   exitDuration?: number;
@@ -66,6 +68,7 @@ function layerSources(scene: Scene): PoseSource[] {
         entranceDistance: entry.entranceDistance,
         kenBurns: entry.kenBurns,
         kenBurnsSpeed: entry.kenBurnsSpeed,
+        effects: entry.effects,
         sfx: entry.sfx,
       },
       motionOut: {

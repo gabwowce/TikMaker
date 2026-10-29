@@ -591,7 +591,10 @@
       "type": "takeaway"
     }
   ],
-  "savedAt": 1790416344473,
+  "captions": {
+    "enabled": true
+  },
+  "savedAt": 1791447796590,
   "audioClips": [
     {
       "id": "audio-mtfmk42a-v4xm",

@@ -1,13 +1,15 @@
-import { NativeSelect } from "@mantine/core";
+import { Checkbox, NativeSelect } from "@mantine/core";
 import {
   entrancePresetSchema,
   exitPresetSchema,
   kenBurnsPresetSchema,
+  visualEffectSchema,
 } from "../../schema/capabilities";
 import type {
   EntrancePreset,
   ExitPreset,
   KenBurnsPreset,
+  VisualEffect,
 } from "../../schema/scene";
 import { DurationSlider, SliderField } from "./ObjectControls";
 
@@ -119,7 +121,36 @@ export function LoopEffectEditor({
     </>
   );
 }
-
+export function VisualEffectsEditor({
+  effects,
+  onChange,
+}: {
+  effects?: VisualEffect[];
+  onChange: (patch: { effects?: VisualEffect[] }) => void;
+}) {
+  return (
+    <Checkbox.Group
+      label="Look"
+      value={effects ?? []}
+      onChange={(value) =>
+        onChange({
+          effects: value.length ? (value as VisualEffect[]) : undefined,
+        })
+      }
+      className="mb-3"
+    >
+      <div className="flex gap-3 mt-1">
+        {visualEffectSchema.options.map((effect) => (
+          <Checkbox
+            key={effect}
+            value={effect}
+            label={friendlyEffect(effect)}
+          />
+        ))}
+      </div>
+    </Checkbox.Group>
+  );
+}
 export const CYCLIC_KEN_BURNS = new Set<string>([
   "float",
   "rotateCW",

@@ -85,7 +85,6 @@ const richHeadlineLineSchema = z.object({
   color: z.string().optional(),
   highlights: z.array(z.string()).optional(),
   highlightStyle: highlightStyleSchema.optional(),
-  // unset = the accent orange (color) or a white box (pill)
   highlightColor: z.string().optional(),
   x: z.number().min(POSITION_MIN).max(POSITION_MAX).optional(),
   y: z.number().min(POSITION_MIN).max(POSITION_MAX).optional(),

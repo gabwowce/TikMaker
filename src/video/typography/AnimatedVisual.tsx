@@ -11,6 +11,7 @@ import type {
   EntrancePreset,
   ExitPreset,
   KenBurnsPreset,
+  VisualEffect,
 } from "../../schema/scene";
 import type { VisualConfig } from "../../schema/visual";
 import type { VisualPose } from "../../utils/visualLinks";
@@ -20,6 +21,7 @@ import { exitStyle as computeExitStyle } from "../motion/exits";
 import { kenBurns as computeKenBurns } from "../motion/kenBurns";
 import { SFX_VOLUME } from "../motion/sfxDefaults";
 import { VisualRenderer } from "../visuals/VisualRenderer";
+import { effectsFilter } from "../visuals/visualEffects";
 type AnimatedVisualProps = {
   visual: VisualConfig;
   entrance?: EntrancePreset;
@@ -32,6 +34,7 @@ type AnimatedVisualProps = {
   exitDistance?: number;
   kenBurns?: KenBurnsPreset;
   kenBurnsSpeed?: number;
+  effects?: VisualEffect[];
   durationSeconds: number;
   style?: CSSProperties;
   ownScale?: number;
@@ -158,6 +161,7 @@ export function AnimatedVisual({
   entranceDistance,
   exitDistance,
   kenBurns,
+  effects,
   kenBurnsSpeed,
   durationSeconds,
   style,
@@ -230,6 +234,7 @@ export function AnimatedVisual({
         ...style,
         opacity: enterResult.opacity * exitResult.opacity,
         transform: transform || undefined,
+        filter: effectsFilter(effects, ownScale),
       }}
     >
       <VisualRenderer visual={visual} />

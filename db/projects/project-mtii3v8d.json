@@ -6,7 +6,6 @@
   "width": 1080,
   "height": 1920,
   "storyPlan": {
-    "targetDuration": 30,
     "premise": "Claude Code can test a web app like a real user through Google Chrome.",
     "audience": "Developers and AI app builders"
   },
@@ -34,29 +33,32 @@
           {
             "text": "Tired of testing apps",
             "size": "headline",
-            "x": 50,
-            "y": 38,
+            "pill": true,
+            "color": "#171717",
+            "highlightStyle": "bold",
+            "x": 52.58426966292134,
+            "y": 40.581542351453855,
             "delay": 0,
             "exitAt": 49,
             "exit": "slideLeft",
             "exitDuration": 12,
             "splitDuration": 29,
-            "lane": 1
+            "lane": 0
           },
           {
             "text": "manually?",
             "size": "headline",
             "pill": true,
             "color": "#171717",
-            "x": 50,
-            "y": 44.5,
+            "x": 52.58426966292134,
+            "y": 48.040455120101136,
             "delay": 29,
             "exitAt": 49,
             "exit": "slideLeft",
             "exitDuration": 9,
             "splitBy": "letter",
             "splitDuration": 13,
-            "lane": 2
+            "lane": 1
           }
         ],
         "blocks": [],
@@ -67,8 +69,8 @@
               "type": "tool-logo",
               "tool": "claude-ai-symbol"
             },
-            "x": 12.037037037037036,
-            "y": 5.827067669172932,
+            "x": 45.74490220557636,
+            "y": 11.458333333333332,
             "scale": 2.5,
             "entrance": "none",
             "entranceDuration": 1,
@@ -79,7 +81,7 @@
             "exitAt": 121,
             "kenBurns": "rotateCW",
             "kenBurnsSpeed": 0.3,
-            "lane": 3,
+            "lane": 2,
             "keyframes": [
               {
                 "id": "kf-8ggcuvg",
@@ -112,7 +114,7 @@
             "exitAt": 121,
             "kenBurns": "rotateCCW",
             "kenBurnsSpeed": 0.3,
-            "lane": 4,
+            "lane": 3,
             "keyframes": [
               {
                 "id": "kf-c15ozgr",
@@ -192,6 +194,7 @@
             "sizePx": 108,
             "pill": true,
             "color": "#171717",
+            "highlightStyle": "color",
             "x": 50.163132137031,
             "y": 71,
             "delay": 42,
@@ -721,7 +724,10 @@
       "type": "takeaway"
     }
   ],
-  "savedAt": 1790416775445,
+  "captions": {
+    "enabled": false
+  },
+  "savedAt": 1793252347978,
   "audioClips": [
     {
       "id": "audio-mtimh5cl-pd7k",

@@ -40,5 +40,47 @@
     "file": "0901-4-mtkcjhrp.mp4",
     "src": "/assets/custom/0901-4-mtkcjhrp.mp4",
     "kind": "video"
+  },
+  {
+    "id": "parduotuve-ir-apskaita-mvs8590m",
+    "label": "parduotuve-ir-apskaita",
+    "file": "parduotuve-ir-apskaita-mvs8590m.png",
+    "src": "/assets/custom/parduotuve-ir-apskaita-mvs8590m.png",
+    "kind": "image"
+  },
+  {
+    "id": "image-1793190427176-mvsdw0mo",
+    "label": "image-1793190427176",
+    "file": "image-1793190427176-mvsdw0mo.png",
+    "src": "/assets/custom/image-1793190427176-mvsdw0mo.png",
+    "kind": "image"
+  },
+  {
+    "id": "ziniu-baze-mvsdwkbt",
+    "label": "ziniu-baze",
+    "file": "ziniu-baze-mvsdwkbt.png",
+    "src": "/assets/custom/ziniu-baze-mvsdwkbt.png",
+    "kind": "image"
+  },
+  {
+    "id": "sunlit-minimalist-workspace-with-laptop-and-plants-mvsdxuaj",
+    "label": "Sunlit Minimalist Workspace with Laptop and Plants",
+    "file": "sunlit-minimalist-workspace-with-laptop-and-plants-mvsdxuaj.png",
+    "src": "/assets/custom/sunlit-minimalist-workspace-with-laptop-and-plants-mvsdxuaj.png",
+    "kind": "image"
+  },
+  {
+    "id": "chatgpt-image-sep-27-2026-08-08-35-pm-upscayl-2x-upscayl-standard-4x-mvsdyeos",
+    "label": "ChatGPT Image Sep 27, 2026, 08_08_35 PM_upscayl_2x_upscayl-standard-4x",
+    "file": "chatgpt-image-sep-27-2026-08-08-35-pm-upscayl-2x-upscayl-standard-4x-mvsdyeos.png",
+    "src": "/assets/custom/chatgpt-image-sep-27-2026-08-08-35-pm-upscayl-2x-upscayl-standard-4x-mvsdyeos.png",
+    "kind": "image"
+  },
+  {
+    "id": "parduotuve-ir-apskaita-mvse8uuc",
+    "label": "parduotuve-ir-apskaita",
+    "file": "parduotuve-ir-apskaita-mvse8uuc.png",
+    "src": "/assets/custom/parduotuve-ir-apskaita-mvse8uuc.png",
+    "kind": "image"
   }
 ]

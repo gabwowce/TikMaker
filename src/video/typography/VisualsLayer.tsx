@@ -140,6 +140,7 @@ function VisualLayerEntry({
       }
       kenBurns={entry.kenBurns}
       kenBurnsSpeed={entry.kenBurnsSpeed}
+      effects={entry.effects}
       durationSeconds={durationSeconds}
       sfx={resolveExplicitSfx(entry.sfx)}
       exitSfx={resolveExplicitSfx(entry.exitSfx)}
@@ -179,7 +180,9 @@ function VisualLayerEntry({
         zIndex: timelineLayerZIndex(entry.lane),
         // An image has no size of its own: give it its box, or it shrinks to
         // the space left between its x and the frame edge.
-        ...(entry.visual.type === "image" ? naturalVisualSize(entry.visual) : {}),
+        ...(entry.visual.type === "image"
+          ? naturalVisualSize(entry.visual)
+          : {}),
       }}
     >
       {animated}
