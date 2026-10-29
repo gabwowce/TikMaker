@@ -133,13 +133,23 @@ export const screenAspectSchema = z.enum([
   "1:1",
   "9:16",
 ]);
+// Where a talking head (B5) sits. Full-bleed: placed against the whole frame.
+export const talkingHeadPlacementSchema = z.enum([
+  "full",
+  "top",
+  "bottom",
+  "circle-tl",
+  "circle-tr",
+  "circle-bl",
+  "circle-br",
+]);
 
 // Every visual element TikMaker can put into a scene: the "type" field of a
 // visual in visual.ts. Grouped like the folders in src/video/visuals/, so each
 // group says what kind of element it is.
 export const visualTypesByGroup = {
   assets: ["tool-logo", "tool-flow", "prop", "image"], // logos, library pictures, own images
-  media: ["recording"], // own video or screen recording
+  media: ["recording", "talking-head"], // own video or screen recording, own face
   devices: ["browser", "screen", "phone"], // a frame around other content
   data: [
     "stat-counter",

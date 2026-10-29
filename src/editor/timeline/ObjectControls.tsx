@@ -318,6 +318,63 @@ export function Field({ label, children }: FieldProps) {
   );
 }
 
+export const COLOR_SWATCHES = [
+  "#FFFFFF",
+  "#171717",
+  "#FF7024",
+  "#FFD166",
+  "#4ADE80",
+  "#60A5FA",
+  "#F472B6",
+];
+
+export type ColorFieldProps = {
+  label: string;
+  value: string | undefined;
+  placeholder: string;
+  onChange: (color: string | undefined) => void;
+};
+
+// Swatches + a hex field. The one colour picker for text and effects alike.
+export function ColorField({
+  label,
+  value,
+  placeholder,
+  onChange,
+}: ColorFieldProps) {
+  return (
+    <div className="mb-3">
+      <div className="text-[10px] text-editor-muted uppercase [letter-spacing:.05em]">
+        {label}
+      </div>
+      <div className="flex gap-1.5 items-center flex-wrap">
+        {COLOR_SWATCHES.map((swatch) => (
+          <Button
+            variant="default"
+            key={swatch}
+            aria-label={swatch}
+            onClick={() => onChange(swatch)}
+            className={`w-5.5 ${value?.toUpperCase() === swatch ? "[border:2px_solid_#FF7024]" : "[border:2px_solid_rgba(255,255,255,0.18)]"}`}
+            style={{
+              background: swatch,
+            }}
+          />
+        ))}
+        <TextInput
+          value={value ?? ""}
+          placeholder={placeholder}
+          spellCheck={false}
+          onChange={(event) => {
+            const next = event.target.value.trim();
+            onChange(next === "" ? undefined : next);
+          }}
+          className="w-24"
+        />
+      </div>
+    </div>
+  );
+}
+
 export function EmptyTab() {
   return (
     <div className="p-[24px_8px] text-editor-muted text-center text-[11px]">

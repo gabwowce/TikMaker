@@ -68,8 +68,8 @@
       "todo": "B1"
     },
     "talking-head": {
-      "status": "no",
-      "todo": "B5"
+      "status": "partly",
+      "tikmaker": "visual talking-head (own video: full, top/bottom half, circle in a corner)"
     },
     "video": {
       "status": "partly",
@@ -209,14 +209,12 @@
   },
   "visualEffect": {
     "glow": {
-      "status": "partly",
-      "tikmaker": "only as background (orange-glow), not on elements",
-      "todo": "B4"
+      "status": "yes",
+      "tikmaker": "layer effect glow (colour, opacity)"
     },
     "shadow": {
-      "status": "partly",
-      "tikmaker": "built into some visuals, cannot be set",
-      "todo": "B4"
+      "status": "yes",
+      "tikmaker": "layer effect shadow (colour, opacity)"
     },
     "blur-background": {
       "status": "no"
@@ -226,8 +224,8 @@
       "tikmaker": "visual highlight (box / circle)"
     },
     "outline": {
-      "status": "no",
-      "todo": "B4"
+      "status": "yes",
+      "tikmaker": "layer effect outline (colour, opacity)"
     },
     "flash": {
       "status": "no"

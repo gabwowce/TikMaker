@@ -11,8 +11,8 @@ export function visualTimelinePreview(
   custom: CustomAsset[],
 ): TimelinePreview {
   if (visual.type === "image") return { src: visual.src, label: "image" };
-  if (visual.type === "recording")
-    return { src: visual.src, video: true, label: "recording" };
+  if (visual.type === "recording" || visual.type === "talking-head")
+    return { src: visual.src, video: true, label: visual.type };
   if (visual.type === "prop" || visual.type === "tool-logo") {
     const key =
       visual.type === "prop" ? `prop:${visual.asset}` : `tool:${visual.tool}`;

@@ -112,6 +112,11 @@ const richHeadlineLineSchema = z.object({
   sfx: z.string().optional(),
   sfxAt: z.number().min(0).optional(),
 });
+const visualEffectEntrySchema = z.object({
+  type: visualEffectSchema,
+  color: z.string().optional(),
+  opacity: z.number().min(0).max(1).optional(),
+});
 const positionedVisualSchema = z.object({
   id: z.string(),
   visual: visualConfigSchema,
@@ -143,7 +148,7 @@ const positionedVisualSchema = z.object({
     .optional(),
   kenBurns: kenBurnsPresetSchema.optional(),
   kenBurnsSpeed: z.number().min(0.1).max(5).optional(),
-  effects: z.array(visualEffectSchema).max(3).optional(),
+  effects: z.array(visualEffectEntrySchema).max(3).optional(),
   lane: z.number().int().min(0).max(24).optional(),
   keyframes: z
     .array(
@@ -278,7 +283,8 @@ export type TextCase = z.infer<typeof textCaseSchema>;
 export type RichTextSplitBy = z.infer<typeof richTextSplitBySchema>;
 export type Block = z.infer<typeof blockSchema>;
 export type BlockType = z.infer<typeof blockTypeSchema>;
-export type VisualEffect = z.infer<typeof visualEffectSchema>;
+export type VisualEffectType = z.infer<typeof visualEffectSchema>;
+export type VisualEffect = z.infer<typeof visualEffectEntrySchema>;
 export type VisualPosition = {
   x: number;
   y: number;

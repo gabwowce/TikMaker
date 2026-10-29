@@ -1,6 +1,7 @@
 import { z } from "zod";
-import { screenAspectSchema } from "./capabilities";
+import { screenAspectSchema, talkingHeadPlacementSchema } from "./capabilities";
 import type { ScreenAspect } from "../video/visuals/devices/screenFrameSize";
+export type TalkingHeadPlacement = z.infer<typeof talkingHeadPlacementSchema>;
 export const toolIdSchema = z.string();
 export const propIdSchema = z.string();
 export type VisualConfig =
@@ -41,6 +42,14 @@ export type VisualConfig =
       url?: string;
       title?: string;
       tabs?: string[];
+    }
+  | {
+      type: "talking-head";
+      src: string;
+      placement: TalkingHeadPlacement;
+      startFrom?: number;
+      endAt?: number;
+      playbackRate?: number;
     }
   | {
       type: "browser";
@@ -247,6 +256,14 @@ export const visualConfigSchema: z.ZodType<VisualConfig> = z.discriminatedUnion(
       url: z.string().optional(),
       title: z.string().optional(),
       tabs: z.array(z.string()).max(3).optional(),
+    }),
+    z.object({
+      type: z.literal("talking-head"),
+      src: z.string(),
+      placement: talkingHeadPlacementSchema.default("circle-bl"),
+      startFrom: z.number().min(0).optional(),
+      endAt: z.number().min(0).optional(),
+      playbackRate: z.number().positive().optional(),
     }),
     z.object({
       type: z.literal("browser"),

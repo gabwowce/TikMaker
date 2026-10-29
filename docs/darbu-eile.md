@@ -32,8 +32,8 @@ Po kiekvieno punkto: papildyti `capabilities.ts` ir vertimo lentelę, paleisti `
 | - [x] B1 | Patikrinti savų paveikslėlių importą (iliustracijos, nuotraukos) | iliustracijos 13 %, nuotraukos 5 % elementų | patikra |
 | - [x] B2 | Paryškinimo stilius: dabar tik „pill“ → + spalva ir pusjuodis; redaktoriuje paryškinamų žodžių ir stiliaus pasirinkimas (dabar nėra) | spalva 17 %, pusjuodis 11 %, pill 2 % teksto blokų | vidutinis |
 | - [x] B3 | Video fonas (`custom` fonas + `video`), plačiam video / paveikslėliui – fokusas X / Y ir priartinimas | video fone 20 % scenų | mažas |
-| - [ ] B4 | Efektai elementams: šešėlis / švytėjimas / kontūras | šešėlis 58 %, švytėjimas 13 %, kontūras 12 % efektų | vidutinis |
-| - [ ] B5 | Kalbančios galvos komponentas: apskritimo rėmelis + padėtys (visas ekranas, pusė viršuje / apačioje, apskritimas 4 kampuose) | talking-head 4 % elementų; agentas siūlo, kai idėjoje pažymėta „Su veidu“ | mažas–vidutinis |
+| - [x] B4 | Efektai elementams: šešėlis / švytėjimas / kontūras | šešėlis 58 %, švytėjimas 13 %, kontūras 12 % efektų | vidutinis |
+| - [x] B5 | Kalbančios galvos komponentas: apskritimo rėmelis + padėtys (visas ekranas, pusė viršuje / apačioje, apskritimas 4 kampuose) | talking-head 4 % elementų; agentas siūlo, kai idėjoje pažymėta „Su veidu“ | mažas–vidutinis |
 | - [ ] B6 | „Draw-on“: linijos ir apibraukimai nusipiešia | draw-on 3 % atsiradimų (diagramos) | mažas |
 | - [ ] B7 | Subtitrų stiliai (šriftas, spalva, kontūras) | subtitrai 67 % video | mažas |
 | - [ ] B8 | `tool-logo` → bendras „ikona / logotipas“ su bibliotekos kategorijomis | ikonos 13 % elementų | mažas |

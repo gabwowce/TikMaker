@@ -21,7 +21,7 @@ import { exitStyle as computeExitStyle } from "../motion/exits";
 import { kenBurns as computeKenBurns } from "../motion/kenBurns";
 import { SFX_VOLUME } from "../motion/sfxDefaults";
 import { VisualRenderer } from "../visuals/VisualRenderer";
-import { effectsFilter } from "../visuals/visualEffects";
+import { useVisualEffects } from "../visuals/visualEffects";
 type AnimatedVisualProps = {
   visual: VisualConfig;
   entrance?: EntrancePreset;
@@ -211,6 +211,7 @@ export function AnimatedVisual({
     seed: driftSeed,
     speed: kenBurnsSpeed,
   });
+  const look = useVisualEffects(effects, ownScale);
   const transform =
     `${enterResult.transform} ${kenBurnsStyle.transform ?? ""} ${exitResult.transform} scale(${ownScale})`.trim();
   const sfxSrc = sfx ? getSfx(sfx)?.src : undefined;
@@ -234,9 +235,10 @@ export function AnimatedVisual({
         ...style,
         opacity: enterResult.opacity * exitResult.opacity,
         transform: transform || undefined,
-        filter: effectsFilter(effects, ownScale),
+        filter: look.filter,
       }}
     >
+      {look.defs}
       <VisualRenderer visual={visual} />
       {sfxSrc ? (
         <Sequence

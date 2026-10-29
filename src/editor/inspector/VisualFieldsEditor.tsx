@@ -123,6 +123,7 @@ export function VisualFieldsEditor({
         />
       );
     case "recording":
+    case "talking-head":
       return <RecordingFields visual={visual} onChange={onChange} />;
     case "browser":
     case "phone":

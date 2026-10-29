@@ -18,17 +18,7 @@ import {
   TEXT_FONT_OPTIONS,
 } from "../../video/typography/textStyle";
 import { useProjectStore } from "../state/projectStore";
-import { Field, SliderField } from "./ObjectControls";
-
-export const TEXT_COLOR_SWATCHES = [
-  "#FFFFFF",
-  "#171717",
-  "#FF7024",
-  "#FFD166",
-  "#4ADE80",
-  "#60A5FA",
-  "#F472B6",
-];
+import { ColorField, Field, SliderField } from "./ObjectControls";
 
 export type TypographyFieldsProps = {
   font: RichTextFont | undefined;
@@ -104,35 +94,12 @@ export function TypographyFields({
         </div>
       </div>
 
-      <div className="mb-3">
-        <div className="text-[10px] text-editor-muted uppercase [letter-spacing:.05em]">
-          Color
-        </div>
-        <div className="flex gap-1.5 items-center flex-wrap">
-          {TEXT_COLOR_SWATCHES.map((swatch) => (
-            <Button
-              variant="default"
-              key={swatch}
-              aria-label={swatch}
-              onClick={() => onChange({ color: swatch })}
-              className={`w-5.5 ${color?.toUpperCase() === swatch ? "[border:2px_solid_#FF7024]" : "[border:2px_solid_rgba(255,255,255,0.18)]"}`}
-              style={{
-                background: swatch,
-              }}
-            />
-          ))}
-          <TextInput
-            value={color ?? ""}
-            placeholder={defaultColorHint}
-            spellCheck={false}
-            onChange={(event) => {
-              const next = event.target.value.trim();
-              onChange({ color: next === "" ? undefined : next });
-            }}
-            className="w-24"
-          />
-        </div>
-      </div>
+      <ColorField
+        label="Color"
+        value={color}
+        placeholder={defaultColorHint}
+        onChange={(next) => onChange({ color: next })}
+      />
 
       <SliderField
         label="Letter spacing"

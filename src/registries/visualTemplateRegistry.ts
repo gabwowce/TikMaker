@@ -76,6 +76,18 @@ export const visualTemplateRegistry: VisualTemplateDefinition[] = [
     }),
   },
   {
+    id: "talking-head",
+    category: "media",
+    label: "Talking Head",
+    description:
+      "Your face on camera — full screen, half the frame, or a circle in a corner.",
+    build: () => ({
+      type: "talking-head",
+      src: "assets/recordings/placeholder.mp4",
+      placement: "circle-bl",
+    }),
+  },
+  {
     id: "stat-counter",
     category: "data",
     label: "Stat Counter",
