@@ -1,0 +1,8 @@
+{
+  "id": "dev",
+  "name": "TikMaker and AI coding",
+  "brief": "Mostly TikMaker itself: what it can do, how a video gets made with it, new features and how it is being built with AI (build in public). Around that, short concrete videos about other AI tools, vibe coding and Claude Code: one problem or one feature per video, shown on screen rather than told.",
+  "audience": "Creators who want to make short videos faster with AI, and developers or beginners who build apps with AI and want to work faster without breaking things.",
+  "tone": "Direct and practical; real screens, real results and numbers instead of hype. Honest about what does not work yet.",
+  "language": "en"
+}

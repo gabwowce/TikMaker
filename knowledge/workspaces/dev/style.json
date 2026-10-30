@@ -1,0 +1,9 @@
+{
+  "backgrounds": ["solid-dark", "soft-grid", "dot-grid"],
+  "surface": "#222222",
+  "textPrimary": "#FFFFFF",
+  "textSecondary": "#B8B8B8",
+  "accent": "#FF7024",
+  "headlineFont": "tanker",
+  "bodyFont": "clash"
+}

@@ -17,11 +17,14 @@ import type { z } from "zod";
 //                medium | high. Thinking tokens are billed but never shown, so
 //                the default is minimal. Flash models reject minimal; give them
 //                low or leave AGENT_THINKING empty.
-const google = createGoogleGenerativeAI({ apiKey: process.env.GEMINI_API_KEY });
-
 type ThinkingLevel = "minimal" | "low" | "medium" | "high";
 
+// The key is read when a model is needed, not when this file loads: the
+// server imports this module before server/index.ts has read .env.local.
 export function agentModel(): LanguageModel {
+  const google = createGoogleGenerativeAI({
+    apiKey: process.env.GEMINI_API_KEY,
+  });
   return google(process.env.AGENT_MODEL ?? "gemini-flash-lite-latest");
 }
 

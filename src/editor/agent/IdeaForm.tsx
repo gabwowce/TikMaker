@@ -8,6 +8,7 @@ import { useStartRun } from "../../api/agent";
 export function IdeaForm({ projectId }: { projectId: string }) {
   const [idea, setIdea] = useState("");
   const [targetSeconds, setTargetSeconds] = useState(40);
+  const [withFace, setWithFace] = useState(false);
   const [generateVoice, setGenerateVoice] = useState(false);
   const start = useStartRun(() => setIdea(""));
   // The same schema the server checks, so the button is never enabled for
@@ -16,6 +17,7 @@ export function IdeaForm({ projectId }: { projectId: string }) {
     idea,
     workspaceId: "dev",
     targetSeconds,
+    withFace,
     generateVoice,
   });
 
@@ -36,6 +38,12 @@ export function IdeaForm({ projectId }: { projectId: string }) {
         max={90}
         value={targetSeconds}
         onChange={(value) => setTargetSeconds(Number(value) || 40)}
+      />
+      <Checkbox
+        label="With face"
+        description="Someone appears on camera; off = a faceless video"
+        checked={withFace}
+        onChange={(event) => setWithFace(event.currentTarget.checked)}
       />
       <Checkbox
         label="Generate the voiceover"

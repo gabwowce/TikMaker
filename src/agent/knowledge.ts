@@ -58,7 +58,6 @@ export const workspaceSchema = z
     audience: z.string(),
     tone: z.string(),
     language: z.string().min(2),
-    faceless: z.boolean(),
   })
   .strict();
 

@@ -86,8 +86,8 @@ su kontekstu apačioje, „Asset to make“ blokas scenos Content skiltyje.
 ```
 Pradžia   „+ New“ → „With AI“: tuščias projektas, Storyboard, skydelyje forma
           (agentRunInputSchema)                                 → [Generate]  ← sprendimas 1
-Angle     skydelyje: parinktas šablonas (įvertinimas, priežastis; < 3 – agento
-          pasiūlytas, FR-05; galima pakeisti) ir 3 kabliukų kortelės
+Angle     skydelyje: parinktas šablonas (įvertinimas, priežastis; < 3 – „nė vienas
+          gerai netinka“; galima pakeisti) ir 3 kabliukų kortelės
                                                                 → pasirinkti   ← sprendimas 2
 Script    scenarijus atsiranda Storyboard'e (rolė, įgarsinimas, tekstas ekrane, ką
           rodyti); taisoma ranka ten pat arba komentaru skydelyje;
@@ -168,9 +168,9 @@ nutraukta:              → cancelled
 
 - **Kabliukai** atsiranda iš žinių bazės formulių, kurios tinka parinktam šablonui
   (jo `hookTypes`): DI pagal jas parašo 3 kabliukus konkrečiai idėjai.
-- **Netinka nė vienas šablonas** (geriausias < 3): tas pats `picking_template`, tik
-  rezultatas pažymėtas kaip agento pasiūlytas šablonas (FR-05); vėliau jį galima
-  įrašyti į žinių bazę (FR-02).
+- **Netinka nė vienas šablonas** (geriausias < 3): kol kas tik parodoma „nė vienas
+  gerai netinka“, naudojamas geriausias. Naujo šablono pasiūlymas (FR-05) ir jo
+  įrašymas į žinių bazę (FR-02) – **vėlesnis etapas** (D12), kai visas srautas veiks.
 
 ---
 
@@ -218,13 +218,20 @@ skydelis rodo `created`; suskleidus, perkrovus puslapį ir išskleidus – tas p
 **Tikslas:** agentas parenka šabloną ir paaiškina kodėl; naudotojas gali pakeisti.
 
 S – serveris:
-- [ ] pirmas kanalas `knowledge/workspaces/dev/workspace.json` + `style.json`
-- [ ] `server/agent/steps/pickTemplate.ts`: į promptą tik šablonų `id`, `name`,
+- [x] pirmas kanalas `knowledge/workspaces/dev/workspace.json` + `style.json`;
+  „su veidu“ – ne kanalo, o idėjos formos varnelė (`input.withFace`, `docs/bd/sprendimai.md`)
+- [x] `templateChoiceSchema` + `run.template` (`src/agent/agentRun.ts`)
+- [x] `server/agent/steps/pickTemplate.ts`: į promptą tik šablonų `id`, `name`,
   `oneLine`, `whenToUse` (ne visas šablonas – pigiau); atsakymas
   `{ videoTemplateId, score 1–5, reason }`; kodas patikrina, kad id egzistuoja (FR-04);
-  jei geriausias < 3 – pažymėti „netinka“ (FR-05 – naujo šablono pasiūlymas vėliau)
-- [ ] `runs.ts`: po `start` paleisti žingsnį fone, būsena `picking_template` → kitas
-  žingsnis; kiekvienas DI kvietimas įrašomas į `steps[]` su tokenais ir laiku (FR-21)
+  jei geriausias < 3 – pažymėti „netinka“ (`MIN_FIT_SCORE`); testai su netikru DI ir su
+  Gemini (tik su raktu)
+- [x] `server/agent/pipeline.ts` (`continueRun`, kviečia `agent.start`): žingsnis fone, būsena
+  `picking_template` → `writing_hooks` (ten laukia D5); kiekvienas DI kvietimas įrašomas į
+  `steps[]` su tokenais ir laiku, ir nepavykęs (FR-21); klaida → `error` su priežastimi.
+  `writeOne` rašo per laikiną failą (skydelis nebeperskaito pusiau įrašyto);
+  `llm.ts` raktą skaito tik kvietimo metu (serveris `.env.local` įkelia vėliau);
+  `KNOWLEDGE_DIR` (`TIKMAKER_KNOWLEDGE` testams). Patikrinta: 1,5 s, 1614 / 57 tokenų
 
 U – sąsaja:
 - [ ] skydelio „Run“ skirtuke: parinktas šablonas (pavadinimas, `oneLine`, įvertinimas,
@@ -324,13 +331,19 @@ gale viena `cta` scena, kitos nepakitusios.
   `generating_voice`, po sudėto projekto (FR-19 – brangu, todėl pabaigoje)
 - [ ] S: ataskaita: ištaisyti ir likę pažeidimai, laikas, kaina (FR-18, FR-21)
 - [ ] U: skydelio „Run“ skirtuke – ataskaita (įspėjimai, laikas, kaina); „Assets to make“
-- [ ] S + U: `agent.saveProposal` – pasiūlytą šabloną ar formulę įrašyti į žinių bazę (FR-02)
 
 ## D11. Testavimas (BD 4 skyrius)
 
 `docs/mano-planas.md` 10 žingsnis: užfiksuoti DI atsakymai be tinklo (NFR-09),
 8–10 testinių idėjų su taisymo ciklu ir be jo, lentelė (pažeidimai prieš/po, laikas,
 kaina), FR patikros lentelė.
+
+## D12. Vėliau, jei spėsim (FR-05, FR-02)
+
+Daroma tik kai D3–D11 veikia nuo idėjos iki video.
+- [ ] S: `server/agent/steps/proposeTemplate.ts` – kai geriausias < 3, DI sukuria naują
+  šabloną (`videoTemplateSchema`), skydelyje pažymėtą „agento pasiūlytas“ (FR-05)
+- [ ] S + U: `agent.saveProposal` – pasiūlytą šabloną ar formulę įrašyti į žinių bazę (FR-02)
 
 ## Atmintis: projektas, ne pokalbis
 

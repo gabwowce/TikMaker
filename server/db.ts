@@ -34,7 +34,22 @@ export async function writeOne(
 ): Promise<void> {
   const file = fileFor(folder, id);
   await fs.mkdir(path.dirname(file), { recursive: true });
-  await fs.writeFile(file, JSON.stringify(data, null, 2) + "\n", "utf-8");
+  // Pirma į laikiną failą, tada pervadinti: skaitytojas (pvz. agento skydelis,
+  // kas sekundę klausiantis paleidimo) niekada nepamato pusiau įrašyto failo.
+  const temp = `${file}.${process.pid}.${Date.now()}.tmp`;
+  await fs.writeFile(temp, JSON.stringify(data, null, 2) + "\n", "utf-8");
+  // Windows neleidžia pervadinti, kol kitas tuo metu skaito tą failą
+  // (EPERM/EBUSY) – tai trunka milisekundes, tad bandoma dar kelis kartus.
+  for (let attempt = 1; ; attempt++) {
+    try {
+      await fs.rename(temp, file);
+      return;
+    } catch (error) {
+      const code = (error as NodeJS.ErrnoException).code;
+      if (attempt >= 5 || (code !== "EPERM" && code !== "EBUSY")) throw error;
+      await new Promise((resolve) => setTimeout(resolve, 20 * attempt));
+    }
+  }
 }
 
 export async function removeOne(folder: string, id: string): Promise<void> {

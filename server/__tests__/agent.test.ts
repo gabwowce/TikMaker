@@ -1,42 +1,104 @@
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
-import { afterAll, describe, expect, it } from "vitest";
+import { MockLanguageModelV4 } from "ai/test";
+import { afterAll, describe, expect, it, vi } from "vitest";
 
 // Point the server at a throwaway folder BEFORE importing it, so these tests
-// never touch the real db/ (the same setup as api.test.ts).
+// never touch the real db/ (the same setup as api.test.ts). The knowledge base
+// is the real one: the agent must work with what we ship.
 const root = fs.mkdtempSync(path.join(os.tmpdir(), "tikmaker-agent-"));
 process.env.TIKMAKER_ROOT = root;
+process.env.TIKMAKER_KNOWLEDGE = path.resolve("knowledge");
+
+// No real model in tests: every call gets the same made-up answer, so a run
+// moves on in milliseconds and costs nothing. pickTemplate.test.ts has the
+// optional test against real Gemini.
+const fakeModel = new MockLanguageModelV4({
+  doGenerate: async () => ({
+    content: [
+      {
+        type: "text",
+        text: JSON.stringify({
+          videoTemplateId: "how-to-steps",
+          score: 4,
+          reason: "A clear how-to.",
+        }),
+      },
+    ],
+    finishReason: { unified: "stop", raw: undefined },
+    usage: {
+      inputTokens: { total: 100, noCache: 100, cacheRead: 0, cacheWrite: 0 },
+      outputTokens: { total: 20, text: 20, reasoning: 0 },
+    },
+    warnings: [],
+  }),
+});
+vi.mock("@ai-sdk/google", () => ({
+  createGoogleGenerativeAI: () => () => fakeModel,
+}));
+
 const { appRouter } = await import("../trpc/router.js");
 const { createCallerFactory } = await import("../trpc/init.js");
 
 // A caller runs procedures directly, the way the editor would over HTTP.
 const api = createCallerFactory(appRouter)({});
 const idea = "How to undo the last git commit in a few seconds";
-const startFor = (projectId: string) =>
-  api.agent.start({ projectId, input: { idea, workspaceId: "dev" } });
+const startFor = (projectId: string, workspaceId = "dev") =>
+  api.agent.start({ projectId, input: { idea, workspaceId } });
+
+// The agent works in the background after start; this waits, the way the
+// panel does, until the run stops moving.
+async function settled(id: string) {
+  for (let i = 0; i < 100; i++) {
+    const run = await api.agent.get(id);
+    if (!["created", "picking_template"].includes(run.status)) return run;
+    await new Promise((resolve) => setTimeout(resolve, 20));
+  }
+  throw new Error(`run ${id} never settled`);
+}
 
 afterAll(() => fs.rmSync(root, { recursive: true, force: true }));
 
 describe("agent runs", () => {
-  it("start saves db/agent-runs/<id>.json as a new run with the defaults filled in", async () => {
+  it("start saves db/agent-runs/<id>.json with the defaults filled in", async () => {
     const { id } = await startFor("p1");
     expect(
       fs.existsSync(path.join(root, "db", "agent-runs", `${id}.json`)),
     ).toBe(true);
-    expect(await api.agent.get(id)).toMatchObject({
+    expect(await settled(id)).toMatchObject({
       id,
       projectId: "p1",
-      status: "created",
-      steps: [],
       input: {
         idea,
         workspaceId: "dev",
         targetSeconds: 40,
         motionOnly: false,
+        withFace: false,
         generateVoice: false,
       },
     });
+  });
+
+  it("picks a template in the background and logs the call", async () => {
+    const { id } = await startFor("p1");
+    const run = await settled(id);
+    expect(run.status).toBe("writing_hooks");
+    expect(run.template).toEqual({
+      videoTemplateId: "how-to-steps",
+      score: 4,
+      reason: "A clear how-to.",
+    });
+    expect(run.steps).toMatchObject([
+      { name: "pickTemplate", inputTokens: 100, outputTokens: 20 },
+    ]);
+  });
+
+  it("stops in error when the channel does not exist", async () => {
+    const { id } = await startFor("p1", "no-such-channel");
+    const run = await settled(id);
+    expect(run.status).toBe("error");
+    expect(run.error).toMatch(/no-such-channel/);
   });
 
   it("refuses an idea that is too short", async () => {
@@ -57,11 +119,12 @@ describe("agent runs", () => {
   });
 
   it("lists only the project's runs, newest first", async () => {
-    const first = await startFor("p1");
+    const first = await startFor("p2");
     await new Promise((resolve) => setTimeout(resolve, 5));
-    const second = await startFor("p1");
-    const other = await startFor("p2");
-    const ids = (await api.agent.list("p1")).map((run) => run.id);
+    const second = await startFor("p2");
+    const other = await startFor("p3");
+    await Promise.all([first, second, other].map(({ id }) => settled(id)));
+    const ids = (await api.agent.list("p2")).map((run) => run.id);
     expect(ids).not.toContain(other.id);
     expect(ids.indexOf(second.id)).toBeLessThan(ids.indexOf(first.id));
   });

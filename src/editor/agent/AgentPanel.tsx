@@ -71,7 +71,19 @@ function AgentPanelBody() {
 
   if (!loaded) return null;
   if (run && working) return <RunProgress runId={run.id} />;
-  if (!hasScenes) return <IdeaForm projectId={projectId} />;
+  if (!hasScenes)
+    return (
+      <div className="flex flex-col gap-3">
+        {/* The last try failed: say why above the form, so starting again
+            is an informed choice rather than a guess. */}
+        {run?.status === "error" ? (
+          <p className="m-0 text-xs text-red-400">
+            The last run stopped: {run.error ?? "unknown error"}
+          </p>
+        ) : null}
+        <IdeaForm projectId={projectId} />
+      </div>
+    );
   return (
     <p className="m-0">
       Select a scene and describe the change. Editing with the AI arrives in D8.

@@ -1,6 +1,7 @@
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 import { agentRunStartSchema } from "../../src/agent/agentRun.js";
+import { continueRun } from "../agent/pipeline.js";
 import { getRun, listRuns, startRun } from "../agent/runs.js";
 import { procedure, router } from "./init.js";
 
@@ -10,6 +11,7 @@ import { procedure, router } from "./init.js";
 export const agentRouter = router({
   start: procedure.input(agentRunStartSchema).mutation(async ({ input }) => {
     const run = await startRun(input.projectId, input.input);
+    continueRun(run); // the agent works in the background; the panel polls get
     return { id: run.id };
   }),
 
