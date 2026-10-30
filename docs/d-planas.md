@@ -21,6 +21,30 @@ klausimai, čia – eiga, failai ir būsena.
   **nemokamu Gemini** (`gemini-flash-lite-latest`, `AGENT_THINKING=minimal`):
   Flash modeliai nemokamame plane atsako per 110–145 s, Flash-Lite – per 4–8 s.
   Nemokamame plane Google gali naudoti užklausas – nesiųsti konfidencialių duomenų.
+- „Įdėk, kas trūksta“ reiškia tik trūkstamus, jau aptartus failus. **Naują dalį** (naują
+  failą ar funkciją) vis tiek duoti kodu ir paaiškinti – net jei ją reikėjo padaryti
+  taisant klaidą. Jei Claude ką nors įrašė pats, kitą žinutę paaiškina tą kodą.
+
+## Kita sesija pradeda nuo čia (2026-10-30)
+
+D4.3 Claude įrašė pats, autorė kodo negavo – **pirma paaiškinti jį eilutė po eilutės,
+paprastai**, paskui tęsti D4.5. Commitas `733e2b8`. Paaiškinti, ką daro ir kodėl:
+1. `server/agent/pipeline.ts` – visas: `continueRun` (darbas fone, klaidos įrašymas į
+   failą), `advance` (kanalo paieška, žingsnis `created` → `picking_template` →
+   `writing_hooks`), `aiStep` (būsena prieš kvietimą, žurnalo įrašas su laiku ir tokenais,
+   nepavykęs kvietimas irgi įrašomas).
+2. `server/trpc/agent.ts` – eilutė `continueRun(run)` po `startRun`.
+3. `server/db.ts` – `writeOne`: rašymas per laikiną failą ir pervadinimas, kartojimas
+   Windows EPERM/EBUSY atveju (kodėl: skydelis skaitė pusiau įrašytą failą).
+4. `server/agent/llm.ts` – `agentModel()` kuria Gemini tiekėją kvietimo metu (kodėl:
+   `server/index.ts` `.env.local` įkelia po importų, raktas buvo tuščias).
+5. `server/config.ts` – `KNOWLEDGE_DIR` ir `TIKMAKER_KNOWLEDGE`.
+6. `server/__tests__/agent.test.ts` – netikras modelis (`MockLanguageModelV4` per
+   `vi.mock("@ai-sdk/google")`), `settled()` laukimas, du nauji testai.
+7. `server/agent/steps/pickTemplate.ts` ir `server/agent/__tests__/pickTemplate.test.ts` –
+   trumpai priminti (aptarta), parodyti du pakeitimus: AI vaidmuo ir „Face on camera“.
+8. `src/editor/agent/AgentPanel.tsx` – klaidos eilutė virš formos;
+   `IdeaForm.tsx` – varnelė „With face“ (`withFace`).
 
 ## Kas jau padaryta (2026-10-29)
 
