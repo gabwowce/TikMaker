@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { AgentPanel } from "./agent/AgentPanel";
 import { EditorInspector } from "./EditorInspector";
 import { EditorToolbar } from "./EditorToolbar";
 import { GlobalStyles } from "./GlobalStyles";
@@ -20,29 +21,32 @@ export function Editor() {
     <div className="flex h-screen flex-col bg-neutral-950 font-sans text-editor-text">
       <GlobalStyles />
       <EditorToolbar mode={mode} onModeChange={setMode} />
-      <main
-        id={`editor-mode-panel-${mode}`}
-        role="tabpanel"
-        aria-labelledby={`editor-mode-tab-${mode}`}
-        className="flex min-h-0 flex-1 flex-col"
-      >
-        {mode === "storyboard" ? (
-          <ProjectStoryboardView onOpenScenes={() => setMode("scenes")} />
-        ) : (
-          <>
-            <div className="flex min-h-0 flex-1 overflow-hidden">
-              <LibraryPanel />
-              <VideoPreview
-                playerRef={playerRef}
-                durationInFrames={durationInFrames}
-              />
-              <EditorInspector />
-            </div>
-            <SceneTimeline currentFrame={currentFrame} onSeek={seekTo} />
-            <SceneStrip />
-          </>
-        )}
-      </main>
+      <div className="flex min-h-0 flex-1">
+        <main
+          id={`editor-mode-panel-${mode}`}
+          role="tabpanel"
+          aria-labelledby={`editor-mode-tab-${mode}`}
+          className="flex min-h-0 min-w-0 flex-1 flex-col"
+        >
+          {mode === "storyboard" ? (
+            <ProjectStoryboardView onOpenScenes={() => setMode("scenes")} />
+          ) : (
+            <>
+              <div className="flex min-h-0 flex-1 overflow-hidden">
+                <LibraryPanel />
+                <VideoPreview
+                  playerRef={playerRef}
+                  durationInFrames={durationInFrames}
+                />
+                <EditorInspector />
+              </div>
+              <SceneTimeline currentFrame={currentFrame} onSeek={seekTo} />
+              <SceneStrip />
+            </>
+          )}
+        </main>
+        <AgentPanel />
+      </div>
     </div>
   );
 }

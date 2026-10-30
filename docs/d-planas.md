@@ -186,24 +186,29 @@ S – serveris:
 - [x] `src/agent/agentRun.ts`: `agentRunInputSchema` (idėja, `workspaceId`, trukmė,
   `motionOnly`, `generateVoice`), `agentRunStatusSchema` (būsenos aukščiau),
   `agentRunSchema` (`id`, `input`, `status`, `steps[]`, `createdAt`, `error?`)
-- [ ] `agentRunSchema` + `projectId` (paleidimas susietas su projektu)
-- [x] `server/agent/runs.ts`: `startRun(input)`, `getRun(id)`, `saveRun(run)`,
-  `listRuns()` → `db/agent-runs/<id>.json`
+- [x] `agentRunSchema` + `projectId` (paleidimas susietas su projektu); `listRuns(projectId)`
+- [x] `server/agent/runs.ts`: `startRun(projectId, input)`, `getRun(id)`, `saveRun(run)`,
+  `listRuns(projectId)` → `db/agent-runs/<id>.json`
 - [x] `server/trpc/agent.ts`: `start`, `get`, `list`; `appRouter` → `agent`
 - [x] testas `server/__tests__/agent.test.ts` (4 testai)
 
-U – sąsaja (tikrinta 2026-10-30: Mantine `Stepper` ir `Switch` stiliai įkeliami
-`src/editor/styles.css` – be jų rodoma be stiliaus; skydelio šaknis su klase `font-sans`):
-- [ ] `src/api/agent.ts` – `useStartRun()`, `useAgentRun(id)` su `refetchInterval`
-  (kaip `RenderButton`), kol būsena ne `awaiting_*`/`done`/`error`/`cancelled`
-- [ ] `src/editor/agent/AgentPanel.tsx` – skydelis dešinėje abiejuose režimuose
+U – sąsaja (tikrinta 2026-10-30 naršyklėje; Mantine `Stepper` stilius įkeliamas
+`src/editor/styles.css` – be jo rodoma be stiliaus):
+- [x] `src/api/agent.ts` – `useStartRun()`, `useAgentRun(id)` su `refetchInterval`
+  (kaip `RenderButton`), `useAgentRuns(projectId)`, `useLatestRun(projectId)`
+  (naujausias paleidimas + ar agentas dar dirba; jį skaito ir skydelis, ir juosta)
+- [x] `src/editor/usePanelResize.ts` – bendras skydelio dydžio keitimas tempiant kraštą
+  (laiko juosta ir AI skydelis)
+- [x] `src/editor/agent/AgentPanel.tsx` – skydelis dešinėje abiejuose režimuose
   (`Editor.tsx`), keičiamo pločio, suskleidžiamas; būsena – `editorPrefs`
-  (`agentPanelOpen`, `agentPanelWidth`, `lastAgentRunId`)
-- [ ] `src/editor/agent/AgentRail.tsx` – suskleista juosta: vienas ✦ su skaičiumi ir
-  eigos taškeliais
-- [ ] `src/editor/agent/IdeaForm.tsx` – forma skydelyje (idėja, kanalas, trukmė,
-  „Tik judanti grafika“, „Generuoti įgarsinimą“)
-- [ ] skydelio viršuje – eigos juosta (5 žingsniai) pagal `status`
+  (`agentPanelOpen`, `agentPanelWidth`). Turinys pagal **projektą**, ne istoriją:
+  agentas dirba → eiga; nėra scenų → forma; yra scenų → redagavimas (D8)
+- [x] `src/editor/agent/AgentRail.tsx` – suskleista juosta: ✦ ir eigos taškeliai, kol
+  agentas dirba. Skaičius ant ✦ – D8–D9 (kai bus ką skaičiuoti)
+- [x] `src/editor/agent/IdeaForm.tsx` – idėja, trukmė, „Generuoti įgarsinimą“;
+  tikrinama ta pačia `agentRunInputSchema`. Kanalas kol kas visada `dev`
+- [x] `src/editor/agent/RunProgress.tsx` – eiga (`Stepper`, 5–6 žingsniai pagal
+  `status`; `runRoad` bendras su juostos taškeliais)
 
 **Patikra:** skydelyje įrašai idėją → „Generate“ → `db/agent-runs/` atsiranda failas,
 skydelis rodo `created`; suskleidus, perkrovus puslapį ir išskleidus – tas pats paleidimas.
@@ -326,6 +331,16 @@ gale viena `cta` scena, kitos nepakitusios.
 `docs/mano-planas.md` 10 žingsnis: užfiksuoti DI atsakymai be tinklo (NFR-09),
 8–10 testinių idėjų su taisymo ciklu ir be jo, lentelė (pažeidimai prieš/po, laikas,
 kaina), FR patikros lentelė.
+
+## Atmintis: projektas, ne pokalbis
+
+Agentas **nesiunčia ankstesnių užduočių ar pokalbio**. Jo atmintis – dabartinis
+projektas (`storyPlan`, `videoTemplateId`, scenų `plan.role`, tekstai), todėl jis visada
+mato ir rankinius pakeitimus. Kiekviena užklausa = instrukcijos (nuolatinės, podėlyje) +
+video santrauka (idėja, šablonas, scenos po eilutę) + pažymėta scena pilnai + prašymas.
+Atsakymas – tik veiksmas (`tools.ts`), ne visas projektas. Todėl kaina priklauso nuo
+projekto dydžio, ne nuo istorijos ilgio. `db/agent-runs/` – istorija naudotojui
+(kas daryta, kaina, atšaukimas), ne DI.
 
 ## Kaina ir laikas (visam keliui)
 

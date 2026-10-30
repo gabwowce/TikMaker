@@ -1,3 +1,4 @@
+import { usePanelResize } from "../usePanelResize";
 import { sceneTimelineEnd } from "./sceneTimelineEnd";
 import { groupDragPositions } from "./groupDrag";
 import { Button, NativeSelect, Slider } from "@mantine/core";
@@ -92,31 +93,14 @@ function SceneTimelineScene({
   const [clipboardReady, setClipboardReady] = useState(clipboardHas);
   const storedPanelHeight = useEditorPrefs((state) => state.timelineHeight);
   const setPreferences = useEditorPrefs((state) => state.set);
-  const [panelHeight, setPanelHeight] = useState(() =>
-    Number.isFinite(storedPanelHeight)
-      ? clamp(storedPanelHeight as number, MIN_PANEL_HEIGHT, MAX_PANEL_HEIGHT)
-      : 250,
-  );
-  function beginPanelResize(event: ReactPointerEvent) {
-    event.preventDefault();
-    const originY = event.clientY;
-    const originHeight = panelHeight;
-    function move(pointer: PointerEvent) {
-      const next = clamp(
-        originHeight + (originY - pointer.clientY),
-        MIN_PANEL_HEIGHT,
-        MAX_PANEL_HEIGHT,
-      );
-      setPanelHeight(next);
-      setPreferences({ timelineHeight: next });
-    }
-    function finish() {
-      window.removeEventListener("pointermove", move);
-      window.removeEventListener("pointerup", finish);
-    }
-    window.addEventListener("pointermove", move);
-    window.addEventListener("pointerup", finish, { once: true });
-  }
+  const { size: panelHeight, beginResize: beginPanelResize } = usePanelResize({
+    edge: "top",
+    stored: storedPanelHeight,
+    initial: 250,
+    min: MIN_PANEL_HEIGHT,
+    max: MAX_PANEL_HEIGHT,
+    save: (timelineHeight) => setPreferences({ timelineHeight }),
+  });
   const rulerRef = useRef<HTMLDivElement>(null);
   const viewportRef = useRef<HTMLDivElement>(null);
   const { assets: customAssets } = useCustomAssets();
@@ -730,7 +714,7 @@ function SceneTimelineScene({
         />
       ) : null}
       <div
-        className={`h-9.5 p-[0_12px] flex items-center gap-3 overflow-x-auto whitespace-nowrap [&_button]:shrink-0 [&_.mantine-NativeSelect-root]:shrink-0 ${expanded ? "[border-bottom:1px_solid_#2c2c2c]" : "[border-bottom:none]"}`}
+        className={`p-[6px_12px] flex items-center gap-3 overflow-x-auto whitespace-nowrap [&_button]:shrink-0 [&_.mantine-NativeSelect-root]:shrink-0 ${expanded ? "[border-bottom:1px_solid_#2c2c2c]" : "[border-bottom:none]"}`}
       >
         <Button
           variant="default"

@@ -13,17 +13,20 @@ const { createCallerFactory } = await import("../trpc/init.js");
 // A caller runs procedures directly, the way the editor would over HTTP.
 const api = createCallerFactory(appRouter)({});
 const idea = "How to undo the last git commit in a few seconds";
+const startFor = (projectId: string) =>
+  api.agent.start({ projectId, input: { idea, workspaceId: "dev" } });
 
 afterAll(() => fs.rmSync(root, { recursive: true, force: true }));
 
 describe("agent runs", () => {
   it("start saves db/agent-runs/<id>.json as a new run with the defaults filled in", async () => {
-    const { id } = await api.agent.start({ idea, workspaceId: "dev" });
+    const { id } = await startFor("p1");
     expect(
       fs.existsSync(path.join(root, "db", "agent-runs", `${id}.json`)),
     ).toBe(true);
     expect(await api.agent.get(id)).toMatchObject({
       id,
+      projectId: "p1",
       status: "created",
       steps: [],
       input: {
@@ -38,7 +41,10 @@ describe("agent runs", () => {
 
   it("refuses an idea that is too short", async () => {
     await expect(
-      api.agent.start({ idea: "short", workspaceId: "dev" }),
+      api.agent.start({
+        projectId: "p1",
+        input: { idea: "short", workspaceId: "dev" },
+      }),
     ).rejects.toMatchObject({
       code: "BAD_REQUEST",
     });
@@ -50,11 +56,13 @@ describe("agent runs", () => {
     });
   });
 
-  it("lists runs newest first", async () => {
-    const first = await api.agent.start({ idea, workspaceId: "dev" });
+  it("lists only the project's runs, newest first", async () => {
+    const first = await startFor("p1");
     await new Promise((resolve) => setTimeout(resolve, 5));
-    const second = await api.agent.start({ idea, workspaceId: "dev" });
-    const ids = (await api.agent.list()).map((run) => run.id);
+    const second = await startFor("p1");
+    const other = await startFor("p2");
+    const ids = (await api.agent.list("p1")).map((run) => run.id);
+    expect(ids).not.toContain(other.id);
     expect(ids.indexOf(second.id)).toBeLessThan(ids.indexOf(first.id));
   });
 });

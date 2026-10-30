@@ -43,11 +43,17 @@ export const agentRunStepSchema = z.object({
 
 export const agentRunSchema = z.object({
   id: z.string(),
+  projectId: z.string().min(1),
   input: agentRunInputSchema,
   status: agentRunStatusSchema,
   steps: z.array(agentRunStepSchema),
   createdAt: z.number(),
   error: z.string().optional(),
+});
+// What agent.start receives: which project, and what the user asked for.
+export const agentRunStartSchema = z.object({
+  projectId: z.string().min(1),
+  input: agentRunInputSchema,
 });
 
 export type AgentRunInput = z.infer<typeof agentRunInputSchema>;

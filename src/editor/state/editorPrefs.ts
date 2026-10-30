@@ -7,6 +7,8 @@ import { persist } from "zustand/middleware";
 // another computer keeps its own.
 type EditorPrefs = {
   lastOpenedProjectId?: string;
+  agentPanelOpen?: boolean;
+  agentPanelWidth?: number;
   timelineHeight?: number;
   set: (patch: Partial<Omit<EditorPrefs, "set">>) => void;
 };

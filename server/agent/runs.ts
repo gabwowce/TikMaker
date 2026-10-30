@@ -12,9 +12,13 @@ import { newId } from "../uploads.js";
 const FOLDER = "agent-runs";
 
 // A new run waits in "created"; the agent's steps (D4 onwards) move it on.
-export async function startRun(input: AgentRunInput): Promise<AgentRun> {
+export async function startRun(
+  projectId: string,
+  input: AgentRunInput,
+): Promise<AgentRun> {
   const run: AgentRun = {
     id: newId("run"),
+    projectId,
     input,
     status: "created",
     steps: [],
@@ -35,11 +39,13 @@ export async function getRun(id: string): Promise<AgentRun | undefined> {
   return parsed.success ? parsed.data : undefined;
 }
 
-// Newest first, so the editor can offer "continue where you left off".
-export async function listRuns(): Promise<AgentRun[]> {
+// One project's runs, newest first: the AI panel's history for the open project.
+export async function listRuns(projectId: string): Promise<AgentRun[]> {
   const runs = (await readAll(FOLDER)).flatMap((data) => {
     const parsed = agentRunSchema.safeParse(data);
-    return parsed.success ? [parsed.data] : [];
+    return parsed.success && parsed.data.projectId === projectId
+      ? [parsed.data]
+      : [];
   });
   return runs.sort((a, b) => b.createdAt - a.createdAt);
 }

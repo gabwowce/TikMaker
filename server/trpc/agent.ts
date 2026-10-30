@@ -1,6 +1,6 @@
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
-import { agentRunInputSchema } from "../../src/agent/agentRun.js";
+import { agentRunStartSchema } from "../../src/agent/agentRun.js";
 import { getRun, listRuns, startRun } from "../agent/runs.js";
 import { procedure, router } from "./init.js";
 
@@ -8,8 +8,8 @@ import { procedure, router } from "./init.js";
 // going. The same start → poll pattern as renders.ts; the run itself lives in
 // db/agent-runs/<id>.json (server/agent/runs.ts).
 export const agentRouter = router({
-  start: procedure.input(agentRunInputSchema).mutation(async ({ input }) => {
-    const run = await startRun(input);
+  start: procedure.input(agentRunStartSchema).mutation(async ({ input }) => {
+    const run = await startRun(input.projectId, input.input);
     return { id: run.id };
   }),
 
@@ -20,5 +20,7 @@ export const agentRouter = router({
     return run;
   }),
 
-  list: procedure.query(() => listRuns()),
+  list: procedure
+    .input(z.string())
+    .query(({ input: projectId }) => listRuns(projectId)),
 });
