@@ -44,7 +44,7 @@ Visas kodas žemiau patikrintas: `npx tsc --noEmit` be klaidų, 9 / 9 testų ža
 
 | # | Failas | Kas |
 |---|---|---|
-| 1 | `src/schema/knowledge.ts` (naujas) | visos schemos + tipai |
+| 1 | `src/agent/knowledge.ts` (naujas) | visos schemos + tipai |
 | 2 | `server/agent/knowledge.ts` (naujas) | `loadKnowledge(dir)` → `{ knowledge, errors }` |
 | 3 | `server/agent/__tests__/fixtures/knowledge/…` (nauji) | pavyzdiniai failai testui |
 | 4 | `server/agent/__tests__/knowledge.test.ts` (naujas) | 9 testai |
@@ -76,7 +76,7 @@ Formulės ir taisyklės trumpos, todėl laikomos sąrašu viename faile.
 
 ---
 
-## 1. Schemos – `src/schema/knowledge.ts` (naujas)
+## 1. Schemos – `src/agent/knowledge.ts` (naujas)
 
 Pirma perskaityk `src/schema/voiceSettings.ts` (`.strict()`) ir `src/schema/scene.ts`
 24–31 eilutes (`scenePlanRoleSchema` iš analizės žodyno). Čia tas pats principas, tik
@@ -853,7 +853,7 @@ Pavadinimų taisyklė: nuoroda į žinių bazės objektą vadinasi taip pat kaip
 - `docs/mano-planas.md`: 1 žingsnio sąrašą „Parašyti“ pakeisk į:
 
 ```md
-- [x] `src/schema/knowledge.ts`: `Workspace`, `WorkspaceStyle`, `VideoTemplate` → `ActTemplate` → `SceneTemplate` → `SceneSlot`, `HookFormula`, `CtaFormula`, `TitleFormula`, `TransitionPhrase`, `LayoutExample` (+ `LayoutElement`, `LayoutText`), `DesignRule`, `SoundRule` + tipai per `z.infer`
+- [x] `src/agent/knowledge.ts`: `Workspace`, `WorkspaceStyle`, `VideoTemplate` → `ActTemplate` → `SceneTemplate` → `SceneSlot`, `HookFormula`, `CtaFormula`, `TitleFormula`, `TransitionPhrase`, `LayoutExample` (+ `LayoutElement`, `LayoutText`), `DesignRule`, `SoundRule` + tipai per `z.infer`
 - [x] `server/agent/knowledge.ts`: `loadKnowledge(dir): { knowledge, errors }`
 - [x] Pavyzdžiai testui: `server/agent/__tests__/fixtures/knowledge/`
 - [x] Projekto schemoje: `workspaceId?`, `videoTemplateId?`; scenoje `layoutExampleId?`

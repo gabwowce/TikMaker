@@ -1,4 +1,4 @@
-import type { DesignRule } from "../../schema/knowledge";
+import type { DesignRule } from "../knowledge";
 import type { VideoProject } from "../../schema/project";
 
 // One problem a check found. sceneId lets the editor select the scene.

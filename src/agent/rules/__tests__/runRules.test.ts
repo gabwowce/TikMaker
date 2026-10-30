@@ -1,6 +1,6 @@
 import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
-import type { DesignRule } from "../../../schema/knowledge";
+import type { DesignRule } from "../../knowledge";
 import type { VideoProject } from "../../../schema/project";
 import { ruleChecks, runRules } from "../index";
 

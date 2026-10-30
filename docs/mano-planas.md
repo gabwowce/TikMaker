@@ -74,7 +74,7 @@ npx tsx scripts/kazkas.ts   # paleisti vieną TS failą
 `src/schema/scene.ts` (`scenePlanSchema`, `scenePlanRoleSchema`).
 
 **Parašyti:**
-- [x] `src/schema/knowledge.ts`: `Workspace`, `WorkspaceStyle`, `VideoTemplate` → `ActTemplate` → `SceneTemplate` → `SceneSlot`, `HookFormula`, `CtaFormula`, `TitleFormula`, `TransitionPhrase`, `LayoutExample` (+ `LayoutElement`, `LayoutText`), `DesignRule`, `SoundRule` + tipai per `z.infer`; be `other`, formulės su `id`
+- [x] `src/agent/knowledge.ts`: `Workspace`, `WorkspaceStyle`, `VideoTemplate` → `ActTemplate` → `SceneTemplate` → `SceneSlot`, `HookFormula`, `CtaFormula`, `TitleFormula`, `TransitionPhrase`, `LayoutExample` (+ `LayoutElement`, `LayoutText`), `DesignRule`, `SoundRule` + tipai per `z.infer`; be `other`, formulės su `id`
 - [x] `server/agent/knowledge.ts`: `loadKnowledge(dir): { knowledge, errors }`
 - [x] Pavyzdžiai testui: `server/agent/__tests__/fixtures/knowledge/`
 - [x] Projekto schemoje: `workspaceId?`, `videoTemplateId?`; scenoje `layoutExampleId?`

@@ -26,7 +26,7 @@ klausimai, čia – eiga, failai ir būsena.
 
 | Kas | Kur |
 |---|---|
-| Žinių bazės schemos ir įkėlimas su klaidų keliais | `src/schema/knowledge.ts`, `server/agent/knowledge.ts` (`loadKnowledge`) |
+| Žinių bazės schemos ir įkėlimas su klaidų keliais | `src/agent/knowledge.ts`, `server/agent/knowledge.ts` (`loadKnowledge`) |
 | 20 šablonų, ~80 kabliukų, 20 CTA, 55 pavadinimų formulės, perėjimų frazės | `knowledge/shared/` (generuojama: `knowledge/draft/proposal.json` → `npm run knowledge:draft`) |
 | 61 išdėstymo pavyzdys su tiksliomis dėžutėmis (x, y, w, h), fonu, teksto stiliumi | `knowledge/shared/layout-examples/`, kadrai `docs/bd/kadrai/geri/` |
 | 6 dizaino taisyklės + jų patikra kodu | `knowledge/shared/design-rules.json`, `src/agent/rules/` (`runRules`) |
@@ -36,6 +36,30 @@ klausimai, čia – eiga, failai ir būsena.
 Ko dar nėra: `knowledge/workspaces/` (kanalo aprašo ir stiliaus) – pirmą sukurti D4
 pradžioje; blogų kadrų pavyzdžių; reveal / setup / problem kadrų po 1–3.
 
+## Kur kas guli (agentas atskirai nuo platformos – NFR-08)
+
+- **`src/agent/`** – tai, ką naudoja ir naršyklė, ir serveris: `knowledge.ts` (žinių bazės
+  schemos), `agentRun.ts` (paleidimo schemos), `rules/` (taisyklės), vėliau
+  `checkScript.ts`, `compileProject.ts`.
+- **`server/agent/`** – tik serveryje: `llm.ts` (DI kvietimas), `knowledge.ts` (žinių
+  bazės įkėlimas iš failų), `runs.ts` (paleidimų saugojimas), vėliau `steps/` (agento
+  žingsniai).
+- **`src/editor/agent/`** – sąsaja; **`src/api/agent.ts`** – sąsajos ryšys su serveriu.
+- Paleidimas = **vienas failas** `db/agent-runs/<id>.json`: būsena perrašoma tame pačiame
+  faile, o istorija kaupiasi jo `steps[]`; keli paleidimai – keli failai.
+
+**Schemų pavyzdys (`src/agent/agentRun.ts`): vienas langas – vienas skyrius**, kiekviename
+„ką agentas parodo“ ir „ką naudotojas atsako“. Skyrius pridedamas tame žingsnyje, kuriame
+langas atsiranda (laukai priklauso nuo to, ką grąžina DI):
+
+```
+1 Idea      agentRunInputSchema                                         (D3)
+2 Angle     templateChoiceSchema, hookOptionSchema + chooseHookInputSchema  (D4–D5)
+3 Script    scriptSceneSchema + approve / revise / setSceneMedia            (D6)
+4 Building  tik būsena ir žurnalas                                        (D7–D8)
+5 Result    reportSchema                                                   (D10)
+```
+
 ## Naudotojo kelias (UX)
 
 Redaktoriaus įrankių juostoje – mygtukas **„New video with AI“**. Jis atidaro langą su
@@ -43,27 +67,52 @@ Redaktoriaus įrankių juostoje – mygtukas **„New video with AI“**. Jis at
 **3 privalomus sprendimus** (NFR-11): paleisti, pasirinkti kabliuką, patvirtinti scenarijų.
 
 ```
-1 Idea      idėja (20–500 simb.), kanalas, trukmė (15–90 s, numatyta 40), „turiu savo įrašų“,
-            „generuoti įgarsinimą“                                   → [Start]   ← sprendimas 1
-2 Angle     parinktas šablonas su įvertinimu 1–5 ir paaiškinimu (galima pakeisti);
-            3 kabliukai su formule ir įvertinimu, arba savas tekstas → [Use this hook] ← sprendimas 2
-3 Script    scenarijus scenomis: rolė, įgarsinimas, tekstas ekrane, vaizdo aprašas,
-            ar reikia savo įrašo; [Approve] / redaguoti / komentaras → perrašyti  ← sprendimas 3
-4 Building  eiga: išdėstymas → projektas → taisyklės → taisymas (ratai), be naudotojo
+1 Idea      idėja (20–500 simb.), kanalas, trukmė (15–90 s, numatyta 40),
+            „Tik judanti grafika“ (nebūtinas), „Generuoti įgarsinimą“  → [Start]   ← sprendimas 1
+2 Angle     parinktas šablonas su įvertinimu 1–5 ir paaiškinimu; jei < 3 – agento pasiūlytas
+            naujas šablonas, aiškiai pažymėtas (FR-05); šabloną galima pakeisti → kabliukai
+            perrašomi; 3 kabliukai su formule ir įvertinimu arba savas tekstas
+                                                                       → [Use this hook] ← sprendimas 2
+3 Script    scenarijus scenomis: rolė, įgarsinimas, tekstas ekrane, vaizdo aprašas;
+            prie scenų, kurioms geriausiai tiktų tikras įrašas – pasirinkimas:
+            „Įrašysiu pati“ (REC vieta su aprašu) / „Padaryk be įrašo“ (maketai, ikonos,
+            tekstas, judesys) / „Sugeneruok“ (IMG/VID vieta su promptu, FR-22)
+            [Approve] / redaguoti / komentaras → perrašyti               ← sprendimas 3
+4 Building  eiga: išdėstymas → projektas → taisyklės → taisymas (ratai) → įgarsinimas,
+            be naudotojo
 5 Result    projektas atsidaro redaktoriuje; ataskaita: likę įspėjimai (paspaudus –
             pažymima scena), [Taisyti su DI], išteklių sąrašas, laikas, kaina
 ```
 
+Ar reikia savų įrašų, sprendžiama **scenarijaus žingsnyje** prie konkrečios scenos, ne
+pradžioje: prieš scenarijų to dar nežinoma. „Tik judanti grafika“ – greitas kelias:
+agentas iš karto planuoja visas scenas be įrašų ir nieko neklausia.
+
+**Įgarsinimas – ne DI.** Agentas tik parašo kiekvienos scenos tekstą (`vo`). Garsą
+sukuria ElevenLabs per esamą `voice.generate` – tai daro **kodas**, kai įjungta
+„Generuoti įgarsinimą“; kitaip įgarsinimą galima sugeneruoti redaktoriuje vėliau.
+
 Langą galima uždaryti bet kada: paleidimas tęsiasi serveryje ir saugomas faile, o
 atidarius vėl rodoma ta pati vieta (paleidimas fone, D3).
 
-**Paleidimo būsenos** (viena būsena = viena vieta lange):
+**Paleidimo būsenos** (viena būsena = viena vieta lange; `awaiting_*` – laukia
+naudotojo, ir tai lygiai du privalomi sprendimai po paleidimo):
 
 ```
-created → picking_template → awaiting_hook → writing_script → awaiting_approval
-        → laying_out → checking → done
-(bet kuri) → error         (klaida: rodoma lange, etapą galima paleisti iš naujo – NFR-06)
+created → picking_template → writing_hooks → awaiting_hook → writing_script → awaiting_approval
+        → laying_out → checking → generating_voice (jei įjungta) → done
+
+pakeistas šablonas:     awaiting_hook → writing_hooks (kabliukai iš naujo)
+komentaras scenarijui:  awaiting_approval → writing_script (perrašo)
+klaida bet kur:         → error (etapą galima paleisti iš naujo – NFR-06)
+nutraukta:              → cancelled
 ```
+
+- **Kabliukai** atsiranda iš žinių bazės formulių, kurios tinka parinktam šablonui
+  (jo `hookTypes`): DI pagal jas parašo 3 kabliukus konkrečiai idėjai.
+- **Netinka nė vienas šablonas** (geriausias < 3): tas pats `picking_template`, tik
+  rezultatas pažymėtas kaip agento pasiūlytas šablonas (FR-05); vėliau jį galima
+  įrašyti į žinių bazę (FR-02).
 
 ---
 
@@ -76,8 +125,8 @@ rodo jo būseną ir atnaujina ją pats. DI dar nekviečiamas.
 `src/editor/RenderButton.tsx` – lygiai tas pats principas (pradėti darbą → klausti būsenos).
 
 S – serveris:
-- [ ] `src/schema/agentRun.ts`: `agentRunInputSchema` (idėja, `workspaceId`, trukmė,
-  `hasOwnRecordings`, `generateVoice`), `agentRunStatusSchema` (būsenos aukščiau),
+- [ ] `src/agent/agentRun.ts`: `agentRunInputSchema` (idėja, `workspaceId`, trukmė,
+  `motionOnly`, `generateVoice`), `agentRunStatusSchema` (būsenos aukščiau),
   `agentRunSchema` (`id`, `input`, `status`, `steps[]`, `createdAt`, `error?`)
 - [ ] `server/agent/runs.ts`: `startRun(input)`, `getRun(id)`, `saveRun(run)` →
   `db/agent-runs/<id>.json` (per `server/db.ts` `readAll`/`writeOne`)
@@ -134,14 +183,17 @@ U – sąsaja:
 S – serveris:
 - [ ] `server/agent/steps/script.ts`: scenos pagal šablono scenas; `optional` scenas
   (įskaitant `hook`, `cta`) agentas įtraukia ar praleidžia pagal idėją ir užrašo
-  priežastį (FR-08)
+  priežastį (FR-08); prie scenų, kurioms geriausiai tiktų tikras įrašas, pažymi
+  `media: "suggest-recording"` (išskyrus kai `motionOnly`)
+- [ ] `agent.setSceneMedia({ runId, sceneIndex, choice: "record" | "motion" | "generate" })`
 - [ ] `src/agent/checkScript.ts` + testai: visos privalomos rolės, trukmė ne daugiau
   kaip +15 % nuo tikslinės, žodžiai ekrane pagal `design-rules.json` (FR-09)
 - [ ] `agent.approveScript`, `agent.reviseScript({ comment })` (FR-10)
 
 U – sąsaja:
-- [ ] scenų sąrašas (rolė, įgarsinimas, tekstas ekrane, vaizdo aprašas, ar reikia
-  savo įrašo); patikros pastabos prie scenų; „Approve“, rankinis redagavimas,
+- [ ] scenų sąrašas (rolė, įgarsinimas, tekstas ekrane, vaizdo aprašas); prie scenų
+  su pasiūlytu įrašu – trys mygtukai „Įrašysiu pati“ / „Padaryk be įrašo“ /
+  „Sugeneruok“; patikros pastabos prie scenų; „Approve“, rankinis redagavimas,
   komentaras → perrašyti
 
 **Patikra:** visas kelias iki patvirtinto scenarijaus veikia naršyklėje.
@@ -193,8 +245,9 @@ gale viena `cta` scena, kitos nepakitusios.
 
 ## D10. Įgarsinimas, ataskaita, rezultatas („5 Result“)
 
-- [ ] S: ElevenLabs logiką iškelti į `server/voice/generate.ts`, agentas ją kviečia tik
-  po scenarijaus patvirtinimo (FR-19 – brangu, todėl pabaigoje)
+- [ ] S: ElevenLabs logiką iškelti į `server/voice/generate.ts`; ją kviečia **kodas**
+  (ne DI) su scenų `vo` tekstais, tik kai įjungta „Generuoti įgarsinimą“, būsena
+  `generating_voice`, po sudėto projekto (FR-19 – brangu, todėl pabaigoje)
 - [ ] S: ataskaita: ištaisyti ir likę pažeidimai, laikas, kaina (FR-18, FR-21)
 - [ ] U: „5 Result“ – ataskaita, išteklių sąrašas, „Atidaryti redaktoriuje“
 - [ ] S + U: `agent.saveProposal` – pasiūlytą šabloną ar formulę įrašyti į žinių bazę (FR-02)

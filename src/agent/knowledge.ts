@@ -15,8 +15,8 @@ import {
   richTextSizeSchema,
   visualEffectSchema,
   visualTypeSchema,
-} from "./capabilities";
-import { scenePlanRoleSchema } from "./scene";
+} from "../schema/capabilities";
+import { scenePlanRoleSchema } from "../schema/scene";
 
 // The knowledge base (knowledge/): what the analysis of real videos taught,
 // written in TikMaker's own words so the agent can only pick what TikMaker can

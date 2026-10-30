@@ -22,7 +22,7 @@ import {
   type VideoTemplate,
   type Workspace,
   type WorkspaceStyle,
-} from "../../src/schema/knowledge.js";
+} from "../../src/agent/knowledge.js";
 
 // Loads knowledge/ and reports every problem instead of stopping at the
 // first: one bad hook formula must not hide the rest of the knowledge base,

@@ -1,4 +1,4 @@
-import type { DesignRule } from "../../schema/knowledge";
+import type { DesignRule } from "../knowledge";
 import type { VideoProject } from "../../schema/project";
 import { onScreenWordsPerScene } from "./onScreenWords";
 import { hookSeconds, sceneSeconds } from "./sceneLength";

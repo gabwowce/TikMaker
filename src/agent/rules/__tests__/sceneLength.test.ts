@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import type { DesignRule } from "../../../schema/knowledge";
+import type { DesignRule } from "../../knowledge";
 import type { VideoProject } from "../../../schema/project";
 import type { Scene } from "../../../schema/scene";
 import { hookSeconds, sceneSeconds } from "../sceneLength";

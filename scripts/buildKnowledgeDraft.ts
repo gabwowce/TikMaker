@@ -16,7 +16,7 @@ import {
   titleFormulaSchema,
   transitionPhraseSchema,
   videoTemplateSchema,
-} from "../src/schema/knowledge";
+} from "../src/agent/knowledge";
 
 // Usage: npm run knowledge:draft [-- knowledge/draft/proposal.json]
 //
