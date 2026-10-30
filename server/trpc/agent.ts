@@ -1,0 +1,24 @@
+import { TRPCError } from "@trpc/server";
+import { z } from "zod";
+import { agentRunInputSchema } from "../../src/agent/agentRun.js";
+import { getRun, listRuns, startRun } from "../agent/runs.js";
+import { procedure, router } from "./init.js";
+
+// The agent as the editor sees it: start a run, then keep asking how it is
+// going. The same start → poll pattern as renders.ts; the run itself lives in
+// db/agent-runs/<id>.json (server/agent/runs.ts).
+export const agentRouter = router({
+  start: procedure.input(agentRunInputSchema).mutation(async ({ input }) => {
+    const run = await startRun(input);
+    return { id: run.id };
+  }),
+
+  get: procedure.input(z.string()).query(async ({ input: id }) => {
+    const run = await getRun(id);
+    if (!run)
+      throw new TRPCError({ code: "NOT_FOUND", message: "Unknown agent run" });
+    return run;
+  }),
+
+  list: procedure.query(() => listRuns()),
+});

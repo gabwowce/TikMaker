@@ -60,40 +60,98 @@ langas atsiranda (laukai priklauso nuo to, ką grąžina DI):
 5 Result    reportSchema                                                   (D10)
 ```
 
-## Naudotojo kelias (UX)
+## Naudotojo kelias (UX) – agentas redaktoriaus viduje
 
-Redaktoriaus įrankių juostoje – mygtukas **„New video with AI“**. Jis atidaro langą su
-5 žingsniais (`docs/bd/sprendimai.md`, „Naudotojo sąsaja“). Naudotojas priima tik
-**3 privalomus sprendimus** (NFR-11): paleisti, pasirinkti kabliuką, patvirtinti scenarijų.
+Agentas **ne atskiras langas ar režimas**, o **AI skydelis** dešinėje, matomas ir
+Storyboard, ir Scenes režimuose. Jis dirba **tame pačiame atidarytame projekte**:
+scenarijus atsiranda Storyboard'e, išdėstymas – Scenes. Dizaino maketai (Claude Design,
+2026-10-30): skydelis su eiga, „Run“ ir „Assets to make“ skirtukais, pokalbio laukas
+su kontekstu apačioje, „Asset to make“ blokas scenos Content skiltyje.
 
+**Skydelis:**
+- Atidarytas – plotis **keičiamas tempiant kraštą** (įsimenamas, kaip laiko juostos
+  aukštis `editorPrefs`); suskleidžiamas.
+- Suskleistas – **vienas ✦ mygtukas** dešiniame krašte su skaičiumi (kiek liko įkelti /
+  nepataisytų įspėjimų) ir eigos taškeliais (5 žingsniai). Jokių atskirų „upload“ ar
+  „chat“ mygtukų – visa tai skydelio viduje.
+- Viršuje – eiga Idea → Angle → Script → Building → Result (5 žingsniai, ne ekranai).
+- Skirtukai: **Run** (šio projekto užduočių istorija: idėja, kabliukas, patvirtintas
+  scenarijus, sudėliota, įspėjimai su „Go to scene“) ir **Assets to make** (ką įkelti,
+  surikiuota pagal scenas; paspaudus – atidaroma scena).
+- Apačioje – **pokalbio laukas su kontekstu**: pažymėta scena (Storyboard'e, scenų
+  juostoje ar laiko juostoje) tampa kontekstu „Scene 3 · Benefit“ (ant scenos – ženkliukas
+  „AI context“); keičiama tik ji. Konteksto nėra → keičiamas visas video.
+
+**Kelias:**
 ```
-1 Idea      idėja (20–500 simb.), kanalas, trukmė (15–90 s, numatyta 40),
-            „Tik judanti grafika“ (nebūtinas), „Generuoti įgarsinimą“  → [Start]   ← sprendimas 1
-2 Angle     parinktas šablonas su įvertinimu 1–5 ir paaiškinimu; jei < 3 – agento pasiūlytas
-            naujas šablonas, aiškiai pažymėtas (FR-05); šabloną galima pakeisti → kabliukai
-            perrašomi; 3 kabliukai su formule ir įvertinimu arba savas tekstas
-                                                                       → [Use this hook] ← sprendimas 2
-3 Script    scenarijus scenomis: rolė, įgarsinimas, tekstas ekrane, vaizdo aprašas;
-            prie scenų, kurioms geriausiai tiktų tikras įrašas – pasirinkimas:
-            „Įrašysiu pati“ (REC vieta su aprašu) / „Padaryk be įrašo“ (maketai, ikonos,
-            tekstas, judesys) / „Sugeneruok“ (IMG/VID vieta su promptu, FR-22)
-            [Approve] / redaguoti / komentaras → perrašyti               ← sprendimas 3
-4 Building  eiga: išdėstymas → projektas → taisyklės → taisymas (ratai) → įgarsinimas,
-            be naudotojo
-5 Result    projektas atsidaro redaktoriuje; ataskaita: likę įspėjimai (paspaudus –
-            pažymima scena), [Taisyti su DI], išteklių sąrašas, laikas, kaina
+Pradžia   „+ New“ → „With AI“: tuščias projektas, Storyboard, skydelyje forma
+          (agentRunInputSchema)                                 → [Generate]  ← sprendimas 1
+Angle     skydelyje: parinktas šablonas (įvertinimas, priežastis; < 3 – agento
+          pasiūlytas, FR-05; galima pakeisti) ir 3 kabliukų kortelės
+                                                                → pasirinkti   ← sprendimas 2
+Script    scenarijus atsiranda Storyboard'e (rolė, įgarsinimas, tekstas ekrane, ką
+          rodyti); taisoma ranka ten pat arba komentaru skydelyje;
+          scenoms su pasiūlytu įrašu – „Įrašysiu pati“ / „Padaryk be įrašo“
+                                                                → [Approve]    ← sprendimas 3
+Building  Scenes režime atsiranda išdėstymas; skydelyje eiga ir taisyklių įspėjimai
+Result    įspėjimai su „Go to scene“, „Assets to make“, laikas, kaina
 ```
 
-Ar reikia savų įrašų, sprendžiama **scenarijaus žingsnyje** prie konkrečios scenos, ne
-pradžioje: prieš scenarijų to dar nežinoma. „Tik judanti grafika“ – greitas kelias:
-agentas iš karto planuoja visas scenas be įrašų ir nieko neklausia.
+**Esami ir importuoti projektai** irgi redaguojami su DI: atidarai bet kurį projektą,
+pažymi sceną ir rašai. Jei projektas neturi `videoTemplateId` ar scenų rolių, agentas
+pirma jas nustato pagal tekstą.
+
+**Ištekliai (savi įrašai, paveikslėliai):**
+- Ar reikia savo įrašo, sprendžiama **scenarijaus žingsnyje** prie konkrečios scenos.
+  „Tik judanti grafika“ – agentas iš karto planuoja scenas be įrašų.
+- Kol kas tik **įkėlimas (Upload)**. „Generate“ (DI sugeneruotas paveikslėlis ar video)
+  – vėliau, ne dabar.
+- „Asset to make“ scenos Content skiltyje ir skydelio sąrašas – **vienas komponentas,
+  vienas veiksmas** (ne dvi „Upload“ versijos). Laiko juostoje – eilutė „Media (missing)“.
+
+**DI pakeitimai ir atšaukimas:** agentas serveryje apskaičiuoja pakeitimus, o
+**redaktorius juos pritaiko atidarytam projektui** (Zustand), todėl AutoSave išsaugo kaip
+įprastai ir niekas neperrašo vienas kito. DI pakeitimas atšaukiamas vienu žingsniu, bet
+**su patvirtinimu** („Atšaukti DI pakeitimą (3 scena)?“); rankinis Ctrl+Z – kaip dabar.
+
+**Užduotys ir projektas:** viena DI užduotis = vienas paleidimas (`db/agent-runs/`):
+sukūrimas, „sutrumpink 3 sceną“, „pridėk CTA“ – atskiri paleidimai, susieti su projektu
+(`projectId`). Skirtukas „Run“ rodo jų istoriją ir kainą.
 
 **Įgarsinimas – ne DI.** Agentas tik parašo kiekvienos scenos tekstą (`vo`). Garsą
 sukuria ElevenLabs per esamą `voice.generate` – tai daro **kodas**, kai įjungta
 „Generuoti įgarsinimą“; kitaip įgarsinimą galima sugeneruoti redaktoriuje vėliau.
 
-Langą galima uždaryti bet kada: paleidimas tęsiasi serveryje ir saugomas faile, o
-atidarius vėl rodoma ta pati vieta (paleidimas fone, D3).
+Skydelį galima suskleisti bet kada: paleidimas tęsiasi serveryje ir saugomas faile.
+
+## Ką agentas gali keisti (DI įrankiai)
+
+DI kadro nemato ir koordinačių nerašo: jis renkasi iš **aprašytų veiksmų** (įrankių), o
+kodas kiekvieną patikrina ir pritaiko. Šaltiniai skirtingi:
+- **`src/schema/capabilities.ts`** – ką TikMaker **moka nupiešti** (vaizdinių tipai,
+  animacijos, fonai, šriftai). Agentas renkasi tik iš to.
+- **`src/agent/tools.ts`** (naujas, D8) – ką agentas **gali pakeisti**: vienas Zod
+  aprašas kiekvienam veiksmui. Tai ir yra „ką DI moka“ sąrašas – BD aprašui ir UI.
+
+1 pakopa (D8): pakeisti tekstą, įgarsinimą, išdėstymą (kitas iš 61 pavyzdžio), vaizdinį,
+trukmę, perėjimą; pridėti, pašalinti, suskaidyti sceną.
+2 pakopa (jei liks laiko): sluoksnio keyframe'ai, elemento perkėlimas tarp scenų
+(„carry“, `link.groupId`), garsai.
+
+## DI tiekėjai
+
+Modelis pasirenkamas `.env.local` (`callStructured` nesikeičia, keičiasi tik tiekėjas):
+- **Gemini** (`@ai-sdk/google`, nemokamas planas) – numatytasis kūrimui ir testams.
+- **Claude per API raktą** (`@ai-sdk/anthropic`) – antras tiekėjas palyginimui; galutinėje
+  programoje (F) kiekvienas naudotojas įrašo **savo** raktą nustatymuose.
+- **Claude Code per prenumeratą (Pro/Max limitai)** – tyrimo išvada 2026-10-30 (antriniai
+  šaltiniai, oficialiai nepatvirtinta): Anthropic prenumeratos prisijungimo naudojimą
+  kitose programose, įskaitant Agent SDK, laiko Consumer Terms pažeidimu, o trečiųjų
+  šalių programos turi naudoti API raktus. Todėl **platinamai programai – ne**. Asmeniškai
+  savo kompiuteryje egzistuoja bendruomenės `ai-sdk-provider-claude-code` (neoficialus),
+  bet ir jis patenka į tą pačią ribą. Prieš bet kokį jungimą – patikrinti Anthropic
+  Consumer Terms ir Agent SDK dokumentaciją; jei leidžiama, tai būtų vienas naujas
+  tiekėjas `llm.ts`, be kito kodo keitimo.
 
 **Paleidimo būsenos** (viena būsena = viena vieta lange; `awaiting_*` – laukia
 naudotojo, ir tai lygiai du privalomi sprendimai po paleidimo):
@@ -116,34 +174,39 @@ nutraukta:              → cancelled
 
 ---
 
-## D3. Paleidimas fone + sąsajos karkasas
+## D3. Paleidimas fone + AI skydelio karkasas
 
-**Tikslas:** paspaudus „Start“, serveris sukuria paleidimą, išsaugo jį faile, o langas
-rodo jo būseną ir atnaujina ją pats. DI dar nekviečiamas.
+**Tikslas:** iš AI skydelio paspaudus „Generate“, serveris sukuria paleidimą, išsaugo jį
+faile, o skydelis rodo jo būseną ir atnaujina ją pats. DI dar nekviečiamas.
 
 **Pirma perskaityti:** `server/renderJobs.ts`, `server/trpc/renders.ts`,
 `src/editor/RenderButton.tsx` – lygiai tas pats principas (pradėti darbą → klausti būsenos).
 
 S – serveris:
-- [ ] `src/agent/agentRun.ts`: `agentRunInputSchema` (idėja, `workspaceId`, trukmė,
+- [x] `src/agent/agentRun.ts`: `agentRunInputSchema` (idėja, `workspaceId`, trukmė,
   `motionOnly`, `generateVoice`), `agentRunStatusSchema` (būsenos aukščiau),
   `agentRunSchema` (`id`, `input`, `status`, `steps[]`, `createdAt`, `error?`)
-- [ ] `server/agent/runs.ts`: `startRun(input)`, `getRun(id)`, `saveRun(run)` →
-  `db/agent-runs/<id>.json` (per `server/db.ts` `readAll`/`writeOne`)
-- [ ] `server/trpc/agent.ts`: `start` (mutation), `get` (query), `list` (query);
-  pridėti į `appRouter` (`server/trpc/router.ts`)
-- [ ] testas `server/__tests__/` (kaip `api.test.ts`): `start` sukuria failą, `get` jį grąžina
+- [ ] `agentRunSchema` + `projectId` (paleidimas susietas su projektu)
+- [x] `server/agent/runs.ts`: `startRun(input)`, `getRun(id)`, `saveRun(run)`,
+  `listRuns()` → `db/agent-runs/<id>.json`
+- [x] `server/trpc/agent.ts`: `start`, `get`, `list`; `appRouter` → `agent`
+- [x] testas `server/__tests__/agent.test.ts` (4 testai)
 
-U – sąsaja:
-- [ ] `src/editor/agent/NewVideoButton.tsx` – mygtukas įrankių juostoje
-  (`EditorToolbar.tsx`, šalia `RenderButton`)
-- [ ] `src/editor/agent/AgentRunDialog.tsx` – langas su 5 žingsnių juosta; kol kas
-  veikia tik „1 Idea“ (forma) ir būsenos rodymas
+U – sąsaja (tikrinta 2026-10-30: Mantine `Stepper` ir `Switch` stiliai įkeliami
+`src/editor/styles.css` – be jų rodoma be stiliaus; skydelio šaknis su klase `font-sans`):
 - [ ] `src/api/agent.ts` – `useStartRun()`, `useAgentRun(id)` su `refetchInterval`
-  (kaip `RenderButton`), kol būsena ne `done`/`error`/`awaiting_*`
+  (kaip `RenderButton`), kol būsena ne `awaiting_*`/`done`/`error`/`cancelled`
+- [ ] `src/editor/agent/AgentPanel.tsx` – skydelis dešinėje abiejuose režimuose
+  (`Editor.tsx`), keičiamo pločio, suskleidžiamas; būsena – `editorPrefs`
+  (`agentPanelOpen`, `agentPanelWidth`, `lastAgentRunId`)
+- [ ] `src/editor/agent/AgentRail.tsx` – suskleista juosta: vienas ✦ su skaičiumi ir
+  eigos taškeliais
+- [ ] `src/editor/agent/IdeaForm.tsx` – forma skydelyje (idėja, kanalas, trukmė,
+  „Tik judanti grafika“, „Generuoti įgarsinimą“)
+- [ ] skydelio viršuje – eigos juosta (5 žingsniai) pagal `status`
 
-**Patikra:** įrašai idėją → „Start“ → `db/agent-runs/` atsiranda failas, langas rodo
-`created`; uždarius ir vėl atidarius langą rodomas tas pats paleidimas.
+**Patikra:** skydelyje įrašai idėją → „Generate“ → `db/agent-runs/` atsiranda failas,
+skydelis rodo `created`; suskleidus, perkrovus puslapį ir išskleidus – tas pats paleidimas.
 
 ## D4. Šablono parinkimas („2 Angle“, pirma pusė)
 
@@ -159,8 +222,8 @@ S – serveris:
   žingsnis; kiekvienas DI kvietimas įrašomas į `steps[]` su tokenais ir laiku (FR-21)
 
 U – sąsaja:
-- [ ] „2 Angle“: parinktas šablonas (pavadinimas, `oneLine`, įvertinimas, priežastis)
-  ir „Pakeisti“ (sąrašas iš `knowledge.list` arba `agent.templates`)
+- [ ] skydelio „Run“ skirtuke: parinktas šablonas (pavadinimas, `oneLine`, įvertinimas,
+  priežastis) ir „Pakeisti“ (sąrašas iš `agent.templates`)
 
 **Patikra:** 3 skirtingoms idėjoms parenkami prasmingi šablonai; paleidimo faile
 matosi tokenai ir laikas.
@@ -173,8 +236,8 @@ S – serveris:
 - [ ] būsena `awaiting_hook`; `agent.chooseHook({ runId, hookIndex | text })` (FR-07)
 
 U – sąsaja:
-- [ ] 3 kabliukų kortelės (tekstas, formulė, įvertinimas) + „Savas tekstas“;
-  pasirinkus – agentas tęsia
+- [ ] skydelyje 3 kabliukų kortelės (tekstas, formulė, įvertinimas) + „Savas tekstas“;
+  pasirinktas įrašomas į 1 sceną, agentas tęsia
 
 **Patikra:** be pasirinkimo scenarijus nerašomas; pasirinkus – būsena juda toliau.
 
@@ -185,16 +248,18 @@ S – serveris:
   (įskaitant `hook`, `cta`) agentas įtraukia ar praleidžia pagal idėją ir užrašo
   priežastį (FR-08); prie scenų, kurioms geriausiai tiktų tikras įrašas, pažymi
   `media: "suggest-recording"` (išskyrus kai `motionOnly`)
-- [ ] `agent.setSceneMedia({ runId, sceneIndex, choice: "record" | "motion" | "generate" })`
+- [ ] `agent.setSceneMedia({ runId, sceneIndex, choice: "record" | "motion" })`
+  („generate“ – vėliau)
+- [ ] scenarijus taikomas **atidarytam projektui** (Storyboard): `storyPlan`, scenos su
+  `plan`, `vo`, tekstu ekrane – per projekto store, ne tiesiai į failą
 - [ ] `src/agent/checkScript.ts` + testai: visos privalomos rolės, trukmė ne daugiau
   kaip +15 % nuo tikslinės, žodžiai ekrane pagal `design-rules.json` (FR-09)
 - [ ] `agent.approveScript`, `agent.reviseScript({ comment })` (FR-10)
 
 U – sąsaja:
-- [ ] scenų sąrašas (rolė, įgarsinimas, tekstas ekrane, vaizdo aprašas); prie scenų
-  su pasiūlytu įrašu – trys mygtukai „Įrašysiu pati“ / „Padaryk be įrašo“ /
-  „Sugeneruok“; patikros pastabos prie scenų; „Approve“, rankinis redagavimas,
-  komentaras → perrašyti
+- [ ] scenarijus matomas **Storyboard'e** (esamas `ProjectStoryboardView`); prie scenų su
+  pasiūlytu įrašu – „Įrašysiu pati“ / „Padaryk be įrašo“; patikros pastabos prie scenų;
+  skydelyje „Approve“ ir komentaras → perrašyti; rankinis taisymas – Storyboard'e
 
 **Patikra:** visas kelias iki patvirtinto scenarijaus veikia naršyklėje.
 
@@ -215,8 +280,10 @@ S – serveris:
 - [ ] išteklių vietos REC / IMG / VID su aprašu ir generavimo promptu (FR-13, FR-22)
 
 U – sąsaja:
-- [ ] „4 Building“: eigos juosta (kuri scena dėliojama); baigus – mygtukas
-  „Atidaryti redaktoriuje“ (projektas įrašomas į `db/projects/` ir atidaromas)
+- [ ] skydelyje eiga (kuri scena dėliojama); išdėstymas taikomas atidarytam projektui ir
+  matomas **Scenes** režime
+- [ ] „Asset to make“ – vienas komponentas scenos Content skiltyje ir skydelio „Assets to
+  make“ skirtuke (tik Upload); laiko juostoje eilutė „Media (missing)“
 
 **Patikra:** sugeneruotas projektas atsidaro redaktoriuje ir groja.
 
@@ -226,14 +293,16 @@ U – sąsaja:
 
 S – serveris:
 - [ ] `scripts/checkProject.ts` papildyti `runRules` rezultatais
-- [ ] `server/agent/steps/revise.ts`: įrankiai (keisti tekstą, išdėstymą, komponentą,
-  šalinti, skaidyti sceną); ciklas iki 3 ratų arba kol pažeidimų nebemažėja (FR-16)
+- [ ] `src/agent/tools.ts`: DI įrankių Zod aprašai (1 pakopa – žr. „Ką agentas gali
+  keisti“); kodas kiekvieną patikrina ir paverčia projekto pakeitimu
+- [ ] `server/agent/steps/revise.ts`: tais įrankiais taiso pažeidimus; ciklas iki 3 ratų
+  arba kol pažeidimų nebemažėja (FR-16)
 - [ ] taškinis taisymas pagal prašymą tekstu (pvz. „pridėk CTA“): keičiama tik tai,
   ko prašoma; nauja scena imama iš šablono (`videoTemplateId`)
 
 U – sąsaja:
-- [ ] įspėjimų sąrašas redaktoriuje (paspaudus – pažymima scena); „Taisyti su DI“;
-  laukelis prašymui tekstu
+- [ ] skydelyje įspėjimai su „Go to scene“; pokalbio laukas su kontekstu (pažymėta scena,
+  ženkliukas „AI context“); DI pakeitimo atšaukimas su patvirtinimu
 
 **Patikra:** sąmoningai per ilga antraštė → ciklas ją sutrumpina; „pridėk CTA“ →
 gale viena `cta` scena, kitos nepakitusios.
@@ -249,7 +318,7 @@ gale viena `cta` scena, kitos nepakitusios.
   (ne DI) su scenų `vo` tekstais, tik kai įjungta „Generuoti įgarsinimą“, būsena
   `generating_voice`, po sudėto projekto (FR-19 – brangu, todėl pabaigoje)
 - [ ] S: ataskaita: ištaisyti ir likę pažeidimai, laikas, kaina (FR-18, FR-21)
-- [ ] U: „5 Result“ – ataskaita, išteklių sąrašas, „Atidaryti redaktoriuje“
+- [ ] U: skydelio „Run“ skirtuke – ataskaita (įspėjimai, laikas, kaina); „Assets to make“
 - [ ] S + U: `agent.saveProposal` – pasiūlytą šabloną ar formulę įrašyti į žinių bazę (FR-02)
 
 ## D11. Testavimas (BD 4 skyrius)

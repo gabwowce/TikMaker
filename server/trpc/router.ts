@@ -1,7 +1,12 @@
-import { savedBackgroundSchema, savedSceneSchema, voiceVariantSchema } from "../../src/schema/library.js";
+import {
+  savedBackgroundSchema,
+  savedSceneSchema,
+  voiceVariantSchema,
+} from "../../src/schema/library.js";
 import { videoProjectSchema } from "../../src/schema/project.js";
 import { sfxOverridesSchema } from "../../src/schema/sfxOverrides.js";
 import { parseProject } from "../../src/utils/normalizeProject.js";
+import { agentRouter } from "./agent.js";
 import { assetsRouter } from "./assets.js";
 import { collectionRouter } from "./collections.js";
 import { router } from "./init.js";
@@ -29,6 +34,7 @@ export const appRouter = router({
   sfx: sfxRouter,
   voice: voiceRouter,
   renders: rendersRouter,
+  agent: agentRouter,
 });
 
 export type AppRouter = typeof appRouter;
