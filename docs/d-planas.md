@@ -27,6 +27,11 @@ klausimai, čia – eiga, failai ir būsena.
 
 ## Kita sesija pradeda nuo čia (2026-10-30)
 
+- [x] **Pertvarka (2026-10-30):** `pipeline.ts` išskaidytas pagal „Kur kas guli“
+  struktūrą: `agent.ts` + `steps/1-idea.ts`, `steps/2-angle.ts` + `prompts/pickTemplate.ts`
+  + `job.ts`; `runs.startRun` → `step1Idea`. Elgsena ta pati, testai praeina. Autorė kodą
+  matė ir patvirtino. Liko paaiškinti 2–8 punktus žemiau (1 punktas – nebeaktualus).
+
 D4.3 Claude įrašė pats, autorė kodo negavo – **pirma paaiškinti jį eilutė po eilutės,
 paprastai**, paskui tęsti D4.5. Commitas `733e2b8`. Paaiškinti, ką daro ir kodėl:
 1. `server/agent/pipeline.ts` – visas: `continueRun` (darbas fone, klaidos įrašymas į
@@ -66,8 +71,22 @@ pradžioje; blogų kadrų pavyzdžių; reveal / setup / problem kadrų po 1–3.
   schemos), `agentRun.ts` (paleidimo schemos), `rules/` (taisyklės), vėliau
   `checkScript.ts`, `compileProject.ts`.
 - **`server/agent/`** – tik serveryje: `llm.ts` (DI kvietimas), `knowledge.ts` (žinių
-  bazės įkėlimas iš failų), `runs.ts` (paleidimų saugojimas), vėliau `steps/` (agento
-  žingsniai).
+  bazės įkėlimas iš failų), `runs.ts` (paleidimų saugojimas). Agentas – trys lygiai,
+  kaip knygoje (turinys → skyriai → sakiniai):
+  ```
+  agent.ts          TURINYS: visas agentas viename lape – kas po ko (switch pagal būseną)
+  steps/
+    1-idea.ts       forma → paleidimo failas (kviečia agent.start)
+    2-angle.ts      šablonas → kabliukai → LAUKIA: naudotoja renkasi kabliuką
+    3-script.ts     scenarijus → patikra → LAUKIA: patvirtinimo
+    4-building.ts   išdėstymas → taisyklės → taisymas
+    5-result.ts     įgarsinimas → ataskaita → done
+  prompts/          ko tiksliai klausiam DI: pickTemplate.ts, writeHooks.ts…
+  job.ts            aptarnavimas: job.save(...), job.ai(...) – laikas, tokenai, klaidos
+  ```
+  Naujas DI klausimas = failas `prompts/` + eilutė `job.ai(...)` savo žingsnyje.
+  Žingsnis, kuris laukia naudotojos, baigiasi `awaiting_*`; jos atsakymą priima naujas
+  endpoint'as `server/trpc/agent.ts`, kuris vėl kviečia `continueRun`.
 - **`src/editor/agent/`** – sąsaja; **`src/api/agent.ts`** – sąsajos ryšys su serveriu.
 - Paleidimas = **vienas failas** `db/agent-runs/<id>.json`: būsena perrašoma tame pačiame
   faile, o istorija kaupiasi jo `steps[]`; keli paleidimai – keli failai.

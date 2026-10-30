@@ -4,7 +4,7 @@ import { MockLanguageModelV4 } from "ai/test";
 import { describe, expect, it } from "vitest";
 import { agentRunInputSchema } from "../../../src/agent/agentRun.js";
 import { loadKnowledge } from "../knowledge.js";
-import { pickTemplate } from "../steps/pickTemplate.js";
+import { pickTemplate } from "../prompts/pickTemplate.js";
 
 // The real knowledge base: the step must work with the templates we ship.
 const root = path.join(

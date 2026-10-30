@@ -1,8 +1,9 @@
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 import { agentRunStartSchema } from "../../src/agent/agentRun.js";
-import { continueRun } from "../agent/pipeline.js";
-import { getRun, listRuns, startRun } from "../agent/runs.js";
+import { continueRun } from "../agent/agent.js";
+import { getRun, listRuns } from "../agent/runs.js";
+import { step1Idea } from "../agent/steps/1-idea.js";
 import { procedure, router } from "./init.js";
 
 // The agent as the editor sees it: start a run, then keep asking how it is
@@ -10,7 +11,7 @@ import { procedure, router } from "./init.js";
 // db/agent-runs/<id>.json (server/agent/runs.ts).
 export const agentRouter = router({
   start: procedure.input(agentRunStartSchema).mutation(async ({ input }) => {
-    const run = await startRun(input.projectId, input.input);
+    const run = await step1Idea(input.projectId, input.input);
     continueRun(run); // the agent works in the background; the panel polls get
     return { id: run.id };
   }),
