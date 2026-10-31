@@ -2,7 +2,11 @@ import type { AgentRun } from "../../src/agent/agentRun.js";
 import type { Workspace } from "../../src/agent/knowledge.js";
 import { KNOWLEDGE_DIR } from "../config.js";
 import { loadKnowledge, type Knowledge } from "./knowledge.js";
-import type { StructuredResult } from "./llm.js";
+import {
+  StructuredCallError,
+  type CallLog,
+  type StructuredResult,
+} from "./llm.js";
 import { saveRun } from "./runs.js";
 
 // What every step (steps/*.ts) works with: the run, the knowledge base and the
@@ -41,27 +45,38 @@ export async function openJob(run: AgentRun): Promise<Job> {
       try {
         const result = await call();
         const step = {
-          name,
-          startedAt,
-          ms: result.ms,
-          inputTokens: result.usage.inputTokens,
-          outputTokens: result.usage.outputTokens,
+          ...logged(name, startedAt, result),
           output: result.data,
         };
         await job.save({ steps: [...job.run.steps, step] });
         return result.data;
       } catch (error) {
         const message = error instanceof Error ? error.message : String(error);
-        const step = {
-          name,
-          startedAt,
-          ms: Date.now() - startedAt,
-          error: message,
-        };
+        // A call that gave up still says what it sent and what it cost.
+        const step =
+          error instanceof StructuredCallError
+            ? { ...logged(name, startedAt, error.log), error: message }
+            : { name, startedAt, ms: Date.now() - startedAt, error: message };
         await job.save({ steps: [...job.run.steps, step] });
         throw error;
       }
     },
   };
   return job;
+}
+// One call as the run's log keeps it: the same fields whether it answered or
+// gave up (FR-21).
+function logged(name: string, startedAt: number, log: CallLog) {
+  return {
+    name,
+    startedAt,
+    ms: log.ms,
+    model: log.model,
+    attempts: log.attempts,
+    prompt: log.prompt,
+    inputTokens: log.usage.inputTokens,
+    cachedInputTokens: log.usage.cachedInputTokens,
+    outputTokens: log.usage.outputTokens,
+    thinkingTokens: log.usage.thinkingTokens,
+  };
 }

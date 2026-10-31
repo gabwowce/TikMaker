@@ -12,7 +12,7 @@ export function AgentRail({ onOpen }: { onOpen: () => void }) {
   const road = run && working ? runRoad(run) : undefined;
 
   return (
-    <aside className="flex w-11 shrink-0 flex-col items-center gap-3 border-0 border-l border-solid border-editor-border py-2">
+    <aside className="editor-ui flex w-11 shrink-0 flex-col items-center gap-3 border-0 border-l border-solid border-editor-border py-2">
       <ActionIcon
         aria-label="Open the AI agent"
         variant="default"

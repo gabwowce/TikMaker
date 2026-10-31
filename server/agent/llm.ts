@@ -33,12 +33,22 @@ function thinkingLevel(): ThinkingLevel | undefined {
   return level ? (level as ThinkingLevel) : undefined;
 }
 
-export type StructuredResult<T> = {
-  data: T;
+export type CallLog = {
+  model: string;
+  prompt: { system: string; user: string };
+  attempts: number;
   usage: TokenCount;
   ms: number;
-  attempts: number;
 };
+export type StructuredResult<T> = CallLog & { data: T };
+
+export class StructuredCallError extends Error {
+  log: CallLog;
+  constructor(message: string, log: CallLog) {
+    super(message);
+    this.log = log;
+  }
+}
 
 // Tokens of every attempt together, the rejected ones too: each was paid for
 // (FR-21). cached = input the provider had already seen (cheaper); thinking =
@@ -67,12 +77,20 @@ export async function callStructured<T>(
 ): Promise<StructuredResult<T>> {
   const level = thinkingLevel();
   const started = Date.now();
+  const modelId = typeof model === "string" ? model : model.modelId;
   const usage: TokenCount = {
     inputTokens: 0,
     cachedInputTokens: 0,
     outputTokens: 0,
     thinkingTokens: 0,
   };
+  const log = (attempts: number): CallLog => ({
+    model: modelId,
+    prompt,
+    attempts,
+    usage,
+    ms: Date.now() - started,
+  });
   for (let attempt = 1; ; attempt++) {
     try {
       const result = await generateText({
@@ -84,18 +102,17 @@ export async function callStructured<T>(
           ? { google: { thinkingConfig: { thinkingLevel: level } } }
           : undefined,
       });
+
       addUsage(usage, result.usage);
-      return {
-        data: result.output,
-        usage,
-        ms: Date.now() - started,
-        attempts: attempt,
-      };
+      return { ...log(attempt), data: result.output };
     } catch (error) {
-      if (!NoObjectGeneratedError.isInstance(error)) throw error;
-      // The model did answer, just not in the right shape: count it.
-      addUsage(usage, error.usage);
-      if (attempt === MAX_ATTEMPTS) throw error;
+      if (NoObjectGeneratedError.isInstance(error)) {
+        // The model did answer, just not in the right shape: count it.
+        addUsage(usage, error.usage);
+        if (attempt < MAX_ATTEMPTS) continue;
+      }
+      const message = error instanceof Error ? error.message : String(error);
+      throw new StructuredCallError(message, log(attempt));
     }
   }
 }

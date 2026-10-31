@@ -66,11 +66,17 @@ export function IdeaForm({ projectId }: { projectId: string }) {
         description="Someone appears on camera; off = a faceless video"
         checked={withFace}
         onChange={(event) => setWithFace(event.currentTarget.checked)}
+        classNames={{
+          description: "text-[10px]",
+        }}
       />
       <Checkbox
         label="Generate the voiceover"
         checked={generateVoice}
         onChange={(event) => setGenerateVoice(event.currentTarget.checked)}
+        classNames={{
+          description: "text-[10px]",
+        }}
       />
       <Button
         disabled={!input.success}

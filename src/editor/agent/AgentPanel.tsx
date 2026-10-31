@@ -35,7 +35,7 @@ export function AgentPanel() {
   return (
     <aside
       style={{ width }}
-      className="relative flex shrink-0 flex-col border-0 border-l border-solid border-editor-border bg-editor-panel"
+      className="editor-ui relative flex shrink-0 flex-col border-0 border-l border-solid border-editor-border bg-editor-panel"
     >
       <div
         role="separator"

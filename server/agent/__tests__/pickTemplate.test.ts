@@ -1,9 +1,10 @@
+import { MockLanguageModelV4 } from "ai/test";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { MockLanguageModelV4 } from "ai/test";
 import { describe, expect, it } from "vitest";
 import { agentRunInputSchema } from "../../../src/agent/agentRun.js";
 import { loadKnowledge } from "../knowledge.js";
+import { StructuredCallError } from "../llm.js";
 import { pickTemplate } from "../prompts/pickTemplate.js";
 
 // The real knowledge base: the step must work with the templates we ship.
@@ -63,7 +64,22 @@ describe("pickTemplate with a fake model", () => {
     expect(result.usage).toMatchObject({ inputTokens: 200, outputTokens: 40 });
   });
 });
-
+describe("a call that gives up", () => {
+  it("still reports what it sent, how often and what it cost", async () => {
+    const madeUp = { videoTemplateId: "no-such", score: 5, reason: "Made up." };
+    const error = await pickTemplate(
+      input("How to undo the last git commit in a few seconds"),
+      workspace,
+      templates,
+      fakeModel(madeUp, madeUp, madeUp),
+    ).catch((e: unknown) => e);
+    expect(error).toBeInstanceOf(StructuredCallError);
+    const { log } = error as StructuredCallError;
+    expect(log.attempts).toBe(3);
+    expect(log.usage).toMatchObject({ inputTokens: 300, outputTokens: 60 });
+    expect(log.prompt.user).toContain("Templates:");
+  });
+});
 // Real Gemini: runs only when the key is given, e.g.
 //   node --env-file=.env.local node_modules/vitest/vitest.mjs run server/agent/__tests__/pickTemplate.test.ts
 // Plain `npm test` skips it, so it never spends the free quota by accident.

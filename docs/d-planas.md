@@ -299,6 +299,40 @@ U – sąsaja:
 **Patikra:** 3 skirtingoms idėjoms parenkami prasmingi šablonai; paleidimo faile
 matosi tokenai ir laikas.
 
+## D4.6 Skydelis pagal maketą (sutarta 2026-10-31)
+
+Skydelis skaitosi kaip pokalbis (maketas: idėja burbule, po ja kiekvienas atliktas
+žingsnis – trumpa eilutė su ✓). Dabartinė vertikali juosta (Template / Hooks / Script /
+Layout / Check) neatitiko plano 5 žingsnių ir užėmė pusę skydelio, o šablono kortelė
+atrodė kaip atsitiktinis nurodymas, ne agento sprendimas.
+
+- [x] 1 viršuje horizontali 5 taškų juosta **Idea → Angle → Script → Building →
+  Result** (`runRoad`; tuos pačius taškus rodo suskleistas skydelis)
+- [x] 2 idėjos burbulas: tekstas + smulkiai „40 s · be veido · šablonas: AI“
+- [x] 3 žingsnių eilutės: kol dirba – „Picking a template…“; po to „✓ Template · <name>“,
+  priežastis, „Fit 5/5“, nuoroda „Change“ (D5 kabliukai – tame pačiame Angle bloke)
+- [x] 4 formos atitraukimas: AI skydelis nebuvo `editor-ui` (be `box-sizing: border-box`
+  laukeliai išlįsdavo už krašto ir skydelis slinkdavo į šoną) – klasė pridėta `AgentPanel`
+  ir `AgentRail`
+
+Ne dabar: skirtukai „Run / Assets to make“ (D7), pokalbio laukas (D8), „Script approved /
+Built“ eilutės – kai bus tie žingsniai.
+
+**D4 patikra (2026-10-31, Gemini Flash-Lite):** 3 idėjos → 3 skirtingi prasmingi šablonai:
+„TikMaker can now turn one sentence…“ → New tool news 5/5; „Three Claude Code shortcuts…“
+→ Tool tips list 5/5 (1,5 s, 1614 / 52 tokenų); „Why vibe-coded apps break…“ → Myth vs
+reality 5/5. Priežastis (`reason`) paliekama – jos reikalauja FR-04, o kainuoja ~30 tokenų
+iš ~1670.
+
+## D4.7 Pilnas žurnalas (FR-21)
+
+Žurnale buvo tik laikas, 2 tokenų skaičiai ir atsakymas; trūko to, kas **nusiųsta**.
+- [x] serveris: `callStructured` grąžina `CallLog` (modelis, promptas, bandymai, 4 tokenų
+  skaičiai, laikas); nepavykęs kvietimas meta `StructuredCallError` su tuo pačiu `log`;
+  `job.ai` viską įrašo į `steps[]` (nauji laukai nebūtini – seni failai atsidaro)
+- [x] skydelis (`StepLog`): prie žingsnio eilutės „1.5 s · 1614 in · 52 out tokens“,
+  paspaudus – modelis, bandymai, promptas ir atsakymas
+
 ## D5. Kabliukai („2 Angle“, antra pusė)
 
 S – serveris:

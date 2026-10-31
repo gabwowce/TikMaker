@@ -91,7 +91,15 @@ describe("agent runs", () => {
       pickedBy: "agent",
     });
     expect(run.steps).toMatchObject([
-      { name: "pickTemplate", inputTokens: 100, outputTokens: 20 },
+      {
+        name: "pickTemplate",
+        inputTokens: 100,
+        outputTokens: 20,
+        attempts: 1,
+        model: expect.any(String),
+        // The step's input: exactly what the model was sent.
+        prompt: { user: expect.stringContaining(idea) },
+      },
     ]);
   });
 
