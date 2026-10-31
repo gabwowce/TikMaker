@@ -53,6 +53,27 @@ export function useAgentRuns(projectId: string) {
   return useQuery(trpc.agent.list.queryOptions(projectId));
 }
 
+// Every template the user can pick (the form, and "Change" on the card). The
+// knowledge base only changes between server starts, so it is asked for once.
+export function useTemplates() {
+  return useQuery(
+    trpc.agent.templates.queryOptions(undefined, { staleTime: Infinity }),
+  );
+}
+
+// Swaps the run's template, then asks for the run again so the card shows it
+// at once (a run waiting for the user is no longer polled).
+export function useChangeTemplate() {
+  return useMutation(
+    trpc.agent.changeTemplate.mutationOptions({
+      onSuccess: (_, { runId }) =>
+        queryClient.invalidateQueries({
+          queryKey: trpc.agent.get.queryKey(runId),
+        }),
+    }),
+  );
+}
+
 // The open project's newest run, asked for again while the agent works on it.
 // Both the panel and its collapsed rail read this, so they never disagree.
 export function useLatestRun(projectId: string) {

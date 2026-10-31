@@ -285,8 +285,9 @@ D4.5 (sutarta 2026-10-31), 5 dalys:
   neklausiamas (taupomi tokenai), `pickedBy: "user"`. **Būsenas keičia tik `agent.ts`**
   (žingsnis tik daro darbą ir įrašo rezultatą; `job.ai(name, call)` be būsenos).
   `llm.ts`: tokenai sumuojami per visus bandymus, ir atmestus (`TokenCount`, FR-21)
-- [ ] 3 routeris: `agent.templates` (id, name, oneLine), `agent.changeTemplate` + testai
-- [ ] 4 `src/api/agent.ts`: `useTemplates`, `useChangeTemplate`
+- [x] 3 routeris: `agent.templates` (id, name, oneLine), `agent.changeTemplate` + testai
+- [x] 4 `src/api/agent.ts`: `useTemplates`, `useChangeTemplate`; formoje „Template:
+  Let the AI pick / sąrašas“ (patikrinta naršyklėje)
 - [ ] 5 sąsaja: `TemplateCard` (pavadinimas, `oneLine`, įvertinimas, priežastis, < 3 –
   „nė vienas gerai netinka“, „Pakeisti“); formoje „Template: Let AI pick / sąrašas“
 

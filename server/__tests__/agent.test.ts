@@ -115,7 +115,41 @@ describe("agent runs", () => {
     expect(run.status).toBe("error");
     expect(run.error).toMatch(/no-such-channel/);
   });
+  it("lists the templates to choose from", async () => {
+    const templates = await api.agent.templates();
+    expect(templates).toContainEqual(
+      expect.objectContaining({ id: "pain-to-fix", name: expect.any(String) }),
+    );
+  });
 
+  it("changes the template to the user's choice", async () => {
+    const { id } = await startFor("p1");
+    await settled(id);
+    await api.agent.changeTemplate({
+      runId: id,
+      videoTemplateId: "pain-to-fix",
+    });
+    expect((await api.agent.get(id)).template).toEqual({
+      videoTemplateId: "pain-to-fix",
+      pickedBy: "user",
+    });
+  });
+
+  it("refuses a template that does not exist", async () => {
+    const { id } = await startFor("p1");
+    await settled(id);
+    await expect(
+      api.agent.changeTemplate({ runId: id, videoTemplateId: "no-such" }),
+    ).rejects.toMatchObject({ code: "BAD_REQUEST" });
+  });
+
+  it("refuses a change once the run has stopped", async () => {
+    const { id } = await startFor("p1", "no-such-channel");
+    await settled(id); // stops in "error"
+    await expect(
+      api.agent.changeTemplate({ runId: id, videoTemplateId: "pain-to-fix" }),
+    ).rejects.toMatchObject({ code: "BAD_REQUEST" });
+  });
   it("refuses an idea that is too short", async () => {
     await expect(
       api.agent.start({

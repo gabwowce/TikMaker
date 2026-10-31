@@ -80,6 +80,11 @@ export const agentRunStartSchema = z.object({
   projectId: z.string().min(1),
   input: agentRunInputSchema,
 });
+// What agent.changeTemplate receives: which run, and the template to go on with.
+export const changeTemplateInputSchema = z.object({
+  runId: z.string().min(1),
+  videoTemplateId: z.string().min(1),
+});
 
 export type AgentRunInput = z.infer<typeof agentRunInputSchema>;
 export type AgentRunStatus = z.infer<typeof agentRunStatusSchema>;
