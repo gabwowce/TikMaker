@@ -1,7 +1,7 @@
+import { MockLanguageModelV4 } from "ai/test";
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
-import { MockLanguageModelV4 } from "ai/test";
 import { afterAll, describe, expect, it, vi } from "vitest";
 
 // Point the server at a throwaway folder BEFORE importing it, so these tests
@@ -88,10 +88,25 @@ describe("agent runs", () => {
       videoTemplateId: "how-to-steps",
       score: 4,
       reason: "A clear how-to.",
+      pickedBy: "agent",
     });
     expect(run.steps).toMatchObject([
       { name: "pickTemplate", inputTokens: 100, outputTokens: 20 },
     ]);
+  });
+
+  it("uses the form's template without asking the model", async () => {
+    const { id } = await api.agent.start({
+      projectId: "p1",
+      input: { idea, workspaceId: "dev", videoTemplateId: "pain-to-fix" },
+    });
+    const run = await settled(id);
+    expect(run.status).toBe("writing_hooks");
+    expect(run.template).toEqual({
+      videoTemplateId: "pain-to-fix",
+      pickedBy: "user",
+    });
+    expect(run.steps).toEqual([]);
   });
 
   it("stops in error when the channel does not exist", async () => {

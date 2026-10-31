@@ -20,6 +20,6 @@ const { data, usage, ms, attempts } = await callStructured(videoPlanSchema, {
 console.log(data);
 console.log(
   `${ms} ms, ${attempts} attempt(s); tokens in ${usage.inputTokens}` +
-    ` (cached ${usage.inputTokenDetails.cacheReadTokens ?? 0}), out ${usage.outputTokens}` +
-    ` (thinking ${usage.outputTokenDetails.reasoningTokens ?? 0})`,
+    ` (cached ${usage.cachedInputTokens}), out ${usage.outputTokens}` +
+    ` (thinking ${usage.thinkingTokens})`,
 );

@@ -14,30 +14,44 @@ export const agentRunInputSchema = z.object({
   // proposes a talking head (docs/bd/sprendimai.md).
   withFace: z.boolean().default(false),
   generateVoice: z.boolean().default(false),
+  videoTemplateId: z.string().min(1).optional(),
 });
-// 2 Angle — the video template the agent picked for the idea, how well it
-// fits (1–5) and why. Below 3 nothing in the knowledge base really fits
-// (FR-05). The user may swap it for another template.
+// 2 Angle — what the model answers: the video template it picked for the
+// idea, how well it fits (1–5) and why.
 export const templateChoiceSchema = z.object({
   videoTemplateId: z.string().min(1),
   score: z.number().int().min(1).max(5),
   reason: z.string().min(1),
 });
+// Below this score nothing in the knowledge base really fits the idea (FR-05).
+export const MIN_FIT_SCORE = 3;
+// The template the run goes on with: the agent's pick, or one the user chose
+// instead ("Change"), which has no score or reason of its own.
+export const runTemplateSchema = templateChoiceSchema
+  .partial({ score: true, reason: true })
+  .extend({ pickedBy: z.enum(["agent", "user"]).default("agent") });
+
 // Where the run is. awaiting_* means the agent waits for the user.
 export const agentRunStatusSchema = z.enum([
-  "created",
-  "picking_template",
+  "created", //           1 Idea: Start pressed, nothing done yet
+  "picking_template", //  2 Angle: the model picks a template
+  "writing_hooks", //     2 Angle: the model writes hooks
+  "awaiting_hook", //     2 Angle: WAIT – the user picks a hook
+  "writing_script", //    3 Script: the model writes the script
+  "awaiting_approval", // 3 Script: WAIT – the user approves or asks for changes
+  "laying_out", //        4 Building: scenes and visuals are placed
+  "checking", //          4 Building: design rules are checked and fixed
+  "generating_voice", //  5 Result: the voiceover is made (if asked)
+  "done", //              finished: the project has its scenes
+  "error", //             stopped: run.error says why
+  "cancelled", //         the user stopped it
+]);
+
+// While the run is in these, the user may swap the template ("Change"):
+export const TEMPLATE_CHANGEABLE: AgentRunStatus[] = [
   "writing_hooks",
   "awaiting_hook",
-  "writing_script",
-  "awaiting_approval",
-  "laying_out",
-  "checking",
-  "generating_voice",
-  "done",
-  "error",
-  "cancelled",
-]);
+];
 
 // One entry in the run's log: what happened, how long it took and what it
 // cost in tokens (FR-21).
@@ -56,7 +70,7 @@ export const agentRunSchema = z.object({
   projectId: z.string().min(1),
   input: agentRunInputSchema,
   status: agentRunStatusSchema,
-  template: templateChoiceSchema.optional(),
+  template: runTemplateSchema.optional(),
   steps: z.array(agentRunStepSchema),
   createdAt: z.number(),
   error: z.string().optional(),
@@ -72,3 +86,4 @@ export type AgentRunStatus = z.infer<typeof agentRunStatusSchema>;
 export type AgentRunStep = z.infer<typeof agentRunStepSchema>;
 export type AgentRun = z.infer<typeof agentRunSchema>;
 export type TemplateChoice = z.infer<typeof templateChoiceSchema>;
+export type RunTemplate = z.infer<typeof runTemplateSchema>;

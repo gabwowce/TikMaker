@@ -1,4 +1,4 @@
-import type { AgentRun, AgentRunStatus } from "../../src/agent/agentRun.js";
+import type { AgentRun } from "../../src/agent/agentRun.js";
 import type { Workspace } from "../../src/agent/knowledge.js";
 import { KNOWLEDGE_DIR } from "../config.js";
 import { loadKnowledge, type Knowledge } from "./knowledge.js";
@@ -14,13 +14,9 @@ export type Job = {
   workspace: Workspace;
   // Writes these fields into the run's file straight away.
   save(changes: Partial<AgentRun>): Promise<void>;
-  // One question to the model: shows `status`, asks, and logs the call in
-  // steps[] with its time and tokens (FR-21), a failed one too. Returns the answer.
-  ai<T>(
-    status: AgentRunStatus,
-    name: string,
-    call: () => Promise<StructuredResult<T>>,
-  ): Promise<T>;
+  // One question to the model, logged in steps[] with its time and tokens
+  // (FR-21), a failed one too. Returns the answer.
+  ai<T>(name: string, call: () => Promise<StructuredResult<T>>): Promise<T>;
 };
 
 export async function openJob(run: AgentRun): Promise<Job> {
@@ -40,8 +36,7 @@ export async function openJob(run: AgentRun): Promise<Job> {
       await saveRun(job.run);
     },
 
-    async ai(status, name, call) {
-      await job.save({ status });
+    async ai(name, call) {
       const startedAt = Date.now();
       try {
         const result = await call();
@@ -57,7 +52,12 @@ export async function openJob(run: AgentRun): Promise<Job> {
         return result.data;
       } catch (error) {
         const message = error instanceof Error ? error.message : String(error);
-        const step = { name, startedAt, ms: Date.now() - startedAt, error: message };
+        const step = {
+          name,
+          startedAt,
+          ms: Date.now() - startedAt,
+          error: message,
+        };
         await job.save({ steps: [...job.run.steps, step] });
         throw error;
       }

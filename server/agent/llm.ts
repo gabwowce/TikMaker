@@ -35,11 +35,26 @@ function thinkingLevel(): ThinkingLevel | undefined {
 
 export type StructuredResult<T> = {
   data: T;
-  usage: LanguageModelUsage;
+  usage: TokenCount;
   ms: number;
   attempts: number;
 };
 
+// Tokens of every attempt together, the rejected ones too: each was paid for
+// (FR-21). cached = input the provider had already seen (cheaper); thinking =
+// output the model used to reason (billed, never shown).
+export type TokenCount = {
+  inputTokens: number;
+  cachedInputTokens: number;
+  outputTokens: number;
+  thinkingTokens: number;
+};
+function addUsage(total: TokenCount, usage: LanguageModelUsage | undefined) {
+  total.inputTokens += usage?.inputTokens ?? 0;
+  total.cachedInputTokens += usage?.inputTokenDetails.cacheReadTokens ?? 0;
+  total.outputTokens += usage?.outputTokens ?? 0;
+  total.thinkingTokens += usage?.outputTokenDetails.reasoningTokens ?? 0;
+}
 // A reply that does not match the schema is asked for again, up to 3 times in
 // all. Network errors are already retried inside generateText (maxRetries), so
 // they are not retried here a second time.
@@ -52,6 +67,12 @@ export async function callStructured<T>(
 ): Promise<StructuredResult<T>> {
   const level = thinkingLevel();
   const started = Date.now();
+  const usage: TokenCount = {
+    inputTokens: 0,
+    cachedInputTokens: 0,
+    outputTokens: 0,
+    thinkingTokens: 0,
+  };
   for (let attempt = 1; ; attempt++) {
     try {
       const result = await generateText({
@@ -63,15 +84,18 @@ export async function callStructured<T>(
           ? { google: { thinkingConfig: { thinkingLevel: level } } }
           : undefined,
       });
+      addUsage(usage, result.usage);
       return {
         data: result.output,
-        usage: result.usage,
+        usage,
         ms: Date.now() - started,
         attempts: attempt,
       };
     } catch (error) {
-      if (!NoObjectGeneratedError.isInstance(error) || attempt === MAX_ATTEMPTS)
-        throw error;
+      if (!NoObjectGeneratedError.isInstance(error)) throw error;
+      // The model did answer, just not in the right shape: count it.
+      addUsage(usage, error.usage);
+      if (attempt === MAX_ATTEMPTS) throw error;
     }
   }
 }

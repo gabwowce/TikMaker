@@ -23,12 +23,17 @@ export function continueRun(run: AgentRun): void {
   });
 }
 
-// Which step comes next depends on where the run stopped.
+// Which step comes next depends on where the run stopped. Statuses change
+// only here; a step does its work and saves what it made.
 async function runAgent(run: AgentRun): Promise<void> {
   const job = await openJob(run);
   switch (run.status) {
     case "created": // Start was pressed
-      return step2Angle(job);
+      await job.save({ status: "picking_template" });
+      await step2Angle(job);
+      // D5: step2Hooks, then "awaiting_hook"
+      await job.save({ status: "writing_hooks" });
+      return;
     // case "writing_script": the user picked a hook → step3Script (D6)
   }
 }

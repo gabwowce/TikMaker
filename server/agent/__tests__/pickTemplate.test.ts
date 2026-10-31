@@ -59,6 +59,8 @@ describe("pickTemplate with a fake model", () => {
     );
     expect(result.data.videoTemplateId).toBe("how-to-steps");
     expect(result.attempts).toBe(2);
+    // Both answers were paid for, the rejected one too.
+    expect(result.usage).toMatchObject({ inputTokens: 200, outputTokens: 40 });
   });
 });
 

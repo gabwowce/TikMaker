@@ -11,9 +11,6 @@ import { callStructured, type StructuredResult } from "../llm.js";
 // short card per template — not its acts and scenes — which is all it needs
 // to choose and keeps the prompt cheap.
 
-// Below this score nothing in the knowledge base really fits the idea (FR-05).
-export const MIN_FIT_SCORE = 3;
-
 const SYSTEM = `You are the producer of a short-video channel (TikTok, Reels, Shorts).
 Your job in this step: choose how the video will be told, by picking ONE template
 from the list you are given. You do not write the video yet.

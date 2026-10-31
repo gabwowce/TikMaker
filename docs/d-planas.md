@@ -30,7 +30,8 @@ klausimai, čia – eiga, failai ir būsena.
 - [x] **Pertvarka (2026-10-30):** `pipeline.ts` išskaidytas pagal „Kur kas guli“
   struktūrą: `agent.ts` + `steps/1-idea.ts`, `steps/2-angle.ts` + `prompts/pickTemplate.ts`
   + `job.ts`; `runs.startRun` → `step1Idea`. Elgsena ta pati, testai praeina. Autorė kodą
-  matė ir patvirtino. Liko paaiškinti 2–8 punktus žemiau (1 punktas – nebeaktualus).
+  matė ir patvirtino.
+- [x] D4.3 kodas paaiškintas autorei (visi punktai žemiau). Toliau – D4.5.
 
 D4.3 Claude įrašė pats, autorė kodo negavo – **pirma paaiškinti jį eilutė po eilutės,
 paprastai**, paskui tęsti D4.5. Commitas `733e2b8`. Paaiškinti, ką daro ir kodėl:
@@ -276,6 +277,19 @@ S – serveris:
   `llm.ts` raktą skaito tik kvietimo metu (serveris `.env.local` įkelia vėliau);
   `KNOWLEDGE_DIR` (`TIKMAKER_KNOWLEDGE` testams). Patikrinta: 1,5 s, 1614 / 57 tokenų
 
+D4.5 (sutarta 2026-10-31), 5 dalys:
+- [x] 1 schema: `runTemplateSchema` (`pickedBy: agent | user`, `score`/`reason` nebūtini),
+  `MIN_FIT_SCORE` perkeltas į `src/agent/agentRun.ts`
+- [x] 2 `steps/2-angle.ts`: `step2ChangeTemplate` (tik `TEMPLATE_CHANGEABLE` būsenose);
+  šablonas formoje iš anksto – `input.videoTemplateId` (FR-03): jei nurodytas, DI
+  neklausiamas (taupomi tokenai), `pickedBy: "user"`. **Būsenas keičia tik `agent.ts`**
+  (žingsnis tik daro darbą ir įrašo rezultatą; `job.ai(name, call)` be būsenos).
+  `llm.ts`: tokenai sumuojami per visus bandymus, ir atmestus (`TokenCount`, FR-21)
+- [ ] 3 routeris: `agent.templates` (id, name, oneLine), `agent.changeTemplate` + testai
+- [ ] 4 `src/api/agent.ts`: `useTemplates`, `useChangeTemplate`
+- [ ] 5 sąsaja: `TemplateCard` (pavadinimas, `oneLine`, įvertinimas, priežastis, < 3 –
+  „nė vienas gerai netinka“, „Pakeisti“); formoje „Template: Let AI pick / sąrašas“
+
 U – sąsaja:
 - [ ] skydelio „Run“ skirtuke: parinktas šablonas (pavadinimas, `oneLine`, įvertinimas,
   priežastis) ir „Pakeisti“ (sąrašas iš `agent.templates`)
@@ -289,6 +303,9 @@ S – serveris:
 - [ ] `server/agent/steps/hooks.ts`: 3 variantai; į promptą tik šablonui tinkančios
   kabliukų formulės (`hookTypes`); kodas patikrina „bent 2 iš bazės formulių“ (FR-06)
 - [ ] būsena `awaiting_hook`; `agent.chooseHook({ runId, hookIndex | text })` (FR-07)
+- [ ] savas kabliukas formoje iš anksto (`input.hook`, nebūtinas): jei nurodytas,
+  kabliukai negeneruojami (taupomi tokenai); papildyti FR-07 tekstą
+- [ ] pakeitus šabloną (`step2ChangeTemplate`) kabliukai perrašomi naujam šablonui
 
 U – sąsaja:
 - [ ] skydelyje 3 kabliukų kortelės (tekstas, formulė, įvertinimas) + „Savas tekstas“;
@@ -310,6 +327,13 @@ S – serveris:
 - [ ] `src/agent/checkScript.ts` + testai: visos privalomos rolės, trukmė ne daugiau
   kaip +15 % nuo tikslinės, žodžiai ekrane pagal `design-rules.json` (FR-09)
 - [ ] `agent.approveScript`, `agent.reviseScript({ comment })` (FR-10)
+- [ ] **Sustabdymas** (`agent.cancel`, būsena `cancelled`; sutarta 2026-10-31): iškart
+  nutraukia vykstantį DI kvietimą (AbortController – tokenai nebeleidžiami) ir
+  nepradeda kito žingsnio; **visi to paleidimo pakeitimai projekte atšaukiami** – prieš
+  pirmą pakeitimą paleidimas įsimena projekto kopiją ir sustabdžius ją grąžina
+  (nesitikima, kad naudotoja spaus Ctrl+Z). Paleidimo žurnalas lieka (laikas, kaina).
+  Vėliau (D12, po BD): sustabdžius klausti – išsaugoti pakeitimus / pašalinti viską /
+  tęsti (jei sustabdyta netyčia)
 
 U – sąsaja:
 - [ ] scenarijus matomas **Storyboard'e** (esamas `ProjectStoryboardView`); prie scenų su
@@ -347,6 +371,12 @@ U – sąsaja:
 `src/agent/rules/` (6 taisyklės, `runRules`) jau yra.
 
 S – serveris:
+- [ ] trūkstami FR-14 patikrinimai `src/agent/rules/` (dabar yra: žodžiai ekrane,
+  scenos ir kabliuko ilgis, sfx tankis, kalbos greitis, vaizdo pokytis): **saugi zona
+  tik tekstui** (antraštė, blokai neišeina už `SAFE_CONTENT_WIDTH`), **bendra trukmė**
+  (pagal `targetSeconds`), **vienodos gretimos scenos** (tas pats `layoutExampleId` ar
+  išdėstymas dviejose iš eilės). Minimalios scenos trukmės netikrinam – ją jau saugo
+  `resolveSceneDuration` grindys (sutarta 2026-10-31)
 - [ ] `scripts/checkProject.ts` papildyti `runRules` rezultatais
 - [ ] `src/agent/tools.ts`: DI įrankių Zod aprašai (1 pakopa – žr. „Ką agentas gali
   keisti“); kodas kiekvieną patikrina ir paverčia projekto pakeitimu
