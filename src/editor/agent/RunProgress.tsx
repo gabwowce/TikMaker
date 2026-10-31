@@ -1,6 +1,7 @@
 import { Loader, Stepper } from "@mantine/core";
 import type { AgentRun, AgentRunStatus } from "../../agent/agentRun";
 import { useAgentRun } from "../../api/agent";
+import { TemplateCard } from "./TemplateCard";
 
 // The run's road as the user sees it: one step per thing the agent does, and
 // which statuses mean "this step is happening now". Waiting for the user
@@ -45,6 +46,7 @@ export function RunProgress({ runId }: { runId: string }) {
           <Stepper.Step key={step.label} label={step.label} />
         ))}
       </Stepper>
+      <TemplateCard run={run} />
       {run.status === "error" ? (
         <p className="m-0 text-xs text-red-400">{run.error ?? "Failed"}</p>
       ) : null}

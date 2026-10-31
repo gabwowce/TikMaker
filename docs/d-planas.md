@@ -288,12 +288,13 @@ D4.5 (sutarta 2026-10-31), 5 dalys:
 - [x] 3 routeris: `agent.templates` (id, name, oneLine), `agent.changeTemplate` + testai
 - [x] 4 `src/api/agent.ts`: `useTemplates`, `useChangeTemplate`; formoje „Template:
   Let the AI pick / sąrašas“ (patikrinta naršyklėje)
-- [ ] 5 sąsaja: `TemplateCard` (pavadinimas, `oneLine`, įvertinimas, priežastis, < 3 –
-  „nė vienas gerai netinka“, „Pakeisti“); formoje „Template: Let AI pick / sąrašas“
+- [x] 5 sąsaja: `TemplateCard` (pavadinimas, `oneLine`, įvertinimas, priežastis, < 3 –
+  „nė vienas gerai netinka“, „Change“) po žingsnių juosta `RunProgress`. Patikrinta
+  naršyklėje su šablonu iš formos (be DI); kortelė su DI parinktu – dar ne
 
 U – sąsaja:
-- [ ] skydelio „Run“ skirtuke: parinktas šablonas (pavadinimas, `oneLine`, įvertinimas,
-  priežastis) ir „Pakeisti“ (sąrašas iš `agent.templates`)
+- [x] skydelyje: parinktas šablonas (pavadinimas, `oneLine`, įvertinimas,
+  priežastis) ir „Change“ (sąrašas iš `agent.templates`) – D4.5 dalys 1–5
 
 **Patikra:** 3 skirtingoms idėjoms parenkami prasmingi šablonai; paleidimo faile
 matosi tokenai ir laikas.
