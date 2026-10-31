@@ -2,7 +2,7 @@ import { MockLanguageModelV4 } from "ai/test";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { describe, expect, it } from "vitest";
-import { agentRunInputSchema } from "../../../src/agent/agentRun.js";
+import { ideaFromUser } from "../../../src/agent/run/1-idea.js";
 import { loadKnowledge } from "../knowledge.js";
 import { StructuredCallError } from "../llm.js";
 import { pickTemplate } from "../prompts/pickTemplate.js";
@@ -18,7 +18,7 @@ const workspace = knowledge.workspaces.find(
   (entry) => entry.workspace.id === "dev",
 )!.workspace;
 const input = (idea: string) =>
-  agentRunInputSchema.parse({ idea, workspaceId: "dev" });
+  ideaFromUser.parse({ idea, workspaceId: "dev" });
 
 // A model that answers with the given JSON texts, one per call.
 function fakeModel(...answers: object[]) {

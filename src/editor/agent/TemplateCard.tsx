@@ -1,10 +1,7 @@
 import { Button, Loader, NativeSelect } from "@mantine/core";
 import { useState } from "react";
-import {
-  MIN_FIT_SCORE,
-  TEMPLATE_CHANGEABLE,
-  type AgentRun,
-} from "../../agent/agentRun";
+import { MIN_FIT_SCORE, TEMPLATE_CHANGEABLE } from "../../agent/run/2-angle";
+import type { AgentRun } from "../../agent/run/run";
 import { useChangeTemplate, useTemplates } from "../../api/agent";
 import { StepLog } from "./StepLog";
 

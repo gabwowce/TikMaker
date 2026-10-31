@@ -1,10 +1,10 @@
 import { UnstyledButton } from "@mantine/core";
 import { useState } from "react";
-import type { AgentRunStep } from "../../agent/agentRun";
+import type { LogEntry } from "../../agent/run/log";
 
 // One AI call from the run's log (FR-21): time and tokens at a glance, and on
 // click exactly what was sent and what came back.
-export function StepLog({ step }: { step: AgentRunStep }) {
+export function StepLog({ step }: { step: LogEntry }) {
   const [open, setOpen] = useState(false);
   const seconds = step.ms === undefined ? "?" : (step.ms / 1000).toFixed(1);
   const extras = [

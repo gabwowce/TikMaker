@@ -1,4 +1,4 @@
-import type { AgentRun } from "../../src/agent/agentRun.js";
+import type { AgentRun } from "../../src/agent/run/run.js";
 import type { Workspace } from "../../src/agent/knowledge.js";
 import { KNOWLEDGE_DIR } from "../config.js";
 import { loadKnowledge, type Knowledge } from "./knowledge.js";

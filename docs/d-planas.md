@@ -69,7 +69,7 @@ pradžioje; blogų kadrų pavyzdžių; reveal / setup / problem kadrų po 1–3.
 ## Kur kas guli (agentas atskirai nuo platformos – NFR-08)
 
 - **`src/agent/`** – tai, ką naudoja ir naršyklė, ir serveris: `knowledge.ts` (žinių bazės
-  schemos), `agentRun.ts` (paleidimo schemos), `rules/` (taisyklės), vėliau
+  schemos), `run/` (paleidimo schemos, žr. žemiau), `rules/` (taisyklės), vėliau
   `checkScript.ts`, `compileProject.ts`.
 - **`server/agent/`** – tik serveryje: `llm.ts` (DI kvietimas), `knowledge.ts` (žinių
   bazės įkėlimas iš failų), `runs.ts` (paleidimų saugojimas). Agentas – trys lygiai,
@@ -92,16 +92,20 @@ pradžioje; blogų kadrų pavyzdžių; reveal / setup / problem kadrų po 1–3.
 - Paleidimas = **vienas failas** `db/agent-runs/<id>.json`: būsena perrašoma tame pačiame
   faile, o istorija kaupiasi jo `steps[]`; keli paleidimai – keli failai.
 
-**Schemų pavyzdys (`src/agent/agentRun.ts`): vienas langas – vienas skyrius**, kiekviename
-„ką agentas parodo“ ir „ką naudotojas atsako“. Skyrius pridedamas tame žingsnyje, kuriame
-langas atsiranda (laukai priklauso nuo to, ką grąžina DI):
+**Paleidimo schemos – `src/agent/run/`, failas kiekvienam žingsniui (sutarta 2026-10-31)**,
+ta pačia numeracija kaip `server/agent/steps/`. Kiekviename žingsnio faile – vienodi vardai:
+**`…FromAi`** (ką atsiunčia DI), **`…FromUser`** (ką atsiunčia mygtukas ar forma),
+**`…InRun`** (kas įrašyta paleidimo faile).
 
 ```
-1 Idea      agentRunInputSchema                                         (D3)
-2 Angle     templateChoiceSchema, hookOptionSchema + chooseHookInputSchema  (D4–D5)
-3 Script    scriptSceneSchema + approve / revise / setSceneMedia            (D6)
-4 Building  tik būsena ir žurnalas                                        (D7–D8)
-5 Result    reportSchema                                                   (D10)
+1-idea.ts     ideaFromUser (forma), startFromUser (Start)                      (D3)
+2-angle.ts    templateFromAi, changeTemplateFromUser, templateInRun;
+              hookFromAi, chooseHookFromUser, hookInRun                        (D4–D5)
+3-script.ts   scriptFromAi, approve / revise / setSceneMedia …FromUser, …InRun  (D6)
+5-result.ts   reportInRun                                                      (D10)
+status.ts     runStatus – kur paleidimas (keičia tik server/agent/agent.ts)
+log.ts        logEntry – vienas DI kvietimas žurnale (FR-21)
+run.ts        agentRun – visas db/agent-runs/<id>.json, surenka viską kartu
 ```
 
 ## Naudotojo kelias (UX) – agentas redaktoriaus viduje
@@ -129,7 +133,7 @@ su kontekstu apačioje, „Asset to make“ blokas scenos Content skiltyje.
 **Kelias:**
 ```
 Pradžia   „+ New“ → „With AI“: tuščias projektas, Storyboard, skydelyje forma
-          (agentRunInputSchema)                                 → [Generate]  ← sprendimas 1
+          (ideaFromUser)                                        → [Generate]  ← sprendimas 1
 Angle     skydelyje: parinktas šablonas (įvertinimas, priežastis; < 3 – „nė vienas
           gerai netinka“; galima pakeisti) ir 3 kabliukų kortelės
                                                                 → pasirinkti   ← sprendimas 2
@@ -347,7 +351,22 @@ U – sąsaja:
 - [ ] skydelyje 3 kabliukų kortelės (tekstas, formulė, įvertinimas) + „Savas tekstas“;
   pasirinktas įrašomas į 1 sceną, agentas tęsia
 
+D5 dalys (sutarta 2026-10-31; pagal tą patį pattern'ą kaip D4):
+- [x] 1 schema (`src/agent/run/2-angle.ts`): `hookFromAi`, `run.hooks` + `hooksFor`,
+  `hookInRun` (`pickedBy`), `input.hook` (savas formoje), `chooseHookFromUser` (numeris
+  arba tekstas). Kartu `agentRun.ts` išskaidytas į `src/agent/run/` (žr. „Kur kas guli“)
+- [x] 2 `prompts/writeHooks.ts`: tik šablono `hookTypes` formulės; bent 2 iš 3 – iš bazės
+  (FR-06); testas su netikru DI
+- [x] 3 `steps/2-angle.ts` (`step2Template`, `step2Hooks`, `step2ChooseHook`) + `agent.ts`: `writing_hooks`
+  → `awaiting_hook` → (pasirinkus) `writing_script`; pakeitus šabloną – kabliukai iš naujo
+- [x] 4 routeris `agent.chooseHook`; `changeTemplate` po pakeitimo – `continueRun`
+- [x] 5 skydelis (`HookCard`): 3 kabliukų kortelės + „Write my own“; pasirinkus – „✓ Hook · …“;
+  formoje „Hook (optional)“. BD: papildyti FR-07 („savas tekstas jau formoje“)
+
 **Patikra:** be pasirinkimo scenarijus nerašomas; pasirinkus – būsena juda toliau.
+Patikrinta 2026-10-31 naršyklėje su Gemini: „How to undo the last git commit…“ → How-to
+steps 5/5 + 3 kabliukai; „Change“ → Problem then fix + nauji kabliukai; pasirinkus →
+`writing_script` (juostoje Script). Seni paleidimai (prieš D5) lieka „Writing hooks…“.
 
 ## D6. Scenarijus („3 Script“)
 

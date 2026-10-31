@@ -1,13 +1,14 @@
 import { Loader } from "@mantine/core";
-import type { AgentRun, AgentRunStatus } from "../../agent/agentRun";
+import type { AgentRun } from "../../agent/run/run";
+import type { RunStatus } from "../../agent/run/status";
 import { useAgentRun } from "../../api/agent";
+import { HookCard } from "./HookCard";
 import { TemplateCard } from "./TemplateCard";
-
 // The run's road as the user sees it: the plan's five steps, and which
 // statuses mean "this step is happening now". Idea is done once Start is
 // pressed; waiting for the user (awaiting_*) belongs to the step whose answer
 // is being waited for.
-const STEPS: { label: string; statuses: AgentRunStatus[] }[] = [
+const STEPS: { label: string; statuses: RunStatus[] }[] = [
   { label: "Idea", statuses: [] },
   {
     label: "Angle",
@@ -99,6 +100,7 @@ export function RunProgress({ runId }: { runId: string }) {
       <RoadBar run={run} />
       <IdeaBubble run={run} />
       <TemplateCard run={run} />
+      <HookCard run={run} />
       {run.status === "error" ? (
         <p className="m-0 text-xs text-red-400">{run.error ?? "Failed"}</p>
       ) : null}

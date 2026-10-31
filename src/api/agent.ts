@@ -1,5 +1,6 @@
 import { skipToken, useMutation, useQuery } from "@tanstack/react-query";
-import type { AgentRunStatus } from "../agent/agentRun";
+import type { AgentRun } from "../agent/run/run";
+import type { RunStatus } from "../agent/run/status";
 import { queryClient } from "./queryClient";
 import { trpc } from "./trpc";
 
@@ -8,17 +9,16 @@ import { trpc } from "./trpc";
 // going — the same start → poll pattern as RenderButton.
 const POLL_MS = 1000;
 
-// Statuses in which nothing changes until the user acts, or ever again:
-// asking then would only repeat the same answer.
-const SETTLED: AgentRunStatus[] = [
-  "awaiting_hook",
-  "awaiting_approval",
-  "done",
-  "error",
-  "cancelled",
-];
+// The run waits for the user, so asking again would only repeat the same
+// answer – unless the user has just answered and the agent hasn't moved yet:
+// a hook picked, or hooks written for a template that was then changed.
+function waitsForUser(run: AgentRun): boolean {
+  if (run.status === "awaiting_hook")
+    return !run.hook && run.hooksFor === run.template?.videoTemplateId;
+  return run.status === "awaiting_approval";
+}
 // Statuses after which the agent is no longer working on a project.
-const FINISHED: AgentRunStatus[] = ["done", "error", "cancelled"];
+const FINISHED: RunStatus[] = ["done", "error", "cancelled"];
 
 // Starts a run for a project. Afterwards the project's run list is asked for
 // again, so the panel's history shows the new run at once.
@@ -41,8 +41,10 @@ export function useAgentRun(runId: string | undefined) {
   return useQuery(
     trpc.agent.get.queryOptions(runId ?? skipToken, {
       refetchInterval: (query) => {
-        const status = query.state.data?.status;
-        return status && SETTLED.includes(status) ? false : POLL_MS;
+        const run = query.state.data;
+        return run && (FINISHED.includes(run.status) || waitsForUser(run))
+          ? false
+          : POLL_MS;
       },
     }),
   );
@@ -73,7 +75,18 @@ export function useChangeTemplate() {
     }),
   );
 }
-
+// The user's pick on screen 2: one of the three hooks, or their own text.
+// The run is asked for again at once, so the panel follows the agent on.
+export function useChooseHook() {
+  return useMutation(
+    trpc.agent.chooseHook.mutationOptions({
+      onSuccess: (_, { runId }) =>
+        queryClient.invalidateQueries({
+          queryKey: trpc.agent.get.queryKey(runId),
+        }),
+    }),
+  );
+}
 // The open project's newest run, asked for again while the agent works on it.
 // Both the panel and its collapsed rail read this, so they never disagree.
 export function useLatestRun(projectId: string) {

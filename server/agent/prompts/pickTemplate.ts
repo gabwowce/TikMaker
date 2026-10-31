@@ -1,9 +1,6 @@
 import { z } from "zod";
-import {
-  templateChoiceSchema,
-  type AgentRunInput,
-  type TemplateChoice,
-} from "../../../src/agent/agentRun.js";
+import type { IdeaFromUser } from "../../../src/agent/run/1-idea.js";
+import { templateFromAi, type TemplateFromAi } from "../../../src/agent/run/2-angle.js";
 import type { VideoTemplate, Workspace } from "../../../src/agent/knowledge.js";
 import { callStructured, type StructuredResult } from "../llm.js";
 
@@ -22,7 +19,7 @@ score: 5 = made for this idea, 3 = workable, 1 = nothing in the list fits.
 reason: one or two sentences for the creator, in plain English, about this idea.`;
 
 function userPrompt(
-  input: AgentRunInput,
+  input: IdeaFromUser,
   workspace: Workspace,
   templates: VideoTemplate[],
 ): string {
@@ -45,16 +42,16 @@ ${cards}`;
 }
 
 export async function pickTemplate(
-  input: AgentRunInput,
+  input: IdeaFromUser,
   workspace: Workspace,
   templates: VideoTemplate[],
   model?: Parameters<typeof callStructured>[2],
-): Promise<StructuredResult<TemplateChoice>> {
+): Promise<StructuredResult<TemplateFromAi>> {
   const ids = templates.map((t) => t.id);
   if (ids.length === 0) throw new Error("The knowledge base has no templates");
   // Only real ids are a valid answer, so a made-up template is caught by the
   // schema and asked for again (callStructured) instead of reaching the run.
-  const schema = templateChoiceSchema.extend({
+  const schema = templateFromAi.extend({
     videoTemplateId: z.enum(ids as [string, ...string[]]),
   });
   return callStructured(

@@ -6,10 +6,10 @@ import {
   Textarea,
 } from "@mantine/core";
 import { useState } from "react";
-import { agentRunInputSchema } from "../../agent/agentRun";
+import { ideaFromUser } from "../../agent/run/1-idea";
 import { useStartRun, useTemplates } from "../../api/agent";
 // The first thing the agent needs: what the video is about. Everything else
-// has a default (agentRunInputSchema), so the form stays one box and a button.
+// has a default (ideaFromUser), so the form stays one box and a button.
 export function IdeaForm({ projectId }: { projectId: string }) {
   const [idea, setIdea] = useState("");
   const [targetSeconds, setTargetSeconds] = useState(40);
@@ -19,16 +19,18 @@ export function IdeaForm({ projectId }: { projectId: string }) {
   const [videoTemplateId, setVideoTemplateId] = useState("");
   const { data: templates = [] } = useTemplates();
   const chosen = templates.find((t) => t.id === videoTemplateId);
+  const [hook, setHook] = useState("");
   const start = useStartRun(() => setIdea(""));
   // The same schema the server checks, so the button is never enabled for
   // something the server would refuse.
-  const input = agentRunInputSchema.safeParse({
+  const input = ideaFromUser.safeParse({
     idea,
     workspaceId: "dev",
     targetSeconds,
     withFace,
     generateVoice,
     videoTemplateId: videoTemplateId || undefined,
+    hook: hook.trim() || undefined,
   });
 
   return (
@@ -60,6 +62,15 @@ export function IdeaForm({ projectId }: { projectId: string }) {
           { value: "", label: "✦ Let the AI pick" },
           ...templates.map((t) => ({ value: t.id, label: t.name })),
         ]}
+      />{" "}
+      <Textarea
+        label="Opening line (optional)"
+        description="Leave empty and the AI proposes three to pick from"
+        autosize
+        minRows={1}
+        maxLength={150}
+        value={hook}
+        onChange={(event) => setHook(event.currentTarget.value)}
       />
       <Checkbox
         label="With face"
