@@ -1,7 +1,9 @@
 import type { AgentRun } from "../../src/agent/run/run.js";
-import { openJob } from "./job.js";
+import { Job, openJob } from "./job.js";
 import { getRun, saveRun } from "./runs.js";
 import { step2Hooks, step2Template } from "./steps/2-angle.js";
+import { step3Script } from "./steps/3-script.js";
+
 // The whole agent on one page (screens: docs/d-planas.md).
 
 //   1 Idea      the user fills the form and presses Start
@@ -33,17 +35,12 @@ async function runAgent(run: AgentRun): Promise<void> {
       await job.save({ status: "writing_hooks" });
       await step2Hooks(job);
       // A hook written in the form: nothing to wait for.
-      await job.save({
-        status: job.run.hook ? "writing_script" : "awaiting_hook",
-      });
+      if (job.run.hook) return toScript(job);
+      await job.save({ status: "awaiting_hook" });
       return;
 
     case "awaiting_hook": // the user answered on screen 2
-      if (job.run.hook) {
-        // A hook was picked: on to the script (D6: step3Script).
-        await job.save({ status: "writing_script" });
-        return;
-      }
+      if (job.run.hook) return toScript(job);
       if (job.run.hooksFor !== job.run.template?.videoTemplateId) {
         // "Change": the hooks were for another template – write new ones.
         await job.save({ status: "writing_hooks" });
@@ -51,5 +48,21 @@ async function runAgent(run: AgentRun): Promise<void> {
         await job.save({ status: "awaiting_hook" });
       }
       return;
+    case "awaiting_approval": // the user answered on screen 3
+      // "Approve": on to building the video (D7: step4Building).
+      if (job.run.script?.approved) {
+        await job.save({ status: "laying_out" });
+        return;
+      }
+      // A comment: the script is written again with it.
+      if (job.run.script?.comment) return toScript(job);
+      return;
   }
+}
+
+// 3 Script: written, checked, then the agent waits for the user's approval.
+async function toScript(job: Job): Promise<void> {
+  await job.save({ status: "writing_script" });
+  await step3Script(job);
+  await job.save({ status: "awaiting_approval" });
 }

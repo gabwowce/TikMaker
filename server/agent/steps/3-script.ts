@@ -1,0 +1,99 @@
+import { checkScript } from "../../../src/agent/rules/checkScript.js";
+import type { ScriptInRun } from "../../../src/agent/run/3-script.js";
+import type { AgentRun } from "../../../src/agent/run/run.js";
+import { openJob, type Job } from "../job.js";
+import { writeScript, type ScriptChange } from "../prompts/writeScript.js";
+import { findTemplate } from "./2-angle.js";
+
+// 3 Script: the model writes the script for the template and the hook; the
+// code checks it and, if anything is wrong, the model fixes it once.
+// What is still wrong after that stays in script.problems for the user to see.
+// Written again with the user's comment when they leave one.
+export async function step3Script(job: Job): Promise<void> {
+  const { input, template: chosen, hook, script: previous } = job.run;
+  if (!chosen || !hook)
+    throw new Error("The script needs a template and a hook first");
+  const template = findTemplate(job, chosen.videoTemplateId);
+  const write = (revise?: ScriptChange) =>
+    job.ai("writeScript", () =>
+      writeScript(
+        input,
+        job.workspace,
+        template,
+        hook.text,
+        job.knowledge,
+        revise,
+      ),
+    );
+  const check = (script: ScriptChange["previous"]) =>
+    checkScript(
+      script,
+      template,
+      input.targetSeconds,
+      job.knowledge.designRules,
+    );
+
+  let script = await write(
+    previous?.comment
+      ? { previous: asWritten(previous), change: [previous.comment] }
+      : undefined,
+  );
+  let problems = check(script);
+  if (problems.length) {
+    script = await write({
+      previous: script,
+      change: problems.map((problem) => problem.message),
+    });
+    problems = check(script);
+  }
+  await job.save({ script: { ...script, problems } });
+}
+
+// "Approve" on screen 3: agent.ts then goes on to building the video.
+export async function step3Approve(run: AgentRun): Promise<void> {
+  const script = scriptAwaitingAnswer(run);
+  const job = await openJob(run);
+  await job.save({ script: { ...script, approved: true } });
+}
+
+// A comment on screen 3: agent.ts then has the script written again with it.
+export async function step3Revise(
+  run: AgentRun,
+  comment: string,
+): Promise<void> {
+  const script = scriptAwaitingAnswer(run);
+  const job = await openJob(run);
+  await job.save({ script: { ...script, comment } });
+}
+
+// "I'll record it" / "do it without" on one scene. Nothing else changes, so
+// the agent keeps waiting for the approval.
+export async function step3SetSceneMedia(
+  run: AgentRun,
+  sceneIndex: number,
+  choice: "record" | "motion",
+): Promise<void> {
+  const script = scriptAwaitingAnswer(run);
+  if (!script.scenes[sceneIndex])
+    throw new Error(`There is no scene ${sceneIndex + 1}`);
+  const scenes = script.scenes.map((scene, index) =>
+    index === sceneIndex ? { ...scene, media: choice } : scene,
+  );
+  const job = await openJob(run);
+  await job.save({ script: { ...script, scenes } });
+}
+
+// The user answers only while the agent waits for them.
+function scriptAwaitingAnswer(run: AgentRun): ScriptInRun {
+  if (run.status !== "awaiting_approval" || !run.script)
+    throw new Error(`The script can't be answered now (${run.status})`);
+  return run.script;
+}
+
+// The script as the model wrote it, without what the run added to it.
+function asWritten(script: ScriptInRun): ScriptChange["previous"] {
+  return {
+    scenes: script.scenes.map(({ media: _media, ...scene }) => scene),
+    skipped: script.skipped,
+  };
+}

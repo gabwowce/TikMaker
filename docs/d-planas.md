@@ -25,32 +25,35 @@ klausimai, čia – eiga, failai ir būsena.
   failą ar funkciją) vis tiek duoti kodu ir paaiškinti – net jei ją reikėjo padaryti
   taisant klaidą. Jei Claude ką nors įrašė pats, kitą žinutę paaiškina tą kodą.
 
-## Kita sesija pradeda nuo čia (2026-10-30)
+## Kita sesija pradeda nuo čia (2026-11-02)
 
-- [x] **Pertvarka (2026-10-30):** `pipeline.ts` išskaidytas pagal „Kur kas guli“
-  struktūrą: `agent.ts` + `steps/1-idea.ts`, `steps/2-angle.ts` + `prompts/pickTemplate.ts`
-  + `job.ts`; `runs.startRun` → `step1Idea`. Elgsena ta pati, testai praeina. Autorė kodą
-  matė ir patvirtino.
-- [x] D4.3 kodas paaiškintas autorei (visi punktai žemiau). Toliau – D4.5.
+Atlikta šioje sesijoje (2026-10-30 – 11-02): D4.5–D4.7, D5 visas, D6 1–4 dalys. Struktūra
+– „Kur kas guli“ žemiau (`agent.ts` + `steps/N-*.ts` + `prompts/` + `job.ts`; schemos
+`src/agent/run/` su vardais `…FromAi` / `…FromUser` / `…InRun`).
 
-D4.3 Claude įrašė pats, autorė kodo negavo – **pirma paaiškinti jį eilutė po eilutės,
-paprastai**, paskui tęsti D4.5. Commitas `733e2b8`. Paaiškinti, ką daro ir kodėl:
-1. `server/agent/pipeline.ts` – visas: `continueRun` (darbas fone, klaidos įrašymas į
-   failą), `advance` (kanalo paieška, žingsnis `created` → `picking_template` →
-   `writing_hooks`), `aiStep` (būsena prieš kvietimą, žurnalo įrašas su laiku ir tokenais,
-   nepavykęs kvietimas irgi įrašomas).
-2. `server/trpc/agent.ts` – eilutė `continueRun(run)` po `startRun`.
-3. `server/db.ts` – `writeOne`: rašymas per laikiną failą ir pervadinimas, kartojimas
-   Windows EPERM/EBUSY atveju (kodėl: skydelis skaitė pusiau įrašytą failą).
-4. `server/agent/llm.ts` – `agentModel()` kuria Gemini tiekėją kvietimo metu (kodėl:
-   `server/index.ts` `.env.local` įkelia po importų, raktas buvo tuščias).
-5. `server/config.ts` – `KNOWLEDGE_DIR` ir `TIKMAKER_KNOWLEDGE`.
-6. `server/__tests__/agent.test.ts` – netikras modelis (`MockLanguageModelV4` per
-   `vi.mock("@ai-sdk/google")`), `settled()` laukimas, du nauji testai.
-7. `server/agent/steps/pickTemplate.ts` ir `server/agent/__tests__/pickTemplate.test.ts` –
-   trumpai priminti (aptarta), parodyti du pakeitimus: AI vaidmuo ir „Face on camera“.
-8. `src/editor/agent/AgentPanel.tsx` – klaidos eilutė virš formos;
-   `IdeaForm.tsx` – varnelė „With face“ (`withFace`).
+**D6 būklė** (dalys – skyriuje „D6“):
+- [x] 1 schema `src/agent/run/3-script.ts` (+ `approved`, `comment` – naudotojos atsakymas)
+- [x] 2 `src/agent/rules/checkScript.ts` + testai
+- [x] 3 `server/agent/prompts/writeScript.ts` + testai (su analizės duomenimis)
+- [x] 4 `server/agent/steps/3-script.ts` (`step3Script`, `step3Approve`, `step3Revise`,
+  `step3SetSceneMedia`) + `agent.ts` (`toScript`, `case "awaiting_approval"`) + testai.
+  Patikrinta: 180 testų praeina
+- [ ] **5 – PRADĖTI ČIA:** routeris `server/trpc/agent.ts`: `approveScript`,
+  `reviseScript`, `setSceneMedia` (kaip `chooseHook`: `findRun` → `asBadRequest(step…)` →
+  `continueRun`; `setSceneMedia` – be `continueRun`) + testai; `src/api/agent.ts` hook'ai
+- [ ] 6 skydelis (scenarijaus eilutė, problemos, Approve, komentaras, „Įrašysiu pati“ /
+  „Padaryk be įrašo“ prie kiekvienos scenos) + scenos Storyboard'e per projekto store;
+  `waitsForUser` (`src/api/agent.ts`) papildyti `awaiting_approval` atveju (atsakyta, bet
+  agentas dar nepajudėjo). Tada viso kelio patikra naršyklėje
+- [ ] 7 Stop (`agent.cancel`)
+
+Atviri klausimai autorei: ar `checkScript` turi perspėti ir per **trumpą** video (pvz.
+< 70 % tikslo)? Su Gemini „How to undo the last git commit“ davė ~21 s iš 40 s.
+BD: papildyti FR-07 („savą kabliuką galima įrašyti jau formoje“).
+
+Darbo būdas (autorės pageidavimas): atsakymai **trumpi, paprasti, be žargono**; kodas
+duodamas dalimis, patikrintas, su paaiškinimu; autorė dažnai prašo „įrašyk tu“ – tada
+įrašyti ir paaiškinti, kas įrašyta.
 
 ## Kas jau padaryta (2026-10-29)
 
@@ -395,6 +398,24 @@ U – sąsaja:
   pasiūlytu įrašu – „Įrašysiu pati“ / „Padaryk be įrašo“; patikros pastabos prie scenų;
   skydelyje „Approve“ ir komentaras → perrašyti; rankinis taisymas – Storyboard'e
 
+D6 dalys (sutarta 2026-10-31; tas pats pattern'as kaip D5):
+- [x] 1 schema `src/agent/run/3-script.ts`: `sceneFromAi` (rolė, balsas, tekstas ekrane, ką
+  rodyti, ar reikia įrašo), `scriptFromAi` (+ praleistos scenos su priežastimi),
+  `scriptInRun` (+ įrašo pasirinkimas, likusios problemos), approve / revise /
+  setSceneMedia `…FromUser`
+- [x] 2 `src/agent/rules/checkScript.ts` (be DI, šalia kitų patikrų) + testai: privalomos rolės, trukmė ≤ +15 %,
+  žodžiai ekrane (FR-09)
+- [x] 3 `prompts/writeScript.ts` + testas (kabliukas – pirma scena; komentaras perrašant); prompte
+  ir analizės duomenys: perėjimų frazės, CTA formulės (`ctaTypes`), lizdai fixed/creative,
+  ribos iš `design-rules.json`
+- [x] 4 `steps/3-script.ts` + `agent.ts`: rašo → tikrina → (vieną kartą pataiso) →
+  `awaiting_approval`; Approve → `laying_out`; komentaras → rašo iš naujo
+- [ ] 5 routeris: `approveScript`, `reviseScript`, `setSceneMedia`
+- [ ] 6 skydelis + Storyboard (scenos taikomos atidarytam projektui per store); „Įrašysiu
+  pati“ / „Padaryk be įrašo“ prie **kiekvienos** scenos, DI tik pasiūlo (`needsRecording`:
+  tikri veiksmai programoje ar tikras rezultatas – taip; viena komanda, kodas – ne)
+- [ ] 7 Stop (`agent.cancel`) – žr. punktą aukščiau
+
 **Patikra:** visas kelias iki patvirtinto scenarijaus veikia naršyklėje.
 
 ## D7. Išdėstymas ir kompiliatorius („4 Building“) – svarbiausias
@@ -468,6 +489,8 @@ kaina), FR patikros lentelė.
 
 ## D12. Vėliau, jei spėsim (FR-05, FR-02)
 
+- [ ] skydelyje parinkto šablono ir scenarijaus scenų eskizai (9:16 dėžutės) – grožiui, ne
+  būtina (autorės pageidavimas 2026-10-31)
 Daroma tik kai D3–D11 veikia nuo idėjos iki video.
 - [ ] S: `server/agent/steps/proposeTemplate.ts` – kai geriausias < 3, DI sukuria naują
   šabloną (`videoTemplateSchema`), skydelyje pažymėtą „agento pasiūlytas“ (FR-05)

@@ -22,19 +22,21 @@ const fakeModel = new MockLanguageModelV4({
     const [first, second] = [...prompt.matchAll(/- id: ([\w-]+)/g)].map(
       (match) => match[1],
     );
-    const answer = prompt.includes("Formulas:")
-      ? {
-          hooks: [
-            { text: "Hook one", formulaId: first, score: 4 },
-            { text: "Hook two", formulaId: second, score: 4 },
-            { text: "Hook three", formulaId: null, score: 3 },
-          ],
-        }
-      : {
-          videoTemplateId: "how-to-steps",
-          score: 4,
-          reason: "A clear how-to.",
-        };
+    const answer = prompt.includes("Transition phrases:")
+      ? fakeScript(prompt)
+      : prompt.includes("Formulas:")
+        ? {
+            hooks: [
+              { text: "Hook one", formulaId: first, score: 4 },
+              { text: "Hook two", formulaId: second, score: 4 },
+              { text: "Hook three", formulaId: null, score: 3 },
+            ],
+          }
+        : {
+            videoTemplateId: "how-to-steps",
+            score: 4,
+            reason: "A clear how-to.",
+          };
     return {
       content: [{ type: "text", text: JSON.stringify(answer) }],
       finishReason: { unified: "stop", raw: undefined },
@@ -46,6 +48,25 @@ const fakeModel = new MockLanguageModelV4({
     };
   },
 });
+// Script: the hook, then every other role the template lists (so the
+// required ones are there). An idea containing "TOO MANY WORDS" gets a first
+// draft the check will catch, and a clean one when written again.
+function fakeScript(prompt: string) {
+  const roles = [...prompt.matchAll(/ \/ ([\w-]+) \(/g)]
+    .map((match) => match[1])
+    .filter((role) => role !== "hook");
+  const wordy =
+    prompt.includes("TOO MANY WORDS") &&
+    !prompt.includes("Your previous script");
+  const scene = (role: string) => ({
+    role,
+    voiceover: "A short line.",
+    onScreen: wordy ? Array(20).fill("word").join(" ") : "Key words",
+    visual: "a terminal",
+    needsRecording: false,
+  });
+  return { scenes: [scene("hook"), ...roles.map(scene)], skipped: [] };
+}
 vi.mock("@ai-sdk/google", () => ({
   createGoogleGenerativeAI: () => () => fakeModel,
 }));
@@ -62,9 +83,16 @@ const startFor = (projectId: string, workspaceId = "dev") =>
 // The agent works in the background after start; this waits, the way the
 // panel does, until the run stops moving.
 async function settled(id: string) {
-  for (let i = 0; i < 100; i++) {
+  for (let i = 0; i < 250; i++) {
     const run = await api.agent.get(id);
-    if (!["created", "picking_template", "writing_hooks"].includes(run.status))
+    if (
+      ![
+        "created",
+        "picking_template",
+        "writing_hooks",
+        "writing_script",
+      ].includes(run.status)
+    )
       return run;
     await new Promise((resolve) => setTimeout(resolve, 20));
   }
@@ -74,7 +102,7 @@ async function settled(id: string) {
 // After an answer the agent goes on in the background too; this waits until
 // the run shows what the test expects.
 async function until(id: string, check: (run: AgentRun) => boolean) {
-  for (let i = 0; i < 100; i++) {
+  for (let i = 0; i < 250; i++) {
     const run = await api.agent.get(id);
     if (check(run)) return run;
     await new Promise((resolve) => setTimeout(resolve, 20));
@@ -157,9 +185,12 @@ describe("agent runs", () => {
       pickedBy: "user",
     });
     expect(run.hooks).toBeUndefined();
-    // Nothing to wait for: on to the script (D6).
-    expect(run.status).toBe("writing_script");
-    expect(run.steps.map((step) => step.name)).toEqual(["pickTemplate"]);
+    // Nothing to wait for: straight on to the script.
+    expect(run.status).toBe("awaiting_approval");
+    expect(run.steps.map((step) => step.name)).toEqual([
+      "pickTemplate",
+      "writeScript",
+    ]);
   });
 
   it("stops in error when the channel does not exist", async () => {
@@ -211,8 +242,11 @@ describe("agent runs", () => {
       runId: id,
       videoTemplateId: "pain-to-fix",
     });
-    const run = await until(id, (run) => run.hooksFor === "pain-to-fix");
-    expect(run.status).toBe("awaiting_hook");
+    // The hooks are saved a moment before the status says "waiting again".
+    const run = await until(
+      id,
+      (run) => run.hooksFor === "pain-to-fix" && run.status === "awaiting_hook",
+    );
     expect(run.steps.map((step) => step.name)).toEqual([
       "pickTemplate",
       "writeHooks",
@@ -224,7 +258,7 @@ describe("agent runs", () => {
     const { id } = await startFor("p1");
     const waiting = await settled(id);
     await api.agent.chooseHook({ runId: id, hookIndex: 1 });
-    const run = await until(id, (run) => run.status === "writing_script");
+    const run = await until(id, (run) => run.status === "awaiting_approval");
     expect(run.hook).toEqual({
       text: waiting.hooks![1].text,
       formulaId: waiting.hooks![1].formulaId,
@@ -236,7 +270,7 @@ describe("agent runs", () => {
     const { id } = await startFor("p1");
     await settled(id);
     await api.agent.chooseHook({ runId: id, text: "My own opening line" });
-    const run = await until(id, (run) => run.status === "writing_script");
+    const run = await until(id, (run) => run.status === "awaiting_approval");
     expect(run.hook).toEqual({ text: "My own opening line", pickedBy: "user" });
   });
 
@@ -244,10 +278,39 @@ describe("agent runs", () => {
     const { id } = await startFor("p1");
     await settled(id);
     await api.agent.chooseHook({ runId: id, hookIndex: 0 });
-    await until(id, (run) => run.status === "writing_script");
+    await until(id, (run) => run.status === "awaiting_approval");
     await expect(
       api.agent.chooseHook({ runId: id, hookIndex: 2 }),
     ).rejects.toMatchObject({ code: "BAD_REQUEST" });
+  });
+
+  it("writes the script after the hook and waits for approval", async () => {
+    const { id } = await startFor("p1");
+    await settled(id);
+    await api.agent.chooseHook({ runId: id, hookIndex: 0 });
+    const run = await until(id, (run) => run.status === "awaiting_approval");
+    expect(run.script?.scenes[0].role).toBe("hook");
+    expect(run.script?.problems).toEqual([]);
+    expect(run.steps[run.steps.length - 1].name).toBe("writeScript");
+  });
+
+  it("has the model fix the script once when the check finds problems", async () => {
+    const { id } = await api.agent.start({
+      projectId: "p1",
+      input: {
+        idea: "TOO MANY WORDS on screen in the first draft",
+        workspaceId: "dev",
+        hook: "Too many words",
+      },
+    });
+    const run = await until(id, (run) => run.status === "awaiting_approval");
+    // First draft caught by the check (FR-09), the second one clean.
+    expect(run.steps.map((step) => step.name)).toEqual([
+      "pickTemplate",
+      "writeScript",
+      "writeScript",
+    ]);
+    expect(run.script?.problems).toEqual([]);
   });
 
   it("refuses an idea that is too short", async () => {

@@ -80,7 +80,7 @@ export async function step2ChooseHook(
 }
 
 // Only a template from the knowledge base (FR-04).
-function findTemplate(job: Job, videoTemplateId: string): VideoTemplate {
+export function findTemplate(job: Job, videoTemplateId: string): VideoTemplate {
   const template = job.knowledge.videoTemplates.find(
     (t) => t.id === videoTemplateId,
   );

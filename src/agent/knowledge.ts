@@ -16,7 +16,6 @@ import {
   visualEffectSchema,
   visualTypeSchema,
 } from "../schema/capabilities";
-import { scenePlanRoleSchema } from "../schema/scene";
 
 // The knowledge base (knowledge/): what the analysis of real videos taught,
 // written in TikMaker's own words so the agent can only pick what TikMaker can
@@ -34,8 +33,10 @@ function vocabulary(field: AnalysisVocabularyField) {
   return z.enum(words as [string, ...string[]]);
 }
 
-// The project's scene roles, minus "other" for the same reason.
-const knowledgeRoleSchema = scenePlanRoleSchema.exclude(["other"]);
+// The project's scene roles (the same analysis list), minus "other" for the
+// same reason. Built like the others rather than with .exclude(): the role
+// enum's type is plain string, and excluding from it typed every role as never.
+const knowledgeRoleSchema = vocabulary("role");
 
 const secondsRangeSchema = z
   .object({ min: z.number().positive(), max: z.number().positive() })
