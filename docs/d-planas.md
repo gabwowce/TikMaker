@@ -520,6 +520,9 @@ kaina), FR patikros lentelė.
 
 ## D12. Vėliau, jei spėsim (FR-05, FR-02)
 
+- [ ] Šaltinis formoje (FR-03 „temą ir idėją“ papildymas): įklijuotas savas tekstas arba URL
+  (straipsnis, dokumentacija), iš kurio agentas ima faktus (`fixed` lizdai) – kad
+  scenarijus nesiremtų vien DI žiniomis (sutarta 2026-11-02)
 - [ ] (po BD) DI sukurtas ir animuotas komponentas medžiagos rėmeliui vietoj REC vietos
   (Claude Code sukuria komponentą pagal REC aprašą) – kai nėra savo įrašo
 - [ ] (po BD) perėjimas iš kanalo stiliaus: `knowledge/workspaces/<kanalas>/style.json`

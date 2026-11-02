@@ -1,0 +1,977 @@
+[
+  {
+    "test": "Test 1",
+    "idea": "How to turn on auto save in VS Code settings",
+    "template": "how-to-steps",
+    "X": {
+      "source": "B videos",
+      "sounds": 4,
+      "cuts": 5,
+      "scenes": 6,
+      "ms": 1700,
+      "tokens": {
+        "inputTokens": 1341,
+        "cachedInputTokens": 0,
+        "outputTokens": 480,
+        "thinkingTokens": 0
+      },
+      "plan": {
+        "scenes": [
+          {
+            "transition": "cut",
+            "textIn": "fade",
+            "textSplit": "word",
+            "highlight": "auto",
+            "visualIn": "scaleIn",
+            "visualAlive": "none",
+            "sound": {
+              "type": "pop",
+              "on": "text"
+            }
+          },
+          {
+            "transition": "cut",
+            "textIn": "slideUp",
+            "textSplit": "line",
+            "highlight": "settings",
+            "visualIn": "none",
+            "visualAlive": "panLeft",
+            "sound": {
+              "type": "whoosh",
+              "on": "cut"
+            }
+          },
+          {
+            "transition": "cut",
+            "textIn": "fade",
+            "textSplit": "line",
+            "highlight": "search",
+            "visualIn": "none",
+            "visualAlive": "none",
+            "sound": null
+          },
+          {
+            "transition": "cut",
+            "textIn": "pop",
+            "textSplit": "word",
+            "highlight": "select",
+            "visualIn": "zoomIn",
+            "visualAlive": "zoomIn",
+            "sound": {
+              "type": "click",
+              "on": "text"
+            }
+          },
+          {
+            "transition": "cut",
+            "textIn": "fade",
+            "textSplit": "line",
+            "highlight": "lose",
+            "visualIn": "none",
+            "visualAlive": "float",
+            "sound": null
+          },
+          {
+            "transition": "slideUp",
+            "textIn": "scaleIn",
+            "textSplit": "word",
+            "highlight": "comment",
+            "visualIn": "pop",
+            "visualAlive": "none",
+            "sound": {
+              "type": "ding",
+              "on": "cut"
+            }
+          }
+        ]
+      }
+    },
+    "Y": {
+      "source": "A rules",
+      "sounds": 3,
+      "cuts": 2,
+      "scenes": 6,
+      "ms": 1641,
+      "tokens": {
+        "inputTokens": 805,
+        "cachedInputTokens": 0,
+        "outputTokens": 238,
+        "thinkingTokens": 0
+      },
+      "plan": {
+        "scenes": [
+          {
+            "transition": "cut",
+            "textIn": "pop",
+            "textSplit": "word",
+            "highlight": "auto save",
+            "visualIn": "zoomIn",
+            "visualAlive": "float",
+            "sound": {
+              "type": "whoosh",
+              "on": "cut"
+            }
+          },
+          {
+            "transition": "slideUp",
+            "textIn": "fade",
+            "textSplit": "line",
+            "highlight": "settings",
+            "visualIn": "zoomSettleLeft",
+            "visualAlive": "none",
+            "sound": null
+          },
+          {
+            "transition": "slideUp",
+            "textIn": "fade",
+            "textSplit": "line",
+            "highlight": "auto save",
+            "visualIn": "slideUp",
+            "visualAlive": "none",
+            "sound": null
+          },
+          {
+            "transition": "slideUp",
+            "textIn": "fade",
+            "textSplit": "line",
+            "highlight": "after delay",
+            "visualIn": "dropIn",
+            "visualAlive": "none",
+            "sound": null
+          },
+          {
+            "transition": "slideUp",
+            "textIn": "scaleIn",
+            "textSplit": "word",
+            "highlight": "Never lose work",
+            "visualIn": "zoomIn",
+            "visualAlive": "zoomIn",
+            "sound": {
+              "type": "ding",
+              "on": "text"
+            }
+          },
+          {
+            "transition": "cut",
+            "textIn": "pop",
+            "textSplit": "word",
+            "highlight": "More tips",
+            "visualIn": "pop",
+            "visualAlive": "float",
+            "sound": {
+              "type": "pop",
+              "on": "visual"
+            }
+          }
+        ]
+      }
+    }
+  },
+  {
+    "test": "Test 2",
+    "idea": "Three Claude Code shortcuts that save me an hour a day",
+    "template": "tool-tips-keyword",
+    "X": {
+      "source": "B videos",
+      "sounds": 6,
+      "cuts": 5,
+      "scenes": 10,
+      "ms": 2700,
+      "tokens": {
+        "inputTokens": 1768,
+        "cachedInputTokens": 0,
+        "outputTokens": 794,
+        "thinkingTokens": 0
+      },
+      "plan": {
+        "scenes": [
+          {
+            "transition": "cut",
+            "textIn": "pop",
+            "textSplit": "word",
+            "highlight": "Claude",
+            "visualIn": "scaleIn",
+            "visualAlive": "zoomIn",
+            "sound": {
+              "type": "whoosh",
+              "on": "cut"
+            }
+          },
+          {
+            "transition": "slideLeft",
+            "textIn": "slideUp",
+            "textSplit": "line",
+            "highlight": "debugging",
+            "visualIn": "slideUp",
+            "visualAlive": "float",
+            "sound": {
+              "type": "whoosh",
+              "on": "cut"
+            }
+          },
+          {
+            "transition": "cut",
+            "textIn": "fade",
+            "textSplit": "word",
+            "highlight": "First",
+            "visualIn": "none",
+            "visualAlive": "none",
+            "sound": null
+          },
+          {
+            "transition": "slideLeft",
+            "textIn": "pop",
+            "textSplit": "line",
+            "highlight": "compact",
+            "visualIn": "zoomSettleLeft",
+            "visualAlive": "panLeft",
+            "sound": {
+              "type": "pop",
+              "on": "text"
+            }
+          },
+          {
+            "transition": "cut",
+            "textIn": "fade",
+            "textSplit": "word",
+            "highlight": "Second",
+            "visualIn": "none",
+            "visualAlive": "none",
+            "sound": null
+          },
+          {
+            "transition": "slideLeft",
+            "textIn": "pop",
+            "textSplit": "line",
+            "highlight": "review",
+            "visualIn": "zoomSettleRight",
+            "visualAlive": "panRight",
+            "sound": {
+              "type": "whoosh",
+              "on": "cut"
+            }
+          },
+          {
+            "transition": "cut",
+            "textIn": "fade",
+            "textSplit": "word",
+            "highlight": "Third",
+            "visualIn": "none",
+            "visualAlive": "none",
+            "sound": null
+          },
+          {
+            "transition": "slideLeft",
+            "textIn": "slideUp",
+            "textSplit": "line",
+            "highlight": "prompts",
+            "visualIn": "slideUp",
+            "visualAlive": "zoomOut",
+            "sound": {
+              "type": "whoosh",
+              "on": "cut"
+            }
+          },
+          {
+            "transition": "cut",
+            "textIn": "fade",
+            "textSplit": "word",
+            "highlight": "hour",
+            "visualIn": "none",
+            "visualAlive": "none",
+            "sound": null
+          },
+          {
+            "transition": "slideUp",
+            "textIn": "pop",
+            "textSplit": "word",
+            "highlight": "CLAUDE",
+            "visualIn": "dropIn",
+            "visualAlive": "float",
+            "sound": {
+              "type": "ding",
+              "on": "visual"
+            }
+          }
+        ]
+      }
+    },
+    "Y": {
+      "source": "A rules",
+      "sounds": 5,
+      "cuts": 5,
+      "scenes": 10,
+      "ms": 2038,
+      "tokens": {
+        "inputTokens": 948,
+        "cachedInputTokens": 0,
+        "outputTokens": 526,
+        "thinkingTokens": 0
+      },
+      "plan": {
+        "scenes": [
+          {
+            "transition": "cut",
+            "textIn": "pop",
+            "textSplit": "word",
+            "highlight": "Skills",
+            "visualIn": "zoomIn",
+            "visualAlive": "zoomOut",
+            "sound": {
+              "type": "whoosh",
+              "on": "cut"
+            }
+          },
+          {
+            "transition": "slideUp",
+            "textIn": "fade",
+            "textSplit": "line",
+            "highlight": "Stop",
+            "visualIn": "fade",
+            "visualAlive": "none",
+            "sound": null
+          },
+          {
+            "transition": "cut",
+            "textIn": "none",
+            "textSplit": "word",
+            "highlight": null,
+            "visualIn": "none",
+            "visualAlive": "none",
+            "sound": null
+          },
+          {
+            "transition": "slideLeft",
+            "textIn": "slideUp",
+            "textSplit": "line",
+            "highlight": "Compact",
+            "visualIn": "slideUp",
+            "visualAlive": "panLeft",
+            "sound": {
+              "type": "ding",
+              "on": "visual"
+            }
+          },
+          {
+            "transition": "cut",
+            "textIn": "none",
+            "textSplit": "word",
+            "highlight": null,
+            "visualIn": "none",
+            "visualAlive": "none",
+            "sound": null
+          },
+          {
+            "transition": "slideLeft",
+            "textIn": "slideUp",
+            "textSplit": "line",
+            "highlight": "Review",
+            "visualIn": "slideUp",
+            "visualAlive": "panLeft",
+            "sound": null
+          },
+          {
+            "transition": "cut",
+            "textIn": "none",
+            "textSplit": "word",
+            "highlight": null,
+            "visualIn": "none",
+            "visualAlive": "none",
+            "sound": null
+          },
+          {
+            "transition": "slideLeft",
+            "textIn": "slideUp",
+            "textSplit": "line",
+            "highlight": "Prompts",
+            "visualIn": "slideUp",
+            "visualAlive": "panLeft",
+            "sound": {
+              "type": "ding",
+              "on": "visual"
+            }
+          },
+          {
+            "transition": "cut",
+            "textIn": "fade",
+            "textSplit": "line",
+            "highlight": "1",
+            "visualIn": "none",
+            "visualAlive": "none",
+            "sound": {
+              "type": "riser",
+              "on": "text"
+            }
+          },
+          {
+            "transition": "slideUp",
+            "textIn": "pop",
+            "textSplit": "word",
+            "highlight": "CLAUDE",
+            "visualIn": "pop",
+            "visualAlive": "float",
+            "sound": {
+              "type": "impact",
+              "on": "text"
+            }
+          }
+        ]
+      }
+    }
+  },
+  {
+    "test": "Test 3",
+    "idea": "Why vibe-coded apps break when real users sign up",
+    "template": "pain-to-fix",
+    "X": {
+      "source": "A rules",
+      "sounds": 4,
+      "cuts": 3,
+      "scenes": 6,
+      "ms": 1955,
+      "tokens": {
+        "inputTokens": 851,
+        "cachedInputTokens": 0,
+        "outputTokens": 494,
+        "thinkingTokens": 0
+      },
+      "plan": {
+        "scenes": [
+          {
+            "transition": "cut",
+            "textIn": "pop",
+            "textSplit": "word",
+            "highlight": "break",
+            "visualIn": "zoomIn",
+            "visualAlive": "float",
+            "sound": {
+              "type": "whoosh",
+              "on": "cut"
+            }
+          },
+          {
+            "transition": "slideUp",
+            "textIn": "fade",
+            "textSplit": "line",
+            "highlight": "bottlenecks",
+            "visualIn": "slideUp",
+            "visualAlive": "panLeft",
+            "sound": null
+          },
+          {
+            "transition": "slideLeft",
+            "textIn": "slideUp",
+            "textSplit": "line",
+            "highlight": "crashes",
+            "visualIn": "pop",
+            "visualAlive": "zoomOut",
+            "sound": null
+          },
+          {
+            "transition": "cut",
+            "textIn": "scaleIn",
+            "textSplit": "word",
+            "highlight": "pooling",
+            "visualIn": "zoomSettleLeft",
+            "visualAlive": "none",
+            "sound": {
+              "type": "riser",
+              "on": "text"
+            }
+          },
+          {
+            "transition": "slideRight",
+            "textIn": "fade",
+            "textSplit": "line",
+            "highlight": "Redis",
+            "visualIn": "dropIn",
+            "visualAlive": "panRight",
+            "sound": {
+              "type": "impact",
+              "on": "visual"
+            }
+          },
+          {
+            "transition": "cut",
+            "textIn": "pop",
+            "textSplit": "word",
+            "highlight": "survive",
+            "visualIn": "scaleIn",
+            "visualAlive": "float",
+            "sound": {
+              "type": "ding",
+              "on": "visual"
+            }
+          }
+        ]
+      }
+    },
+    "Y": {
+      "source": "B videos",
+      "sounds": 6,
+      "cuts": 6,
+      "scenes": 6,
+      "ms": 1985,
+      "tokens": {
+        "inputTokens": 1451,
+        "cachedInputTokens": 0,
+        "outputTokens": 527,
+        "thinkingTokens": 0
+      },
+      "plan": {
+        "scenes": [
+          {
+            "transition": "cut",
+            "textIn": "pop",
+            "textSplit": "word",
+            "highlight": "instantly",
+            "visualIn": "pop",
+            "visualAlive": "none",
+            "sound": {
+              "type": "pop",
+              "on": "text"
+            }
+          },
+          {
+            "transition": "cut",
+            "textIn": "slideUp",
+            "textSplit": "line",
+            "highlight": "bottlenecks",
+            "visualIn": "zoomIn",
+            "visualAlive": "float",
+            "sound": {
+              "type": "whoosh",
+              "on": "cut"
+            }
+          },
+          {
+            "transition": "cut",
+            "textIn": "fade",
+            "textSplit": "word",
+            "highlight": "crashes",
+            "visualIn": "scaleIn",
+            "visualAlive": "none",
+            "sound": {
+              "type": "impact",
+              "on": "text"
+            }
+          },
+          {
+            "transition": "cut",
+            "textIn": "pop",
+            "textSplit": "word",
+            "highlight": "pooling",
+            "visualIn": "dropIn",
+            "visualAlive": "none",
+            "sound": {
+              "type": "swipe",
+              "on": "cut"
+            }
+          },
+          {
+            "transition": "cut",
+            "textIn": "fade",
+            "textSplit": "line",
+            "highlight": "Redis",
+            "visualIn": "zoomSettleLeft",
+            "visualAlive": "panRight",
+            "sound": {
+              "type": "typing",
+              "on": "visual"
+            }
+          },
+          {
+            "transition": "cut",
+            "textIn": "scaleIn",
+            "textSplit": "word",
+            "highlight": "survive",
+            "visualIn": "pop",
+            "visualAlive": "zoomOut",
+            "sound": {
+              "type": "ding",
+              "on": "text"
+            }
+          }
+        ]
+      }
+    }
+  },
+  {
+    "test": "Test 4",
+    "idea": "TikMaker can now turn one sentence into a whole video storyboard",
+    "template": "new-tool-news",
+    "X": {
+      "source": "B videos",
+      "sounds": 6,
+      "cuts": 7,
+      "scenes": 8,
+      "ms": 2057,
+      "tokens": {
+        "inputTokens": 1618,
+        "cachedInputTokens": 0,
+        "outputTokens": 654,
+        "thinkingTokens": 0
+      },
+      "plan": {
+        "scenes": [
+          {
+            "transition": "cut",
+            "textIn": "pop",
+            "textSplit": "word",
+            "highlight": "sentence",
+            "visualIn": "zoomIn",
+            "visualAlive": "float",
+            "sound": {
+              "type": "whoosh",
+              "on": "cut"
+            }
+          },
+          {
+            "transition": "cut",
+            "textIn": "fade",
+            "textSplit": "line",
+            "highlight": "planning",
+            "visualIn": "slideUp",
+            "visualAlive": "none",
+            "sound": null
+          },
+          {
+            "transition": "cut",
+            "textIn": "pop",
+            "textSplit": "word",
+            "highlight": "speed",
+            "visualIn": "pop",
+            "visualAlive": "zoomIn",
+            "sound": {
+              "type": "pop",
+              "on": "text"
+            }
+          },
+          {
+            "transition": "cut",
+            "textIn": "scaleIn",
+            "textSplit": "line",
+            "highlight": "TikMaker",
+            "visualIn": "dropIn",
+            "visualAlive": "none",
+            "sound": {
+              "type": "ding",
+              "on": "visual"
+            }
+          },
+          {
+            "transition": "cut",
+            "textIn": "fade",
+            "textSplit": "word",
+            "highlight": "scenes",
+            "visualIn": "pop",
+            "visualAlive": "panLeft",
+            "sound": {
+              "type": "pop",
+              "on": "text"
+            }
+          },
+          {
+            "transition": "cut",
+            "textIn": "slideUp",
+            "textSplit": "word",
+            "highlight": "idea",
+            "visualIn": "scaleIn",
+            "visualAlive": "zoomOut",
+            "sound": {
+              "type": "click",
+              "on": "visual"
+            }
+          },
+          {
+            "transition": "cut",
+            "textIn": "fade",
+            "textSplit": "line",
+            "highlight": "control",
+            "visualIn": "zoomSettleLeft",
+            "visualAlive": "none",
+            "sound": null
+          },
+          {
+            "transition": "slideLeft",
+            "textIn": "pop",
+            "textSplit": "word",
+            "highlight": "STORY",
+            "visualIn": "pop",
+            "visualAlive": "float",
+            "sound": {
+              "type": "notification",
+              "on": "text"
+            }
+          }
+        ]
+      }
+    },
+    "Y": {
+      "source": "A rules",
+      "sounds": 3,
+      "cuts": 3,
+      "scenes": 8,
+      "ms": 1549,
+      "tokens": {
+        "inputTokens": 942,
+        "cachedInputTokens": 0,
+        "outputTokens": 308,
+        "thinkingTokens": 0
+      },
+      "plan": {
+        "scenes": [
+          {
+            "transition": "cut",
+            "textIn": "pop",
+            "textSplit": "word",
+            "highlight": "sentence",
+            "visualIn": "zoomIn",
+            "visualAlive": "float",
+            "sound": {
+              "type": "whoosh",
+              "on": "cut"
+            }
+          },
+          {
+            "transition": "slideUp",
+            "textIn": "fade",
+            "textSplit": "line",
+            "highlight": null,
+            "visualIn": "scaleIn",
+            "visualAlive": "none",
+            "sound": null
+          },
+          {
+            "transition": "slideUp",
+            "textIn": "fade",
+            "textSplit": "line",
+            "highlight": "speed",
+            "visualIn": "slideUp",
+            "visualAlive": "panLeft",
+            "sound": null
+          },
+          {
+            "transition": "slideUp",
+            "textIn": "pop",
+            "textSplit": "word",
+            "highlight": "TikMaker",
+            "visualIn": "pop",
+            "visualAlive": "zoomIn",
+            "sound": {
+              "type": "riser",
+              "on": "text"
+            }
+          },
+          {
+            "transition": "cut",
+            "textIn": "fade",
+            "textSplit": "line",
+            "highlight": "ready-to-use",
+            "visualIn": "fade",
+            "visualAlive": "none",
+            "sound": null
+          },
+          {
+            "transition": "slideUp",
+            "textIn": "scaleIn",
+            "textSplit": "word",
+            "highlight": "idea",
+            "visualIn": "zoomSettleLeft",
+            "visualAlive": "panRight",
+            "sound": null
+          },
+          {
+            "transition": "slideUp",
+            "textIn": "fade",
+            "textSplit": "line",
+            "highlight": "control",
+            "visualIn": "zoomSettleRight",
+            "visualAlive": "none",
+            "sound": null
+          },
+          {
+            "transition": "cut",
+            "textIn": "pop",
+            "textSplit": "word",
+            "highlight": "STORY",
+            "visualIn": "pop",
+            "visualAlive": "float",
+            "sound": {
+              "type": "impact",
+              "on": "visual"
+            }
+          }
+        ]
+      }
+    }
+  },
+  {
+    "test": "Test 5",
+    "idea": "Why I started building TikMaker. There was chaos in my head: it's hard to understand how to analyse successful videos, it takes a lot of time and some kind of structure. I wanted one brand and one library, videos easy to edit by hand, a place to write the script, and AI helping me there. I also wanted to learn to build AI agents, so I put one right inside TikMaker.",
+    "template": "pain-to-fix",
+    "X": {
+      "source": "A rules",
+      "sounds": 3,
+      "cuts": 4,
+      "scenes": 6,
+      "ms": 1338,
+      "tokens": {
+        "inputTokens": 916,
+        "cachedInputTokens": 0,
+        "outputTokens": 242,
+        "thinkingTokens": 0
+      },
+      "plan": {
+        "scenes": [
+          {
+            "transition": "cut",
+            "textIn": "pop",
+            "textSplit": "word",
+            "highlight": "CHAOS",
+            "visualIn": "zoomIn",
+            "visualAlive": "zoomOut",
+            "sound": {
+              "type": "whoosh",
+              "on": "cut"
+            }
+          },
+          {
+            "transition": "slideLeft",
+            "textIn": "slideUp",
+            "textSplit": "line",
+            "highlight": "ANALYZING",
+            "visualIn": "fade",
+            "visualAlive": "float",
+            "sound": null
+          },
+          {
+            "transition": "cut",
+            "textIn": "fade",
+            "textSplit": "line",
+            "highlight": "STRUCTURE",
+            "visualIn": "slideUp",
+            "visualAlive": "none",
+            "sound": null
+          },
+          {
+            "transition": "slideUp",
+            "textIn": "scaleIn",
+            "textSplit": "word",
+            "highlight": "TIKMAKER",
+            "visualIn": "scaleIn",
+            "visualAlive": "zoomIn",
+            "sound": {
+              "type": "riser",
+              "on": "visual"
+            }
+          },
+          {
+            "transition": "cut",
+            "textIn": "slideUp",
+            "textSplit": "line",
+            "highlight": "BRAND",
+            "visualIn": "zoomSettleLeft",
+            "visualAlive": "panLeft",
+            "sound": null
+          },
+          {
+            "transition": "cut",
+            "textIn": "fade",
+            "textSplit": "line",
+            "highlight": "AGENTS",
+            "visualIn": "pop",
+            "visualAlive": "zoomIn",
+            "sound": {
+              "type": "impact",
+              "on": "visual"
+            }
+          }
+        ]
+      }
+    },
+    "Y": {
+      "source": "B videos",
+      "sounds": 4,
+      "cuts": 6,
+      "scenes": 6,
+      "ms": 2007,
+      "tokens": {
+        "inputTokens": 1516,
+        "cachedInputTokens": 0,
+        "outputTokens": 482,
+        "thinkingTokens": 0
+      },
+      "plan": {
+        "scenes": [
+          {
+            "transition": "cut",
+            "textIn": "pop",
+            "textSplit": "word",
+            "highlight": "CHAOS",
+            "visualIn": "pop",
+            "visualAlive": "float",
+            "sound": {
+              "type": "pop",
+              "on": "text"
+            }
+          },
+          {
+            "transition": "cut",
+            "textIn": "fade",
+            "textSplit": "line",
+            "highlight": "analyze",
+            "visualIn": "zoomIn",
+            "visualAlive": "none",
+            "sound": null
+          },
+          {
+            "transition": "cut",
+            "textIn": "slideUp",
+            "textSplit": "line",
+            "highlight": "structure",
+            "visualIn": "slideUp",
+            "visualAlive": "none",
+            "sound": {
+              "type": "whoosh",
+              "on": "cut"
+            }
+          },
+          {
+            "transition": "cut",
+            "textIn": "scaleIn",
+            "textSplit": "word",
+            "highlight": "TikMaker",
+            "visualIn": "pop",
+            "visualAlive": "zoomOut",
+            "sound": {
+              "type": "impact",
+              "on": "visual"
+            }
+          },
+          {
+            "transition": "cut",
+            "textIn": "fade",
+            "textSplit": "line",
+            "highlight": "brand",
+            "visualIn": "none",
+            "visualAlive": "panLeft",
+            "sound": null
+          },
+          {
+            "transition": "cut",
+            "textIn": "pop",
+            "textSplit": "word",
+            "highlight": "agents",
+            "visualIn": "zoomIn",
+            "visualAlive": "float",
+            "sound": {
+              "type": "ding",
+              "on": "text"
+            }
+          }
+        ]
+      }
+    }
+  }
+]

@@ -21,6 +21,8 @@ the words shown and spoken in the first two seconds, which decide whether people
 Write THREE different hooks for the idea.
 At least two must follow a formula from the list: fill the formula in for this idea,
 do not copy its example. formulaId = that formula's id, or null for a hook of your own.
+Fill a formula only with what the idea says: never claim something it does not
+(no "I switched from…", no number, no result the idea does not give).
 Each hook: one line, at most 12 words, plain spoken English, no hashtags, no emojis.
 score: 5 = people stop scrolling, 3 = fine, 1 = weak.`;
 

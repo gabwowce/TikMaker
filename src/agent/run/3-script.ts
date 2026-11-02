@@ -48,6 +48,13 @@ export const reviseScriptFromUser = z.object({
 
 // ── In the run's file ────────────────────────────────────────────────────
 
+// What the agent found on the web before writing (step 3a): the facts, as
+// the model wrote them, and the pages they came from.
+export const researchInRun = z.object({
+  facts: z.string(),
+  sources: z.array(z.object({ url: z.string(), title: z.string().optional() })),
+});
+
 // One problem the code found in the script (FR-09): which scene, if any, and
 // what is wrong.
 export const scriptProblem = z.object({

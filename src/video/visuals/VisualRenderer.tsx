@@ -27,6 +27,7 @@ import { NodeGroup } from "./diagrams/NodeGroup";
 import { Stack } from "./diagrams/Stack";
 import { Transform } from "./diagrams/Transform";
 import { ScreenRecording } from "./media/ScreenRecording";
+import { customScenes } from "../custom/registry";
 type FrameContentProps = {
   visual: VisualConfig;
 };
@@ -136,6 +137,10 @@ export function VisualRenderer({ visual }: VisualRendererProps) {
           sfx={visual.sfx}
         />
       );
+    case "custom-scene": {
+      const Scene = customScenes[visual.component];
+      return Scene ? <Scene /> : null;
+    }
     case "checkpoint":
       return (
         <Checkpoint

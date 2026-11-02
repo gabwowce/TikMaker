@@ -51,6 +51,8 @@ export function naturalVisualSize(visual: VisualConfig): Size {
       if (visual.variant === "pill") return { width: 460, height: 70 };
       if (visual.variant === "compact") return { width: 520, height: 74 };
       return { width: 680, height: visual.detail ? 116 : 88 };
+    case "custom-scene":
+      return { width: videoDefaults.width, height: videoDefaults.height };
     case "pricing-card":
       return { width: 640, height: 420 + (visual.features?.length ?? 0) * 56 };
     case "app-mockup":

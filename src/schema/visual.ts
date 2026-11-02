@@ -93,6 +93,7 @@ export type VisualConfig =
       stagger?: number;
       sfx?: string;
     }
+  | { type: "custom-scene"; component: string }
   | {
       type: "checkpoint";
       label: string;
@@ -324,6 +325,11 @@ export const visualConfigSchema: z.ZodType<VisualConfig> = z.discriminatedUnion(
         .optional(),
       stagger: z.number().min(0).max(60).optional(),
       sfx: z.string().optional(),
+    }),
+    // A scene drawn for one video only (src/video/custom/), by name.
+    z.object({
+      type: z.literal("custom-scene"),
+      component: z.string().min(1),
     }),
     z.object({
       type: z.literal("checkpoint"),

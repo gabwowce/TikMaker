@@ -1,8 +1,11 @@
 import type { VideoProject } from "../schema/project";
 import type { Scene } from "../schema/scene";
+import type { RichTextSize } from "../schema/scene";
 import type { VisualConfig } from "../schema/visual";
+import { generatedLogos } from "../registries/assets.generated";
 import { SAFE_CONTENT_WIDTH } from "../video/layout/layoutPresets";
 import { fitScale, naturalVisualSize } from "../video/layout/visualMetrics";
+import { fontSizes } from "../video/typography/tokens";
 import type { LayoutElement, LayoutExample, WorkspaceStyle } from "./knowledge";
 import type { AgentRun } from "./run/run";
 
@@ -10,14 +13,19 @@ import type { AgentRun } from "./run/run";
 // looks like the example. The same input always gives the same scene
 // (NFR-04). Boxes in an example are percent of the 1080x1920 canvas.
 const CANVAS = { width: 1080, height: 1920 };
+const logoIds = generatedLogos.map((asset) => asset.id);
 
 // What goes into one picture of the example. A logo or a prop is a library
 // file (the fill is its id); anything else is the user's own material, so it
 // becomes a "REC" placeholder saying what to put there (FR-13) – the same
 // placeholder npm run video:check reports.
 function visualFor(element: LayoutElement, fill: string): VisualConfig {
-  if (element.kind === "logo") return { type: "logo", logo: fill };
-  if (element.kind === "prop") return { type: "prop", asset: fill };
+  // A logo or a prop picture takes any icon from the library; which one it
+  // is decides how it is drawn.
+  if (element.kind === "logo" || element.kind === "prop")
+    return logoIds.includes(fill)
+      ? { type: "logo", logo: fill }
+      : { type: "prop", asset: fill };
   const ratio =
     (element.w * CANVAS.width) / 100 / ((element.h * CANVAS.height) / 100);
   return {
@@ -59,9 +67,23 @@ export function compileScene(
     scene.content.richHeadline?.map((l) => l.text).join(" ") ??
     scene.content.headline ??
     "";
-  const block = example.textBlocks[0];
-  const richHeadline =
-    block && text ? [{ text, size: block.size, pill: block.pill }] : undefined;
+  // The text goes where the example has it. An example that splits its text
+  // over two places (half above a picture, half below) gets it split the
+  // same way; each part is sized down until it fits its box.
+  const blocks = example.textBlocks;
+  const parts = text ? splitWords(text, Math.max(blocks.length, 1)) : [];
+  const richHeadline = blocks.length
+    ? parts.map((part, index) => {
+        const block = blocks[index];
+        return {
+          text: part,
+          size: fittingSize(part, block),
+          pill: block.pill,
+          x: block.x,
+          y: Math.min(Math.max(block.y, TEXT_TOP), TEXT_BOTTOM),
+        };
+      })
+    : undefined;
 
   return {
     ...scene,
@@ -70,12 +92,61 @@ export function compileScene(
       ...scene.content,
       headline: undefined,
       richHeadline,
-      richHeadlineX: block?.x,
-      richHeadlineY: block?.y,
       visuals,
       textOnTop: true,
     },
   };
+}
+
+// Where text may sit, in % of the height: below TikTok's top bar and above
+// its caption and buttons area (y 170–1500 px of 1920).
+const TEXT_TOP = 9;
+const TEXT_BOTTOM = 78;
+// Text sizes from the biggest down, and roughly how wide one character is.
+const SIZES: RichTextSize[] = [
+  "hero",
+  "headline",
+  "title",
+  "bodyLarge",
+  "body",
+  "label",
+];
+const CHAR_WIDTH = 0.58; // × font size, for the bold display fonts
+
+// The words split into n parts of about the same length, in order.
+function splitWords(text: string, n: number): string[] {
+  const words = text.split(/\s+/).filter(Boolean);
+  const parts = Math.min(n, words.length);
+  const per = Math.ceil(words.length / parts);
+  return Array.from({ length: parts }, (_, i) =>
+    words.slice(i * per, (i + 1) * per).join(" "),
+  ).filter(Boolean);
+}
+
+// The example's size, or the next smaller one until the text wraps into no
+// more lines than the box allows (at least two) – so it never runs over the
+// picture below it.
+function fittingSize(text: string, block: LayoutExample["textBlocks"][number]) {
+  const width = Math.min((block.w * CANVAS.width) / 100, SAFE_CONTENT_WIDTH);
+  const allowed = Math.max(block.lines, 2);
+  const start = SIZES.indexOf(block.size);
+  for (const size of SIZES.slice(start))
+    if (lineCount(text, width, fontSizes[size]) <= allowed) return size;
+  return SIZES[SIZES.length - 1];
+}
+
+function lineCount(text: string, width: number, fontSize: number): number {
+  const perLine = Math.max(1, Math.floor(width / (fontSize * CHAR_WIDTH)));
+  let lines = 1;
+  let used = 0;
+  for (const word of text.split(/\s+/)) {
+    const needed = (used ? 1 : 0) + word.length;
+    if (used + needed > perLine && used) {
+      lines++;
+      used = word.length;
+    } else used += needed;
+  }
+  return lines;
 }
 
 // The whole video: every scene the agent wrote is laid out like the example

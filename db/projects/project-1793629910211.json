@@ -1,0 +1,394 @@
+{
+  "id": "project-1793629910211",
+  "title": "test-2",
+  "workspaceId": "dev",
+  "videoTemplateId": "analogy-explainer",
+  "fps": 30,
+  "width": 1080,
+  "height": 1920,
+  "storyPlan": {
+    "premise": "What is an AI agent, explained simply for people who are not technical. A chatbot only answers; an agent gets a goal and works step by step: it picks a tool, uses it, checks the result and moves on. Use my app TikMaker as the example: its agent picks a template, writes hooks, writes the script and lays out the scenes, and plain code checks every answer. Think of it as a new employee with a menu and a strict manager."
+  },
+  "scenes": [
+    {
+      "id": "scene-run-mvzczmc2-1",
+      "plan": {
+        "role": "hook",
+        "visualBrief": "A bold title with a small robot icon that pops in"
+      },
+      "layoutExampleId": "hook-10",
+      "vo": "AI agents explained in three simple steps.",
+      "background": "solid-dark",
+      "content": {
+        "richHeadline": [
+          {
+            "text": "AI",
+            "size": "bodyLarge",
+            "x": 38,
+            "y": 25,
+            "lane": 0
+          },
+          {
+            "text": "Agents",
+            "size": "bodyLarge",
+            "x": 25,
+            "y": 29,
+            "lane": 1
+          },
+          {
+            "text": "Explained",
+            "size": "headline",
+            "x": 38,
+            "y": 34.5,
+            "lane": 2
+          }
+        ],
+        "visuals": [
+          {
+            "id": "scene-run-mvzczmc2-1-v1",
+            "visual": {
+              "type": "prop",
+              "asset": "robot-helpers"
+            },
+            "x": 38.5,
+            "y": 47,
+            "scale": 0.6276923076923077,
+            "lane": 3
+          }
+        ],
+        "textOnTop": true
+      },
+      "motion": {
+        "entrance": "fade",
+        "transition": "cut",
+        "stagger": 4
+      },
+      "type": "hook-centered"
+    },
+    {
+      "id": "scene-run-mvzczmc2-2",
+      "plan": {
+        "role": "setup",
+        "visualBrief": "A new employee character at an empty desk"
+      },
+      "layoutExampleId": "bridge-01",
+      "vo": "Think of an AI agent like a new employee on their first day at the office.",
+      "background": "solid-dark",
+      "content": {
+        "richHeadline": [
+          {
+            "text": "A New Employee",
+            "size": "title",
+            "x": 50,
+            "y": 50
+          }
+        ],
+        "visuals": [],
+        "textOnTop": true
+      },
+      "motion": {
+        "entrance": "none",
+        "transition": "slideLeft",
+        "stagger": 6
+      },
+      "type": "visual-explainer"
+    },
+    {
+      "id": "scene-run-mvzczmc2-3",
+      "plan": {
+        "role": "setup",
+        "visualBrief": "A menu card of tools on the desk and a strict manager beside the employee"
+      },
+      "layoutExampleId": "demo-02",
+      "vo": "They are given a specific menu of tools and work right next to a strict manager.",
+      "background": "solid-dark",
+      "content": {
+        "richHeadline": [
+          {
+            "text": "Tools +",
+            "size": "body",
+            "pill": true,
+            "x": 51,
+            "y": 19.5
+          },
+          {
+            "text": "Strict Manager",
+            "size": "label",
+            "x": 50,
+            "y": 63.5
+          }
+        ],
+        "visuals": [
+          {
+            "id": "scene-run-mvzczmc2-3-v1",
+            "visual": {
+              "type": "prop",
+              "asset": "screen-panel"
+            },
+            "x": 50,
+            "y": 50,
+            "scale": 1.3292307692307692
+          }
+        ],
+        "textOnTop": true
+      },
+      "motion": {
+        "entrance": "none",
+        "transition": "slideLeft",
+        "stagger": 6
+      },
+      "type": "visual-explainer"
+    },
+    {
+      "id": "scene-run-mvzczmc2-4",
+      "plan": {
+        "role": "problem",
+        "visualBrief": "A chat bubble that answers once and then a pause icon"
+      },
+      "layoutExampleId": "bridge-01",
+      "vo": "A regular chatbot only answers one question, stops, and waits for your next reply.",
+      "background": "solid-dark",
+      "content": {
+        "richHeadline": [
+          {
+            "text": "Chatbots Stop Here",
+            "size": "title",
+            "x": 50,
+            "y": 50
+          }
+        ],
+        "visuals": [],
+        "textOnTop": true
+      },
+      "motion": {
+        "entrance": "none",
+        "transition": "slideLeft",
+        "stagger": 6
+      },
+      "type": "visual-explainer"
+    },
+    {
+      "id": "scene-run-mvzczmc2-5",
+      "plan": {
+        "role": "mechanism",
+        "visualBrief": "A big goal at the top breaking into a plan and a row of action steps"
+      },
+      "layoutExampleId": "demo-02",
+      "vo": "So an agent takes a big goal, makes a plan, and works through it step by step.",
+      "background": "solid-dark",
+      "content": {
+        "richHeadline": [
+          {
+            "text": "Goal → Plan",
+            "size": "body",
+            "pill": true,
+            "x": 51,
+            "y": 19.5
+          },
+          {
+            "text": "→ Actions",
+            "size": "label",
+            "x": 50,
+            "y": 63.5
+          }
+        ],
+        "visuals": [
+          {
+            "id": "scene-run-mvzczmc2-5-v1",
+            "visual": {
+              "type": "prop",
+              "asset": "target"
+            },
+            "x": 50,
+            "y": 50,
+            "scale": 1.3292307692307692
+          }
+        ],
+        "textOnTop": true
+      },
+      "motion": {
+        "entrance": "none",
+        "transition": "slideLeft",
+        "stagger": 6
+      },
+      "type": "visual-explainer"
+    },
+    {
+      "id": "scene-run-mvzczmc2-6",
+      "plan": {
+        "role": "reveal",
+        "visualBrief": "The employee picking one tool from the menu and a check mark on the result"
+      },
+      "layoutExampleId": "demo-02",
+      "vo": "First is tool use: the agent chooses the right tool, checks the output, and keeps moving.",
+      "background": "solid-dark",
+      "content": {
+        "richHeadline": [
+          {
+            "text": "1. Pick Tools",
+            "size": "body",
+            "pill": true,
+            "x": 51,
+            "y": 19.5
+          },
+          {
+            "text": "& Review",
+            "size": "label",
+            "x": 50,
+            "y": 63.5
+          }
+        ],
+        "visuals": [
+          {
+            "id": "scene-run-mvzczmc2-6-v1",
+            "visual": {
+              "type": "prop",
+              "asset": "puzzle-piece"
+            },
+            "x": 50,
+            "y": 50,
+            "scale": 1.3292307692307692
+          }
+        ],
+        "textOnTop": true
+      },
+      "motion": {
+        "entrance": "none",
+        "transition": "slideLeft",
+        "stagger": 6
+      },
+      "type": "visual-explainer"
+    },
+    {
+      "id": "scene-run-mvzczmc2-7",
+      "plan": {
+        "role": "mechanism",
+        "visualBrief": "A flow: topic → template → hooks → script, each lighting up in turn"
+      },
+      "layoutExampleId": "demo-02",
+      "vo": "You can see this in TikMaker: given a topic, the agent picks a template, writes hooks, and scripts every scene.",
+      "background": "solid-dark",
+      "content": {
+        "richHeadline": [
+          {
+            "text": "TikMaker",
+            "size": "body",
+            "pill": true,
+            "x": 51,
+            "y": 19.5
+          },
+          {
+            "text": "Workflow",
+            "size": "label",
+            "x": 50,
+            "y": 63.5
+          }
+        ],
+        "visuals": [
+          {
+            "id": "scene-run-mvzczmc2-7-v1",
+            "visual": {
+              "type": "prop",
+              "asset": "document"
+            },
+            "x": 50,
+            "y": 50,
+            "scale": 1.3292307692307692
+          }
+        ],
+        "textOnTop": true
+      },
+      "motion": {
+        "entrance": "none",
+        "transition": "slideLeft",
+        "stagger": 6
+      },
+      "type": "visual-explainer"
+    },
+    {
+      "id": "scene-run-mvzczmc2-8",
+      "plan": {
+        "role": "reveal",
+        "visualBrief": "The manager stamping answers: green ticks pass, a red cross sends one back"
+      },
+      "layoutExampleId": "demo-02",
+      "vo": "Second is the manager: plain code checks every single response before anything reaches your screen.",
+      "background": "solid-dark",
+      "content": {
+        "richHeadline": [
+          {
+            "text": "2. Strict",
+            "size": "body",
+            "pill": true,
+            "x": 51,
+            "y": 19.5
+          },
+          {
+            "text": "Validation",
+            "size": "label",
+            "x": 50,
+            "y": 63.5
+          }
+        ],
+        "visuals": [
+          {
+            "id": "scene-run-mvzczmc2-8-v1",
+            "visual": {
+              "type": "prop",
+              "asset": "padlock"
+            },
+            "x": 50,
+            "y": 50,
+            "scale": 1.3292307692307692
+          }
+        ],
+        "textOnTop": true
+      },
+      "motion": {
+        "entrance": "none",
+        "transition": "slideLeft",
+        "stagger": 6
+      },
+      "type": "visual-explainer"
+    },
+    {
+      "id": "scene-run-mvzczmc2-9",
+      "plan": {
+        "role": "payoff",
+        "visualBrief": "Finished work sliding out: a completed video card with a big tick"
+      },
+      "layoutExampleId": "payoff-02",
+      "vo": "Third is the result: instead of just generating text, you get an autonomous worker that never breaks.",
+      "background": "solid-dark",
+      "content": {
+        "richHeadline": [
+          {
+            "text": "3. Reliable",
+            "size": "title",
+            "x": 49,
+            "y": 46.5,
+            "lane": 0
+          },
+          {
+            "text": "Autonomous Output",
+            "size": "title",
+            "x": 48.5,
+            "y": 52.5,
+            "lane": 1
+          }
+        ],
+        "visuals": [],
+        "textOnTop": true
+      },
+      "motion": {
+        "entrance": "none",
+        "transition": "slideLeft",
+        "stagger": 6
+      },
+      "type": "visual-explainer"
+    }
+  ],
+  "captions": {},
+  "savedAt": 1793630390961,
+  "audioClips": []
+}

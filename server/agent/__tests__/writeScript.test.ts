@@ -75,6 +75,30 @@ describe("writeScript with a fake model", () => {
     expect(result.prompt.user).toContain("facts: task, tool-name");
   });
 
+  it("offers no link CTA unless the idea gives a link", async () => {
+    // how-to-steps allows none, link and comment-keyword.
+    const prompt = async (idea: string) =>
+      (
+        await writeScript(
+          ideaFromUser.parse({ idea, workspaceId: "dev" }),
+          workspace,
+          template,
+          hook,
+          knowledge,
+          undefined,
+          fakeModel(script),
+        )
+      ).prompt.user;
+    const without = await prompt(
+      "How to undo the last git commit in a few seconds",
+    );
+    expect(without).toContain("types allowed: none, comment-keyword");
+    const withLink = await prompt(
+      "How to undo the last git commit, full guide at tikmaker.dev",
+    );
+    expect(withLink).toContain("types allowed: none, link, comment-keyword");
+  });
+
   it("asks again when the script does not open with the hook", async () => {
     const result = await writeScript(
       input(),

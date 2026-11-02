@@ -44,7 +44,7 @@ const example = {
 
 describe("compileScene", () => {
   const compiled = compileScene(scene, example, [
-    "vscode",
+    "vs-code",
     "Record opening the settings",
   ]);
   const [logo, recording] = compiled.content.visuals ?? [];
@@ -56,7 +56,7 @@ describe("compileScene", () => {
   });
 
   it("uses the library file for a logo", () => {
-    expect(logo.visual).toEqual({ type: "logo", logo: "vscode" });
+    expect(logo.visual).toEqual({ type: "logo", logo: "vs-code" });
   });
 
   it("leaves a REC placeholder saying what to record (FR-13)", () => {
@@ -85,19 +85,44 @@ describe("compileScene", () => {
 
   it("puts the on-screen text where the example has its text", () => {
     expect(compiled.content.richHeadline).toEqual([
-      { text: "Open settings", size: "headline", pill: true },
+      { text: "Open settings", size: "headline", pill: true, x: 50, y: 78 },
     ]);
-    expect([
-      compiled.content.richHeadlineX,
-      compiled.content.richHeadlineY,
-    ]).toEqual([50, 82]);
     expect(compiled.content.headline).toBeUndefined();
+    // Read over the pictures, like the label in the successful video.
     expect(compiled.content.textOnTop).toBe(true);
+  });
+
+  it("splits the text over the example's text places", () => {
+    const two = {
+      ...example,
+      textBlocks: [
+        { ...example.textBlocks[0], y: 18 },
+        { ...example.textBlocks[0], y: 70 },
+      ],
+    };
+    const lines = compileScene(scene, two, ["vs-code", "Record it"]).content
+      .richHeadline!;
+    expect(lines.map((l) => [l.text, l.y])).toEqual([
+      ["Open", 18],
+      ["settings", 70],
+    ]);
+  });
+
+  it("sizes long text down until it fits its box", () => {
+    const long = {
+      ...scene,
+      content: {
+        headline: "Analysing viral TikToks broke my brain completely today",
+      },
+    };
+    const [line] = compileScene(long, example, ["vs-code", "Record it"]).content
+      .richHeadline!;
+    expect(line.size).not.toBe("headline");
   });
 
   it("shows no text when the example has none", () => {
     const quiet = compileScene(scene, { ...example, textBlocks: [] }, [
-      "vscode",
+      "vs-code",
       "Record it",
     ]);
     expect(quiet.content.richHeadline).toBeUndefined();
@@ -130,8 +155,8 @@ describe("compileProject", () => {
     id: "run-1",
     layout: {
       scenes: [
-        { layoutExampleId: "demo-test", fills: ["vscode", "Record A"] },
-        { layoutExampleId: "demo-low", fills: ["vscode", "Record B"] },
+        { layoutExampleId: "demo-test", fills: ["vs-code", "Record A"] },
+        { layoutExampleId: "demo-low", fills: ["vs-code", "Record B"] },
       ],
     },
   } as AgentRun;

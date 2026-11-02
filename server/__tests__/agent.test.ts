@@ -84,18 +84,24 @@ function fakeLayout(prompt: string) {
           : pictures
               .split("; ")
               .map((picture) =>
-                picture.includes("a logo id")
-                  ? "vs-code"
-                  : picture.includes("a prop id")
-                    ? "bug"
-                    : "Record the step",
+                picture.includes("prop id") ? "vs-code" : "Record the step",
               );
       return { layoutExampleId: id, fills };
     });
   return { scenes };
 }
+// The search tool is only handed to the model; the fake model ignores it.
 vi.mock("@ai-sdk/google", () => ({
-  createGoogleGenerativeAI: () => () => fakeModel,
+  createGoogleGenerativeAI: () =>
+    Object.assign(() => fakeModel, {
+      tools: {
+        googleSearch: () => ({
+          type: "provider",
+          id: "google.google_search",
+          args: {},
+        }),
+      },
+    }),
 }));
 
 const { appRouter } = await import("../trpc/router.js");
@@ -224,6 +230,7 @@ describe("agent runs", () => {
     expect(run.status).toBe("awaiting_approval");
     expect(run.steps.map((step) => step.name)).toEqual([
       "pickTemplate",
+      "research",
       "writeScript",
     ]);
   });
@@ -342,6 +349,7 @@ describe("agent runs", () => {
     // First draft caught by the check (FR-09), the second one clean.
     expect(run.steps.map((step) => step.name)).toEqual([
       "pickTemplate",
+      "research",
       "writeScript",
       "writeScript",
     ]);

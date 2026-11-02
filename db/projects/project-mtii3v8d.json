@@ -65,8 +65,8 @@
           {
             "id": "visual-gm36vwn",
             "visual": {
-              "type": "tool-logo",
-              "tool": "claude-ai-symbol"
+              "type": "logo",
+              "logo": "claude-ai-symbol"
             },
             "x": 45.74490220557636,
             "y": 11.458333333333332,
@@ -98,8 +98,8 @@
           {
             "id": "visual-y2anidf",
             "visual": {
-              "type": "tool-logo",
-              "tool": "claude-ai-symbol"
+              "type": "logo",
+              "logo": "claude-ai-symbol"
             },
             "x": 85.18930957683742,
             "y": 88.03258145363408,
@@ -403,8 +403,8 @@
           {
             "id": "visual-dku3eaa",
             "visual": {
-              "type": "tool-logo",
-              "tool": "claude"
+              "type": "logo",
+              "logo": "claude"
             },
             "x": 50,
             "y": 31,
@@ -420,8 +420,8 @@
           {
             "id": "visual-ft2trou",
             "visual": {
-              "type": "tool-logo",
-              "tool": "google-chrome"
+              "type": "logo",
+              "logo": "google-chrome"
             },
             "x": 50,
             "y": 62.174479166666664,
@@ -679,8 +679,8 @@
           {
             "id": "visual-z49cn40",
             "visual": {
-              "type": "tool-logo",
-              "tool": "claude-ai-symbol"
+              "type": "logo",
+              "logo": "claude-ai-symbol"
             },
             "x": 12.037037037037036,
             "y": 5.827067669172932,
@@ -697,8 +697,8 @@
           {
             "id": "visual-qso4z0b",
             "visual": {
-              "type": "tool-logo",
-              "tool": "claude-ai-symbol"
+              "type": "logo",
+              "logo": "claude-ai-symbol"
             },
             "x": 85.18930957683742,
             "y": 88.03258145363408,
@@ -731,7 +731,7 @@
     "volume": 0.58,
     "duckVolume": 0.2
   },
-  "savedAt": 1793258127418,
+  "savedAt": 1793623403379,
   "audioClips": [
     {
       "id": "audio-mtimh5cl-pd7k",

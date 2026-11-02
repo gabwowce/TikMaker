@@ -58,19 +58,29 @@ export function layoutChoices(
       !(input.motionOnly && hasMedia(example)),
   );
   const forRole = usable.filter((example) => example.role === scene.role);
-  return (forRole.length ? forRole : usable).slice(0, MAX_CHOICES);
+  // A scene without a recording sees the examples with nothing to capture
+  // first, so they are not cut off by MAX_CHOICES.
+  const ranked = (forRole.length ? forRole : usable)
+    .slice()
+    .sort(
+      (a, b) =>
+        Number(!scene.needsRecording && hasMedia(a)) -
+        Number(!scene.needsRecording && hasMedia(b)),
+    );
+  return ranked.slice(0, MAX_CHOICES);
 }
 
 const SYSTEM = `You lay out the scenes of a short vertical video (TikTok, Reels, Shorts).
 Every layout example is taken from a successful video. For every scene, pick ONE
 example from that scene's list (layoutExampleId) and fill each of its pictures, in
 the order they are listed (fills):
-- a logo picture: an id from Logos
-- a prop picture: an id from Props
+- a logo or prop picture: an id from Logos or Props (both are icons from the library)
 - any other picture (a recording, a screen, a photo, a phone): one short sentence
   telling the user what to record or capture there for this scene.
-Pick the example whose arrangement suits what the scene shows; when a scene is
-marked "own recording: yes", prefer an example with a recording or screen.
+Pick the example whose arrangement suits what the scene shows. When a scene is
+marked "own recording: yes", prefer an example with a recording or screen; when it is
+marked "own recording: no", prefer an example whose pictures are all logos or props
+(nothing to capture), if its list has one.
 Answer with one entry per scene, in the same order.`;
 
 // One example as the model reads it: each picture with what it takes, so a
@@ -78,12 +88,9 @@ Answer with one entry per scene, in the same order.`;
 function describe(example: LayoutExample): string {
   const pictures = example.elements
     .map((element, index) => {
-      const takes =
-        element.kind === "logo"
-          ? "a logo id"
-          : element.kind === "prop"
-            ? "a prop id"
-            : "a sentence: what to capture";
+      const takes = LIBRARY.includes(element.kind)
+        ? "a logo or prop id"
+        : "a sentence: what to capture";
       return `${index + 1} ${element.kind} → ${takes}`;
     })
     .join("; ");
@@ -147,14 +154,10 @@ export async function pickLayouts(
           return problem(`needs ${example.elements.length} fills`);
         example.elements.forEach((element, n) => {
           const fill = choice.fills[n];
-          if (element.kind === "logo" && !logoIds.includes(fill))
-            problem(`"${fill}" is not a logo id`);
-          if (element.kind === "prop" && !propIds.includes(fill))
-            problem(`"${fill}" is not a prop id`);
-          if (
-            MEDIA.includes(element.kind) &&
-            (logoIds.includes(fill) || propIds.includes(fill))
-          )
+          const library = logoIds.includes(fill) || propIds.includes(fill);
+          if (LIBRARY.includes(element.kind) && !library)
+            problem(`"${fill}" is not a logo or prop id`);
+          if (MEDIA.includes(element.kind) && library)
             problem(`picture ${n + 1} is real material: say what to capture`);
         });
       });

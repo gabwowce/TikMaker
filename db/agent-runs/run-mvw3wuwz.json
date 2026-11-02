@@ -1,0 +1,32 @@
+{
+  "id": "run-mvw3wuwz",
+  "projectId": "project-1793351517083",
+  "input": {
+    "idea": "TikMaker can now turn one sentence into a whole video storyboard",
+    "workspaceId": "dev",
+    "targetSeconds": 40,
+    "motionOnly": false,
+    "withFace": false,
+    "generateVoice": false
+  },
+  "status": "writing_hooks",
+  "template": {
+    "videoTemplateId": "new-tool-news",
+    "pickedBy": "user"
+  },
+  "steps": [
+    {
+      "name": "pickTemplate",
+      "startedAt": 1793433352133,
+      "ms": 1064,
+      "inputTokens": 1615,
+      "outputTokens": 53,
+      "output": {
+        "videoTemplateId": "new-tool-news",
+        "score": 5,
+        "reason": "This template is a perfect fit for announcing a major new feature update like turning one sentence into a whole storyboard."
+      }
+    }
+  ],
+  "createdAt": 1793433352067
+}

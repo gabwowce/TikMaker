@@ -116,3 +116,57 @@ export async function callStructured<T>(
     }
   }
 }
+
+// A question answered with Google Search (Gemini's search grounding): plain
+// text back, and the pages it was taken from. Not checked against a schema –
+// Gemini does not search and keep to a JSON schema in the same call – so the
+// text only ever feeds a later prompt as facts, never the run as structure.
+export type SearchAnswer = {
+  text: string;
+  sources: { url: string; title?: string }[];
+};
+
+export async function callWithSearch(
+  prompt: { system: string; user: string },
+  model: LanguageModel = agentModel(),
+): Promise<StructuredResult<SearchAnswer>> {
+  const started = Date.now();
+  const google = createGoogleGenerativeAI({
+    apiKey: process.env.GEMINI_API_KEY,
+  });
+  const usage: TokenCount = {
+    inputTokens: 0,
+    cachedInputTokens: 0,
+    outputTokens: 0,
+    thinkingTokens: 0,
+  };
+  const level = thinkingLevel();
+  const log = (): CallLog => ({
+    model: typeof model === "string" ? model : model.modelId,
+    prompt,
+    attempts: 1,
+    usage,
+    ms: Date.now() - started,
+  });
+  try {
+    const result = await generateText({
+      model,
+      instructions: prompt.system,
+      prompt: prompt.user,
+      tools: { google_search: google.tools.googleSearch({}) },
+      providerOptions: level
+        ? { google: { thinkingConfig: { thinkingLevel: level } } }
+        : undefined,
+    });
+    addUsage(usage, result.usage);
+    const sources = result.sources.flatMap((source) =>
+      source.sourceType === "url"
+        ? [{ url: source.url, title: source.title }]
+        : [],
+    );
+    return { ...log(), data: { text: result.text.trim(), sources } };
+  } catch (error) {
+    const message = error instanceof Error ? error.message : String(error);
+    throw new StructuredCallError(message, log());
+  }
+}

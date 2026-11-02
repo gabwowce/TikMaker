@@ -170,6 +170,7 @@ export const visualTypesByGroup = {
     "transform",
     "corner-props",
   ],
+  custom: ["custom-scene"], // drawn for one video only (src/video/custom/)
 } as const;
 export const visualTypeSchema = z.enum(
   Object.values(visualTypesByGroup).flat() as [string, ...string[]],

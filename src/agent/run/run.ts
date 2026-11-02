@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { ideaFromUser } from "./1-idea";
 import { hookFromAi, hookInRun, templateInRun } from "./2-angle";
-import { scriptInRun } from "./3-script";
+import { researchInRun, scriptInRun } from "./3-script";
 import { layoutInRun } from "./4-building";
 import { logEntry } from "./log";
 import { runStatus } from "./status";
@@ -27,6 +27,7 @@ export const agentRun = z.object({
   hooksFor: z.string().optional(),
   hook: hookInRun.optional(),
   // 3 Script
+  research: researchInRun.optional(),
   script: scriptInRun.optional(),
   // 4 Building
   layout: layoutInRun.optional(),

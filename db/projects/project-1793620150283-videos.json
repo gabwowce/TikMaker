@@ -1,0 +1,401 @@
+{
+  "id": "project-1793620150283-videos",
+  "title": "TikMaker-1 · B videos",
+  "workspaceId": "dev",
+  "videoTemplateId": "pain-to-fix",
+  "fps": 30,
+  "width": 1080,
+  "height": 1920,
+  "storyPlan": {
+    "premise": "Why I started building TikMaker. There was chaos in my head: it’s hard to understand how to analyse successful videos, it takes a lot of time and some kind of structure. I wanted my videos to have one brand and one library, all videos easy to edit by hand, a place to write the script, and AI helping me there. I also wanted to learn to build AI agents, so I thought the most useful place is to put one right inside TikMaker. So it’s a personal video, but it also shows what TikMaker is."
+  },
+  "scenes": [
+    {
+      "id": "scene-run-mvz7dip3-1",
+      "plan": {
+        "role": "hook",
+        "visualBrief": "A messy folder of random TikTok downloads on a computer desktop"
+      },
+      "layoutExampleId": "hook-02",
+      "vo": "Analysing viral TikToks broke my brain.",
+      "background": "solid-dark",
+      "content": {
+        "richHeadline": [
+          {
+            "text": "Analysing viral TikToks",
+            "size": "title",
+            "highlights": [],
+            "x": 50,
+            "y": 18,
+            "animation": "fade",
+            "splitBy": "word",
+            "lane": 0,
+            "sfx": "d-pop"
+          },
+          {
+            "text": "broke my brain",
+            "size": "headline",
+            "highlights": [
+              "broke"
+            ],
+            "x": 50,
+            "y": 78,
+            "animation": "fade",
+            "splitBy": "word",
+            "lane": 1,
+            "sfx": "none"
+          }
+        ],
+        "richHeadlineY": 18,
+        "richHeadlineX": 50,
+        "visuals": [
+          {
+            "id": "scene-run-mvz7dip3-1-v1",
+            "visual": {
+              "type": "screen",
+              "aspect": "16:10",
+              "content": {
+                "type": "checkpoint",
+                "label": "REC",
+                "detail": "A messy folder of random TikTok downloads on a computer desktop"
+              }
+            },
+            "x": 50,
+            "y": 50,
+            "scale": 0.8565055762081785,
+            "entrance": "zoomIn",
+            "sfx": "none",
+            "exitSfx": "none",
+            "lane": 2
+          }
+        ],
+        "textOnTop": true
+      },
+      "motion": {
+        "entrance": "none",
+        "transition": "cut",
+        "stagger": 4,
+        "sfx": "none",
+        "exitSfx": "none"
+      },
+      "type": "hook-centered"
+    },
+    {
+      "id": "scene-run-mvz7dip3-2",
+      "plan": {
+        "role": "setup",
+        "visualBrief": "Notes app open with scattered, unstructured thoughts about viral videos"
+      },
+      "layoutExampleId": "setup-03",
+      "vo": "Trying to understand how successful videos work was total chaos in my head.",
+      "background": "solid-dark",
+      "content": {
+        "visuals": [
+          {
+            "id": "scene-run-mvz7dip3-2-v1",
+            "visual": {
+              "type": "screen",
+              "aspect": "9:16",
+              "content": {
+                "type": "checkpoint",
+                "label": "REC",
+                "detail": "Notes app open with scattered, unstructured thoughts about viral videos"
+              }
+            },
+            "x": 50,
+            "y": 50,
+            "scale": 1.550094517958412,
+            "entrance": "slideUp",
+            "sfx": "none",
+            "exitSfx": "none",
+            "kenBurns": "float"
+          }
+        ],
+        "textOnTop": true
+      },
+      "motion": {
+        "entrance": "none",
+        "transition": "slideLeft",
+        "stagger": 6,
+        "sfx": "soft-whoosh",
+        "exitSfx": "none"
+      },
+      "type": "visual-explainer"
+    },
+    {
+      "id": "scene-run-mvz7dip3-3",
+      "plan": {
+        "role": "problem",
+        "visualBrief": "A blank script document with a blinking cursor"
+      },
+      "layoutExampleId": "problem-01",
+      "vo": "It took a huge amount of time, lacked any structure, and was just too hard.",
+      "background": "solid-dark",
+      "content": {
+        "richHeadline": [
+          {
+            "text": "No structure, takes",
+            "size": "title",
+            "highlights": [
+              "structure,"
+            ],
+            "x": 51,
+            "y": 34.5,
+            "animation": "fade",
+            "splitBy": "word",
+            "sfx": "none"
+          },
+          {
+            "text": "too much time",
+            "size": "headline",
+            "pill": true,
+            "highlights": [],
+            "x": 50,
+            "y": 50,
+            "animation": "fade",
+            "splitBy": "word",
+            "sfx": "none"
+          }
+        ],
+        "richHeadlineY": 34.5,
+        "richHeadlineX": 51,
+        "visuals": [
+          {
+            "id": "scene-run-mvz7dip3-3-v1",
+            "visual": {
+              "type": "logo",
+              "logo": "claude"
+            },
+            "x": 23,
+            "y": 50,
+            "scale": 0.610909090909091,
+            "entrance": "dropIn",
+            "sfx": "d-enter",
+            "exitSfx": "none"
+          },
+          {
+            "id": "scene-run-mvz7dip3-3-v2",
+            "visual": {
+              "type": "screen",
+              "aspect": "16:10",
+              "content": {
+                "type": "checkpoint",
+                "label": "REC",
+                "detail": "A blank script document with a blinking cursor"
+              }
+            },
+            "x": 50,
+            "y": 50,
+            "scale": 0.4817843866171003,
+            "entrance": "dropIn",
+            "sfx": "none",
+            "exitSfx": "none"
+          }
+        ],
+        "textOnTop": true
+      },
+      "motion": {
+        "entrance": "none",
+        "transition": "cut",
+        "stagger": 6,
+        "sfx": "none",
+        "exitSfx": "none"
+      },
+      "type": "visual-explainer"
+    },
+    {
+      "id": "scene-run-mvz7dip3-4",
+      "plan": {
+        "role": "reveal",
+        "visualBrief": "The TikMaker app dashboard opening up on screen"
+      },
+      "layoutExampleId": "reveal-01",
+      "vo": "So I built TikMaker to fix it.",
+      "notes": "🎥 Your own recording",
+      "background": "solid-dark",
+      "content": {
+        "visuals": [
+          {
+            "id": "scene-run-mvz7dip3-4-v1",
+            "visual": {
+              "type": "screen",
+              "aspect": "1:1",
+              "content": {
+                "type": "checkpoint",
+                "label": "REC",
+                "detail": "The TikMaker app dashboard opening up on screen"
+              }
+            },
+            "x": 68.5,
+            "y": 67.5,
+            "scale": 0.9534883720930233,
+            "entrance": "scaleIn",
+            "sfx": "none",
+            "exitSfx": "none",
+            "kenBurns": "zoomOut"
+          }
+        ],
+        "textOnTop": true
+      },
+      "motion": {
+        "entrance": "none",
+        "transition": "cut",
+        "stagger": 6,
+        "sfx": "none",
+        "exitSfx": "none"
+      },
+      "type": "visual-explainer"
+    },
+    {
+      "id": "scene-run-mvz7dip3-5",
+      "plan": {
+        "role": "demo",
+        "visualBrief": "The library view in TikMaker showing organized video projects"
+      },
+      "layoutExampleId": "demo-01",
+      "vo": "First is having one brand and one library where all videos are easy to edit by hand.",
+      "notes": "🎥 Your own recording",
+      "background": "solid-dark",
+      "content": {
+        "visuals": [
+          {
+            "id": "scene-run-mvz7dip3-5-v1",
+            "visual": {
+              "type": "screen",
+              "aspect": "9:16",
+              "content": {
+                "type": "checkpoint",
+                "label": "REC",
+                "detail": "The library view in TikMaker showing organized video projects"
+              }
+            },
+            "x": 50,
+            "y": 44,
+            "scale": 1.4297872340425533,
+            "entrance": "none",
+            "sfx": "none",
+            "exitSfx": "none",
+            "kenBurns": "panLeft"
+          }
+        ],
+        "textOnTop": true
+      },
+      "motion": {
+        "entrance": "none",
+        "transition": "cut",
+        "stagger": 6,
+        "sfx": "none",
+        "exitSfx": "none"
+      },
+      "type": "visual-explainer"
+    },
+    {
+      "id": "scene-run-mvz7dip3-6",
+      "plan": {
+        "role": "demo",
+        "visualBrief": "Typing a script in TikMaker with an AI assistant panel active on the side"
+      },
+      "layoutExampleId": "demo-01",
+      "vo": "Second is a dedicated place to write scripts with AI helping right inside.",
+      "notes": "🎥 Your own recording",
+      "background": "solid-dark",
+      "content": {
+        "visuals": [
+          {
+            "id": "scene-run-mvz7dip3-6-v1",
+            "visual": {
+              "type": "screen",
+              "aspect": "9:16",
+              "content": {
+                "type": "checkpoint",
+                "label": "REC",
+                "detail": "Typing a script in TikMaker with an AI assistant panel active on the side"
+              }
+            },
+            "x": 50,
+            "y": 44,
+            "scale": 1.4297872340425533,
+            "entrance": "none",
+            "sfx": "none",
+            "exitSfx": "none",
+            "kenBurns": "panRight"
+          }
+        ],
+        "textOnTop": true
+      },
+      "motion": {
+        "entrance": "none",
+        "transition": "cut",
+        "stagger": 6,
+        "sfx": "none",
+        "exitSfx": "none"
+      },
+      "type": "visual-explainer"
+    },
+    {
+      "id": "scene-run-mvz7dip3-7",
+      "plan": {
+        "role": "benefit",
+        "visualBrief": "The AI agent chat interface responding inside the app"
+      },
+      "layoutExampleId": "benefit-04",
+      "vo": "So I put an AI agent right inside the app to learn how to build them while building TikMaker in public.",
+      "notes": "🎥 Your own recording",
+      "background": "solid-dark",
+      "content": {
+        "richHeadline": [
+          {
+            "text": "AI agent inside TikMaker",
+            "size": "title",
+            "pill": true,
+            "highlights": [
+              "agent"
+            ],
+            "x": 50,
+            "y": 78,
+            "animation": "scaleIn",
+            "splitBy": "line",
+            "sfx": "none"
+          }
+        ],
+        "richHeadlineY": 78.5,
+        "richHeadlineX": 50,
+        "visuals": [
+          {
+            "id": "scene-run-mvz7dip3-7-v1",
+            "visual": {
+              "type": "screen",
+              "aspect": "9:16",
+              "content": {
+                "type": "checkpoint",
+                "label": "REC",
+                "detail": "The AI agent chat interface responding inside the app"
+              }
+            },
+            "x": 50,
+            "y": 50,
+            "scale": 1.550094517958412,
+            "entrance": "zoomIn",
+            "sfx": "none",
+            "exitSfx": "none",
+            "kenBurns": "zoomIn"
+          }
+        ],
+        "textOnTop": true
+      },
+      "motion": {
+        "entrance": "none",
+        "transition": "cut",
+        "stagger": 6,
+        "sfx": "riser",
+        "exitSfx": "none"
+      },
+      "type": "visual-explainer"
+    }
+  ],
+  "captions": {
+    "y": 68
+  },
+  "savedAt": 1793623757062,
+  "audioClips": []
+}

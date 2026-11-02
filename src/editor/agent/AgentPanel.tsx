@@ -97,7 +97,10 @@ function AgentPanelBody() {
   }, [run, awaitsLayout, layoutKnowledge, applyAgentLayout]);
 
   if (!loaded) return null;
-  if (run && working) return <RunProgress runId={run.id} />;
+  // While the agent works, and after it has built this project, the panel
+  // shows the run: every step it took stays readable.
+  if (run && (working || run.status === "done"))
+    return <RunProgress runId={run.id} />;
   if (!hasScenes)
     return (
       <div className="flex flex-col gap-3">

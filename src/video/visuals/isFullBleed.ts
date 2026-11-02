@@ -5,5 +5,6 @@ export function isFullBleedVisual(
   if (!visual) return false;
   if (visual.type === "node-group" && visual.layout === "orbit") return true;
   if (visual.type === "corner-props") return true;
+  if (visual.type === "custom-scene") return true;
   return false;
 }

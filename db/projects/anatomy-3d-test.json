@@ -1,0 +1,45 @@
+{
+  "id": "anatomy-3d-test",
+  "title": "Anatomy 3D · test",
+  "fps": 30,
+  "width": 1080,
+  "height": 1920,
+  "scenes": [
+    {
+      "id": "anatomy-1",
+      "durationSeconds": 8,
+      "background": "solid-dark",
+      "content": {
+        "visuals": [
+          {
+            "id": "anatomy-1-scene",
+            "visual": {
+              "type": "custom-scene",
+              "component": "ai-agent-explained/anatomy"
+            },
+            "x": 50,
+            "y": 50,
+            "entrance": "none",
+            "sfx": "none",
+            "exitSfx": "none"
+          }
+        ]
+      },
+      "motion": {
+        "entrance": "none",
+        "transition": "cut",
+        "sfx": "none",
+        "exitSfx": "none"
+      },
+      "type": "hook-centered",
+      "plan": {
+        "role": "hook"
+      }
+    }
+  ],
+  "captions": {
+    "enabled": false
+  },
+  "savedAt": 1793632106669,
+  "audioClips": []
+}

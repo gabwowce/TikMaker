@@ -84,6 +84,11 @@ describe("layoutChoices", () => {
     expect(kinds).not.toContain("talking-head"); // the form said faceless
   });
 
+  it("shows a scene without a recording the examples with nothing to capture first", () => {
+    const [first] = layoutChoices(scene("hook", false), examples, input);
+    expect(first.elements.some((el) => MEDIA.includes(el.kind))).toBe(false);
+  });
+
   it("offers no real material for motion graphics only", () => {
     const motionOnly = { ...input, motionOnly: true };
     const choices = layoutChoices(scene("hook"), examples, motionOnly);
