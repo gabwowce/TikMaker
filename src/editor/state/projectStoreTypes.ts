@@ -1,3 +1,4 @@
+import type { AgentRun } from "../../agent/run/run";
 import type { VideoProject } from "../../schema/project";
 import type {
   Block,
@@ -15,6 +16,7 @@ import type {
 } from "../../schema/scene";
 import type { VisualConfig } from "../../schema/visual";
 import { type KeyframeProperty } from "../../video/layout/visualKeyframes";
+
 export type VisualSlot = "main" | "left" | "right";
 export type ProjectStore = {
   project: VideoProject;
@@ -50,6 +52,7 @@ export type ProjectStore = {
   ) => void;
   updateProjectMusic: (music: VideoProject["music"]) => void;
   openProject: (project: VideoProject) => void;
+  applyAgentScript: (run: AgentRun) => void;
   addScene: (type: SceneType) => void;
   insertScene: (scene: Scene) => void;
   removeScene: (id: string) => void;

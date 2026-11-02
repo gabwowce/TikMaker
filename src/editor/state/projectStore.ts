@@ -1,5 +1,6 @@
 import { temporal } from "zundo";
 import { create, useStore } from "zustand";
+import { projectFromScript } from "../../agent/projectFromScript";
 import { getSceneDefinition } from "../../registries/sceneRegistry";
 import { getSfx } from "../../registries/sfxRegistry";
 import type { VideoProject } from "../../schema/project";
@@ -201,6 +202,11 @@ export const useProjectStore = create<ProjectStore>()(
       openProject(project) {
         set({ project, selectedSceneId: project.scenes[0]?.id ?? null });
         clearHistory();
+      },
+      // "Approve" in the AI panel: the script becomes the project's scenes.
+      applyAgentScript(run) {
+        const project = projectFromScript(get().project, run);
+        set({ project, selectedSceneId: project.scenes[0]?.id ?? null });
       },
       addScene(type) {
         const def = getSceneDefinition(type);

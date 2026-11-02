@@ -44,13 +44,16 @@ Atlikta šioje sesijoje (2026-10-30 – 11-02): D4.5–D4.7, D5 visas, D6 1–4 
 - [ ] 6 skydelis + Storyboard:
   - [x] `ScriptCard` (scenos, problemos, Approve, komentaras); formoje „Motion graphics
     only“ (`motionOnly`) ir „Hook (optional)“. Patikrinta naršyklėje su Gemini 2026-11-02
-  - [ ] **PRADĖTI ČIA:** scenarijus taikomas atidarytam projektui (Storyboard) per store
+  - [x] po Approve scenarijus taikomas atidarytam projektui (Storyboard):
+    `src/agent/projectFromScript.ts` + testai, store `applyAgentScript`, `AgentPanel`
+    (`useEffect`, tik kai projektas tuščias). Scenos tipas kol kas pagal rolę (hook →
+    hook-centered, cta → takeaway, kitos → visual-explainer); D7 jį perrašo pagal išdėstymą
 
 **Sutarta 2026-11-02:** įrašo sprendžia **agentas** (`needsRecording`), naudotoja
 nesirenka prie kiekvienos scenos – skydelyje tik ženkliukas „🎥 your recording“; keisti
 – komentaru („3 scena be įrašo“), visai be įrašų – formos „Motion graphics only“.
 `setSceneMedia` ir `media` pašalinti (per daug sprendimų kūrėjui).
-- [ ] 7 Stop (`agent.cancel`)
+- [ ] **7 – PRADĖTI ČIA:** Stop (`agent.cancel`)
 
 Sutarta 2026-11-02: `checkScript` per **trumpo** video neperspėja – trukmė ir taip matoma
 (su Gemini „How to undo the last git commit“ – ~21 s iš 40 s); kol kas nieko nedarom.

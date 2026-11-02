@@ -1,4 +1,5 @@
 import { ActionIcon } from "@mantine/core";
+import { useEffect } from "react";
 import { useLatestRun } from "../../api/agent";
 import { useEditorPrefs } from "../state/editorPrefs";
 import { useProjectStore } from "../state/projectStore";
@@ -67,7 +68,14 @@ export function AgentPanel() {
 function AgentPanelBody() {
   const projectId = useProjectStore((s) => s.project.id);
   const hasScenes = useProjectStore((s) => s.project.scenes.length > 0);
+  const applyAgentScript = useProjectStore((s) => s.applyAgentScript);
   const { loaded, run, working } = useLatestRun(projectId);
+
+  // "Approve": the script goes into the still empty project, so it shows in
+  // Storyboard. Once there are scenes, nothing is written over them.
+  useEffect(() => {
+    if (run?.script?.approved && !hasScenes) applyAgentScript(run);
+  }, [run, hasScenes, applyAgentScript]);
 
   if (!loaded) return null;
   if (run && working) return <RunProgress runId={run.id} />;
