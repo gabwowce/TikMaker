@@ -38,17 +38,22 @@ Atlikta šioje sesijoje (2026-10-30 – 11-02): D4.5–D4.7, D5 visas, D6 1–4 
 - [x] 4 `server/agent/steps/3-script.ts` (`step3Script`, `step3Approve`, `step3Revise`,
   `step3SetSceneMedia`) + `agent.ts` (`toScript`, `case "awaiting_approval"`) + testai.
   Patikrinta: 180 testų praeina
-- [ ] **5 – PRADĖTI ČIA:** routeris `server/trpc/agent.ts`: `approveScript`,
-  `reviseScript`, `setSceneMedia` (kaip `chooseHook`: `findRun` → `asBadRequest(step…)` →
-  `continueRun`; `setSceneMedia` – be `continueRun`) + testai; `src/api/agent.ts` hook'ai
-- [ ] 6 skydelis (scenarijaus eilutė, problemos, Approve, komentaras, „Įrašysiu pati“ /
-  „Padaryk be įrašo“ prie kiekvienos scenos) + scenos Storyboard'e per projekto store;
-  `waitsForUser` (`src/api/agent.ts`) papildyti `awaiting_approval` atveju (atsakyta, bet
-  agentas dar nepajudėjo). Tada viso kelio patikra naršyklėje
+- [x] 5 routeris `server/trpc/agent.ts`: `approveScript`, `reviseScript` + testai;
+  `src/api/agent.ts` hook'ai (`askForRunAgain`), `waitsForUser` – `awaiting_approval`
+  su atsakymu vėl klausinėjamas
+- [ ] 6 skydelis + Storyboard:
+  - [x] `ScriptCard` (scenos, problemos, Approve, komentaras); formoje „Motion graphics
+    only“ (`motionOnly`) ir „Hook (optional)“. Patikrinta naršyklėje su Gemini 2026-11-02
+  - [ ] **PRADĖTI ČIA:** scenarijus taikomas atidarytam projektui (Storyboard) per store
+
+**Sutarta 2026-11-02:** įrašo sprendžia **agentas** (`needsRecording`), naudotoja
+nesirenka prie kiekvienos scenos – skydelyje tik ženkliukas „🎥 your recording“; keisti
+– komentaru („3 scena be įrašo“), visai be įrašų – formos „Motion graphics only“.
+`setSceneMedia` ir `media` pašalinti (per daug sprendimų kūrėjui).
 - [ ] 7 Stop (`agent.cancel`)
 
-Atviri klausimai autorei: ar `checkScript` turi perspėti ir per **trumpą** video (pvz.
-< 70 % tikslo)? Su Gemini „How to undo the last git commit“ davė ~21 s iš 40 s.
+Sutarta 2026-11-02: `checkScript` per **trumpo** video neperspėja – trukmė ir taip matoma
+(su Gemini „How to undo the last git commit“ – ~21 s iš 40 s); kol kas nieko nedarom.
 BD: papildyti FR-07 („savą kabliuką galima įrašyti jau formoje“).
 
 Darbo būdas (autorės pageidavimas): atsakymai **trumpi, paprasti, be žargono**; kodas

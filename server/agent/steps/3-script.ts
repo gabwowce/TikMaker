@@ -66,23 +66,6 @@ export async function step3Revise(
   await job.save({ script: { ...script, comment } });
 }
 
-// "I'll record it" / "do it without" on one scene. Nothing else changes, so
-// the agent keeps waiting for the approval.
-export async function step3SetSceneMedia(
-  run: AgentRun,
-  sceneIndex: number,
-  choice: "record" | "motion",
-): Promise<void> {
-  const script = scriptAwaitingAnswer(run);
-  if (!script.scenes[sceneIndex])
-    throw new Error(`There is no scene ${sceneIndex + 1}`);
-  const scenes = script.scenes.map((scene, index) =>
-    index === sceneIndex ? { ...scene, media: choice } : scene,
-  );
-  const job = await openJob(run);
-  await job.save({ script: { ...script, scenes } });
-}
-
 // The user answers only while the agent waits for them.
 function scriptAwaitingAnswer(run: AgentRun): ScriptInRun {
   if (run.status !== "awaiting_approval" || !run.script)
@@ -93,7 +76,7 @@ function scriptAwaitingAnswer(run: AgentRun): ScriptInRun {
 // The script as the model wrote it, without what the run added to it.
 function asWritten(script: ScriptInRun): ScriptChange["previous"] {
   return {
-    scenes: script.scenes.map(({ media: _media, ...scene }) => scene),
+    scenes: script.scenes,
     skipped: script.skipped,
   };
 }

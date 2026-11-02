@@ -14,6 +14,7 @@ export function IdeaForm({ projectId }: { projectId: string }) {
   const [idea, setIdea] = useState("");
   const [targetSeconds, setTargetSeconds] = useState(40);
   const [withFace, setWithFace] = useState(false);
+  const [motionOnly, setMotionOnly] = useState(false);
   const [generateVoice, setGenerateVoice] = useState(false);
   // "" = let the AI pick (FR-04); a template id = use that one, no AI call.
   const [videoTemplateId, setVideoTemplateId] = useState("");
@@ -28,6 +29,7 @@ export function IdeaForm({ projectId }: { projectId: string }) {
     workspaceId: "dev",
     targetSeconds,
     withFace,
+    motionOnly,
     generateVoice,
     videoTemplateId: videoTemplateId || undefined,
     hook: hook.trim() || undefined,
@@ -64,8 +66,8 @@ export function IdeaForm({ projectId }: { projectId: string }) {
         ]}
       />{" "}
       <Textarea
-        label="Opening line (optional)"
-        description="Leave empty and the AI proposes three to pick from"
+        label="Hook (optional)"
+        description="Your own first line. Empty = the AI writes three to pick from"
         autosize
         minRows={1}
         maxLength={150}
@@ -77,6 +79,15 @@ export function IdeaForm({ projectId }: { projectId: string }) {
         description="Someone appears on camera; off = a faceless video"
         checked={withFace}
         onChange={(event) => setWithFace(event.currentTarget.checked)}
+        classNames={{
+          description: "text-[10px]",
+        }}
+      />
+      <Checkbox
+        label="Motion graphics only"
+        description="No recordings of your own: every scene is animated"
+        checked={motionOnly}
+        onChange={(event) => setMotionOnly(event.currentTarget.checked)}
         classNames={{
           description: "text-[10px]",
         }}

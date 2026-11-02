@@ -109,7 +109,15 @@ async function until(id: string, check: (run: AgentRun) => boolean) {
   }
   throw new Error(`run ${id} never got there`);
 }
-
+// A run that has a script and waits for the user's answer on screen 3. The
+// hook comes from the form, so nothing else needs answering first.
+async function waitingForApproval() {
+  const { id } = await api.agent.start({
+    projectId: "p1",
+    input: { idea, workspaceId: "dev", hook: "My own opening line" },
+  });
+  return until(id, (run) => run.status === "awaiting_approval");
+}
 afterAll(() => fs.rmSync(root, { recursive: true, force: true }));
 
 describe("agent runs", () => {
@@ -312,7 +320,37 @@ describe("agent runs", () => {
     ]);
     expect(run.script?.problems).toEqual([]);
   });
+  it("goes on to building once the script is approved", async () => {
+    const { id } = await waitingForApproval();
+    await api.agent.approveScript({ runId: id });
+    const run = await until(id, (run) => run.status === "laying_out");
+    expect(run.script?.approved).toBe(true);
+  });
 
+  it("writes the script again with the user's comment (FR-10)", async () => {
+    const waiting = await waitingForApproval();
+    await api.agent.reviseScript({
+      runId: waiting.id,
+      comment: "Make it shorter",
+    });
+    // Waiting again, with one more call in the log: the script was rewritten.
+    const run = await until(
+      waiting.id,
+      (run) =>
+        run.status === "awaiting_approval" &&
+        run.steps.length > waiting.steps.length,
+    );
+    expect(run.steps[run.steps.length - 1].name).toBe("writeScript");
+    expect(run.script?.comment).toBeUndefined();
+  });
+
+  it("refuses an approval before there is a script", async () => {
+    const { id } = await startFor("p1");
+    await settled(id); // waits for a hook, no script yet
+    await expect(api.agent.approveScript({ runId: id })).rejects.toMatchObject({
+      code: "BAD_REQUEST",
+    });
+  });
   it("refuses an idea that is too short", async () => {
     await expect(
       api.agent.start({

@@ -5,6 +5,10 @@ import {
   changeTemplateFromUser,
   chooseHookFromUser,
 } from "../../src/agent/run/2-angle.js";
+import {
+  approveScriptFromUser,
+  reviseScriptFromUser,
+} from "../../src/agent/run/3-script.js";
 import { continueRun } from "../agent/agent.js";
 import { loadKnowledge } from "../agent/knowledge.js";
 import { getRun, listRuns } from "../agent/runs.js";
@@ -13,6 +17,10 @@ import {
   step2ChangeTemplate,
   step2ChooseHook,
 } from "../agent/steps/2-angle.js";
+import {
+  step3Approve,
+  step3Revise,
+} from "../agent/steps/3-script.js";
 import { KNOWLEDGE_DIR } from "../config.js";
 import { procedure, router } from "./init.js";
 
@@ -62,6 +70,25 @@ export const agentRouter = router({
       await asBadRequest(() => step2ChooseHook(run, input));
       continueRun(await findRun(run.id));
     }),
+
+  // Screen 3: "Approve" – the agent goes on to building the video.
+  approveScript: procedure
+    .input(approveScriptFromUser)
+    .mutation(async ({ input }) => {
+      const run = await findRun(input.runId);
+      await asBadRequest(() => step3Approve(run));
+      continueRun(await findRun(run.id));
+    }),
+
+  // Screen 3: a comment – the agent writes the script again with it.
+  reviseScript: procedure
+    .input(reviseScriptFromUser)
+    .mutation(async ({ input }) => {
+      const run = await findRun(input.runId);
+      await asBadRequest(() => step3Revise(run, input.comment));
+      continueRun(await findRun(run.id));
+    }),
+
 });
 
 async function findRun(id: string) {

@@ -45,12 +45,6 @@ export const reviseScriptFromUser = z.object({
   runId: z.string().min(1),
   comment: z.string().trim().min(3).max(500),
 });
-// A scene that suggests a recording: "I'll record it" or "do it without".
-export const setSceneMediaFromUser = z.object({
-  runId: z.string().min(1),
-  sceneIndex: z.number().int().min(0),
-  choice: z.enum(["record", "motion"]),
-});
 
 // ── In the run's file ────────────────────────────────────────────────────
 
@@ -61,13 +55,9 @@ export const scriptProblem = z.object({
   message: z.string().min(1),
 });
 
-// The script the run goes on with: the model's scenes, each with the user's
-// recording choice once made, and the problems still left after the one
-// automatic fix.
+// The script the run goes on with: the model's scenes and the problems still
+// left after the one automatic fix.
 export const scriptInRun = scriptFromAi.extend({
-  scenes: z.array(
-    sceneFromAi.extend({ media: z.enum(["record", "motion"]).optional() }),
-  ),
   problems: z.array(scriptProblem),
   approved: z.boolean().optional(),
   comment: z.string().optional(),

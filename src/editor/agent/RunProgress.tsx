@@ -3,6 +3,7 @@ import type { AgentRun } from "../../agent/run/run";
 import type { RunStatus } from "../../agent/run/status";
 import { useAgentRun } from "../../api/agent";
 import { HookCard } from "./HookCard";
+import { ScriptCard } from "./ScriptCard";
 import { TemplateCard } from "./TemplateCard";
 // The run's road as the user sees it: the plan's five steps, and which
 // statuses mean "this step is happening now". Idea is done once Start is
@@ -72,12 +73,19 @@ function RoadBar({ run }: { run: AgentRun }) {
 // What the user asked for, as the first message of the conversation, with the
 // form's choices underneath so the run explains itself later too.
 function IdeaBubble({ run }: { run: AgentRun }) {
-  const { idea, targetSeconds, withFace, videoTemplateId, generateVoice } =
-    run.input;
+  const {
+    idea,
+    targetSeconds,
+    withFace,
+    motionOnly,
+    videoTemplateId,
+    generateVoice,
+  } = run.input;
   const notes = [
     `${targetSeconds} s`,
     withFace ? "with face" : "faceless",
     videoTemplateId ? "template chosen" : "AI picks the template",
+    ...(motionOnly ? ["motion only"] : []),
     ...(generateVoice ? ["voiceover"] : []),
   ];
   return (
@@ -101,6 +109,7 @@ export function RunProgress({ runId }: { runId: string }) {
       <IdeaBubble run={run} />
       <TemplateCard run={run} />
       <HookCard run={run} />
+      <ScriptCard run={run} />
       {run.status === "error" ? (
         <p className="m-0 text-xs text-red-400">{run.error ?? "Failed"}</p>
       ) : null}
