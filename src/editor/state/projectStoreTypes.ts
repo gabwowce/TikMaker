@@ -1,3 +1,4 @@
+import type { LayoutExample, WorkspaceStyle } from "../../agent/knowledge";
 import type { AgentRun } from "../../agent/run/run";
 import type { VideoProject } from "../../schema/project";
 import type {
@@ -53,6 +54,11 @@ export type ProjectStore = {
   updateProjectMusic: (music: VideoProject["music"]) => void;
   openProject: (project: VideoProject) => void;
   applyAgentScript: (run: AgentRun) => void;
+  applyAgentLayout: (
+    run: AgentRun,
+    examples: LayoutExample[],
+    style: WorkspaceStyle,
+  ) => void;
   addScene: (type: SceneType) => void;
   insertScene: (scene: Scene) => void;
   removeScene: (id: string) => void;

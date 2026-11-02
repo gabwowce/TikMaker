@@ -41,7 +41,7 @@ Atlikta šioje sesijoje (2026-10-30 – 11-02): D4.5–D4.7, D5 visas, D6 1–4 
 - [x] 5 routeris `server/trpc/agent.ts`: `approveScript`, `reviseScript` + testai;
   `src/api/agent.ts` hook'ai (`askForRunAgain`), `waitsForUser` – `awaiting_approval`
   su atsakymu vėl klausinėjamas
-- [ ] 6 skydelis + Storyboard:
+- [x] 6 skydelis + Storyboard:
   - [x] `ScriptCard` (scenos, problemos, Approve, komentaras); formoje „Motion graphics
     only“ (`motionOnly`) ir „Hook (optional)“. Patikrinta naršyklėje su Gemini 2026-11-02
   - [x] po Approve scenarijus taikomas atidarytam projektui (Storyboard):
@@ -53,7 +53,30 @@ Atlikta šioje sesijoje (2026-10-30 – 11-02): D4.5–D4.7, D5 visas, D6 1–4 
 nesirenka prie kiekvienos scenos – skydelyje tik ženkliukas „🎥 your recording“; keisti
 – komentaru („3 scena be įrašo“), visai be įrašų – formos „Motion graphics only“.
 `setSceneMedia` ir `media` pašalinti (per daug sprendimų kūrėjui).
-- [ ] **7 – PRADĖTI ČIA:** Stop (`agent.cancel`)
+- 7 Stop – **atidėta į D12** (sutarta 2026-11-02): BD reikalavimuose (FR-01–FR-24) jo nėra.
+
+**D6 baigta. Kita sesija pradeda nuo D7 (išdėstymas ir kompiliatorius).**
+
+**D7 būklė (2026-11-02):** 1–5 dalys padarytos, patikrinta naršyklėje su Gemini (idėja →
+Approve → scenos su maketais Scenes režime):
+- [x] 1 schema `src/agent/run/4-building.ts` (`layoutFromAi`, `run.layout`)
+- [x] 2 `src/agent/compileProject.ts` (`compileScene`, `compileProject`) + testai
+- [x] 3 `server/agent/prompts/pickLayouts.ts` (`layoutChoices`, patikra FR-11) + testai
+- [x] 4 `server/agent/steps/4-building.ts`; `agent.ts`: Approve → `laying_out` → `done`
+- [x] 5 `agent.layoutKnowledge`, `useLayoutKnowledge`, store `applyAgentLayout`, `AgentPanel`
+  (pritaiko vieną kartą); `content.textOnTop` (`SceneFrame` zIndex) – užrašas ant įrašo
+- [ ] atviras klausimas: CTA maketas be teksto (`cta-01`) – be įgarsinimo scena tuščia;
+  siūlyti CTA tik maketus su tekstu?
+- [ ] „Assets to make“ sąrašas skydelyje ir „Media (missing)“ (plano U dalis) – dar ne
+
+**D7 sprendimai (2026-11-02):**
+- Maketai iš sėkmingų video naudojami **tokie, kokie yra**: rėmelis tikrai medžiagai
+  (recording, screen, image, phone, browser) visada tampa REC vieta su aprašu, ką įkelti;
+  logo / prop rėmeliai – iš bibliotekos. Logotipo į medžiagos rėmelį nekišam.
+- Medžiagos rėmeliai juda visą laiką (`kenBurns: "zoomIn"`), kad ir įkelta nuotrauka būtų gyva.
+- „Motion graphics only“: tik maketai be medžiagos; jei rolė tokių neturi – tikras maketas
+  be medžiagos iš kitos rolės (ne išgalvotas).
+- Maketai su checklist, diagramomis ir pan. kol kas nesiūlomi (jų turinio DI negeneruoja).
 
 Sutarta 2026-11-02: `checkScript` per **trumpo** video neperspėja – trukmė ir taip matoma
 (su Gemini „How to undo the last git commit“ – ~21 s iš 40 s); kol kas nieko nedarom.
@@ -422,7 +445,7 @@ D6 dalys (sutarta 2026-10-31; tas pats pattern'as kaip D5):
 - [ ] 6 skydelis + Storyboard (scenos taikomos atidarytam projektui per store); „Įrašysiu
   pati“ / „Padaryk be įrašo“ prie **kiekvienos** scenos, DI tik pasiūlo (`needsRecording`:
   tikri veiksmai programoje ar tikras rezultatas – taip; viena komanda, kodas – ne)
-- [ ] 7 Stop (`agent.cancel`) – žr. punktą aukščiau
+- 7 Stop (`agent.cancel`) – atidėta į D12
 
 **Patikra:** visas kelias iki patvirtinto scenarijaus veikia naršyklėje.
 
@@ -497,6 +520,16 @@ kaina), FR patikros lentelė.
 
 ## D12. Vėliau, jei spėsim (FR-05, FR-02)
 
+- [ ] (po BD) DI sukurtas ir animuotas komponentas medžiagos rėmeliui vietoj REC vietos
+  (Claude Code sukuria komponentą pagal REC aprašą) – kai nėra savo įrašo
+- [ ] (po BD) perėjimas iš kanalo stiliaus: `knowledge/workspaces/<kanalas>/style.json`
+  `"transition"` (pvz. `slideUp`), `compileProject` ima jį vietoj fiksuoto `slideLeft` –
+  kiekvienas kanalas savo, bet vienodą per visą video (sutarta 2026-11-02)
+- [ ] Stop (`agent.cancel`, būsena `cancelled`): ne BD reikalavimas. Paprasčiausias
+  variantas (išbandytas 2026-11-02, neįrašytas): `cancelRun` agent.ts, `job.save` prieš
+  rašymą tikrina, ar paleidimas nesustabdytas (kitaip fone baigęs žingsnis perrašytų
+  `cancelled`), `continueRun` sustabdyto nelaiko klaida; DI kvietimas nenutraukiamas,
+  projekto pakeitimai neatšaukiami; mygtukas Stop `RunProgress`
 - [ ] skydelyje parinkto šablono ir scenarijaus scenų eskizai (9:16 dėžutės) – grožiui, ne
   būtina (autorės pageidavimas 2026-10-31)
 Daroma tik kai D3–D11 veikia nuo idėjos iki video.

@@ -17,10 +17,7 @@ import {
   step2ChangeTemplate,
   step2ChooseHook,
 } from "../agent/steps/2-angle.js";
-import {
-  step3Approve,
-  step3Revise,
-} from "../agent/steps/3-script.js";
+import { step3Approve, step3Revise } from "../agent/steps/3-script.js";
 import { KNOWLEDGE_DIR } from "../config.js";
 import { procedure, router } from "./init.js";
 
@@ -50,7 +47,19 @@ export const agentRouter = router({
       oneLine: t.oneLine,
     }));
   }),
-
+  // What the editor lays the scenes out with (compileProject): the layout
+  // examples and the channel's style. Only changes between server starts.
+  layoutKnowledge: procedure
+    .input(z.string())
+    .query(async ({ input: workspaceId }) => {
+      const { knowledge } = await loadKnowledge(KNOWLEDGE_DIR);
+      const entry = knowledge.workspaces.find(
+        (e) => e.workspace.id === workspaceId,
+      );
+      if (!entry)
+        throw new TRPCError({ code: "NOT_FOUND", message: "Unknown channel" });
+      return { examples: knowledge.layoutExamples, style: entry.style };
+    }),
   // Screen 2: the card shows the agent's pick; the user swaps it for another
   // one from the list. The agent then writes new hooks.
   changeTemplate: procedure
@@ -88,7 +97,6 @@ export const agentRouter = router({
       await asBadRequest(() => step3Revise(run, input.comment));
       continueRun(await findRun(run.id));
     }),
-
 });
 
 async function findRun(id: string) {

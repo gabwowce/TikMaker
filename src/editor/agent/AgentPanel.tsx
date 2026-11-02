@@ -1,6 +1,6 @@
 import { ActionIcon } from "@mantine/core";
 import { useEffect } from "react";
-import { useLatestRun } from "../../api/agent";
+import { useLatestRun, useLayoutKnowledge } from "../../api/agent";
 import { useEditorPrefs } from "../state/editorPrefs";
 import { useProjectStore } from "../state/projectStore";
 import { usePanelResize } from "../usePanelResize";
@@ -69,13 +69,32 @@ function AgentPanelBody() {
   const projectId = useProjectStore((s) => s.project.id);
   const hasScenes = useProjectStore((s) => s.project.scenes.length > 0);
   const applyAgentScript = useProjectStore((s) => s.applyAgentScript);
+  const applyAgentLayout = useProjectStore((s) => s.applyAgentLayout);
   const { loaded, run, working } = useLatestRun(projectId);
+  // The agent's scenes are still words only: the layout has not been applied.
+  const awaitsLayout = useProjectStore(
+    (s) =>
+      run?.layout !== undefined &&
+      s.project.scenes.some(
+        (scene) =>
+          scene.id.startsWith(`scene-${run.id}-`) && !scene.layoutExampleId,
+      ),
+  );
+  const { data: layoutKnowledge } = useLayoutKnowledge(
+    awaitsLayout ? run?.input.workspaceId : undefined,
+  );
 
   // "Approve": the script goes into the still empty project, so it shows in
   // Storyboard. Once there are scenes, nothing is written over them.
   useEffect(() => {
     if (run?.script?.approved && !hasScenes) applyAgentScript(run);
   }, [run, hasScenes, applyAgentScript]);
+  // The agent laid the video out: its scenes get the chosen examples, once.
+  // Scenes laid out already, or added by hand, are left as they are.
+  useEffect(() => {
+    if (run && awaitsLayout && layoutKnowledge)
+      applyAgentLayout(run, layoutKnowledge.examples, layoutKnowledge.style);
+  }, [run, awaitsLayout, layoutKnowledge, applyAgentLayout]);
 
   if (!loaded) return null;
   if (run && working) return <RunProgress runId={run.id} />;

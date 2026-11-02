@@ -65,7 +65,15 @@ export function useTemplates() {
     trpc.agent.templates.queryOptions(undefined, { staleTime: Infinity }),
   );
 }
-
+// The layout examples and the channel's style, for laying the agent's scenes
+// out in the editor. Asked for once, and only when there is a layout to apply.
+export function useLayoutKnowledge(workspaceId: string | undefined) {
+  return useQuery(
+    trpc.agent.layoutKnowledge.queryOptions(workspaceId ?? skipToken, {
+      staleTime: Infinity,
+    }),
+  );
+}
 // Swaps the run's template, then asks for the run again so the card shows it
 // at once (a run waiting for the user is no longer polled).
 export function useChangeTemplate() {

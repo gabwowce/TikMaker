@@ -224,6 +224,7 @@ const baseSceneFields = {
     richHeadlineX: z.number().min(POSITION_MIN).max(POSITION_MAX).optional(),
     blocks: z.array(blockSchema).max(8).optional(),
     visuals: z.array(positionedVisualSchema).optional(),
+    textOnTop: z.boolean().optional(),
   }),
   layout: layoutIdSchema.optional(),
   visual: visualConfigSchema.optional(),

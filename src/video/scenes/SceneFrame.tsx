@@ -48,6 +48,7 @@ export function SceneFrame({
           justifyContent: textZoneJustify[resolveTextZone(layout, textZone)],
           gap,
           ...exitStyle,
+          ...(content.textOnTop ? { zIndex: TEXT_ON_TOP_Z } : {}),
         }}
       >
         {children}
@@ -80,6 +81,7 @@ type SceneCueProps = {
   fallback?: "fade" | "slideUp";
   children: ReactNode;
 };
+const TEXT_ON_TOP_Z = 2000;
 export function SceneCue({
   motion,
   delay,

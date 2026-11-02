@@ -22,21 +22,23 @@ const fakeModel = new MockLanguageModelV4({
     const [first, second] = [...prompt.matchAll(/- id: ([\w-]+)/g)].map(
       (match) => match[1],
     );
-    const answer = prompt.includes("Transition phrases:")
-      ? fakeScript(prompt)
-      : prompt.includes("Formulas:")
-        ? {
-            hooks: [
-              { text: "Hook one", formulaId: first, score: 4 },
-              { text: "Hook two", formulaId: second, score: 4 },
-              { text: "Hook three", formulaId: null, score: 3 },
-            ],
-          }
-        : {
-            videoTemplateId: "how-to-steps",
-            score: 4,
-            reason: "A clear how-to.",
-          };
+    const answer = prompt.includes("Logos:")
+      ? fakeLayout(prompt)
+      : prompt.includes("Transition phrases:")
+        ? fakeScript(prompt)
+        : prompt.includes("Formulas:")
+          ? {
+              hooks: [
+                { text: "Hook one", formulaId: first, score: 4 },
+                { text: "Hook two", formulaId: second, score: 4 },
+                { text: "Hook three", formulaId: null, score: 3 },
+              ],
+            }
+          : {
+              videoTemplateId: "how-to-steps",
+              score: 4,
+              reason: "A clear how-to.",
+            };
     return {
       content: [{ type: "text", text: JSON.stringify(answer) }],
       finishReason: { unified: "stop", raw: undefined },
@@ -66,6 +68,31 @@ function fakeScript(prompt: string) {
     needsRecording: false,
   });
   return { scenes: [scene("hook"), ...roles.map(scene)], skipped: [] };
+}
+// Layout: for every scene the first example offered, each picture filled the
+// way the prompt says it takes (a logo id, a prop id or a sentence).
+function fakeLayout(prompt: string) {
+  const scenes = prompt
+    .split(/Scene \d+ \(/)
+    .slice(1)
+    .map((block) => {
+      const [, id, pictures] =
+        /- ([\w-]+): pictures: (.*?); (?:with|no) text/.exec(block)!;
+      const fills =
+        pictures === "none"
+          ? []
+          : pictures
+              .split("; ")
+              .map((picture) =>
+                picture.includes("a logo id")
+                  ? "vs-code"
+                  : picture.includes("a prop id")
+                    ? "bug"
+                    : "Record the step",
+              );
+      return { layoutExampleId: id, fills };
+    });
+  return { scenes };
 }
 vi.mock("@ai-sdk/google", () => ({
   createGoogleGenerativeAI: () => () => fakeModel,
@@ -320,11 +347,14 @@ describe("agent runs", () => {
     ]);
     expect(run.script?.problems).toEqual([]);
   });
-  it("goes on to building once the script is approved", async () => {
+  it("lays the video out once the script is approved", async () => {
     const { id } = await waitingForApproval();
     await api.agent.approveScript({ runId: id });
-    const run = await until(id, (run) => run.status === "laying_out");
+    const run = await until(id, (run) => run.status === "done");
     expect(run.script?.approved).toBe(true);
+    // One checked layout choice per scene of the script.
+    expect(run.layout?.scenes).toHaveLength(run.script!.scenes.length);
+    expect(run.steps[run.steps.length - 1].name).toBe("pickLayouts");
   });
 
   it("writes the script again with the user's comment (FR-10)", async () => {
@@ -349,6 +379,14 @@ describe("agent runs", () => {
     await settled(id); // waits for a hook, no script yet
     await expect(api.agent.approveScript({ runId: id })).rejects.toMatchObject({
       code: "BAD_REQUEST",
+    });
+  });
+  it("gives the editor the layout examples and the channel's style", async () => {
+    const { examples, style } = await api.agent.layoutKnowledge("dev");
+    expect(examples.length).toBeGreaterThan(0);
+    expect(style.backgrounds.length).toBeGreaterThan(0);
+    await expect(api.agent.layoutKnowledge("nope")).rejects.toMatchObject({
+      code: "NOT_FOUND",
     });
   });
   it("refuses an idea that is too short", async () => {

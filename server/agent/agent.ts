@@ -3,6 +3,7 @@ import { Job, openJob } from "./job.js";
 import { getRun, saveRun } from "./runs.js";
 import { step2Hooks, step2Template } from "./steps/2-angle.js";
 import { step3Script } from "./steps/3-script.js";
+import { step4Building } from "./steps/4-building.js";
 
 // The whole agent on one page (screens: docs/d-planas.md).
 
@@ -52,6 +53,8 @@ async function runAgent(run: AgentRun): Promise<void> {
       // "Approve": on to building the video (D7: step4Building).
       if (job.run.script?.approved) {
         await job.save({ status: "laying_out" });
+        await step4Building(job);
+        await job.save({ status: "done" });
         return;
       }
       // A comment: the script is written again with it.
