@@ -1,0 +1,362 @@
+import { usePack } from "./pack";
+import type { ReactNode } from "react";
+import { interpolate, useCurrentFrame, useVideoConfig } from "remotion";
+import { Sparkle } from "./Glyphs";
+import { pop, ramp, settle } from "./pop";
+import { shadows, stage } from "./tokens";
+
+// Viršutinės zonos vaizdai (docs/bd/kadrai/insiderforce/): kiekvienas didelis,
+// ~85 % pločio, su gyliu. `at` – kadras, kai atsiranda.
+
+// Ramybės judesys: lėtai kyla ir leidžiasi (±8 px per 2,8 s).
+function useFloat(seed = 0) {
+  const frame = useCurrentFrame();
+  return Math.sin((frame / 84) * Math.PI * 2 + seed) * 8;
+}
+
+// ── Logotipų „monetos“ su jungiančia linija (kaip 01, 05, 06 kadruose) ──
+export function CoinChain({
+  icons,
+  ats,
+  at,
+  y = stage.visualCenterY,
+}: {
+  icons: ReactNode[];
+  // Kada iššoka kiekviena moneta (kadrai) – ant savo žodžio; be jų – po 5 kadrus
+  ats?: number[];
+  at: number;
+  y?: number;
+}) {
+  const c = usePack();
+  const frame = useCurrentFrame();
+  const { fps } = useVideoConfig();
+  const size = 230;
+  const gap = (stage.contentWidth - size) / (icons.length - 1);
+  const left = (1080 - stage.contentWidth) / 2;
+  // Linija nusibrėžia per 14 kadrų, monetos iššoka viena po kitos.
+  const line = ramp(frame, at, 14);
+  return (
+    <div
+      style={{
+        position: "absolute",
+        left: 0,
+        top: y - size / 2,
+        width: 1080,
+        height: size,
+      }}
+    >
+      <div
+        style={{
+          position: "absolute",
+          left: 0,
+          top: size / 2 - 3,
+          height: 6,
+          width: 1080 * line,
+          background: c.border,
+          borderRadius: 3,
+        }}
+      />
+      {icons.map((icon, i) => {
+        const p = pop(frame, ats?.[i] ?? at + 4 + i * 5, fps);
+        const float = Math.sin((frame / 84) * Math.PI * 2 + i * 1.3) * 8;
+        return (
+          <div
+            key={i}
+            style={{
+              position: "absolute",
+              left: left + i * gap,
+              top: float,
+              width: size,
+              height: size,
+              borderRadius: "50%",
+              background: `radial-gradient(circle at 35% 30%, ${c.surfaceHi}, ${c.surface})`,
+              border: `2px solid ${c.border}`,
+              boxShadow: shadows.coin,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              opacity: Math.min(1, p * 2),
+              transform: `scale(${interpolate(p, [0, 1], [0.3, 1])}) rotate(${interpolate(p, [0, 1], [-25, 0])}deg)`,
+            }}
+          >
+            {icon}
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
+// ── Kortelė su „kalade“ už jos (kaip 01 kadre) ──
+export function DeckCard({
+  at,
+  children,
+  top = stage.visualTop + 170,
+  height = 600,
+}: {
+  at: number;
+  children: ReactNode;
+  top?: number;
+  height?: number;
+}) {
+  const c = usePack();
+  const frame = useCurrentFrame();
+  const { fps } = useVideoConfig();
+  const p = settle(frame, at, fps);
+  const float = useFloat(0.7);
+  const width = stage.contentWidth - 60;
+  const left = (1080 - width) / 2 - 30;
+  // Dvi kortelės už pagrindinės išsiskleidžia į dešinę šiek tiek vėliau.
+  const fan = settle(frame, at + 6, fps);
+  return (
+    <div
+      style={{ position: "absolute", left, top: top + float, width, height }}
+    >
+      {[2, 1].map((n) => (
+        <div
+          key={n}
+          style={{
+            position: "absolute",
+            inset: 0,
+            borderRadius: 30,
+            background: c.surface,
+            border: `2px solid ${c.border}`,
+            boxShadow: shadows.card,
+            transform: `translate(${fan * n * 34}px, ${fan * n * 14}px) scale(${1 - n * 0.04})`,
+            opacity: fan * (1 - n * 0.25),
+          }}
+        />
+      ))}
+      <div
+        style={{
+          position: "absolute",
+          inset: 0,
+          borderRadius: 30,
+          overflow: "hidden",
+          background: `linear-gradient(180deg, ${c.surfaceHi}, ${c.surface})`,
+          border: `2px solid ${c.border}`,
+          boxShadow: shadows.card,
+          opacity: Math.min(1, p * 1.6),
+          transform: `translateY(${interpolate(p, [0, 1], [260, 0])}px) scale(${interpolate(p, [0, 1], [0.9, 1])})`,
+        }}
+      >
+        {children}
+      </div>
+    </div>
+  );
+}
+
+// Kodo turinys kortelėje: eilutės atsiranda viena po kitos, `+ ` – paryškinta.
+export function CodeBody({
+  lines,
+  at,
+  file,
+}: {
+  lines: string[];
+  at: number;
+  file: string;
+}) {
+  const c = usePack();
+  const frame = useCurrentFrame();
+  return (
+    <div style={{ height: "100%", display: "flex", flexDirection: "column" }}>
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          gap: 14,
+          padding: "26px 34px",
+          borderBottom: `2px solid ${c.border}`,
+        }}
+      >
+        {["#FF5F57", "#FEBC2E", "#28C840"].map((c) => (
+          <div
+            key={c}
+            style={{ width: 20, height: 20, borderRadius: 10, background: c }}
+          />
+        ))}
+        <div
+          style={{
+            marginLeft: 18,
+            fontFamily: c.fontRegular,
+            fontSize: 30,
+            color: c.textSoft,
+          }}
+        >
+          {file}
+        </div>
+      </div>
+      <div
+        style={{
+          padding: "30px 34px",
+          display: "flex",
+          flexDirection: "column",
+          gap: 10,
+        }}
+      >
+        {lines.map((line, i) => {
+          const hot = line.startsWith("+ ");
+          const show = ramp(frame, at + 8 + i * 4, 6);
+          return (
+            <div
+              key={i}
+              style={{
+                fontFamily: "ui-monospace, Menlo, monospace",
+                fontSize: 40,
+                lineHeight: 1.35,
+                whiteSpace: "pre",
+                color: hot ? c.text : c.textSoft,
+                background: hot ? "rgba(255,112,36,0.16)" : "transparent",
+                borderLeft: `6px solid ${hot ? c.accent : "transparent"}`,
+                padding: "2px 16px",
+                borderRadius: 8,
+                opacity: show,
+                transform: `translateX(${(1 - show) * -24}px)`,
+              }}
+            >
+              {colorize(hot ? line.slice(2) : line)}
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+// Labai paprastas kodo spalvinimas: kabutės – akcentas, raktai – šviesūs.
+function colorize(line: string) {
+  return line.split(/('[^']*')/).map((part, i) =>
+    part.startsWith("'") ? (
+      <span key={i} style={{ color: "#FFB27D" }}>
+        {part}
+      </span>
+    ) : (
+      <span key={i}>{part}</span>
+    ),
+  );
+}
+
+// ── Numerio juosta „01“ su linija žemyn (kaip 08 kadre) ──
+export function NumberBadge({
+  label,
+  at,
+  top = stage.visualTop - 40,
+}: {
+  label: string;
+  at: number;
+  top?: number;
+}) {
+  const c = usePack();
+  const frame = useCurrentFrame();
+  const { fps } = useVideoConfig();
+  const p = pop(frame, at, fps);
+  const line = ramp(frame, at + 6, 8);
+  const width = stage.contentWidth;
+  return (
+    <div style={{ position: "absolute", left: (1080 - width) / 2, top, width }}>
+      <div
+        style={{
+          height: 150,
+          borderRadius: 26,
+          background: c.text,
+          color: c.bg,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          fontFamily: c.fontStrong,
+          fontSize: 104,
+          letterSpacing: "-0.03em",
+          boxShadow: "0 30px 60px rgba(0,0,0,0.55)",
+          opacity: Math.min(1, p * 2),
+          transform: `translateY(${interpolate(p, [0, 1], [-60, 0])}px) scale(${interpolate(p, [0, 1], [0.85, 1])})`,
+        }}
+      >
+        {label}
+      </div>
+      <div
+        style={{
+          margin: "0 auto",
+          width: 6,
+          height: 210 * line,
+          background: "rgba(255,255,255,0.3)",
+        }}
+      />
+    </div>
+  );
+}
+
+// ── Didelis sąrašas su ✦ (kaip 02, 09 kadruose) ──
+export function BigList({
+  items,
+  top = stage.visualTop + 60,
+}: {
+  items: { text: string; at: number }[];
+  top?: number;
+}) {
+  const c = usePack();
+  const frame = useCurrentFrame();
+  const { fps } = useVideoConfig();
+  return (
+    <div
+      style={{
+        position: "absolute",
+        left: (1080 - stage.contentWidth) / 2,
+        top,
+        display: "flex",
+        flexDirection: "column",
+        gap: 54,
+      }}
+    >
+      {items.map((item, i) => {
+        const icon = pop(frame, item.at, fps);
+        const text = settle(frame, item.at + 3, fps);
+        return (
+          <div
+            key={i}
+            style={{ display: "flex", alignItems: "center", gap: 44 }}
+          >
+            <div
+              style={{
+                transform: `scale(${interpolate(icon, [0, 1], [0, 1])}) rotate(${interpolate(icon, [0, 1], [-90, 0])}deg)`,
+              }}
+            >
+              <Sparkle size={78} color={c.accent} />
+            </div>
+            <div
+              style={{
+                fontFamily: c.fontSemi,
+                fontSize: 88 * c.widthFactor,
+                whiteSpace: "nowrap",
+                letterSpacing: "-0.03em",
+                color: c.text,
+                opacity: Math.min(1, text * 1.5),
+                transform: `translateX(${interpolate(text, [0, 1], [-50, 0])}px)`,
+              }}
+            >
+              {item.text}
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
+// Visas vaizdas išeina: pakyla ir išblunka (kai jį keičia kitas).
+export function ExitUp({ at, children }: { at: number; children: ReactNode }) {
+  const frame = useCurrentFrame();
+  const out = ramp(frame, at, 8);
+  if (out >= 1) return null;
+  return (
+    <div
+      style={{
+        position: "absolute",
+        inset: 0,
+        opacity: 1 - out,
+        transform: `translateY(${-90 * out}px) scale(${1 - 0.06 * out})`,
+      }}
+    >
+      {children}
+    </div>
+  );
+}

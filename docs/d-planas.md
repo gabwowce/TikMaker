@@ -25,7 +25,48 @@ klausimai, čia – eiga, failai ir būsena.
   failą ar funkciją) vis tiek duoti kodu ir paaiškinti – net jei ją reikėjo padaryti
   taisant klaidą. Jei Claude ką nors įrašė pats, kitą žinutę paaiškina tą kodą.
 
-## Kita sesija pradeda nuo čia (2026-11-02)
+## Kita sesija pradeda nuo čia (2026-11-03)
+
+**Kryptis pasikeitė:** motion video daromi ne iš 61 maketo, o iš **blokų** (lyg LEGO):
+viršuje vienas didelis vaizdas, apačioje didelis kinetinis tekstas (tai, kas sakoma),
+viskas kanalo **stiliaus paketu**. Visa struktūra, pavyzdžiai ir etapai –
+**`docs/motion-planas.md`** (skaityk pirmiausia). Vertės ir tempas – `docs/motion-stilius.md`.
+
+**Jau main'e (2026-11-03):**
+- `src/video/stage/` – išdėstymas, kinetinis tekstas (`KineticCaption`) ir **10 blokų**:
+  logotipų grandinė, kodo kortelė, terminalas, ekrano kortelė, didelis sąrašas, skaičius,
+  palyginimas, juosta „01“, didelis daiktas, schema (`StageVisuals.tsx`, `StageBlocks.tsx`).
+  Studijoje: `StageDemo` (pavyzdinė scena) ir `StageCatalog` (visi blokai po 3 s).
+- `src/agent/stylePack.ts` + `knowledge/shared/style-presets/` (midnight, ocean, plum) –
+  stiliaus paketas: spalvos, šriftas, ženklas. Blokai jį ima per `usePack()`.
+- `docs/bd/kadrai/insiderforce/` – 10 pavyzdinių kadrų.
+
+**Eksperimentų šaka `claude/charming-gauss-7ldow0`** (į main dar NEKELTA, imti po dalį):
+Motion 1–4 (atšokimas, plūduriavimas, scenos kamera, kortelių šešėliai),
+`scripts/agentToProject.ts` (agentas be naršyklės), `planBeats` (įvykiai ant žodžių –
+etape C keisis į blokus). `stageFromBeats` – NEKELTI (pakeistas blokais).
+
+**Eilė (sutarta 2026-11-03):**
+1. **Konkurentų analizė – DI video generatoriai** (ne kanalai): naudotoja atsiunčia
+   nuorodas, aprašome pagal klausimus: kokie blokai/vaizdai, tempas, tekstas, kaip
+   keičiasi tarp temų, stilius, kaip kuriamas kanalo stilius (pavyzdžiai, brand kit),
+   ką daro DI, o ką žmogus, kas patinka / ko vengti. Rezultatas – lentelė ir išvados
+   BD Įvadui (panašių sistemų analizė) ir mūsų planui.
+2. Pagal analizę patikslinti blokų sąrašą ir stiliaus paketo laukus (kortelių forma,
+   kertinio žodžio išskyrimas, sąrašo ženklas, fono tipas, monetos/linijos).
+3. **Kanalas ↔ biblioteka ir stilius:** kanalo faile nurodoma, kurį paketą ir kurią
+   biblioteką jis naudoja (dabar `dev` → `midnight` + visa dabartinė biblioteka);
+   kodas visada ima „šio kanalo“ biblioteką ir stilių. Vėliau – kanalo puslapis
+   naršyklėje (stilius, spalvos, savi logotipai, pavyzdiniai video).
+4. **Agentas renkasi blokus** (motion-planas.md etapas C): tekstas automatiškai iš
+   įgarsinimo, agentas kas 2–3 s parenka bloką ir įrašo turinį, pažymi kertinius
+   žodžius; tempo taisyklė tikrinama kodu. Testas – agento video 3 skirtingomis temomis.
+5. Tikri žodžių laikai iš ElevenLabs (D10), kritikas pagal kadrus (D9), paketas iš
+   kanalo pavyzdžių – vėliau.
+
+Kodą į main rašo naudotoja pati, žingsnis po žingsnio (eksperimentų šaka – pavyzdys).
+
+## Būklė 2026-11-02 (D6–D7)
 
 Atlikta šioje sesijoje (2026-10-30 – 11-02): D4.5–D4.7, D5 visas, D6 1–4 dalys. Struktūra
 – „Kur kas guli“ žemiau (`agent.ts` + `steps/N-*.ts` + `prompts/` + `job.ts`; schemos

@@ -1,0 +1,16 @@
+{
+  "id": "plum",
+  "name": "Plum",
+  "colors": {
+    "bg": "#140A1C",
+    "bgGlow": "#2A1438",
+    "surface": "#221230",
+    "surfaceHi": "#301A42",
+    "text": "#FFF2FA",
+    "textSoft": "#CBB2D6",
+    "accent": "#FF4FA3",
+    "accent2": "#FFC24F"
+  },
+  "fonts": { "caption": "panchang" },
+  "brand": "tikmaker"
+}

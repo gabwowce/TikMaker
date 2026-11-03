@@ -1,0 +1,16 @@
+{
+  "id": "midnight",
+  "name": "Midnight",
+  "colors": {
+    "bg": "#0F0F12",
+    "bgGlow": "#1D1D24",
+    "surface": "#1B1B21",
+    "surfaceHi": "#24242C",
+    "text": "#F4F4F6",
+    "textSoft": "#B9B9C2",
+    "accent": "#FF7024",
+    "accent2": "#8B7CFF"
+  },
+  "fonts": { "caption": "clash" },
+  "brand": "tikmaker"
+}

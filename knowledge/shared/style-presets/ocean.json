@@ -1,0 +1,16 @@
+{
+  "id": "ocean",
+  "name": "Ocean",
+  "colors": {
+    "bg": "#07131F",
+    "bgGlow": "#0F2840",
+    "surface": "#0E2135",
+    "surfaceHi": "#163150",
+    "text": "#EEF7FF",
+    "textSoft": "#9DB7CF",
+    "accent": "#35D0FF",
+    "accent2": "#7CFFB2"
+  },
+  "fonts": { "caption": "clash" },
+  "brand": "tikmaker"
+}
