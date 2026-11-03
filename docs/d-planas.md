@@ -47,7 +47,11 @@ Motion 1–4 (atšokimas, plūduriavimas, scenos kamera, kortelių šešėliai),
 etape C keisis į blokus). `stageFromBeats` – NEKELTI (pakeistas blokais).
 
 **Eilė (sutarta 2026-11-03):**
-1. **Konkurentų analizė – DI video generatoriai** (ne kanalai): naudotoja atsiunčia
+1. **Konkurentų analizė – DI video generatoriai** (ne kanalai). **Pradėta 2026-11-03:**
+   `docs/bd/konkurentai.md` – Hera, Kario, GenMotion, Revid, Slice; ką pasiimame:
+   2–3 variantai, vizuali siužetinė lenta, subtitrų stiliai, stilius iš nuorodos/pavyzdžių,
+   pavyzdinis video prie šablono, MCP su naudotojo Claude Code prenumerata. Toliau –
+   jei atsiras daugiau konkurentų, papildyti; perkelti į BD Įvadą. naudotoja atsiunčia
    nuorodas, aprašome pagal klausimus: kokie blokai/vaizdai, tempas, tekstas, kaip
    keičiasi tarp temų, stilius, kaip kuriamas kanalo stilius (pavyzdžiai, brand kit),
    ką daro DI, o ką žmogus, kas patinka / ko vengti. Rezultatas – lentelė ir išvados
