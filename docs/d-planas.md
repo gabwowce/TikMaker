@@ -51,7 +51,10 @@ etape C keisis į blokus). `stageFromBeats` – NEKELTI (pakeistas blokais).
    `docs/bd/konkurentai.md` – Hera, Kario, GenMotion, Revid, Slice; ką pasiimame:
    2–3 variantai, vizuali siužetinė lenta, subtitrų stiliai, stilius iš nuorodos/pavyzdžių,
    pavyzdinis video prie šablono, MCP su naudotojo Claude Code prenumerata. Toliau –
-   jei atsiras daugiau konkurentų, papildyti; perkelti į BD Įvadą. naudotoja atsiunčia
+   jei atsiras daugiau konkurentų, papildyti; **perkelti į BD Įvadą** (`docs/bd/1-ivadas.md`,
+   „Panašių sistemų analizė“: naujos grupės – motion graphics generatoriai, trumpų video
+   generatoriai, Remotion įrankiai; atnaujinti lentelę ir išvadas). Kas daroma BD, kas
+   „jei spėsim“, kas po BD – lentelė `docs/bd/konkurentai.md` „Ką pasiimame ir kada“. naudotoja atsiunčia
    nuorodas, aprašome pagal klausimus: kokie blokai/vaizdai, tempas, tekstas, kaip
    keičiasi tarp temų, stilius, kaip kuriamas kanalo stilius (pavyzdžiai, brand kit),
    ką daro DI, o ką žmogus, kas patinka / ko vengti. Rezultatas – lentelė ir išvados
