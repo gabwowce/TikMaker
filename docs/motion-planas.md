@@ -43,6 +43,28 @@ sąrašas (privalumai) → skaičius („100 % offline“) → schema (failai �
 **„3 Claude Code skills“:** logotipų grandinė → juosta „01“ → kodo kortelė → sąrašas
 (tai, kas jau padaryta pavyzdinėje scenoje).
 
+## Stage tipai ir perėjimai (vietoj 61 maketo)
+
+5–6 išdėstymo tipai iš tų pačių dalių, todėl perėjimai tarp jų sklandūs:
+
+| Tipas | Kaip atrodo | Kada |
+|---|---|---|
+| Vaizdas viršuje, tekstas apačioje | kaip StageDemo | dauguma scenų |
+| Tekstas viršuje, vaizdas apačioje | apversta | įvairovei |
+| Tik tekstas | didelė frazė per visą kadrą | kabliukas, svarbus teiginys |
+| Visas kadras | įrašas / vaizdas per visą ekraną, tekstas ant viršaus | tavo įrašai, demonstracija |
+| Du vaizdai | palyginimas, „prieš / po“ | palyginimai |
+
+Perėjimai: tekstas nuslysta į kitą vietą; vaizdas priartėja ir „praleidžia“ į kitą
+sceną; kortelė virsta kita kortele. 61 maketas lieka tik kaip analizės duomenys
+tipams pagrįsti.
+
+## Ką agentas gauna ir iš ko renkasi
+
+Visą katalogą: blokai (kam tinka), stage tipai, perėjimai, bibliotekos failai pagal id.
+Rinktis tik iš jo – kodas tikrina. Ko trūksta, agentas pažymi „norų sąraše“ – iš jo
+matome, kokius vizualus pridėti į biblioteką.
+
 ## Kaip užtikrinamas greitas tempas
 
 1. **Tekstas** – frazė keičiasi kas ~1,5 s, žodžiai iššoka kas ~0,3 s. Tai daro kodas

@@ -54,6 +54,13 @@ etape C keisis į blokus). `stageFromBeats` – NEKELTI (pakeistas blokais).
    BD Įvadui (panašių sistemų analizė) ir mūsų planui.
 2. Pagal analizę patikslinti blokų sąrašą ir stiliaus paketo laukus (kortelių forma,
    kertinio žodžio išskyrimas, sąrašo ženklas, fono tipas, monetos/linijos).
+   **Stage tipai vietoj 61 maketo (sutarta 2026-11-03):** 5–6 išdėstymo tipai –
+   vaizdas viršuje/tekstas apačioje, tekstas viršuje/vaizdas apačioje, tik tekstas,
+   visas kadras (įrašas per visą ekraną), du vaizdai (palyginimas) – ir **perėjimai
+   tarp jų** (tekstas nuslysta į kitą vietą, vaizdas priartėja ir „praleidžia“ į kitą
+   sceną, kortelė virsta kita kortele). Tinka ir motion, ir rec video (įrašas – ekrano
+   kortelė arba visas kadras). 61 maketas lieka tik kaip analizės duomenys tipams
+   pagrįsti; BD tekstus (FR, 1.2) pakoreguosime.
 3. **Kanalas ↔ biblioteka ir stilius:** kanalo faile nurodoma, kurį paketą ir kurią
    biblioteką jis naudoja (dabar `dev` → `midnight` + visa dabartinė biblioteka);
    kodas visada ima „šio kanalo“ biblioteką ir stilių. Vėliau – kanalo puslapis
@@ -61,6 +68,13 @@ etape C keisis į blokus). `stageFromBeats` – NEKELTI (pakeistas blokais).
 4. **Agentas renkasi blokus** (motion-planas.md etapas C): tekstas automatiškai iš
    įgarsinimo, agentas kas 2–3 s parenka bloką ir įrašo turinį, pažymi kertinius
    žodžius; tempo taisyklė tikrinama kodu. Testas – agento video 3 skirtingomis temomis.
+   - Agentui paduodamas **visas turimų dalykų katalogas**: blokai (su eilute, kam
+     tinka), stage tipai ir perėjimai, bibliotekos failai (logotipai, daiktai, garsai)
+     pagal id. Rinktis galima **tik iš jo** – kodas tikrina kiekvieną pasirinkimą,
+     neteisingą grąžina taisyti (kaip dabar pickLayouts). Kūrybiškumas – kaip derinti
+     tai, kas yra (kuris blokas kuriai minčiai, turinys, metaforos, kada keisti tipą).
+   - **Norų sąrašas:** agentas gali pažymėti „norėjau X, bet nėra“ (pvz. Notion
+     logotipas, gaublys). Iš to matysime, kokių vizualų trūksta bibliotekoje.
 5. Tikri žodžių laikai iš ElevenLabs (D10), kritikas pagal kadrus (D9), paketas iš
    kanalo pavyzdžių – vėliau.
 
