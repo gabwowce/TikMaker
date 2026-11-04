@@ -27,6 +27,12 @@ klausimai, čia – eiga, failai ir būsena.
 
 ## Kita sesija pradeda nuo čia (2026-11-03)
 
+**BD reikalavimai ir terminai:** `docs/bd/reikalavimai/README.md` (metodiniai, bendrieji
+reikalavimai, DI gairės – PDF + .md kopijos). **BD peržiūra katedros komisijoje – 2026-11-30–12-04**
+(suderinti Programą ir Aprašą su vadovu, Aprašą įkelti į Moodle, demonstruoti Programą);
+gynimas katedroje 01-05–01-07, BD gynimas 01-20–01-22 (`PI-etapu-planas.md`).
+Įvadas – `docs/bd/1-ivadas.md` (patikrintas pagal metodinių 1.2.1, 5 psl.).
+
 **Kryptis pasikeitė:** motion video daromi ne iš 61 maketo, o iš **blokų** (lyg LEGO):
 viršuje vienas didelis vaizdas, apačioje didelis kinetinis tekstas (tai, kas sakoma),
 viskas kanalo **stiliaus paketu**. Visa struktūra, pavyzdžiai ir etapai –
