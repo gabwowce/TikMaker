@@ -51,8 +51,8 @@ etape C keisis į blokus). `stageFromBeats` – NEKELTI (pakeistas blokais).
    `docs/bd/konkurentai.md` – Hera, Kario, GenMotion, Revid, Slice; ką pasiimame:
    2–3 variantai, vizuali siužetinė lenta, subtitrų stiliai, stilius iš nuorodos/pavyzdžių,
    pavyzdinis video prie šablono, MCP su naudotojo Claude Code prenumerata. Toliau –
-   jei atsiras daugiau konkurentų, papildyti; ✓ **perkelta į BD Įvadą 2026-11-04** (`docs/bd/1-ivadas.md` – autorės Įvadas, trumpa apžvalga
-   be lentelių, APA; išsami versija su lentele – `docs/bd/1-1-panasios-sistemos.md` (1.1 juodraštis);
+   jei atsiras daugiau konkurentų, papildyti; ✓ **perkelta į BD Įvadą 2026-11-04** (`docs/bd/1-ivadas.md` – autorės Įvadas, visa analizė
+   su 1 lentele, APA; 1.1 poskyrio nėra; pastabos – `docs/bd/konkurentai.md`;
    liko: atidaryti **[PATIKRINTI]** šaltinius; I1–I6 prasmė ta pati, pridėta I7 – niša;
    „Panašių sistemų analizė“: naujos grupės – motion graphics generatoriai, trumpų video
    generatoriai, Remotion įrankiai; atnaujinti lentelę ir išvadas). Kas daroma BD, kas
