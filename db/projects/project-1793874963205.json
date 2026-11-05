@@ -1,0 +1,1670 @@
+{
+  "id": "project-1793874963205",
+  "title": "7 testas - 3tema",
+  "workspaceId": "dev",
+  "videoTemplateId": "pain-to-fix",
+  "fps": 30,
+  "width": 1080,
+  "height": 1920,
+  "storyPlan": {
+    "premise": "What if creating short-form videos took only 2 minutes?\n\nA promotional concept introducing TikMaker as an AI-powered tool that transforms simple ideas into ready-to-publish vertical videos. The video highlights the time-consuming process of traditional content creation, including brainstorming, scriptwriting, finding visuals, editing and animating. It then introduces TikMaker, demonstrating how the platform automates these steps and generates a complete motion graphics video from a single idea. The goal is to attract content creators, faceless creators and social media marketers while testing whether they would be interested in using such a tool."
+  },
+  "scenes": [
+    {
+      "id": "scene-run-mw3eucnm-1",
+      "plan": {
+        "role": "hook",
+        "visualBrief": "Big stopwatch counting from 0:00 to 2:00, next to a phone showing an animated 9:16 explainer video with a labeled diagram"
+      },
+      "durationSeconds": 2.858,
+      "vo": "What if making a short video took only two minutes?",
+      "background": "stage",
+      "content": {
+        "visuals": [
+          {
+            "id": "scene-run-mw3eucnm-1-block-1",
+            "visual": {
+              "type": "stage-block",
+              "block": {
+                "onWord": "What",
+                "kind": "object",
+                "id": "clock"
+              }
+            },
+            "x": 50,
+            "y": 27.083333333333332,
+            "scale": 0.68,
+            "entrance": "scaleIn",
+            "entranceDuration": 12,
+            "exit": "fade",
+            "exitDuration": 7,
+            "delay": 0,
+            "exitAt": 86,
+            "sfx": "none",
+            "exitSfx": "none",
+            "kenBurns": "float",
+            "lane": 0
+          },
+          {
+            "id": "scene-run-mw3eucnm-1-block-2",
+            "visual": {
+              "type": "stage-block",
+              "block": {
+                "onWord": "two",
+                "kind": "number",
+                "text": "to make a short video",
+                "value": 2,
+                "suffix": "min"
+              }
+            },
+            "x": 50,
+            "y": 57.8125,
+            "scale": 0.68,
+            "entrance": "pop",
+            "entranceDuration": 12,
+            "exit": "fade",
+            "exitDuration": 7,
+            "delay": 52,
+            "exitAt": 86,
+            "sfx": "none",
+            "exitSfx": "none",
+            "lane": 1
+          }
+        ]
+      },
+      "stage": "split",
+      "motion": {
+        "entrance": "none",
+        "transition": "cut"
+      },
+      "type": "visual-explainer"
+    },
+    {
+      "id": "scene-run-mw3eucnm-2",
+      "plan": {
+        "role": "setup",
+        "visualBrief": "Empty phone frame in 9:16 with a blinking question mark and a small 'faceless' icon; tech icons (code brackets, chip, cloud) float around it"
+      },
+      "durationSeconds": 4.715,
+      "vo": "Say you want to explain a tech topic in a short video. No face, just clear visuals.",
+      "background": "stage",
+      "content": {
+        "visuals": [
+          {
+            "id": "scene-run-mw3eucnm-2-block-1",
+            "visual": {
+              "type": "stage-block",
+              "block": {
+                "onWord": "Say",
+                "kind": "object",
+                "id": "idea"
+              }
+            },
+            "x": 50,
+            "y": 34.11458333333333,
+            "scale": 1,
+            "entrance": "fade",
+            "entranceDuration": 10,
+            "exit": "slideLeft",
+            "exitDuration": 7,
+            "delay": 0,
+            "exitAt": 26,
+            "sfx": "none",
+            "exitSfx": "none",
+            "kenBurns": "float",
+            "lane": 0
+          },
+          {
+            "id": "scene-run-mw3eucnm-2-block-2",
+            "visual": {
+              "type": "stage-block",
+              "block": {
+                "onWord": "tech",
+                "kind": "badge",
+                "text": "Tech topic"
+              }
+            },
+            "x": 50,
+            "y": 34.11458333333333,
+            "scale": 1,
+            "entrance": "slideLeft",
+            "entranceDuration": 10,
+            "exit": "slideLeft",
+            "exitDuration": 7,
+            "delay": 26,
+            "exitAt": 77,
+            "sfx": "none",
+            "exitSfx": "none",
+            "lane": 0
+          },
+          {
+            "id": "scene-run-mw3eucnm-2-block-3",
+            "visual": {
+              "type": "stage-block",
+              "block": {
+                "onWord": "No",
+                "kind": "list",
+                "items": [
+                  "No face",
+                  "Clear visuals"
+                ]
+              }
+            },
+            "x": 50,
+            "y": 34.11458333333333,
+            "scale": 1,
+            "entrance": "slideLeft",
+            "entranceDuration": 10,
+            "exit": "slideLeft",
+            "exitDuration": 7,
+            "delay": 77,
+            "exitAt": 141,
+            "sfx": "none",
+            "exitSfx": "none",
+            "lane": 0
+          }
+        ]
+      },
+      "stage": "top",
+      "motion": {
+        "entrance": "none",
+        "transition": "slideLeft"
+      },
+      "type": "visual-explainer"
+    },
+    {
+      "id": "scene-run-mw3eucnm-3",
+      "plan": {
+        "role": "problem",
+        "visualBrief": "Split screen: on the left a messy document with crossed-out lines, on the right empty boxes waiting for diagrams"
+      },
+      "durationSeconds": 7.084,
+      "vo": "But explaining it well is the hard part. You need a script that teaches step by step, and visuals that show each step.",
+      "background": "stage",
+      "content": {
+        "visuals": [
+          {
+            "id": "scene-run-mw3eucnm-3-block-1",
+            "visual": {
+              "type": "stage-block",
+              "block": {
+                "onWord": "But",
+                "kind": "object",
+                "id": "question"
+              }
+            },
+            "x": 50,
+            "y": 34.11458333333333,
+            "scale": 1,
+            "entrance": "fade",
+            "entranceDuration": 10,
+            "exit": "slideLeft",
+            "exitDuration": 7,
+            "delay": 0,
+            "exitAt": 43,
+            "sfx": "none",
+            "exitSfx": "none",
+            "kenBurns": "float",
+            "lane": 0
+          },
+          {
+            "id": "scene-run-mw3eucnm-3-block-2",
+            "visual": {
+              "type": "stage-block",
+              "block": {
+                "onWord": "hard",
+                "kind": "object",
+                "id": "frustration"
+              }
+            },
+            "x": 50,
+            "y": 34.11458333333333,
+            "scale": 1,
+            "entrance": "slideLeft",
+            "entranceDuration": 10,
+            "exit": "slideLeft",
+            "exitDuration": 7,
+            "delay": 43,
+            "exitAt": 82,
+            "sfx": "none",
+            "exitSfx": "none",
+            "kenBurns": "zoomIn",
+            "lane": 0
+          },
+          {
+            "id": "scene-run-mw3eucnm-3-block-3",
+            "visual": {
+              "type": "stage-block",
+              "block": {
+                "onWord": "script",
+                "kind": "object",
+                "id": "document"
+              }
+            },
+            "x": 50,
+            "y": 34.11458333333333,
+            "scale": 1,
+            "entrance": "slideLeft",
+            "entranceDuration": 10,
+            "exit": "slideLeft",
+            "exitDuration": 7,
+            "delay": 82,
+            "exitAt": 149,
+            "sfx": "none",
+            "exitSfx": "none",
+            "kenBurns": "float",
+            "lane": 0
+          },
+          {
+            "id": "scene-run-mw3eucnm-3-block-4",
+            "visual": {
+              "type": "stage-block",
+              "block": {
+                "onWord": "visuals",
+                "kind": "object",
+                "id": "screen-panel"
+              }
+            },
+            "x": 50,
+            "y": 34.11458333333333,
+            "scale": 1,
+            "entrance": "slideLeft",
+            "entranceDuration": 10,
+            "exit": "slideLeft",
+            "exitDuration": 7,
+            "delay": 149,
+            "exitAt": 213,
+            "sfx": "none",
+            "exitSfx": "none",
+            "kenBurns": "zoomIn",
+            "lane": 0
+          }
+        ]
+      },
+      "stage": "top",
+      "motion": {
+        "entrance": "none",
+        "transition": "slideUp"
+      },
+      "type": "visual-explainer"
+    },
+    {
+      "id": "scene-run-mw3eucnm-4",
+      "plan": {
+        "role": "problem",
+        "visualBrief": "Animation timeline crowded with keyframes, a cursor dragging one arrow at a time into a diagram"
+      },
+      "durationSeconds": 4.715,
+      "vo": "And motion graphics mean animating every arrow, label and diagram by hand.",
+      "background": "stage",
+      "content": {
+        "visuals": [
+          {
+            "id": "scene-run-mw3eucnm-4-block-1",
+            "visual": {
+              "type": "stage-block",
+              "block": {
+                "onWord": "motion",
+                "kind": "object",
+                "id": "layer-stack"
+              }
+            },
+            "x": 50,
+            "y": 34.11458333333333,
+            "scale": 1,
+            "entrance": "slideLeft",
+            "entranceDuration": 10,
+            "exit": "slideLeft",
+            "exitDuration": 7,
+            "delay": 6,
+            "exitAt": 59,
+            "sfx": "none",
+            "exitSfx": "none",
+            "kenBurns": "float",
+            "lane": 0
+          },
+          {
+            "id": "scene-run-mw3eucnm-4-block-2",
+            "visual": {
+              "type": "stage-block",
+              "block": {
+                "onWord": "arrow",
+                "kind": "list",
+                "items": [
+                  "Every arrow",
+                  "Every label",
+                  "Every diagram"
+                ]
+              }
+            },
+            "x": 50,
+            "y": 34.11458333333333,
+            "scale": 1,
+            "entrance": "slideLeft",
+            "entranceDuration": 10,
+            "exit": "fade",
+            "exitDuration": 7,
+            "delay": 59,
+            "exitAt": 141,
+            "sfx": "none",
+            "exitSfx": "none",
+            "lane": 0
+          }
+        ]
+      },
+      "stage": "top",
+      "motion": {
+        "entrance": "none",
+        "transition": "slideLeft"
+      },
+      "type": "visual-explainer"
+    },
+    {
+      "id": "scene-run-mw3eucnm-5",
+      "plan": {
+        "role": "reveal",
+        "visualBrief": "The crowded timeline collapses into the TikMaker app icon, which slides into the center of the phone frame"
+      },
+      "durationSeconds": 5.04,
+      "vo": "That's what TikMaker is for. It turns one idea into an educational motion graphics video.",
+      "background": "stage",
+      "content": {
+        "visuals": [
+          {
+            "id": "scene-run-mw3eucnm-5-block-1",
+            "visual": {
+              "type": "stage-block",
+              "block": {
+                "onWord": "That's",
+                "kind": "badge",
+                "text": "Meet TikMaker"
+              }
+            },
+            "x": 50,
+            "y": 34.11458333333333,
+            "scale": 1,
+            "entrance": "zoomSettleRight",
+            "entranceDuration": 14,
+            "exit": "slideLeft",
+            "exitDuration": 7,
+            "delay": 0,
+            "exitAt": 48,
+            "sfx": "none",
+            "exitSfx": "none",
+            "lane": 0
+          },
+          {
+            "id": "scene-run-mw3eucnm-5-block-2",
+            "visual": {
+              "type": "stage-block",
+              "block": {
+                "onWord": "turns",
+                "kind": "schema",
+                "nodes": [
+                  {
+                    "label": "One idea",
+                    "id": "idea"
+                  },
+                  {
+                    "label": "TikMaker"
+                  },
+                  {
+                    "label": "Motion video",
+                    "id": "screen-panel"
+                  }
+                ]
+              }
+            },
+            "x": 50,
+            "y": 34.11458333333333,
+            "scale": 1,
+            "entrance": "slideLeft",
+            "entranceDuration": 10,
+            "exit": "slideLeft",
+            "exitDuration": 7,
+            "delay": 48,
+            "exitAt": 102,
+            "sfx": "none",
+            "exitSfx": "none",
+            "lane": 0
+          },
+          {
+            "id": "scene-run-mw3eucnm-5-block-3",
+            "visual": {
+              "type": "stage-block",
+              "block": {
+                "onWord": "motion",
+                "kind": "object",
+                "id": "layer-stack"
+              }
+            },
+            "x": 50,
+            "y": 34.11458333333333,
+            "scale": 1,
+            "entrance": "slideLeft",
+            "entranceDuration": 10,
+            "exit": "fade",
+            "exitDuration": 7,
+            "delay": 102,
+            "exitAt": 151,
+            "sfx": "none",
+            "exitSfx": "none",
+            "kenBurns": "zoomIn",
+            "lane": 0
+          }
+        ]
+      },
+      "stage": "top",
+      "motion": {
+        "entrance": "none",
+        "transition": "cut"
+      },
+      "type": "visual-explainer"
+    },
+    {
+      "id": "scene-run-mw3eucnm-6",
+      "plan": {
+        "role": "demo",
+        "visualBrief": "TikMaker input field, a one-line tech idea typed in and the generate button clicked"
+      },
+      "durationSeconds": 2.951,
+      "vo": "First, you type your idea. Just one sentence.",
+      "notes": "🎥 Your own recording",
+      "background": "stage",
+      "content": {
+        "visuals": [
+          {
+            "id": "scene-run-mw3eucnm-6-block-1",
+            "visual": {
+              "type": "stage-block",
+              "block": {
+                "onWord": "First",
+                "kind": "screen",
+                "text": "Type a one-line idea, click Generate"
+              }
+            },
+            "x": 50,
+            "y": 44.79166666666667,
+            "scale": 1.12,
+            "entrance": "scaleIn",
+            "entranceDuration": 12,
+            "exit": "slideLeft",
+            "exitDuration": 7,
+            "delay": 0,
+            "exitAt": 89,
+            "sfx": "none",
+            "exitSfx": "none",
+            "kenBurns": "zoomIn",
+            "lane": 0
+          }
+        ]
+      },
+      "stage": "full",
+      "motion": {
+        "entrance": "none",
+        "transition": "slideLeft"
+      },
+      "type": "visual-explainer"
+    },
+    {
+      "id": "scene-run-mw3eucnm-7",
+      "plan": {
+        "role": "demo",
+        "visualBrief": "TikMaker screen where the scene list appears: hook, problem, explanation, each with voiceover and on-screen text"
+      },
+      "durationSeconds": 5.643999999999999,
+      "vo": "Second, TikMaker writes the script scene by scene, with the voiceover and the words shown on screen.",
+      "notes": "🎥 Your own recording",
+      "background": "stage",
+      "content": {
+        "visuals": [
+          {
+            "id": "scene-run-mw3eucnm-7-block-1",
+            "visual": {
+              "type": "stage-block",
+              "block": {
+                "onWord": "Second",
+                "kind": "screen",
+                "text": "Show the scene list appearing"
+              }
+            },
+            "x": 50,
+            "y": 34.11458333333333,
+            "scale": 1,
+            "entrance": "slideLeft",
+            "entranceDuration": 10,
+            "exit": "slideLeft",
+            "exitDuration": 7,
+            "delay": 0,
+            "exitAt": 59,
+            "sfx": "none",
+            "exitSfx": "none",
+            "lane": 0
+          },
+          {
+            "id": "scene-run-mw3eucnm-7-block-2",
+            "visual": {
+              "type": "stage-block",
+              "block": {
+                "onWord": "scene",
+                "kind": "list",
+                "items": [
+                  "Hook",
+                  "Problem",
+                  "Explanation"
+                ]
+              }
+            },
+            "x": 50,
+            "y": 34.11458333333333,
+            "scale": 1,
+            "entrance": "slideLeft",
+            "entranceDuration": 10,
+            "exit": "slideLeft",
+            "exitDuration": 7,
+            "delay": 59,
+            "exitAt": 97,
+            "sfx": "none",
+            "exitSfx": "none",
+            "lane": 0
+          },
+          {
+            "id": "scene-run-mw3eucnm-7-block-3",
+            "visual": {
+              "type": "stage-block",
+              "block": {
+                "onWord": "voiceover",
+                "kind": "list",
+                "items": [
+                  "Voiceover",
+                  "On-screen words"
+                ]
+              }
+            },
+            "x": 50,
+            "y": 34.11458333333333,
+            "scale": 1,
+            "entrance": "slideLeft",
+            "entranceDuration": 10,
+            "exit": "slideLeft",
+            "exitDuration": 7,
+            "delay": 97,
+            "exitAt": 169,
+            "sfx": "none",
+            "exitSfx": "none",
+            "lane": 0
+          }
+        ]
+      },
+      "stage": "top",
+      "motion": {
+        "entrance": "none",
+        "transition": "slideLeft"
+      },
+      "type": "visual-explainer"
+    },
+    {
+      "id": "scene-run-mw3eucnm-8",
+      "plan": {
+        "role": "demo",
+        "visualBrief": "TikMaker preview player playing the animated scenes, diagrams and labels moving in, in a full vertical 9:16 frame"
+      },
+      "durationSeconds": 6.5729999999999995,
+      "vo": "Third, it animates every scene as motion graphics in a nine by sixteen frame that fills the whole phone screen.",
+      "notes": "🎥 Your own recording",
+      "background": "stage",
+      "content": {
+        "visuals": [
+          {
+            "id": "scene-run-mw3eucnm-8-block-1",
+            "visual": {
+              "type": "stage-block",
+              "block": {
+                "onWord": "Third",
+                "kind": "screen",
+                "text": "Play the preview with scenes animating"
+              }
+            },
+            "x": 50,
+            "y": 34.11458333333333,
+            "scale": 1,
+            "entrance": "slideLeft",
+            "entranceDuration": 10,
+            "exit": "slideLeft",
+            "exitDuration": 7,
+            "delay": 0,
+            "exitAt": 65,
+            "sfx": "none",
+            "exitSfx": "none",
+            "kenBurns": "zoomIn",
+            "lane": 0
+          },
+          {
+            "id": "scene-run-mw3eucnm-8-block-2",
+            "visual": {
+              "type": "stage-block",
+              "block": {
+                "onWord": "motion",
+                "kind": "object",
+                "id": "layer-stack"
+              }
+            },
+            "x": 50,
+            "y": 34.11458333333333,
+            "scale": 1,
+            "entrance": "slideLeft",
+            "entranceDuration": 10,
+            "exit": "slideLeft",
+            "exitDuration": 7,
+            "delay": 65,
+            "exitAt": 95,
+            "sfx": "none",
+            "exitSfx": "none",
+            "kenBurns": "float",
+            "lane": 0
+          },
+          {
+            "id": "scene-run-mw3eucnm-8-block-3",
+            "visual": {
+              "type": "stage-block",
+              "block": {
+                "onWord": "nine",
+                "kind": "badge",
+                "text": "9:16 frame"
+              }
+            },
+            "x": 50,
+            "y": 34.11458333333333,
+            "scale": 1,
+            "entrance": "scaleIn",
+            "entranceDuration": 10,
+            "exit": "slideLeft",
+            "exitDuration": 7,
+            "delay": 95,
+            "exitAt": 141,
+            "sfx": "none",
+            "exitSfx": "none",
+            "lane": 0
+          },
+          {
+            "id": "scene-run-mw3eucnm-8-block-4",
+            "visual": {
+              "type": "stage-block",
+              "block": {
+                "onWord": "fills",
+                "kind": "object",
+                "id": "screen-panel"
+              }
+            },
+            "x": 50,
+            "y": 34.11458333333333,
+            "scale": 1,
+            "entrance": "slideLeft",
+            "entranceDuration": 10,
+            "exit": "fade",
+            "exitDuration": 7,
+            "delay": 141,
+            "exitAt": 197,
+            "sfx": "none",
+            "exitSfx": "none",
+            "kenBurns": "zoomIn",
+            "lane": 0
+          }
+        ]
+      },
+      "stage": "top",
+      "motion": {
+        "entrance": "none",
+        "transition": "slideLeft"
+      },
+      "type": "visual-explainer"
+    },
+    {
+      "id": "scene-run-mw3eucnm-9",
+      "plan": {
+        "role": "benefit",
+        "visualBrief": "The finished explainer video playing full screen on a phone, then a check mark next to 'Ready to post'"
+      },
+      "durationSeconds": 4.9479999999999995,
+      "vo": "So you focus on what you want to teach, and TikMaker turns it into a vertical video ready to post.",
+      "background": "stage",
+      "content": {
+        "visuals": [
+          {
+            "id": "scene-run-mw3eucnm-9-block-1",
+            "visual": {
+              "type": "stage-block",
+              "block": {
+                "onWord": "So",
+                "kind": "object",
+                "id": "target"
+              }
+            },
+            "x": 50,
+            "y": 34.11458333333333,
+            "scale": 1,
+            "entrance": "slideLeft",
+            "entranceDuration": 10,
+            "exit": "fade",
+            "exitDuration": 6,
+            "delay": 0,
+            "exitAt": 34,
+            "sfx": "none",
+            "exitSfx": "none",
+            "kenBurns": "float",
+            "lane": 0
+          },
+          {
+            "id": "scene-run-mw3eucnm-9-block-2",
+            "visual": {
+              "type": "stage-block",
+              "block": {
+                "onWord": "teach",
+                "kind": "object",
+                "id": "idea"
+              }
+            },
+            "x": 50,
+            "y": 34.11458333333333,
+            "scale": 1,
+            "entrance": "fade",
+            "entranceDuration": 6,
+            "exit": "slideLeft",
+            "exitDuration": 6,
+            "delay": 34,
+            "exitAt": 54,
+            "sfx": "none",
+            "exitSfx": "none",
+            "lane": 0
+          },
+          {
+            "id": "scene-run-mw3eucnm-9-block-3",
+            "visual": {
+              "type": "stage-block",
+              "block": {
+                "onWord": "TikMaker",
+                "kind": "schema",
+                "nodes": [
+                  {
+                    "label": "Your idea",
+                    "id": "idea"
+                  },
+                  {
+                    "label": "TikMaker"
+                  },
+                  {
+                    "label": "Vertical video"
+                  }
+                ]
+              }
+            },
+            "x": 50,
+            "y": 34.11458333333333,
+            "scale": 1,
+            "entrance": "slideLeft",
+            "entranceDuration": 10,
+            "exit": "fade",
+            "exitDuration": 6,
+            "delay": 54,
+            "exitAt": 111,
+            "sfx": "none",
+            "exitSfx": "none",
+            "lane": 0
+          },
+          {
+            "id": "scene-run-mw3eucnm-9-block-4",
+            "visual": {
+              "type": "stage-block",
+              "block": {
+                "onWord": "ready",
+                "kind": "badge",
+                "text": "Ready to post"
+              }
+            },
+            "x": 50,
+            "y": 34.11458333333333,
+            "scale": 1,
+            "entrance": "pop",
+            "entranceDuration": 12,
+            "exit": "fade",
+            "exitDuration": 8,
+            "delay": 111,
+            "exitAt": 148,
+            "sfx": "none",
+            "exitSfx": "none",
+            "lane": 0
+          }
+        ]
+      },
+      "stage": "top",
+      "motion": {
+        "entrance": "none",
+        "transition": "slideLeft"
+      },
+      "type": "visual-explainer"
+    }
+  ],
+  "captions": {
+    "style": "kinetic",
+    "keywords": [
+      "two minutes",
+      "tech topic",
+      "No face",
+      "hard part",
+      "script",
+      "visuals",
+      "by hand",
+      "TikMaker",
+      "one idea",
+      "one sentence",
+      "scene by scene",
+      "animates",
+      "nine by sixteen",
+      "teach",
+      "ready to post"
+    ]
+  },
+  "savedAt": 1793875550445,
+  "audioClips": [
+    {
+      "id": "audio-run-mw3eucnm-scene-run-mw3eucnm-1",
+      "sfxId": "vo-run-mw3eucnm-scene-1-mw3f6ld0",
+      "from": 0,
+      "durationInFrames": 86,
+      "volume": 1,
+      "voiceText": "What if making a short video took only two minutes?",
+      "words": [
+        {
+          "text": "What",
+          "start": 0,
+          "end": 0.174
+        },
+        {
+          "text": "if",
+          "start": 0.209,
+          "end": 0.279
+        },
+        {
+          "text": "making",
+          "start": 0.325,
+          "end": 0.557
+        },
+        {
+          "text": "a",
+          "start": 0.592,
+          "end": 0.615
+        },
+        {
+          "text": "short",
+          "start": 0.65,
+          "end": 0.824
+        },
+        {
+          "text": "video",
+          "start": 0.859,
+          "end": 1.207
+        },
+        {
+          "text": "took",
+          "start": 1.265,
+          "end": 1.416
+        },
+        {
+          "text": "only",
+          "start": 1.474,
+          "end": 1.672
+        },
+        {
+          "text": "two",
+          "start": 1.73,
+          "end": 1.858
+        },
+        {
+          "text": "minutes?",
+          "start": 1.904,
+          "end": 2.508
+        }
+      ]
+    },
+    {
+      "id": "audio-run-mw3eucnm-scene-run-mw3eucnm-2",
+      "sfxId": "vo-run-mw3eucnm-scene-2-mw3f6lpw",
+      "from": 86,
+      "durationInFrames": 141,
+      "volume": 1,
+      "voiceText": "Say you want to explain a tech topic in a short video. No face, just clear visuals.",
+      "words": [
+        {
+          "text": "Say",
+          "start": 0,
+          "end": 0.174
+        },
+        {
+          "text": "you",
+          "start": 0.209,
+          "end": 0.279
+        },
+        {
+          "text": "want",
+          "start": 0.313,
+          "end": 0.418
+        },
+        {
+          "text": "to",
+          "start": 0.441,
+          "end": 0.488
+        },
+        {
+          "text": "explain",
+          "start": 0.522,
+          "end": 0.789
+        },
+        {
+          "text": "a",
+          "start": 0.824,
+          "end": 0.848
+        },
+        {
+          "text": "tech",
+          "start": 0.882,
+          "end": 1.033
+        },
+        {
+          "text": "topic",
+          "start": 1.068,
+          "end": 1.382
+        },
+        {
+          "text": "in",
+          "start": 1.44,
+          "end": 1.509
+        },
+        {
+          "text": "a",
+          "start": 1.544,
+          "end": 1.567
+        },
+        {
+          "text": "short",
+          "start": 1.625,
+          "end": 1.811
+        },
+        {
+          "text": "video.",
+          "start": 1.846,
+          "end": 2.357
+        },
+        {
+          "text": "No",
+          "start": 2.566,
+          "end": 2.694
+        },
+        {
+          "text": "face,",
+          "start": 2.752,
+          "end": 3.111
+        },
+        {
+          "text": "just",
+          "start": 3.262,
+          "end": 3.425
+        },
+        {
+          "text": "clear",
+          "start": 3.46,
+          "end": 3.634
+        },
+        {
+          "text": "visuals.",
+          "start": 3.68,
+          "end": 4.365
+        }
+      ]
+    },
+    {
+      "id": "audio-run-mw3eucnm-scene-run-mw3eucnm-3",
+      "sfxId": "vo-run-mw3eucnm-scene-3-mw3f6m9e",
+      "from": 227,
+      "durationInFrames": 213,
+      "volume": 1,
+      "voiceText": "But explaining it well is the hard part. You need a script that teaches step by step, and visuals that show each step.",
+      "words": [
+        {
+          "text": "But",
+          "start": 0,
+          "end": 0.151
+        },
+        {
+          "text": "explaining",
+          "start": 0.186,
+          "end": 0.58
+        },
+        {
+          "text": "it",
+          "start": 0.615,
+          "end": 0.685
+        },
+        {
+          "text": "well",
+          "start": 0.72,
+          "end": 0.952
+        },
+        {
+          "text": "is",
+          "start": 1.057,
+          "end": 1.254
+        },
+        {
+          "text": "the",
+          "start": 1.312,
+          "end": 1.382
+        },
+        {
+          "text": "hard",
+          "start": 1.428,
+          "end": 1.567
+        },
+        {
+          "text": "part.",
+          "start": 1.602,
+          "end": 1.939
+        },
+        {
+          "text": "You",
+          "start": 2.322,
+          "end": 2.438
+        },
+        {
+          "text": "need",
+          "start": 2.473,
+          "end": 2.612
+        },
+        {
+          "text": "a",
+          "start": 2.647,
+          "end": 2.67
+        },
+        {
+          "text": "script",
+          "start": 2.717,
+          "end": 2.995
+        },
+        {
+          "text": "that",
+          "start": 3.03,
+          "end": 3.17
+        },
+        {
+          "text": "teaches",
+          "start": 3.216,
+          "end": 3.564
+        },
+        {
+          "text": "step",
+          "start": 3.622,
+          "end": 3.831
+        },
+        {
+          "text": "by",
+          "start": 3.878,
+          "end": 3.982
+        },
+        {
+          "text": "step,",
+          "start": 4.04,
+          "end": 4.412
+        },
+        {
+          "text": "and",
+          "start": 4.621,
+          "end": 4.876
+        },
+        {
+          "text": "visuals",
+          "start": 4.981,
+          "end": 5.41
+        },
+        {
+          "text": "that",
+          "start": 5.445,
+          "end": 5.573
+        },
+        {
+          "text": "show",
+          "start": 5.642,
+          "end": 5.875
+        },
+        {
+          "text": "each",
+          "start": 5.979,
+          "end": 6.153
+        },
+        {
+          "text": "step.",
+          "start": 6.188,
+          "end": 6.734
+        }
+      ]
+    },
+    {
+      "id": "audio-run-mw3eucnm-scene-run-mw3eucnm-4",
+      "sfxId": "vo-run-mw3eucnm-scene-4-mw3f6mmo",
+      "from": 440,
+      "durationInFrames": 141,
+      "volume": 1,
+      "voiceText": "And motion graphics mean animating every arrow, label and diagram by hand.",
+      "words": [
+        {
+          "text": "And",
+          "start": 0,
+          "end": 0.151
+        },
+        {
+          "text": "motion",
+          "start": 0.209,
+          "end": 0.43
+        },
+        {
+          "text": "graphics",
+          "start": 0.464,
+          "end": 0.824
+        },
+        {
+          "text": "mean",
+          "start": 0.882,
+          "end": 1.033
+        },
+        {
+          "text": "animating",
+          "start": 1.103,
+          "end": 1.556
+        },
+        {
+          "text": "every",
+          "start": 1.66,
+          "end": 1.916
+        },
+        {
+          "text": "arrow,",
+          "start": 1.962,
+          "end": 2.392
+        },
+        {
+          "text": "label",
+          "start": 2.635,
+          "end": 2.949
+        },
+        {
+          "text": "and",
+          "start": 3.019,
+          "end": 3.123
+        },
+        {
+          "text": "diagram",
+          "start": 3.181,
+          "end": 3.611
+        },
+        {
+          "text": "by",
+          "start": 3.657,
+          "end": 3.762
+        },
+        {
+          "text": "hand.",
+          "start": 3.82,
+          "end": 4.365
+        }
+      ]
+    },
+    {
+      "id": "audio-run-mw3eucnm-scene-run-mw3eucnm-5",
+      "sfxId": "vo-run-mw3eucnm-scene-5-mw3f6mzw",
+      "from": 581,
+      "durationInFrames": 151,
+      "volume": 1,
+      "voiceText": "That's what TikMaker is for. It turns one idea into an educational motion graphics video.",
+      "words": [
+        {
+          "text": "That's",
+          "start": 0,
+          "end": 0.232
+        },
+        {
+          "text": "what",
+          "start": 0.255,
+          "end": 0.372
+        },
+        {
+          "text": "TikMaker",
+          "start": 0.406,
+          "end": 0.766
+        },
+        {
+          "text": "is",
+          "start": 0.801,
+          "end": 0.871
+        },
+        {
+          "text": "for.",
+          "start": 0.917,
+          "end": 1.277
+        },
+        {
+          "text": "It",
+          "start": 1.463,
+          "end": 1.567
+        },
+        {
+          "text": "turns",
+          "start": 1.591,
+          "end": 1.776
+        },
+        {
+          "text": "one",
+          "start": 1.846,
+          "end": 1.985
+        },
+        {
+          "text": "idea",
+          "start": 2.02,
+          "end": 2.299
+        },
+        {
+          "text": "into",
+          "start": 2.38,
+          "end": 2.566
+        },
+        {
+          "text": "an",
+          "start": 2.635,
+          "end": 2.694
+        },
+        {
+          "text": "educational",
+          "start": 2.775,
+          "end": 3.32
+        },
+        {
+          "text": "motion",
+          "start": 3.39,
+          "end": 3.657
+        },
+        {
+          "text": "graphics",
+          "start": 3.704,
+          "end": 4.029
+        },
+        {
+          "text": "video.",
+          "start": 4.063,
+          "end": 4.69
+        }
+      ]
+    },
+    {
+      "id": "audio-run-mw3eucnm-scene-run-mw3eucnm-6",
+      "sfxId": "vo-run-mw3eucnm-scene-6-mw3f6naj",
+      "from": 732,
+      "durationInFrames": 89,
+      "volume": 1,
+      "voiceText": "First, you type your idea. Just one sentence.",
+      "words": [
+        {
+          "text": "First,",
+          "start": 0,
+          "end": 0.395
+        },
+        {
+          "text": "you",
+          "start": 0.546,
+          "end": 0.65
+        },
+        {
+          "text": "type",
+          "start": 0.708,
+          "end": 0.882
+        },
+        {
+          "text": "your",
+          "start": 0.906,
+          "end": 1.01
+        },
+        {
+          "text": "idea.",
+          "start": 1.045,
+          "end": 1.416
+        },
+        {
+          "text": "Just",
+          "start": 1.567,
+          "end": 1.741
+        },
+        {
+          "text": "one",
+          "start": 1.8,
+          "end": 1.916
+        },
+        {
+          "text": "sentence.",
+          "start": 1.95,
+          "end": 2.601
+        }
+      ]
+    },
+    {
+      "id": "audio-run-mw3eucnm-scene-run-mw3eucnm-7",
+      "sfxId": "vo-run-mw3eucnm-scene-7-mw3f6nnx",
+      "from": 821,
+      "durationInFrames": 169,
+      "volume": 1,
+      "voiceText": "Second, TikMaker writes the script scene by scene, with the voiceover and the words shown on screen.",
+      "words": [
+        {
+          "text": "Second,",
+          "start": 0,
+          "end": 0.522
+        },
+        {
+          "text": "TikMaker",
+          "start": 0.766,
+          "end": 1.254
+        },
+        {
+          "text": "writes",
+          "start": 1.3,
+          "end": 1.521
+        },
+        {
+          "text": "the",
+          "start": 1.556,
+          "end": 1.637
+        },
+        {
+          "text": "script",
+          "start": 1.672,
+          "end": 1.927
+        },
+        {
+          "text": "scene",
+          "start": 1.974,
+          "end": 2.194
+        },
+        {
+          "text": "by",
+          "start": 2.229,
+          "end": 2.345
+        },
+        {
+          "text": "scene,",
+          "start": 2.415,
+          "end": 2.798
+        },
+        {
+          "text": "with",
+          "start": 2.926,
+          "end": 3.077
+        },
+        {
+          "text": "the",
+          "start": 3.111,
+          "end": 3.181
+        },
+        {
+          "text": "voiceover",
+          "start": 3.228,
+          "end": 3.68
+        },
+        {
+          "text": "and",
+          "start": 3.75,
+          "end": 3.855
+        },
+        {
+          "text": "the",
+          "start": 3.889,
+          "end": 3.959
+        },
+        {
+          "text": "words",
+          "start": 3.994,
+          "end": 4.226
+        },
+        {
+          "text": "shown",
+          "start": 4.261,
+          "end": 4.47
+        },
+        {
+          "text": "on",
+          "start": 4.516,
+          "end": 4.586
+        },
+        {
+          "text": "screen.",
+          "start": 4.644,
+          "end": 5.294
+        }
+      ]
+    },
+    {
+      "id": "audio-run-mw3eucnm-scene-run-mw3eucnm-8",
+      "sfxId": "vo-run-mw3eucnm-scene-8-mw3f6o3r",
+      "from": 990,
+      "durationInFrames": 197,
+      "volume": 1,
+      "voiceText": "Third, it animates every scene as motion graphics in a nine by sixteen frame that fills the whole phone screen.",
+      "words": [
+        {
+          "text": "Third,",
+          "start": 0,
+          "end": 0.43
+        },
+        {
+          "text": "it",
+          "start": 0.639,
+          "end": 0.755
+        },
+        {
+          "text": "animates",
+          "start": 0.813,
+          "end": 1.196
+        },
+        {
+          "text": "every",
+          "start": 1.324,
+          "end": 1.591
+        },
+        {
+          "text": "scene",
+          "start": 1.637,
+          "end": 1.892
+        },
+        {
+          "text": "as",
+          "start": 1.939,
+          "end": 2.078
+        },
+        {
+          "text": "motion",
+          "start": 2.159,
+          "end": 2.403
+        },
+        {
+          "text": "graphics",
+          "start": 2.438,
+          "end": 2.856
+        },
+        {
+          "text": "in",
+          "start": 2.902,
+          "end": 3.007
+        },
+        {
+          "text": "a",
+          "start": 3.053,
+          "end": 3.077
+        },
+        {
+          "text": "nine",
+          "start": 3.158,
+          "end": 3.367
+        },
+        {
+          "text": "by",
+          "start": 3.402,
+          "end": 3.483
+        },
+        {
+          "text": "sixteen",
+          "start": 3.541,
+          "end": 3.913
+        },
+        {
+          "text": "frame",
+          "start": 3.959,
+          "end": 4.307
+        },
+        {
+          "text": "that",
+          "start": 4.458,
+          "end": 4.632
+        },
+        {
+          "text": "fills",
+          "start": 4.69,
+          "end": 4.946
+        },
+        {
+          "text": "the",
+          "start": 4.992,
+          "end": 5.074
+        },
+        {
+          "text": "whole",
+          "start": 5.132,
+          "end": 5.375
+        },
+        {
+          "text": "phone",
+          "start": 5.41,
+          "end": 5.631
+        },
+        {
+          "text": "screen.",
+          "start": 5.654,
+          "end": 6.223
+        }
+      ]
+    },
+    {
+      "id": "audio-run-mw3eucnm-scene-run-mw3eucnm-9",
+      "sfxId": "vo-run-mw3eucnm-scene-9-mw3f6oh1",
+      "from": 1187,
+      "durationInFrames": 148,
+      "volume": 1,
+      "voiceText": "So you focus on what you want to teach, and TikMaker turns it into a vertical video ready to post.",
+      "words": [
+        {
+          "text": "So",
+          "start": 0,
+          "end": 0.139
+        },
+        {
+          "text": "you",
+          "start": 0.174,
+          "end": 0.244
+        },
+        {
+          "text": "focus",
+          "start": 0.29,
+          "end": 0.546
+        },
+        {
+          "text": "on",
+          "start": 0.58,
+          "end": 0.639
+        },
+        {
+          "text": "what",
+          "start": 0.673,
+          "end": 0.778
+        },
+        {
+          "text": "you",
+          "start": 0.813,
+          "end": 0.882
+        },
+        {
+          "text": "want",
+          "start": 0.917,
+          "end": 1.033
+        },
+        {
+          "text": "to",
+          "start": 1.057,
+          "end": 1.103
+        },
+        {
+          "text": "teach,",
+          "start": 1.138,
+          "end": 1.416
+        },
+        {
+          "text": "and",
+          "start": 1.451,
+          "end": 1.695
+        },
+        {
+          "text": "TikMaker",
+          "start": 1.8,
+          "end": 2.241
+        },
+        {
+          "text": "turns",
+          "start": 2.287,
+          "end": 2.473
+        },
+        {
+          "text": "it",
+          "start": 2.508,
+          "end": 2.577
+        },
+        {
+          "text": "into",
+          "start": 2.612,
+          "end": 2.775
+        },
+        {
+          "text": "a",
+          "start": 2.844,
+          "end": 2.868
+        },
+        {
+          "text": "vertical",
+          "start": 2.914,
+          "end": 3.193
+        },
+        {
+          "text": "video",
+          "start": 3.239,
+          "end": 3.587
+        },
+        {
+          "text": "ready",
+          "start": 3.692,
+          "end": 3.878
+        },
+        {
+          "text": "to",
+          "start": 3.913,
+          "end": 3.959
+        },
+        {
+          "text": "post.",
+          "start": 4.005,
+          "end": 4.598
+        }
+      ]
+    }
+  ]
+}

@@ -4,6 +4,7 @@ import { getRun, saveRun } from "./runs.js";
 import { step2Hooks, step2Template } from "./steps/2-angle.js";
 import { step3Script } from "./steps/3-script.js";
 import { step4Building } from "./steps/4-building.js";
+import { step5Voice } from "./steps/5-voice.js";
 
 // The whole agent on one page (screens: docs/d-planas.md).
 
@@ -54,6 +55,11 @@ async function runAgent(run: AgentRun): Promise<void> {
       if (job.run.script?.approved) {
         await job.save({ status: "laying_out" });
         await step4Building(job);
+        // 5 Result: the voiceover, only when the form asked for it.
+        if (job.run.input.generateVoice) {
+          await job.save({ status: "generating_voice" });
+          await step5Voice(job);
+        }
         await job.save({ status: "done" });
         return;
       }

@@ -1,4 +1,4 @@
-import type { DesignRule, VideoTemplate } from "../knowledge";
+import type { DesignRule } from "../knowledge";
 import type { ScriptFromAi, ScriptProblem, SceneFromAi } from "../run/3-script";
 import {
   MIN_SCENE_SECONDS,
@@ -31,22 +31,10 @@ export function sceneSeconds(scene: SceneFromAi): number {
 
 export function checkScript(
   script: ScriptFromAi,
-  template: VideoTemplate,
   targetSeconds: number,
   rules: DesignRule[],
 ): ScriptProblem[] {
   const problems: ScriptProblem[] = [];
-
-  // Every scene the template does not mark optional.
-  const roles = new Set(script.scenes.map((scene) => scene.role));
-  for (const act of template.acts) {
-    for (const needed of act.scenes) {
-      if (!needed.optional && !roles.has(needed.role))
-        problems.push({
-          message: `The template needs a "${needed.role}" scene (${needed.purpose})`,
-        });
-    }
-  }
 
   // The whole video, at most 15 % over the wanted length.
   const total = script.scenes.reduce((sum, s) => sum + sceneSeconds(s), 0);

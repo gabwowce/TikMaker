@@ -1,9 +1,0 @@
-{
-  "id": "hook-keycap",
-  "role": "hook",
-  "arrangement": "stack",
-  "anchor": "center",
-  "background": "solid",
-  "elements": [{ "kind": "keycap", "x": 50, "y": 60, "w": 40, "h": 12, "order": 1, "enter": "pop" }],
-  "textBlocks": [{ "x": 50, "y": 35, "w": 80, "h": 15, "order": 0, "size": "hero", "lines": 2, "pill": true }]
-}

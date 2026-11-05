@@ -22,23 +22,25 @@ const fakeModel = new MockLanguageModelV4({
     const [first, second] = [...prompt.matchAll(/- id: ([\w-]+)/g)].map(
       (match) => match[1],
     );
-    const answer = prompt.includes("Logos:")
-      ? fakeLayout(prompt)
-      : prompt.includes("Transition phrases:")
-        ? fakeScript(prompt)
-        : prompt.includes("Formulas:")
-          ? {
-              hooks: [
-                { text: "Hook one", formulaId: first, score: 4 },
-                { text: "Hook two", formulaId: second, score: 4 },
-                { text: "Hook three", formulaId: null, score: 3 },
-              ],
-            }
-          : {
-              videoTemplateId: "how-to-steps",
-              score: 4,
-              reason: "A clear how-to.",
-            };
+    const answer = prompt.includes("Entrances:")
+      ? fakeMotion(prompt)
+      : prompt.includes("Blocks:")
+        ? fakeBlocks(prompt)
+        : prompt.includes("Transition phrases:")
+          ? fakeScript(prompt)
+          : prompt.includes("Formulas:")
+            ? {
+                hooks: [
+                  { text: "Hook one", formulaId: first, score: 4 },
+                  { text: "Hook two", formulaId: second, score: 4 },
+                  { text: "Hook three", formulaId: null, score: 3 },
+                ],
+              }
+            : {
+                videoTemplateId: "how-to-steps",
+                score: 4,
+                reason: "A clear how-to.",
+              };
     return {
       content: [{ type: "text", text: JSON.stringify(answer) }],
       finishReason: { unified: "stop", raw: undefined },
@@ -69,33 +71,48 @@ function fakeScript(prompt: string) {
   });
   return { scenes: [scene("hook"), ...roles.map(scene)], skipped: [] };
 }
-// Layout: for every scene the first example offered, each picture filled the
-// way the prompt says it takes (a logo id, a prop id or a sentence).
-function fakeLayout(prompt: string) {
+// Motion (motion video): a calm fade for every block the timeline lists.
+function fakeMotion(prompt: string) {
+  const scenes = prompt
+    .split(/Scene \d+ – /)
+    .slice(1)
+    .map((scene) => ({
+      transition: "cut",
+      // the prompt arrives JSON-encoded, so its newlines and quotes are escaped
+      blocks: [...scene.matchAll(/\\n {2}\d+\. on \\"/g)].map(() => ({
+        entrance: "fade",
+        enterFrames: 4,
+        exit: "fade",
+        exitFrames: 4,
+      })),
+    }));
+  return { idea: "Calm fades all the way through.", scenes };
+}
+// Blocks (motion video): one badge per scene, on the first word of its
+// voiceover ("A short line."), so the code's check finds nothing.
+function fakeBlocks(prompt: string) {
   const scenes = prompt
     .split(/Scene \d+ \(/)
     .slice(1)
-    .map((block) => {
-      const [, id, pictures] =
-        /- ([\w-]+): pictures: (.*?); (?:with|no) text/.exec(block)!;
-      const fills =
-        pictures === "none"
-          ? []
-          : pictures
-              .split("; ")
-              .map((picture) =>
-                picture.includes("a logo id")
-                  ? "vs-code"
-                  : picture.includes("a prop id")
-                    ? "bug"
-                    : "Record the step",
-              );
-      return { layoutExampleId: id, fills };
-    });
-  return { scenes };
+    .map((_, i) => ({
+      stage: i % 2 ? "bottom" : "top",
+      blocks: [{ onWord: "A", kind: "badge", text: "01" }],
+      keywords: ["short"],
+    }));
+  return { scenes, wishes: [] };
 }
+// The search tool is only handed to the model; the fake model ignores it.
 vi.mock("@ai-sdk/google", () => ({
-  createGoogleGenerativeAI: () => () => fakeModel,
+  createGoogleGenerativeAI: () =>
+    Object.assign(() => fakeModel, {
+      tools: {
+        googleSearch: () => ({
+          type: "provider",
+          id: "google.google_search",
+          args: {},
+        }),
+      },
+    }),
 }));
 
 const { appRouter } = await import("../trpc/router.js");
@@ -224,6 +241,7 @@ describe("agent runs", () => {
     expect(run.status).toBe("awaiting_approval");
     expect(run.steps.map((step) => step.name)).toEqual([
       "pickTemplate",
+      "research",
       "writeScript",
     ]);
   });
@@ -342,19 +360,24 @@ describe("agent runs", () => {
     // First draft caught by the check (FR-09), the second one clean.
     expect(run.steps.map((step) => step.name)).toEqual([
       "pickTemplate",
+      "research",
       "writeScript",
       "writeScript",
     ]);
     expect(run.script?.problems).toEqual([]);
   });
-  it("lays the video out once the script is approved", async () => {
+  it("builds the video from blocks and their motion once the script is approved", async () => {
     const { id } = await waitingForApproval();
     await api.agent.approveScript({ runId: id });
     const run = await until(id, (run) => run.status === "done");
     expect(run.script?.approved).toBe(true);
-    // One checked layout choice per scene of the script.
-    expect(run.layout?.scenes).toHaveLength(run.script!.scenes.length);
-    expect(run.steps[run.steps.length - 1].name).toBe("pickLayouts");
+    // One entry of blocks per scene, checked by the code …
+    expect(run.blocks?.scenes).toHaveLength(run.script!.scenes.length);
+    expect(run.blocks?.problems).toEqual([]);
+    // … then the motion, one entry per scene, with nothing left to fix.
+    expect(run.motion?.scenes).toHaveLength(run.script!.scenes.length);
+    expect(run.motion?.problems).toEqual([]);
+    expect(run.steps[run.steps.length - 1].name).toBe("pickMotion");
   });
 
   it("writes the script again with the user's comment (FR-10)", async () => {
@@ -379,14 +402,6 @@ describe("agent runs", () => {
     await settled(id); // waits for a hook, no script yet
     await expect(api.agent.approveScript({ runId: id })).rejects.toMatchObject({
       code: "BAD_REQUEST",
-    });
-  });
-  it("gives the editor the layout examples and the channel's style", async () => {
-    const { examples, style } = await api.agent.layoutKnowledge("dev");
-    expect(examples.length).toBeGreaterThan(0);
-    expect(style.backgrounds.length).toBeGreaterThan(0);
-    await expect(api.agent.layoutKnowledge("nope")).rejects.toMatchObject({
-      code: "NOT_FOUND",
     });
   });
   it("refuses an idea that is too short", async () => {

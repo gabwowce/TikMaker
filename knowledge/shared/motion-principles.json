@@ -1,0 +1,118 @@
+[
+  {
+    "id": "one-focus",
+    "principle": "At any moment one thing moves and holds the eye; everything else is still or settles.",
+    "why": "The viewer can follow only one moving thing. Several pictures animating at once in the same place read as a pile, not as a sequence – nothing is understood and the frame looks unstable.",
+    "inTikMaker": "Never let two blocks enter or travel in the same place at the same time. When a new block arrives, the old one has already left or is leaving the opposite way.",
+    "sources": [
+      "https://ixdf.org/literature/article/ui-animation-how-to-apply-disney-s-12-principles-of-animation-to-ui-design",
+      "https://m1.material.io/motion/choreography.html"
+    ]
+  },
+  {
+    "id": "motion-means-something",
+    "principle": "Every move says something: arriving, leaving, growing in importance, turning into something else, moving on.",
+    "why": "Motion without a reason is decoration; decoration on every element is noise. When each move matches what the voice says at that moment, the motion explains instead of distracting.",
+    "inTikMaker": "Pick an entrance for what the block MEANS at that word: a number that is the payoff can pop or zoomSettle; a next item in a list slides in from the same side as the previous one; a calm explanation can just fade.",
+    "sources": [
+      "https://ixdf.org/literature/article/ui-animation-how-to-apply-disney-s-12-principles-of-animation-to-ui-design"
+    ]
+  },
+  {
+    "id": "consistent-direction",
+    "principle": "Keep one direction of travel for things that are 'the next one' – a list, steps, the story moving on.",
+    "why": "A consistent direction builds a mental map: new things come from the right, old ones leave to the left, so 'forward' always looks the same. A different direction on every cut reads as random.",
+    "inTikMaker": "Choose a main direction for the video (e.g. in from the right, out to the left) and use it for every 'next' moment. Change direction only to mark a real change: a contrast, a turn in the story, a new chapter.",
+    "sources": ["https://m1.material.io/motion/choreography.html"]
+  },
+  {
+    "id": "continuity-across-cuts",
+    "principle": "Carry something across a cut: the same object, the same position, the same shape or the same direction of movement.",
+    "why": "A cut where nothing connects resets the viewer's attention to zero. A match – one element staying, or the motion of the outgoing scene continuing into the incoming one – makes two scenes feel like one flow.",
+    "inTikMaker": "When the same logo or object is in two consecutive scenes, carry it (link) instead of letting it leave and come back. When nothing is shared, let the outgoing block leave in the same direction the incoming one arrives from, so the motion continues.",
+    "sources": [
+      "https://morphic.com/ai-glossary/match-cut",
+      "https://m1.material.io/motion/choreography.html"
+    ]
+  },
+  {
+    "id": "few-carried",
+    "principle": "Carry at most one element across a cut.",
+    "why": "One carried element guides the eye to the next scene; several moving at once cross paths and the eye loses which one to follow.",
+    "inTikMaker": "One link per cut. Everything else leaves.",
+    "sources": ["https://m1.material.io/motion/choreography.html"]
+  },
+  {
+    "id": "ease-in-ease-out",
+    "principle": "Arrivals slow down into place; departures speed up and leave.",
+    "why": "Real objects accelerate and decelerate. Something that arrives fast and settles feels confident; something that leaves accelerating feels gone. Linear motion looks mechanical.",
+    "inTikMaker": "The code already eases every entrance out and every exit in. Use keyframe moves for deliberate travel, not for small nudges.",
+    "sources": [
+      "https://m1.material.io/motion/duration-easing.html",
+      "https://ixdf.org/literature/article/ui-animation-how-to-apply-disney-s-12-principles-of-animation-to-ui-design"
+    ]
+  },
+  {
+    "id": "exit-shorter-than-entrance",
+    "principle": "Leaving is quicker than arriving.",
+    "why": "The viewer cares about what is coming, not about what is going. A long exit holds attention on something that no longer matters.",
+    "inTikMaker": "Exits about 6–8 frames, entrances about 8–12 frames at 30 fps. Longer only for a deliberate, dramatic reveal.",
+    "sources": ["https://m1.material.io/motion/duration-easing.html"]
+  },
+  {
+    "id": "size-and-distance-set-duration",
+    "principle": "Bigger changes take longer; small ones are quick.",
+    "why": "A move across the whole frame in a few frames is a jump; a tiny fade over a second is sluggish. Duration should match how far and how much something changes.",
+    "inTikMaker": "A full-frame transition or a long keyframe travel: 12–18 frames. A badge or a small element appearing: 6–10 frames.",
+    "sources": ["https://m1.material.io/motion/duration-easing.html"]
+  },
+  {
+    "id": "overshoot-for-emphasis",
+    "principle": "A small overshoot and settle gives an element weight – use it for the few moments that matter.",
+    "why": "Overshoot draws attention because it is a little surprising. On every element it stops being a surprise and the video feels bouncy and cheap.",
+    "inTikMaker": "pop, bounceIn and zoomSettle* are the overshooting presets – reserve them for the hook, the key number and the verdict. Most blocks should arrive calmly (fade, slide, scaleIn).",
+    "sources": [
+      "https://ixdf.org/literature/article/ui-animation-how-to-apply-disney-s-12-principles-of-animation-to-ui-design"
+    ]
+  },
+  {
+    "id": "anticipation-before-payoff",
+    "principle": "Prepare the viewer just before the payoff.",
+    "why": "A brief build-up – a pause, a small zoom in, the previous element clearing the stage – makes the reveal land harder than if it simply appears.",
+    "inTikMaker": "Before the key moment, let the stage clear (the previous block leaves early) or give the incoming block a slower, larger entrance than the rest.",
+    "sources": [
+      "https://ixdf.org/literature/article/ui-animation-how-to-apply-disney-s-12-principles-of-animation-to-ui-design"
+    ]
+  },
+  {
+    "id": "stagger-groups",
+    "principle": "When several things belong together, they arrive one after another in reading order, not all at once.",
+    "why": "A staggered arrival shows the order to read them in; everything at once is a wall the viewer has to sort out themselves.",
+    "inTikMaker": "List items, schema nodes and logos already stagger inside their block. Do not add a second stagger on top of it.",
+    "sources": ["https://m1.material.io/motion/choreography.html"]
+  },
+  {
+    "id": "hold-still-to-read",
+    "principle": "Text and numbers must stop moving long enough to be read.",
+    "why": "The eye cannot read moving text. Continuous drift is fine for a picture, not for a sentence or a number the viewer has to take in.",
+    "inTikMaker": "Ken Burns (zoomIn, float…) suits objects and screenshots held longer than about 2 s, not code, terminals, lists or numbers.",
+    "sources": []
+  },
+  {
+    "id": "variety-without-chaos",
+    "principle": "Vary the motion between beats, but from a small set used consistently.",
+    "why": "The same fade on every element for a minute is boring; twenty different effects look like a template demo. Two or three entrances with a clear role each read as a style.",
+    "inTikMaker": "Give each kind of moment its own move (next item, contrast, payoff, calm explanation) and keep that pairing through the whole video.",
+    "sources": [
+      "https://m1.material.io/motion/choreography.html",
+      "https://ixdf.org/literature/article/ui-animation-how-to-apply-disney-s-12-principles-of-animation-to-ui-design"
+    ]
+  },
+  {
+    "id": "statement-is-a-breath",
+    "principle": "A frame with no picture is a pause – the cut into it should feel like the stage clearing.",
+    "why": "A statement scene works because it is empty. If the previous picture lingers or is pushed out noisily, the pause is lost.",
+    "inTikMaker": "Before a statement scene, let the last block leave cleanly (fade or a short exit) by the end of its scene.",
+    "sources": []
+  }
+]

@@ -1,21 +1,69 @@
+import { checkBlocks } from "../../../src/agent/rules/checkBlocks.js";
+import { checkMotion } from "../../../src/agent/rules/checkMotion.js";
+import type {
+  BlocksFromAi,
+  BlocksProblem,
+} from "../../../src/agent/run/4-blocks.js";
+import type {
+  MotionFromAi,
+  MotionProblem,
+} from "../../../src/agent/run/4-motion.js";
 import type { Job } from "../job.js";
-import { pickLayouts } from "../prompts/pickLayouts.js";
+import { blockLibrary, pickBlocks } from "../prompts/pickBlocks.js";
+import { pickMotion } from "../prompts/pickMotion.js";
 
-// 4 Building: the model picks a layout example for every scene of the
-// approved script and says what goes into its pictures; the code has already
-// checked the answer (pickLayouts). The editor then lays the scenes out with
-// compileProject – the agent never writes the project itself.
+// 4 Building (docs/motion-planas.md): every video is made of blocks on stage
+// types. The model picks the blocks for every scene of the approved script and
+// the code checks them (checkBlocks); problems get one fix with the previous
+// answer, as in the script step. What is left goes into blocks.problems for
+// the user to see. Then the motion, a call of its own. The editor builds the
+// project from both (projectFromBlocks) – the agent never writes it itself.
+// "Motion graphics only" only decides whether a block may ask the user for a
+// recording of their own (the screen block).
 export async function step4Building(job: Job): Promise<void> {
   const { input, script } = job.run;
   if (!script?.approved)
-    throw new Error("The video is laid out only after the script is approved");
-  const layout = await job.ai("pickLayouts", () =>
-    pickLayouts(
-      input,
-      job.workspace,
-      script.scenes,
-      job.knowledge.layoutExamples,
-    ),
-  );
-  await job.save({ layout });
+    throw new Error("The video is built only after the script is approved");
+  const pick = (previous?: {
+    blocks: BlocksFromAi;
+    problems: BlocksProblem[];
+  }) =>
+    job.ai("pickBlocks", () =>
+      pickBlocks(input, job.workspace, script.scenes, previous),
+    );
+  let blocks = await pick();
+  let problems = checkBlocks(blocks, script, blockLibrary);
+  if (problems.length) {
+    blocks = await pick({ blocks, problems });
+    problems = checkBlocks(blocks, script, blockLibrary);
+  }
+  await job.save({ blocks: { ...blocks, problems } });
+  await step4Motion(job, blocks);
+}
+
+// After the blocks: a call of its own for how everything moves
+// (docs/motion-planas.md, B), checked by code (checkMotion) with one fix, as
+// the blocks are. What is left goes into motion.problems for the user to see.
+async function step4Motion(job: Job, blocks: BlocksFromAi): Promise<void> {
+  const { script } = job.run;
+  if (!script) throw new Error("Motion needs the approved script");
+  const pick = (previous?: {
+    motion: MotionFromAi;
+    problems: MotionProblem[];
+  }) =>
+    job.ai("pickMotion", () =>
+      pickMotion(
+        script.scenes,
+        blocks,
+        job.knowledge.motionPrinciples,
+        previous,
+      ),
+    );
+  let motion = await pick();
+  let problems = checkMotion(motion, blocks, script);
+  if (problems.length) {
+    motion = await pick({ motion, problems });
+    problems = checkMotion(motion, blocks, script);
+  }
+  await job.save({ motion: { ...motion, problems } });
 }

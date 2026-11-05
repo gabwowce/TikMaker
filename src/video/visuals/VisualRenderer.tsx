@@ -27,6 +27,8 @@ import { NodeGroup } from "./diagrams/NodeGroup";
 import { Stack } from "./diagrams/Stack";
 import { Transform } from "./diagrams/Transform";
 import { ScreenRecording } from "./media/ScreenRecording";
+import { customScenes } from "../custom/registry";
+import { StageBlockVisual } from "../stage/StageBlock";
 type FrameContentProps = {
   visual: VisualConfig;
 };
@@ -136,6 +138,12 @@ export function VisualRenderer({ visual }: VisualRendererProps) {
           sfx={visual.sfx}
         />
       );
+    case "stage-block":
+      return <StageBlockVisual block={visual.block} settled={visual.settled} />;
+    case "custom-scene": {
+      const Scene = customScenes[visual.component];
+      return Scene ? <Scene /> : null;
+    }
     case "checkpoint":
       return (
         <Checkpoint

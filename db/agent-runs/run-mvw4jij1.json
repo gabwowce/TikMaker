@@ -1,0 +1,34 @@
+{
+  "id": "run-mvw4jij1",
+  "projectId": "project-1793434326769",
+  "input": {
+    "idea": "Three Claude Code shortcuts that save me an hour a day",
+    "workspaceId": "dev",
+    "targetSeconds": 40,
+    "motionOnly": false,
+    "withFace": false,
+    "generateVoice": false
+  },
+  "status": "writing_hooks",
+  "steps": [
+    {
+      "name": "pickTemplate",
+      "startedAt": 1793434409158,
+      "ms": 1532,
+      "inputTokens": 1614,
+      "outputTokens": 52,
+      "output": {
+        "videoTemplateId": "tool-tips-keyword",
+        "score": 5,
+        "reason": "This template is a perfect fit for showcasing a handful of concrete shortcuts for a specific tool like Claude Code."
+      }
+    }
+  ],
+  "createdAt": 1793434409101,
+  "template": {
+    "videoTemplateId": "tool-tips-keyword",
+    "score": 5,
+    "reason": "This template is a perfect fit for showcasing a handful of concrete shortcuts for a specific tool like Claude Code.",
+    "pickedBy": "agent"
+  }
+}

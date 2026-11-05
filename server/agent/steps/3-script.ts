@@ -2,6 +2,7 @@ import { checkScript } from "../../../src/agent/rules/checkScript.js";
 import type { ScriptInRun } from "../../../src/agent/run/3-script.js";
 import type { AgentRun } from "../../../src/agent/run/run.js";
 import { openJob, type Job } from "../job.js";
+import { research } from "../prompts/research.js";
 import { writeScript, type ScriptChange } from "../prompts/writeScript.js";
 import { findTemplate } from "./2-angle.js";
 
@@ -23,15 +24,28 @@ export async function step3Script(job: Job): Promise<void> {
         hook.text,
         job.knowledge,
         revise,
+        undefined,
+        job.run.research?.facts,
       ),
     );
   const check = (script: ScriptChange["previous"]) =>
-    checkScript(
-      script,
-      template,
-      input.targetSeconds,
-      job.knowledge.designRules,
-    );
+    checkScript(script, input.targetSeconds, job.knowledge.designRules);
+
+  // Looked up once per run; a rewrite after a comment reuses the facts. A
+  // search that fails (no search quota on the key, the network) is logged and
+  // the script is written from the idea alone, as before.
+  if (!job.run.research) {
+    try {
+      const found = await job.ai("research", () =>
+        research(input, job.workspace),
+      );
+      await job.save({
+        research: { facts: found.text, sources: found.sources },
+      });
+    } catch {
+      // job.ai has already put the failed call in the run's log.
+    }
+  }
 
   let script = await write(
     previous?.comment

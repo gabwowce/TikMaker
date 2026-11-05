@@ -74,8 +74,10 @@ etape C keisis į blokus). `stageFromBeats` – NEKELTI (pakeistas blokais).
    visas kadras (įrašas per visą ekraną), du vaizdai (palyginimas) – ir **perėjimai
    tarp jų** (tekstas nuslysta į kitą vietą, vaizdas priartėja ir „praleidžia“ į kitą
    sceną, kortelė virsta kita kortele). Tinka ir motion, ir rec video (įrašas – ekrano
-   kortelė arba visas kadras). 61 maketas lieka tik kaip analizės duomenys tipams
-   pagrįsti; BD tekstus (FR, 1.2) pakoreguosime.
+   kortelė arba visas kadras). **2026-11-05:** 61 maketas nereikalingas ir bus
+   pašalintas po etapo C (BD aprašo programą, ne analizę); kanalo stilius vėliau turi
+   keisti bent blokus, ne tik spalvas – kol kas darom paprasčiau
+   (`docs/motion-planas.md`, „Sprendimai 2026-11-05“). BD tekstus (FR, 1.2) pakoreguosime.
 3. **Kanalas ↔ biblioteka ir stilius:** kanalo faile nurodoma, kurį paketą ir kurią
    biblioteką jis naudoja (dabar `dev` → `midnight` + visa dabartinė biblioteka);
    kodas visada ima „šio kanalo“ biblioteką ir stilių. Vėliau – kanalo puslapis
@@ -94,6 +96,21 @@ etape C keisis į blokus). `stageFromBeats` – NEKELTI (pakeistas blokais).
    kanalo pavyzdžių – vėliau.
 
 Kodą į main rašo naudotoja pati, žingsnis po žingsnio (eksperimentų šaka – pavyzdys).
+
+**Principas (sutarta 2026-11-05): daugiau laisvės agentui.** Agentui neduodam iš anksto
+nustatytų „kada kurį“ taisyklių – jis sprendžia pagal situaciją; taisom tik tada, kai
+rezultatas blogas. Paliekama: tai, kas būtina, kad nemeluotų ir programa veiktų (tik iš
+sąrašų, jokių išgalvotų faktų ir nuorodų, žodžiai tikrai ištariami), ir kokybės ribos
+(tempas, trukmė +15 %, žodžiai ekrane, kabliukas iki 12 žodžių). Atlaisvinta:
+- **Šablonas – gairės, ne narvas:** scenų tvarką keisti, sceną praleisti ar pridėti
+  galima (`writeScript`); `checkScript` nebetikrina privalomų šablono scenų.
+- **CTA formulės ir kabliukų formulės – pavyzdžiai:** galima savo pabaiga ir visi trys
+  savi kabliukai (`writeHooks` – nebėra „bent 2 pagal formulę“).
+- **Ar reikia įrašo** – sprendžia agentas (be „paspaudimai, meniu…“ sąlygų).
+- Išimta taisyklė „First / Second / Third tik sąrašams“.
+- Stage tipai prompte tik aprašomi; „ne daugiau 3 to paties iš eilės“ išimta.
+**BD tekstai** (FR, Aprašas) suderinami su programa **pabaigus agentą** – tada peržiūrim,
+kad ataskaitoje būtų tik tiesa (sutarta 2026-11-05).
 
 ## Būklė 2026-11-02 (D6–D7)
 
@@ -521,6 +538,10 @@ D6 dalys (sutarta 2026-10-31; tas pats pattern'as kaip D5):
 
 ## D7. Išdėstymas ir kompiliatorius („4 Building“) – svarbiausias
 
+> **2026-11-05: pakeista.** 61 maketo pavyzdžių kelias (`pickLayouts`, `compileProject`)
+> pašalintas. „4 Building“ dabar – blokai ant stage tipų ir judesio žingsnis; žr.
+> `docs/motion-planas.md` („Būklė 2026-11-05 vakare“). Žemiau – istorija.
+
 **Tikslas:** iš patvirtinto scenarijaus – projektas, kuris atsidaro redaktoriuje.
 
 S – serveris:
@@ -576,9 +597,13 @@ gale viena `cta` scena, kitos nepakitusios.
 
 ## D10. Įgarsinimas, ataskaita, rezultatas („5 Result“)
 
-- [ ] S: ElevenLabs logiką iškelti į `server/voice/generate.ts`; ją kviečia **kodas**
-  (ne DI) su scenų `vo` tekstais, tik kai įjungta „Generuoti įgarsinimą“, būsena
-  `generating_voice`, po sudėto projekto (FR-19 – brangu, todėl pabaigoje)
+- [x] S: ElevenLabs logika iškelta į `server/voice.ts` (`generateVoice`); ją kviečia
+  **kodas** (ne DI) su scenų `vo` tekstais, tik kai įjungta „Generuoti įgarsinimą“,
+  būsena `generating_voice`, po sudėto projekto (FR-19 – brangu, todėl pabaigoje).
+  Žingsnis `server/agent/steps/5-voice.ts`, run laukas `voice` (`5-voice.ts`).
+  Redaktorius (`src/agent/agentVoice.ts`): klipai po scenomis su žodžių laikais
+  (iš jų – subtitrai), scenos ilgis pagal balsą; motion video blokai – ant tikrų
+  žodžių laikų. Skydelyje – `VoiceCard` (2026-11-05)
 - [ ] S: ataskaita: ištaisyti ir likę pažeidimai, laikas, kaina (FR-18, FR-21)
 - [ ] U: skydelio „Run“ skirtuke – ataskaita (įspėjimai, laikas, kaina); „Assets to make“
 
@@ -588,8 +613,22 @@ gale viena `cta` scena, kitos nepakitusios.
 8–10 testinių idėjų su taisymo ciklu ir be jo, lentelė (pažeidimai prieš/po, laikas,
 kaina), FR patikros lentelė.
 
+## E. Vaizdų generavimas kodu (sutarta 2026-11-02)
+
+Agentas po scenarijaus parašo istoriją ir vaizdų planą, o kodą rašantis modelis pagal
+jį nupiešia kiekvieną sceną į `custom-scene` lizdą; kodas tikrina kadrus. Formatą bus
+galima rinktis: motion, 2D siužetas, 3D, rec. **Būklė 2026-11-02:** E1–E4 padaryti
+eksperimento šakoje `experiment/e1-e4` (aplankas `C:\ig-tiktok-yt\wt-e`); geriausias
+bandymas B (Pro modelis) dar nepakankamai aiškus; kitas žingsnis – C, motion versija.
+Į main – tik gavus norimą rezultatą, žingsnis po žingsnio. Visa būklė, sprendimai ir
+eilė – `docs/vaizdu-generavimas-planas.md`; 3D – `docs/eksperimentai/3d-planas.md`,
+kodas šakoje `experiment/3d-desk`.
+
 ## D12. Vėliau, jei spėsim (FR-05, FR-02)
 
+- [ ] Šaltinis formoje (FR-03 „temą ir idėją“ papildymas): įklijuotas savas tekstas arba URL
+  (straipsnis, dokumentacija), iš kurio agentas ima faktus (`fixed` lizdai) – kad
+  scenarijus nesiremtų vien DI žiniomis (sutarta 2026-11-02)
 - [ ] (po BD) DI sukurtas ir animuotas komponentas medžiagos rėmeliui vietoj REC vietos
   (Claude Code sukuria komponentą pagal REC aprašą) – kai nėra savo įrašo
 - [ ] (po BD) perėjimas iš kanalo stiliaus: `knowledge/workspaces/<kanalas>/style.json`

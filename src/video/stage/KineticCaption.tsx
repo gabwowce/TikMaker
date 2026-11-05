@@ -3,21 +3,39 @@ import { pop, ramp } from "./pop";
 import { usePack } from "./pack";
 import { stage } from "./tokens";
 
-// Didelis kinetinis tekstas apačioje – tai, kas sakoma (kaip InsiderForce:
-// docs/bd/kadrai/insiderforce/). Tekstas eina frazėmis po 3–7 žodžius; kiekvienas
-// žodis iššoka tą kadrą, kai ištariamas. Kertiniai žodžiai (strong) – stori ir
-// ryškūs, kiti – ploni ir šiek tiek blankesni. Viena frazės dalis gali būti
-// „dėžutėje“ (boxed) – šviesus fonas, tamsus tekstas. Nauja frazė pakeičia seną.
+// Big kinetic text at the bottom – what is being said (like InsiderForce:
+// docs/bd/kadrai/insiderforce/). The text goes in phrases of 3–7 words; every
+// word pops in on the frame it is said. Key words (strong) are bold and bright,
+// the others thin and a little dimmer. One part of a phrase can be "boxed" – a
+// light background, dark text. A new phrase replaces the old one.
 
 export type CaptionWord = {
   text: string;
-  at: number; // kadras, kai ištariamas
+  at: number; // the frame it is said on
   strong?: boolean;
   boxed?: boolean;
 };
-export type CaptionPhrase = { words: CaptionWord[] };
+// `top` and `scale` – where the stage type puts the captions (stageTypes.ts);
+// unset – the "top" type's place.
+export type CaptionPhrase = {
+  words: CaptionWord[];
+  top?: number;
+  scale?: number;
+};
 
 const EXIT_FRAMES = 5;
+const GLIDE_FRAMES = 10;
+
+// Between two values (unset – `fallback`, the "top" type's), `t` of the way.
+function mix(
+  a: number | undefined,
+  b: number | undefined,
+  t: number,
+  fallback: number,
+) {
+  const from = a ?? fallback;
+  return from + ((b ?? fallback) - from) * t;
+}
 
 export function KineticCaption({ phrases }: { phrases: CaptionPhrase[] }) {
   const c = usePack();
@@ -27,9 +45,20 @@ export function KineticCaption({ phrases }: { phrases: CaptionPhrase[] }) {
     <>
       {phrases.map((phrase, i) => {
         const start = phrase.words[0].at;
+        // A new stage type puts the captions elsewhere: the phrase glides there
+        // from where the previous one stood instead of jumping.
+        const before = phrases[i - 1];
+        const move = ramp(frame, start - 2, GLIDE_FRAMES);
+        const top = mix(
+          before?.top ?? phrase.top,
+          phrase.top,
+          move,
+          stage.captionTop,
+        );
+        const scale = mix(before?.scale ?? phrase.scale, phrase.scale, move, 1);
         const next = phrases[i + 1]?.words[0].at ?? Infinity;
         if (frame < start - 2 || frame > next + EXIT_FRAMES) return null;
-        // Išėjimas: frazė pakyla ir išblunka per EXIT_FRAMES kadrų
+        // Exit: the phrase rises and fades over EXIT_FRAMES frames
         const out = Number.isFinite(next)
           ? ramp(frame, next - 1, EXIT_FRAMES)
           : 0;
@@ -40,14 +69,14 @@ export function KineticCaption({ phrases }: { phrases: CaptionPhrase[] }) {
               position: "absolute",
               left: (1080 - stage.contentWidth) / 2,
               width: stage.contentWidth,
-              top: stage.captionTop,
+              top,
               display: "flex",
               flexWrap: "wrap",
               justifyContent: "center",
               alignItems: "baseline",
               columnGap: "0.24em",
               rowGap: 6,
-              fontSize: stage.captionSize * c.widthFactor,
+              fontSize: stage.captionSize * c.widthFactor * scale,
               lineHeight: stage.captionLine,
               letterSpacing: "-0.025em",
               opacity: 1 - out,
@@ -106,8 +135,8 @@ function Word({
   );
 }
 
-// Dėžutė užsipildo iš kairės, kai ištariamas pirmas jos žodis, o žodžiai
-// joje iššoka kaip ir kiti.
+// The box fills from the left when its first word is said, and the words in
+// it pop in like the others.
 function BoxedGroup({
   words,
   frame,
@@ -166,8 +195,8 @@ function groupBoxed(words: CaptionWord[]) {
   return groups;
 }
 
-// Pagalbinė: sakinys → žodžiai su laikais. `*žodis*` – kertinis, `[frazė]` –
-// dėžutėje. Laikas – pagal kalbėjimo greitį nuo `start` kadro.
+// Helper: a sentence → words with times. `*word*` – a key word, `[phrase]` –
+// boxed. Times follow the speaking rate from the `start` frame.
 export function phrasesFrom(
   lines: string[],
   start: number,
@@ -186,7 +215,7 @@ export function phrasesFrom(
       }
       const closes = text.endsWith("]");
       if (closes) text = text.slice(0, -1);
-      // *žodis* arba *žodis*, (skyrybos ženklas po žvaigždutės)
+      // *word* or *word*, (a punctuation mark after the asterisk)
       const marked = /^\*(.+)\*([,.!?;:]*)$/.exec(text);
       const strong = Boolean(marked);
       if (marked) text = marked[1] + marked[2];

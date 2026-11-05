@@ -1,0 +1,108 @@
+{
+  "id": "project-1793600302151",
+  "title": "ScriptCard check",
+  "workspaceId": "dev",
+  "videoTemplateId": "how-to-steps",
+  "fps": 30,
+  "width": 1080,
+  "height": 1920,
+  "storyPlan": {
+    "premise": "How to undo the last git commit in a few seconds"
+  },
+  "scenes": [
+    {
+      "id": "scene-run-mvyvbafw-1",
+      "plan": {
+        "role": "hook",
+        "visualBrief": "A terminal window showing git status"
+      },
+      "vo": "You committed the wrong thing?",
+      "background": "solid-dark",
+      "content": {
+        "richHeadline": [
+          {
+            "text": "Wrong commit?",
+            "size": "hero",
+            "lane": 0
+          }
+        ]
+      },
+      "type": "hook-centered"
+    },
+    {
+      "id": "scene-run-mvyvbafw-2",
+      "plan": {
+        "role": "item",
+        "visualBrief": "Terminal typing git reset command"
+      },
+      "vo": "First, open your terminal and type git reset --soft HEAD~1.",
+      "background": "solid-dark",
+      "content": {
+        "richHeadline": [
+          {
+            "text": "git reset --soft HEAD~1",
+            "size": "title"
+          }
+        ]
+      },
+      "type": "visual-explainer"
+    },
+    {
+      "id": "scene-run-mvyvbafw-3",
+      "plan": {
+        "role": "item",
+        "visualBrief": "Terminal showing git status with files still modified"
+      },
+      "vo": "Second, keep your changes staged by using the soft flag.",
+      "background": "solid-dark",
+      "content": {
+        "richHeadline": [
+          {
+            "text": "Keep changes staged",
+            "size": "title"
+          }
+        ]
+      },
+      "type": "visual-explainer"
+    },
+    {
+      "id": "scene-run-mvyvbafw-4",
+      "plan": {
+        "role": "benefit",
+        "visualBrief": "Code editor showing the modified files"
+      },
+      "vo": "As a result, your code stays safe and you can fix the mistake instantly.",
+      "notes": "🎥 Your own recording",
+      "background": "solid-dark",
+      "content": {
+        "richHeadline": [
+          {
+            "text": "Code stays safe",
+            "size": "title"
+          }
+        ]
+      },
+      "type": "visual-explainer"
+    },
+    {
+      "id": "scene-run-mvyvbafw-5",
+      "plan": {
+        "role": "cta",
+        "visualBrief": "A terminal window running git log"
+      },
+      "vo": "Comment GIT and I'll send you my ebook. Make sure you follow TikMaker.",
+      "background": "solid-dark",
+      "content": {
+        "richHeadline": [
+          {
+            "text": "Comment GIT for ebook",
+            "size": "headline"
+          }
+        ]
+      },
+      "type": "takeaway"
+    }
+  ],
+  "savedAt": 1793617037336,
+  "audioClips": []
+}

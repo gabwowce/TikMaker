@@ -1,0 +1,771 @@
+{
+  "id": "project-1793868580235",
+  "title": "6e motion test (Claude)",
+  "workspaceId": "dev",
+  "videoTemplateId": "pain-to-fix",
+  "fps": 30,
+  "width": 1080,
+  "height": 1920,
+  "storyPlan": {
+    "premise": "How to undo your last git commit without losing your changes: git reset --soft HEAD~1"
+  },
+  "scenes": [
+    {
+      "id": "scene-run-mw3b1l2d-1",
+      "plan": {
+        "role": "hook",
+        "visualBrief": "Animated git log graph: a fresh commit dot pops onto the branch with a red 'oops' badge; a trash can icon hovers nearby and gets crossed out"
+      },
+      "vo": "Committed too early? Don't delete your work. Do this instead.",
+      "background": "stage",
+      "content": {
+        "items": [],
+        "richHeadline": [],
+        "blocks": [],
+        "visuals": [
+          {
+            "id": "scene-run-mw3b1l2d-1-block-1",
+            "visual": {
+              "type": "stage-block",
+              "block": {
+                "onWord": "Committed",
+                "kind": "object",
+                "id": "frustration"
+              }
+            },
+            "x": 50,
+            "y": 34.11458333333333,
+            "scale": 1,
+            "entrance": "fade",
+            "entranceDuration": 4,
+            "exit": "fade",
+            "exitDuration": 8,
+            "delay": 0,
+            "exitAt": 66,
+            "sfx": "none",
+            "exitSfx": "none",
+            "lane": 1
+          },
+          {
+            "id": "scene-run-mw3b1l2d-1-block-2",
+            "visual": {
+              "type": "stage-block",
+              "block": {
+                "onWord": "Do",
+                "kind": "object",
+                "id": "uturn"
+              }
+            },
+            "x": 50,
+            "y": 34.11458333333333,
+            "scale": 1,
+            "entrance": "fade",
+            "entranceDuration": 4,
+            "exit": "fade",
+            "exitDuration": 8,
+            "delay": 66,
+            "exitAt": 109,
+            "sfx": "none",
+            "exitSfx": "none",
+            "lane": 0,
+            "keyframes": [
+              {
+                "id": "scene-run-mw3b1l2d-1-block-2-from",
+                "frame": 97,
+                "y": 34.11458333333333,
+                "scale": 1
+              },
+              {
+                "id": "scene-run-mw3b1l2d-1-block-2-to",
+                "frame": 109,
+                "y": 27.083333333333332,
+                "scale": 0.68
+              }
+            ]
+          }
+        ]
+      },
+      "stage": "top",
+      "motion": {
+        "entrance": "none",
+        "transition": "cut"
+      },
+      "type": "visual-explainer"
+    },
+    {
+      "id": "scene-run-mw3b1l2d-2",
+      "plan": {
+        "role": "setup",
+        "visualBrief": "Stylized terminal showing 'git commit -m \"fix lgoin bug\"'; the typo 'lgoin' gets circled in red, and a file icon 'auth.js' slides in labeled 'not committed'"
+      },
+      "vo": "You commit, then spot a typo or a forgotten file.",
+      "background": "stage",
+      "content": {
+        "visuals": [
+          {
+            "id": "scene-run-mw3b1l2d-2-block-1",
+            "visual": {
+              "type": "stage-block",
+              "block": {
+                "onWord": "commit,",
+                "kind": "terminal",
+                "lines": [
+                  "git commit -m \"fix lgoin bug\"",
+                  "[main a1b2c3d] fix lgoin bug"
+                ]
+              }
+            },
+            "x": 50,
+            "y": 27.083333333333332,
+            "scale": 0.68,
+            "entrance": "fade",
+            "entranceDuration": 4,
+            "exit": "fade",
+            "exitDuration": 8,
+            "delay": 9,
+            "exitAt": 109,
+            "sfx": "none",
+            "exitSfx": "none",
+            "lane": 0,
+            "keyframes": [
+              {
+                "id": "scene-run-mw3b1l2d-2-block-1-from",
+                "frame": 97,
+                "y": 27.083333333333332,
+                "scale": 0.68
+              },
+              {
+                "id": "scene-run-mw3b1l2d-2-block-1-to",
+                "frame": 109,
+                "y": 34.11458333333333,
+                "scale": 1
+              }
+            ]
+          },
+          {
+            "id": "scene-run-mw3b1l2d-2-block-2",
+            "visual": {
+              "type": "stage-block",
+              "block": {
+                "onWord": "forgotten",
+                "kind": "code",
+                "file": "git status",
+                "lines": [
+                  "Untracked files:",
+                  "+ auth.js"
+                ]
+              }
+            },
+            "x": 50,
+            "y": 57.8125,
+            "scale": 0.68,
+            "entrance": "fade",
+            "entranceDuration": 4,
+            "exit": "fade",
+            "exitDuration": 8,
+            "delay": 75,
+            "exitAt": 109,
+            "sfx": "none",
+            "exitSfx": "none",
+            "lane": 1,
+            "keyframes": [
+              {
+                "id": "scene-run-mw3b1l2d-2-block-2-from",
+                "frame": 97,
+                "y": 57.8125,
+                "scale": 0.68
+              },
+              {
+                "id": "scene-run-mw3b1l2d-2-block-2-to",
+                "frame": 109,
+                "y": 34.11458333333333,
+                "scale": 1
+              }
+            ]
+          }
+        ]
+      },
+      "stage": "split",
+      "motion": {
+        "entrance": "none",
+        "transition": "cut"
+      },
+      "type": "visual-explainer"
+    },
+    {
+      "id": "scene-run-mw3b1l2d-3",
+      "plan": {
+        "role": "problem",
+        "visualBrief": "Terminal types 'git reset --hard HEAD~1'; code file cards beside it flash red and dissolve into dust"
+      },
+      "vo": "But reset --hard overwrites your files. Uncommitted work: gone.",
+      "background": "stage",
+      "content": {
+        "visuals": [
+          {
+            "id": "scene-run-mw3b1l2d-3-block-1",
+            "visual": {
+              "type": "stage-block",
+              "block": {
+                "onWord": "reset",
+                "kind": "terminal",
+                "lines": [
+                  "git reset --hard HEAD~1",
+                  "HEAD is now at 7e4f0b2"
+                ]
+              }
+            },
+            "x": 50,
+            "y": 34.11458333333333,
+            "scale": 1,
+            "entrance": "fade",
+            "entranceDuration": 4,
+            "exit": "fade",
+            "exitDuration": 8,
+            "delay": 9,
+            "exitAt": 56,
+            "sfx": "none",
+            "exitSfx": "none",
+            "lane": 0
+          },
+          {
+            "id": "scene-run-mw3b1l2d-3-block-2",
+            "visual": {
+              "type": "stage-block",
+              "block": {
+                "onWord": "Uncommitted",
+                "kind": "object",
+                "id": "broken-glass"
+              }
+            },
+            "x": 50,
+            "y": 34.11458333333333,
+            "scale": 1,
+            "entrance": "fade",
+            "entranceDuration": 4,
+            "exit": "fade",
+            "exitDuration": 8,
+            "delay": 56,
+            "exitAt": 99,
+            "sfx": "none",
+            "exitSfx": "none",
+            "lane": 0,
+            "keyframes": [
+              {
+                "id": "scene-run-mw3b1l2d-3-block-2-from",
+                "frame": 87,
+                "y": 34.11458333333333,
+                "scale": 1
+              },
+              {
+                "id": "scene-run-mw3b1l2d-3-block-2-to",
+                "frame": 99,
+                "y": 44.79166666666667,
+                "scale": 1.12
+              }
+            ]
+          }
+        ]
+      },
+      "stage": "top",
+      "motion": {
+        "entrance": "none",
+        "transition": "cut"
+      },
+      "type": "visual-explainer"
+    },
+    {
+      "id": "scene-run-mw3b1l2d-4",
+      "plan": {
+        "role": "reveal",
+        "visualBrief": "The command types itself out in big monospace text on a dark terminal, '--soft' highlighted in green"
+      },
+      "vo": "Instead, use git reset --soft HEAD~1.",
+      "background": "stage",
+      "content": {
+        "visuals": [
+          {
+            "id": "scene-run-mw3b1l2d-4-block-1",
+            "visual": {
+              "type": "stage-block",
+              "block": {
+                "onWord": "Instead,",
+                "kind": "terminal",
+                "lines": [
+                  "git reset --soft HEAD~1",
+                  "# changes kept, staged"
+                ]
+              }
+            },
+            "x": 50,
+            "y": 44.79166666666667,
+            "scale": 1.12,
+            "entrance": "fade",
+            "entranceDuration": 4,
+            "exit": "fade",
+            "exitDuration": 8,
+            "delay": 0,
+            "exitAt": 71,
+            "sfx": "none",
+            "exitSfx": "none",
+            "lane": 0,
+            "keyframes": [
+              {
+                "id": "scene-run-mw3b1l2d-4-block-1-from",
+                "frame": 59,
+                "y": 44.79166666666667,
+                "scale": 1.12
+              },
+              {
+                "id": "scene-run-mw3b1l2d-4-block-1-to",
+                "frame": 71,
+                "y": 27.083333333333332,
+                "scale": 0.68
+              }
+            ]
+          }
+        ]
+      },
+      "stage": "full",
+      "motion": {
+        "entrance": "none",
+        "transition": "cut"
+      },
+      "type": "visual-explainer"
+    },
+    {
+      "id": "scene-run-mw3b1l2d-5",
+      "plan": {
+        "role": "demo",
+        "visualBrief": "Commit graph: the HEAD/branch label slides back one dot; the removed commit's files fly into a green 'Staged' box, intact"
+      },
+      "vo": "HEAD~1 means one commit back. Your branch steps back, and your changes stay staged.",
+      "background": "stage",
+      "content": {
+        "visuals": [
+          {
+            "id": "scene-run-mw3b1l2d-5-block-1",
+            "visual": {
+              "type": "stage-block",
+              "block": {
+                "onWord": "HEAD~1",
+                "kind": "schema",
+                "nodes": [
+                  {
+                    "label": "HEAD~1"
+                  },
+                  {
+                    "label": "HEAD (oops)"
+                  }
+                ]
+              }
+            },
+            "x": 50,
+            "y": 27.083333333333332,
+            "scale": 0.68,
+            "entrance": "fade",
+            "entranceDuration": 4,
+            "exit": "fade",
+            "exitDuration": 8,
+            "delay": 0,
+            "exitAt": 113,
+            "sfx": "none",
+            "exitSfx": "none",
+            "lane": 0
+          },
+          {
+            "id": "scene-run-mw3b1l2d-5-block-2",
+            "visual": {
+              "type": "stage-block",
+              "block": {
+                "onWord": "branch",
+                "kind": "object",
+                "id": "uturn"
+              }
+            },
+            "x": 50,
+            "y": 57.8125,
+            "scale": 0.68,
+            "entrance": "fade",
+            "entranceDuration": 4,
+            "exit": "fade",
+            "exitDuration": 8,
+            "delay": 66,
+            "exitAt": 146,
+            "sfx": "none",
+            "exitSfx": "none",
+            "lane": 1,
+            "keyframes": [
+              {
+                "id": "scene-run-mw3b1l2d-5-block-2-from",
+                "frame": 134,
+                "y": 57.8125,
+                "scale": 0.68
+              },
+              {
+                "id": "scene-run-mw3b1l2d-5-block-2-to",
+                "frame": 146,
+                "y": 34.11458333333333,
+                "scale": 1
+              }
+            ]
+          },
+          {
+            "id": "scene-run-mw3b1l2d-5-block-3",
+            "visual": {
+              "type": "stage-block",
+              "block": {
+                "onWord": "changes",
+                "kind": "terminal",
+                "lines": [
+                  "git status",
+                  "Changes to be committed:",
+                  "  modified: auth.js"
+                ]
+              }
+            },
+            "x": 50,
+            "y": 27.083333333333332,
+            "scale": 0.68,
+            "entrance": "fade",
+            "entranceDuration": 4,
+            "exit": "fade",
+            "exitDuration": 8,
+            "delay": 113,
+            "exitAt": 146,
+            "sfx": "none",
+            "exitSfx": "none",
+            "lane": 0,
+            "keyframes": [
+              {
+                "id": "scene-run-mw3b1l2d-5-block-3-from",
+                "frame": 134,
+                "y": 27.083333333333332,
+                "scale": 0.68
+              },
+              {
+                "id": "scene-run-mw3b1l2d-5-block-3-to",
+                "frame": 146,
+                "y": 34.11458333333333,
+                "scale": 1
+              }
+            ]
+          }
+        ]
+      },
+      "stage": "split",
+      "motion": {
+        "entrance": "none",
+        "transition": "cut"
+      },
+      "type": "visual-explainer"
+    },
+    {
+      "id": "scene-run-mw3b1l2d-6",
+      "plan": {
+        "role": "demo",
+        "visualBrief": "Terminal: 'git add auth.js' then 'git commit -m \"fix login bug\"'; a new clean commit dot appears on the graph with a green check"
+      },
+      "vo": "Fix the typo or add the file, then commit again.",
+      "background": "stage",
+      "content": {
+        "visuals": [
+          {
+            "id": "scene-run-mw3b1l2d-6-block-1",
+            "visual": {
+              "type": "stage-block",
+              "block": {
+                "onWord": "Fix",
+                "kind": "list",
+                "items": [
+                  "Fix the typo",
+                  "git add auth.js",
+                  "Commit again"
+                ]
+              }
+            },
+            "x": 50,
+            "y": 34.11458333333333,
+            "scale": 1,
+            "entrance": "fade",
+            "entranceDuration": 4,
+            "exit": "fade",
+            "exitDuration": 8,
+            "delay": 0,
+            "exitAt": 75,
+            "sfx": "none",
+            "exitSfx": "none",
+            "lane": 0
+          },
+          {
+            "id": "scene-run-mw3b1l2d-6-block-2",
+            "visual": {
+              "type": "stage-block",
+              "block": {
+                "onWord": "commit",
+                "kind": "terminal",
+                "lines": [
+                  "git commit -m \"fix login bug\"",
+                  "[main 9f3e2a1] fix login bug"
+                ]
+              }
+            },
+            "x": 50,
+            "y": 34.11458333333333,
+            "scale": 1,
+            "entrance": "fade",
+            "entranceDuration": 4,
+            "exit": "fade",
+            "exitDuration": 8,
+            "delay": 75,
+            "exitAt": 109,
+            "sfx": "none",
+            "exitSfx": "none",
+            "lane": 0
+          }
+        ]
+      },
+      "stage": "top",
+      "motion": {
+        "entrance": "none",
+        "transition": "cut"
+      },
+      "type": "visual-explainer"
+    },
+    {
+      "id": "scene-run-mw3b1l2d-7",
+      "plan": {
+        "role": "demo",
+        "visualBrief": "Five small commit dots on the graph merge into one larger dot after 'git reset --soft HEAD~5' and 'git commit' appear in the terminal"
+      },
+      "vo": "Bonus: reset --soft HEAD~5, then commit, squashes five commits into one.",
+      "background": "stage",
+      "content": {
+        "visuals": [
+          {
+            "id": "scene-run-mw3b1l2d-7-block-1",
+            "visual": {
+              "type": "stage-block",
+              "block": {
+                "onWord": "Bonus:",
+                "kind": "badge",
+                "text": "Bonus"
+              }
+            },
+            "x": 50,
+            "y": 34.11458333333333,
+            "scale": 1,
+            "entrance": "fade",
+            "entranceDuration": 4,
+            "exit": "fade",
+            "exitDuration": 8,
+            "delay": 0,
+            "exitAt": 9,
+            "sfx": "none",
+            "exitSfx": "none",
+            "lane": 0
+          },
+          {
+            "id": "scene-run-mw3b1l2d-7-block-2",
+            "visual": {
+              "type": "stage-block",
+              "block": {
+                "onWord": "reset",
+                "kind": "terminal",
+                "lines": [
+                  "git reset --soft HEAD~5",
+                  "git commit -m \"one clean commit\""
+                ]
+              }
+            },
+            "x": 50,
+            "y": 34.11458333333333,
+            "scale": 1,
+            "entrance": "fade",
+            "entranceDuration": 4,
+            "exit": "fade",
+            "exitDuration": 8,
+            "delay": 9,
+            "exitAt": 66,
+            "sfx": "none",
+            "exitSfx": "none",
+            "lane": 0
+          },
+          {
+            "id": "scene-run-mw3b1l2d-7-block-3",
+            "visual": {
+              "type": "stage-block",
+              "block": {
+                "onWord": "squashes",
+                "kind": "compare",
+                "before": {
+                  "label": "Commits",
+                  "value": "5"
+                },
+                "after": {
+                  "label": "After squash",
+                  "value": "1"
+                }
+              }
+            },
+            "x": 50,
+            "y": 34.11458333333333,
+            "scale": 1,
+            "entrance": "fade",
+            "entranceDuration": 4,
+            "exit": "fade",
+            "exitDuration": 8,
+            "delay": 66,
+            "exitAt": 118,
+            "sfx": "none",
+            "exitSfx": "none",
+            "lane": 0,
+            "keyframes": [
+              {
+                "id": "scene-run-mw3b1l2d-7-block-3-from",
+                "frame": 106,
+                "y": 34.11458333333333,
+                "scale": 1
+              },
+              {
+                "id": "scene-run-mw3b1l2d-7-block-3-to",
+                "frame": 118,
+                "y": 27.083333333333332,
+                "scale": 0.68
+              }
+            ]
+          }
+        ]
+      },
+      "stage": "top",
+      "motion": {
+        "entrance": "none",
+        "transition": "cut"
+      },
+      "type": "visual-explainer"
+    },
+    {
+      "id": "scene-run-mw3b1l2d-8",
+      "plan": {
+        "role": "benefit",
+        "visualBrief": "Split card: left a green shield over the files labeled 'local: reset --soft'; right a cloud icon labeled 'pushed: git revert' adding a new undo commit to the graph"
+      },
+      "vo": "Files untouched. Already pushed to a shared branch? Use git revert instead.",
+      "background": "stage",
+      "content": {
+        "visuals": [
+          {
+            "id": "scene-run-mw3b1l2d-8-block-1",
+            "visual": {
+              "type": "stage-block",
+              "block": {
+                "onWord": "Files",
+                "kind": "object",
+                "id": "padlock"
+              }
+            },
+            "x": 50,
+            "y": 27.083333333333332,
+            "scale": 0.68,
+            "entrance": "fade",
+            "entranceDuration": 4,
+            "exit": "fade",
+            "exitDuration": 8,
+            "delay": 0,
+            "exitAt": 94,
+            "sfx": "none",
+            "exitSfx": "none",
+            "lane": 0
+          },
+          {
+            "id": "scene-run-mw3b1l2d-8-block-2",
+            "visual": {
+              "type": "stage-block",
+              "block": {
+                "onWord": "pushed",
+                "kind": "compare",
+                "before": {
+                  "label": "Local",
+                  "value": "reset --soft"
+                },
+                "after": {
+                  "label": "Already pushed",
+                  "value": "git revert"
+                }
+              }
+            },
+            "x": 50,
+            "y": 57.8125,
+            "scale": 0.68,
+            "entrance": "fade",
+            "entranceDuration": 4,
+            "exit": "fade",
+            "exitDuration": 8,
+            "delay": 28,
+            "exitAt": 128,
+            "sfx": "none",
+            "exitSfx": "none",
+            "lane": 1
+          },
+          {
+            "id": "scene-run-mw3b1l2d-8-block-3",
+            "visual": {
+              "type": "stage-block",
+              "block": {
+                "onWord": "revert",
+                "kind": "terminal",
+                "lines": [
+                  "git revert HEAD",
+                  "[main 4c8d1e0] Revert \"fix bug\""
+                ]
+              }
+            },
+            "x": 50,
+            "y": 27.083333333333332,
+            "scale": 0.68,
+            "entrance": "fade",
+            "entranceDuration": 4,
+            "exit": "fade",
+            "exitDuration": 8,
+            "delay": 94,
+            "exitAt": 128,
+            "sfx": "none",
+            "exitSfx": "none",
+            "lane": 0
+          }
+        ]
+      },
+      "stage": "split",
+      "motion": {
+        "entrance": "none",
+        "transition": "cut"
+      },
+      "type": "visual-explainer"
+    }
+  ],
+  "captions": {
+    "style": "kinetic",
+    "keywords": [
+      "Committed",
+      "delete",
+      "typo",
+      "forgotten",
+      "--hard",
+      "gone.",
+      "--soft",
+      "HEAD~1.",
+      "HEAD~1",
+      "staged.",
+      "Fix",
+      "commit",
+      "Bonus:",
+      "HEAD~5,",
+      "squashes",
+      "untouched.",
+      "pushed",
+      "revert"
+    ]
+  },
+  "savedAt": 1793869303085,
+  "audioClips": []
+}

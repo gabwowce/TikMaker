@@ -5,6 +5,7 @@ import { projectDurationInFrames } from "./utils/duration";
 import { parseProject } from "./utils/normalizeProject";
 import { StageCatalog, STAGE_CATALOG_FRAMES } from "./video/stage/StageCatalog";
 import { StageDemo, STAGE_DEMO_FRAMES } from "./video/stage/StageDemo";
+import { StageTypes, STAGE_TYPES_FRAMES } from "./video/stage/StageTypesDemo";
 import { TikTokVideo } from "./video/TikTokVideo";
 import { videoDefaults } from "./video/typography/tokens";
 const showcaseProject = parseProject(showcaseProjectJson);
@@ -35,11 +36,20 @@ export function RemotionRoot() {
         width={videoDefaults.width}
         height={videoDefaults.height}
       />
-      {/* Visi stage blokai iš eilės (docs/motion-planas.md) */}
+      {/* All stage blocks in a row (docs/motion-planas.md) */}
       <Composition
         id="StageCatalog"
         component={StageCatalog}
         durationInFrames={STAGE_CATALOG_FRAMES}
+        fps={videoDefaults.fps}
+        width={videoDefaults.width}
+        height={videoDefaults.height}
+      />
+      {/* The five stage types (docs/motion-planas.md) */}
+      <Composition
+        id="StageTypes"
+        component={StageTypes}
+        durationInFrames={STAGE_TYPES_FRAMES}
         fps={videoDefaults.fps}
         width={videoDefaults.width}
         height={videoDefaults.height}

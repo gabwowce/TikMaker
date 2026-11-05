@@ -12,15 +12,15 @@ import { callStructured, type StructuredResult } from "../llm.js";
 // formulas whose type the template allows, with one example each — enough to
 // follow them, and the prompt stays small.
 
-// At least this many of the three follow a formula from the knowledge base.
-export const MIN_FROM_FORMULAS = 2;
-
 const SYSTEM = `You write the opening line (hook) of a short vertical video (TikTok, Reels, Shorts):
 the words shown and spoken in the first two seconds, which decide whether people keep watching.
 
 Write THREE different hooks for the idea.
-At least two must follow a formula from the list: fill the formula in for this idea,
-do not copy its example. formulaId = that formula's id, or null for a hook of your own.
+The formulas show openings that have worked: follow one where it fits this idea (fill it
+in, do not copy its example) or write your own. formulaId = the formula's id, or null for
+a hook of your own.
+Fill a formula only with what the idea says: never claim something it does not
+(no "I switched from…", no number, no result the idea does not give).
 Each hook: one line, at most 12 words, plain spoken English, no hashtags, no emojis.
 score: 5 = people stop scrolling, 3 = fine, 1 = weak.`;
 
@@ -60,24 +60,17 @@ export async function writeHooks(
   if (ids.length === 0)
     throw new Error(`No hook formula fits the template "${template.id}"`);
 
-  // Three hooks; a formulaId must be one of the usable formulas, and at least
-  // two must have one. A reply that breaks either is asked for again.
-  const schema = z
-    .object({
-      hooks: z
-        .array(
-          hookFromAi.extend({
-            formulaId: z.enum(ids as [string, ...string[]]).nullable(),
-          }),
-        )
-        .length(3),
-    })
-    .refine(
-      (answer) =>
-        answer.hooks.filter((hook) => hook.formulaId !== null).length >=
-        MIN_FROM_FORMULAS,
-      `At least ${MIN_FROM_FORMULAS} hooks must follow a formula from the list`,
-    );
+  // Three hooks; a formulaId, when given, must be one of the usable formulas.
+  // A reply that breaks it is asked for again.
+  const schema = z.object({
+    hooks: z
+      .array(
+        hookFromAi.extend({
+          formulaId: z.enum(ids as [string, ...string[]]).nullable(),
+        }),
+      )
+      .length(3),
+  });
 
   const result = await callStructured(
     schema,

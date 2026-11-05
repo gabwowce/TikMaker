@@ -1,0 +1,1176 @@
+{
+  "id": "project-1793873865797",
+  "title": "7 testas - 2 tema",
+  "workspaceId": "dev",
+  "videoTemplateId": "build-it-fast",
+  "fps": 30,
+  "width": 1080,
+  "height": 1920,
+  "storyPlan": {
+    "premise": "AI Agent: Turn Screenshots Into Code.\nAn educational video explaining how AI coding agents can recreate website interfaces from screenshots. Show how a developer provides a screenshot of a website to an AI agent, which analyzes its visual structure, identifies UI elements, colors, spacing, typography and layout, then generates the corresponding HTML, CSS and React components. The result is a functional webpage that visually resembles the original design."
+  },
+  "scenes": [
+    {
+      "id": "scene-run-mw3e6yup-1",
+      "plan": {
+        "role": "hook",
+        "visualBrief": "Split screen: on the left a static screenshot of a website landing page, on the right the rebuilt page running live in a browser, with the cursor scrolling it"
+      },
+      "layoutExampleId": "hook-04",
+      "durationSeconds": 3.4610000000000003,
+      "vo": "I gave an AI agent one screenshot. It built this page.",
+      "notes": "🎥 Your own recording",
+      "background": "solid-dark",
+      "content": {
+        "richHeadline": [
+          {
+            "text": "ONE screenshot → THIS page",
+            "size": "title",
+            "x": 50,
+            "y": 50,
+            "lane": 0
+          }
+        ],
+        "visuals": [
+          {
+            "id": "scene-run-mw3e6yup-1-v1",
+            "visual": {
+              "type": "screen",
+              "aspect": "16:10",
+              "content": {
+                "type": "checkpoint",
+                "label": "REC",
+                "detail": "Record the rebuilt page running live in the browser next to the original screenshot, scrolling it with the cursor."
+              }
+            },
+            "x": 50,
+            "y": 27.5,
+            "scale": 0.9534883720930233,
+            "kenBurns": "zoomIn",
+            "lane": 1
+          },
+          {
+            "id": "scene-run-mw3e6yup-1-v2",
+            "visual": {
+              "type": "logo",
+              "logo": "claude"
+            },
+            "x": 22.5,
+            "y": 62.5,
+            "scale": 0.8290909090909091,
+            "lane": 2
+          },
+          {
+            "id": "scene-run-mw3e6yup-1-v3",
+            "visual": {
+              "type": "logo",
+              "logo": "vs-code"
+            },
+            "x": 71,
+            "y": 71.5,
+            "scale": 1.7672727272727273,
+            "lane": 3
+          },
+          {
+            "id": "scene-run-mw3e6yup-1-v4",
+            "visual": {
+              "type": "logo",
+              "logo": "google-chrome"
+            },
+            "x": 27.5,
+            "y": 87.5,
+            "scale": 1.570909090909091,
+            "lane": 4
+          }
+        ],
+        "textOnTop": true
+      },
+      "motion": {
+        "entrance": "fade",
+        "transition": "cut",
+        "stagger": 4
+      },
+      "type": "hook-centered"
+    },
+    {
+      "id": "scene-run-mw3e6yup-2",
+      "plan": {
+        "role": "demo",
+        "visualBrief": "Screen recording: the website screenshot is dragged into the AI agent's chat window and a short prompt is typed asking it to rebuild the page"
+      },
+      "layoutExampleId": "demo-01",
+      "durationSeconds": 6.201,
+      "vo": "First, I drop one screenshot into the agent. It runs on a multimodal model, so it reads images as well as text.",
+      "notes": "🎥 Your own recording",
+      "background": "solid-dark",
+      "content": {
+        "visuals": [
+          {
+            "id": "scene-run-mw3e6yup-2-v1",
+            "visual": {
+              "type": "screen",
+              "aspect": "9:16",
+              "content": {
+                "type": "checkpoint",
+                "label": "REC",
+                "detail": "Screen-record dragging the website screenshot into the AI agent's chat and typing a short prompt asking it to rebuild the page."
+              }
+            },
+            "x": 50,
+            "y": 44,
+            "scale": 1.4297872340425533,
+            "kenBurns": "zoomIn"
+          }
+        ],
+        "textOnTop": true
+      },
+      "motion": {
+        "entrance": "none",
+        "transition": "slideLeft",
+        "stagger": 6
+      },
+      "type": "visual-explainer"
+    },
+    {
+      "id": "scene-run-mw3e6yup-3",
+      "plan": {
+        "role": "demo",
+        "visualBrief": "The screenshot with boxes drawn over the header, hero, cards and footer, labels popping up for hex colors, font names and spacing values"
+      },
+      "layoutExampleId": "demo-02",
+      "durationSeconds": 7.084,
+      "vo": "Second, it breaks the picture down: page blocks, text, colors, spacing, typography, and where every element sits.",
+      "background": "solid-dark",
+      "content": {
+        "richHeadline": [
+          {
+            "text": "2. Blocks · Text · Colors",
+            "size": "body",
+            "pill": true,
+            "x": 51,
+            "y": 19.5
+          },
+          {
+            "text": "· Spacing · Fonts · Layout",
+            "size": "label",
+            "x": 50,
+            "y": 63.5
+          }
+        ],
+        "visuals": [
+          {
+            "id": "scene-run-mw3e6yup-3-v1",
+            "visual": {
+              "type": "prop",
+              "asset": "eye"
+            },
+            "x": 50,
+            "y": 50,
+            "scale": 1.3292307692307692
+          }
+        ],
+        "textOnTop": true
+      },
+      "motion": {
+        "entrance": "none",
+        "transition": "slideLeft",
+        "stagger": 6
+      },
+      "type": "visual-explainer"
+    },
+    {
+      "id": "scene-run-mw3e6yup-4",
+      "plan": {
+        "role": "demo",
+        "visualBrief": "Screen recording: the agent streaming code into files, a Header.jsx and Hero.jsx component appearing in the editor's file tree with Tailwind classes"
+      },
+      "layoutExampleId": "demo-01",
+      "durationSeconds": 6.154999999999999,
+      "vo": "Third, it writes the code: plain HTML and CSS, or React components styled with Tailwind.",
+      "notes": "🎥 Your own recording",
+      "background": "solid-dark",
+      "content": {
+        "visuals": [
+          {
+            "id": "scene-run-mw3e6yup-4-v1",
+            "visual": {
+              "type": "screen",
+              "aspect": "9:16",
+              "content": {
+                "type": "checkpoint",
+                "label": "REC",
+                "detail": "Screen-record the agent streaming code into files, with Header.jsx and Hero.jsx showing up in the editor's file tree and Tailwind classes visible."
+              }
+            },
+            "x": 50,
+            "y": 44,
+            "scale": 1.4297872340425533,
+            "kenBurns": "zoomIn"
+          }
+        ],
+        "textOnTop": true
+      },
+      "motion": {
+        "entrance": "none",
+        "transition": "slideLeft",
+        "stagger": 6
+      },
+      "type": "visual-explainer"
+    },
+    {
+      "id": "scene-run-mw3e6yup-5",
+      "plan": {
+        "role": "proof",
+        "visualBrief": "Screen recording: the generated page opened in the browser, side by side with the original screenshot, buttons hovering and the page scrolling"
+      },
+      "layoutExampleId": "proof-03",
+      "durationSeconds": 3.74,
+      "vo": "And here it runs: a working page that looks like the original.",
+      "notes": "🎥 Your own recording",
+      "background": "solid-dark",
+      "content": {
+        "richHeadline": [
+          {
+            "text": "Working page",
+            "size": "title",
+            "x": 36.5,
+            "y": 17
+          },
+          {
+            "text": "✓",
+            "size": "title",
+            "x": 27.5,
+            "y": 51.5
+          }
+        ],
+        "visuals": [
+          {
+            "id": "scene-run-mw3e6yup-5-v1",
+            "visual": {
+              "type": "screen",
+              "aspect": "16:10",
+              "content": {
+                "type": "checkpoint",
+                "label": "REC",
+                "detail": "Capture the original website screenshot as a clean card."
+              }
+            },
+            "x": 49.5,
+            "y": 34,
+            "scale": 0.8921933085501859,
+            "kenBurns": "zoomIn"
+          },
+          {
+            "id": "scene-run-mw3e6yup-5-v2",
+            "visual": {
+              "type": "screen",
+              "aspect": "16:10",
+              "content": {
+                "type": "checkpoint",
+                "label": "REC",
+                "detail": "Capture the generated page open in the browser, framed at the same size, with a button hovered."
+              }
+            },
+            "x": 49.5,
+            "y": 67,
+            "scale": 0.8921933085501859,
+            "kenBurns": "zoomIn"
+          }
+        ],
+        "textOnTop": true
+      },
+      "motion": {
+        "entrance": "none",
+        "transition": "slideLeft",
+        "stagger": 6
+      },
+      "type": "visual-explainer"
+    },
+    {
+      "id": "scene-run-mw3e6yup-6",
+      "plan": {
+        "role": "proof",
+        "visualBrief": "Simple chart: a grid of 484 small page thumbnails, about half of them lighting up green, with the label Design2Code 2024"
+      },
+      "layoutExampleId": "proof-04",
+      "durationSeconds": 9.033999999999999,
+      "vo": "In a 2024 benchmark of 484 real webpages, judges said GPT-4V's rebuilds could replace the originals 49% of the time.",
+      "background": "solid-dark",
+      "content": {
+        "richHeadline": [
+          {
+            "text": "484 webpages → 49% could replace the original",
+            "size": "body",
+            "x": 50,
+            "y": 56.5
+          }
+        ],
+        "visuals": [
+          {
+            "id": "scene-run-mw3e6yup-6-v1",
+            "visual": {
+              "type": "screen",
+              "aspect": "16:10",
+              "content": {
+                "type": "checkpoint",
+                "label": "REC",
+                "detail": "Capture the Design2Code 2024 results figure showing that 49% of 484 generated webpages could replace the original."
+              }
+            },
+            "x": 49.5,
+            "y": 36.5,
+            "scale": 0.9100371747211896,
+            "kenBurns": "zoomIn"
+          }
+        ],
+        "textOnTop": true
+      },
+      "motion": {
+        "entrance": "none",
+        "transition": "slideLeft",
+        "stagger": 6
+      },
+      "type": "visual-explainer"
+    },
+    {
+      "id": "scene-run-mw3e6yup-7",
+      "plan": {
+        "role": "other",
+        "visualBrief": "Bar chart dropping from 93.0 to 56.6, labeled Design2Code-HARD, next to a crowded, complex website screenshot"
+      },
+      "layoutExampleId": "demo-02",
+      "durationSeconds": 7.502,
+      "vo": "But complex pages are still hard: on tougher sites, GPT-4o's layout score fell from 93 to 56.6.",
+      "background": "solid-dark",
+      "content": {
+        "richHeadline": [
+          {
+            "text": "Hard pages: layout score",
+            "size": "body",
+            "pill": true,
+            "x": 51,
+            "y": 19.5
+          },
+          {
+            "text": "93 → 56.6",
+            "size": "label",
+            "x": 50,
+            "y": 63.5
+          }
+        ],
+        "visuals": [
+          {
+            "id": "scene-run-mw3e6yup-7-v1",
+            "visual": {
+              "type": "prop",
+              "asset": "tower-leaning"
+            },
+            "x": 50,
+            "y": 50,
+            "scale": 1.3292307692307692
+          }
+        ],
+        "textOnTop": true
+      },
+      "motion": {
+        "entrance": "none",
+        "transition": "slideLeft",
+        "stagger": 6
+      },
+      "type": "visual-explainer"
+    },
+    {
+      "id": "scene-run-mw3e6yup-8",
+      "plan": {
+        "role": "cta",
+        "visualBrief": "The rebuilt page shrinking into a phone frame, with a comment bubble icon pulsing below it"
+      },
+      "layoutExampleId": "cta-01",
+      "durationSeconds": 5.643999999999999,
+      "vo": "So start with simple pages. Drop a comment if you want more screenshot-to-code builds with AI agents.",
+      "background": "solid-dark",
+      "content": {
+        "visuals": [
+          {
+            "id": "scene-run-mw3e6yup-8-v1",
+            "visual": {
+              "type": "prop",
+              "asset": "browser-window"
+            },
+            "x": 50.5,
+            "y": 41.5,
+            "scale": 0.6646153846153846
+          },
+          {
+            "id": "scene-run-mw3e6yup-8-v2",
+            "visual": {
+              "type": "prop",
+              "asset": "idea"
+            },
+            "x": 50,
+            "y": 50,
+            "scale": 0.48
+          },
+          {
+            "id": "scene-run-mw3e6yup-8-v3",
+            "visual": {
+              "type": "prop",
+              "asset": "two-users"
+            },
+            "x": 56,
+            "y": 53.5,
+            "scale": 0.45692307692307693
+          }
+        ],
+        "textOnTop": true
+      },
+      "motion": {
+        "entrance": "none",
+        "transition": "slideLeft",
+        "stagger": 6
+      },
+      "type": "takeaway"
+    }
+  ],
+  "captions": {
+    "y": 68
+  },
+  "savedAt": 1793874127927,
+  "audioClips": [
+    {
+      "id": "audio-run-mw3e6yup-scene-run-mw3e6yup-1",
+      "sfxId": "vo-run-mw3e6yup-scene-1-mw3ealq0",
+      "from": 0,
+      "durationInFrames": 104,
+      "volume": 1,
+      "voiceText": "I gave an AI agent one screenshot. It built this page.",
+      "words": [
+        {
+          "text": "I",
+          "start": 0,
+          "end": 0.325
+        },
+        {
+          "text": "gave",
+          "start": 0.395,
+          "end": 0.546
+        },
+        {
+          "text": "an",
+          "start": 0.58,
+          "end": 0.639
+        },
+        {
+          "text": "AI",
+          "start": 0.697,
+          "end": 0.952
+        },
+        {
+          "text": "agent",
+          "start": 0.998,
+          "end": 1.254
+        },
+        {
+          "text": "one",
+          "start": 1.3,
+          "end": 1.416
+        },
+        {
+          "text": "screenshot.",
+          "start": 1.44,
+          "end": 1.962
+        },
+        {
+          "text": "It",
+          "start": 2.067,
+          "end": 2.171
+        },
+        {
+          "text": "built",
+          "start": 2.206,
+          "end": 2.368
+        },
+        {
+          "text": "this",
+          "start": 2.403,
+          "end": 2.531
+        },
+        {
+          "text": "page.",
+          "start": 2.577,
+          "end": 3.111
+        }
+      ]
+    },
+    {
+      "id": "audio-run-mw3e6yup-scene-run-mw3e6yup-2",
+      "sfxId": "vo-run-mw3e6yup-scene-2-mw3eam6s",
+      "from": 104,
+      "durationInFrames": 186,
+      "volume": 1,
+      "voiceText": "First, I drop one screenshot into the agent. It runs on a multimodal model, so it reads images as well as text.",
+      "words": [
+        {
+          "text": "First,",
+          "start": 0,
+          "end": 0.372
+        },
+        {
+          "text": "I",
+          "start": 0.418,
+          "end": 0.464
+        },
+        {
+          "text": "drop",
+          "start": 0.546,
+          "end": 0.731
+        },
+        {
+          "text": "one",
+          "start": 0.836,
+          "end": 0.987
+        },
+        {
+          "text": "screenshot",
+          "start": 1.01,
+          "end": 1.44
+        },
+        {
+          "text": "into",
+          "start": 1.498,
+          "end": 1.649
+        },
+        {
+          "text": "the",
+          "start": 1.683,
+          "end": 1.765
+        },
+        {
+          "text": "agent.",
+          "start": 1.811,
+          "end": 2.241
+        },
+        {
+          "text": "It",
+          "start": 2.345,
+          "end": 2.45
+        },
+        {
+          "text": "runs",
+          "start": 2.485,
+          "end": 2.647
+        },
+        {
+          "text": "on",
+          "start": 2.682,
+          "end": 2.752
+        },
+        {
+          "text": "a",
+          "start": 2.786,
+          "end": 2.81
+        },
+        {
+          "text": "multimodal",
+          "start": 2.856,
+          "end": 3.367
+        },
+        {
+          "text": "model,",
+          "start": 3.402,
+          "end": 3.762
+        },
+        {
+          "text": "so",
+          "start": 3.796,
+          "end": 3.901
+        },
+        {
+          "text": "it",
+          "start": 3.971,
+          "end": 4.029
+        },
+        {
+          "text": "reads",
+          "start": 4.063,
+          "end": 4.238
+        },
+        {
+          "text": "images",
+          "start": 4.284,
+          "end": 4.679
+        },
+        {
+          "text": "as",
+          "start": 4.748,
+          "end": 4.888
+        },
+        {
+          "text": "well",
+          "start": 4.946,
+          "end": 5.085
+        },
+        {
+          "text": "as",
+          "start": 5.12,
+          "end": 5.19
+        },
+        {
+          "text": "text.",
+          "start": 5.236,
+          "end": 5.851
+        }
+      ]
+    },
+    {
+      "id": "audio-run-mw3e6yup-scene-run-mw3e6yup-3",
+      "sfxId": "vo-run-mw3e6yup-scene-3-mw3eammu",
+      "from": 290,
+      "durationInFrames": 213,
+      "volume": 1,
+      "voiceText": "Second, it breaks the picture down: page blocks, text, colors, spacing, typography, and where every element sits.",
+      "words": [
+        {
+          "text": "Second,",
+          "start": 0,
+          "end": 0.441
+        },
+        {
+          "text": "it",
+          "start": 0.627,
+          "end": 0.72
+        },
+        {
+          "text": "breaks",
+          "start": 0.755,
+          "end": 0.964
+        },
+        {
+          "text": "the",
+          "start": 0.998,
+          "end": 1.068
+        },
+        {
+          "text": "picture",
+          "start": 1.103,
+          "end": 1.335
+        },
+        {
+          "text": "down:",
+          "start": 1.37,
+          "end": 1.73
+        },
+        {
+          "text": "page",
+          "start": 1.939,
+          "end": 2.183
+        },
+        {
+          "text": "blocks,",
+          "start": 2.206,
+          "end": 2.566
+        },
+        {
+          "text": "text,",
+          "start": 2.67,
+          "end": 3.053
+        },
+        {
+          "text": "colors,",
+          "start": 3.135,
+          "end": 3.611
+        },
+        {
+          "text": "spacing,",
+          "start": 3.68,
+          "end": 4.214
+        },
+        {
+          "text": "typography,",
+          "start": 4.249,
+          "end": 4.946
+        },
+        {
+          "text": "and",
+          "start": 5.132,
+          "end": 5.271
+        },
+        {
+          "text": "where",
+          "start": 5.306,
+          "end": 5.48
+        },
+        {
+          "text": "every",
+          "start": 5.538,
+          "end": 5.782
+        },
+        {
+          "text": "element",
+          "start": 5.84,
+          "end": 6.13
+        },
+        {
+          "text": "sits.",
+          "start": 6.165,
+          "end": 6.734
+        }
+      ]
+    },
+    {
+      "id": "audio-run-mw3e6yup-scene-run-mw3e6yup-4",
+      "sfxId": "vo-run-mw3e6yup-scene-4-mw3ean84",
+      "from": 503,
+      "durationInFrames": 185,
+      "volume": 1,
+      "voiceText": "Third, it writes the code: plain HTML and CSS, or React components styled with Tailwind.",
+      "words": [
+        {
+          "text": "Third,",
+          "start": 0,
+          "end": 0.43
+        },
+        {
+          "text": "it",
+          "start": 0.639,
+          "end": 0.743
+        },
+        {
+          "text": "writes",
+          "start": 0.766,
+          "end": 0.975
+        },
+        {
+          "text": "the",
+          "start": 1.01,
+          "end": 1.08
+        },
+        {
+          "text": "code:",
+          "start": 1.126,
+          "end": 1.474
+        },
+        {
+          "text": "plain",
+          "start": 1.602,
+          "end": 1.869
+        },
+        {
+          "text": "HTML",
+          "start": 1.974,
+          "end": 2.647
+        },
+        {
+          "text": "and",
+          "start": 2.728,
+          "end": 2.856
+        },
+        {
+          "text": "CSS,",
+          "start": 2.914,
+          "end": 3.471
+        },
+        {
+          "text": "or",
+          "start": 3.599,
+          "end": 3.738
+        },
+        {
+          "text": "React",
+          "start": 3.808,
+          "end": 4.052
+        },
+        {
+          "text": "components",
+          "start": 4.098,
+          "end": 4.54
+        },
+        {
+          "text": "styled",
+          "start": 4.574,
+          "end": 4.876
+        },
+        {
+          "text": "with",
+          "start": 4.899,
+          "end": 5.027
+        },
+        {
+          "text": "Tailwind.",
+          "start": 5.074,
+          "end": 5.805
+        }
+      ]
+    },
+    {
+      "id": "audio-run-mw3e6yup-scene-run-mw3e6yup-5",
+      "sfxId": "vo-run-mw3e6yup-scene-5-mw3eaniw",
+      "from": 688,
+      "durationInFrames": 112,
+      "volume": 1,
+      "voiceText": "And here it runs: a working page that looks like the original.",
+      "words": [
+        {
+          "text": "And",
+          "start": 0,
+          "end": 0.221
+        },
+        {
+          "text": "here",
+          "start": 0.29,
+          "end": 0.441
+        },
+        {
+          "text": "it",
+          "start": 0.476,
+          "end": 0.546
+        },
+        {
+          "text": "runs:",
+          "start": 0.58,
+          "end": 0.998
+        },
+        {
+          "text": "a",
+          "start": 1.184,
+          "end": 1.242
+        },
+        {
+          "text": "working",
+          "start": 1.324,
+          "end": 1.591
+        },
+        {
+          "text": "page",
+          "start": 1.637,
+          "end": 1.916
+        },
+        {
+          "text": "that",
+          "start": 1.95,
+          "end": 2.09
+        },
+        {
+          "text": "looks",
+          "start": 2.136,
+          "end": 2.31
+        },
+        {
+          "text": "like",
+          "start": 2.345,
+          "end": 2.485
+        },
+        {
+          "text": "the",
+          "start": 2.519,
+          "end": 2.589
+        },
+        {
+          "text": "original.",
+          "start": 2.635,
+          "end": 3.39
+        }
+      ]
+    },
+    {
+      "id": "audio-run-mw3e6yup-scene-run-mw3e6yup-6",
+      "sfxId": "vo-run-mw3e6yup-scene-6-mw3eao13",
+      "from": 800,
+      "durationInFrames": 271,
+      "volume": 1,
+      "voiceText": "In a 2024 benchmark of 484 real webpages, judges said GPT-4V's rebuilds could replace the originals 49% of the time.",
+      "words": [
+        {
+          "text": "In",
+          "start": 0,
+          "end": 0.453
+        },
+        {
+          "text": "a",
+          "start": 0.488,
+          "end": 0.511
+        },
+        {
+          "text": "2024",
+          "start": 0.58,
+          "end": 1.265
+        },
+        {
+          "text": "benchmark",
+          "start": 1.312,
+          "end": 1.695
+        },
+        {
+          "text": "of",
+          "start": 1.765,
+          "end": 1.846
+        },
+        {
+          "text": "484",
+          "start": 1.95,
+          "end": 2.81
+        },
+        {
+          "text": "real",
+          "start": 2.879,
+          "end": 3.03
+        },
+        {
+          "text": "webpages,",
+          "start": 3.077,
+          "end": 3.75
+        },
+        {
+          "text": "judges",
+          "start": 4.029,
+          "end": 4.331
+        },
+        {
+          "text": "said",
+          "start": 4.365,
+          "end": 4.54
+        },
+        {
+          "text": "GPT-4V's",
+          "start": 4.609,
+          "end": 5.561
+        },
+        {
+          "text": "rebuilds",
+          "start": 5.619,
+          "end": 5.991
+        },
+        {
+          "text": "could",
+          "start": 6.049,
+          "end": 6.211
+        },
+        {
+          "text": "replace",
+          "start": 6.246,
+          "end": 6.56
+        },
+        {
+          "text": "the",
+          "start": 6.594,
+          "end": 6.664
+        },
+        {
+          "text": "originals",
+          "start": 6.711,
+          "end": 7.105
+        },
+        {
+          "text": "49%",
+          "start": 7.233,
+          "end": 7.872
+        },
+        {
+          "text": "of",
+          "start": 7.941,
+          "end": 7.988
+        },
+        {
+          "text": "the",
+          "start": 8.022,
+          "end": 8.092
+        },
+        {
+          "text": "time.",
+          "start": 8.127,
+          "end": 8.684
+        }
+      ]
+    },
+    {
+      "id": "audio-run-mw3e6yup-scene-run-mw3e6yup-7",
+      "sfxId": "vo-run-mw3e6yup-scene-7-mw3eaoil",
+      "from": 1071,
+      "durationInFrames": 225,
+      "volume": 1,
+      "voiceText": "But complex pages are still hard: on tougher sites, GPT-4o's layout score fell from 93 to 56.6.",
+      "words": [
+        {
+          "text": "But",
+          "start": 0,
+          "end": 0.163
+        },
+        {
+          "text": "complex",
+          "start": 0.209,
+          "end": 0.546
+        },
+        {
+          "text": "pages",
+          "start": 0.592,
+          "end": 0.94
+        },
+        {
+          "text": "are",
+          "start": 0.998,
+          "end": 1.126
+        },
+        {
+          "text": "still",
+          "start": 1.161,
+          "end": 1.347
+        },
+        {
+          "text": "hard:",
+          "start": 1.405,
+          "end": 1.73
+        },
+        {
+          "text": "on",
+          "start": 2.009,
+          "end": 2.148
+        },
+        {
+          "text": "tougher",
+          "start": 2.194,
+          "end": 2.45
+        },
+        {
+          "text": "sites,",
+          "start": 2.496,
+          "end": 2.891
+        },
+        {
+          "text": "GPT-4o's",
+          "start": 2.995,
+          "end": 3.866
+        },
+        {
+          "text": "layout",
+          "start": 3.913,
+          "end": 4.145
+        },
+        {
+          "text": "score",
+          "start": 4.18,
+          "end": 4.47
+        },
+        {
+          "text": "fell",
+          "start": 4.516,
+          "end": 4.679
+        },
+        {
+          "text": "from",
+          "start": 4.725,
+          "end": 4.865
+        },
+        {
+          "text": "93",
+          "start": 4.969,
+          "end": 5.433
+        },
+        {
+          "text": "to",
+          "start": 5.712,
+          "end": 5.805
+        },
+        {
+          "text": "56.6.",
+          "start": 5.886,
+          "end": 7.152
+        }
+      ]
+    },
+    {
+      "id": "audio-run-mw3e6yup-scene-run-mw3e6yup-8",
+      "sfxId": "vo-run-mw3e6yup-scene-8-mw3eaow4",
+      "from": 1296,
+      "durationInFrames": 169,
+      "volume": 1,
+      "voiceText": "So start with simple pages. Drop a comment if you want more screenshot-to-code builds with AI agents.",
+      "words": [
+        {
+          "text": "So",
+          "start": 0,
+          "end": 0.151
+        },
+        {
+          "text": "start",
+          "start": 0.209,
+          "end": 0.395
+        },
+        {
+          "text": "with",
+          "start": 0.43,
+          "end": 0.557
+        },
+        {
+          "text": "simple",
+          "start": 0.592,
+          "end": 0.848
+        },
+        {
+          "text": "pages.",
+          "start": 0.882,
+          "end": 1.393
+        },
+        {
+          "text": "Drop",
+          "start": 1.672,
+          "end": 1.869
+        },
+        {
+          "text": "a",
+          "start": 1.916,
+          "end": 1.939
+        },
+        {
+          "text": "comment",
+          "start": 1.985,
+          "end": 2.31
+        },
+        {
+          "text": "if",
+          "start": 2.345,
+          "end": 2.415
+        },
+        {
+          "text": "you",
+          "start": 2.45,
+          "end": 2.519
+        },
+        {
+          "text": "want",
+          "start": 2.554,
+          "end": 2.694
+        },
+        {
+          "text": "more",
+          "start": 2.728,
+          "end": 2.891
+        },
+        {
+          "text": "screenshot-to-code",
+          "start": 2.937,
+          "end": 3.692
+        },
+        {
+          "text": "builds",
+          "start": 3.727,
+          "end": 3.971
+        },
+        {
+          "text": "with",
+          "start": 4.005,
+          "end": 4.145
+        },
+        {
+          "text": "AI",
+          "start": 4.214,
+          "end": 4.528
+        },
+        {
+          "text": "agents.",
+          "start": 4.574,
+          "end": 5.294
+        }
+      ]
+    }
+  ]
+}

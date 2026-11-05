@@ -1,4 +1,5 @@
 import type { VisualConfig } from "../../schema/visual";
+import { stage } from "../stage/tokens";
 import { fontSizes, videoDefaults } from "../typography/tokens";
 import { MONO_SIZE } from "../visuals/dev/devText";
 import { screenFrameSize } from "../visuals/devices/screenFrameSize";
@@ -51,6 +52,14 @@ export function naturalVisualSize(visual: VisualConfig): Size {
       if (visual.variant === "pill") return { width: 460, height: 70 };
       if (visual.variant === "compact") return { width: 520, height: 74 };
       return { width: 680, height: visual.detail ? 116 : 88 };
+    case "custom-scene":
+      return { width: videoDefaults.width, height: videoDefaults.height };
+    case "stage-block":
+      // the stage's top zone, which every block is drawn for
+      return {
+        width: videoDefaults.width,
+        height: stage.visualBottom - stage.visualTop,
+      };
     case "pricing-card":
       return { width: 640, height: 420 + (visual.features?.length ?? 0) * 56 };
     case "app-mockup":

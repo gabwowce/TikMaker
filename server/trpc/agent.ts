@@ -47,19 +47,6 @@ export const agentRouter = router({
       oneLine: t.oneLine,
     }));
   }),
-  // What the editor lays the scenes out with (compileProject): the layout
-  // examples and the channel's style. Only changes between server starts.
-  layoutKnowledge: procedure
-    .input(z.string())
-    .query(async ({ input: workspaceId }) => {
-      const { knowledge } = await loadKnowledge(KNOWLEDGE_DIR);
-      const entry = knowledge.workspaces.find(
-        (e) => e.workspace.id === workspaceId,
-      );
-      if (!entry)
-        throw new TRPCError({ code: "NOT_FOUND", message: "Unknown channel" });
-      return { examples: knowledge.layoutExamples, style: entry.style };
-    }),
   // Screen 2: the card shows the agent's pick; the user swaps it for another
   // one from the list. The agent then writes new hooks.
   changeTemplate: procedure

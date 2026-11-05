@@ -8,6 +8,42 @@ Naudotoja įrašo idėją (bet kokia tema) → agentas sukuria ~30–60 s vertik
 - viskas **kanalo stiliumi** (stiliaus paketas: spalvos, šriftas, ženklas);
 - rezultatas atsidaro redaktoriuje ir jį galima taisyti rankomis.
 
+## Būklė 2026-11-05 vakare (sesijos pabaiga) – nuo čia tęsti
+
+**Padaryta (commit 2026-11-05):**
+- Visas agentas eina per Claude Code (prenumerata, `AGENT_PROVIDER=claude-code`,
+  `AGENT_CLAUDE_MODEL=opus`), faktų paieška – irgi.
+- **Vienas kelias kiekvienam video:** idėja → kabliukas → scenarijus → blokai ant stage
+  tipų (`pickBlocks` + `checkBlocks`) → judesys (`pickMotion` + `checkMotion`, žinios
+  `motion-principles.json`) → balsas (ElevenLabs, žodžių laikai → subtitrai, blokai ant
+  tikrų žodžių). 61 maketas ir jų kelias pašalinti. „Motion graphics only“ – tik ar
+  galima ekrano blokas (vieta naudotojos įrašui).
+- Skydelyje kortelės: „Pictures picked“, „Motion planned“, „Voiceover“.
+- Fonas „stage“: šviesus centras + tinklelis iš stiliaus paketo (`grid`: linijos / taškai /
+  nieko); žvaigždutės išimtos.
+- Tekstas nebeišlenda: sąrašo eilutės ir didelis skaičius mažėja, kad tilptų
+  (`src/video/stage/fitText.ts`).
+- Kinetiniai subtitrai visada viršuje (`CAPTIONS_Z_INDEX`).
+
+**7 testas (3 temos) – vyksta.** 1 tema („ChatGPT Plus vs Claude Pro“) parodė krūvas,
+vienodus fade, kartojimąsi, išlendantį tekstą → sutvarkyta (žr. „Judesio žingsnis“).
+2 tema paleista be „Motion only“ – dar senu maketų keliu (todėl jis ir pašalintas).
+3 tema – naudotojai „po truputį pradeda patikti“; ką taisyti, aptarsim kitoje sesijoje.
+
+**Toliau (dar nepadaryta):**
+- Naudotojos pastabos po 3 temos (kita sesija).
+- **Kartojimasis** (sutarta, nepadaryta): `pickBlocks` prompte paaiškinti, kodėl
+  kartojimas nuobodus, ir parodyti modeliui jo paties vaizdų seką – žinios, ne taisyklė;
+  norų sąraše leisti prašyti ir naujų **blokų tipų**. Blokų tipų per mažai (10) – plėsti.
+- Trūkstami vaizdai: norų sąrašas → importas; logotipai / ikonos iš Iconify (Simple
+  Icons, Lucide) arba Claude nupieštas SVG.
+- Ekrano blokas + naudotojos įrašas: įrašas įkeliamas „Replace asset…“, bet sluoksnio
+  dydis skirtas blokui – nepatikrinta, gal reikia pritaikyti.
+- Su balsu scenų ilgis nustatytas pagal tikrą balsą → redaktoriaus `pacingWarning` gali
+  klaidingai sakyti „per trumpa“.
+- Blokų taisymas agentu (B: „gali siūlyti keisti netinkamą bloką“) – dar nedaryta.
+- BD tekstus (FR ir kt.) suderinti su programa – kai agentas baigtas.
+
 ## Kaip tai tinka bet kokiai temai: blokai, ne šablonai
 
 Video nėra vienas šablonas. Yra ~10 **blokų** (lyg LEGO detalės). Kiekvienas blokas
@@ -43,6 +79,24 @@ sąrašas (privalumai) → skaičius („100 % offline“) → schema (failai �
 **„3 Claude Code skills“:** logotipų grandinė → juosta „01“ → kodo kortelė → sąrašas
 (tai, kas jau padaryta pavyzdinėje scenoje).
 
+## Sprendimai 2026-11-05
+
+- **Kanalo stilius – ne tik spalvos.** Kitas kanalas turi skirtis bent blokais, geriausia
+  ir stage tipais; vien spalvų ir šrifto keitimas – ne kitas kanalas. **Kol kas to
+  nedarom:** dar neaišku, kaip atrodys mūsų video, tad darom paprasčiau ir greičiau,
+  kryptį koreguosim pagal rezultatą.
+- **Rec video – irgi iš stage tipų**, ne iš 61 maketo: „visas kadras“ (įrašas per visą
+  ekraną) ir ekrano kortelė (blokas 4) jau tinka įrašams. Viena sistema motion ir rec video.
+- **61 maketas nereikalingas** – BD aprašo programą, ne analizę. Šalinsim (pavyzdžiai
+  žinių bazėje, `pickLayouts`, D7 maketų logika), kai agentas jau rinksis blokus ir stage
+  tipus (etapas C) – ne anksčiau, kad iki tol veiktų dabartinis kelias.
+  **✓ Pašalinta 2026-11-05:** 61 pavyzdys (`knowledge/shared/layout-examples`), `pickLayouts`,
+  `compileProject`, `run.layout`, `agent.layoutKnowledge`, `scene.layoutExampleId`. Dabar
+  **kiekvienas** video eina vienu keliu: blokai ant stage tipų → judesys → balsas.
+  „Motion graphics only“ tik nusprendžia, ar agentas gali rinktis ekrano bloką (`screen` –
+  vieta tavo įrašui); įrašą į tą sluoksnį įkeli pakeisdama jo turinį (dešinys pelės
+  mygtukas laiko juostoje → asset).
+
 ## Stage tipai ir perėjimai (vietoj 61 maketo)
 
 5–6 išdėstymo tipai iš tų pačių dalių, todėl perėjimai tarp jų sklandūs:
@@ -56,8 +110,8 @@ sąrašas (privalumai) → skaičius („100 % offline“) → schema (failai �
 | Du vaizdai | palyginimas, „prieš / po“ | palyginimai |
 
 Perėjimai: tekstas nuslysta į kitą vietą; vaizdas priartėja ir „praleidžia“ į kitą
-sceną; kortelė virsta kita kortele. 61 maketas lieka tik kaip analizės duomenys
-tipams pagrįsti.
+sceną; kortelė virsta kita kortele. 61 maketas bus pašalintas (žr. „Sprendimai
+2026-11-05“).
 
 ## Ką agentas gauna ir iš ko renkasi
 
@@ -94,17 +148,178 @@ matome, kokius vizualus pridėti į biblioteką.
 | E | Kritikas: išrenderina kadrus, vaizdą matantis modelis įvertina ir grąžina taisyti (D9) | mažiau prastų kadrų | |
 | F | Stiliaus paketas iš kanalo pavyzdžių | kiekvienas kanalas savo stiliumi | vėliau |
 
+### Captionai ir stage – sutarta 2026-11-05
+
+**Kas ką daro su captionais:** agentas captionų nedėlioja – jis renkasi scenos **stage
+tipą** ir pažymi **kertinius žodžius**. Sistema pati: ima žodžius ir jų laikus iš
+įgarsinimo, skaido į frazes, piešia kanalo stiliumi (stiliaus paketas) ir deda į tą
+vietą, kurią numato stage tipas (pvz. `top` – apačioje, `bottom` – viršuje, `full` –
+ant vaizdo).
+
+**Viena captionų sistema.** TikMaker jau turi captionus (`CaptionLayer`, iš ElevenLabs
+žodžių laikų, stilius – `project.captions`: šriftas, dydis, spalva, kaip išskiriamas
+tariamas žodis). `KineticCaption` būtų antra sistema tam pačiam – to nedarom. Vietoj
+to kinetinis tekstas tampa **captionų stiliumi** (`captions.style: "kinetic"` šalia
+dabartinio „pill“): frazės po 3–7 žodžius, žodžiai iššoka, kertiniai stori. Captionus
+visada daro sistema iš įgarsinimo; agentas tik pažymi kertinius žodžius. Kurį stilių
+naudoti – stiliaus paketas (kanalo dizainas); vietą ekrane – stage tipas.
+
+**Stage tipai** – iš ko sudėtas kadras; captionai – tik viena iš zonų:
+
+| Tipas | Kadras | Kada (agento taisyklė) |
+| --- | --- | --- |
+| `top` (yra) | vaizdas viršuje, captionai apačioje | numatytas – dauguma scenų |
+| `statement` | tik didelis tekstas per visą kadrą (pati frazė – captionai) | kabliukas, svarbus teiginys, išvada |
+| `full` | vaizdas / įrašas per visą kadrą, captionai ant viršaus | įrašai, „herojaus“ momentas |
+| `split` | du vaizdai (prieš / po), captionai apačioje | palyginimai |
+| `bottom` | captionai viršuje, vaizdas apačioje | įvairovei |
+
+Kodėl būtent šie: jie dengia tai, ką rodo pavyzdžiai (InsiderForce kadrai, 61 maketo
+analizė apibendrinta) ir mūsų blokai; visi sudėti iš tų pačių dalių, todėl perėjimai
+tarp jų sklandūs. **Perėjimai:** captionai nuslysta į naują vietą; vaizdas išsiplečia
+į visą kadrą arba susitraukia; kortelė virsta kita kortele. **Agentas** kiekvienai
+scenai renkasi stage tipą pagal turinį (palyginimas → `split`, įrašas → `full`,
+kabliukas → `statement`), o kodas tikrina: tipas tinka blokams (pvz. `split` – tik su
+`compare`), tas pats tipas ne daugiau kaip 3 kartus iš eilės.
+
+**6a būklė (2026-11-05):** ✓ įrašyta (232 testai, patikrinta kadrais su
+įgarsinimu): `project.captions.style` ("pill" | "kinetic") ir
+`keywords`, `CHUNK_LIMITS` + `isKeyword` (`src/utils/captions.ts`), `CaptionLayer` →
+`KineticCaption`, „Caption look“ redaktoriuje (`CaptionStyleFields.tsx`), testai.
+
+**6b būklė (2026-11-05):** padaryta ir patikrinta kadrais (Studijoje kompozicija
+„StageTypes“ – visi 5 tipai): `src/video/stage/stageTypes.ts` (tipai ir jų zonos – kur
+vaizdas, kur captionai), `StageBlock.tsx` (bloko duomenys → komponentas; `StageZone`
+perkelia ir mastelį keičia viršutinę zoną), `StageTypesDemo.tsx`, scenos laukas `stage`
+(`src/schema/scene.ts`), „kinetic“ captionai dedami pagal scenos stage tipą
+(`CaptionLayer`, `KineticCaption` – `top`, `scale`). **Captionai visada virš visko**
+(`CAPTIONS_Z_INDEX = 10000`, `src/video/layout/layerOrder.ts`) – naudotojos prašymu.
+
+**6c būklė (2026-11-05):** padaryta, patikrinta kadrais ir testais (236). Blokas
+projekte – **įprastas sluoksnis** (vaizdo tipas `stage-block`, `src/schema/visual.ts`,
+piešia `StageBlockVisual`): vieta ir dydis iš stage tipo, atsiranda ant savo žodžio
+(`delay`, trumpas `fade`), išeina, kai toje vietoje atsiranda kitas (`exitAt`) –
+todėl laiko juostoje redaguojamas kaip bet kuris sluoksnis. `src/agent/projectFromBlocks.ts`
+sudeda scenas (`stage`, sluoksniai, captionai „kinetic“ + kertiniai žodžiai);
+**perėjimai:** paskutinis scenos vaizdas per 12 kadrų nuslenka į kitos scenos vaizdo vietą
+(keyframes), į `statement` – susitraukia; captionai, pasikeitus stage, nuslysta į naują
+vietą (`KineticCaption`, 10 kadrų). Redaktorius pritaiko blokus po agento
+(`applyAgentBlocks`, `AgentPanel`). Žodžio paieška – viena vieta `src/utils/voWords.ts`.
+**Liko:** stage scenose fonas kol kas `solid-dark` (be StageDemo tinklelio ir švytėjimo).
+
+**6d būklė (2026-11-05):** padaryta (238 testai). Agentas kiekvienai scenai renkasi
+`stage`; `statement` scena be blokų. **Sutarta:** prompte stage tipai tik **aprašomi**
+(kaip atrodo), o **kada kurį naudoti – sprendžia agentas pagal situaciją**; jokių „kabliukas
+→ statement“ taisyklių (`pickBlocks.ts`, `STAGES`). Kodas tikrina tik tai, kas išplaukia iš
+paties tipo (`statement` be vaizdo, `split` – du); taisyklė „ne daugiau 3 to paties iš
+eilės“ išimta – agentas sprendžia pats, koreguosim, jei bus blogai. `checkBlocks` tikrina: stage nurodytas; `statement` – be blokų; kitos – bent
+vienas blokas; `split` – bent 2; tas pats stage ne daugiau kaip 3 scenos iš eilės.
+Išbandyta su Claude (sonnet, per prenumeratą), „AI agents explained“: 9 scenos, visi 5
+tipai (statement → top → bottom → split → top → bottom → full → top → bottom), **0 problemų**,
+~24 s. Norų sąrašas: varnelė, antspaudas, pokalbio burbulas, pauzės ženklas, TikMaker logotipas.
+
+**Nauja C eilė (patvirtinta):** 6a captionų stilius „kinetic“ esamoje sistemoje →
+6b stage tipai (duomenys + piešimas) → 6c perėjimai → 6d agentas renkasi stage →
+6e video redaktoriuje + skydelio kortelė → 7 testas.
+
+### Etapo C dalys (pradėta 2026-11-05)
+
+| # | Dalis | Failas | Būklė |
+| --- | --- | --- | --- |
+| 1 | Schema: ką modelis atsiunčia (blokai su turiniu, kertiniai žodžiai, norų sąrašas) | `src/agent/run/4-blocks.ts` | ✓ įrašyta |
+| 2 | Patikra kodu: žodžiai yra įgarsinime ir eina iš eilės, bloko privalomi laukai, bibliotekos id, tempas (pirmas blokas per 1 s, naujas – ne rečiau kaip kas 3 s), kertiniai žodžiai | `src/agent/rules/checkBlocks.ts` + `__tests__/checkBlocks.test.ts` | ✓ įrašyta |
+| 3–4 | Katalogas modeliui (blokai su „kam tinka“, bibliotekos id; „Motion only“ – be ekrano kortelės) ir promptas; taisymas – su ankstesniu atsakymu ir problemomis | `server/agent/prompts/pickBlocks.ts` + `server/agent/__tests__/pickBlocks.test.ts` | duota, rašo naudotoja. Išbandyta su Gemini 2026-11-05: 9 scenos per ~6 s; po vieno taisymo liko 3 tempo pažeidimai (3,1–3,8 s) |
+
+**Sprendimai 2026-11-05 (po 3–4 dalies):**
+- **Tempas – kodu, ne modeliu.** Modelis blogai skaičiuoja žodžius, todėl „naujas blokas
+  kas ≤ 3 s“ jam nepavyksta net su taisymu. Siūloma: kodas pats suskaido kiekvienos scenos
+  įgarsinimą į gabalus po ≤ 8 žodžius (~2,5 s, ties sakinio skyrybos vietomis), o modelis
+  kiekvienam gabalui parenka bloką. Tada tempas teisingas iš karto, kaip maketai daro
+  perpildymą neįmanomą. Keičia 1–4 dalis (schema: blokas gabalui, ne `onWord`).
+- **Modelis – Claude per naudotojos Claude Code prenumeratą, ne Gemini.** Gemini mokamas
+  ir su limitais, Claude geriau mąsto. Kol nepakeista, tikrų Gemini kvietimų bandymams
+  nedarom. **Tempo kol kas netaisom** – pirma Claude, tada matysim, ką taisyti sistemoje,
+  o ką promptuose. Kaip prijungti (patikrinta Claude Code dokumentacijoje 2026-11-05):
+  serveris paleidžia `claude -p` su `--output-format json --json-schema <schema>`
+  (atsakymas – lauke `structured_output`, dar patikrinamas Zod), `--tools ""` (be įrankių),
+  `--system-prompt`, `--model`; užklausa – per stdin; darbo aplankas – tuščias, ne
+  projektas (kad neskaitytų CLAUDE.md); be `--bare` (jis neskaito prenumeratos
+  prisijungimo); iš aplinkos pašalinti `ANTHROPIC_API_KEY` (jei jis yra, `-p` naudoja jį,
+  ne prenumeratą). Kiekvienas kvietimas – nauja sesija be atminties; visą kontekstą
+  duoda užklausa, kaip ir dabar. Taisyklės: prenumerata tinka **asmeniniam** naudojimui
+  savo kompiuteryje; jei programa būtų siūloma kitiems – reikia API rakto (Claude
+  Console). Kvietimai eina į prenumeratos limitus; kaina JSON'e (`total_cost_usd`) – tik
+  apytikslė. Šaltiniai: code.claude.com/docs/en/headless, cli-reference, authentication,
+  legal-and-compliance.
+  **Būklė 2026-11-05:** Claude Code 2.1.318 įdiegtas (`C:\Users\gt123\.local\bin\claude.exe`,
+  PATH vartotojui pridėtas), prisijungta su Claude Pro. Išbandyta: `callStructured` per
+  Claude Code (sonnet) grąžina atsakymą pagal schemą iš pirmo karto, ir blokų schemą
+  (`blocksFromAi`); 7–9 s kvietimui. Kodas: A `server/agent/claudeCode.ts` + testas
+  (✓ įrašė naudotoja), B `llm.ts` perjungimas `AGENT_PROVIDER=claude-code` (✓ įrašyta,
+  `.env.local` – įjungta). Faktų paieška (`callWithSearch`, žingsnis 3a) – irgi per tą
+  patį jungiklį: Claude Code su WebSearch/WebFetch įrankiais, atsakymas pagal schemą
+  (`text` + `sources`). Išbandyta: 6 faktai, 4 šaltiniai, ~21 s. Visas agentas dabar
+  eina per Claude Code; Gemini – tik jei `AGENT_PROVIDER` ištrintas.
+- **Norų sąrašas → lengvas importas** redaktoriuje (pamatai, ko trūksta, ir iškart
+  įkeli) – vėliau, kai bus sugeneruotas video.
+
+**Gemini apribojimas (2026-11-05):** schemoje negalima riboti scenų skaičiaus
+(`.length`, `.min/.max` išoriniame masyve) – Gemini atmeta užklausą („invalid argument“).
+Scenų skaičių tikrina `checkBlocks`.
+| 5 | Agento žingsnis: „Motion graphics only“ → blokai vietoj maketų; `run.blocks` (patikra + vienas taisymas) | `server/agent/steps/4-building.ts`, `run.ts`, testas `server/__tests__/agent.test.ts` | ✓ įrašyta 2026-11-05 (230 testų) |
+| 6 | Video iš blokų: blokai ant žodžių, apačioje kinetinis tekstas iš įgarsinimo, stiliaus paketas (pirma Studijoje, paskui redaktoriuje) | `src/video/stage/` | ✓ (6a–6e) |
+| 6e | Skydelio kortelė „Pictures picked“ (scena → stage → blokai ant žodžių, norų sąrašas, problemos); „stage“ fonas (šviesus centras, slenkantis tinklelis; ženklai vėliau išimti, tinklelis – iš stiliaus) – agento motion scenoms; pilna eiga redaktoriuje su Claude | `src/editor/agent/BlocksCard.tsx`, `src/video/stage/Backdrop.tsx`, fonas `stage`, `projectFromBlocks.ts` | ✓ 2026-11-05. Bandymas (opus): „git reset --soft“, 30 s → 8 scenos (top ×4, split ×3, full ×1), 0 problemų, ~29,6 s video. Norai: Git logotipas, šiukšliadėžė, commit grafas, skydas. **Be balso subtitrų nėra** – jie daromi iš ElevenLabs žodžių laikų |
+| 7 | Testas: agento video 3 skirtingomis temomis | – | vyksta (žr. „Būklė“ viršuje) |
+
+Pavyzdys, kaip panašiai buvo daryta anksčiau: šaka `claude/charming-gauss-7ldow0`,
+`src/agent/run/4-beats.ts` (vienas objektas su neprivalomais laukais – Gemini taip lengviau).
+
+### Judesio žingsnis – sutarta 2026-11-05 (po pirmo 7 testo)
+
+Testas „ChatGPT Plus vs Claude Pro“ parodė: vaizdai atsiranda ir išeina vienodai
+(fade), scenos keičiasi be ryšio, o „split“ scenos pabaigoje abu vaizdai slenka į tą
+pačią kitos scenos vietą, kur jau atsiranda naujas – susidaro krūva (kodo klaida
+`projectFromBlocks`, ne agento).
+
+| # | Dalis | Būklė |
+| --- | --- | --- |
+| A | Švarus pagrindas kode: vienoje vietoje vienu metu – vienas vaizdas; scenos pabaigoje vaizdai išeina (slinkimas į kitos scenos vietą išimtas – perkėlimą spręs agentas B žingsnyje) | ✓ 2026-11-05 (`projectFromBlocks.ts`) |
+| C | Judesio žinios `knowledge/shared/motion-principles.json` (14 principų: principas, kodėl, kaip tai TikMaker, šaltiniai – Material Design judesio gairės, IxDF apie Disney principus, match cut). Užkrovimas į žinių bazę (schema + `server/agent/knowledge.ts`) – B dalyje | ✓ 2026-11-05 |
+| B | Agento žingsnis „Motion“ (po blokų, prieš balsą), vienintelis darbas – judesys. Gauna: visą laiko juostą (scenos, tipai, vaizdai su turiniu, kada ir kur), judesių sąrašą (19 įėjimų, 14 išėjimų, keyframe'ai, perkėlimas į kitą sceną, perėjimai) ir C žinias. Sprendžia: kiekvieno vaizdo įėjimą / išėjimą, judėjimą, perkėlimą, perėjimus; gali siūlyti keisti netinkamą bloką (dar nedaryta). Kodas tikrina: niekas nesusideda vienoje vietoje, viskas rėmo ribose, tik esami judesiai, laikai scenoje; vienas taisymas. Skydelyje – kortelė „Motion“ | ✓ (be blokų keitimo) |
+
+Eilė: A → C → B.
+
+**B dalys** (B1 parodyta naudotojai, visą B naudotojos prašymu („padaryk tu“) įrašė Claude, 2026-11-05):
+
+| # | Dalis | Failas | Būklė |
+| --- | --- | --- | --- |
+| B1 | Schema: ką modelis atsiunčia – kiekvienai scenai perėjimas, kiekvienam blokui įėjimas / išėjimas su kadrais, lėtas judesys, judėjimai (keyframe'ai ant žodžių), perkėlimas į kitą sceną; viso video judesio idėja | `src/agent/run/4-motion.ts` | ✓ |
+| B2 | Patikra kodu: scenų ir blokų skaičius sutampa; blokas neatsiranda „be efekto“ (būtų matomas prieš savo žodį); įėjimas + išėjimas telpa į bloko laiką; judėjimas – ant pasakyto žodžio, rėmo ribose, neužlipa ant kitos vietos vaizdo; perkelti galima tik paskutinį scenos bloką, į sceną su paveikslėliu, ir tada perėjimas – „cut“ | `src/agent/rules/checkMotion.ts` + testai | ✓ |
+| B3 | Žinių bazė: `motion-principles.json` schema ir užkrovimas | `src/agent/knowledge.ts`, `server/agent/knowledge.ts` | ✓ |
+| B4 | Promptas: laiko juosta (scenos, tipai, blokai su turiniu, kada ir kur), judesių sąrašas, principai; taisymas su ankstesniu atsakymu | `server/agent/prompts/pickMotion.ts` + testai | ✓ |
+| B5 | Agento žingsnis po blokų: pickMotion → checkMotion → vienas taisymas → `run.motion` | `server/agent/steps/4-building.ts`, `run.ts` | ✓ |
+| B6 | Video: judesys pritaikomas sluoksniams (įėjimai, išėjimai, keyframe'ai, perkėlimas, perėjimai) | `src/agent/projectFromBlocks.ts` + testai | ✓ |
+| B7 | Skydelio kortelė „Motion“: idėja, kiekvienos scenos perėjimas ir blokų judesiai, problemos | `src/editor/agent/MotionCard.tsx` | ✓ |
+
+Pastabos po B:
+- Perkėlimas (`carry`) padarytas ne per `link`: grandinė (`resolveHoistedLinkGroups`) apima visas scenas nuo pradžios iki galo ir nepaiso `delay`/`exitAt`. Vietoj to – du sluoksniai: blokas lieka iki scenos galo, kitoje scenoje jo kopija (`settled: true` – piešiama jau „atvykusi“, turinys iš naujo nesikuria) nuslenka į pirmą vietą ir išeina, kai ateina tos scenos pirmas blokas.
+- Ištaisyta: scenos ilgis buvo skaičiuojamas iš scenos su senu tekstu ekrane, todėl paskutinio bloko išėjimas nukrisdavo už scenos galo ir nesuveikdavo.
+- Ištaisyta: didelis skaičius („$20/mo“) išlįsdavo už rėmo – dabar šriftas mažėja, kad tilptų (`src/video/stage/fitText.ts`).
+
 ## Kaip tai susiję su esamu planu (docs/d-planas.md)
 
 - Idėja → kabliukas → scenarijus (D4–D6) – **nesikeičia**.
-- D7 išdėstymas: „rec“ video (su tavo įrašais) lieka su 61 maketo pavyzdžiu; **motion**
-  video naudoja šiuos blokus.
-- D8 taisyklės – prisideda tempo taisyklė; D9 kritikas – etapas E; D10 įgarsinimas – etapas D.
+- D7 išdėstymas: ir motion, ir „rec“ video (su tavo įrašais) naudos stage tipus ir
+  blokus; 61 maketo logika pašalinta 2026-11-05.
+- D8 taisyklės – prisideda tempo taisyklė; D9 kritikas – etapas E; D10 įgarsinimas – ✓ 2026-11-05.
 
 ## Kur kas guli
 
 - `src/video/stage/` – išdėstymas, kinetinis tekstas, blokai.
 - `src/agent/stylePack.ts`, `knowledge/shared/style-presets/` – stiliaus paketai.
-- `src/agent/run/4-beats.ts`, `server/agent/prompts/planBeats.ts` – agento įvykiai
-  (etape C keisis į blokus).
+- Agentas: `src/agent/run/4-blocks.ts`, `4-motion.ts`, `5-voice.ts` (ką modelis atsiunčia);
+  `src/agent/rules/checkBlocks.ts`, `checkMotion.ts` (patikra kodu);
+  `server/agent/prompts/pickBlocks.ts`, `pickMotion.ts`; `server/agent/steps/4-building.ts`,
+  `5-voice.ts`; `src/agent/projectFromBlocks.ts`, `agentVoice.ts` (video redaktoriuje).
+- Žinios: `knowledge/shared/motion-principles.json`.
 - `docs/motion-stilius.md` – judesio ir tempo vertės; `docs/bd/kadrai/insiderforce/` – pavyzdžiai.

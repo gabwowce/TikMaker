@@ -12,5 +12,6 @@
     "accent2": "#FFC24F"
   },
   "fonts": { "caption": "panchang" },
+  "grid": { "kind": "lines", "size": 120, "opacity": 0.03 },
   "brand": "tikmaker"
 }

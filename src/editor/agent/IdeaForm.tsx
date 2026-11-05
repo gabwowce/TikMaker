@@ -39,7 +39,7 @@ export function IdeaForm({ projectId }: { projectId: string }) {
     <div className="flex flex-col gap-3">
       <Textarea
         label="Video idea"
-        description="One problem the video solves, 20–500 characters"
+        description="One problem the video solves, 20–2000 characters"
         placeholder="How to undo the last git commit in a few seconds"
         autosize
         minRows={3}

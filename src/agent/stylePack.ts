@@ -1,31 +1,42 @@
 import { z } from "zod";
 
-// Stiliaus paketas – kaip kanalo video atrodo (ne ką jie sako). Kol kas tik
-// spalvos, šriftai ir ženklas: išdėstymas ir judesys visiems vienodi
-// (src/video/stage/). Vėliau čia atsiras tempas ir judesio charakteris, o
-// paketą iš kanalo pavyzdinių kadrų galės pasiūlyti DI – tuo pačiu formatu.
-// Paruošti paketai: knowledge/shared/style-presets/<id>.json.
+// A style pack – how a channel's videos look (not what they say). For now only
+// colours, fonts, the background grid and the brand mark: layout and motion are the same for all
+// (src/video/stage/). Later pace and the character of the motion come here,
+// and an AI can propose a pack from a channel's sample frames – in the same
+// format. Ready packs: knowledge/shared/style-presets/<id>.json.
 
-const color = z.string().regex(/^#[0-9A-Fa-f]{6}$/, "spalva – #RRGGBB");
+const color = z.string().regex(/^#[0-9A-Fa-f]{6}$/, "colour – #RRGGBB");
 
-// Šriftai, kuriuos TikMaker turi (src/video/typography/fonts.ts)
+// The fonts TikMaker has (src/video/typography/fonts.ts)
 export const packFont = z.enum(["clash", "panchang"]);
+
+// The background's grid (src/video/stage/Backdrop.tsx): lines, dots or none;
+// `size` – one cell in px, `opacity` – how white the lines or dots are.
+export const packGrid = z.object({
+  kind: z.enum(["lines", "dots", "none"]),
+  size: z.number().int().min(30).max(240),
+  opacity: z.number().min(0).max(0.3),
+});
 
 export const stylePack = z.object({
   id: z.string().min(1),
   name: z.string().min(1),
   colors: z.object({
     bg: color, // fonas
-    bgGlow: color, // šviesesnis fono centras
-    surface: color, // kortelės, monetos
-    surfaceHi: color, // šviesesnė kortelės dalis
-    text: color, // kertiniai žodžiai, antraštės
-    textSoft: color, // kiti žodžiai
-    accent: color, // ✦, paryškinta kodo eilutė, fono ženklai
-    accent2: color, // antra ikona ar akcentas
+    bgGlow: color, // the lighter centre of the background
+    surface: color, // cards, coins
+    surfaceHi: color, // the lighter part of a card
+    text: color, // key words, headings
+    textSoft: color, // the other words
+    accent: color, // ✦, the highlighted code line
+    accent2: color, // a second icon or accent
   }),
   fonts: z.object({ caption: packFont }),
-  brand: z.string().max(30), // ženklas apačioje, pvz. "tikmaker"
+  // A pack written before the grid existed gets the old look: faint lines.
+  grid: packGrid.default({ kind: "lines", size: 90, opacity: 0.035 }),
+  brand: z.string().max(30), // the brand mark at the bottom, e.g. "tikmaker"
 });
 
 export type StylePack = z.infer<typeof stylePack>;
+export type PackGrid = z.infer<typeof packGrid>;

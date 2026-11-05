@@ -3,9 +3,9 @@ import midnightJson from "../../../knowledge/shared/style-presets/midnight.json"
 import { stylePack, type StylePack } from "../../agent/stylePack";
 import { fontFamilies } from "../typography/tokens";
 
-// Stiliaus paketas scenai (src/agent/stylePack.ts). Visi „stage“ komponentai
-// spalvas ir šriftą ima iš čia (usePack), todėl tas pats video kitu paketu
-// atrodo kitaip, o išdėstymas ir judesys lieka tie patys.
+// The style pack for a scene (src/agent/stylePack.ts). Every "stage" component
+// takes its colours and font from here (usePack), so the same video in another
+// pack looks different while the layout and motion stay the same.
 export const defaultPack: StylePack = stylePack.parse(midnightJson);
 
 const PackContext = createContext<StylePack>(defaultPack);
@@ -37,7 +37,7 @@ const fonts = {
   },
 };
 
-// Spalvos ir šriftai vienoje vietoje; `border` – plona šviesi linija.
+// Colours and fonts in one place; `border` – a thin light line.
 export function usePack() {
   const pack = useContext(PackContext);
   const font = fonts[pack.fonts.caption];
@@ -48,8 +48,9 @@ export function usePack() {
     fontSemi: font.semi,
     fontRegular: font.regular,
     brand: pack.brand,
-    // Platus šriftas (Panchang) užima ~25 % daugiau vietos – tekstas mažinamas,
-    // kad eilutės lūžtų taip pat kaip su Clash.
+    grid: pack.grid,
+    // A wide font (Panchang) takes ~25 % more room – the text is made smaller
+    // so the lines break the same as with Clash.
     widthFactor: pack.fonts.caption === "panchang" ? 0.78 : 1,
   };
 }

@@ -1230,7 +1230,7 @@
       "format": "demo",
       "name": "Problem then fix",
       "oneLine": "The broken or painful way first, then the tool that fixes it, shown working",
-      "whenToUse": "An idea where a tool fixes a pain the audience recognises.",
+      "whenToUse": "An idea where a tool fixes a pain the audience recognises, including a creator telling why they built their own tool: the pain they had, then the tool that fixes it.",
       "basedOnAnalysisIds": [
         "EmxXYzX6iEs",
         "FX8eD_qN_qU",
@@ -2700,7 +2700,7 @@
       "format": "story",
       "name": "Rise of a brand",
       "oneLine": "From a humble start, through hardship, to a big brand",
-      "whenToUse": "An idea that is the history of a brand, product or founder.",
+      "whenToUse": "An idea that is the history of a brand, product or founder that has already grown big: the idea gives the success to show (users, money, years). Not a creator telling why they built their own tool.",
       "basedOnAnalysisIds": [
         "A4gshIyrNNU",
         "x7iYFWYxmbQ",

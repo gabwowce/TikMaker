@@ -5,7 +5,7 @@ import {
   ctaFormulaSchema,
   designRuleSchema,
   hookFormulaSchema,
-  layoutExampleSchema,
+  motionPrincipleSchema,
   soundRuleSchema,
   titleFormulaSchema,
   transitionPhraseSchema,
@@ -15,7 +15,7 @@ import {
   type CtaFormula,
   type DesignRule,
   type HookFormula,
-  type LayoutExample,
+  type MotionPrinciple,
   type SoundRule,
   type TitleFormula,
   type TransitionPhrase,
@@ -30,13 +30,13 @@ import {
 //
 // Layout of the folder:
 //   shared/video-templates/<id>.json   one VideoTemplate per file
-//   shared/layout-examples/<id>.json   one LayoutExample per file
 //   shared/hook-formulas.json          arrays — every file is optional
 //   shared/cta-formulas.json
 //   shared/title-formulas.json
 //   shared/transition-phrases.json
 //   shared/design-rules.json
 //   shared/sound-rules.json
+//   shared/motion-principles.json
 //   workspaces/<id>/workspace.json     + style.json
 
 export type KnowledgeError = {
@@ -49,13 +49,13 @@ export type WorkspaceEntry = { workspace: Workspace; style: WorkspaceStyle };
 
 export type Knowledge = {
   videoTemplates: VideoTemplate[];
-  layoutExamples: LayoutExample[];
   hookFormulas: HookFormula[];
   ctaFormulas: CtaFormula[];
   titleFormulas: TitleFormula[];
   transitionPhrases: TransitionPhrase[];
   designRules: DesignRule[];
   soundRules: SoundRule[];
+  motionPrinciples: MotionPrinciple[];
   workspaces: WorkspaceEntry[];
 };
 
@@ -170,10 +170,6 @@ export async function loadKnowledge(
       "shared/video-templates",
       videoTemplateSchema,
     ),
-    layoutExamples: await readFolder(
-      "shared/layout-examples",
-      layoutExampleSchema,
-    ),
     hookFormulas: await readList(
       "shared/hook-formulas.json",
       hookFormulaSchema,
@@ -189,6 +185,10 @@ export async function loadKnowledge(
     ),
     designRules: await readList("shared/design-rules.json", designRuleSchema),
     soundRules: await readList("shared/sound-rules.json", soundRuleSchema),
+    motionPrinciples: await readList(
+      "shared/motion-principles.json",
+      motionPrincipleSchema,
+    ),
     workspaces: await readWorkspaces(),
   };
 
@@ -196,11 +196,11 @@ export async function loadKnowledge(
   // run used, a workspace's id), so two with the same id make the join ambiguous.
   const idGroups: [string, { id: string }[]][] = [
     ["shared/video-templates", knowledge.videoTemplates],
-    ["shared/layout-examples", knowledge.layoutExamples],
     ["shared/hook-formulas.json", knowledge.hookFormulas],
     ["shared/cta-formulas.json", knowledge.ctaFormulas],
     ["shared/title-formulas.json", knowledge.titleFormulas],
     ["shared/design-rules.json", knowledge.designRules],
+    ["shared/motion-principles.json", knowledge.motionPrinciples],
     ["workspaces", knowledge.workspaces.map((entry) => entry.workspace)],
   ];
   for (const [file, items] of idGroups) {

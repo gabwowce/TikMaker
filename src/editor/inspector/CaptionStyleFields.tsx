@@ -13,8 +13,24 @@ export function CaptionStyleFields() {
   const captions = useProjectStore((state) => state.project.captions) ?? {};
   const update = useProjectStore((state) => state.updateProjectCaptions);
   const activeStyle = captions.activeStyle ?? "pill";
+  const look = captions.style ?? "pill";
   return (
     <div className="flex flex-col gap-2 mt-3">
+      <div className="text-[10px] text-editor-muted uppercase [letter-spacing:.05em]">
+        Caption look
+      </div>
+      <div className="flex gap-1.5">
+        {(["pill", "kinetic"] as const).map((style) => (
+          <Button
+            variant="default"
+            key={style}
+            onClick={() => update({ style })}
+            className={`flex-1 capitalize ${look === style ? "bg-[rgba(255,112,36,0.14)] [border:1px_solid_#FF7024] text-editor-accent" : "bg-transparent [border:1px_solid_#2c2c2c] text-editor-text"}`}
+          >
+            {style}
+          </Button>
+        ))}
+      </div>
       <Field label="Caption font">
         <NativeSelect
           className="w-full"

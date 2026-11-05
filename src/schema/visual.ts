@@ -1,6 +1,7 @@
 import { z } from "zod";
 import { screenAspectSchema, talkingHeadPlacementSchema } from "./capabilities";
 import type { ScreenAspect } from "../video/visuals/devices/screenFrameSize";
+import { blockFromAi, type BlockFromAi } from "../agent/run/4-blocks";
 export type TalkingHeadPlacement = z.infer<typeof talkingHeadPlacementSchema>;
 export const logoIdSchema = z.string();
 export const propIdSchema = z.string();
@@ -93,6 +94,8 @@ export type VisualConfig =
       stagger?: number;
       sfx?: string;
     }
+  | { type: "custom-scene"; component: string }
+  | { type: "stage-block"; block: BlockFromAi; settled?: boolean }
   | {
       type: "checkpoint";
       label: string;
@@ -324,6 +327,20 @@ export const visualConfigSchema: z.ZodType<VisualConfig> = z.discriminatedUnion(
         .optional(),
       stagger: z.number().min(0).max(60).optional(),
       sfx: z.string().optional(),
+    }),
+    // A scene drawn for one video only (src/video/custom/), by name.
+    z.object({
+      type: z.literal("custom-scene"),
+      component: z.string().min(1),
+    }),
+    // One block of a motion scene (src/video/stage/), as the agent picked it
+    // (src/agent/run/4-blocks.ts); drawn the size of the stage's top zone.
+    z.object({
+      type: z.literal("stage-block"),
+      block: blockFromAi,
+      // Carried in from the previous scene: drawn finished, without building
+      // itself up again (projectFromBlocks).
+      settled: z.boolean().optional(),
     }),
     z.object({
       type: z.literal("checkpoint"),

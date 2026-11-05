@@ -8,6 +8,7 @@ import { PerspectiveDataGrid } from "./PerspectiveDataGrid";
 import { SoftGrid } from "./SoftGrid";
 import { SolidDark } from "./SolidDark";
 import { Spotlight } from "./Spotlight";
+import { Backdrop } from "../stage/Backdrop";
 const backgroundComponents: Record<BackgroundId, ComponentType> = {
   "solid-dark": SolidDark,
   "soft-grid": SoftGrid,
@@ -16,6 +17,7 @@ const backgroundComponents: Record<BackgroundId, ComponentType> = {
   "perspective-data-grid": PerspectiveDataGrid,
   "floating-glass-layers": FloatingGlassLayers,
   "dot-grid": DotGrid,
+  stage: Backdrop,
 };
 type BackgroundProps = {
   id: SceneBackground;

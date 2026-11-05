@@ -1,6 +1,7 @@
 import { ActionIcon } from "@mantine/core";
 import { useEffect } from "react";
-import { useLatestRun, useLayoutKnowledge } from "../../api/agent";
+import { useLatestRun } from "../../api/agent";
+import { loadCustomSfx } from "../../api/library";
 import { useEditorPrefs } from "../state/editorPrefs";
 import { useProjectStore } from "../state/projectStore";
 import { usePanelResize } from "../usePanelResize";
@@ -69,19 +70,21 @@ function AgentPanelBody() {
   const projectId = useProjectStore((s) => s.project.id);
   const hasScenes = useProjectStore((s) => s.project.scenes.length > 0);
   const applyAgentScript = useProjectStore((s) => s.applyAgentScript);
-  const applyAgentLayout = useProjectStore((s) => s.applyAgentLayout);
+  const applyAgentBlocks = useProjectStore((s) => s.applyAgentBlocks);
   const { loaded, run, working } = useLatestRun(projectId);
-  // The agent's scenes are still words only: the layout has not been applied.
-  const awaitsLayout = useProjectStore(
+  // The video is built only once the agent is past building it: with a
+  // voiceover that is after the voice step, so the scenes get its timings.
+  const built =
+    run !== undefined &&
+    !["laying_out", "checking", "generating_voice"].includes(run.status);
+  // The agent's scenes are still words only: no stage type yet.
+  const awaitsBlocks = useProjectStore(
     (s) =>
-      run?.layout !== undefined &&
+      built &&
+      run?.blocks !== undefined &&
       s.project.scenes.some(
-        (scene) =>
-          scene.id.startsWith(`scene-${run.id}-`) && !scene.layoutExampleId,
+        (scene) => scene.id.startsWith(`scene-${run.id}-`) && !scene.stage,
       ),
-  );
-  const { data: layoutKnowledge } = useLayoutKnowledge(
-    awaitsLayout ? run?.input.workspaceId : undefined,
   );
 
   // "Approve": the script goes into the still empty project, so it shows in
@@ -89,15 +92,18 @@ function AgentPanelBody() {
   useEffect(() => {
     if (run?.script?.approved && !hasScenes) applyAgentScript(run);
   }, [run, hasScenes, applyAgentScript]);
-  // The agent laid the video out: its scenes get the chosen examples, once.
-  // Scenes laid out already, or added by hand, are left as they are.
+  // The agent built the video: its blocks become the scenes' layers, once.
+  // Scenes built already, or added by hand, are left as they are.
   useEffect(() => {
-    if (run && awaitsLayout && layoutKnowledge)
-      applyAgentLayout(run, layoutKnowledge.examples, layoutKnowledge.style);
-  }, [run, awaitsLayout, layoutKnowledge, applyAgentLayout]);
+    if (!run || !awaitsBlocks) return;
+    void withVoiceSounds(run).then(() => applyAgentBlocks(run));
+  }, [run, awaitsBlocks, applyAgentBlocks]);
 
   if (!loaded) return null;
-  if (run && working) return <RunProgress runId={run.id} />;
+  // While the agent works, and after it has built this project, the panel
+  // shows the run: every step it took stays readable.
+  if (run && (working || run.status === "done"))
+    return <RunProgress runId={run.id} />;
   if (!hasScenes)
     return (
       <div className="flex flex-col gap-3">
@@ -116,4 +122,11 @@ function AgentPanelBody() {
       Select a scene and describe the change. Editing with the AI arrives in D8.
     </p>
   );
+}
+
+// The agent's voiceover clips were made on the server: the editor learns
+// about them (the sound list) before a project points at them, or the
+// preview would not find the audio.
+async function withVoiceSounds(run: { voice?: unknown }): Promise<void> {
+  if (run.voice) await loadCustomSfx();
 }

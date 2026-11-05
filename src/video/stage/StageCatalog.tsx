@@ -13,7 +13,7 @@ import {
   ScreenBody,
   TerminalBody,
 } from "./StageBlocks";
-import { Backdrop } from "./StageDemo";
+import { Backdrop } from "./Backdrop";
 import {
   BigList,
   CodeBody,
@@ -23,9 +23,10 @@ import {
 } from "./StageVisuals";
 import { stage } from "./tokens";
 
-// Blokų katalogas: visi 10 viršutinės zonos blokų iš eilės po 3 s, apačioje –
-// bloko pavadinimas. Iš šių blokų agentas rinksis (docs/motion-planas.md).
-// Studijoje – kompozicija „StageCatalog“; `pack` – stiliaus paketas.
+// The blocks catalogue: all 10 top-zone blocks in a row, 3 s each, with the
+// block's name at the bottom. The agent picks from these blocks
+// (docs/motion-planas.md). In the Studio – the "StageCatalog" composition;
+// `pack` – the style pack.
 const SEGMENT = 90;
 
 const blocks: { name: string; render: () => ReactNode }[] = [

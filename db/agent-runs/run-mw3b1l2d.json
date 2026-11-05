@@ -1,0 +1,1085 @@
+{
+  "id": "run-mw3b1l2d",
+  "projectId": "project-1793868580235",
+  "createdAt": 1793868593125,
+  "status": "done",
+  "input": {
+    "idea": "How to undo your last git commit without losing your changes: git reset --soft HEAD~1",
+    "workspaceId": "dev",
+    "targetSeconds": 30,
+    "motionOnly": true,
+    "withFace": false,
+    "generateVoice": false
+  },
+  "template": {
+    "videoTemplateId": "pain-to-fix",
+    "score": 4,
+    "reason": "Most devs know the panic of committing too early. This template opens on that moment, then shows `git reset --soft HEAD~1` running in the terminal, with your changes still staged afterwards. It suits a faceless 30-second video, though the \"tool\" here is a single command, so \"How-to steps\" would also work if you want numbered steps.",
+    "pickedBy": "agent"
+  },
+  "hooks": [
+    {
+      "text": "Committed too early? Don't delete your work. Do this instead.",
+      "formulaId": null,
+      "score": 4
+    },
+    {
+      "text": "Saw a dev undoing his last commit like this",
+      "formulaId": "saw-someone-doing-it-like-this",
+      "score": 4
+    },
+    {
+      "text": "When you undo a git commit, you might think your changes vanish...",
+      "formulaId": "you-might-think",
+      "score": 4
+    }
+  ],
+  "hooksFor": "pain-to-fix",
+  "hook": {
+    "text": "Committed too early? Don't delete your work. Do this instead.",
+    "formulaId": null,
+    "pickedBy": "agent"
+  },
+  "research": {
+    "facts": "- `git reset --soft HEAD~1` removes your last commit, but your files and your staged changes stay exactly as they were. Git's docs say --soft leaves \"your working tree files and the index unchanged.\"\n- `HEAD~1` means \"one commit before the one you're on now.\" Your branch moves back one step, and everything from the removed commit sits staged, so you can commit it again.\n- Common uses: you wrote a typo in the commit message, or you forgot a file. Fix it, then run `git commit` again. Git's official docs give this exact \"undo a commit and redo\" example.\n- Compare the modes: `--mixed` (the default) also keeps your files but unstages them. `--hard` overwrites your files to match the older commit, so any uncommitted work is lost.\n- The same trick can squash several commits into one. Git's docs show `git reset --soft HEAD~5` followed by `git commit` to turn the last 5 commits into 1.\n- If you already pushed the commit to a shared branch, the usual safer choice is `git revert`. It adds a new commit that undoes the old one, so nobody's history gets rewritten. Using reset there means you'd have to force-push.",
+    "sources": [
+      {
+        "url": "https://git-scm.com/docs/git-reset",
+        "title": "Git - git-reset Documentation"
+      },
+      {
+        "url": "https://git-scm.com/docs/git-revert",
+        "title": "Git - git-revert Documentation"
+      },
+      {
+        "url": "https://coddy.tech/git-commands/git-undo-last-commit",
+        "title": "git undo last commit (Coddy)"
+      },
+      {
+        "url": "https://techearl.com/git-undo-last-commit",
+        "title": "git undo last commit (TechEarl)"
+      }
+    ]
+  },
+  "script": {
+    "scenes": [
+      {
+        "role": "hook",
+        "voiceover": "Committed too early? Don't delete your work. Do this instead.",
+        "onScreen": "Committed too early? Don't delete your work.",
+        "visual": "Animated git log graph: a fresh commit dot pops onto the branch with a red 'oops' badge; a trash can icon hovers nearby and gets crossed out",
+        "needsRecording": false
+      },
+      {
+        "role": "setup",
+        "voiceover": "You commit, then spot a typo or a forgotten file.",
+        "onScreen": "Typo? Forgot a file?",
+        "visual": "Stylized terminal showing 'git commit -m \"fix lgoin bug\"'; the typo 'lgoin' gets circled in red, and a file icon 'auth.js' slides in labeled 'not committed'",
+        "needsRecording": false
+      },
+      {
+        "role": "problem",
+        "voiceover": "But reset --hard overwrites your files. Uncommitted work: gone.",
+        "onScreen": "--hard = work lost",
+        "visual": "Terminal types 'git reset --hard HEAD~1'; code file cards beside it flash red and dissolve into dust",
+        "needsRecording": false
+      },
+      {
+        "role": "reveal",
+        "voiceover": "Instead, use git reset --soft HEAD~1.",
+        "onScreen": "git reset --soft HEAD~1",
+        "visual": "The command types itself out in big monospace text on a dark terminal, '--soft' highlighted in green",
+        "needsRecording": false
+      },
+      {
+        "role": "demo",
+        "voiceover": "HEAD~1 means one commit back. Your branch steps back, and your changes stay staged.",
+        "onScreen": "HEAD~1 = one commit back. Changes stay staged",
+        "visual": "Commit graph: the HEAD/branch label slides back one dot; the removed commit's files fly into a green 'Staged' box, intact",
+        "needsRecording": false
+      },
+      {
+        "role": "demo",
+        "voiceover": "Fix the typo or add the file, then commit again.",
+        "onScreen": "Fix it → git commit",
+        "visual": "Terminal: 'git add auth.js' then 'git commit -m \"fix login bug\"'; a new clean commit dot appears on the graph with a green check",
+        "needsRecording": false
+      },
+      {
+        "role": "demo",
+        "voiceover": "Bonus: reset --soft HEAD~5, then commit, squashes five commits into one.",
+        "onScreen": "HEAD~5 → 5 commits become 1",
+        "visual": "Five small commit dots on the graph merge into one larger dot after 'git reset --soft HEAD~5' and 'git commit' appear in the terminal",
+        "needsRecording": false
+      },
+      {
+        "role": "benefit",
+        "voiceover": "Files untouched. Already pushed to a shared branch? Use git revert instead.",
+        "onScreen": "Files untouched. Pushed? → git revert",
+        "visual": "Split card: left a green shield over the files labeled 'local: reset --soft'; right a cloud icon labeled 'pushed: git revert' adding a new undo commit to the graph",
+        "needsRecording": false
+      }
+    ],
+    "skipped": [
+      {
+        "role": "cta",
+        "reason": "Only the 'none' CTA type is allowed and the idea mentions no guide, so the video ends on the benefit scene."
+      }
+    ],
+    "problems": [],
+    "approved": true
+  },
+  "steps": [
+    {
+      "name": "pickTemplate",
+      "startedAt": 1793868593194,
+      "ms": 10970,
+      "model": "claude-opus-5-5",
+      "attempts": 1,
+      "prompt": {
+        "system": "You are the producer of a short-video channel (TikTok, Reels, Shorts).\nYour job in this step: choose how the video will be told, by picking ONE template\nfrom the list you are given. You do not write the video yet.\n\nYou get the channel, the video idea and the templates.\nPick the template whose \"when to use\" fits the idea best; the length matters less.\nA template's \"needs\" are the facts its required scenes are built on. Pick one the idea\ncan fill with its OWN facts: a rise-to-success story needs a success to show, a how-to\nneeds steps, a list needs items. If the idea lacks what a template needs, that template\ndoes not fit, however close its topic is.\nNever invent a template: answer only with an id from the list.\nscore: 5 = made for this idea and the idea has every fact it needs, 3 = workable,\n1 = nothing in the list fits.\nreason: one or two sentences for the creator, in plain English, about this idea.",
+        "user": "Channel: TikMaker and AI coding. Mostly TikMaker itself: what it can do, how a video gets made with it, new features and how it is being built with AI (build in public). Around that, short concrete videos about other AI tools, vibe coding and Claude Code: one problem or one feature per video, shown on screen rather than told.\nAudience: Creators who want to make short videos faster with AI, and developers or beginners who build apps with AI and want to work faster without breaking things.\n\nIdea: How to undo your last git commit without losing your changes: git reset --soft HEAD~1\nWanted length: about 30 s\nFace on camera: no, a faceless video\n\nTemplates:\n- id: analogy-explainer\n  name: Explained with characters\n  what: A concept explained through a small invented world or everyday analogy\n  when to use: An idea that is an abstract concept (economics, health, finance) that becomes clear as a story.\n  needs: problem, step, concept-term, real-case, lesson\n  length: 26–63 s\n- id: app-list\n  name: Free apps list\n  what: A quick list of apps, one per scene, each shown on screen\n  when to use: An idea that recommends several apps or tools for one device or audience.\n  needs: app-count, device-or-audience, app-name, app-feature\n  length: 14–62 s\n- id: brand-origin\n  name: Rise of a brand\n  what: From a humble start, through hardship, to a big brand\n  when to use: An idea that is the history of a brand, product or founder that has already grown big: the idea gives the success to show (users, money, years). Not a creator telling why they built their own tool.\n  needs: year-or-result, brand, founder, start, hardship, time-jump, result-number\n  length: 43–80 s\n- id: build-it-fast\n  name: Build it fast\n  what: Show the finished thing, then every step that built it\n  when to use: An idea where the viewer can build something real in minutes with a tool.\n  needs: result, time, tool-name, step, screen-recording\n  length: 20–51 s\n- id: dark-true-story\n  name: Creepy true story\n  what: A dark or strange true story told step by step to a shocking ending\n  when to use: An idea that is a real crime, legend or eerie event.\n  needs: place-or-person, event, ending\n  length: 15–51 s\n- id: explained-in-time\n  name: Explained in 60 seconds\n  what: A complex topic explained in a promised short time, often to an unlikely audience\n  when to use: An idea that is a complex topic the viewer finds hard and wants explained quickly.\n  needs: nothing special\n  length: 35–54 s\n- id: how-to-steps\n  name: How-to steps\n  what: A how-to promise followed by numbered steps on screen\n  when to use: An idea that is a concrete task the viewer wants to do with a tool, in a few steps.\n  needs: task, tool-name\n  length: 32–43 s\n- id: myth-vs-reality\n  name: Myth vs reality\n  what: What people think, then how it really works, with the proof\n  when to use: An idea that corrects a common belief or reveals a hidden side of something familiar.\n  needs: belief, background, reality, step, twist\n  length: 26–59 s\n- id: new-tool-news\n  name: New tool news\n  what: A just-released free tool, its benefits, a quick demo and a comment-keyword offer\n  when to use: An idea that is news about a newly released or newly free tool.\n  needs: who-released, tool-name, benefit, keyword, resource\n  length: 30–107 s\n- id: pain-to-fix\n  name: Problem then fix\n  what: The broken or painful way first, then the tool that fixes it, shown working\n  when to use: An idea where a tool fixes a pain the audience recognises, including a creator telling why they built their own tool: the pain they had, then the tool that fixes it.\n  needs: pain, task, screen-recording\n  length: 30–40 s\n- id: plot-recap\n  name: Story recap\n  what: A plot, journey or character backstory retold event by event\n  when to use: An idea that recaps an episode, myth, game lore or a character's story.\n  needs: story-name, setting, ending\n  length: 48–181 s\n- id: product-promo\n  name: Product promo\n  what: A product's benefits shown one by one through its interface, ending on where to get it\n  when to use: An idea that promotes one product or service.\n  needs: product-name\n  length: 11–30 s\n- id: question-answered\n  name: Big question answered\n  what: A why or how question, answered step by step with diagrams\n  when to use: An idea that is a question the audience has wondered about.\n  needs: question\n  length: 43–71 s\n- id: ranked-countdown\n  name: Top N countdown\n  what: Ranked items counted down to number one\n  when to use: An idea that ranks a set of things by some measure.\n  needs: rank-count, ranked-thing, rank-number, item-name, item-detail\n  length: 25–60 s\n- id: rapid-facts\n  name: Rapid-fire facts\n  what: Many short facts in a row, one per scene, with the strongest kept for last\n  when to use: An idea that is a collection of short surprising facts around one theme.\n  needs: theme, fact\n  length: 40–56 s\n- id: single-fact\n  name: One surprising fact\n  what: One fact built up line by line to a short reveal\n  when to use: An idea that is a single surprising or eerie fact that fits in under 20 seconds.\n  needs: topic\n  length: 7–16 s\n- id: software-tutorial\n  name: Software how-to\n  what: A finished result first, then the steps to make it in the software\n  when to use: An idea that is a specific thing to make in a common program (PowerPoint, GitHub, a no-code tool).\n  needs: result, software\n  length: 14–53 s\n- id: tool-deep-dive\n  name: Tool explained\n  what: What a tool is, how it differs, and what it really does\n  when to use: An idea that explains one popular tool or model and how to think about it.\n  needs: tool-name, difference, main-point\n  length: 49–78 s\n- id: tool-spotlight\n  name: Tool spotlight\n  what: One website or tool shown working, often as a numbered series part\n  when to use: An idea that is a single useful website, repo or tool the viewer probably has not seen.\n  needs: tool-category, series-part, screen-recording\n  length: 10–56 s\n- id: tool-tips-keyword\n  name: Tool tips list\n  what: Numbered tips for one tool, each named and then shown working, ending with a comment-keyword offer\n  when to use: An idea that is a handful of concrete tips, skills or add-ons for one tool the audience already uses.\n  needs: tool-name, tip-count, tip-number, tip-name, keyword, resource\n  length: 47–88 s"
+      },
+      "inputTokens": 2,
+      "cachedInputTokens": 3909,
+      "outputTokens": 463,
+      "thinkingTokens": 253,
+      "output": {
+        "videoTemplateId": "pain-to-fix",
+        "score": 4,
+        "reason": "Most devs know the panic of committing too early. This template opens on that moment, then shows `git reset --soft HEAD~1` running in the terminal, with your changes still staged afterwards. It suits a faceless 30-second video, though the \"tool\" here is a single command, so \"How-to steps\" would also work if you want numbered steps."
+      }
+    },
+    {
+      "name": "writeHooks",
+      "startedAt": 1793868604174,
+      "ms": 8385,
+      "model": "claude-opus-5-5",
+      "attempts": 1,
+      "prompt": {
+        "system": "You write the opening line (hook) of a short vertical video (TikTok, Reels, Shorts):\nthe words shown and spoken in the first two seconds, which decide whether people keep watching.\n\nWrite THREE different hooks for the idea.\nThe formulas show openings that have worked: follow one where it fits this idea (fill it\nin, do not copy its example) or write your own. formulaId = the formula's id, or null for\na hook of your own.\nFill a formula only with what the idea says: never claim something it does not\n(no \"I switched from…\", no number, no result the idea does not give).\nEach hook: one line, at most 12 words, plain spoken English, no hashtags, no emojis.\nscore: 5 = people stop scrolling, 3 = fine, 1 = weak.",
+        "user": "Channel: TikMaker and AI coding. Mostly TikMaker itself: what it can do, how a video gets made with it, new features and how it is being built with AI (build in public). Around that, short concrete videos about other AI tools, vibe coding and Claude Code: one problem or one feature per video, shown on screen rather than told.\nAudience: Creators who want to make short videos faster with AI, and developers or beginners who build apps with AI and want to work faster without breaking things.\n\nIdea: How to undo your last git commit without losing your changes: git reset --soft HEAD~1\nTemplate: Problem then fix – The broken or painful way first, then the tool that fixes it, shown working\n\nFormulas:\n- id: everyone-uses-it-wrong\n  type: pain-shown\n  formula: Everyone's using [tool] like [wrong analogy].\n  example: Everyone's using Claude Code like it's a magic wand.\n- id: in-year-subject-did\n  type: story\n  formula: In [year or era], [subject] [did something].\n  example: In 1946, four brothers named Kashio\n- id: saw-someone-doing-it-like-this\n  type: pain-shown\n  formula: Saw [someone] [doing a task] like this\n  example: Saw the intern visualizing his data like this\n- id: everyone-uses-but\n  type: contrarian\n  formula: Everyone's using [trending tool] to [goal], but [pain].\n  example: Everyone's using Claude Code to build AI agents\n- id: characters-live-in-two-places\n  type: story\n  formula: [Characters] live in two [places]: [A] and [B].\n  example: Gorillas live in two countries\n- id: did-you-know-spooky-place\n  type: story\n  formula: Did you know that in [spooky place]...\n  example: Did you know that in an old house on the outskirts of Hiroshima...\n- id: dramatic-quote\n  type: story\n  formula: \"[The most dramatic line spoken in the story]\"\n  example: Why did you kill my wife and daughter ?\n- id: i-switched-from\n  type: story\n  formula: I switched from [tool A] to [tool B].\n  example: I switched from Cursor to Claude Code.\n- id: everyone-without-is-wasting\n  type: contrarian\n  formula: Everyone using [tool] without [feature] is just wasting their [resource].\n  example: Everyone using Claude without skills is just wasting their tokens.\n- id: you-are-the-only\n  type: contrarian\n  formula: You are the only [statement that sounds impossible].\n  example: You are the only person alive.\n- id: you-might-think\n  type: contrarian\n  formula: When you [everyday action], you might think [misconception]...\n  example: When you visit a website, you might think that your computer is connecting with\n- id: characters-on-a-job\n  type: story\n  formula: Alright guys, we've got a [job] to do. Where's the [problem] this time?\n  example: Alright guys, we've got a job to do. Where's the pain this time?\n- id: imagine-you-have\n  type: story\n  formula: Imagine you have [valuable thing] in your [place].\n  example: Imagine you have ten thousand dollars"
+      },
+      "inputTokens": 2,
+      "cachedInputTokens": 2719,
+      "outputTokens": 179,
+      "thinkingTokens": 0,
+      "output": [
+        {
+          "text": "Committed too early? Don't delete your work. Do this instead.",
+          "formulaId": null,
+          "score": 4
+        },
+        {
+          "text": "Saw a dev undoing his last commit like this",
+          "formulaId": "saw-someone-doing-it-like-this",
+          "score": 4
+        },
+        {
+          "text": "When you undo a git commit, you might think your changes vanish...",
+          "formulaId": "you-might-think",
+          "score": 4
+        }
+      ]
+    },
+    {
+      "name": "research",
+      "startedAt": 1793868623610,
+      "ms": 55814,
+      "model": "claude-opus-5-5",
+      "attempts": 1,
+      "prompt": {
+        "system": "You research the facts for a short vertical video (TikTok, Reels, Shorts).\nSearch the web for the idea's topic and answer with 4 to 6 short facts that help explain\nit to the video's audience: what it is, how it works, a clear example or number.\nOne fact per line, starting with \"- \", plain English, each one true and checkable.\nNo opinions, no advice, nothing about the creator – only the topic.\n\nPut your answer in \"text\" and every page you used in \"sources\".",
+        "user": "Audience: Creators who want to make short videos faster with AI, and developers or beginners who build apps with AI and want to work faster without breaking things.\n\nIdea: How to undo your last git commit without losing your changes: git reset --soft HEAD~1"
+      },
+      "inputTokens": 17031,
+      "cachedInputTokens": 32295,
+      "outputTokens": 1113,
+      "thinkingTokens": 163,
+      "output": {
+        "text": "- `git reset --soft HEAD~1` removes your last commit, but your files and your staged changes stay exactly as they were. Git's docs say --soft leaves \"your working tree files and the index unchanged.\"\n- `HEAD~1` means \"one commit before the one you're on now.\" Your branch moves back one step, and everything from the removed commit sits staged, so you can commit it again.\n- Common uses: you wrote a typo in the commit message, or you forgot a file. Fix it, then run `git commit` again. Git's official docs give this exact \"undo a commit and redo\" example.\n- Compare the modes: `--mixed` (the default) also keeps your files but unstages them. `--hard` overwrites your files to match the older commit, so any uncommitted work is lost.\n- The same trick can squash several commits into one. Git's docs show `git reset --soft HEAD~5` followed by `git commit` to turn the last 5 commits into 1.\n- If you already pushed the commit to a shared branch, the usual safer choice is `git revert`. It adds a new commit that undoes the old one, so nobody's history gets rewritten. Using reset there means you'd have to force-push.",
+        "sources": [
+          {
+            "url": "https://git-scm.com/docs/git-reset",
+            "title": "Git - git-reset Documentation"
+          },
+          {
+            "url": "https://git-scm.com/docs/git-revert",
+            "title": "Git - git-revert Documentation"
+          },
+          {
+            "url": "https://coddy.tech/git-commands/git-undo-last-commit",
+            "title": "git undo last commit (Coddy)"
+          },
+          {
+            "url": "https://techearl.com/git-undo-last-commit",
+            "title": "git undo last commit (TechEarl)"
+          }
+        ]
+      }
+    },
+    {
+      "name": "writeScript",
+      "startedAt": 1793868679431,
+      "ms": 25900,
+      "model": "claude-opus-5-5",
+      "attempts": 1,
+      "prompt": {
+        "system": "You write the script of a short vertical video (TikTok, Reels, Shorts).\n\nTell ONE connected story. The idea may be written as loose thoughts in any order: sort\nthem into the order the template's scenes tell (the problem before the fix, the cause\nbefore the result), and let every scene follow from the one before it – the voiceovers\nread in a row must make sense as one spoken text. A scene that promises something (\"what I learned\", \"here's why\") is\nfollowed by the scene that says it.\n\nThe template is a guide: a structure that has worked for videos like this – its scenes,\ntheir order and how they link. Follow it where it serves this idea; change the order,\nleave a scene out or add one when that tells this story better. A \"repeatable\" scene\nmay appear several times in a row (one per step or item). Put every template scene you\nleave out in \"skipped\" with a short reason.\nA scene's \"facts\" come from the idea and the facts found online only – never invent a\ntool, a number or a result.\nWhen the idea has no fact for a scene, leave it out if it is optional; if it is required,\nfill it with what the idea does say rather than with an invented claim.\nIts \"creative\" parts are yours to word.\n\nThe first scene is the hook: say the chosen hook as it is, and show its key words.\nThe template's links (\"→ next\") and the transition phrases are examples of how scenes\ncan follow each other; use them only where they read naturally. End the way that fits\nthis video best: the CTA formulas show endings that have worked – use one, or write\nyour own, or none if no ending asks for one.\nThe call to action never sends people to a link, a website, a download or a giveaway\nthe idea does not mention – then pick a CTA formula that needs none of those.\n\nFor every scene:\n- voiceover: what is said, natural spoken English\n- onScreen: the key words shown big, not the whole sentence\n- visual: what the viewer sees, concrete (a terminal running a command, a settings page,\n  an app icon), never \"something engaging\"\n- needsRecording: your call – true when the scene is shown best with the creator's own\n  screen recording rather than a picture the video editor draws.\n\nKeep within the limits. Each scene lasts about as long as its voiceover: fill the wanted\nlength – add more steps or items with the repeatable scenes, keep the optional scenes\nthat help – rather than stopping short.",
+        "user": "Channel: TikMaker and AI coding. Mostly TikMaker itself: what it can do, how a video gets made with it, new features and how it is being built with AI (build in public). Around that, short concrete videos about other AI tools, vibe coding and Claude Code: one problem or one feature per video, shown on screen rather than told.\nAudience: Creators who want to make short videos faster with AI, and developers or beginners who build apps with AI and want to work faster without breaking things.\n\nIdea: How to undo your last git commit without losing your changes: git reset --soft HEAD~1\n\nFacts found online (true – use them to explain the idea):\n- `git reset --soft HEAD~1` removes your last commit, but your files and your staged changes stay exactly as they were. Git's docs say --soft leaves \"your working tree files and the index unchanged.\"\n- `HEAD~1` means \"one commit before the one you're on now.\" Your branch moves back one step, and everything from the removed commit sits staged, so you can commit it again.\n- Common uses: you wrote a typo in the commit message, or you forgot a file. Fix it, then run `git commit` again. Git's official docs give this exact \"undo a commit and redo\" example.\n- Compare the modes: `--mixed` (the default) also keeps your files but unstages them. `--hard` overwrites your files to match the older commit, so any uncommitted work is lost.\n- The same trick can squash several commits into one. Git's docs show `git reset --soft HEAD~5` followed by `git commit` to turn the last 5 commits into 1.\n- If you already pushed the commit to a shared branch, the usual safer choice is `git revert`. It adds a new commit that undoes the old one, so nobody's history gets rewritten. Using reset there means you'd have to force-push.\nWanted length: about 30 s\nFace on camera: no, a faceless video\nMotion graphics only: no recordings at all (needsRecording is always false).\n\nHook: Committed too early? Don't delete your work. Do this instead.\n\nTemplate: Problem then fix – The broken or painful way first, then the tool that fixes it, shown working\nScenes:\n- opening / hook (2–2.8 s): Shows or states the wrong way people do it. [required] → next: contrast; facts: pain; creative: who\n- build / setup (2.4–4 s): Sets the scene of the task. [required] → next: sequence; facts: task\n- build / problem (3–7 s): Names what goes wrong. [optional] [repeatable] → next: open-loop-payoff; facts: problem\n- core / reveal (2.2–4.6 s): Names the fix. [optional] [repeatable] → next: sequence; facts: tool-name\n- core / demo (3–7 s): Shows the fix working on screen. [required] [repeatable] → next: sequence; facts: screen-recording\n- climax / benefit (3.4–6.6 s): States what changed. [optional] → next: bridge; facts: gain\n- close / cta (3–3 s): Points to the full guide. [optional] → next: none; facts: resource\n\nTransition phrases:\n- sequence: First, | Second, | Third, | First is | Second is | Third is\n- contrast: But | Instead | Instead of just | But instead, | but in reality, | but that's not how\n- bridge: So if you want | So just | To get the full | For a PDF | So want to try it for yourself? | Now you might be wondering...\n- open-loop-payoff: It's called | You have probably heard of | Here's the easiest way | All roads lead to Rome... | And that's why... | Anthropic just dropped\n\nCTA formulas (types allowed: none):\n- none: end on the last scene, without a call to action (skip the cta scene)\n\nLimits, from the analysis of successful videos:\n- speak at most 3.4 words per second\n- a scene lasts at most 9 s, the hook at most 5 s\n- at most 15 words on screen in a scene"
+      },
+      "inputTokens": 3556,
+      "cachedInputTokens": 0,
+      "outputTokens": 1759,
+      "thinkingTokens": 603,
+      "output": {
+        "scenes": [
+          {
+            "role": "hook",
+            "voiceover": "Committed too early? Don't delete your work. Do this instead.",
+            "onScreen": "Committed too early? Don't delete your work.",
+            "visual": "Animated git log graph: a fresh commit dot pops onto the branch with a red 'oops' badge; a trash can icon hovers nearby and gets crossed out",
+            "needsRecording": false
+          },
+          {
+            "role": "setup",
+            "voiceover": "You just committed. Then you spot a typo, or a file you forgot.",
+            "onScreen": "Typo in message? Forgot a file?",
+            "visual": "Stylized terminal showing 'git commit -m \"fix lgoin bug\"'; the typo 'lgoin' gets circled in red, and a file icon 'auth.js' slides in labeled 'not committed'",
+            "needsRecording": false
+          },
+          {
+            "role": "problem",
+            "voiceover": "But git reset --hard overwrites your files to match the older commit. Any uncommitted work is gone.",
+            "onScreen": "--hard = uncommitted work lost",
+            "visual": "Terminal types 'git reset --hard HEAD~1'; code file cards beside it flash red and dissolve into dust",
+            "needsRecording": false
+          },
+          {
+            "role": "reveal",
+            "voiceover": "Instead, use git reset --soft HEAD~1.",
+            "onScreen": "git reset --soft HEAD~1",
+            "visual": "The command types itself out in big monospace text on a dark terminal, '--soft' highlighted in green",
+            "needsRecording": false
+          },
+          {
+            "role": "demo",
+            "voiceover": "HEAD~1 means one commit back. Your branch steps back, and everything from that commit sits staged, untouched.",
+            "onScreen": "HEAD~1 = one commit back. Changes stay staged",
+            "visual": "Commit graph: the HEAD/branch label slides back one dot; the removed commit's files fly into a green 'Staged' box, intact",
+            "needsRecording": false
+          },
+          {
+            "role": "demo",
+            "voiceover": "Fix the typo, or add the missing file, then run git commit again.",
+            "onScreen": "Fix it → git commit",
+            "visual": "Terminal: 'git add auth.js' then 'git commit -m \"fix login bug\"'; a new clean commit dot appears on the graph with a green check",
+            "needsRecording": false
+          },
+          {
+            "role": "demo",
+            "voiceover": "Same trick squashes commits: reset --soft HEAD~5, commit once, and five become one.",
+            "onScreen": "git reset --soft HEAD~5 → 5 commits become 1",
+            "visual": "Five small commit dots on the graph merge together into one larger dot after 'git reset --soft HEAD~5' and 'git commit' appear in the terminal",
+            "needsRecording": false
+          },
+          {
+            "role": "benefit",
+            "voiceover": "Your files stay exactly as they were. One rule: already pushed to a shared branch? Use git revert instead, so nobody's history gets rewritten.",
+            "onScreen": "Files untouched. Already pushed? → git revert",
+            "visual": "Split card: left a green shield over the files labeled 'local: reset --soft'; right a cloud icon labeled 'pushed: git revert' adding a new undo commit to the graph",
+            "needsRecording": false
+          }
+        ],
+        "skipped": [
+          {
+            "role": "cta",
+            "reason": "Only the 'none' CTA type is allowed and the idea mentions no guide, so the video ends on the benefit scene."
+          }
+        ]
+      }
+    },
+    {
+      "name": "writeScript",
+      "startedAt": 1793868705336,
+      "ms": 18186,
+      "model": "claude-opus-5-5",
+      "attempts": 1,
+      "prompt": {
+        "system": "You write the script of a short vertical video (TikTok, Reels, Shorts).\n\nTell ONE connected story. The idea may be written as loose thoughts in any order: sort\nthem into the order the template's scenes tell (the problem before the fix, the cause\nbefore the result), and let every scene follow from the one before it – the voiceovers\nread in a row must make sense as one spoken text. A scene that promises something (\"what I learned\", \"here's why\") is\nfollowed by the scene that says it.\n\nThe template is a guide: a structure that has worked for videos like this – its scenes,\ntheir order and how they link. Follow it where it serves this idea; change the order,\nleave a scene out or add one when that tells this story better. A \"repeatable\" scene\nmay appear several times in a row (one per step or item). Put every template scene you\nleave out in \"skipped\" with a short reason.\nA scene's \"facts\" come from the idea and the facts found online only – never invent a\ntool, a number or a result.\nWhen the idea has no fact for a scene, leave it out if it is optional; if it is required,\nfill it with what the idea does say rather than with an invented claim.\nIts \"creative\" parts are yours to word.\n\nThe first scene is the hook: say the chosen hook as it is, and show its key words.\nThe template's links (\"→ next\") and the transition phrases are examples of how scenes\ncan follow each other; use them only where they read naturally. End the way that fits\nthis video best: the CTA formulas show endings that have worked – use one, or write\nyour own, or none if no ending asks for one.\nThe call to action never sends people to a link, a website, a download or a giveaway\nthe idea does not mention – then pick a CTA formula that needs none of those.\n\nFor every scene:\n- voiceover: what is said, natural spoken English\n- onScreen: the key words shown big, not the whole sentence\n- visual: what the viewer sees, concrete (a terminal running a command, a settings page,\n  an app icon), never \"something engaging\"\n- needsRecording: your call – true when the scene is shown best with the creator's own\n  screen recording rather than a picture the video editor draws.\n\nKeep within the limits. Each scene lasts about as long as its voiceover: fill the wanted\nlength – add more steps or items with the repeatable scenes, keep the optional scenes\nthat help – rather than stopping short.",
+        "user": "Channel: TikMaker and AI coding. Mostly TikMaker itself: what it can do, how a video gets made with it, new features and how it is being built with AI (build in public). Around that, short concrete videos about other AI tools, vibe coding and Claude Code: one problem or one feature per video, shown on screen rather than told.\nAudience: Creators who want to make short videos faster with AI, and developers or beginners who build apps with AI and want to work faster without breaking things.\n\nIdea: How to undo your last git commit without losing your changes: git reset --soft HEAD~1\n\nFacts found online (true – use them to explain the idea):\n- `git reset --soft HEAD~1` removes your last commit, but your files and your staged changes stay exactly as they were. Git's docs say --soft leaves \"your working tree files and the index unchanged.\"\n- `HEAD~1` means \"one commit before the one you're on now.\" Your branch moves back one step, and everything from the removed commit sits staged, so you can commit it again.\n- Common uses: you wrote a typo in the commit message, or you forgot a file. Fix it, then run `git commit` again. Git's official docs give this exact \"undo a commit and redo\" example.\n- Compare the modes: `--mixed` (the default) also keeps your files but unstages them. `--hard` overwrites your files to match the older commit, so any uncommitted work is lost.\n- The same trick can squash several commits into one. Git's docs show `git reset --soft HEAD~5` followed by `git commit` to turn the last 5 commits into 1.\n- If you already pushed the commit to a shared branch, the usual safer choice is `git revert`. It adds a new commit that undoes the old one, so nobody's history gets rewritten. Using reset there means you'd have to force-push.\nWanted length: about 30 s\nFace on camera: no, a faceless video\nMotion graphics only: no recordings at all (needsRecording is always false).\n\nHook: Committed too early? Don't delete your work. Do this instead.\n\nTemplate: Problem then fix – The broken or painful way first, then the tool that fixes it, shown working\nScenes:\n- opening / hook (2–2.8 s): Shows or states the wrong way people do it. [required] → next: contrast; facts: pain; creative: who\n- build / setup (2.4–4 s): Sets the scene of the task. [required] → next: sequence; facts: task\n- build / problem (3–7 s): Names what goes wrong. [optional] [repeatable] → next: open-loop-payoff; facts: problem\n- core / reveal (2.2–4.6 s): Names the fix. [optional] [repeatable] → next: sequence; facts: tool-name\n- core / demo (3–7 s): Shows the fix working on screen. [required] [repeatable] → next: sequence; facts: screen-recording\n- climax / benefit (3.4–6.6 s): States what changed. [optional] → next: bridge; facts: gain\n- close / cta (3–3 s): Points to the full guide. [optional] → next: none; facts: resource\n\nTransition phrases:\n- sequence: First, | Second, | Third, | First is | Second is | Third is\n- contrast: But | Instead | Instead of just | But instead, | but in reality, | but that's not how\n- bridge: So if you want | So just | To get the full | For a PDF | So want to try it for yourself? | Now you might be wondering...\n- open-loop-payoff: It's called | You have probably heard of | Here's the easiest way | All roads lead to Rome... | And that's why... | Anthropic just dropped\n\nCTA formulas (types allowed: none):\n- none: end on the last scene, without a call to action (skip the cta scene)\n\nLimits, from the analysis of successful videos:\n- speak at most 3.4 words per second\n- a scene lasts at most 9 s, the hook at most 5 s\n- at most 15 words on screen in a scene\n\nYour previous script:\n{\n  \"scenes\": [\n    {\n      \"role\": \"hook\",\n      \"voiceover\": \"Committed too early? Don't delete your work. Do this instead.\",\n      \"onScreen\": \"Committed too early? Don't delete your work.\",\n      \"visual\": \"Animated git log graph: a fresh commit dot pops onto the branch with a red 'oops' badge; a trash can icon hovers nearby and gets crossed out\",\n      \"needsRecording\": false\n    },\n    {\n      \"role\": \"setup\",\n      \"voiceover\": \"You just committed. Then you spot a typo, or a file you forgot.\",\n      \"onScreen\": \"Typo in message? Forgot a file?\",\n      \"visual\": \"Stylized terminal showing 'git commit -m \\\"fix lgoin bug\\\"'; the typo 'lgoin' gets circled in red, and a file icon 'auth.js' slides in labeled 'not committed'\",\n      \"needsRecording\": false\n    },\n    {\n      \"role\": \"problem\",\n      \"voiceover\": \"But git reset --hard overwrites your files to match the older commit. Any uncommitted work is gone.\",\n      \"onScreen\": \"--hard = uncommitted work lost\",\n      \"visual\": \"Terminal types 'git reset --hard HEAD~1'; code file cards beside it flash red and dissolve into dust\",\n      \"needsRecording\": false\n    },\n    {\n      \"role\": \"reveal\",\n      \"voiceover\": \"Instead, use git reset --soft HEAD~1.\",\n      \"onScreen\": \"git reset --soft HEAD~1\",\n      \"visual\": \"The command types itself out in big monospace text on a dark terminal, '--soft' highlighted in green\",\n      \"needsRecording\": false\n    },\n    {\n      \"role\": \"demo\",\n      \"voiceover\": \"HEAD~1 means one commit back. Your branch steps back, and everything from that commit sits staged, untouched.\",\n      \"onScreen\": \"HEAD~1 = one commit back. Changes stay staged\",\n      \"visual\": \"Commit graph: the HEAD/branch label slides back one dot; the removed commit's files fly into a green 'Staged' box, intact\",\n      \"needsRecording\": false\n    },\n    {\n      \"role\": \"demo\",\n      \"voiceover\": \"Fix the typo, or add the missing file, then run git commit again.\",\n      \"onScreen\": \"Fix it → git commit\",\n      \"visual\": \"Terminal: 'git add auth.js' then 'git commit -m \\\"fix login bug\\\"'; a new clean commit dot appears on the graph with a green check\",\n      \"needsRecording\": false\n    },\n    {\n      \"role\": \"demo\",\n      \"voiceover\": \"Same trick squashes commits: reset --soft HEAD~5, commit once, and five become one.\",\n      \"onScreen\": \"git reset --soft HEAD~5 → 5 commits become 1\",\n      \"visual\": \"Five small commit dots on the graph merge together into one larger dot after 'git reset --soft HEAD~5' and 'git commit' appear in the terminal\",\n      \"needsRecording\": false\n    },\n    {\n      \"role\": \"benefit\",\n      \"voiceover\": \"Your files stay exactly as they were. One rule: already pushed to a shared branch? Use git revert instead, so nobody's history gets rewritten.\",\n      \"onScreen\": \"Files untouched. Already pushed? → git revert\",\n      \"visual\": \"Split card: left a green shield over the files labeled 'local: reset --soft'; right a cloud icon labeled 'pushed: git revert' adding a new undo commit to the graph\",\n      \"needsRecording\": false\n    }\n  ],\n  \"skipped\": [\n    {\n      \"role\": \"cta\",\n      \"reason\": \"Only the 'none' CTA type is allowed and the idea mentions no guide, so the video ends on the benefit scene.\"\n    }\n  ]\n}\n\nWrite it again and change this:\n- About 39 s long, more than 35 s (30 s + 15 %)"
+      },
+      "inputTokens": 3235,
+      "cachedInputTokens": 1620,
+      "outputTokens": 1521,
+      "thinkingTokens": 427,
+      "output": {
+        "scenes": [
+          {
+            "role": "hook",
+            "voiceover": "Committed too early? Don't delete your work. Do this instead.",
+            "onScreen": "Committed too early? Don't delete your work.",
+            "visual": "Animated git log graph: a fresh commit dot pops onto the branch with a red 'oops' badge; a trash can icon hovers nearby and gets crossed out",
+            "needsRecording": false
+          },
+          {
+            "role": "setup",
+            "voiceover": "You commit, then spot a typo or a forgotten file.",
+            "onScreen": "Typo? Forgot a file?",
+            "visual": "Stylized terminal showing 'git commit -m \"fix lgoin bug\"'; the typo 'lgoin' gets circled in red, and a file icon 'auth.js' slides in labeled 'not committed'",
+            "needsRecording": false
+          },
+          {
+            "role": "problem",
+            "voiceover": "But reset --hard overwrites your files. Uncommitted work: gone.",
+            "onScreen": "--hard = work lost",
+            "visual": "Terminal types 'git reset --hard HEAD~1'; code file cards beside it flash red and dissolve into dust",
+            "needsRecording": false
+          },
+          {
+            "role": "reveal",
+            "voiceover": "Instead, use git reset --soft HEAD~1.",
+            "onScreen": "git reset --soft HEAD~1",
+            "visual": "The command types itself out in big monospace text on a dark terminal, '--soft' highlighted in green",
+            "needsRecording": false
+          },
+          {
+            "role": "demo",
+            "voiceover": "HEAD~1 means one commit back. Your branch steps back, and your changes stay staged.",
+            "onScreen": "HEAD~1 = one commit back. Changes stay staged",
+            "visual": "Commit graph: the HEAD/branch label slides back one dot; the removed commit's files fly into a green 'Staged' box, intact",
+            "needsRecording": false
+          },
+          {
+            "role": "demo",
+            "voiceover": "Fix the typo or add the file, then commit again.",
+            "onScreen": "Fix it → git commit",
+            "visual": "Terminal: 'git add auth.js' then 'git commit -m \"fix login bug\"'; a new clean commit dot appears on the graph with a green check",
+            "needsRecording": false
+          },
+          {
+            "role": "demo",
+            "voiceover": "Bonus: reset --soft HEAD~5, then commit, squashes five commits into one.",
+            "onScreen": "HEAD~5 → 5 commits become 1",
+            "visual": "Five small commit dots on the graph merge into one larger dot after 'git reset --soft HEAD~5' and 'git commit' appear in the terminal",
+            "needsRecording": false
+          },
+          {
+            "role": "benefit",
+            "voiceover": "Files untouched. Already pushed to a shared branch? Use git revert instead.",
+            "onScreen": "Files untouched. Pushed? → git revert",
+            "visual": "Split card: left a green shield over the files labeled 'local: reset --soft'; right a cloud icon labeled 'pushed: git revert' adding a new undo commit to the graph",
+            "needsRecording": false
+          }
+        ],
+        "skipped": [
+          {
+            "role": "cta",
+            "reason": "Only the 'none' CTA type is allowed and the idea mentions no guide, so the video ends on the benefit scene."
+          }
+        ]
+      }
+    },
+    {
+      "name": "pickBlocks",
+      "startedAt": 1793868732066,
+      "ms": 24027,
+      "model": "claude-opus-5-5",
+      "attempts": 1,
+      "prompt": {
+        "system": "You turn the approved script of a short vertical motion video into pictures.\nEvery frame shows a stage: big pictures (blocks) and the spoken words, which the code\ndraws from the voiceover by itself.\n\nFor every scene, decide which stage tells it best – your call, from what the scene says\nand what comes before and after it.\nThen pick 1–4 blocks from the catalogue and fill them (none for a statement):\n- onWord: the word of THAT scene's voiceover on which the block appears; the blocks go in\n  the order their words are said\n- the first block appears on the scene's first or second word\n- a new block at least every 3 seconds – about every 8 spoken words; one picture standing\n  longer feels slow\n- the block shows what is being said at that moment, concretely: the tool that is named,\n  the command, the number, the steps – never a decoration\n- fill exactly the fields the catalogue gives that block\n- keywords: 1–4 words of the voiceover to stand out in the spoken text (the names, the\n  numbers, the one word that carries the scene)\n\nUse only the logo and prop ids given. When you want a logo or an object that is not\nthere, show the scene with another block and write what you wanted in wishes (e.g.\n\"Notion logo\"). Answer with one entry per scene, in the same order.",
+        "user": "Channel: TikMaker and AI coding. Mostly TikMaker itself: what it can do, how a video gets made with it, new features and how it is being built with AI (build in public). Around that, short concrete videos about other AI tools, vibe coding and Claude Code: one problem or one feature per video, shown on screen rather than told.\nIdea: How to undo your last git commit without losing your changes: git reset --soft HEAD~1\n\nStages:\n- top: one picture above, the spoken words below\n- bottom: the spoken words above, one picture below\n- statement: no picture – only the spoken words, big, over the whole frame; blocks: []\n- full: one picture over the whole frame, the spoken words over it\n- split: two pictures at once, one above the other, the spoken words below; at least 2 blocks\n\nBlocks:\n- logos: ids: 2–4 logo or prop ids – when tools, apps or companies are named\n- code: file, lines: 2–6 lines of code, at most 35 characters each; start the key line with \"+ \" – when the scene is about code or a setting\n- terminal: lines: the command first, then 1–2 lines of its output – when the scene is about a command\n- list: items: 2–4 short points, at most 24 characters each – benefits, steps, mistakes\n- number: value, prefix (e.g. $), suffix (e.g. %, k), text: what the number means – a price, a time, a percentage\n- compare: before and after: { label, value }, e.g. \"Official price\" \"$49/mo\" → \"With TikMaker\" \"$0.016\" – before / after, expensive / cheap\n- badge: text: \"01\" or two words – a new point in a numbered list\n- object: id: one prop id – a metaphor or a feeling (a padlock, a clock, a robot)\n- schema: nodes: 2–4 { label, id? } – how something works, A → B → C\n\nLogos: bolt, chatgpt, claude, claude-ai-symbol, claude-svg, cloudflare, discord, elevenlabs, figma, gemini, github, gmail, google-chrome, grok, kilo-code, lovable, midjourney, netlify, reddit, remotion, remotion, stripe, supabase, vercel, vs-code, x\nProps: broken-glass, broom, browser-window, bug, card-declined, clock, coin, credit-card, database, document, dollar-cupure, envelope, eye, frustration, fuel-gauge, idea, key, layer-stack, link, padlock, paper-documents, pen, pin, plane, pricetag, puzzle-joined, puzzle-piece, question, robot-helpers, screen-panel, shop, sync-arrows, target, tower-leaning, two-users, user-avatar, uturn, wallet\n\nScene 1 (hook, ~3.1 s, so about 2 blocks)\n  Voiceover: Committed too early? Don't delete your work. Do this instead.\n  Shows: Animated git log graph: a fresh commit dot pops onto the branch with a red 'oops' badge; a trash can icon hovers nearby and gets crossed out\n\nScene 2 (setup, ~3.1 s, so about 2 blocks)\n  Voiceover: You commit, then spot a typo or a forgotten file.\n  Shows: Stylized terminal showing 'git commit -m \"fix lgoin bug\"'; the typo 'lgoin' gets circled in red, and a file icon 'auth.js' slides in labeled 'not committed'\n\nScene 3 (problem, ~2.8 s, so about 1 blocks)\n  Voiceover: But reset --hard overwrites your files. Uncommitted work: gone.\n  Shows: Terminal types 'git reset --hard HEAD~1'; code file cards beside it flash red and dissolve into dust\n\nScene 4 (reveal, ~1.9 s, so about 1 blocks)\n  Voiceover: Instead, use git reset --soft HEAD~1.\n  Shows: The command types itself out in big monospace text on a dark terminal, '--soft' highlighted in green\n\nScene 5 (demo, ~4.4 s, so about 2 blocks)\n  Voiceover: HEAD~1 means one commit back. Your branch steps back, and your changes stay staged.\n  Shows: Commit graph: the HEAD/branch label slides back one dot; the removed commit's files fly into a green 'Staged' box, intact\n\nScene 6 (demo, ~3.1 s, so about 2 blocks)\n  Voiceover: Fix the typo or add the file, then commit again.\n  Shows: Terminal: 'git add auth.js' then 'git commit -m \"fix login bug\"'; a new clean commit dot appears on the graph with a green check\n\nScene 7 (demo, ~3.4 s, so about 2 blocks)\n  Voiceover: Bonus: reset --soft HEAD~5, then commit, squashes five commits into one.\n  Shows: Five small commit dots on the graph merge into one larger dot after 'git reset --soft HEAD~5' and 'git commit' appear in the terminal\n\nScene 8 (benefit, ~3.8 s, so about 2 blocks)\n  Voiceover: Files untouched. Already pushed to a shared branch? Use git revert instead.\n  Shows: Split card: left a green shield over the files labeled 'local: reset --soft'; right a cloud icon labeled 'pushed: git revert' adding a new undo commit to the graph"
+      },
+      "inputTokens": 4200,
+      "cachedInputTokens": 0,
+      "outputTokens": 2259,
+      "thinkingTokens": 1138,
+      "output": {
+        "scenes": [
+          {
+            "stage": "top",
+            "blocks": [
+              {
+                "onWord": "Committed",
+                "kind": "object",
+                "id": "frustration"
+              },
+              {
+                "onWord": "Do",
+                "kind": "object",
+                "id": "uturn"
+              }
+            ],
+            "keywords": [
+              "Committed",
+              "delete"
+            ]
+          },
+          {
+            "stage": "split",
+            "blocks": [
+              {
+                "onWord": "commit,",
+                "kind": "terminal",
+                "lines": [
+                  "git commit -m \"fix lgoin bug\"",
+                  "[main a1b2c3d] fix lgoin bug"
+                ]
+              },
+              {
+                "onWord": "forgotten",
+                "kind": "code",
+                "file": "git status",
+                "lines": [
+                  "Untracked files:",
+                  "+ auth.js"
+                ]
+              }
+            ],
+            "keywords": [
+              "typo",
+              "forgotten"
+            ]
+          },
+          {
+            "stage": "top",
+            "blocks": [
+              {
+                "onWord": "reset",
+                "kind": "terminal",
+                "lines": [
+                  "git reset --hard HEAD~1",
+                  "HEAD is now at 7e4f0b2"
+                ]
+              },
+              {
+                "onWord": "Uncommitted",
+                "kind": "object",
+                "id": "broken-glass"
+              }
+            ],
+            "keywords": [
+              "--hard",
+              "gone."
+            ]
+          },
+          {
+            "stage": "full",
+            "blocks": [
+              {
+                "onWord": "Instead,",
+                "kind": "terminal",
+                "lines": [
+                  "git reset --soft HEAD~1",
+                  "# changes kept, staged"
+                ]
+              }
+            ],
+            "keywords": [
+              "--soft",
+              "HEAD~1."
+            ]
+          },
+          {
+            "stage": "split",
+            "blocks": [
+              {
+                "onWord": "HEAD~1",
+                "kind": "schema",
+                "nodes": [
+                  {
+                    "label": "HEAD~1"
+                  },
+                  {
+                    "label": "HEAD (oops)"
+                  }
+                ]
+              },
+              {
+                "onWord": "changes",
+                "kind": "terminal",
+                "lines": [
+                  "git status",
+                  "Changes to be committed:",
+                  "  modified: auth.js"
+                ]
+              }
+            ],
+            "keywords": [
+              "HEAD~1",
+              "staged."
+            ]
+          },
+          {
+            "stage": "top",
+            "blocks": [
+              {
+                "onWord": "Fix",
+                "kind": "list",
+                "items": [
+                  "Fix the typo",
+                  "git add auth.js",
+                  "Commit again"
+                ]
+              },
+              {
+                "onWord": "commit",
+                "kind": "terminal",
+                "lines": [
+                  "git commit -m \"fix login bug\"",
+                  "[main 9f3e2a1] fix login bug"
+                ]
+              }
+            ],
+            "keywords": [
+              "Fix",
+              "commit"
+            ]
+          },
+          {
+            "stage": "top",
+            "blocks": [
+              {
+                "onWord": "Bonus:",
+                "kind": "badge",
+                "text": "Bonus"
+              },
+              {
+                "onWord": "reset",
+                "kind": "terminal",
+                "lines": [
+                  "git reset --soft HEAD~5",
+                  "git commit -m \"one clean commit\""
+                ]
+              },
+              {
+                "onWord": "squashes",
+                "kind": "compare",
+                "before": {
+                  "label": "Commits",
+                  "value": "5"
+                },
+                "after": {
+                  "label": "After squash",
+                  "value": "1"
+                }
+              }
+            ],
+            "keywords": [
+              "Bonus:",
+              "HEAD~5,",
+              "squashes"
+            ]
+          },
+          {
+            "stage": "split",
+            "blocks": [
+              {
+                "onWord": "Files",
+                "kind": "object",
+                "id": "padlock"
+              },
+              {
+                "onWord": "pushed",
+                "kind": "compare",
+                "before": {
+                  "label": "Local",
+                  "value": "reset --soft"
+                },
+                "after": {
+                  "label": "Already pushed",
+                  "value": "git revert"
+                }
+              },
+              {
+                "onWord": "revert",
+                "kind": "terminal",
+                "lines": [
+                  "git revert HEAD",
+                  "[main 4c8d1e0] Revert \"fix bug\""
+                ]
+              }
+            ],
+            "keywords": [
+              "untouched.",
+              "pushed",
+              "revert"
+            ]
+          }
+        ],
+        "wishes": [
+          "Git logo",
+          "Trash can prop",
+          "Commit graph / branch prop",
+          "Shield prop"
+        ]
+      }
+    },
+    {
+      "name": "pickBlocks",
+      "startedAt": 1793868756100,
+      "ms": 15745,
+      "model": "claude-opus-5-5",
+      "attempts": 1,
+      "prompt": {
+        "system": "You turn the approved script of a short vertical motion video into pictures.\nEvery frame shows a stage: big pictures (blocks) and the spoken words, which the code\ndraws from the voiceover by itself.\n\nFor every scene, decide which stage tells it best – your call, from what the scene says\nand what comes before and after it.\nThen pick 1–4 blocks from the catalogue and fill them (none for a statement):\n- onWord: the word of THAT scene's voiceover on which the block appears; the blocks go in\n  the order their words are said\n- the first block appears on the scene's first or second word\n- a new block at least every 3 seconds – about every 8 spoken words; one picture standing\n  longer feels slow\n- the block shows what is being said at that moment, concretely: the tool that is named,\n  the command, the number, the steps – never a decoration\n- fill exactly the fields the catalogue gives that block\n- keywords: 1–4 words of the voiceover to stand out in the spoken text (the names, the\n  numbers, the one word that carries the scene)\n\nUse only the logo and prop ids given. When you want a logo or an object that is not\nthere, show the scene with another block and write what you wanted in wishes (e.g.\n\"Notion logo\"). Answer with one entry per scene, in the same order.",
+        "user": "Channel: TikMaker and AI coding. Mostly TikMaker itself: what it can do, how a video gets made with it, new features and how it is being built with AI (build in public). Around that, short concrete videos about other AI tools, vibe coding and Claude Code: one problem or one feature per video, shown on screen rather than told.\nIdea: How to undo your last git commit without losing your changes: git reset --soft HEAD~1\n\nStages:\n- top: one picture above, the spoken words below\n- bottom: the spoken words above, one picture below\n- statement: no picture – only the spoken words, big, over the whole frame; blocks: []\n- full: one picture over the whole frame, the spoken words over it\n- split: two pictures at once, one above the other, the spoken words below; at least 2 blocks\n\nBlocks:\n- logos: ids: 2–4 logo or prop ids – when tools, apps or companies are named\n- code: file, lines: 2–6 lines of code, at most 35 characters each; start the key line with \"+ \" – when the scene is about code or a setting\n- terminal: lines: the command first, then 1–2 lines of its output – when the scene is about a command\n- list: items: 2–4 short points, at most 24 characters each – benefits, steps, mistakes\n- number: value, prefix (e.g. $), suffix (e.g. %, k), text: what the number means – a price, a time, a percentage\n- compare: before and after: { label, value }, e.g. \"Official price\" \"$49/mo\" → \"With TikMaker\" \"$0.016\" – before / after, expensive / cheap\n- badge: text: \"01\" or two words – a new point in a numbered list\n- object: id: one prop id – a metaphor or a feeling (a padlock, a clock, a robot)\n- schema: nodes: 2–4 { label, id? } – how something works, A → B → C\n\nLogos: bolt, chatgpt, claude, claude-ai-symbol, claude-svg, cloudflare, discord, elevenlabs, figma, gemini, github, gmail, google-chrome, grok, kilo-code, lovable, midjourney, netlify, reddit, remotion, remotion, stripe, supabase, vercel, vs-code, x\nProps: broken-glass, broom, browser-window, bug, card-declined, clock, coin, credit-card, database, document, dollar-cupure, envelope, eye, frustration, fuel-gauge, idea, key, layer-stack, link, padlock, paper-documents, pen, pin, plane, pricetag, puzzle-joined, puzzle-piece, question, robot-helpers, screen-panel, shop, sync-arrows, target, tower-leaning, two-users, user-avatar, uturn, wallet\n\nScene 1 (hook, ~3.1 s, so about 2 blocks)\n  Voiceover: Committed too early? Don't delete your work. Do this instead.\n  Shows: Animated git log graph: a fresh commit dot pops onto the branch with a red 'oops' badge; a trash can icon hovers nearby and gets crossed out\n\nScene 2 (setup, ~3.1 s, so about 2 blocks)\n  Voiceover: You commit, then spot a typo or a forgotten file.\n  Shows: Stylized terminal showing 'git commit -m \"fix lgoin bug\"'; the typo 'lgoin' gets circled in red, and a file icon 'auth.js' slides in labeled 'not committed'\n\nScene 3 (problem, ~2.8 s, so about 1 blocks)\n  Voiceover: But reset --hard overwrites your files. Uncommitted work: gone.\n  Shows: Terminal types 'git reset --hard HEAD~1'; code file cards beside it flash red and dissolve into dust\n\nScene 4 (reveal, ~1.9 s, so about 1 blocks)\n  Voiceover: Instead, use git reset --soft HEAD~1.\n  Shows: The command types itself out in big monospace text on a dark terminal, '--soft' highlighted in green\n\nScene 5 (demo, ~4.4 s, so about 2 blocks)\n  Voiceover: HEAD~1 means one commit back. Your branch steps back, and your changes stay staged.\n  Shows: Commit graph: the HEAD/branch label slides back one dot; the removed commit's files fly into a green 'Staged' box, intact\n\nScene 6 (demo, ~3.1 s, so about 2 blocks)\n  Voiceover: Fix the typo or add the file, then commit again.\n  Shows: Terminal: 'git add auth.js' then 'git commit -m \"fix login bug\"'; a new clean commit dot appears on the graph with a green check\n\nScene 7 (demo, ~3.4 s, so about 2 blocks)\n  Voiceover: Bonus: reset --soft HEAD~5, then commit, squashes five commits into one.\n  Shows: Five small commit dots on the graph merge into one larger dot after 'git reset --soft HEAD~5' and 'git commit' appear in the terminal\n\nScene 8 (benefit, ~3.8 s, so about 2 blocks)\n  Voiceover: Files untouched. Already pushed to a shared branch? Use git revert instead.\n  Shows: Split card: left a green shield over the files labeled 'local: reset --soft'; right a cloud icon labeled 'pushed: git revert' adding a new undo commit to the graph\n\nYour previous answer:\n{\"scenes\":[{\"stage\":\"top\",\"blocks\":[{\"onWord\":\"Committed\",\"kind\":\"object\",\"id\":\"frustration\"},{\"onWord\":\"Do\",\"kind\":\"object\",\"id\":\"uturn\"}],\"keywords\":[\"Committed\",\"delete\"]},{\"stage\":\"split\",\"blocks\":[{\"onWord\":\"commit,\",\"kind\":\"terminal\",\"lines\":[\"git commit -m \\\"fix lgoin bug\\\"\",\"[main a1b2c3d] fix lgoin bug\"]},{\"onWord\":\"forgotten\",\"kind\":\"code\",\"file\":\"git status\",\"lines\":[\"Untracked files:\",\"+ auth.js\"]}],\"keywords\":[\"typo\",\"forgotten\"]},{\"stage\":\"top\",\"blocks\":[{\"onWord\":\"reset\",\"kind\":\"terminal\",\"lines\":[\"git reset --hard HEAD~1\",\"HEAD is now at 7e4f0b2\"]},{\"onWord\":\"Uncommitted\",\"kind\":\"object\",\"id\":\"broken-glass\"}],\"keywords\":[\"--hard\",\"gone.\"]},{\"stage\":\"full\",\"blocks\":[{\"onWord\":\"Instead,\",\"kind\":\"terminal\",\"lines\":[\"git reset --soft HEAD~1\",\"# changes kept, staged\"]}],\"keywords\":[\"--soft\",\"HEAD~1.\"]},{\"stage\":\"split\",\"blocks\":[{\"onWord\":\"HEAD~1\",\"kind\":\"schema\",\"nodes\":[{\"label\":\"HEAD~1\"},{\"label\":\"HEAD (oops)\"}]},{\"onWord\":\"changes\",\"kind\":\"terminal\",\"lines\":[\"git status\",\"Changes to be committed:\",\"  modified: auth.js\"]}],\"keywords\":[\"HEAD~1\",\"staged.\"]},{\"stage\":\"top\",\"blocks\":[{\"onWord\":\"Fix\",\"kind\":\"list\",\"items\":[\"Fix the typo\",\"git add auth.js\",\"Commit again\"]},{\"onWord\":\"commit\",\"kind\":\"terminal\",\"lines\":[\"git commit -m \\\"fix login bug\\\"\",\"[main 9f3e2a1] fix login bug\"]}],\"keywords\":[\"Fix\",\"commit\"]},{\"stage\":\"top\",\"blocks\":[{\"onWord\":\"Bonus:\",\"kind\":\"badge\",\"text\":\"Bonus\"},{\"onWord\":\"reset\",\"kind\":\"terminal\",\"lines\":[\"git reset --soft HEAD~5\",\"git commit -m \\\"one clean commit\\\"\"]},{\"onWord\":\"squashes\",\"kind\":\"compare\",\"before\":{\"label\":\"Commits\",\"value\":\"5\"},\"after\":{\"label\":\"After squash\",\"value\":\"1\"}}],\"keywords\":[\"Bonus:\",\"HEAD~5,\",\"squashes\"]},{\"stage\":\"split\",\"blocks\":[{\"onWord\":\"Files\",\"kind\":\"object\",\"id\":\"padlock\"},{\"onWord\":\"pushed\",\"kind\":\"compare\",\"before\":{\"label\":\"Local\",\"value\":\"reset --soft\"},\"after\":{\"label\":\"Already pushed\",\"value\":\"git revert\"}},{\"onWord\":\"revert\",\"kind\":\"terminal\",\"lines\":[\"git revert HEAD\",\"[main 4c8d1e0] Revert \\\"fix bug\\\"\"]}],\"keywords\":[\"untouched.\",\"pushed\",\"revert\"]}],\"wishes\":[\"Git logo\",\"Trash can prop\",\"Commit graph / branch prop\",\"Shield prop\"]}\n\nThe code found these problems – fix them, keep the rest:\n- Scene 5: block 1 stays 3.8 s – change the picture at least every 3 s"
+      },
+      "inputTokens": 3573,
+      "cachedInputTokens": 1744,
+      "outputTokens": 1440,
+      "thinkingTokens": 295,
+      "output": {
+        "scenes": [
+          {
+            "stage": "top",
+            "blocks": [
+              {
+                "onWord": "Committed",
+                "kind": "object",
+                "id": "frustration"
+              },
+              {
+                "onWord": "Do",
+                "kind": "object",
+                "id": "uturn"
+              }
+            ],
+            "keywords": [
+              "Committed",
+              "delete"
+            ]
+          },
+          {
+            "stage": "split",
+            "blocks": [
+              {
+                "onWord": "commit,",
+                "kind": "terminal",
+                "lines": [
+                  "git commit -m \"fix lgoin bug\"",
+                  "[main a1b2c3d] fix lgoin bug"
+                ]
+              },
+              {
+                "onWord": "forgotten",
+                "kind": "code",
+                "file": "git status",
+                "lines": [
+                  "Untracked files:",
+                  "+ auth.js"
+                ]
+              }
+            ],
+            "keywords": [
+              "typo",
+              "forgotten"
+            ]
+          },
+          {
+            "stage": "top",
+            "blocks": [
+              {
+                "onWord": "reset",
+                "kind": "terminal",
+                "lines": [
+                  "git reset --hard HEAD~1",
+                  "HEAD is now at 7e4f0b2"
+                ]
+              },
+              {
+                "onWord": "Uncommitted",
+                "kind": "object",
+                "id": "broken-glass"
+              }
+            ],
+            "keywords": [
+              "--hard",
+              "gone."
+            ]
+          },
+          {
+            "stage": "full",
+            "blocks": [
+              {
+                "onWord": "Instead,",
+                "kind": "terminal",
+                "lines": [
+                  "git reset --soft HEAD~1",
+                  "# changes kept, staged"
+                ]
+              }
+            ],
+            "keywords": [
+              "--soft",
+              "HEAD~1."
+            ]
+          },
+          {
+            "stage": "split",
+            "blocks": [
+              {
+                "onWord": "HEAD~1",
+                "kind": "schema",
+                "nodes": [
+                  {
+                    "label": "HEAD~1"
+                  },
+                  {
+                    "label": "HEAD (oops)"
+                  }
+                ]
+              },
+              {
+                "onWord": "branch",
+                "kind": "object",
+                "id": "uturn"
+              },
+              {
+                "onWord": "changes",
+                "kind": "terminal",
+                "lines": [
+                  "git status",
+                  "Changes to be committed:",
+                  "  modified: auth.js"
+                ]
+              }
+            ],
+            "keywords": [
+              "HEAD~1",
+              "staged."
+            ]
+          },
+          {
+            "stage": "top",
+            "blocks": [
+              {
+                "onWord": "Fix",
+                "kind": "list",
+                "items": [
+                  "Fix the typo",
+                  "git add auth.js",
+                  "Commit again"
+                ]
+              },
+              {
+                "onWord": "commit",
+                "kind": "terminal",
+                "lines": [
+                  "git commit -m \"fix login bug\"",
+                  "[main 9f3e2a1] fix login bug"
+                ]
+              }
+            ],
+            "keywords": [
+              "Fix",
+              "commit"
+            ]
+          },
+          {
+            "stage": "top",
+            "blocks": [
+              {
+                "onWord": "Bonus:",
+                "kind": "badge",
+                "text": "Bonus"
+              },
+              {
+                "onWord": "reset",
+                "kind": "terminal",
+                "lines": [
+                  "git reset --soft HEAD~5",
+                  "git commit -m \"one clean commit\""
+                ]
+              },
+              {
+                "onWord": "squashes",
+                "kind": "compare",
+                "before": {
+                  "label": "Commits",
+                  "value": "5"
+                },
+                "after": {
+                  "label": "After squash",
+                  "value": "1"
+                }
+              }
+            ],
+            "keywords": [
+              "Bonus:",
+              "HEAD~5,",
+              "squashes"
+            ]
+          },
+          {
+            "stage": "split",
+            "blocks": [
+              {
+                "onWord": "Files",
+                "kind": "object",
+                "id": "padlock"
+              },
+              {
+                "onWord": "pushed",
+                "kind": "compare",
+                "before": {
+                  "label": "Local",
+                  "value": "reset --soft"
+                },
+                "after": {
+                  "label": "Already pushed",
+                  "value": "git revert"
+                }
+              },
+              {
+                "onWord": "revert",
+                "kind": "terminal",
+                "lines": [
+                  "git revert HEAD",
+                  "[main 4c8d1e0] Revert \"fix bug\""
+                ]
+              }
+            ],
+            "keywords": [
+              "untouched.",
+              "pushed",
+              "revert"
+            ]
+          }
+        ],
+        "wishes": [
+          "Git logo",
+          "Trash can prop",
+          "Commit graph / branch prop",
+          "Shield prop"
+        ]
+      }
+    }
+  ],
+  "blocks": {
+    "scenes": [
+      {
+        "stage": "top",
+        "blocks": [
+          {
+            "onWord": "Committed",
+            "kind": "object",
+            "id": "frustration"
+          },
+          {
+            "onWord": "Do",
+            "kind": "object",
+            "id": "uturn"
+          }
+        ],
+        "keywords": [
+          "Committed",
+          "delete"
+        ]
+      },
+      {
+        "stage": "split",
+        "blocks": [
+          {
+            "onWord": "commit,",
+            "kind": "terminal",
+            "lines": [
+              "git commit -m \"fix lgoin bug\"",
+              "[main a1b2c3d] fix lgoin bug"
+            ]
+          },
+          {
+            "onWord": "forgotten",
+            "kind": "code",
+            "file": "git status",
+            "lines": [
+              "Untracked files:",
+              "+ auth.js"
+            ]
+          }
+        ],
+        "keywords": [
+          "typo",
+          "forgotten"
+        ]
+      },
+      {
+        "stage": "top",
+        "blocks": [
+          {
+            "onWord": "reset",
+            "kind": "terminal",
+            "lines": [
+              "git reset --hard HEAD~1",
+              "HEAD is now at 7e4f0b2"
+            ]
+          },
+          {
+            "onWord": "Uncommitted",
+            "kind": "object",
+            "id": "broken-glass"
+          }
+        ],
+        "keywords": [
+          "--hard",
+          "gone."
+        ]
+      },
+      {
+        "stage": "full",
+        "blocks": [
+          {
+            "onWord": "Instead,",
+            "kind": "terminal",
+            "lines": [
+              "git reset --soft HEAD~1",
+              "# changes kept, staged"
+            ]
+          }
+        ],
+        "keywords": [
+          "--soft",
+          "HEAD~1."
+        ]
+      },
+      {
+        "stage": "split",
+        "blocks": [
+          {
+            "onWord": "HEAD~1",
+            "kind": "schema",
+            "nodes": [
+              {
+                "label": "HEAD~1"
+              },
+              {
+                "label": "HEAD (oops)"
+              }
+            ]
+          },
+          {
+            "onWord": "branch",
+            "kind": "object",
+            "id": "uturn"
+          },
+          {
+            "onWord": "changes",
+            "kind": "terminal",
+            "lines": [
+              "git status",
+              "Changes to be committed:",
+              "  modified: auth.js"
+            ]
+          }
+        ],
+        "keywords": [
+          "HEAD~1",
+          "staged."
+        ]
+      },
+      {
+        "stage": "top",
+        "blocks": [
+          {
+            "onWord": "Fix",
+            "kind": "list",
+            "items": [
+              "Fix the typo",
+              "git add auth.js",
+              "Commit again"
+            ]
+          },
+          {
+            "onWord": "commit",
+            "kind": "terminal",
+            "lines": [
+              "git commit -m \"fix login bug\"",
+              "[main 9f3e2a1] fix login bug"
+            ]
+          }
+        ],
+        "keywords": [
+          "Fix",
+          "commit"
+        ]
+      },
+      {
+        "stage": "top",
+        "blocks": [
+          {
+            "onWord": "Bonus:",
+            "kind": "badge",
+            "text": "Bonus"
+          },
+          {
+            "onWord": "reset",
+            "kind": "terminal",
+            "lines": [
+              "git reset --soft HEAD~5",
+              "git commit -m \"one clean commit\""
+            ]
+          },
+          {
+            "onWord": "squashes",
+            "kind": "compare",
+            "before": {
+              "label": "Commits",
+              "value": "5"
+            },
+            "after": {
+              "label": "After squash",
+              "value": "1"
+            }
+          }
+        ],
+        "keywords": [
+          "Bonus:",
+          "HEAD~5,",
+          "squashes"
+        ]
+      },
+      {
+        "stage": "split",
+        "blocks": [
+          {
+            "onWord": "Files",
+            "kind": "object",
+            "id": "padlock"
+          },
+          {
+            "onWord": "pushed",
+            "kind": "compare",
+            "before": {
+              "label": "Local",
+              "value": "reset --soft"
+            },
+            "after": {
+              "label": "Already pushed",
+              "value": "git revert"
+            }
+          },
+          {
+            "onWord": "revert",
+            "kind": "terminal",
+            "lines": [
+              "git revert HEAD",
+              "[main 4c8d1e0] Revert \"fix bug\""
+            ]
+          }
+        ],
+        "keywords": [
+          "untouched.",
+          "pushed",
+          "revert"
+        ]
+      }
+    ],
+    "wishes": [
+      "Git logo",
+      "Trash can prop",
+      "Commit graph / branch prop",
+      "Shield prop"
+    ],
+    "problems": []
+  }
+}

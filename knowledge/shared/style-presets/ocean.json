@@ -12,5 +12,6 @@
     "accent2": "#7CFFB2"
   },
   "fonts": { "caption": "clash" },
+  "grid": { "kind": "dots", "size": 60, "opacity": 0.08 },
   "brand": "tikmaker"
 }

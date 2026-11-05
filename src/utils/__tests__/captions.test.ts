@@ -1,6 +1,11 @@
 import { describe, expect, it } from "vitest";
 import { createEmptyProject, type VideoProject } from "../../schema/project";
-import { captionTimeline, chunkWords } from "../captions";
+import {
+  CHUNK_LIMITS,
+  captionTimeline,
+  chunkWords,
+  isKeyword,
+} from "../captions";
 import { alignmentToWords } from "../captionWords";
 
 function words(text: string, gap = 0) {
@@ -12,11 +17,19 @@ function words(text: string, gap = 0) {
   });
 }
 
-function projectWith(clip: Partial<NonNullable<VideoProject["audioClips"]>[number]>): VideoProject {
+function projectWith(
+  clip: Partial<NonNullable<VideoProject["audioClips"]>[number]>,
+): VideoProject {
   return {
     ...createEmptyProject("p", "p"),
     scenes: [
-      { id: "s", type: "hook-centered", durationSeconds: 10, background: "solid-dark", content: {} },
+      {
+        id: "s",
+        type: "hook-centered",
+        durationSeconds: 10,
+        background: "solid-dark",
+        content: {},
+      },
     ],
     audioClips: [{ id: "a", sfxId: "vo-x", from: 30, ...clip }],
   };
@@ -47,6 +60,14 @@ describe("chunkWords", () => {
     ]);
   });
 
+  it("keeps whole phrases together in the kinetic style", () => {
+    const chunks = chunkWords(
+      words("one two three four five six seven"),
+      CHUNK_LIMITS.kinetic,
+    );
+    expect(chunks.map((c) => c.length)).toEqual([6, 1]);
+  });
+
   it("breaks after punctuation and at a pause", () => {
     expect(chunkWords(words("stop. now")).length).toBe(2);
     expect(chunkWords(words("a b", 0.5)).length).toBe(2);
@@ -74,15 +95,28 @@ describe("captionTimeline", () => {
         { text: "cut", start: 2, end: 2.4 },
       ],
     });
-    const texts = captionTimeline(project, 30).flatMap((c) => c.words.map((w) => w.text));
+    const texts = captionTimeline(project, 30).flatMap((c) =>
+      c.words.map((w) => w.text),
+    );
     expect(texts).toEqual(["kept"]);
   });
 
   it("never shows two chunks at once", () => {
-    const project = projectWith({ words: words("one two three four five six") });
+    const project = projectWith({
+      words: words("one two three four five six"),
+    });
     const chunks = captionTimeline(project, 30);
     for (let i = 0; i < chunks.length - 1; i++) {
       expect(chunks[i].to).toBeLessThanOrEqual(chunks[i + 1].from);
     }
+  });
+});
+
+describe("isKeyword", () => {
+  it("matches a key word whatever its case and punctuation", () => {
+    expect(isKeyword("Claude,", ["claude"])).toBe(true);
+    expect(isKeyword("agents", ["AI agents"])).toBe(true);
+    expect(isKeyword("the", ["claude"])).toBe(false);
+    expect(isKeyword("Claude")).toBe(false);
   });
 });

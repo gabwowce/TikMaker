@@ -1,0 +1,92 @@
+{
+  "id": "run-mw3b0yx0",
+  "projectId": "project-1793868537392",
+  "input": {
+    "idea": "How to undo your last git commit without losing your changes: git reset --soft HEAD~1",
+    "workspaceId": "dev",
+    "targetSeconds": 30,
+    "motionOnly": false,
+    "withFace": false,
+    "generateVoice": false
+  },
+  "status": "awaiting_hook",
+  "steps": [
+    {
+      "name": "pickTemplate",
+      "startedAt": 1793868564487,
+      "ms": 9917,
+      "model": "claude-opus-5-5",
+      "attempts": 1,
+      "prompt": {
+        "system": "You are the producer of a short-video channel (TikTok, Reels, Shorts).\nYour job in this step: choose how the video will be told, by picking ONE template\nfrom the list you are given. You do not write the video yet.\n\nYou get the channel, the video idea and the templates.\nPick the template whose \"when to use\" fits the idea best; the length matters less.\nA template's \"needs\" are the facts its required scenes are built on. Pick one the idea\ncan fill with its OWN facts: a rise-to-success story needs a success to show, a how-to\nneeds steps, a list needs items. If the idea lacks what a template needs, that template\ndoes not fit, however close its topic is.\nNever invent a template: answer only with an id from the list.\nscore: 5 = made for this idea and the idea has every fact it needs, 3 = workable,\n1 = nothing in the list fits.\nreason: one or two sentences for the creator, in plain English, about this idea.",
+        "user": "Channel: TikMaker and AI coding. Mostly TikMaker itself: what it can do, how a video gets made with it, new features and how it is being built with AI (build in public). Around that, short concrete videos about other AI tools, vibe coding and Claude Code: one problem or one feature per video, shown on screen rather than told.\nAudience: Creators who want to make short videos faster with AI, and developers or beginners who build apps with AI and want to work faster without breaking things.\n\nIdea: How to undo your last git commit without losing your changes: git reset --soft HEAD~1\nWanted length: about 30 s\nFace on camera: no, a faceless video\n\nTemplates:\n- id: analogy-explainer\n  name: Explained with characters\n  what: A concept explained through a small invented world or everyday analogy\n  when to use: An idea that is an abstract concept (economics, health, finance) that becomes clear as a story.\n  needs: problem, step, concept-term, real-case, lesson\n  length: 26–63 s\n- id: app-list\n  name: Free apps list\n  what: A quick list of apps, one per scene, each shown on screen\n  when to use: An idea that recommends several apps or tools for one device or audience.\n  needs: app-count, device-or-audience, app-name, app-feature\n  length: 14–62 s\n- id: brand-origin\n  name: Rise of a brand\n  what: From a humble start, through hardship, to a big brand\n  when to use: An idea that is the history of a brand, product or founder that has already grown big: the idea gives the success to show (users, money, years). Not a creator telling why they built their own tool.\n  needs: year-or-result, brand, founder, start, hardship, time-jump, result-number\n  length: 43–80 s\n- id: build-it-fast\n  name: Build it fast\n  what: Show the finished thing, then every step that built it\n  when to use: An idea where the viewer can build something real in minutes with a tool.\n  needs: result, time, tool-name, step, screen-recording\n  length: 20–51 s\n- id: dark-true-story\n  name: Creepy true story\n  what: A dark or strange true story told step by step to a shocking ending\n  when to use: An idea that is a real crime, legend or eerie event.\n  needs: place-or-person, event, ending\n  length: 15–51 s\n- id: explained-in-time\n  name: Explained in 60 seconds\n  what: A complex topic explained in a promised short time, often to an unlikely audience\n  when to use: An idea that is a complex topic the viewer finds hard and wants explained quickly.\n  needs: nothing special\n  length: 35–54 s\n- id: how-to-steps\n  name: How-to steps\n  what: A how-to promise followed by numbered steps on screen\n  when to use: An idea that is a concrete task the viewer wants to do with a tool, in a few steps.\n  needs: task, tool-name\n  length: 32–43 s\n- id: myth-vs-reality\n  name: Myth vs reality\n  what: What people think, then how it really works, with the proof\n  when to use: An idea that corrects a common belief or reveals a hidden side of something familiar.\n  needs: belief, background, reality, step, twist\n  length: 26–59 s\n- id: new-tool-news\n  name: New tool news\n  what: A just-released free tool, its benefits, a quick demo and a comment-keyword offer\n  when to use: An idea that is news about a newly released or newly free tool.\n  needs: who-released, tool-name, benefit, keyword, resource\n  length: 30–107 s\n- id: pain-to-fix\n  name: Problem then fix\n  what: The broken or painful way first, then the tool that fixes it, shown working\n  when to use: An idea where a tool fixes a pain the audience recognises, including a creator telling why they built their own tool: the pain they had, then the tool that fixes it.\n  needs: pain, task, screen-recording\n  length: 30–40 s\n- id: plot-recap\n  name: Story recap\n  what: A plot, journey or character backstory retold event by event\n  when to use: An idea that recaps an episode, myth, game lore or a character's story.\n  needs: story-name, setting, ending\n  length: 48–181 s\n- id: product-promo\n  name: Product promo\n  what: A product's benefits shown one by one through its interface, ending on where to get it\n  when to use: An idea that promotes one product or service.\n  needs: product-name\n  length: 11–30 s\n- id: question-answered\n  name: Big question answered\n  what: A why or how question, answered step by step with diagrams\n  when to use: An idea that is a question the audience has wondered about.\n  needs: question\n  length: 43–71 s\n- id: ranked-countdown\n  name: Top N countdown\n  what: Ranked items counted down to number one\n  when to use: An idea that ranks a set of things by some measure.\n  needs: rank-count, ranked-thing, rank-number, item-name, item-detail\n  length: 25–60 s\n- id: rapid-facts\n  name: Rapid-fire facts\n  what: Many short facts in a row, one per scene, with the strongest kept for last\n  when to use: An idea that is a collection of short surprising facts around one theme.\n  needs: theme, fact\n  length: 40–56 s\n- id: single-fact\n  name: One surprising fact\n  what: One fact built up line by line to a short reveal\n  when to use: An idea that is a single surprising or eerie fact that fits in under 20 seconds.\n  needs: topic\n  length: 7–16 s\n- id: software-tutorial\n  name: Software how-to\n  what: A finished result first, then the steps to make it in the software\n  when to use: An idea that is a specific thing to make in a common program (PowerPoint, GitHub, a no-code tool).\n  needs: result, software\n  length: 14–53 s\n- id: tool-deep-dive\n  name: Tool explained\n  what: What a tool is, how it differs, and what it really does\n  when to use: An idea that explains one popular tool or model and how to think about it.\n  needs: tool-name, difference, main-point\n  length: 49–78 s\n- id: tool-spotlight\n  name: Tool spotlight\n  what: One website or tool shown working, often as a numbered series part\n  when to use: An idea that is a single useful website, repo or tool the viewer probably has not seen.\n  needs: tool-category, series-part, screen-recording\n  length: 10–56 s\n- id: tool-tips-keyword\n  name: Tool tips list\n  what: Numbered tips for one tool, each named and then shown working, ending with a comment-keyword offer\n  when to use: An idea that is a handful of concrete tips, skills or add-ons for one tool the audience already uses.\n  needs: tool-name, tip-count, tip-number, tip-name, keyword, resource\n  length: 47–88 s"
+      },
+      "inputTokens": 3911,
+      "cachedInputTokens": 0,
+      "outputTokens": 385,
+      "thinkingTokens": 173,
+      "output": {
+        "videoTemplateId": "pain-to-fix",
+        "score": 4,
+        "reason": "Most developers know the moment of committing too early and worrying their work is gone, so open on that. Then show `git reset --soft HEAD~1` in a terminal recording, with the commit disappearing and the changes still staged. It's really a single command, so a \"problem then fix\" video fits 30 seconds better than a list of numbered steps would."
+      }
+    },
+    {
+      "name": "writeHooks",
+      "startedAt": 1793868574412,
+      "ms": 8278,
+      "model": "claude-opus-5-5",
+      "attempts": 1,
+      "prompt": {
+        "system": "You write the opening line (hook) of a short vertical video (TikTok, Reels, Shorts):\nthe words shown and spoken in the first two seconds, which decide whether people keep watching.\n\nWrite THREE different hooks for the idea.\nThe formulas show openings that have worked: follow one where it fits this idea (fill it\nin, do not copy its example) or write your own. formulaId = the formula's id, or null for\na hook of your own.\nFill a formula only with what the idea says: never claim something it does not\n(no \"I switched from…\", no number, no result the idea does not give).\nEach hook: one line, at most 12 words, plain spoken English, no hashtags, no emojis.\nscore: 5 = people stop scrolling, 3 = fine, 1 = weak.",
+        "user": "Channel: TikMaker and AI coding. Mostly TikMaker itself: what it can do, how a video gets made with it, new features and how it is being built with AI (build in public). Around that, short concrete videos about other AI tools, vibe coding and Claude Code: one problem or one feature per video, shown on screen rather than told.\nAudience: Creators who want to make short videos faster with AI, and developers or beginners who build apps with AI and want to work faster without breaking things.\n\nIdea: How to undo your last git commit without losing your changes: git reset --soft HEAD~1\nTemplate: Problem then fix – The broken or painful way first, then the tool that fixes it, shown working\n\nFormulas:\n- id: everyone-uses-it-wrong\n  type: pain-shown\n  formula: Everyone's using [tool] like [wrong analogy].\n  example: Everyone's using Claude Code like it's a magic wand.\n- id: in-year-subject-did\n  type: story\n  formula: In [year or era], [subject] [did something].\n  example: In 1946, four brothers named Kashio\n- id: saw-someone-doing-it-like-this\n  type: pain-shown\n  formula: Saw [someone] [doing a task] like this\n  example: Saw the intern visualizing his data like this\n- id: everyone-uses-but\n  type: contrarian\n  formula: Everyone's using [trending tool] to [goal], but [pain].\n  example: Everyone's using Claude Code to build AI agents\n- id: characters-live-in-two-places\n  type: story\n  formula: [Characters] live in two [places]: [A] and [B].\n  example: Gorillas live in two countries\n- id: did-you-know-spooky-place\n  type: story\n  formula: Did you know that in [spooky place]...\n  example: Did you know that in an old house on the outskirts of Hiroshima...\n- id: dramatic-quote\n  type: story\n  formula: \"[The most dramatic line spoken in the story]\"\n  example: Why did you kill my wife and daughter ?\n- id: i-switched-from\n  type: story\n  formula: I switched from [tool A] to [tool B].\n  example: I switched from Cursor to Claude Code.\n- id: everyone-without-is-wasting\n  type: contrarian\n  formula: Everyone using [tool] without [feature] is just wasting their [resource].\n  example: Everyone using Claude without skills is just wasting their tokens.\n- id: you-are-the-only\n  type: contrarian\n  formula: You are the only [statement that sounds impossible].\n  example: You are the only person alive.\n- id: you-might-think\n  type: contrarian\n  formula: When you [everyday action], you might think [misconception]...\n  example: When you visit a website, you might think that your computer is connecting with\n- id: characters-on-a-job\n  type: story\n  formula: Alright guys, we've got a [job] to do. Where's the [problem] this time?\n  example: Alright guys, we've got a job to do. Where's the pain this time?\n- id: imagine-you-have\n  type: story\n  formula: Imagine you have [valuable thing] in your [place].\n  example: Imagine you have ten thousand dollars"
+      },
+      "inputTokens": 2721,
+      "cachedInputTokens": 0,
+      "outputTokens": 185,
+      "thinkingTokens": 0,
+      "output": [
+        {
+          "text": "Committed too early? Don't delete your work. Undo it like this.",
+          "formulaId": null,
+          "score": 4
+        },
+        {
+          "text": "Saw a dev re-clone the whole repo to undo one commit",
+          "formulaId": "saw-someone-doing-it-like-this",
+          "score": 5
+        },
+        {
+          "text": "When you undo a commit, you might think your changes are gone...",
+          "formulaId": "you-might-think",
+          "score": 4
+        }
+      ]
+    }
+  ],
+  "createdAt": 1793868564420,
+  "template": {
+    "videoTemplateId": "pain-to-fix",
+    "score": 4,
+    "reason": "Most developers know the moment of committing too early and worrying their work is gone, so open on that. Then show `git reset --soft HEAD~1` in a terminal recording, with the commit disappearing and the changes still staged. It's really a single command, so a \"problem then fix\" video fits 30 seconds better than a list of numbered steps would.",
+    "pickedBy": "agent"
+  },
+  "hooks": [
+    {
+      "text": "Committed too early? Don't delete your work. Undo it like this.",
+      "formulaId": null,
+      "score": 4
+    },
+    {
+      "text": "Saw a dev re-clone the whole repo to undo one commit",
+      "formulaId": "saw-someone-doing-it-like-this",
+      "score": 5
+    },
+    {
+      "text": "When you undo a commit, you might think your changes are gone...",
+      "formulaId": "you-might-think",
+      "score": 4
+    }
+  ],
+  "hooksFor": "pain-to-fix"
+}

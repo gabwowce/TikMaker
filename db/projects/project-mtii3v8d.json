@@ -65,8 +65,8 @@
           {
             "id": "visual-gm36vwn",
             "visual": {
-              "type": "tool-logo",
-              "tool": "claude-ai-symbol"
+              "type": "logo",
+              "logo": "claude-ai-symbol"
             },
             "x": 45.74490220557636,
             "y": 11.458333333333332,
@@ -98,8 +98,8 @@
           {
             "id": "visual-y2anidf",
             "visual": {
-              "type": "tool-logo",
-              "tool": "claude-ai-symbol"
+              "type": "logo",
+              "logo": "claude-ai-symbol"
             },
             "x": 85.18930957683742,
             "y": 88.03258145363408,
@@ -403,8 +403,8 @@
           {
             "id": "visual-dku3eaa",
             "visual": {
-              "type": "tool-logo",
-              "tool": "claude"
+              "type": "logo",
+              "logo": "claude"
             },
             "x": 50,
             "y": 31,
@@ -420,8 +420,8 @@
           {
             "id": "visual-ft2trou",
             "visual": {
-              "type": "tool-logo",
-              "tool": "google-chrome"
+              "type": "logo",
+              "logo": "google-chrome"
             },
             "x": 50,
             "y": 62.174479166666664,
@@ -679,8 +679,8 @@
           {
             "id": "visual-z49cn40",
             "visual": {
-              "type": "tool-logo",
-              "tool": "claude-ai-symbol"
+              "type": "logo",
+              "logo": "claude-ai-symbol"
             },
             "x": 12.037037037037036,
             "y": 5.827067669172932,
@@ -697,8 +697,8 @@
           {
             "id": "visual-qso4z0b",
             "visual": {
-              "type": "tool-logo",
-              "tool": "claude-ai-symbol"
+              "type": "logo",
+              "logo": "claude-ai-symbol"
             },
             "x": 85.18930957683742,
             "y": 88.03258145363408,
@@ -724,14 +724,15 @@
     }
   ],
   "captions": {
-    "enabled": false
+    "enabled": true,
+    "style": "kinetic"
   },
   "music": {
     "sfxId": "aetheric-snap-crackle-mvt7k2ts",
     "volume": 0.58,
     "duckVolume": 0.2
   },
-  "savedAt": 1793258127418,
+  "savedAt": 1793864686275,
   "audioClips": [
     {
       "id": "audio-mtimh5cl-pd7k",
@@ -845,6 +846,71 @@
       "from": 356,
       "durationInFrames": 17,
       "volume": 0.15
+    },
+    {
+      "id": "audio-mw1xdyos-ta4q",
+      "sfxId": "vo-claude-code-can-now-test-your-app-like-a-mw1xdynw",
+      "from": 49,
+      "durationInFrames": 86,
+      "volume": 1,
+      "voiceText": "Claude Code can now test your app like a real user.",
+      "words": [
+        {
+          "text": "Claude",
+          "start": 0,
+          "end": 0.302
+        },
+        {
+          "text": "Code",
+          "start": 0.337,
+          "end": 0.58
+        },
+        {
+          "text": "can",
+          "start": 0.615,
+          "end": 0.731
+        },
+        {
+          "text": "now",
+          "start": 0.778,
+          "end": 0.917
+        },
+        {
+          "text": "test",
+          "start": 0.975,
+          "end": 1.184
+        },
+        {
+          "text": "your",
+          "start": 1.219,
+          "end": 1.335
+        },
+        {
+          "text": "app",
+          "start": 1.382,
+          "end": 1.533
+        },
+        {
+          "text": "like",
+          "start": 1.66,
+          "end": 1.811
+        },
+        {
+          "text": "a",
+          "start": 1.846,
+          "end": 1.869
+        },
+        {
+          "text": "real",
+          "start": 1.974,
+          "end": 2.171
+        },
+        {
+          "text": "user.",
+          "start": 2.241,
+          "end": 2.879
+        }
+      ]
     }
   ]
 }

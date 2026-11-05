@@ -3,7 +3,7 @@
   "format": "demo",
   "name": "Problem then fix",
   "oneLine": "The broken or painful way first, then the tool that fixes it, shown working",
-  "whenToUse": "An idea where a tool fixes a pain the audience recognises.",
+  "whenToUse": "An idea where a tool fixes a pain the audience recognises, including a creator telling why they built their own tool: the pain they had, then the tool that fixes it.",
   "seconds": {
     "min": 30,
     "max": 40

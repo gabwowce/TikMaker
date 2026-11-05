@@ -152,5 +152,145 @@
     "file": "aetheric-snap-crackle-mvt7k2ts.mp3",
     "src": "/assets/custom-sfx/aetheric-snap-crackle-mvt7k2ts.mp3",
     "group": "music"
+  },
+  {
+    "id": "vo-claude-code-can-now-test-your-app-like-a-mw1xdynw",
+    "label": "Claude Code can now test your app like a",
+    "file": "vo-claude-code-can-now-test-your-app-like-a-mw1xdynw.mp3",
+    "src": "/assets/voice/vo-claude-code-can-now-test-your-app-like-a-mw1xdynw.mp3",
+    "group": "voice"
+  },
+  {
+    "id": "vo-chatgpt-plus-or-claude-pro-which-20-ac-mw3d9lyi",
+    "label": "ChatGPT Plus or Claude Pro: which $20 ac",
+    "file": "vo-chatgpt-plus-or-claude-pro-which-20-ac-mw3d9lyi.mp3",
+    "src": "/assets/voice/vo-chatgpt-plus-or-claude-pro-which-20-ac-mw3d9lyi.mp3",
+    "group": "voice"
+  },
+  {
+    "id": "vo-well-first-surprise-for-coding-they-r-mw3da5lc",
+    "label": "Well, first surprise: for coding, they'r",
+    "file": "vo-well-first-surprise-for-coding-they-r-mw3da5lc.mp3",
+    "src": "/assets/voice/vo-well-first-surprise-for-coding-they-r-mw3da5lc.mp3",
+    "group": "voice"
+  },
+  {
+    "id": "vo-run-mw3e6yup-scene-1-mw3ealq0",
+    "label": "run-mw3e6yup scene 1",
+    "file": "vo-run-mw3e6yup-scene-1-mw3ealq0.mp3",
+    "src": "/assets/voice/vo-run-mw3e6yup-scene-1-mw3ealq0.mp3",
+    "group": "voice"
+  },
+  {
+    "id": "vo-run-mw3e6yup-scene-2-mw3eam6s",
+    "label": "run-mw3e6yup scene 2",
+    "file": "vo-run-mw3e6yup-scene-2-mw3eam6s.mp3",
+    "src": "/assets/voice/vo-run-mw3e6yup-scene-2-mw3eam6s.mp3",
+    "group": "voice"
+  },
+  {
+    "id": "vo-run-mw3e6yup-scene-3-mw3eammu",
+    "label": "run-mw3e6yup scene 3",
+    "file": "vo-run-mw3e6yup-scene-3-mw3eammu.mp3",
+    "src": "/assets/voice/vo-run-mw3e6yup-scene-3-mw3eammu.mp3",
+    "group": "voice"
+  },
+  {
+    "id": "vo-run-mw3e6yup-scene-4-mw3ean84",
+    "label": "run-mw3e6yup scene 4",
+    "file": "vo-run-mw3e6yup-scene-4-mw3ean84.mp3",
+    "src": "/assets/voice/vo-run-mw3e6yup-scene-4-mw3ean84.mp3",
+    "group": "voice"
+  },
+  {
+    "id": "vo-run-mw3e6yup-scene-5-mw3eaniw",
+    "label": "run-mw3e6yup scene 5",
+    "file": "vo-run-mw3e6yup-scene-5-mw3eaniw.mp3",
+    "src": "/assets/voice/vo-run-mw3e6yup-scene-5-mw3eaniw.mp3",
+    "group": "voice"
+  },
+  {
+    "id": "vo-run-mw3e6yup-scene-6-mw3eao13",
+    "label": "run-mw3e6yup scene 6",
+    "file": "vo-run-mw3e6yup-scene-6-mw3eao13.mp3",
+    "src": "/assets/voice/vo-run-mw3e6yup-scene-6-mw3eao13.mp3",
+    "group": "voice"
+  },
+  {
+    "id": "vo-run-mw3e6yup-scene-7-mw3eaoil",
+    "label": "run-mw3e6yup scene 7",
+    "file": "vo-run-mw3e6yup-scene-7-mw3eaoil.mp3",
+    "src": "/assets/voice/vo-run-mw3e6yup-scene-7-mw3eaoil.mp3",
+    "group": "voice"
+  },
+  {
+    "id": "vo-run-mw3e6yup-scene-8-mw3eaow4",
+    "label": "run-mw3e6yup scene 8",
+    "file": "vo-run-mw3e6yup-scene-8-mw3eaow4.mp3",
+    "src": "/assets/voice/vo-run-mw3e6yup-scene-8-mw3eaow4.mp3",
+    "group": "voice"
+  },
+  {
+    "id": "vo-run-mw3eucnm-scene-1-mw3f6ld0",
+    "label": "run-mw3eucnm scene 1",
+    "file": "vo-run-mw3eucnm-scene-1-mw3f6ld0.mp3",
+    "src": "/assets/voice/vo-run-mw3eucnm-scene-1-mw3f6ld0.mp3",
+    "group": "voice"
+  },
+  {
+    "id": "vo-run-mw3eucnm-scene-2-mw3f6lpw",
+    "label": "run-mw3eucnm scene 2",
+    "file": "vo-run-mw3eucnm-scene-2-mw3f6lpw.mp3",
+    "src": "/assets/voice/vo-run-mw3eucnm-scene-2-mw3f6lpw.mp3",
+    "group": "voice"
+  },
+  {
+    "id": "vo-run-mw3eucnm-scene-3-mw3f6m9e",
+    "label": "run-mw3eucnm scene 3",
+    "file": "vo-run-mw3eucnm-scene-3-mw3f6m9e.mp3",
+    "src": "/assets/voice/vo-run-mw3eucnm-scene-3-mw3f6m9e.mp3",
+    "group": "voice"
+  },
+  {
+    "id": "vo-run-mw3eucnm-scene-4-mw3f6mmo",
+    "label": "run-mw3eucnm scene 4",
+    "file": "vo-run-mw3eucnm-scene-4-mw3f6mmo.mp3",
+    "src": "/assets/voice/vo-run-mw3eucnm-scene-4-mw3f6mmo.mp3",
+    "group": "voice"
+  },
+  {
+    "id": "vo-run-mw3eucnm-scene-5-mw3f6mzw",
+    "label": "run-mw3eucnm scene 5",
+    "file": "vo-run-mw3eucnm-scene-5-mw3f6mzw.mp3",
+    "src": "/assets/voice/vo-run-mw3eucnm-scene-5-mw3f6mzw.mp3",
+    "group": "voice"
+  },
+  {
+    "id": "vo-run-mw3eucnm-scene-6-mw3f6naj",
+    "label": "run-mw3eucnm scene 6",
+    "file": "vo-run-mw3eucnm-scene-6-mw3f6naj.mp3",
+    "src": "/assets/voice/vo-run-mw3eucnm-scene-6-mw3f6naj.mp3",
+    "group": "voice"
+  },
+  {
+    "id": "vo-run-mw3eucnm-scene-7-mw3f6nnx",
+    "label": "run-mw3eucnm scene 7",
+    "file": "vo-run-mw3eucnm-scene-7-mw3f6nnx.mp3",
+    "src": "/assets/voice/vo-run-mw3eucnm-scene-7-mw3f6nnx.mp3",
+    "group": "voice"
+  },
+  {
+    "id": "vo-run-mw3eucnm-scene-8-mw3f6o3r",
+    "label": "run-mw3eucnm scene 8",
+    "file": "vo-run-mw3eucnm-scene-8-mw3f6o3r.mp3",
+    "src": "/assets/voice/vo-run-mw3eucnm-scene-8-mw3f6o3r.mp3",
+    "group": "voice"
+  },
+  {
+    "id": "vo-run-mw3eucnm-scene-9-mw3f6oh1",
+    "label": "run-mw3eucnm scene 9",
+    "file": "vo-run-mw3eucnm-scene-9-mw3f6oh1.mp3",
+    "src": "/assets/voice/vo-run-mw3eucnm-scene-9-mw3f6oh1.mp3",
+    "group": "voice"
   }
 ]

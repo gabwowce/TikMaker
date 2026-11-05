@@ -47,14 +47,12 @@ describe("checkScript", () => {
       scenes: [scene("hook"), scene("item"), scene("payoff")],
       skipped: [],
     };
-    expect(checkScript(script, template, 40, rules)).toEqual([]);
+    expect(checkScript(script, 40, rules)).toEqual([]);
   });
 
-  it("finds a scene the template needs that is missing", () => {
+  it("leaves the structure to the model: a template scene may be left out", () => {
     const script = { scenes: [scene("hook"), scene("item")], skipped: [] };
-    expect(checkScript(script, template, 40, rules)).toEqual([
-      { message: 'The template needs a "payoff" scene (The result.)' },
-    ]);
+    expect(checkScript(script, 40, rules)).toEqual([]);
   });
 
   it("finds a script more than 15 % longer than asked for", () => {
@@ -64,7 +62,7 @@ describe("checkScript", () => {
       scenes: [scene("hook", long), scene("item", long), scene("payoff", long)],
       skipped: [],
     };
-    const problems = checkScript(script, template, 20, rules);
+    const problems = checkScript(script, 20, rules);
     expect(problems).toHaveLength(1);
     expect(problems[0].message).toMatch(/more than 23 s/);
   });
@@ -77,7 +75,7 @@ describe("checkScript", () => {
       ],
       skipped: [],
     };
-    expect(checkScript(script, template, 40, rules)).toEqual([
+    expect(checkScript(script, 40, rules)).toEqual([
       { sceneIndex: 1, message: "Scene 2: 6 words on screen, the limit is 5" },
     ]);
   });

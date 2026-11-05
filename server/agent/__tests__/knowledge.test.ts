@@ -37,7 +37,6 @@ describe("loadKnowledge", () => {
     const { knowledge, errors } = await loadKnowledge(FIXTURE);
     expect(errors).toEqual([]);
     expect(knowledge.videoTemplates.map((t) => t.id)).toEqual(["problem-fix"]);
-    expect(knowledge.layoutExamples).toHaveLength(1);
     expect(knowledge.hookFormulas[0].type).toBe("pain-shown");
     expect(knowledge.workspaces[0].style.accent).toBe("#FF7024");
     expect(knowledge.designRules).toHaveLength(1);

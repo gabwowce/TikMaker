@@ -3,23 +3,24 @@ import { getLogo } from "../../registries/logoRegistry";
 import { getProp } from "../../registries/propRegistry";
 import { assetUrl } from "../../utils/assetUrl";
 import { usePack } from "./pack";
+import { BOLD_GLYPH_WIDTH, fitFontSize } from "./fitText";
 import { pop, ramp, settle } from "./pop";
 import { shadows, stage } from "./tokens";
 
-// Likę viršutinės zonos blokai (docs/motion-planas.md, blokų lentelė).
-// Pirmi keturi – StageVisuals.tsx (CoinChain, DeckCard + CodeBody, NumberBadge,
-// BigList). Visi blokai: ~85 % pločio, spalvos ir šriftas – iš stiliaus paketo,
-// `at` – kadras, kai blokas atsiranda (ant žodžio).
+// The rest of the top-zone blocks (docs/motion-planas.md, the blocks table).
+// The first four are in StageVisuals.tsx (CoinChain, DeckCard + CodeBody,
+// NumberBadge, BigList). Every block: ~85 % wide, colours and font from the
+// style pack, `at` – the frame the block appears on (on a word).
 
 const LEFT = (1080 - stage.contentWidth) / 2;
 
-// Ramybės judesys: lėtai kyla ir leidžiasi (±8 px per 2,8 s).
+// Idle motion: slowly rises and sinks (±8 px over 2.8 s).
 function floatY(frame: number, seed = 0) {
   return Math.sin((frame / 84) * Math.PI * 2 + seed) * 8;
 }
 
-// ── Bibliotekos ikona: logotipas arba daiktas pagal id; jei tokio nėra –
-// pavadinimo raidės (pvz. „Notion“ → „N“), kad blokas niekada nebūtų tuščias.
+// ── A library icon: a logo or a prop by id; if there is none – the name's
+// letters (e.g. "Notion" → "N"), so a block is never empty.
 export function LibraryIcon({ id, size }: { id: string; size: number }) {
   const c = usePack();
   const src = getLogo(id)?.src ?? getProp(id)?.src;
@@ -44,8 +45,8 @@ export function LibraryIcon({ id, size }: { id: string; size: number }) {
   );
 }
 
-// ── Terminalo turinys kortelėje (DeckCard viduje): komanda spausdinama
-// raidė po raidės, atsakymo eilutės atsiranda po jos.
+// ── A terminal in a card (inside DeckCard): the command types itself letter
+// by letter, the output lines appear after it.
 export function TerminalBody({ lines, at }: { lines: string[]; at: number }) {
   const c = usePack();
   const frame = useCurrentFrame();
@@ -107,8 +108,8 @@ export function TerminalBody({ lines, at }: { lines: string[]; at: number }) {
   );
 }
 
-// ── Ekrano turinys kortelėje: tavo įrašas / nuotrauka (src) arba vieta jai
-// su aprašu, ką įkelti (kaip REC vietos dabartiniuose maketuose).
+// ── A screen in a card: the user's recording / screenshot (src) or a place
+// for it saying what to upload (like the REC slots in the current layouts).
 export function ScreenBody({ src, label }: { src?: string; label: string }) {
   const c = usePack();
   if (src)
@@ -150,7 +151,7 @@ export function ScreenBody({ src, label }: { src?: string; label: string }) {
   );
 }
 
-// ── Didelis skaičius, kuris suskaičiuojamas (pvz. „$0.016“, „214k“, „90 %“).
+// ── A big number that counts up (e.g. "$0.016", "214k", "90 %").
 export function BigNumber({
   to,
   decimals = 0,
@@ -170,11 +171,19 @@ export function BigNumber({
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
   const appear = pop(frame, at, fps);
-  // Skaičiuoja 20 kadrų, lėtėdamas pabaigoje; pasiekus – mažas „pop“
+  // Counts for 20 frames, slowing at the end; on arrival – a small "pop"
   const t = ramp(frame, at, 20);
   const value = to * (1 - Math.pow(1 - t, 3));
   const landed = pop(frame, at + 20, fps);
   const punch = 1 + 0.06 * Math.sin(Math.min(1, landed) * Math.PI);
+  // Sized for the number it lands on – the widest it gets – so "$20/mo"
+  // fits the frame as well as "5".
+  const fontSize = fitFontSize(
+    [`${prefix}${to.toFixed(decimals)}${suffix}`],
+    300 * c.widthFactor,
+    stage.contentWidth,
+    BOLD_GLYPH_WIDTH,
+  );
   return (
     <div
       style={{
@@ -190,7 +199,7 @@ export function BigNumber({
       <div
         style={{
           fontFamily: c.fontStrong,
-          fontSize: 300 * c.widthFactor,
+          fontSize,
           lineHeight: 1,
           letterSpacing: "-0.04em",
           color: c.text,
@@ -216,8 +225,8 @@ export function BigNumber({
   );
 }
 
-// ── Palyginimas: viršuje „prieš“ (blankus, perbrauktas), apačioje „po“
-// (akcento spalva), tarp jų – „vs“ moneta (kaip 04 kadre).
+// ── A comparison: "before" on top (dim, struck through), "after" below
+// (accent colour), a "vs" coin between them (as in frame 04).
 export function Compare({
   before,
   after,
@@ -326,9 +335,9 @@ export function Compare({
   );
 }
 
-// ── Vienas didelis daiktas iš bibliotekos (spyna, laikrodis, robotas…):
-// nukrenta, „atsitrenkia“ (suspaudžiamas ir atšoka), tada plūduriuoja; po juo
-// šešėlis, kuris mažėja, kai daiktas pakyla (kaip maskotas 06–10 kadruose).
+// ── One big object from the library (a padlock, a clock, a robot…): drops,
+// "hits" (squashes and bounces), then floats; under it a shadow that shrinks
+// as the object rises (like the mascot in frames 06–10).
 export function HeroObject({
   id,
   at,
@@ -342,7 +351,7 @@ export function HeroObject({
   const { fps } = useVideoConfig();
   const fall = settle(frame, at, fps);
   const land = pop(frame, at + 9, fps);
-  // Suspaudimas nusileidžiant: 0,86 → 1,08 → 1
+  // Squash on landing: 0.86 → 1.08 → 1
   const squash = interpolate(land, [0, 0.5, 1], [0.86, 1.08, 1], {
     extrapolateRight: "clamp",
   });
@@ -383,8 +392,8 @@ export function HeroObject({
   );
 }
 
-// ── Schema: mazgai iš viršaus į apačią, tarp jų nusibrėžia punktyrinė linija
-// (kaip 05 ir 07 kadruose). Mazgas – moneta su ikona arba užrašas.
+// ── A diagram: nodes from top to bottom with a dashed line drawing itself
+// between them (as in frames 05 and 07). A node – a coin with an icon, or a label.
 export function FlowSchema({
   nodes,
   ats,
@@ -402,7 +411,7 @@ export function FlowSchema({
       style={{ position: "absolute", left: 0, top, width: 1080, height: 860 }}
     >
       {nodes.slice(1).map((_, i) => {
-        // Linija į mazgą i+1 brėžiasi prieš jam atsirandant
+        // The line to node i+1 draws itself just before the node appears
         const draw = ramp(frame, ats[i + 1] - 8, 8);
         return (
           <div

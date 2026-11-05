@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { stageTypeIds } from "../video/stage/stageTypes";
 import { analysisVocabulary } from "../knowledge/analysisVocabulary";
 import {
   POSITION_MAX,
@@ -197,9 +198,6 @@ const blockSchema = z.object({
 const baseSceneFields = {
   id: z.string(),
   plan: scenePlanSchema.optional(),
-  // The knowledge-base LayoutExample this scene was laid out from, for
-  // statistics only. Not `layout`, the TikMaker preset the scene renders with.
-  layoutExampleId: z.string().optional(),
   storyboardBeatId: z.string().optional(),
   durationSeconds: z.number().positive().optional(),
   timelineRange: z
@@ -227,6 +225,9 @@ const baseSceneFields = {
     textOnTop: z.boolean().optional(),
   }),
   layout: layoutIdSchema.optional(),
+  // A motion scene's stage type: where its picture and captions go
+  // (src/video/stage/stageTypes.ts). Unset – "top".
+  stage: z.enum(stageTypeIds).optional(),
   visual: visualConfigSchema.optional(),
   visualPosition: z
     .object({

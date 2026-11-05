@@ -5,7 +5,6 @@ import { describe, expect, it } from "vitest";
 import { ideaFromUser } from "../../../src/agent/run/1-idea.js";
 import type { ScriptFromAi } from "../../../src/agent/run/3-script.js";
 import { loadKnowledge } from "../knowledge.js";
-import { StructuredCallError } from "../llm.js";
 import { writeScript } from "../prompts/writeScript.js";
 
 // The real knowledge base: the step must work with the templates we ship.
@@ -75,6 +74,30 @@ describe("writeScript with a fake model", () => {
     expect(result.prompt.user).toContain("facts: task, tool-name");
   });
 
+  it("offers no link CTA unless the idea gives a link", async () => {
+    // how-to-steps allows none, link and comment-keyword.
+    const prompt = async (idea: string) =>
+      (
+        await writeScript(
+          ideaFromUser.parse({ idea, workspaceId: "dev" }),
+          workspace,
+          template,
+          hook,
+          knowledge,
+          undefined,
+          fakeModel(script),
+        )
+      ).prompt.user;
+    const without = await prompt(
+      "How to undo the last git commit in a few seconds",
+    );
+    expect(without).toContain("types allowed: none, comment-keyword");
+    const withLink = await prompt(
+      "How to undo the last git commit, full guide at tikmaker.dev",
+    );
+    expect(withLink).toContain("types allowed: none, link, comment-keyword");
+  });
+
   it("asks again when the script does not open with the hook", async () => {
     const result = await writeScript(
       input(),
@@ -88,19 +111,18 @@ describe("writeScript with a fake model", () => {
     expect(result.attempts).toBe(2);
   });
 
-  it("does not accept a role the template does not have", async () => {
-    const wrong = { ...script, scenes: [scene("hook"), scene("escalation")] };
-    await expect(
-      writeScript(
-        input(),
-        workspace,
-        template,
-        hook,
-        knowledge,
-        undefined,
-        fakeModel(wrong, wrong, wrong),
-      ),
-    ).rejects.toBeInstanceOf(StructuredCallError);
+  it("accepts a scene the template does not have – the template is a guide", async () => {
+    const own = { ...script, scenes: [scene("hook"), scene("escalation")] };
+    const result = await writeScript(
+      input(),
+      workspace,
+      template,
+      hook,
+      knowledge,
+      undefined,
+      fakeModel(own),
+    );
+    expect(result.attempts).toBe(1);
   });
 
   it("asks for no recording when the video is motion graphics only", async () => {

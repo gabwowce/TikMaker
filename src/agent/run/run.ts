@@ -1,8 +1,10 @@
 import { z } from "zod";
 import { ideaFromUser } from "./1-idea";
 import { hookFromAi, hookInRun, templateInRun } from "./2-angle";
-import { scriptInRun } from "./3-script";
-import { layoutInRun } from "./4-building";
+import { researchInRun, scriptInRun } from "./3-script";
+import { blocksInRun } from "./4-blocks";
+import { motionInRun } from "./4-motion";
+import { voiceInRun } from "./5-voice";
 import { logEntry } from "./log";
 import { runStatus } from "./status";
 // One agent run, as saved in db/agent-runs/<id>.json (server/agent/runs.ts):
@@ -27,9 +29,14 @@ export const agentRun = z.object({
   hooksFor: z.string().optional(),
   hook: hookInRun.optional(),
   // 3 Script
+  research: researchInRun.optional(),
   script: scriptInRun.optional(),
-  // 4 Building
-  layout: layoutInRun.optional(),
+  // 4 Building: the blocks on stage types, then how they move
+  // (docs/motion-planas.md)
+  blocks: blocksInRun.optional(),
+  motion: motionInRun.optional(),
+  // 5 Result: the voiceover, when the form asked for it
+  voice: voiceInRun.optional(),
   // Every call to the model, in order.
   steps: z.array(logEntry),
 });

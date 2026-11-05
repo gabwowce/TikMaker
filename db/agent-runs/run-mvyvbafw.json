@@ -1,0 +1,214 @@
+{
+  "id": "run-mvyvbafw",
+  "projectId": "project-1793600302151",
+  "createdAt": 1793600307356,
+  "status": "laying_out",
+  "input": {
+    "idea": "How to undo the last git commit in a few seconds",
+    "workspaceId": "dev",
+    "targetSeconds": 40,
+    "motionOnly": false,
+    "withFace": false,
+    "generateVoice": false,
+    "hook": "You committed the wrong thing?"
+  },
+  "template": {
+    "videoTemplateId": "how-to-steps",
+    "score": 5,
+    "reason": "This template is a perfect fit for showing a quick, concrete git command to solve a specific developer problem in just a few steps.",
+    "pickedBy": "agent"
+  },
+  "hook": {
+    "text": "You committed the wrong thing?",
+    "pickedBy": "user"
+  },
+  "script": {
+    "scenes": [
+      {
+        "role": "hook",
+        "voiceover": "You committed the wrong thing?",
+        "onScreen": "Wrong commit?",
+        "visual": "A terminal window showing git status",
+        "needsRecording": false
+      },
+      {
+        "role": "item",
+        "voiceover": "First, open your terminal and type git reset --soft HEAD~1.",
+        "onScreen": "git reset --soft HEAD~1",
+        "visual": "Terminal typing git reset command",
+        "needsRecording": false
+      },
+      {
+        "role": "item",
+        "voiceover": "Second, keep your changes staged by using the soft flag.",
+        "onScreen": "Keep changes staged",
+        "visual": "Terminal showing git status with files still modified",
+        "needsRecording": false
+      },
+      {
+        "role": "benefit",
+        "voiceover": "As a result, your code stays safe and you can fix the mistake instantly.",
+        "onScreen": "Code stays safe",
+        "visual": "Code editor showing the modified files",
+        "needsRecording": true
+      },
+      {
+        "role": "cta",
+        "voiceover": "Comment GIT and I'll send you my ebook. Make sure you follow TikMaker.",
+        "onScreen": "Comment GIT for ebook",
+        "visual": "A terminal window running git log",
+        "needsRecording": false
+      }
+    ],
+    "skipped": [
+      {
+        "role": "demo",
+        "reason": "Not needed as the terminal commands cover the full process concisely."
+      }
+    ],
+    "problems": [],
+    "approved": true
+  },
+  "steps": [
+    {
+      "name": "pickTemplate",
+      "startedAt": 1793600307403,
+      "ms": 5586,
+      "model": "gemini-flash-lite-latest",
+      "attempts": 1,
+      "prompt": {
+        "system": "You are the producer of a short-video channel (TikTok, Reels, Shorts).\nYour job in this step: choose how the video will be told, by picking ONE template\nfrom the list you are given. You do not write the video yet.\n\nYou get the channel, the video idea and the templates.\nPick the template whose \"when to use\" fits the idea best; the length matters less.\nNever invent a template: answer only with an id from the list.\nscore: 5 = made for this idea, 3 = workable, 1 = nothing in the list fits.\nreason: one or two sentences for the creator, in plain English, about this idea.",
+        "user": "Channel: TikMaker and AI coding. Mostly TikMaker itself: what it can do, how a video gets made with it, new features and how it is being built with AI (build in public). Around that, short concrete videos about other AI tools, vibe coding and Claude Code: one problem or one feature per video, shown on screen rather than told.\nAudience: Creators who want to make short videos faster with AI, and developers or beginners who build apps with AI and want to work faster without breaking things.\n\nIdea: How to undo the last git commit in a few seconds\nWanted length: about 40 s\nFace on camera: no, a faceless video\n\nTemplates:\n- id: analogy-explainer\n  name: Explained with characters\n  what: A concept explained through a small invented world or everyday analogy\n  when to use: An idea that is an abstract concept (economics, health, finance) that becomes clear as a story.\n  length: 26–63 s\n- id: app-list\n  name: Free apps list\n  what: A quick list of apps, one per scene, each shown on screen\n  when to use: An idea that recommends several apps or tools for one device or audience.\n  length: 14–62 s\n- id: brand-origin\n  name: Rise of a brand\n  what: From a humble start, through hardship, to a big brand\n  when to use: An idea that is the history of a brand, product or founder.\n  length: 43–80 s\n- id: build-it-fast\n  name: Build it fast\n  what: Show the finished thing, then every step that built it\n  when to use: An idea where the viewer can build something real in minutes with a tool.\n  length: 20–51 s\n- id: dark-true-story\n  name: Creepy true story\n  what: A dark or strange true story told step by step to a shocking ending\n  when to use: An idea that is a real crime, legend or eerie event.\n  length: 15–51 s\n- id: explained-in-time\n  name: Explained in 60 seconds\n  what: A complex topic explained in a promised short time, often to an unlikely audience\n  when to use: An idea that is a complex topic the viewer finds hard and wants explained quickly.\n  length: 35–54 s\n- id: how-to-steps\n  name: How-to steps\n  what: A how-to promise followed by numbered steps on screen\n  when to use: An idea that is a concrete task the viewer wants to do with a tool, in a few steps.\n  length: 32–43 s\n- id: myth-vs-reality\n  name: Myth vs reality\n  what: What people think, then how it really works, with the proof\n  when to use: An idea that corrects a common belief or reveals a hidden side of something familiar.\n  length: 26–59 s\n- id: new-tool-news\n  name: New tool news\n  what: A just-released free tool, its benefits, a quick demo and a comment-keyword offer\n  when to use: An idea that is news about a newly released or newly free tool.\n  length: 30–107 s\n- id: pain-to-fix\n  name: Problem then fix\n  what: The broken or painful way first, then the tool that fixes it, shown working\n  when to use: An idea where a tool fixes a pain the audience recognises.\n  length: 30–40 s\n- id: plot-recap\n  name: Story recap\n  what: A plot, journey or character backstory retold event by event\n  when to use: An idea that recaps an episode, myth, game lore or a character's story.\n  length: 48–181 s\n- id: product-promo\n  name: Product promo\n  what: A product's benefits shown one by one through its interface, ending on where to get it\n  when to use: An idea that promotes one product or service.\n  length: 11–30 s\n- id: question-answered\n  name: Big question answered\n  what: A why or how question, answered step by step with diagrams\n  when to use: An idea that is a question the audience has wondered about.\n  length: 43–71 s\n- id: ranked-countdown\n  name: Top N countdown\n  what: Ranked items counted down to number one\n  when to use: An idea that ranks a set of things by some measure.\n  length: 25–60 s\n- id: rapid-facts\n  name: Rapid-fire facts\n  what: Many short facts in a row, one per scene, with the strongest kept for last\n  when to use: An idea that is a collection of short surprising facts around one theme.\n  length: 40–56 s\n- id: single-fact\n  name: One surprising fact\n  what: One fact built up line by line to a short reveal\n  when to use: An idea that is a single surprising or eerie fact that fits in under 20 seconds.\n  length: 7–16 s\n- id: software-tutorial\n  name: Software how-to\n  what: A finished result first, then the steps to make it in the software\n  when to use: An idea that is a specific thing to make in a common program (PowerPoint, GitHub, a no-code tool).\n  length: 14–53 s\n- id: tool-deep-dive\n  name: Tool explained\n  what: What a tool is, how it differs, and what it really does\n  when to use: An idea that explains one popular tool or model and how to think about it.\n  length: 49–78 s\n- id: tool-spotlight\n  name: Tool spotlight\n  what: One website or tool shown working, often as a numbered series part\n  when to use: An idea that is a single useful website, repo or tool the viewer probably has not seen.\n  length: 10–56 s\n- id: tool-tips-keyword\n  name: Tool tips list\n  what: Numbered tips for one tool, each named and then shown working, ending with a comment-keyword offer\n  when to use: An idea that is a handful of concrete tips, skills or add-ons for one tool the audience already uses.\n  length: 47–88 s"
+      },
+      "inputTokens": 1614,
+      "cachedInputTokens": 0,
+      "outputTokens": 57,
+      "thinkingTokens": 0,
+      "output": {
+        "videoTemplateId": "how-to-steps",
+        "score": 5,
+        "reason": "This template is a perfect fit for showing a quick, concrete git command to solve a specific developer problem in just a few steps."
+      }
+    },
+    {
+      "name": "writeScript",
+      "startedAt": 1793600313004,
+      "ms": 6413,
+      "model": "gemini-flash-lite-latest",
+      "attempts": 1,
+      "prompt": {
+        "system": "You write the script of a short vertical video (TikTok, Reels, Shorts).\n\nFollow the template's scenes in their order. A \"repeatable\" scene may appear several\ntimes in a row (one per step or item); an \"optional\" scene may be left out – then put it\nin \"skipped\" with a short reason. Never use a role the template does not have.\nA scene's \"facts\" come from the idea only – never invent a tool, a number or a result.\nIts \"creative\" parts are yours to word.\n\nThe first scene is the hook: say the chosen hook as it is, and show its key words.\nLink each scene to the next the way the template says (\"→ next\"), using the\ntransition phrases for that link. End with a call to action that follows one of the\nCTA formulas, unless the template's CTA types include \"none\" and none fits.\n\nFor every scene:\n- voiceover: what is said, natural spoken English\n- onScreen: the key words shown big, not the whole sentence\n- visual: what the viewer sees, concrete (a terminal running a command, a settings page,\n  an app icon), never \"something engaging\"\n- needsRecording: true when the scene shows real actions in an app (clicks, menus,\n  several windows) or a real result only a recording can prove; false for a single\n  command, a line of code, a key press or a simple graphic – the video editor draws\n  those. The user decides in the end, scene by scene.\n\nKeep within the limits. Each scene lasts about as long as its voiceover: fill the wanted\nlength – add more steps or items with the repeatable scenes, keep the optional scenes\nthat help – rather than stopping short.",
+        "user": "Channel: TikMaker and AI coding. Mostly TikMaker itself: what it can do, how a video gets made with it, new features and how it is being built with AI (build in public). Around that, short concrete videos about other AI tools, vibe coding and Claude Code: one problem or one feature per video, shown on screen rather than told.\nAudience: Creators who want to make short videos faster with AI, and developers or beginners who build apps with AI and want to work faster without breaking things.\n\nIdea: How to undo the last git commit in a few seconds\nWanted length: about 40 s\nFace on camera: no, a faceless video\n\nHook: You committed the wrong thing?\n\nTemplate: How-to steps – A how-to promise followed by numbered steps on screen\nScenes:\n- opening / hook (2.4–4 s): States the task and the tool. [required] → next: sequence; facts: task, tool-name\n- build / demo (2.4–5.6 s): Shows the first actions in the tool. [optional] [repeatable] → next: sequence; facts: screen-recording\n- core / item (2.8–7.2 s): Shows one step. [optional] [repeatable] → next: sequence; facts: step\n- core / demo (2.4–5.6 s): Shows the tool doing the work. [optional] [repeatable] → next: cause-effect; facts: screen-recording\n- core / benefit (2–2.8 s): States what a step makes possible. [optional] [repeatable] → next: example; facts: benefit\n- close / benefit (2–2.8 s): States the gain in one line. [optional] [repeatable] → next: bridge; creative: gain\n- close / cta (3–3 s): Offers more or the full version. [optional] → next: none; creative: cta-line\n\nTransition phrases:\n- sequence: First, | Second, | Third, | First is | Second is | Third is\n- cause-effect: So | As a result | And since | In other words, | You see, | And look\n- bridge: So if you want | So just | To get the full | For a PDF | So want to try it for yourself? | Now you might be wondering...\n- example: Here's another example | They say | Anytime | In many cases, | That's like | You can see\n\nCTA formulas (types allowed: none, link, comment-keyword):\n- comment-keyword: Comment [KEYWORD] and I'll send you [the link / my ebook]. (e.g. \"Comment HUMAN and I'll send you my ebook\")\n- comment-keyword: Comment [KEYWORD] and I'll send you [resource]. Make sure you follow [channel]. (e.g. \"Comment HUMAN and I'll send you my ebook. Make sure you follow InsiderForce.\")\n- comment-keyword: Drop a comment if you want more [topic] with [tool]. (e.g. \"Drop a comment if you want more trading ideas with Claude.\")\n- link: Head [here / to this website] if you want [benefit]. (e.g. \"Head to this website right here\")\n- link: [domain] (e.g. \"artinals.com\")\n- link: Available now (e.g. \"Available now\")\n- link: To get the full [resource], check the link in the description. (e.g. \"To get the full setup guide, check the link in the description.\")\n- link: Unlock more [benefit] in the full video. (e.g. \"Unlock more superpowers in the full video.\")\n\nLimits, from the analysis of successful videos:\n- speak at most 3.4 words per second\n- a scene lasts at most 9 s, the hook at most 5 s\n- at most 15 words on screen in a scene"
+      },
+      "inputTokens": 1247,
+      "cachedInputTokens": 0,
+      "outputTokens": 239,
+      "thinkingTokens": 0,
+      "output": {
+        "scenes": [
+          {
+            "role": "hook",
+            "voiceover": "You committed the wrong thing?",
+            "onScreen": "Wrong commit?",
+            "visual": "A terminal window showing git status",
+            "needsRecording": false
+          },
+          {
+            "role": "item",
+            "voiceover": "First, open your terminal and type git reset --soft HEAD~1.",
+            "onScreen": "git reset --soft HEAD~1",
+            "visual": "Terminal typing git reset command",
+            "needsRecording": false
+          },
+          {
+            "role": "item",
+            "voiceover": "Second, keep your changes staged by using the soft flag.",
+            "onScreen": "Keep changes staged",
+            "visual": "Terminal showing git status with files still modified",
+            "needsRecording": false
+          },
+          {
+            "role": "benefit",
+            "voiceover": "As a result, your code stays safe and you can fix the mistake instantly.",
+            "onScreen": "Code stays safe",
+            "visual": "Code editor showing the modified files",
+            "needsRecording": true
+          },
+          {
+            "role": "cta",
+            "voiceover": "Drop a comment if you want more git tips with Claude Code.",
+            "onScreen": "Comment GIT for more tips",
+            "visual": "A terminal window running git log",
+            "needsRecording": false
+          }
+        ],
+        "skipped": [
+          {
+            "role": "demo",
+            "reason": "Not needed as the terminal commands cover the full process concisely."
+          }
+        ]
+      }
+    },
+    {
+      "name": "writeScript",
+      "startedAt": 1793600346640,
+      "ms": 1542,
+      "model": "gemini-flash-lite-latest",
+      "attempts": 1,
+      "prompt": {
+        "system": "You write the script of a short vertical video (TikTok, Reels, Shorts).\n\nFollow the template's scenes in their order. A \"repeatable\" scene may appear several\ntimes in a row (one per step or item); an \"optional\" scene may be left out – then put it\nin \"skipped\" with a short reason. Never use a role the template does not have.\nA scene's \"facts\" come from the idea only – never invent a tool, a number or a result.\nIts \"creative\" parts are yours to word.\n\nThe first scene is the hook: say the chosen hook as it is, and show its key words.\nLink each scene to the next the way the template says (\"→ next\"), using the\ntransition phrases for that link. End with a call to action that follows one of the\nCTA formulas, unless the template's CTA types include \"none\" and none fits.\n\nFor every scene:\n- voiceover: what is said, natural spoken English\n- onScreen: the key words shown big, not the whole sentence\n- visual: what the viewer sees, concrete (a terminal running a command, a settings page,\n  an app icon), never \"something engaging\"\n- needsRecording: true when the scene shows real actions in an app (clicks, menus,\n  several windows) or a real result only a recording can prove; false for a single\n  command, a line of code, a key press or a simple graphic – the video editor draws\n  those. The user decides in the end, scene by scene.\n\nKeep within the limits. Each scene lasts about as long as its voiceover: fill the wanted\nlength – add more steps or items with the repeatable scenes, keep the optional scenes\nthat help – rather than stopping short.",
+        "user": "Channel: TikMaker and AI coding. Mostly TikMaker itself: what it can do, how a video gets made with it, new features and how it is being built with AI (build in public). Around that, short concrete videos about other AI tools, vibe coding and Claude Code: one problem or one feature per video, shown on screen rather than told.\nAudience: Creators who want to make short videos faster with AI, and developers or beginners who build apps with AI and want to work faster without breaking things.\n\nIdea: How to undo the last git commit in a few seconds\nWanted length: about 40 s\nFace on camera: no, a faceless video\n\nHook: You committed the wrong thing?\n\nTemplate: How-to steps – A how-to promise followed by numbered steps on screen\nScenes:\n- opening / hook (2.4–4 s): States the task and the tool. [required] → next: sequence; facts: task, tool-name\n- build / demo (2.4–5.6 s): Shows the first actions in the tool. [optional] [repeatable] → next: sequence; facts: screen-recording\n- core / item (2.8–7.2 s): Shows one step. [optional] [repeatable] → next: sequence; facts: step\n- core / demo (2.4–5.6 s): Shows the tool doing the work. [optional] [repeatable] → next: cause-effect; facts: screen-recording\n- core / benefit (2–2.8 s): States what a step makes possible. [optional] [repeatable] → next: example; facts: benefit\n- close / benefit (2–2.8 s): States the gain in one line. [optional] [repeatable] → next: bridge; creative: gain\n- close / cta (3–3 s): Offers more or the full version. [optional] → next: none; creative: cta-line\n\nTransition phrases:\n- sequence: First, | Second, | Third, | First is | Second is | Third is\n- cause-effect: So | As a result | And since | In other words, | You see, | And look\n- bridge: So if you want | So just | To get the full | For a PDF | So want to try it for yourself? | Now you might be wondering...\n- example: Here's another example | They say | Anytime | In many cases, | That's like | You can see\n\nCTA formulas (types allowed: none, link, comment-keyword):\n- comment-keyword: Comment [KEYWORD] and I'll send you [the link / my ebook]. (e.g. \"Comment HUMAN and I'll send you my ebook\")\n- comment-keyword: Comment [KEYWORD] and I'll send you [resource]. Make sure you follow [channel]. (e.g. \"Comment HUMAN and I'll send you my ebook. Make sure you follow InsiderForce.\")\n- comment-keyword: Drop a comment if you want more [topic] with [tool]. (e.g. \"Drop a comment if you want more trading ideas with Claude.\")\n- link: Head [here / to this website] if you want [benefit]. (e.g. \"Head to this website right here\")\n- link: [domain] (e.g. \"artinals.com\")\n- link: Available now (e.g. \"Available now\")\n- link: To get the full [resource], check the link in the description. (e.g. \"To get the full setup guide, check the link in the description.\")\n- link: Unlock more [benefit] in the full video. (e.g. \"Unlock more superpowers in the full video.\")\n\nLimits, from the analysis of successful videos:\n- speak at most 3.4 words per second\n- a scene lasts at most 9 s, the hook at most 5 s\n- at most 15 words on screen in a scene\n\nYour previous script:\n{\n  \"scenes\": [\n    {\n      \"role\": \"hook\",\n      \"voiceover\": \"You committed the wrong thing?\",\n      \"onScreen\": \"Wrong commit?\",\n      \"visual\": \"A terminal window showing git status\",\n      \"needsRecording\": false\n    },\n    {\n      \"role\": \"item\",\n      \"voiceover\": \"First, open your terminal and type git reset --soft HEAD~1.\",\n      \"onScreen\": \"git reset --soft HEAD~1\",\n      \"visual\": \"Terminal typing git reset command\",\n      \"needsRecording\": false\n    },\n    {\n      \"role\": \"item\",\n      \"voiceover\": \"Second, keep your changes staged by using the soft flag.\",\n      \"onScreen\": \"Keep changes staged\",\n      \"visual\": \"Terminal showing git status with files still modified\",\n      \"needsRecording\": false\n    },\n    {\n      \"role\": \"benefit\",\n      \"voiceover\": \"As a result, your code stays safe and you can fix the mistake instantly.\",\n      \"onScreen\": \"Code stays safe\",\n      \"visual\": \"Code editor showing the modified files\",\n      \"needsRecording\": true\n    },\n    {\n      \"role\": \"cta\",\n      \"voiceover\": \"Drop a comment if you want more git tips with Claude Code.\",\n      \"onScreen\": \"Comment GIT for more tips\",\n      \"visual\": \"A terminal window running git log\",\n      \"needsRecording\": false\n    }\n  ],\n  \"skipped\": [\n    {\n      \"role\": \"demo\",\n      \"reason\": \"Not needed as the terminal commands cover the full process concisely.\"\n    }\n  ]\n}\n\nWrite it again and change this:\n- Make the CTA about following for more git tips"
+      },
+      "inputTokens": 1653,
+      "cachedInputTokens": 0,
+      "outputTokens": 385,
+      "thinkingTokens": 0,
+      "output": {
+        "scenes": [
+          {
+            "role": "hook",
+            "voiceover": "You committed the wrong thing?",
+            "onScreen": "Wrong commit?",
+            "visual": "A terminal window showing git status",
+            "needsRecording": false
+          },
+          {
+            "role": "item",
+            "voiceover": "First, open your terminal and type git reset --soft HEAD~1.",
+            "onScreen": "git reset --soft HEAD~1",
+            "visual": "Terminal typing git reset command",
+            "needsRecording": false
+          },
+          {
+            "role": "item",
+            "voiceover": "Second, keep your changes staged by using the soft flag.",
+            "onScreen": "Keep changes staged",
+            "visual": "Terminal showing git status with files still modified",
+            "needsRecording": false
+          },
+          {
+            "role": "benefit",
+            "voiceover": "As a result, your code stays safe and you can fix the mistake instantly.",
+            "onScreen": "Code stays safe",
+            "visual": "Code editor showing the modified files",
+            "needsRecording": true
+          },
+          {
+            "role": "cta",
+            "voiceover": "Comment GIT and I'll send you my ebook. Make sure you follow TikMaker.",
+            "onScreen": "Comment GIT for ebook",
+            "visual": "A terminal window running git log",
+            "needsRecording": false
+          }
+        ],
+        "skipped": [
+          {
+            "role": "demo",
+            "reason": "Not needed as the terminal commands cover the full process concisely."
+          }
+        ]
+      }
+    }
+  ]
+}

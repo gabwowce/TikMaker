@@ -2,19 +2,20 @@ import { usePack } from "./pack";
 import type { ReactNode } from "react";
 import { interpolate, useCurrentFrame, useVideoConfig } from "remotion";
 import { Sparkle } from "./Glyphs";
+import { fitFontSize } from "./fitText";
 import { pop, ramp, settle } from "./pop";
 import { shadows, stage } from "./tokens";
 
-// Viršutinės zonos vaizdai (docs/bd/kadrai/insiderforce/): kiekvienas didelis,
-// ~85 % pločio, su gyliu. `at` – kadras, kai atsiranda.
+// Top-zone pictures (docs/bd/kadrai/insiderforce/): each one big, ~85 % wide,
+// with depth. `at` – the frame it appears on.
 
-// Ramybės judesys: lėtai kyla ir leidžiasi (±8 px per 2,8 s).
+// Idle motion: slowly rises and sinks (±8 px over 2.8 s).
 function useFloat(seed = 0) {
   const frame = useCurrentFrame();
   return Math.sin((frame / 84) * Math.PI * 2 + seed) * 8;
 }
 
-// ── Logotipų „monetos“ su jungiančia linija (kaip 01, 05, 06 kadruose) ──
+// ── Logo "coins" joined by a line (as in frames 01, 05, 06) ──
 export function CoinChain({
   icons,
   ats,
@@ -22,7 +23,7 @@ export function CoinChain({
   y = stage.visualCenterY,
 }: {
   icons: ReactNode[];
-  // Kada iššoka kiekviena moneta (kadrai) – ant savo žodžio; be jų – po 5 kadrus
+  // When each coin pops in (frames) – on its own word; without them – 5 frames apart
   ats?: number[];
   at: number;
   y?: number;
@@ -33,7 +34,7 @@ export function CoinChain({
   const size = 230;
   const gap = (stage.contentWidth - size) / (icons.length - 1);
   const left = (1080 - stage.contentWidth) / 2;
-  // Linija nusibrėžia per 14 kadrų, monetos iššoka viena po kitos.
+  // The line draws itself over 14 frames, the coins pop in one after another.
   const line = ramp(frame, at, 14);
   return (
     <div
@@ -87,7 +88,7 @@ export function CoinChain({
   );
 }
 
-// ── Kortelė su „kalade“ už jos (kaip 01 kadre) ──
+// ── A card with a "deck" behind it (as in frame 01) ──
 export function DeckCard({
   at,
   children,
@@ -106,7 +107,7 @@ export function DeckCard({
   const float = useFloat(0.7);
   const width = stage.contentWidth - 60;
   const left = (1080 - width) / 2 - 30;
-  // Dvi kortelės už pagrindinės išsiskleidžia į dešinę šiek tiek vėliau.
+  // Two cards behind the main one fan out to the right a little later.
   const fan = settle(frame, at + 6, fps);
   return (
     <div
@@ -146,7 +147,7 @@ export function DeckCard({
   );
 }
 
-// Kodo turinys kortelėje: eilutės atsiranda viena po kitos, `+ ` – paryškinta.
+// Code in a card: the lines appear one after another, `+ ` – highlighted.
 export function CodeBody({
   lines,
   at,
@@ -223,7 +224,7 @@ export function CodeBody({
   );
 }
 
-// Labai paprastas kodo spalvinimas: kabutės – akcentas, raktai – šviesūs.
+// Very simple code colouring: strings in the accent, keys light.
 function colorize(line: string) {
   return line.split(/('[^']*')/).map((part, i) =>
     part.startsWith("'") ? (
@@ -236,7 +237,7 @@ function colorize(line: string) {
   );
 }
 
-// ── Numerio juosta „01“ su linija žemyn (kaip 08 kadre) ──
+// ── A "01" number strip with a line down (as in frame 08) ──
 export function NumberBadge({
   label,
   at,
@@ -285,7 +286,10 @@ export function NumberBadge({
   );
 }
 
-// ── Didelis sąrašas su ✦ (kaip 02, 09 kadruose) ──
+// ── A big list with ✦ (as in frames 02, 09) ──
+const LIST_ICON = 78;
+const LIST_GAP = 44;
+
 export function BigList({
   items,
   top = stage.visualTop + 60,
@@ -296,6 +300,13 @@ export function BigList({
   const c = usePack();
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
+  // One size for every row, so the list reads as one: the longest row has to
+  // fit beside its icon, or the whole list gets smaller.
+  const fontSize = fitFontSize(
+    items.map((item) => item.text),
+    88 * c.widthFactor,
+    stage.contentWidth - LIST_ICON - LIST_GAP,
+  );
   return (
     <div
       style={{
@@ -304,7 +315,7 @@ export function BigList({
         top,
         display: "flex",
         flexDirection: "column",
-        gap: 54,
+        gap: 54 * (fontSize / (88 * c.widthFactor)),
       }}
     >
       {items.map((item, i) => {
@@ -313,19 +324,19 @@ export function BigList({
         return (
           <div
             key={i}
-            style={{ display: "flex", alignItems: "center", gap: 44 }}
+            style={{ display: "flex", alignItems: "center", gap: LIST_GAP }}
           >
             <div
               style={{
                 transform: `scale(${interpolate(icon, [0, 1], [0, 1])}) rotate(${interpolate(icon, [0, 1], [-90, 0])}deg)`,
               }}
             >
-              <Sparkle size={78} color={c.accent} />
+              <Sparkle size={LIST_ICON} color={c.accent} />
             </div>
             <div
               style={{
                 fontFamily: c.fontSemi,
-                fontSize: 88 * c.widthFactor,
+                fontSize,
                 whiteSpace: "nowrap",
                 letterSpacing: "-0.03em",
                 color: c.text,
@@ -342,7 +353,7 @@ export function BigList({
   );
 }
 
-// Visas vaizdas išeina: pakyla ir išblunka (kai jį keičia kitas).
+// The whole picture leaves: rises and fades (when the next one replaces it).
 export function ExitUp({ at, children }: { at: number; children: ReactNode }) {
   const frame = useCurrentFrame();
   const out = ramp(frame, at, 8);

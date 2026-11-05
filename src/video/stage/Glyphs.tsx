@@ -1,5 +1,5 @@
-// Paprastos ikonos be išorinių failų (demonstracijai): kiekviena – SVG,
-// piešiama `color` spalva, `size` px dydžio.
+// Simple icons with no outside files (for the demo): each one an SVG drawn in
+// `color`, `size` px big.
 type GlyphProps = { size: number; color: string };
 
 export function Asterisk({ size, color }: GlyphProps) {

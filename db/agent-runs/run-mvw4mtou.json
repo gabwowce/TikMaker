@@ -1,0 +1,34 @@
+{
+  "id": "run-mvw4mtou",
+  "projectId": "project-1793434562051",
+  "input": {
+    "idea": "Why vibe-coded apps break when real users sign up",
+    "workspaceId": "dev",
+    "targetSeconds": 40,
+    "motionOnly": false,
+    "withFace": false,
+    "generateVoice": false
+  },
+  "status": "writing_hooks",
+  "steps": [
+    {
+      "name": "pickTemplate",
+      "startedAt": 1793434563586,
+      "ms": 849,
+      "inputTokens": 1614,
+      "outputTokens": 55,
+      "output": {
+        "videoTemplateId": "myth-vs-reality",
+        "score": 5,
+        "reason": "This template is a great fit for contrasting the illusion of easy vibe coding with the harsh reality of scale when users arrive."
+      }
+    }
+  ],
+  "createdAt": 1793434563534,
+  "template": {
+    "videoTemplateId": "myth-vs-reality",
+    "score": 5,
+    "reason": "This template is a great fit for contrasting the illusion of easy vibe coding with the harsh reality of scale when users arrive.",
+    "pickedBy": "agent"
+  }
+}

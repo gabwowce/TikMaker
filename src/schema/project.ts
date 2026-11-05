@@ -42,6 +42,11 @@ export const videoProjectSchema = z.object({
       outline: z.boolean().optional(), // dark outline around the letters
       activeStyle: highlightStyleSchema.optional(), // how the spoken word stands out
       activeColor: z.string().optional(), // its box (pill) or text (color) colour
+      // "pill" (default) – short chunks, the spoken word in a pill; "kinetic" –
+      // longer phrases, every word pops in, key words bold (docs/motion-planas.md)
+      style: z.enum(["pill", "kinetic"]).optional(),
+      // words drawn bold in the kinetic style – the agent marks them
+      keywords: z.array(z.string()).optional(),
     })
     .optional(),
   music: z

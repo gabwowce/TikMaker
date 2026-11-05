@@ -2,6 +2,8 @@ import { Loader } from "@mantine/core";
 import type { AgentRun } from "../../agent/run/run";
 import type { RunStatus } from "../../agent/run/status";
 import { useAgentRun } from "../../api/agent";
+import { BuildCard } from "./BuildCard";
+import { VoiceCard } from "./VoiceCard";
 import { HookCard } from "./HookCard";
 import { ScriptCard } from "./ScriptCard";
 import { TemplateCard } from "./TemplateCard";
@@ -110,6 +112,8 @@ export function RunProgress({ runId }: { runId: string }) {
       <TemplateCard run={run} />
       <HookCard run={run} />
       <ScriptCard run={run} />
+      <BuildCard run={run} />
+      <VoiceCard run={run} />
       {run.status === "error" ? (
         <p className="m-0 text-xs text-red-400">{run.error ?? "Failed"}</p>
       ) : null}

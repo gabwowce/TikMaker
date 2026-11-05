@@ -1,6 +1,6 @@
 import { temporal } from "zundo";
 import { create, useStore } from "zustand";
-import { compileProject } from "../../agent/compileProject";
+import { projectFromBlocks } from "../../agent/projectFromBlocks";
 import { projectFromScript } from "../../agent/projectFromScript";
 import { getSceneDefinition } from "../../registries/sceneRegistry";
 import { getSfx } from "../../registries/sfxRegistry";
@@ -210,8 +210,9 @@ export const useProjectStore = create<ProjectStore>()(
         set({ project, selectedSceneId: project.scenes[0]?.id ?? null });
       },
       // The agent finished laying out: its scenes get the chosen examples.
-      applyAgentLayout(run, examples, style) {
-        set({ project: compileProject(get().project, run, examples, style) });
+      // A motion video: the agent picked blocks instead of layouts.
+      applyAgentBlocks(run) {
+        set({ project: projectFromBlocks(get().project, run) });
       },
       addScene(type) {
         const def = getSceneDefinition(type);

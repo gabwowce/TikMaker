@@ -43,6 +43,12 @@ export const backgroundRegistry: BackgroundDefinition[] = [
     description:
       "Dark charcoal background with a subtle dotted grid, like a notebook page.",
   },
+  {
+    id: "stage",
+    name: "Stage",
+    description:
+      "The motion stage: a soft lit centre, a slowly drifting grid and two turning accent marks.",
+  },
 ];
 export function getBackground(
   id: BackgroundId,

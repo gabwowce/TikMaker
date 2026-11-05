@@ -72,30 +72,17 @@ describe("writeHooks with a fake model", () => {
     expect(result.prompt.user).not.toContain(doesNotFit.id);
   });
 
-  it("asks again when fewer than two follow a formula (FR-06)", async () => {
+  it("accepts hooks of the model's own, the formulas being examples", async () => {
     const result = await writeHooks(
       input,
       workspace,
       template,
       formulas,
-      fakeModel(
-        {
-          hooks: [
-            hook("One", fits1.id),
-            hook("Two", null),
-            hook("Three", null),
-          ],
-        },
-        {
-          hooks: [
-            hook("One", fits1.id),
-            hook("Two", fits2.id),
-            hook("Three", null),
-          ],
-        },
-      ),
+      fakeModel({
+        hooks: [hook("One", null), hook("Two", null), hook("Three", null)],
+      }),
     );
-    expect(result.attempts).toBe(2);
+    expect(result.attempts).toBe(1);
   });
 
   it("does not accept a formula the template does not allow", async () => {
