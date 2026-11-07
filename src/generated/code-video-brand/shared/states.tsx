@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 import { random, useCurrentFrame } from "remotion";
-import { PhotoSlot, useBrand } from "../brand/kit";
+import { PhotoSlot, useBrand } from "../../../experiments/codeVideo/brand/kit";
 import { BOUNCE, EXIT, lerp, ramp, typed, useTimeline } from "./anim";
 import { Cursor, Gauge, INK, Sticker, TitleBar, counter, fmt, mono } from "./ui";
 

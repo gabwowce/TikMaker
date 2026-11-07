@@ -225,6 +225,16 @@ const baseSceneFields = {
     textOnTop: z.boolean().optional(),
   }),
   layout: layoutIdSchema.optional(),
+  // A code scene (type "code"): the picture is a React component the agent
+  // wrote (docs/tikmaker-kryptis.md). `file` – under src/generated/, e.g.
+  // "<project>/scene-3.tsx"; `params` – the values of the fields the code
+  // lists as editable (its `schema`), filled in the Inspector.
+  code: z
+    .object({
+      file: z.string().regex(/^[\w-]+\/[\w.-]+\.tsx$/),
+      params: z.record(z.unknown()).optional(),
+    })
+    .optional(),
   // A motion scene's stage type: where its picture and captions go
   // (src/video/stage/stageTypes.ts). Unset – "top".
   stage: z.enum(stageTypeIds).optional(),

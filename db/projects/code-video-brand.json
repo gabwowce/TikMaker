@@ -1,0 +1,928 @@
+{
+  "id": "code-video-brand",
+  "title": "4 bandymas: CodeVideoBrand (kodo scenos)",
+  "workspaceId": "dev",
+  "videoTemplateId": "tool-tips-keyword",
+  "fps": 30,
+  "width": 1080,
+  "height": 1920,
+  "storyPlan": {
+    "premise": "3 Claude Code mistakes that burn your tokens: 1) one endless session – the context grows, every message resends everything; fix: /clear or a new session per task. 2) letting it read the whole repo – fix: point it at the files. 3) no CLAUDE.md – it rediscovers the project every time; fix: write the basics once. Show the money burning, then the fix for each."
+  },
+  "scenes": [
+    {
+      "id": "scene-run-mw4zf3t3-1",
+      "plan": {
+        "role": "hook",
+        "visualBrief": "A Claude Code terminal session scrolls endlessly while a fuel gauge beside it drops toward empty"
+      },
+      "durationSeconds": 3.2760000000000002,
+      "vo": "If Claude Code keeps eating your tokens, here are 3 fixes.",
+      "background": "stage",
+      "content": {},
+      "stage": "top",
+      "type": "code",
+      "code": {
+        "file": "code-video-brand/scene-1.tsx"
+      }
+    },
+    {
+      "id": "scene-run-mw4zf3t3-2",
+      "plan": {
+        "role": "setup",
+        "visualBrief": "A dollar counter ticks up next to a calendar day while coins drip out of a cracked pipe labeled 'tokens'"
+      },
+      "durationSeconds": 4.39,
+      "vo": "Teams spend about thirteen dollars per developer a day. Here's where it leaks.",
+      "background": "stage",
+      "content": {},
+      "stage": "bottom",
+      "type": "code",
+      "code": {
+        "file": "code-video-brand/scene-2.tsx"
+      }
+    },
+    {
+      "id": "scene-run-mw4zf3t3-3",
+      "plan": {
+        "role": "item",
+        "visualBrief": "A tiny one-line question gets sent, dragging a huge stack of the day's chat history behind it, while banknotes burn beside it"
+      },
+      "durationSeconds": 6.387,
+      "vo": "First, one endless session. Every message resends the whole history, so a one-line question pays for all of it.",
+      "background": "stage",
+      "content": {},
+      "stage": "split",
+      "type": "code",
+      "code": {
+        "file": "code-video-brand/scene-3.tsx"
+      }
+    },
+    {
+      "id": "scene-run-mw4zf3t3-4",
+      "plan": {
+        "role": "item",
+        "visualBrief": "In the Claude Code terminal, /clear is typed and the long conversation disappears, leaving an empty prompt"
+      },
+      "durationSeconds": 4.622,
+      "vo": "The fix: type slash clear when you switch tasks. It costs nothing.",
+      "notes": "🎥 Your own recording",
+      "background": "stage",
+      "content": {},
+      "stage": "full",
+      "type": "code",
+      "code": {
+        "file": "code-video-brand/scene-4.tsx"
+      }
+    },
+    {
+      "id": "scene-run-mw4zf3t3-5",
+      "plan": {
+        "role": "item",
+        "visualBrief": "The prompt 'improve this codebase' goes in and a file tree lights up folder after folder while a token counter races up"
+      },
+      "durationSeconds": 5.505,
+      "vo": "Second, letting it read the whole repo. 'Improve this codebase' makes it scan everything.",
+      "background": "stage",
+      "content": {},
+      "stage": "split",
+      "type": "code",
+      "code": {
+        "file": "code-video-brand/scene-5.tsx"
+      }
+    },
+    {
+      "id": "scene-run-mw4zf3t3-6",
+      "plan": {
+        "role": "item",
+        "visualBrief": "In Claude Code a prompt naming auth.ts is typed, and only that file gets opened before the edit appears"
+      },
+      "durationSeconds": 7.27,
+      "vo": "Instead, point it at the file: add input validation to the login function in auth.ts. A few reads, done.",
+      "notes": "🎥 Your own recording",
+      "background": "stage",
+      "content": {},
+      "stage": "top",
+      "type": "code",
+      "code": {
+        "file": "code-video-brand/scene-6.tsx"
+      }
+    },
+    {
+      "id": "scene-run-mw4zf3t3-7",
+      "plan": {
+        "role": "item",
+        "visualBrief": "Three new sessions open one after another, and in each the same project folders get explored again from zero"
+      },
+      "durationSeconds": 6.340999999999999,
+      "vo": "Third, no CLAUDE.md. Every session starts fresh, so it rediscovers your project every time.",
+      "background": "stage",
+      "content": {},
+      "stage": "split",
+      "type": "code",
+      "code": {
+        "file": "code-video-brand/scene-7.tsx"
+      }
+    },
+    {
+      "id": "scene-run-mw4zf3t3-8",
+      "plan": {
+        "role": "item",
+        "visualBrief": "A short CLAUDE.md with project basics is written in the editor, then a new Claude Code session starts and picks it up"
+      },
+      "durationSeconds": 5.550999999999999,
+      "vo": "Write the basics once in CLAUDE.md. It loads every session. Keep it under two hundred lines.",
+      "notes": "🎥 Your own recording",
+      "background": "stage",
+      "content": {},
+      "stage": "top",
+      "type": "code",
+      "code": {
+        "file": "code-video-brand/scene-8.tsx"
+      }
+    },
+    {
+      "id": "scene-run-mw4zf3t3-9",
+      "plan": {
+        "role": "cta",
+        "visualBrief": "The fuel gauge from the opening climbs back to full beside a clean, short terminal session"
+      },
+      "durationSeconds": 3.508,
+      "vo": "Drop a comment if you want more token-saving tips with Claude Code.",
+      "background": "stage",
+      "content": {},
+      "stage": "bottom",
+      "type": "code",
+      "code": {
+        "file": "code-video-brand/scene-9.tsx"
+      }
+    }
+  ],
+  "captions": {
+    "style": "kinetic",
+    "keywords": [
+      "tokens",
+      "3 fixes",
+      "thirteen dollars",
+      "leaks",
+      "endless session",
+      "whole history",
+      "slash clear",
+      "nothing",
+      "whole repo",
+      "everything",
+      "auth.ts",
+      "few reads",
+      "CLAUDE.md",
+      "every time",
+      "once",
+      "every session",
+      "two hundred lines",
+      "comment",
+      "token-saving"
+    ]
+  },
+  "savedAt": 1793970375577,
+  "audioClips": [
+    {
+      "id": "audio-run-mw4zf3t3-scene-run-mw4zf3t3-1",
+      "sfxId": "vo-run-mw4zf3t3-scene-1-mw4zkfye",
+      "from": 0,
+      "durationInFrames": 98,
+      "volume": 1,
+      "voiceText": "If Claude Code keeps eating your tokens, here are 3 fixes.",
+      "words": [
+        {
+          "text": "If",
+          "start": 0,
+          "end": 0.128
+        },
+        {
+          "text": "Claude",
+          "start": 0.174,
+          "end": 0.383
+        },
+        {
+          "text": "Code",
+          "start": 0.418,
+          "end": 0.627
+        },
+        {
+          "text": "keeps",
+          "start": 0.662,
+          "end": 0.836
+        },
+        {
+          "text": "eating",
+          "start": 0.871,
+          "end": 1.057
+        },
+        {
+          "text": "your",
+          "start": 1.091,
+          "end": 1.184
+        },
+        {
+          "text": "tokens,",
+          "start": 1.219,
+          "end": 1.695
+        },
+        {
+          "text": "here",
+          "start": 1.753,
+          "end": 1.892
+        },
+        {
+          "text": "are",
+          "start": 1.927,
+          "end": 2.032
+        },
+        {
+          "text": "3",
+          "start": 2.09,
+          "end": 2.241
+        },
+        {
+          "text": "fixes.",
+          "start": 2.299,
+          "end": 2.926
+        }
+      ]
+    },
+    {
+      "id": "audio-run-mw4zf3t3-scene-run-mw4zf3t3-2",
+      "sfxId": "vo-run-mw4zf3t3-scene-2-mw4zkgaa",
+      "from": 98,
+      "durationInFrames": 132,
+      "volume": 1,
+      "voiceText": "Teams spend about thirteen dollars per developer a day. Here's where it leaks.",
+      "words": [
+        {
+          "text": "Teams",
+          "start": 0,
+          "end": 0.279
+        },
+        {
+          "text": "spend",
+          "start": 0.302,
+          "end": 0.546
+        },
+        {
+          "text": "about",
+          "start": 0.615,
+          "end": 0.836
+        },
+        {
+          "text": "thirteen",
+          "start": 0.882,
+          "end": 1.254
+        },
+        {
+          "text": "dollars",
+          "start": 1.3,
+          "end": 1.602
+        },
+        {
+          "text": "per",
+          "start": 1.66,
+          "end": 1.765
+        },
+        {
+          "text": "developer",
+          "start": 1.8,
+          "end": 2.183
+        },
+        {
+          "text": "a",
+          "start": 2.252,
+          "end": 2.287
+        },
+        {
+          "text": "day.",
+          "start": 2.345,
+          "end": 2.659
+        },
+        {
+          "text": "Here's",
+          "start": 2.995,
+          "end": 3.204
+        },
+        {
+          "text": "where",
+          "start": 3.228,
+          "end": 3.355
+        },
+        {
+          "text": "it",
+          "start": 3.39,
+          "end": 3.437
+        },
+        {
+          "text": "leaks.",
+          "start": 3.471,
+          "end": 4.04
+        }
+      ]
+    },
+    {
+      "id": "audio-run-mw4zf3t3-scene-run-mw4zf3t3-3",
+      "sfxId": "vo-run-mw4zf3t3-scene-3-mw4zkgps",
+      "from": 230,
+      "durationInFrames": 192,
+      "volume": 1,
+      "voiceText": "First, one endless session. Every message resends the whole history, so a one-line question pays for all of it.",
+      "words": [
+        {
+          "text": "First,",
+          "start": 0,
+          "end": 0.464
+        },
+        {
+          "text": "one",
+          "start": 0.673,
+          "end": 0.882
+        },
+        {
+          "text": "endless",
+          "start": 0.929,
+          "end": 1.219
+        },
+        {
+          "text": "session.",
+          "start": 1.242,
+          "end": 1.695
+        },
+        {
+          "text": "Every",
+          "start": 1.846,
+          "end": 2.09
+        },
+        {
+          "text": "message",
+          "start": 2.148,
+          "end": 2.438
+        },
+        {
+          "text": "resends",
+          "start": 2.473,
+          "end": 2.786
+        },
+        {
+          "text": "the",
+          "start": 2.821,
+          "end": 2.902
+        },
+        {
+          "text": "whole",
+          "start": 2.949,
+          "end": 3.135
+        },
+        {
+          "text": "history,",
+          "start": 3.17,
+          "end": 3.646
+        },
+        {
+          "text": "so",
+          "start": 3.831,
+          "end": 3.947
+        },
+        {
+          "text": "a",
+          "start": 4.017,
+          "end": 4.052
+        },
+        {
+          "text": "one-line",
+          "start": 4.133,
+          "end": 4.481
+        },
+        {
+          "text": "question",
+          "start": 4.516,
+          "end": 4.876
+        },
+        {
+          "text": "pays",
+          "start": 4.946,
+          "end": 5.143
+        },
+        {
+          "text": "for",
+          "start": 5.19,
+          "end": 5.294
+        },
+        {
+          "text": "all",
+          "start": 5.341,
+          "end": 5.445
+        },
+        {
+          "text": "of",
+          "start": 5.492,
+          "end": 5.538
+        },
+        {
+          "text": "it.",
+          "start": 5.584,
+          "end": 6.037
+        }
+      ]
+    },
+    {
+      "id": "audio-run-mw4zf3t3-scene-run-mw4zf3t3-4",
+      "sfxId": "vo-run-mw4zf3t3-scene-4-mw4zkh2u",
+      "from": 422,
+      "durationInFrames": 139,
+      "volume": 1,
+      "voiceText": "The fix: type slash clear when you switch tasks. It costs nothing.",
+      "words": [
+        {
+          "text": "The",
+          "start": 0,
+          "end": 0.151
+        },
+        {
+          "text": "fix:",
+          "start": 0.209,
+          "end": 0.627
+        },
+        {
+          "text": "type",
+          "start": 0.906,
+          "end": 1.277
+        },
+        {
+          "text": "slash",
+          "start": 1.324,
+          "end": 1.649
+        },
+        {
+          "text": "clear",
+          "start": 1.695,
+          "end": 1.95
+        },
+        {
+          "text": "when",
+          "start": 2.078,
+          "end": 2.229
+        },
+        {
+          "text": "you",
+          "start": 2.264,
+          "end": 2.334
+        },
+        {
+          "text": "switch",
+          "start": 2.38,
+          "end": 2.601
+        },
+        {
+          "text": "tasks.",
+          "start": 2.635,
+          "end": 3.1
+        },
+        {
+          "text": "It",
+          "start": 3.286,
+          "end": 3.39
+        },
+        {
+          "text": "costs",
+          "start": 3.425,
+          "end": 3.646
+        },
+        {
+          "text": "nothing.",
+          "start": 3.704,
+          "end": 4.272
+        }
+      ]
+    },
+    {
+      "id": "audio-run-mw4zf3t3-scene-run-mw4zf3t3-5",
+      "sfxId": "vo-run-mw4zf3t3-scene-5-mw4zkhfu",
+      "from": 561,
+      "durationInFrames": 165,
+      "volume": 1,
+      "voiceText": "Second, letting it read the whole repo. 'Improve this codebase' makes it scan everything.",
+      "words": [
+        {
+          "text": "Second,",
+          "start": 0,
+          "end": 0.499
+        },
+        {
+          "text": "letting",
+          "start": 0.708,
+          "end": 0.94
+        },
+        {
+          "text": "it",
+          "start": 0.975,
+          "end": 1.033
+        },
+        {
+          "text": "read",
+          "start": 1.08,
+          "end": 1.231
+        },
+        {
+          "text": "the",
+          "start": 1.265,
+          "end": 1.347
+        },
+        {
+          "text": "whole",
+          "start": 1.393,
+          "end": 1.602
+        },
+        {
+          "text": "repo.",
+          "start": 1.637,
+          "end": 2.136
+        },
+        {
+          "text": "'Improve",
+          "start": 2.519,
+          "end": 2.891
+        },
+        {
+          "text": "this",
+          "start": 2.926,
+          "end": 3.053
+        },
+        {
+          "text": "codebase'",
+          "start": 3.1,
+          "end": 3.669
+        },
+        {
+          "text": "makes",
+          "start": 3.715,
+          "end": 3.924
+        },
+        {
+          "text": "it",
+          "start": 3.959,
+          "end": 4.029
+        },
+        {
+          "text": "scan",
+          "start": 4.075,
+          "end": 4.354
+        },
+        {
+          "text": "everything.",
+          "start": 4.435,
+          "end": 5.155
+        }
+      ]
+    },
+    {
+      "id": "audio-run-mw4zf3t3-scene-run-mw4zf3t3-6",
+      "sfxId": "vo-run-mw4zf3t3-scene-6-mw4zkhwi",
+      "from": 726,
+      "durationInFrames": 218,
+      "volume": 1,
+      "voiceText": "Instead, point it at the file: add input validation to the login function in auth.ts. A few reads, done.",
+      "words": [
+        {
+          "text": "Instead,",
+          "start": 0,
+          "end": 0.557
+        },
+        {
+          "text": "point",
+          "start": 0.708,
+          "end": 0.929
+        },
+        {
+          "text": "it",
+          "start": 0.964,
+          "end": 1.033
+        },
+        {
+          "text": "at",
+          "start": 1.068,
+          "end": 1.138
+        },
+        {
+          "text": "the",
+          "start": 1.173,
+          "end": 1.242
+        },
+        {
+          "text": "file:",
+          "start": 1.277,
+          "end": 1.672
+        },
+        {
+          "text": "add",
+          "start": 1.95,
+          "end": 2.148
+        },
+        {
+          "text": "input",
+          "start": 2.206,
+          "end": 2.461
+        },
+        {
+          "text": "validation",
+          "start": 2.496,
+          "end": 2.961
+        },
+        {
+          "text": "to",
+          "start": 3.007,
+          "end": 3.077
+        },
+        {
+          "text": "the",
+          "start": 3.123,
+          "end": 3.193
+        },
+        {
+          "text": "login",
+          "start": 3.239,
+          "end": 3.483
+        },
+        {
+          "text": "function",
+          "start": 3.529,
+          "end": 3.82
+        },
+        {
+          "text": "in",
+          "start": 3.889,
+          "end": 4.005
+        },
+        {
+          "text": "auth.ts.",
+          "start": 4.11,
+          "end": 5.224
+        },
+        {
+          "text": "A",
+          "start": 5.433,
+          "end": 5.503
+        },
+        {
+          "text": "few",
+          "start": 5.573,
+          "end": 5.712
+        },
+        {
+          "text": "reads,",
+          "start": 5.77,
+          "end": 6.142
+        },
+        {
+          "text": "done.",
+          "start": 6.351,
+          "end": 6.92
+        }
+      ]
+    },
+    {
+      "id": "audio-run-mw4zf3t3-scene-run-mw4zf3t3-7",
+      "sfxId": "vo-run-mw4zf3t3-scene-7-mw4zkibb",
+      "from": 944,
+      "durationInFrames": 190,
+      "volume": 1,
+      "voiceText": "Third, no CLAUDE.md. Every session starts fresh, so it rediscovers your project every time.",
+      "words": [
+        {
+          "text": "Third,",
+          "start": 0,
+          "end": 0.464
+        },
+        {
+          "text": "no",
+          "start": 0.743,
+          "end": 0.906
+        },
+        {
+          "text": "CLAUDE.md.",
+          "start": 0.964,
+          "end": 1.997
+        },
+        {
+          "text": "Every",
+          "start": 2.276,
+          "end": 2.519
+        },
+        {
+          "text": "session",
+          "start": 2.566,
+          "end": 2.844
+        },
+        {
+          "text": "starts",
+          "start": 2.891,
+          "end": 3.111
+        },
+        {
+          "text": "fresh,",
+          "start": 3.146,
+          "end": 3.506
+        },
+        {
+          "text": "so",
+          "start": 3.657,
+          "end": 3.75
+        },
+        {
+          "text": "it",
+          "start": 3.82,
+          "end": 3.878
+        },
+        {
+          "text": "rediscovers",
+          "start": 3.913,
+          "end": 4.423
+        },
+        {
+          "text": "your",
+          "start": 4.458,
+          "end": 4.574
+        },
+        {
+          "text": "project",
+          "start": 4.609,
+          "end": 4.992
+        },
+        {
+          "text": "every",
+          "start": 5.143,
+          "end": 5.387
+        },
+        {
+          "text": "time.",
+          "start": 5.422,
+          "end": 5.991
+        }
+      ]
+    },
+    {
+      "id": "audio-run-mw4zf3t3-scene-run-mw4zf3t3-8",
+      "sfxId": "vo-run-mw4zf3t3-scene-8-mw4zkipb",
+      "from": 1134,
+      "durationInFrames": 167,
+      "volume": 1,
+      "voiceText": "Write the basics once in CLAUDE.md. It loads every session. Keep it under two hundred lines.",
+      "words": [
+        {
+          "text": "Write",
+          "start": 0,
+          "end": 0.221
+        },
+        {
+          "text": "the",
+          "start": 0.244,
+          "end": 0.313
+        },
+        {
+          "text": "basics",
+          "start": 0.348,
+          "end": 0.697
+        },
+        {
+          "text": "once",
+          "start": 0.755,
+          "end": 0.964
+        },
+        {
+          "text": "in",
+          "start": 1.01,
+          "end": 1.091
+        },
+        {
+          "text": "CLAUDE.md.",
+          "start": 1.161,
+          "end": 2.02
+        },
+        {
+          "text": "It",
+          "start": 2.299,
+          "end": 2.403
+        },
+        {
+          "text": "loads",
+          "start": 2.45,
+          "end": 2.659
+        },
+        {
+          "text": "every",
+          "start": 2.763,
+          "end": 3.007
+        },
+        {
+          "text": "session.",
+          "start": 3.042,
+          "end": 3.471
+        },
+        {
+          "text": "Keep",
+          "start": 3.599,
+          "end": 3.773
+        },
+        {
+          "text": "it",
+          "start": 3.82,
+          "end": 3.889
+        },
+        {
+          "text": "under",
+          "start": 3.947,
+          "end": 4.122
+        },
+        {
+          "text": "two",
+          "start": 4.168,
+          "end": 4.296
+        },
+        {
+          "text": "hundred",
+          "start": 4.342,
+          "end": 4.563
+        },
+        {
+          "text": "lines.",
+          "start": 4.598,
+          "end": 5.201
+        }
+      ]
+    },
+    {
+      "id": "audio-run-mw4zf3t3-scene-run-mw4zf3t3-9",
+      "sfxId": "vo-run-mw4zf3t3-scene-9-mw4zkj0a",
+      "from": 1301,
+      "durationInFrames": 105,
+      "volume": 1,
+      "voiceText": "Drop a comment if you want more token-saving tips with Claude Code.",
+      "words": [
+        {
+          "text": "Drop",
+          "start": 0,
+          "end": 0.221
+        },
+        {
+          "text": "a",
+          "start": 0.267,
+          "end": 0.29
+        },
+        {
+          "text": "comment",
+          "start": 0.325,
+          "end": 0.627
+        },
+        {
+          "text": "if",
+          "start": 0.662,
+          "end": 0.731
+        },
+        {
+          "text": "you",
+          "start": 0.766,
+          "end": 0.848
+        },
+        {
+          "text": "want",
+          "start": 0.882,
+          "end": 1.022
+        },
+        {
+          "text": "more",
+          "start": 1.057,
+          "end": 1.219
+        },
+        {
+          "text": "token-saving",
+          "start": 1.265,
+          "end": 1.834
+        },
+        {
+          "text": "tips",
+          "start": 1.881,
+          "end": 2.125
+        },
+        {
+          "text": "with",
+          "start": 2.159,
+          "end": 2.299
+        },
+        {
+          "text": "Claude",
+          "start": 2.345,
+          "end": 2.577
+        },
+        {
+          "text": "Code.",
+          "start": 2.612,
+          "end": 3.158
+        }
+      ]
+    }
+  ]
+}

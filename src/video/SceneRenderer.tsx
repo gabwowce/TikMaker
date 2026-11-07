@@ -3,7 +3,13 @@ import { AbsoluteFill, Sequence, useCurrentFrame } from "remotion";
 import { getSceneDefinition } from "../registries/sceneRegistry";
 import type { VideoProject } from "../schema/project";
 import type { Scene } from "../schema/scene";
-import { computeSceneTimings } from "../utils/duration";
+import {
+  computeSceneTimings,
+  projectDurationInFrames,
+} from "../utils/duration";
+import { sceneWords } from "../utils/sceneWords";
+import { CodeScene } from "./code/CodeScene";
+import type { SceneWord } from "./code/types";
 import {
   hoistedOwnership,
   resolveHoistedLinkGroups,
@@ -24,6 +30,8 @@ type TransitionedSceneProps = {
   fps: number;
   hoistedLayerIds?: Set<string>;
   contentOverride?: Scene["content"];
+  // A code scene's own picture, drawn under its ordinary layers.
+  code?: { index: number; words: SceneWord[] };
 };
 function TransitionedScene({
   scene,
@@ -32,6 +40,7 @@ function TransitionedScene({
   fps,
   hoistedLayerIds,
   contentOverride,
+  code,
 }: TransitionedSceneProps) {
   const frameInScene = useCurrentFrame();
   const style = transitionStyle(scene.motion?.transition, {
@@ -45,6 +54,14 @@ function TransitionedScene({
       <Background id={scene.background} />
 
       <AbsoluteFill style={style}>
+        {code ? (
+          <CodeScene
+            scene={scene}
+            index={code.index}
+            durationInFrames={durationInFrames}
+            words={code.words}
+          />
+        ) : null}
         <Component
           {...scene}
           content={
@@ -69,6 +86,7 @@ type SceneRendererProps = {
 };
 export function SceneRenderer({ project }: SceneRendererProps) {
   const timings = computeSceneTimings(project);
+  const total = projectDurationInFrames(project);
   const linkGroups = resolveHoistedLinkGroups(timings);
   const hoisted = hoistedOwnership(linkGroups);
   const baseContent = new Map<string, Scene["content"]>();
@@ -240,7 +258,7 @@ export function SceneRenderer({ project }: SceneRendererProps) {
   }
   return (
     <>
-      {timings.map(({ scene, from, durationInFrames, durationSeconds }) => (
+      {timings.map(({ scene, from, durationInFrames, durationSeconds }, index) => (
         <Sequence
           key={scene.id}
           from={from}
@@ -254,6 +272,18 @@ export function SceneRenderer({ project }: SceneRendererProps) {
             fps={project.fps}
             hoistedLayerIds={hoisted.get(scene.id)}
             contentOverride={baseContent.get(scene.id)}
+            code={
+              scene.type === "code"
+                ? {
+                    index,
+                    words: sceneWords(
+                      project,
+                      { from, durationInFrames, vo: scene.vo },
+                      total,
+                    ),
+                  }
+                : undefined
+            }
           />
         </Sequence>
       ))}

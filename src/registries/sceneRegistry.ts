@@ -66,6 +66,16 @@ export const sceneRegistry: SceneDefinition[] = [
     component: StepsScene,
     defaultDurationSeconds: 4.5,
   },
+  {
+    type: "code",
+    name: "Code Scene",
+    description:
+      "A picture the agent wrote as code; ordinary layers go on top of it.",
+    // the code's picture is drawn by SceneRenderer (CodeScene); this draws
+    // the ordinary layers the creator adds on top
+    component: VisualExplainerScene,
+    defaultDurationSeconds: 4,
+  },
 ];
 export function getSceneDefinition(type: SceneType): SceneDefinition {
   const def = sceneRegistry.find((s) => s.type === type);

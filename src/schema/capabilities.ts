@@ -125,6 +125,9 @@ export const sceneTypeSchema = z.enum([
   "takeaway",
   "comparison",
   "steps",
+  // A scene whose picture is code written by the agent (src/generated/,
+  // src/video/code/): the scene's `code` says which file and its fields.
+  "code",
 ]);
 // Where an element's centre may be, in % of the frame. Beyond 0–100 so text
 // and visuals can sit off the frame and slide in or out with keyframes.

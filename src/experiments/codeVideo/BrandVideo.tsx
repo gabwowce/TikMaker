@@ -11,7 +11,7 @@ import { PackProvider } from "../../video/stage/pack";
 import { CaptionLayer } from "../../video/typography/CaptionLayer";
 import { ensureFontsLoaded } from "../../video/typography/fonts";
 import type { FreeScene } from "./FreeVideo";
-import { BrandVideoBody } from "./generated-brand/Video";
+import { BrandVideoBody } from "../../generated/code-video-brand/shared/Video";
 
 // Test 4 of the experiment: the official Remotion skill + the explainer motion
 // skill + the channel's brand kit. Ours: the backdrop, the kinetic captions,

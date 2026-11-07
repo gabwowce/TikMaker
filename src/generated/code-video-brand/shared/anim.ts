@@ -1,6 +1,6 @@
 import { createContext, useContext } from "react";
 import { Easing, interpolate } from "remotion";
-import type { FreeScene } from "../FreeVideo";
+import type { FreeScene } from "../../../experiments/codeVideo/FreeVideo";
 
 // Motion vocabulary of the brand kit: decelerating entrances, bouncy only for
 // stickers and small icons, fast accelerating exits.
