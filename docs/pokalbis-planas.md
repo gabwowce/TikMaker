@@ -204,4 +204,4 @@ Testai praeina; laukelis su žyme „Scene 1“ patikrintas redaktoriuje, tikros
 pasiūlymai su „Do it / No“ (`agent.decide`), įrašymas be lenktynių (`updateRun` +
 `mergeMessages`). Kodas su paaiškinimais – `docs/pokalbis-kodas.md`.
 
-**Liko:** 3 etapas (agento klausimai, `awaiting_answers`, „prisimink“).
+**3 etapas padarytas** (2026-11-07) – aprašas su kodu: `docs/klausimai-kodas.md`.
