@@ -17,6 +17,9 @@ export const agentRun = z.object({
   projectId: z.string().min(1),
   createdAt: z.number(),
   status: runStatus,
+  // When the run got its current status (job.save): how long the step being
+  // worked on has taken so far, shown on the panel's working line.
+  statusAt: z.number().optional(),
   // Why the run stopped, when status is "error" or "paused".
   error: z.string().optional(),
   // "paused" / "awaiting_answers": where the run was when it stopped.

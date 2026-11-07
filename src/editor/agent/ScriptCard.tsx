@@ -1,8 +1,9 @@
-import { Button, Loader } from "@mantine/core";
+import { Button } from "@mantine/core";
 import type { ScriptInRun } from "../../agent/run/3-script";
 import type { AgentRun } from "../../agent/run/run";
 import { useApproveScript } from "../../api/agent";
 import { StepLog } from "./StepLog";
+import { WorkingLine } from "./WorkingLine";
 
 // 3 Script in the conversation: while the model writes, one line; then the
 // scenes to read, what the check still found, and "Approve". To have it
@@ -29,10 +30,9 @@ export function ScriptCard({ run }: { run: AgentRun }) {
   const answered = Boolean(script?.comment);
   if (run.status === "writing_script" || answered) {
     return (
-      <div className="flex items-center gap-2 rounded-2xl rounded-bl-none border border-solid border-editor-border p-3 text-xs">
-        <Loader size={12} />
+      <WorkingLine run={run}>
         {answered || script ? "Rewriting the script…" : "Writing the script…"}
-      </div>
+      </WorkingLine>
     );
   }
   if (run.status !== "awaiting_approval" || !script) return null;

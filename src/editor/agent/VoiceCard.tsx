@@ -1,5 +1,5 @@
-import { Loader } from "@mantine/core";
 import type { AgentRun } from "../../agent/run/run";
+import { WorkingLine } from "./WorkingLine";
 
 // 5 Result in the conversation: the voiceover, scene by scene while it is
 // being made (the voice step saves after every scene), then how many scenes
@@ -10,10 +10,9 @@ export function VoiceCard({ run }: { run: AgentRun }) {
   const done = run.voice?.scenes.length ?? 0;
   if (run.status === "generating_voice") {
     return (
-      <div className="flex items-center gap-2 rounded-2xl rounded-bl-none border border-solid border-editor-border p-3 text-xs">
-        <Loader size={12} />
+      <WorkingLine run={run}>
         Voicing scene {Math.min(done + 1, total)} of {total}…
-      </div>
+      </WorkingLine>
     );
   }
   if (!done) return null;

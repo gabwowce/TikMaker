@@ -1,5 +1,6 @@
 import type { ChatMessage } from "../../src/agent/run/7-chat.js";
 import type { AgentRun } from "../../src/agent/run/run.js";
+import { RESTING_STATUSES } from "../../src/agent/run/status.js";
 import { Job, openJob } from "./job.js";
 import { isLimitError, resumeStatus } from "./limits.js";
 import { allRuns, getRun, saveRun } from "./runs.js";
@@ -162,25 +163,13 @@ export async function resumeRun(run: AgentRun): Promise<void> {
   continueRun((await getRun(run.id)) ?? run);
 }
 
-// Statuses where no worker is needed: the agent waits for the user, or the
-// run has ended.
-const RESTING: AgentRun["status"][] = [
-  "awaiting_hook",
-  "awaiting_approval",
-  "awaiting_answers",
-  "done",
-  "paused",
-  "error",
-  "cancelled",
-];
-
 // At server start: a run left in a working status had its worker in the
 // server that stopped (a restart, a crash), so nobody goes on with it. It is
 // paused the same way as at the usage limit – "Continue" picks it up from
 // where it was, and what it made before is kept.
 export async function pauseInterruptedRuns(): Promise<void> {
   for (const run of await allRuns()) {
-    if (RESTING.includes(run.status)) continue;
+    if (RESTING_STATUSES.includes(run.status)) continue;
     await saveRun({
       ...run,
       status: "paused",

@@ -1,8 +1,9 @@
-import { Button, Loader, Textarea, UnstyledButton } from "@mantine/core";
+import { Button, Textarea, UnstyledButton } from "@mantine/core";
 import { useState } from "react";
 import type { AgentRun } from "../../agent/run/run";
 import { useChooseHook } from "../../api/agent";
 import { StepLog } from "./StepLog";
+import { WorkingLine } from "./WorkingLine";
 
 // 2 Angle, the opening line, in the conversation: while the model writes,
 // the three it proposes to pick from (or the user's own text), and once
@@ -37,12 +38,7 @@ export function HookCard({ run }: { run: AgentRun }) {
   if (!fresh || run.status !== "awaiting_hook") {
     if (run.status !== "writing_hooks" && run.status !== "awaiting_hook")
       return null;
-    return (
-      <div className="flex items-center gap-2 rounded-2xl rounded-bl-none border border-solid border-editor-border p-3 text-xs">
-        <Loader size={12} />
-        Writing hooks…
-      </div>
-    );
+    return <WorkingLine run={run}>Writing hooks…</WorkingLine>;
   }
 
   return (

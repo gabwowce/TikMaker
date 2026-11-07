@@ -52,10 +52,15 @@ export async function openJob(run: AgentRun): Promise<Job> {
           changes.messages ?? job.run.messages,
           onDisk?.messages,
         );
+        // A new status starts its clock (the panel shows how long it takes).
+        const moved =
+          changes.status !== undefined &&
+          changes.status !== (onDisk?.status ?? job.run.status);
         return {
           ...job.run,
           ...changes,
           ...(messages ? { messages } : {}),
+          ...(moved ? { statusAt: Date.now() } : {}),
         };
       });
     },

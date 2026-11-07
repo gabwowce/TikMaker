@@ -1,9 +1,10 @@
-import { Button, Loader, NativeSelect } from "@mantine/core";
+import { Button, NativeSelect } from "@mantine/core";
 import { useState } from "react";
 import { MIN_FIT_SCORE, TEMPLATE_CHANGEABLE } from "../../agent/run/2-angle";
 import type { AgentRun } from "../../agent/run/run";
 import { useChangeTemplate, useTemplates } from "../../api/agent";
 import { StepLog } from "./StepLog";
+import { WorkingLine } from "./WorkingLine";
 
 // 2 Angle in the conversation: one line saying what was decided and by whom,
 // the template itself, and "Change" while nothing is written for it yet.
@@ -17,12 +18,7 @@ export function TemplateCard({ run }: { run: AgentRun }) {
   if (!choice) {
     if (run.status !== "created" && run.status !== "picking_template")
       return null;
-    return (
-      <div className="flex items-center gap-2 rounded-2xl rounded-bl-none border border-solid border-editor-border p-3 text-xs">
-        <Loader size={12} />
-        Picking a template…
-      </div>
-    );
+    return <WorkingLine run={run}>Picking a template…</WorkingLine>;
   }
   const template = templates.find((t) => t.id === choice.videoTemplateId);
   const byAgent = choice.pickedBy === "agent";

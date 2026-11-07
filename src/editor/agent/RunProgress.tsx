@@ -8,6 +8,7 @@ import { HookCard } from "./HookCard";
 import { ChatMessages } from "./ChatMessages";
 import { ScriptCard } from "./ScriptCard";
 import { TemplateCard } from "./TemplateCard";
+import { WorkingLine } from "./WorkingLine";
 // The run's road as the user sees it: the plan's five steps, and which
 // statuses mean "this step is happening now". Idea is done once Start is
 // pressed; waiting for the user (awaiting_*) belongs to the step whose answer
@@ -141,15 +142,14 @@ function ReviewingLine({ run }: { run: AgentRun }) {
     message.text.startsWith("Self-review, round"),
   ).length;
   return (
-    <div className="flex items-center gap-2 rounded-2xl rounded-bl-none border border-solid border-editor-border p-3 text-xs">
-      <Loader size={12} />
+    <WorkingLine run={run}>
       {rounds
         ? "Fixing what it found, then looking again…"
-        : "Rendering frames and looking at them…"}
+        : "Rendering frames and looking at them…"}{" "}
       <span className="text-editor-muted">
         The video goes into the editor when this is done.
       </span>
-    </div>
+    </WorkingLine>
   );
 }
 

@@ -1,6 +1,6 @@
-import { Loader } from "@mantine/core";
 import type { AgentRun } from "../../agent/run/run";
 import { FoldCard } from "./FoldCard";
+import { WorkingLine } from "./WorkingLine";
 
 // 4 Building in the conversation: one line while Claude Code writes the
 // pictures as code (it takes minutes), then what every scene shows – folded –
@@ -10,10 +10,10 @@ export function BuildCard({ run }: { run: AgentRun }) {
   const code = run.code;
   if (!code)
     return working ? (
-      <Working>
+      <WorkingLine run={run}>
         Writing the pictures as code… (Claude Code with the skills – about a
         minute or two per scene)
-      </Working>
+      </WorkingLine>
     ) : null;
   const failed = code.scenes.filter((scene) => scene.error).length;
   return (
@@ -38,7 +38,9 @@ export function BuildCard({ run }: { run: AgentRun }) {
               {scene.version > 1 ? ` · v${scene.version}` : ""}
             </span>
             {scene.error ? (
-              <div className="text-amber-300">The code failed: {scene.error.split("\n")[0]}</div>
+              <div className="text-amber-300">
+                The code failed: {scene.error.split("\n")[0]}
+              </div>
             ) : null}
           </li>
         ))}
@@ -55,16 +57,9 @@ export function BuildCard({ run }: { run: AgentRun }) {
           Wanted but missing: {code.wishes.join(", ")}
         </div>
       ) : null}
-      {working ? <Working>Writing the pictures again…</Working> : null}
+      {working ? (
+        <WorkingLine run={run}>Writing the pictures again…</WorkingLine>
+      ) : null}
     </FoldCard>
-  );
-}
-
-function Working({ children }: { children: string }) {
-  return (
-    <div className="flex items-center gap-2 rounded-2xl rounded-bl-none border border-solid border-editor-border p-3 text-xs">
-      <Loader size={12} />
-      {children}
-    </div>
   );
 }

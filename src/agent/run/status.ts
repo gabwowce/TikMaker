@@ -24,3 +24,15 @@ export const runStatus = z.enum([
 ]);
 
 export type RunStatus = z.infer<typeof runStatus>;
+
+// Statuses where nobody is working on the run: the agent waits for the user,
+// or the run has ended. Every other status has a worker busy on it.
+export const RESTING_STATUSES: RunStatus[] = [
+  "awaiting_hook",
+  "awaiting_approval",
+  "awaiting_answers",
+  "done",
+  "paused",
+  "error",
+  "cancelled",
+];
