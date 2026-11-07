@@ -1,0 +1,532 @@
+{
+  "id": "run-codetry",
+  "projectId": "code-try",
+  "createdAt": 1793970000903,
+  "status": "done",
+  "input": {
+    "idea": "3 Claude Code mistakes that burn your tokens: 1) one endless session – the context grows, every message resends everything; fix: /clear or a new session per task. 2) letting it read the whole repo – fix: point it at the files. 3) no CLAUDE.md – it rediscovers the project every time; fix: write the basics once. Show the money burning, then the fix for each.",
+    "workspaceId": "dev",
+    "targetSeconds": 45,
+    "motionOnly": false,
+    "withFace": false,
+    "generateVoice": true
+  },
+  "template": {
+    "videoTemplateId": "tool-tips-keyword",
+    "score": 4,
+    "reason": "This is three numbered tips for Claude Code, a tool your audience already uses, and each one has a clear mistake and a fix you can show on screen. The idea has no comment keyword or giveaway yet, so you'll need to add one, such as a ready-made CLAUDE.md template. At 45 s it's a little under the template's usual 47–88 s.",
+    "needsFacts": true,
+    "pickedBy": "agent"
+  },
+  "hooks": [
+    {
+      "text": "If Claude Code keeps eating your tokens, here are 3 fixes.",
+      "firstFrame": "Claude Code terminal session scrolling endlessly while a fuel-gauge object beside it drops toward empty",
+      "angle": "problem",
+      "formulaId": "if-tool-keeps-n-tricks",
+      "score": 4
+    },
+    {
+      "text": "Every message in a long Claude Code session resends everything before it.",
+      "firstFrame": "A chat block where each new message drags the full stack of earlier messages along, with coins dropping off as it grows",
+      "angle": "curiosity",
+      "formulaId": null,
+      "score": 4
+    },
+    {
+      "text": "Using Claude Code without a CLAUDE.md is just wasting your tokens.",
+      "firstFrame": "Screen recording of Claude Code reading file after file in a repo, a dollar bill shrinking with each file it opens",
+      "angle": "surprise",
+      "formulaId": "everyone-without-is-wasting",
+      "score": 3
+    }
+  ],
+  "hooksFor": "tool-tips-keyword",
+  "hook": {
+    "text": "If Claude Code keeps eating your tokens, here are 3 fixes.",
+    "firstFrame": "Claude Code terminal session scrolling endlessly while a fuel-gauge object beside it drops toward empty",
+    "formulaId": "if-tool-keeps-n-tricks",
+    "pickedBy": "agent"
+  },
+  "research": {
+    "facts": "- Claude Code sends your whole conversation with every request. A one-line question in a session that has been open all day still costs tokens for the entire history, though repeated history is billed at the cheaper cached rate.\n- Anthropic's docs say to run /clear when you switch to unrelated work, because \"stale context wastes tokens on every subsequent message.\" /clear costs nothing. /compact has to read the whole conversation to summarize it, so it is a large request in its own right.\n- Vague prompts like \"improve this codebase\" make Claude scan broadly. A specific prompt like \"add input validation to the login function in auth.ts\" lets it work with only a few file reads.\n- Every Claude Code session starts with a fresh context window. CLAUDE.md is a file you write once with your project's instructions, and it is loaded automatically at the start of every session. The docs suggest keeping it under 200 lines.\n- In enterprise deployments, Claude Code costs about $13 per developer per active day, or $150–250 per month. Anthropic says unusually high spend on API or cloud-provider plans usually comes from long sessions that were never cleared or from leaving Opus as the default model.",
+    "sources": [
+      {
+        "url": "https://code.claude.com/docs/en/costs",
+        "title": "Manage costs effectively – Claude Code Docs"
+      },
+      {
+        "url": "https://code.claude.com/docs/en/memory",
+        "title": "How Claude remembers your project – Claude Code Docs"
+      }
+    ]
+  },
+  "script": {
+    "scenes": [
+      {
+        "role": "item",
+        "voiceover": "First, one endless session. Every message resends the whole history, so a one-line question pays for all of it.",
+        "onScreen": "1. One endless session",
+        "visual": "A tiny one-line question gets sent, dragging a huge stack of the day's chat history behind it, while banknotes burn beside it",
+        "needsRecording": false
+      },
+      {
+        "role": "item",
+        "voiceover": "The fix: type slash clear when you switch tasks. It costs nothing.",
+        "onScreen": "Fix: /clear per task",
+        "visual": "In the Claude Code terminal, /clear is typed and the long conversation disappears, leaving an empty prompt",
+        "needsRecording": true
+      },
+      {
+        "role": "item",
+        "voiceover": "Second, letting it read the whole repo. 'Improve this codebase' makes it scan everything.",
+        "onScreen": "2. Reading the whole repo",
+        "visual": "The prompt 'improve this codebase' goes in and a file tree lights up folder after folder while a token counter races up",
+        "needsRecording": false
+      }
+    ],
+    "skipped": [
+      {
+        "role": "bridge",
+        "reason": "Opening bridge not needed – 'here's where it leaks' already hands over to tip one."
+      },
+      {
+        "role": "bridge",
+        "reason": "Core bridges left out to keep the video near 45 s; tips flow straight into each other."
+      },
+      {
+        "role": "bridge",
+        "reason": "Close bridge not needed – the last fix leads directly into the short CTA."
+      }
+    ],
+    "problems": [],
+    "approved": true
+  },
+  "code": {
+    "scenes": [
+      {
+        "file": "code-try/scene-1.tsx",
+        "description": "A Claude Code terminal scrolls through a day of chat history. A one-line question is typed, the whole history lights up as sent along with it, a '148k tokens for 1 line' sticker slams in, and banknotes burn under a rising 'burned today' dollar counter.",
+        "stage": "top",
+        "version": 1,
+        "history": []
+      },
+      {
+        "file": "code-try/scene-2.tsx",
+        "description": "The long terminal fades into the creator's screen recording of typing /clear in Claude Code. Below it a context bar drops from 148k to 0, and a '$0.00' sticker lands on 'nothing'.",
+        "stage": "top",
+        "version": 1
+      },
+      {
+        "file": "code-try/scene-3.tsx",
+        "description": "In the terminal 'improve this codebase' is typed. The project's file tree then lights up folder after folder with a token cost on each line, the 'tokens read' counter races to 212,480, and a '1,284 files read' sticker slams in.",
+        "stage": "top",
+        "version": 1
+      }
+    ],
+    "keywords": [
+      "endless",
+      "one-line",
+      "/clear",
+      "nothing",
+      "whole repo",
+      "everything"
+    ],
+    "wishes": [
+      "A drawn burning-banknote or flame prop with a transparent background in the library (dollar-cupure.png has a grey backdrop, so I drew the bills with CSS)",
+      "A Claude Code terminal component in the kit (title bar, prompt, tool-call lines, context meter) so videos don't each redraw it",
+      "A headline helper in the kit that shrinks long text to fit the 900 px zone",
+      "A shared sticker component in the kit with the brand's slam-in motion",
+      "A 'claude-code' logo or terminal icon in the logo library (only the Claude chat logos are there)",
+      "A Terminal title bar height option in the kit, so wider title-bar content like the dollar counter has room to breathe",
+      "A ready-made money/cost counter component in the brand kit",
+      "A Claude Code logo in the logo library for the terminal title bar"
+    ],
+    "problems": []
+  },
+  "voice": {
+    "scenes": [
+      {
+        "sfxId": "vo-run-mw4zf3t3-scene-3-mw4zkgps",
+        "words": [
+          {
+            "text": "First,",
+            "start": 0,
+            "end": 0.464
+          },
+          {
+            "text": "one",
+            "start": 0.673,
+            "end": 0.882
+          },
+          {
+            "text": "endless",
+            "start": 0.929,
+            "end": 1.219
+          },
+          {
+            "text": "session.",
+            "start": 1.242,
+            "end": 1.695
+          },
+          {
+            "text": "Every",
+            "start": 1.846,
+            "end": 2.09
+          },
+          {
+            "text": "message",
+            "start": 2.148,
+            "end": 2.438
+          },
+          {
+            "text": "resends",
+            "start": 2.473,
+            "end": 2.786
+          },
+          {
+            "text": "the",
+            "start": 2.821,
+            "end": 2.902
+          },
+          {
+            "text": "whole",
+            "start": 2.949,
+            "end": 3.135
+          },
+          {
+            "text": "history,",
+            "start": 3.17,
+            "end": 3.646
+          },
+          {
+            "text": "so",
+            "start": 3.831,
+            "end": 3.947
+          },
+          {
+            "text": "a",
+            "start": 4.017,
+            "end": 4.052
+          },
+          {
+            "text": "one-line",
+            "start": 4.133,
+            "end": 4.481
+          },
+          {
+            "text": "question",
+            "start": 4.516,
+            "end": 4.876
+          },
+          {
+            "text": "pays",
+            "start": 4.946,
+            "end": 5.143
+          },
+          {
+            "text": "for",
+            "start": 5.19,
+            "end": 5.294
+          },
+          {
+            "text": "all",
+            "start": 5.341,
+            "end": 5.445
+          },
+          {
+            "text": "of",
+            "start": 5.492,
+            "end": 5.538
+          },
+          {
+            "text": "it.",
+            "start": 5.584,
+            "end": 6.037
+          }
+        ]
+      },
+      {
+        "sfxId": "vo-run-mw4zf3t3-scene-4-mw4zkh2u",
+        "words": [
+          {
+            "text": "The",
+            "start": 0,
+            "end": 0.151
+          },
+          {
+            "text": "fix:",
+            "start": 0.209,
+            "end": 0.627
+          },
+          {
+            "text": "type",
+            "start": 0.906,
+            "end": 1.277
+          },
+          {
+            "text": "slash",
+            "start": 1.324,
+            "end": 1.649
+          },
+          {
+            "text": "clear",
+            "start": 1.695,
+            "end": 1.95
+          },
+          {
+            "text": "when",
+            "start": 2.078,
+            "end": 2.229
+          },
+          {
+            "text": "you",
+            "start": 2.264,
+            "end": 2.334
+          },
+          {
+            "text": "switch",
+            "start": 2.38,
+            "end": 2.601
+          },
+          {
+            "text": "tasks.",
+            "start": 2.635,
+            "end": 3.1
+          },
+          {
+            "text": "It",
+            "start": 3.286,
+            "end": 3.39
+          },
+          {
+            "text": "costs",
+            "start": 3.425,
+            "end": 3.646
+          },
+          {
+            "text": "nothing.",
+            "start": 3.704,
+            "end": 4.272
+          }
+        ]
+      },
+      {
+        "sfxId": "vo-run-mw4zf3t3-scene-5-mw4zkhfu",
+        "words": [
+          {
+            "text": "Second,",
+            "start": 0,
+            "end": 0.499
+          },
+          {
+            "text": "letting",
+            "start": 0.708,
+            "end": 0.94
+          },
+          {
+            "text": "it",
+            "start": 0.975,
+            "end": 1.033
+          },
+          {
+            "text": "read",
+            "start": 1.08,
+            "end": 1.231
+          },
+          {
+            "text": "the",
+            "start": 1.265,
+            "end": 1.347
+          },
+          {
+            "text": "whole",
+            "start": 1.393,
+            "end": 1.602
+          },
+          {
+            "text": "repo.",
+            "start": 1.637,
+            "end": 2.136
+          },
+          {
+            "text": "'Improve",
+            "start": 2.519,
+            "end": 2.891
+          },
+          {
+            "text": "this",
+            "start": 2.926,
+            "end": 3.053
+          },
+          {
+            "text": "codebase'",
+            "start": 3.1,
+            "end": 3.669
+          },
+          {
+            "text": "makes",
+            "start": 3.715,
+            "end": 3.924
+          },
+          {
+            "text": "it",
+            "start": 3.959,
+            "end": 4.029
+          },
+          {
+            "text": "scan",
+            "start": 4.075,
+            "end": 4.354
+          },
+          {
+            "text": "everything.",
+            "start": 4.435,
+            "end": 5.155
+          }
+        ]
+      }
+    ]
+  },
+  "messages": [
+    {
+      "id": "msg-mw67g1npqwt0",
+      "at": 1794043947877,
+      "from": "user",
+      "text": "Make the terminal much taller so it fills the picture zone, and move the burned-today counter inside the terminal title bar.",
+      "attachments": [
+        {
+          "sceneIndex": 0,
+          "label": "Scene 1"
+        }
+      ],
+      "targets": [
+        {
+          "kind": "pictures",
+          "sceneIndex": 0,
+          "instruction": "Make the terminal much taller so it fills the picture zone, and move the 'burned today' dollar counter inside the terminal title bar."
+        }
+      ],
+      "status": "done"
+    },
+    {
+      "id": "msg-mw67im9tq7w0",
+      "at": 1794044067905,
+      "from": "agent",
+      "text": "✓ I'll redo scene 1's picture. The terminal will be much taller so it fills the picture zone, and the burned-today counter will sit inside the terminal's title bar. (Undo in the Inspector brings the earlier version back.)"
+    }
+  ],
+  "steps": [
+    {
+      "name": "writeCode",
+      "startedAt": 1794043531448,
+      "ms": 349621,
+      "model": "claude-opus-5-5",
+      "attempts": 1,
+      "prompt": {
+        "system": "You are the motion designer of TikMaker: you write the pictures of a short\nvertical video (1080x1920, 30 fps) as Remotion code – one file per scene. The voice,\nthe captions and the backdrop are already in the video; you write only the pictures.\n\nBefore writing, read with the Read tool:\n1. .claude/skills/tikmaker-explainer/SKILL.md – the genre, the brand kit and the\n   scene file contract. Follow it exactly.\n2. .claude/skills/remotion-best-practices/remotion-markup/REFERENCE.md – how to write\n   Remotion markup right (open the pages it points to that you need: timing,\n   sequencing, transitions, text-highlights). Ignore anything about starting Studio,\n   creating projects or installing packages.\n3. src/video/brand/kit.tsx, src/video/brand/fields.ts and src/video/code/types.ts.\n\nRules:\n- Write ONLY in the folder you are given (src/generated/<folder>/). Never touch other\n  files. Shared helpers for several scenes go in <folder>/shared.tsx.\n- Time everything by the `words` prop (wordFrame) and `durationInFrames`, never by the\n  frame numbers in the brief – they are only there for you to plan.\n- Check your work: run `npx tsc --noEmit -p .` until nothing in your folder fails.\n  Then render a frame or two of every scene you wrote with the command in the brief\n  and look at the PNG with Read: is the main visual big (≥ 60 % of the zone), is there\n  a headline, does nothing overlap, is nothing under the captions band? Fix what is\n  wrong and look again.\n- Do not ask questions – nobody is there to answer. Decide.\n- At the end answer with JSON: for every scene you wrote its sceneIndex (from 0), one\n  sentence of what the viewer sees, and its stage (\"top\" unless the scene is a\n  full-screen recording); the voiceover words the captions should draw bold\n  (keywords, 1–2 per scene); and wishes – what the kit or the logo library lacked.",
+        "user": "Channel: TikMaker and AI coding\nWhat it is about: Mostly TikMaker itself: what it can do, how a video gets made with it, new features and how it is being built with AI (build in public). Around that, short concrete videos about other AI tools, vibe coding and Claude Code: one problem or one feature per video, shown on screen rather than told.\nAudience: Creators who want to make short videos faster with AI, and developers or beginners who build apps with AI and want to work faster without breaking things.\nTone: Direct and practical; real screens, real results and numbers instead of hype. Honest about what does not work yet.\nProduct screen \"New video form\": The AI agent panel on the right of the TikMaker editor, on an empty project: a 'Video idea' text box, length in seconds, a template picker ('Let the AI pick'), an optional own hook, checkboxes 'With face', 'Motion graphics only', 'Generate the voiceover', and a 'Start' button.\nProduct screen \"Agent at work\": The same panel as a conversation: a progress bar with five steps (Idea, Angle, Script, Building, Result) ticking off, and a card appearing for each step – the chosen template, three hooks to pick from (each with what it shows), the script scene by scene with an 'Approve' button, 'Pictures picked', 'Motion planned' and 'Voiceover' (folded cards that open on click).\nProduct screen \"Editor with the built video\": Once built: the scene strip along the bottom fills with the video's scenes, the timeline shows each scene's blocks, voice and captions as clips, the vertical preview in the middle plays the video with its kinetic captions.\nProduct screen \"Preview playing\": The vertical 9:16 preview player in the middle of the editor playing the finished video with play / pause, time and fullscreen.\nProduct screen \"Render\": The 'Render MP4' button top right: a progress bar, then the finished MP4 file to download.\nProduct screen \"Storyboard\": The Storyboard tab: the script as a list of beats – each scene's voiceover and on-screen words – with the total length against the target.\n\nThe video: 3 Claude Code mistakes that burn your tokens: 1) one endless session – the context grows, every message resends everything; fix: /clear or a new session per task. 2) letting it read the whole repo – fix: point it at the files. 3) no CLAUDE.md – it rediscovers the project every time; fix: write the basics once. Show the money burning, then the fix for each.\nFolder: src/generated/code-try/\n\nWrite every scene's file (1, 2, 3).\n\n## Scene 1 (item) – WRITE src/generated/code-try/scene-1.tsx\n192 frames (6.4 s); global frames 0–191\nVoiceover: First, one endless session. Every message resends the whole history, so a one-line question pays for all of it.\nWords (word@frame from the scene's start): First,@0 one@20 endless@28 session.@37 Every@55 message@64 resends@74 the@85 whole@88 history,@95 so@115 a@121 one-line@124 question@135 pays@148 for@156 all@160 of@165 it.@168\nOn screen (the script's words): 1. One endless session\nThe script's idea for the picture: A tiny one-line question gets sent, dragging a huge stack of the day's chat history behind it, while banknotes burn beside it\nRender a frame: npx remotion still TikTokVideo out/agent/code-try/scene-1.png --props=out/agent/code-try/props.json --frame=134 --scale=0.5\n\n## Scene 2 (item) – WRITE src/generated/code-try/scene-2.tsx\n139 frames (4.6 s); global frames 192–330\nVoiceover: The fix: type slash clear when you switch tasks. It costs nothing.\nWords (word@frame from the scene's start): The@0 fix:@6 type@27 slash@40 clear@51 when@62 you@68 switch@71 tasks.@79 It@99 costs@103 nothing.@111\nOn screen (the script's words): Fix: /clear per task\nThe script's idea for the picture: In the Claude Code terminal, /clear is typed and the long conversation disappears, leaving an empty prompt\nThe creator's own screen recording belongs here (a RecordingSlot – say exactly what to record)\nRender a frame: npx remotion still TikTokVideo out/agent/code-try/scene-2.png --props=out/agent/code-try/props.json --frame=289 --scale=0.5\n\n## Scene 3 (item) – WRITE src/generated/code-try/scene-3.tsx\n165 frames (5.5 s); global frames 331–495\nVoiceover: Second, letting it read the whole repo. 'Improve this codebase' makes it scan everything.\nWords (word@frame from the scene's start): Second,@0 letting@21 it@29 read@32 the@38 whole@42 repo.@49 'Improve@76 this@88 codebase'@93 makes@111 it@119 scan@122 everything.@133\nOn screen (the script's words): 2. Reading the whole repo\nThe script's idea for the picture: The prompt 'improve this codebase' goes in and a file tree lights up folder after folder while a token counter races up\nRender a frame: npx remotion still TikTokVideo out/agent/code-try/scene-3.png --props=out/agent/code-try/props.json --frame=446 --scale=0.5"
+      },
+      "inputTokens": 71756,
+      "cachedInputTokens": 1342734,
+      "outputTokens": 29981,
+      "thinkingTokens": 7485,
+      "turns": 51,
+      "output": {
+        "scenes": [
+          {
+            "sceneIndex": 0,
+            "description": "A Claude Code terminal scrolls through a day of chat history. A one-line question is typed, the whole history lights up as sent along with it, a '148k tokens for 1 line' sticker slams in, and banknotes burn under a rising 'burned today' dollar counter.",
+            "stage": "top"
+          },
+          {
+            "sceneIndex": 1,
+            "description": "The long terminal fades into the creator's screen recording of typing /clear in Claude Code. Below it a context bar drops from 148k to 0, and a '$0.00' sticker lands on 'nothing'.",
+            "stage": "top"
+          },
+          {
+            "sceneIndex": 2,
+            "description": "In the terminal 'improve this codebase' is typed. The project's file tree then lights up folder after folder with a token cost on each line, the 'tokens read' counter races to 212,480, and a '1,284 files read' sticker slams in.",
+            "stage": "top"
+          }
+        ],
+        "keywords": [
+          "endless",
+          "one-line",
+          "/clear",
+          "nothing",
+          "whole repo",
+          "everything"
+        ],
+        "wishes": [
+          "A drawn burning-banknote or flame prop with a transparent background in the library (dollar-cupure.png has a grey backdrop, so I drew the bills with CSS)",
+          "A Claude Code terminal component in the kit (title bar, prompt, tool-call lines, context meter) so videos don't each redraw it",
+          "A headline helper in the kit that shrinks long text to fit the 900 px zone",
+          "A shared sticker component in the kit with the brand's slam-in motion",
+          "A 'claude-code' logo or terminal icon in the logo library (only the Claude chat logos are there)"
+        ]
+      }
+    },
+    {
+      "name": "routeMessage",
+      "startedAt": 1794043947899,
+      "ms": 5136,
+      "model": "claude-sonnet-5-5",
+      "attempts": 1,
+      "prompt": {
+        "system": "You read a creator's message to the AI agent that is making their short video,\nand decide what the message asks to change. You do not make the change.\n\nAnswer with:\n- targets: one per thing to change, of the kinds allowed now (listed). Split a message\n  that asks for several things into several targets, each with its own instruction –\n  the instruction is what to do, in plain words, taken from the message. A scene is\n  given by sceneIndex (scene 1 = 0); when the creator had something selected in the\n  editor (Attached), a message about \"this\" or \"here\" means that.\n- confirm: true when the change reaches several parts (more than one target, the motion\n  of the whole video, a hook while a script already exists) – the creator then sees your\n  proposal and decides; false for one clear change.\n- reply: what you say back, in the language of the message, one or two short sentences:\n  what you will change (or propose to change). If the message is not clear enough to act\n  on – which scene? what exactly? – give no targets and ask in reply. If it asks for\n  something not allowed now, give no targets and say in reply what can be changed now.",
+        "user": "Where the video is: done\nAllowed now:\n- pictures: write one scene's picture (its code) again – what it shows, its layout, how big things are; needs sceneIndex; the words stay\n- motion: write how things move again – one scene (sceneIndex) or, without sceneIndex, every scene of the video (slow: minutes per scene)\n- words: write one scene's voiceover again – needs sceneIndex; then its voice and its pictures are made again on the new words\n- review: look at frames of the built video and propose what to fix – when the creator asks how it looks, to check it, or to find what is wrong; no sceneIndex\n\nHook: If Claude Code keeps eating your tokens, here are 3 fixes.\nScene 1 (item): First, one endless session. Every message resends the whole history, so a one-line question pays for all of it. | picture: A Claude Code terminal scrolls through a day of chat history. A one-line question is typed, the whole history lights up as sent along with it, a '148k tokens for 1 line' sticker slams in, and banknotes burn under a rising 'burned today' dollar counter.\nScene 2 (item): The fix: type slash clear when you switch tasks. It costs nothing. | picture: The long terminal fades into the creator's screen recording of typing /clear in Claude Code. Below it a context bar drops from 148k to 0, and a '$0.00' sticker lands on 'nothing'.\nScene 3 (item): Second, letting it read the whole repo. 'Improve this codebase' makes it scan everything. | picture: In the terminal 'improve this codebase' is typed. The project's file tree then lights up folder after folder with a token cost on each line, the 'tokens read' counter races to 212,480, and a '1,284 files read' sticker slams in.\n\nAttached (selected in the editor):\n- Scene 1\n\nMessage: Make the terminal much taller so it fills the picture zone, and move the burned-today counter inside the terminal title bar."
+      },
+      "inputTokens": 3049,
+      "cachedInputTokens": 0,
+      "outputTokens": 261,
+      "thinkingTokens": 0,
+      "turns": 2,
+      "output": {
+        "reply": "I'll redo scene 1's picture. The terminal will be much taller so it fills the picture zone, and the burned-today counter will sit inside the terminal's title bar.",
+        "targets": [
+          {
+            "kind": "pictures",
+            "sceneIndex": 0,
+            "instruction": "Make the terminal much taller so it fills the picture zone, and move the 'burned today' dollar counter inside the terminal title bar."
+          }
+        ],
+        "confirm": false
+      }
+    },
+    {
+      "name": "writeCode",
+      "startedAt": 1794043953048,
+      "ms": 105463,
+      "model": "claude-opus-5-5",
+      "attempts": 1,
+      "prompt": {
+        "system": "You are the motion designer of TikMaker: you write the pictures of a short\nvertical video (1080x1920, 30 fps) as Remotion code – one file per scene. The voice,\nthe captions and the backdrop are already in the video; you write only the pictures.\n\nBefore writing, read with the Read tool:\n1. .claude/skills/tikmaker-explainer/SKILL.md – the genre, the brand kit and the\n   scene file contract. Follow it exactly.\n2. .claude/skills/remotion-best-practices/remotion-markup/REFERENCE.md – how to write\n   Remotion markup right (open the pages it points to that you need: timing,\n   sequencing, transitions, text-highlights). Ignore anything about starting Studio,\n   creating projects or installing packages.\n3. src/video/brand/kit.tsx, src/video/brand/fields.ts and src/video/code/types.ts.\n\nRules:\n- Write ONLY in the folder you are given (src/generated/<folder>/). Never touch other\n  files. Shared helpers for several scenes go in <folder>/shared.tsx.\n- Time everything by the `words` prop (wordFrame) and `durationInFrames`, never by the\n  frame numbers in the brief – they are only there for you to plan.\n- Check your work: run `npx tsc --noEmit -p .` until nothing in your folder fails.\n  Then render a frame or two of every scene you wrote with the command in the brief\n  and look at the PNG with Read: is the main visual big (≥ 60 % of the zone), is there\n  a headline, does nothing overlap, is nothing under the captions band? Fix what is\n  wrong and look again.\n- Do not ask questions – nobody is there to answer. Decide.\n- At the end answer with JSON: for every scene you wrote its sceneIndex (from 0), one\n  sentence of what the viewer sees, and its stage (\"top\" unless the scene is a\n  full-screen recording); the voiceover words the captions should draw bold\n  (keywords, 1–2 per scene); and wishes – what the kit or the logo library lacked.",
+        "user": "Channel: TikMaker and AI coding\nWhat it is about: Mostly TikMaker itself: what it can do, how a video gets made with it, new features and how it is being built with AI (build in public). Around that, short concrete videos about other AI tools, vibe coding and Claude Code: one problem or one feature per video, shown on screen rather than told.\nAudience: Creators who want to make short videos faster with AI, and developers or beginners who build apps with AI and want to work faster without breaking things.\nTone: Direct and practical; real screens, real results and numbers instead of hype. Honest about what does not work yet.\nProduct screen \"New video form\": The AI agent panel on the right of the TikMaker editor, on an empty project: a 'Video idea' text box, length in seconds, a template picker ('Let the AI pick'), an optional own hook, checkboxes 'With face', 'Motion graphics only', 'Generate the voiceover', and a 'Start' button.\nProduct screen \"Agent at work\": The same panel as a conversation: a progress bar with five steps (Idea, Angle, Script, Building, Result) ticking off, and a card appearing for each step – the chosen template, three hooks to pick from (each with what it shows), the script scene by scene with an 'Approve' button, 'Pictures picked', 'Motion planned' and 'Voiceover' (folded cards that open on click).\nProduct screen \"Editor with the built video\": Once built: the scene strip along the bottom fills with the video's scenes, the timeline shows each scene's blocks, voice and captions as clips, the vertical preview in the middle plays the video with its kinetic captions.\nProduct screen \"Preview playing\": The vertical 9:16 preview player in the middle of the editor playing the finished video with play / pause, time and fullscreen.\nProduct screen \"Render\": The 'Render MP4' button top right: a progress bar, then the finished MP4 file to download.\nProduct screen \"Storyboard\": The Storyboard tab: the script as a list of beats – each scene's voiceover and on-screen words – with the total length against the target.\n\nThe video: 3 Claude Code mistakes that burn your tokens: 1) one endless session – the context grows, every message resends everything; fix: /clear or a new session per task. 2) letting it read the whole repo – fix: point it at the files. 3) no CLAUDE.md – it rediscovers the project every time; fix: write the basics once. Show the money burning, then the fix for each.\nFolder: src/generated/code-try/\n\nRewrite scene(s) 1 – the change asked for: Make the terminal much taller so it fills the picture zone, and move the 'burned today' dollar counter inside the terminal title bar.\nKeep what was not asked to change. Keep the file name, keep the schema's field names where they still fit.\n\n## Scene 1 (item) – WRITE src/generated/code-try/scene-1.tsx\n192 frames (6.4 s); global frames 0–191\nVoiceover: First, one endless session. Every message resends the whole history, so a one-line question pays for all of it.\nWords (word@frame from the scene's start): First,@0 one@20 endless@28 session.@37 Every@55 message@64 resends@74 the@85 whole@88 history,@95 so@115 a@121 one-line@124 question@135 pays@148 for@156 all@160 of@165 it.@168\nOn screen (the script's words): 1. One endless session\nThe script's idea for the picture: A tiny one-line question gets sent, dragging a huge stack of the day's chat history behind it, while banknotes burn beside it\nRender a frame: npx remotion still TikTokVideo out/agent/code-try/scene-1.png --props=out/agent/code-try/props.json --frame=134 --scale=0.5\nIts code now:\n```tsx\nimport { z } from \"zod\";\nimport { AbsoluteFill, interpolate, useCurrentFrame } from \"remotion\";\nimport { field, MONO, useBrand, wordFrame } from \"../../video/brand/kit\";\nimport type { CodeSceneProps } from \"../../video/code/types\";\nimport {\n  BurningBill,\n  CARD,\n  clamp,\n  CtxMeter,\n  EASE_OUT,\n  Headline,\n  HISTORY,\n  HistoryLine,\n  LINE_H,\n  popScale,\n  prog,\n  Prompt,\n  Sticker,\n  Terminal,\n} from \"./shared\";\n\nexport const description =\n  \"A Claude Code terminal full of a day's chat history: a one-line question is typed and the whole history lights up as sent with it, while banknotes burn below\";\n\nexport const schema = z.object({\n  pill: field.text(\"Strip\", \"MISTAKE 01\"),\n  headline: field.text(\"Headline (*word* – key word)\", \"One *endless* session\"),\n  question: field.text(\"The one-line question\", \"what does this regex do?\"),\n  tokensStart: field.number(\"Context at the start (tokens)\", 96000, { min: 0 }),\n  tokensEnd: field.number(\"Context at the end (tokens)\", 148000, { min: 0 }),\n  sticker: field.text(\"Sticker\", \"148k tokens for 1 line\"),\n  dollars: field.number(\"Dollars burned by the end\", 4.2, { min: 0 }),\n  resendOn: field.word(\"History lights up on\", \"resends\"),\n  questionOn: field.word(\"Question typed on\", \"one-line\"),\n  paysOn: field.word(\"Sticker on\", \"pays\"),\n});\ntype Params = z.infer<typeof schema>;\n\nconst CARD_H = 520;\nconst BODY_H = CARD_H - 64;\nconst PROMPT_H = 84;\n\nexport default function Scene1({ words, durationInFrames, params }: CodeSceneProps<Params>) {\n  const frame = useCurrentFrame();\n  const c = useBrand();\n\n  const resend = wordFrame(words, params.resendOn, 70) - 3;\n  const question = wordFrame(words, params.questionOn, 120) - 6;\n  const pays = wordFrame(words, params.paysOn, 145) - 3;\n  const endless = wordFrame(words, \"endless\", 26) - 2;\n\n  // The history scrolls up, endlessly (the list repeats); faster on \"endless\".\n  const scroll =\n    frame * 1.1 + interpolate(frame, [endless, endless + 30], [0, 90], { ...clamp, easing: EASE_OUT });\n  const listH = HISTORY.length * LINE_H;\n  const offset = scroll % listH;\n\n  const tokens = interpolate(\n    frame,\n    [0, pays, pays + 10, durationInFrames],\n    [params.tokensStart, params.tokensEnd * 0.9, params.tokensEnd, params.tokensEnd + 1200],\n    clamp,\n  );\n\n  const lit = prog(frame, resend, 10); // the history is resent\n  const sent = prog(frame, pays, 8); // the one-liner goes with all of it\n  const enter = popScale(frame, 0);\n  const push = interpolate(frame, [0, durationInFrames], [1, 1.03], clamp);\n  const float = Math.sin(frame / 22) * 6;\n\n  // Money row\n  const billsIn = prog(frame, resend + 4, 12);\n  const dollars = interpolate(frame, [resend, durationInFrames], [0, params.dollars], clamp);\n\n  return (\n    <AbsoluteFill>\n      <Headline pill={params.pill} text={params.headline} />\n\n      <div style={{ position: \"absolute\", inset: 0, scale: `${push}`, translate: `0px ${float}px` }}>\n        <Terminal\n          style={{ height: CARD_H, scale: `${enter}`, opacity: prog(frame, 0, 8) }}\n          right={<CtxMeter tokens={tokens} max={params.tokensEnd} />}\n        >\n          {/* history */}\n          <div\n            style={{\n              position: \"absolute\",\n              left: 0,\n              right: 0,\n              top: 0,\n              height: BODY_H - PROMPT_H,\n              overflow: \"hidden\",\n              maskImage: \"linear-gradient(to bottom, transparent, black 22%)\",\n            }}\n          >\n            <div style={{ position: \"absolute\", left: 50, top: -offset, right: 30 }}>\n              {[...HISTORY, ...HISTORY, ...HISTORY].map((l, i) => (\n                <HistoryLine key={i} kind={l.kind} text={l.text} />\n              ))}\n            </div>\n          </div>\n          {/* \"resent\" highlight over the history */}\n          <div\n            style={{\n              position: \"absolute\",\n              left: 18,\n              right: 18,\n              top: 12,\n              height: BODY_H - PROMPT_H - 18,\n              borderRadius: 18,\n              border: `3px solid ${c.accent}`,\n              background: `rgba(255,112,36,${0.06 + sent * 0.12})`,\n              opacity: lit,\n              scale: `${interpolate(lit, [0, 1], [0.97, 1])}`,\n            }}\n          />\n          <div\n            style={{\n              position: \"absolute\",\n              right: 36,\n              top: 26,\n              fontFamily: c.fontStrong,\n              fontSize: 30,\n              color: c.bg,\n              background: c.accent,\n              borderRadius: 10,\n              padding: \"6px 14px 3px\",\n              opacity: lit,\n              translate: `0px ${(1 - lit) * -10}px`,\n            }}\n          >\n            {sent > 0.5 ? \"↑ ALL OF THIS GOES WITH IT\" : \"↑ RESENT EVERY MESSAGE\"}\n          </div>\n          {/* the one-line question */}\n          <div\n            style={{\n              position: \"absolute\",\n              left: 0,\n              right: 0,\n              bottom: 0,\n              height: PROMPT_H,\n              borderTop: \"1px solid rgba(255,255,255,0.1)\",\n              display: \"flex\",\n              alignItems: \"center\",\n              padding: \"0 34px\",\n              background: `rgba(255,112,36,${sent * 0.14})`,\n            }}\n          >\n            <Prompt text={params.question} typedFrom={question} cps={1.6} />\n            <div\n              style={{\n                marginLeft: \"auto\",\n                fontFamily: MONO,\n                fontSize: 24,\n                color: c.textSoft,\n                border: `1px solid ${c.border}`,\n                borderRadius: 8,\n                padding: \"4px 10px\",\n                opacity: prog(frame, question + 8, 8) * (1 - prog(frame, pays, 4)),\n              }}\n            >\n              1 line\n            </div>\n          </div>\n        </Terminal>\n\n        {/* the money burning */}\n        <div\n          style={{\n            position: \"absolute\",\n            left: CARD.x,\n            width: CARD.w,\n            top: CARD.y + CARD_H + 8,\n            height: 150,\n            display: \"flex\",\n            alignItems: \"flex-end\",\n            justifyContent: \"space-between\",\n            opacity: billsIn,\n            translate: `0px ${(1 - billsIn) * 20}px`,\n          }}\n        >\n          <div style={{ display: \"flex\", flexDirection: \"column\", paddingBottom: 6 }}>\n            <div style={{ fontFamily: c.fontSemi, fontSize: 30, color: c.textSoft }}>burned today</div>\n            <div style={{ fontFamily: c.fontStrong, fontSize: 76, color: c.accent, lineHeight: 1 }}>\n              ${dollars.toFixed(2)}\n            </div>\n          </div>\n          <div style={{ display: \"flex\", gap: 24 }}>\n            {[0, 1, 2].map((i) => {\n              const start = resend + 6 + i * 14;\n              const burn = interpolate(frame, [start, start + 170], [0.04, 0.6], clamp);\n              return (\n                <div key={i} style={{ rotate: `${(i - 1) * 5}deg` }}>\n                  <BurningBill burn={burn} seed={i} width={160} />\n                </div>\n              );\n            })}\n          </div>\n        </div>\n      </div>\n\n      <Sticker\n        text={params.sticker}\n        at={pays}\n        rotate={-7}\n        size={58}\n        style={{ right: 50, top: CARD.y + 250 }}\n      />\n    </AbsoluteFill>\n  );\n}\n\n```\n\n## Scene 2 (item) – already written, keep src/generated/code-try/scene-2.tsx\n139 frames (4.6 s); global frames 192–330\nVoiceover: The fix: type slash clear when you switch tasks. It costs nothing.\nWords (word@frame from the scene's start): The@0 fix:@6 type@27 slash@40 clear@51 when@62 you@68 switch@71 tasks.@79 It@99 costs@103 nothing.@111\nOn screen (the script's words): Fix: /clear per task\nThe script's idea for the picture: In the Claude Code terminal, /clear is typed and the long conversation disappears, leaving an empty prompt\nThe creator's own screen recording belongs here (a RecordingSlot – say exactly what to record)\n\n\n## Scene 3 (item) – already written, keep src/generated/code-try/scene-3.tsx\n165 frames (5.5 s); global frames 331–495\nVoiceover: Second, letting it read the whole repo. 'Improve this codebase' makes it scan everything.\nWords (word@frame from the scene's start): Second,@0 letting@21 it@29 read@32 the@38 whole@42 repo.@49 'Improve@76 this@88 codebase'@93 makes@111 it@119 scan@122 everything.@133\nOn screen (the script's words): 2. Reading the whole repo\nThe script's idea for the picture: The prompt 'improve this codebase' goes in and a file tree lights up folder after folder while a token counter races up\n"
+      },
+      "inputTokens": 26093,
+      "cachedInputTokens": 180829,
+      "outputTokens": 9911,
+      "thinkingTokens": 1398,
+      "turns": 11,
+      "output": {
+        "scenes": [
+          {
+            "sceneIndex": 0,
+            "description": "A tall Claude Code terminal fills the zone under 'One endless session': the day's chat history scrolls and lights up as resent, three banknotes burn in a right-hand column, and the context meter and a 'burned today' dollar counter tick up in the title bar as a one-line question goes out.",
+            "stage": "top"
+          }
+        ],
+        "keywords": [
+          "endless",
+          "one-line"
+        ],
+        "wishes": [
+          "A Terminal title bar height option in the kit, so wider title-bar content like the dollar counter has room to breathe",
+          "A ready-made money/cost counter component in the brand kit",
+          "A Claude Code logo in the logo library for the terminal title bar"
+        ]
+      }
+    }
+  ]
+}

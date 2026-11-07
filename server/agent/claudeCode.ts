@@ -44,6 +44,15 @@ const NOT_SUBSCRIPTION = [
   "CLAUDE_CODE_USE_FOUNDRY",
 ];
 
+// AGENT_CLAUDE_KEEP_ENV=1 keeps those variables (a machine where Claude Code
+// itself is set up through them, e.g. a cloud sandbox).
+function childEnv(): NodeJS.ProcessEnv {
+  const env = { ...process.env };
+  if (process.env.AGENT_CLAUDE_KEEP_ENV !== "1")
+    for (const name of NOT_SUBSCRIPTION) delete env[name];
+  return env;
+}
+
 const claudePath = () =>
   process.env.CLAUDE_CODE_PATH ??
   path.join(os.homedir(), ".local", "bin", "claude.exe");
@@ -130,8 +139,6 @@ export function runClaudeCode(
   tools: string[] = [],
 ): Promise<string> {
   const cwd = agentFolder();
-  const env = { ...process.env };
-  for (const name of NOT_SUBSCRIPTION) delete env[name];
   const args = [
     "-p",
     "--output-format",
@@ -149,8 +156,61 @@ export function runClaudeCode(
     prompt.system,
     "--no-session-persistence",
   ];
+  return spawnClaude(args, cwd, prompt.user);
+}
+
+// Claude Code as a coding agent (the pictures as code, steps/4-building.ts):
+// in the project's own folder, with its usual system prompt plus ours, its
+// skills (.claude/skills) and the tools it may use – `allow` are permission
+// rules (e.g. "Edit(src/generated/p1/**)", "Bash(npx tsc:*)"); anything else
+// is refused, as nobody is there to press "allow". Ends with a JSON answer
+// checked against the schema.
+export async function callClaudeCodeAgent<T>(
+  schema: z.ZodType<T>,
+  prompt: { system: string; user: string },
+  options: { cwd: string; tools: string[]; allow: string[]; timeoutMs?: number },
+): Promise<ClaudeCodeAnswer<T>> {
+  const args = [
+    "-p",
+    "--output-format",
+    "json",
+    "--json-schema",
+    JSON.stringify(zodSchema(schema).jsonSchema),
+    "--tools",
+    options.tools.join(","),
+    "--allowedTools",
+    ...options.allow,
+    "--model",
+    claudeModel(),
+    "--append-system-prompt",
+    prompt.system,
+    "--no-session-persistence",
+  ];
+  const stdout = await spawnClaude(
+    args,
+    options.cwd,
+    prompt.user,
+    options.timeoutMs,
+  );
+  return readAnswer(stdout, schema);
+}
+
+function spawnClaude(
+  args: string[],
+  cwd: string,
+  input: string,
+  timeoutMs?: number,
+): Promise<string> {
+  const env = childEnv();
   return new Promise((resolve, reject) => {
     const child = spawn(claudePath(), args, { cwd, env });
+    const timer = timeoutMs
+      ? setTimeout(() => {
+          child.kill();
+          reject(new Error(`Claude Code took longer than ${Math.round(timeoutMs / 60000)} min`));
+        }, timeoutMs)
+      : undefined;
+    child.on("close", () => clearTimeout(timer));
     let stdout = "";
     let stderr = "";
     child.stdout.on("data", (chunk) => (stdout += chunk));
@@ -169,7 +229,7 @@ export function runClaudeCode(
         ? resolve(stdout)
         : reject(new Error(`Claude Code stopped (${code}): ${stderr.trim()}`)),
     );
-    child.stdin.end(prompt.user);
+    child.stdin.end(input);
   });
 }
 

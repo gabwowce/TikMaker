@@ -81,7 +81,7 @@ function AgentPanelBody() {
   const projectId = useProjectStore((s) => s.project.id);
   const hasScenes = useProjectStore((s) => s.project.scenes.length > 0);
   const applyAgentScript = useProjectStore((s) => s.applyAgentScript);
-  const applyAgentBlocks = useProjectStore((s) => s.applyAgentBlocks);
+  const applyAgentCode = useProjectStore((s) => s.applyAgentCode);
   const { loaded, run, working } = useLatestRun(projectId);
   // The video is built only once the agent is past building it: with a
   // voiceover that is after the voice step, so the scenes get its timings.
@@ -90,13 +90,14 @@ function AgentPanelBody() {
   const built =
     run !== undefined &&
     !["laying_out", "checking", "generating_voice"].includes(run.status);
-  // The agent's scenes are still words only: no stage type yet.
-  const awaitsBlocks = useProjectStore(
+  // The agent's scenes are still words only: not code scenes yet.
+  const awaitsCode = useProjectStore(
     (s) =>
       built &&
-      run?.blocks !== undefined &&
+      run?.code !== undefined &&
       s.project.scenes.some(
-        (scene) => scene.id.startsWith(`scene-${run.id}-`) && !scene.stage,
+        (scene) =>
+          scene.id.startsWith(`scene-${run.id}-`) && scene.type !== "code",
       ),
   );
 
@@ -105,22 +106,22 @@ function AgentPanelBody() {
   useEffect(() => {
     if (run?.script?.approved && !hasScenes) applyAgentScript(run);
   }, [run, hasScenes, applyAgentScript]);
-  // The agent built the video: its blocks become the scenes' layers, once.
+  // The agent built the video: its scenes become code scenes, once.
   // Scenes built already, or added by hand, are left as they are.
   useEffect(() => {
-    if (!run || !awaitsBlocks) return;
-    void withVoiceSounds(run).then(() => applyAgentBlocks(run));
-  }, [run, awaitsBlocks, applyAgentBlocks]);
+    if (!run || !awaitsCode) return;
+    void withVoiceSounds(run).then(() => applyAgentCode(run));
+  }, [run, awaitsCode, applyAgentCode]);
   // The self-review ended (done, or paused at a limit): what it fixed goes
   // into the editor – the whole video built again from the run; recordings and
-  // pictures put in meanwhile stay (projectFromBlocks keeps them).
+  // fields filled in meanwhile stay (projectFromCode keeps them).
   const lastStatus = useRef(run?.status);
   useEffect(() => {
     const before = lastStatus.current;
     lastStatus.current = run?.status;
     if (!run || before !== "reviewing" || run.status === "reviewing") return;
-    void withVoiceSounds(run).then(() => applyAgentBlocks(run));
-  }, [run, applyAgentBlocks]);
+    void withVoiceSounds(run).then(() => applyAgentCode(run));
+  }, [run, applyAgentCode]);
 
   if (!loaded) return null;
   // While the agent works, and after it has built this project, the panel

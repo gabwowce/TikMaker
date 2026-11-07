@@ -1,4 +1,3 @@
-import { checkMotion } from "../../../src/agent/rules/checkMotion.js";
 import type {
   ChatMessage,
   ChatTarget,
@@ -10,12 +9,11 @@ import type { AgentRun } from "../../../src/agent/run/run.js";
 import type { RunStatus } from "../../../src/agent/run/status.js";
 import { generateVoice } from "../../voice.js";
 import { openJob, type Job } from "../job.js";
-import { pickMotion } from "../prompts/pickMotion.js";
 import { rewriteScene } from "../prompts/rewriteScene.js";
 import { routeMessage } from "../prompts/routeMessage.js";
 import { writeHooks } from "../prompts/writeHooks.js";
 import { findTemplate } from "./2-angle.js";
-import { changeScenePictures } from "./6-edit.js";
+import { rewriteCodeScenes } from "../codeScenes.js";
 
 // 7 The conversation (docs/pokalbis-planas.md, docs/pokalbis-kodas.md).
 //
@@ -112,7 +110,7 @@ export async function step7Route(
       allowed,
       hook: job.run.hook?.text,
       scenes,
-      blocks: job.run.blocks,
+      code: job.run.code,
     }),
   );
   const targets = validTargets(routed.targets, allowed, scenes.length, message);
@@ -217,68 +215,42 @@ export async function step7ToScript(
 }
 
 // pictures / motion / words: after the build. Returns notes for the reply.
+// The pictures are code (docs/tikmaker-kryptis.md): "pictures" and "motion"
+// both write the scene's code again with the instruction – the earlier code
+// is kept as a version (Undo); "motion" for the whole video writes every
+// scene again.
 export async function step7Change(
   job: Job,
   target: ChatTarget,
 ): Promise<string[]> {
+  const notes = await changeCode(job, target);
+  // the earlier code is kept: the creator can go back
+  return target.kind === "pictures" || target.kind === "motion" || target.kind === "words"
+    ? [...notes, "(Undo in the Inspector brings the earlier version back.)"]
+    : notes;
+}
+
+async function changeCode(job: Job, target: ChatTarget): Promise<string[]> {
   const instruction = target.instruction ?? "";
   const n = target.sceneIndex;
+  const count = job.run.script?.scenes.length ?? 0;
   if (target.kind === "pictures" && n !== undefined) {
     const comment = target.objectId
-      ? `${instruction} (about the layer "${target.objectId}")`
+      ? `${instruction} (about the layer "${target.objectId}" the creator put on top)`
       : instruction;
-    return brokenNote(await changeScenePictures(job, n, comment), n);
+    return rewriteCodeScenes(job, [n], comment);
   }
-  if (target.kind === "motion") return step7Motion(job, n, instruction);
+  if (target.kind === "motion")
+    return n === undefined
+      ? rewriteCodeScenes(job, [...Array(count).keys()], `How it moves: ${instruction}`)
+      : rewriteCodeScenes(job, [n], `How it moves: ${instruction}`);
   if (target.kind === "words" && n !== undefined)
     return step7Words(job, n, instruction);
   throw new Error(`I can't change "${target.kind}" now`);
 }
 
-function brokenNote(problems: { advice?: boolean }[], n: number): string[] {
-  const broken = problems.filter((problem) => !problem.advice).length;
-  return broken
-    ? [`Scene ${n + 1}: ${broken} problem(s) left – see Pictures picked.`]
-    : [];
-}
-
-// motion: planned again with the instruction; one scene's part replaces that
-// scene's, or – for the whole video – all of it.
-async function step7Motion(
-  job: Job,
-  n: number | undefined,
-  instruction: string,
-): Promise<string[]> {
-  const { script, blocks, motion } = job.run;
-  if (!script || !blocks || !motion)
-    throw new Error("The video is not built yet");
-  const planned = await job.ai("pickMotion", () =>
-    pickMotion(
-      script.scenes,
-      blocks,
-      job.knowledge.motionPrinciples,
-      undefined,
-      undefined,
-      n === undefined ? instruction : `scene ${n + 1}: ${instruction}`,
-    ),
-  );
-  const scenes =
-    n === undefined
-      ? planned.scenes
-      : motion.scenes.map((scene, i) => (i === n ? planned.scenes[i] : scene));
-  const merged = {
-    idea: n === undefined ? planned.idea : motion.idea,
-    scenes,
-  };
-  const problems = checkMotion(merged, blocks, script);
-  await job.save({ motion: { ...merged, problems } });
-  return problems.length
-    ? [`${problems.length} motion problem(s) left – see Motion planned.`]
-    : [];
-}
-
 // words: the scene's voiceover written again; its voice made again (when the
-// video has one); its pictures picked again on the new words.
+// video has one); its picture written again on the new words.
 async function step7Words(
   job: Job,
   n: number,
@@ -311,12 +283,11 @@ async function step7Words(
       },
     });
   }
-  const problems = await changeScenePictures(
+  return rewriteCodeScenes(
     job,
-    n,
-    `The words of this scene were just rewritten – pick its pictures for the new words. ${instruction}`,
+    [n],
+    `The words of this scene were just rewritten – fit the picture to the new words. ${instruction}`,
   );
-  return brokenNote(problems, n);
 }
 
 // ── Messages ───────────────────────────────────────────────────────────────

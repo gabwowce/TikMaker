@@ -136,6 +136,12 @@ export function useDecide() {
     trpc.agent.decide.mutationOptions({ onSuccess: askForRunAgain }),
   );
 }
+// Undo on a code scene: back to the version before the agent's last change.
+export function useUndoScene() {
+  return useMutation(
+    trpc.agent.undoScene.mutationOptions({ onSuccess: askForRunAgain }),
+  );
+}
 // After an answer: ask for the run again, since one that waits for the user is
 // no longer polled.
 function askForRunAgain(_: unknown, { runId }: { runId: string }) {

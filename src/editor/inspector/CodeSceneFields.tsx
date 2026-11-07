@@ -1,4 +1,5 @@
 import {
+  Button,
   Fieldset,
   NativeSelect,
   NumberInput,
@@ -16,6 +17,8 @@ import { describeFields, type FieldInfo } from "../../video/brand/fields";
 import { loadCodeScene } from "../../video/code/loadCodeScene";
 import { sceneParams } from "../../video/code/params";
 import type { CodeSceneModule } from "../../video/code/types";
+import { useAgentRun, useUndoScene } from "../../api/agent";
+import { forgetCodeScene } from "../../video/code/loadCodeScene";
 import { useProjectStore } from "../state/projectStore";
 import { AssetSelect } from "./AssetSelect";
 
@@ -46,6 +49,7 @@ export function CodeSceneFields({ scene }: { scene: Scene }) {
       <div className="text-[11px] text-editor-muted mb-3 break-all">
         src/generated/{file}
       </div>
+      <CodeVersions scene={scene} file={file} />
       {fields.length ? (
         <div className="flex flex-col gap-3">
           {fields.map((info) => (
@@ -171,6 +175,54 @@ export function visualSrc(visual: VisualConfig | undefined): string {
   if (visual.type === "prop") return getProp(visual.asset)?.src ?? "";
   if (visual.type === "logo") return getLogo(visual.logo)?.src ?? "";
   return "";
+}
+
+// The scene's version and Undo: the agent keeps every earlier version of
+// the code it rewrote (a message, the review); Undo puts the one before back.
+// Only for a scene of the agent's run ("scene-<run>-<n>").
+function CodeVersions({ scene, file }: { scene: Scene; file: string }) {
+  const match = /^scene-(.+)-(\d+)$/.exec(scene.id);
+  const runId = match?.[1];
+  const n = match ? Number(match[2]) - 1 : -1;
+  const { data: run } = useAgentRun(runId);
+  const undo = useUndoScene();
+  const applyScene = useProjectStore((s) => s.applyAgentSceneEdit);
+  const code = run?.code?.scenes[n];
+  if (!run || !code) return null;
+  const back = (code.history ?? []).filter((h) => h.version < code.version).pop();
+  return (
+    <div className="flex flex-col items-start gap-1.5 mb-3 text-[12px]">
+      <span className="text-editor-muted">
+        Version {code.version}
+        {code.history?.length
+          ? ` · changed: ${code.history[code.history.length - 1].changedBy ?? "by the agent"}`
+          : ""}
+      </span>
+      {back ? (
+        <Button
+          size="compact-xs"
+          variant="default"
+          loading={undo.isPending}
+          onClick={() =>
+            undo.mutate(
+              { runId: run.id, sceneIndex: n },
+              {
+                onSuccess: (next) => {
+                  forgetCodeScene(file);
+                  applyScene(next, n);
+                },
+              },
+            )
+          }
+        >
+          Undo → v{back.version}
+        </Button>
+      ) : null}
+      {undo.error ? (
+        <span className="text-[#ff8a65]">{undo.error.message}</span>
+      ) : null}
+    </div>
+  );
 }
 
 function useCodeModule(file: string | undefined) {

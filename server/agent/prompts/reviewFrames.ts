@@ -3,7 +3,7 @@ import type {
   ReferenceSheet,
   ReviewCheck,
 } from "../../../src/agent/knowledge.js";
-import type { BlocksFromAi } from "../../../src/agent/run/4-blocks.js";
+import type { CodeInRun } from "../../../src/agent/run/4-code.js";
 import type { SceneFromAi } from "../../../src/agent/run/3-script.js";
 import {
   reviewFromAi,
@@ -36,13 +36,13 @@ rubric:
 - verdict "fix" only when a "fix" check of the rubric fails – the viewer would be lost,
   the eye has nowhere to land, text cannot be read, something is covered. Then give
   at most 3 problems as you see them and ONE change:
-  - pictures: the scene's pictures are picked again – say concretely what it should
-    show instead (one main picture of what, which block or stage, what to drop)
+  - pictures: the scene's picture (its code) is written again – say concretely what it
+    should show instead (one main picture of what, how big, what to drop)
   - words: the voiceover says too much for one picture – say how to say it shorter or
     simpler (its voice and pictures are then made again)
-  - motion: the pictures are right but sit or move badly (too small, too low, over the
-    caption) – say where they should be and how big
-- A dashed "● REC" or "▣ PICTURE" slot is a place the creator fills with their own
+  - motion: the picture is right but sits or moves badly (too small, too low, over the
+    caption, something on top of something else) – say where it should be and how big
+- A dashed "● REC" or "▣ PHOTO" slot is a place the creator fills with their own
   recording or picture later: judge where it sits and what it asks for, not that it is
   empty.
 - verdict "good" otherwise. A "note" check that fails goes into problems of a "good"
@@ -57,7 +57,7 @@ export type ReviewGuide = {
 
 export async function reviewFrames(
   scenes: SceneFromAi[],
-  blocks: BlocksFromAi,
+  code: CodeInRun,
   stills: Still[],
   guide: ReviewGuide,
   model?: Parameters<typeof callWithImages>[3],
@@ -78,10 +78,7 @@ export async function reviewFrames(
     .join("\n");
   const list = scenes
     .map((scene, n) => {
-      const picked = blocks.scenes[n];
-      const pictures = picked
-        ? `${picked.stage ?? "top"} – ${picked.blocks.map((b) => b.kind + ("shape" in b && b.shape ? ` (${b.shape})` : "")).join(", ") || "words only"}`
-        : "–";
+      const pictures = code.scenes[n]?.description || "–";
       const frames = stills
         .filter((still) => still.sceneIndex === n)
         .map((still) => `  - ${still.file} (at ${still.seconds.toFixed(1)} s)`)
@@ -99,7 +96,7 @@ ${rubric}
 Example frames:
 ${examples || "- (none)"}
 
-Principles the pictures were picked by:
+Principles for the pictures:
 ${knowledge}
 
 ${list}

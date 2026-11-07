@@ -1,0 +1,344 @@
+{
+  "id": "code-try",
+  "title": "Bandymas: vaizdai kodu (3 scenos)",
+  "workspaceId": "dev",
+  "videoTemplateId": "tool-tips-keyword",
+  "fps": 30,
+  "width": 1080,
+  "height": 1920,
+  "storyPlan": {
+    "premise": "3 Claude Code mistakes that burn your tokens: 1) one endless session – the context grows, every message resends everything; fix: /clear or a new session per task. 2) letting it read the whole repo – fix: point it at the files. 3) no CLAUDE.md – it rediscovers the project every time; fix: write the basics once. Show the money burning, then the fix for each."
+  },
+  "scenes": [
+    {
+      "id": "scene-run-codetry-1",
+      "plan": {
+        "role": "item",
+        "visualBrief": "A Claude Code terminal scrolls through a day of chat history. A one-line question is typed, the whole history lights up as sent along with it, a '148k tokens for 1 line' sticker slams in, and banknotes burn under a rising 'burned today' dollar counter."
+      },
+      "durationSeconds": 6.387,
+      "vo": "First, one endless session. Every message resends the whole history, so a one-line question pays for all of it.",
+      "background": "stage",
+      "content": {},
+      "code": {
+        "file": "code-try/scene-1.tsx"
+      },
+      "stage": "top",
+      "motion": {
+        "entrance": "none",
+        "transition": "cut"
+      },
+      "type": "code"
+    },
+    {
+      "id": "scene-run-codetry-2",
+      "plan": {
+        "role": "item",
+        "visualBrief": ""
+      },
+      "durationSeconds": 4.622,
+      "vo": "The fix: type slash clear when you switch tasks. It costs nothing.",
+      "notes": "🎥 Your own recording",
+      "background": "stage",
+      "content": {},
+      "code": {
+        "file": "code-try/scene-2.tsx"
+      },
+      "stage": "top",
+      "motion": {
+        "entrance": "none",
+        "transition": "cut"
+      },
+      "type": "code"
+    },
+    {
+      "id": "scene-run-codetry-3",
+      "plan": {
+        "role": "item",
+        "visualBrief": ""
+      },
+      "durationSeconds": 5.505,
+      "vo": "Second, letting it read the whole repo. 'Improve this codebase' makes it scan everything.",
+      "background": "stage",
+      "content": {},
+      "code": {
+        "file": "code-try/scene-3.tsx"
+      },
+      "stage": "top",
+      "motion": {
+        "entrance": "none",
+        "transition": "cut"
+      },
+      "type": "code"
+    }
+  ],
+  "captions": {
+    "style": "kinetic",
+    "keywords": [
+      "endless",
+      "one-line",
+      "/clear",
+      "nothing",
+      "whole repo",
+      "everything"
+    ]
+  },
+  "savedAt": 1794044129294,
+  "audioClips": [
+    {
+      "id": "audio-run-codetry-scene-run-codetry-1",
+      "sfxId": "vo-run-mw4zf3t3-scene-3-mw4zkgps",
+      "from": 0,
+      "durationInFrames": 192,
+      "volume": 1,
+      "voiceText": "First, one endless session. Every message resends the whole history, so a one-line question pays for all of it.",
+      "words": [
+        {
+          "text": "First,",
+          "start": 0,
+          "end": 0.464
+        },
+        {
+          "text": "one",
+          "start": 0.673,
+          "end": 0.882
+        },
+        {
+          "text": "endless",
+          "start": 0.929,
+          "end": 1.219
+        },
+        {
+          "text": "session.",
+          "start": 1.242,
+          "end": 1.695
+        },
+        {
+          "text": "Every",
+          "start": 1.846,
+          "end": 2.09
+        },
+        {
+          "text": "message",
+          "start": 2.148,
+          "end": 2.438
+        },
+        {
+          "text": "resends",
+          "start": 2.473,
+          "end": 2.786
+        },
+        {
+          "text": "the",
+          "start": 2.821,
+          "end": 2.902
+        },
+        {
+          "text": "whole",
+          "start": 2.949,
+          "end": 3.135
+        },
+        {
+          "text": "history,",
+          "start": 3.17,
+          "end": 3.646
+        },
+        {
+          "text": "so",
+          "start": 3.831,
+          "end": 3.947
+        },
+        {
+          "text": "a",
+          "start": 4.017,
+          "end": 4.052
+        },
+        {
+          "text": "one-line",
+          "start": 4.133,
+          "end": 4.481
+        },
+        {
+          "text": "question",
+          "start": 4.516,
+          "end": 4.876
+        },
+        {
+          "text": "pays",
+          "start": 4.946,
+          "end": 5.143
+        },
+        {
+          "text": "for",
+          "start": 5.19,
+          "end": 5.294
+        },
+        {
+          "text": "all",
+          "start": 5.341,
+          "end": 5.445
+        },
+        {
+          "text": "of",
+          "start": 5.492,
+          "end": 5.538
+        },
+        {
+          "text": "it.",
+          "start": 5.584,
+          "end": 6.037
+        }
+      ]
+    },
+    {
+      "id": "audio-run-codetry-scene-run-codetry-2",
+      "sfxId": "vo-run-mw4zf3t3-scene-4-mw4zkh2u",
+      "from": 192,
+      "durationInFrames": 139,
+      "volume": 1,
+      "voiceText": "The fix: type slash clear when you switch tasks. It costs nothing.",
+      "words": [
+        {
+          "text": "The",
+          "start": 0,
+          "end": 0.151
+        },
+        {
+          "text": "fix:",
+          "start": 0.209,
+          "end": 0.627
+        },
+        {
+          "text": "type",
+          "start": 0.906,
+          "end": 1.277
+        },
+        {
+          "text": "slash",
+          "start": 1.324,
+          "end": 1.649
+        },
+        {
+          "text": "clear",
+          "start": 1.695,
+          "end": 1.95
+        },
+        {
+          "text": "when",
+          "start": 2.078,
+          "end": 2.229
+        },
+        {
+          "text": "you",
+          "start": 2.264,
+          "end": 2.334
+        },
+        {
+          "text": "switch",
+          "start": 2.38,
+          "end": 2.601
+        },
+        {
+          "text": "tasks.",
+          "start": 2.635,
+          "end": 3.1
+        },
+        {
+          "text": "It",
+          "start": 3.286,
+          "end": 3.39
+        },
+        {
+          "text": "costs",
+          "start": 3.425,
+          "end": 3.646
+        },
+        {
+          "text": "nothing.",
+          "start": 3.704,
+          "end": 4.272
+        }
+      ]
+    },
+    {
+      "id": "audio-run-codetry-scene-run-codetry-3",
+      "sfxId": "vo-run-mw4zf3t3-scene-5-mw4zkhfu",
+      "from": 331,
+      "durationInFrames": 165,
+      "volume": 1,
+      "voiceText": "Second, letting it read the whole repo. 'Improve this codebase' makes it scan everything.",
+      "words": [
+        {
+          "text": "Second,",
+          "start": 0,
+          "end": 0.499
+        },
+        {
+          "text": "letting",
+          "start": 0.708,
+          "end": 0.94
+        },
+        {
+          "text": "it",
+          "start": 0.975,
+          "end": 1.033
+        },
+        {
+          "text": "read",
+          "start": 1.08,
+          "end": 1.231
+        },
+        {
+          "text": "the",
+          "start": 1.265,
+          "end": 1.347
+        },
+        {
+          "text": "whole",
+          "start": 1.393,
+          "end": 1.602
+        },
+        {
+          "text": "repo.",
+          "start": 1.637,
+          "end": 2.136
+        },
+        {
+          "text": "'Improve",
+          "start": 2.519,
+          "end": 2.891
+        },
+        {
+          "text": "this",
+          "start": 2.926,
+          "end": 3.053
+        },
+        {
+          "text": "codebase'",
+          "start": 3.1,
+          "end": 3.669
+        },
+        {
+          "text": "makes",
+          "start": 3.715,
+          "end": 3.924
+        },
+        {
+          "text": "it",
+          "start": 3.959,
+          "end": 4.029
+        },
+        {
+          "text": "scan",
+          "start": 4.075,
+          "end": 4.354
+        },
+        {
+          "text": "everything.",
+          "start": 4.435,
+          "end": 5.155
+        }
+      ]
+    }
+  ]
+}

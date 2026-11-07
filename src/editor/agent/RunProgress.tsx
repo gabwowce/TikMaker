@@ -19,8 +19,8 @@ const STEPS: { label: string; statuses: RunStatus[] }[] = [
     statuses: ["created", "picking_template", "writing_hooks", "awaiting_hook"],
   },
   { label: "Script", statuses: ["writing_script", "awaiting_approval"] },
-  { label: "Building", statuses: ["laying_out", "checking"] },
-  { label: "Result", statuses: ["generating_voice", "reviewing"] },
+  { label: "Building", statuses: ["generating_voice", "laying_out", "checking"] },
+  { label: "Result", statuses: ["reviewing"] },
 ];
 // Which step the run is on. Shared with the collapsed rail's dots, so both
 // count the same way.
@@ -119,8 +119,8 @@ export function RunProgress({ runId }: { runId: string }) {
       <TemplateCard run={run} />
       <HookCard run={run} />
       <ScriptCard run={run} />
-      <BuildCard run={run} />
       <VoiceCard run={run} />
+      <BuildCard run={run} />
       <ChatMessages run={run} />
       <ReviewingLine run={run} />
       <PausedCard run={run} />

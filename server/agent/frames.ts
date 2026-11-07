@@ -25,6 +25,15 @@ export function framesToReview(
   return computeSceneTimings(project).flatMap(
     ({ scene, from, durationInFrames }, sceneIndex) => {
       const last = Math.max(0, durationInFrames - END_MARGIN);
+      // A code scene has no layers to read the times from: the picture
+      // halfway in, once it has built up, and at its fullest near the end.
+      if (scene.type === "code" && !(scene.content.visuals ?? []).length)
+        return [
+          ...new Set([
+            Math.min(last, Math.max(SETTLED_FRAMES, Math.round(durationInFrames * 0.45))),
+            last,
+          ]),
+        ].map((frame) => ({ sceneIndex, frame: from + frame }));
       const at = (scene.content.visuals ?? [])
         .map((entry) => {
           const from = entry.delay ?? 0;

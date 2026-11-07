@@ -2,8 +2,7 @@ import { z } from "zod";
 import { ideaFromUser } from "./1-idea";
 import { hookFromAi, hookInRun, templateInRun } from "./2-angle";
 import { researchInRun, scriptInRun } from "./3-script";
-import { blocksInRun } from "./4-blocks";
-import { motionInRun } from "./4-motion";
+import { codeInRun } from "./4-code";
 import { voiceInRun } from "./5-voice";
 import { chatMessage } from "./7-chat";
 import { logEntry } from "./log";
@@ -34,10 +33,8 @@ export const agentRun = z.object({
   // 3 Script
   research: researchInRun.optional(),
   script: scriptInRun.optional(),
-  // 4 Building: the blocks on stage types, then how they move
-  // (docs/motion-planas.md)
-  blocks: blocksInRun.optional(),
-  motion: motionInRun.optional(),
+  // 4 Building: every scene's picture written as code (docs/tikmaker-kryptis.md)
+  code: codeInRun.optional(),
   // 5 Result: the voiceover, when the form asked for it
   voice: voiceInRun.optional(),
   // 7 The conversation: the user's messages and the agent's answers, oldest

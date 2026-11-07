@@ -1,20 +1,14 @@
 import fs from "node:fs";
 import path from "node:path";
-import { projectFromBlocks } from "../../../src/agent/projectFromBlocks.js";
-import { projectFromScript } from "../../../src/agent/projectFromScript.js";
 import type {
   ChatTarget,
   ReviewFromAi,
   ReviewInMessage,
 } from "../../../src/agent/run/7-chat.js";
-import {
-  createEmptyProject,
-  type VideoProject,
-} from "../../../src/schema/project.js";
-import { parseProject } from "../../../src/utils/normalizeProject.js";
+import type { VideoProject } from "../../../src/schema/project.js";
 import { KNOWLEDGE_DIR } from "../../config.js";
 import { agentFolder } from "../claudeCode.js";
-import { readJson, slugify } from "../../db.js";
+import { builtProject, rewriteCodeScenes, savedProject } from "../codeScenes.js";
 import type { Job } from "../job.js";
 import { reviewFrames } from "../prompts/reviewFrames.js";
 import { renderStills, type Still } from "../stills.js";
@@ -56,33 +50,14 @@ export type RenderFrames = (
 // Fix rounds at most (FR-16): look → fix → look again, three times.
 export const MAX_FIX_ROUNDS = 3;
 
-// The project the way the editor will build it from this run: the script's
-// scenes, then the blocks, motion and voice on them – the same functions the
-// editor calls, so the frames are what the creator will get. Settings the
-// saved project has (captions, music…) are kept.
-export async function builtProject(job: Job): Promise<VideoProject> {
-  const base =
-    (await savedProject(job)) ??
-    createEmptyProject(job.run.projectId, job.run.input.idea.slice(0, 60));
-  return projectFromBlocks(projectFromScript(base, job.run), job.run);
-}
-
-async function savedProject(job: Job): Promise<VideoProject | undefined> {
-  const saved = await readJson(
-    `projects/${slugify(job.run.projectId)}.json`,
-    null,
-  );
-  return saved ? parseProject(saved) : undefined;
-}
-
 // One look: the frames of `project`, and what the model makes of them.
 async function reviewProject(
   job: Job,
   project: VideoProject,
   render: RenderFrames,
 ): Promise<ReviewResult> {
-  const { script, blocks } = job.run;
-  if (!script || !blocks) throw new Error("The video is not built yet");
+  const { script, code } = job.run;
+  if (!script || !code) throw new Error("The video is not built yet");
   // Inside the folder Claude Code runs in, so its Read tool may open them.
   const folder = path.join(
     agentFolder(),
@@ -100,7 +75,7 @@ async function reviewProject(
     return [{ sheet, file }];
   });
   const review = await job.ai("reviewFrames", () =>
-    reviewFrames(script.scenes, blocks, stills, {
+    reviewFrames(script.scenes, code, stills, {
       rubric: job.knowledge.reviewRubric,
       references,
       principles: job.knowledge.picturePrinciples,
@@ -161,16 +136,33 @@ export async function step6SelfReview(
       `${said}\nFixing scene(s) ${scenes.join(", ")}…`,
       shown(found, "fixing", round),
     );
-    for (const target of found.targets) {
+    // The pictures and their motion are code: every scene to fix is written
+    // again in one Claude Code run (one session sees the whole video, and it
+    // is one start-up instead of several); words go one by one.
+    const code = found.targets.filter((t) => t.kind !== "words");
+    const words = found.targets.filter((t) => t.kind === "words");
+    const fixes: (() => Promise<unknown>)[] = [
+      ...(code.length
+        ? [
+            () =>
+              rewriteCodeScenes(
+                job,
+                [...new Set(code.map((t) => t.sceneIndex ?? 0))],
+                code
+                  .map((t) => `Scene ${(t.sceneIndex ?? 0) + 1}: ${t.instruction ?? ""}`)
+                  .join("\n"),
+              ),
+          ]
+        : []),
+      ...words.map((target) => () => step7Change(job, target)),
+    ];
+    for (const fix of fixes) {
       try {
-        await step7Change(job, target);
+        await fix();
       } catch (error) {
         if (isLimitError(error)) throw error;
         const why = error instanceof Error ? error.message : String(error);
-        await agentSays(
-          job,
-          `Scene ${(target.sceneIndex ?? 0) + 1}: the fix failed – ${why}`,
-        );
+        await agentSays(job, `The fix failed – ${why}`);
       }
     }
     before = found.targets.length;

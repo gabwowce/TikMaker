@@ -14,6 +14,9 @@ process.env.TIKMAKER_KNOWLEDGE = path.resolve("knowledge");
 // The self-review at the end of the build is tried in its own test below;
 // everywhere else the build ends where it did before it existed.
 process.env.AGENT_SELF_REVIEW = "off";
+// No TypeScript compile of the written scenes in tests (the fake writes none
+// that could fail).
+process.env.TIKMAKER_TSC = "off";
 
 let limitOn = true;
 // No real model in tests: a made-up answer per kind of question, so a run
@@ -22,15 +25,6 @@ let limitOn = true;
 const fakeModel = new MockLanguageModelV4({
   doGenerate: async (options) => {
     const prompt = JSON.stringify(options.prompt);
-    // The usage limit: while it is on, the blocks step of an idea saying so
-    // stops on it (every attempt, as a real limit does).
-    if (
-      limitOn &&
-      prompt.includes("HIT THE LIMIT") &&
-      prompt.includes("Blocks:") &&
-      !prompt.includes("Allowed now:")
-    )
-      throw new Error("You've hit your 5-hour limit · resets 5pm");
     // Hooks: the first two formulas the prompt offers, and one of its own.
     const [first, second] = [...prompt.matchAll(/- id: ([\w-]+)/g)].map(
       (match) => match[1],
@@ -41,13 +35,7 @@ const fakeModel = new MockLanguageModelV4({
       ? fakeRoute(prompt)
       : prompt.includes("Rewrite scene")
         ? { voiceover: "A simpler short line.", onScreen: "Simpler" }
-        : prompt.includes("Entrances:")
-          ? fakeMotion(prompt)
-          : prompt.includes("wants scene")
-            ? FAKE_EDIT
-            : prompt.includes("Blocks:")
-              ? fakeBlocks(prompt)
-              : prompt.includes("Transition phrases:")
+        : prompt.includes("Transition phrases:")
                 ? fakeScript(prompt)
                 : prompt.includes("Formulas:")
                   ? {
@@ -130,32 +118,6 @@ function fakeScript(prompt: string) {
       : {}),
   };
 }
-// Motion (motion video): a calm fade for every block the timeline lists.
-function fakeMotion(prompt: string) {
-  const scenes = prompt
-    .split(/Scene \d+ – /)
-    .slice(1)
-    .map((scene) => ({
-      transition: "cut",
-      // the prompt arrives JSON-encoded, so its newlines and quotes are escaped
-      blocks: [...scene.matchAll(/\\n {2}\d+\. on \\"/g)].map(() => ({
-        entrance: "fade",
-        enterFrames: 4,
-        exit: "fade",
-        exitFrames: 4,
-      })),
-    }));
-  return { idea: "Calm fades all the way through.", scenes };
-}
-// Blocks (motion video): one block per scene, on the first word of its
-// voiceover ("A short line."), taking turns between four looks so no look
-// comes more than twice – the code's check finds nothing.
-const FAKE_BLOCKS = [
-  { onWord: "A", kind: "badge", text: "01" },
-  { onWord: "A", kind: "number", value: 2, text: "Two" },
-  { onWord: "A", kind: "progress", value: 50, text: "Half" },
-  { onWord: "A", kind: "keys", items: ["A"], partWords: ["A"] },
-];
 // The message router: what the message asks for, by its words.
 function fakeRoute(prompt: string) {
   const says = (words: string) => prompt.includes(`Message: ${words}`);
@@ -213,34 +175,39 @@ const FAKE_REVIEW = {
     },
   ],
 };
-// Editing a scene: the one scene again, as a transform – a look no other
-// scene uses, so the check finds nothing.
-const FAKE_EDIT = {
-  happens: "One line turns into a finished video",
-  stage: "top",
-  blocks: [
-    {
-      onWord: "A",
-      kind: "transform",
-      nodes: [{ label: "Line" }, { label: "Video" }],
-      partWords: ["A", "A"],
-    },
-  ],
-  keywords: ["short"],
-  wishes: [],
-};
-function fakeBlocks(prompt: string) {
-  const scenes = prompt
-    .split(/Scene \d+ \(/)
-    .slice(1)
-    .map((_, i) => ({
-      happens: "A badge with the step number appears",
-      stage: i % 2 ? "bottom" : "top",
-      blocks: [FAKE_BLOCKS[i % FAKE_BLOCKS.length]],
-      keywords: ["short"],
-    }));
-  return { scenes, wishes: [] };
-}
+// The pictures as code: no Claude Code in tests. The fake writes a tiny
+// component for every scene it is asked to, and says what it made; an idea
+// saying "HIT THE LIMIT" stops on the usage limit while it is on.
+vi.mock("../agent/prompts/writeCode.js", async (original) => ({
+  ...(await original<typeof import("../agent/prompts/writeCode.js")>()),
+  writeCode: async (job: import("../agent/prompts/writeCode.js").CodeJob, cwd: string) => {
+    if (limitOn && job.input.idea.includes("HIT THE LIMIT"))
+      throw new Error("You've hit your 5-hour limit · resets 5pm");
+    for (const n of job.write) {
+      const file = path.join(cwd, "src", "generated", job.scenes[n].file);
+      fs.mkdirSync(path.dirname(file), { recursive: true });
+      fs.writeFileSync(
+        file,
+        `// ${job.instruction ?? "first"}\nexport default function Scene() { return null; }\n`,
+      );
+    }
+    return {
+      model: "fake",
+      prompt: { system: "", user: job.instruction ?? "" },
+      attempts: 1,
+      ms: 1,
+      usage: { inputTokens: 1, cachedInputTokens: 0, outputTokens: 1, thinkingTokens: 0 },
+      data: {
+        scenes: job.write.map((n) => ({
+          sceneIndex: n,
+          description: job.instruction ? `Rewritten: ${job.instruction}` : "A badge with the step number",
+        })),
+        keywords: ["short"],
+        wishes: [],
+      },
+    };
+  },
+}));
 // The search tool is only handed to the model; the fake model ignores it.
 vi.mock("@ai-sdk/google", () => ({
   createGoogleGenerativeAI: () =>
@@ -520,18 +487,25 @@ describe("agent runs", () => {
     ]);
     expect(run.script?.problems).toEqual([]);
   });
-  it("builds the video from blocks and their motion once the script is approved", async () => {
+  it("writes every scene's picture as code once the script is approved", async () => {
     const { id } = await waitingForApproval();
     await api.agent.approveScript({ runId: id });
     const run = await until(id, (run) => run.status === "done");
     expect(run.script?.approved).toBe(true);
-    // One entry of blocks per scene, checked by the code …
-    expect(run.blocks?.scenes).toHaveLength(run.script!.scenes.length);
-    expect(run.blocks?.problems).toEqual([]);
-    // … then the motion, one entry per scene, with nothing left to fix.
-    expect(run.motion?.scenes).toHaveLength(run.script!.scenes.length);
-    expect(run.motion?.problems).toEqual([]);
-    expect(run.steps[run.steps.length - 1].name).toBe("pickMotion");
+    // one code scene per scene of the script, in the project's folder
+    expect(run.code?.scenes).toHaveLength(run.script!.scenes.length);
+    expect(run.code?.problems).toEqual([]);
+    expect(run.code?.scenes[0]).toMatchObject({
+      file: "p1/scene-1.tsx",
+      description: "A badge with the step number",
+      version: 1,
+    });
+    expect(run.code?.keywords).toEqual(["short"]);
+    for (const scene of run.code!.scenes)
+      expect(fs.existsSync(path.join(root, "src", "generated", scene.file))).toBe(true);
+    // the props file the agent renders its frames from
+    expect(fs.existsSync(path.join(root, "out", "agent", "p1", "props.json"))).toBe(true);
+    expect(run.steps[run.steps.length - 1].name).toBe("writeCode");
   });
 
   // A built video, for the conversation tests.
@@ -554,9 +528,16 @@ describe("agent runs", () => {
       built.id,
       (run) => run.status === "done" && run.messages?.length === 2,
     );
-    // that scene has the new picture; the others are as they were
-    expect(run.blocks?.scenes[1].blocks[0].kind).toBe("transform");
-    expect(run.blocks?.scenes[0]).toEqual(built.blocks?.scenes[0]);
+    // that scene's code is written again; the others are as they were
+    expect(run.code?.scenes[1]).toMatchObject({
+      description: "Rewritten: one thing turning into another",
+      version: 2,
+    });
+    expect(run.code?.scenes[0]).toEqual(built.code?.scenes[0]);
+    // the code before is kept as version 1
+    expect(
+      fs.existsSync(path.join(root, "db", "code-versions", "p1", "scene-2.v1.tsx")),
+    ).toBe(true);
     expect(run.steps.map((step) => step.name)).toContain("routeMessage");
     const [mine, reply] = run.messages!;
     expect(mine).toMatchObject({ from: "user", status: "done" });
@@ -570,6 +551,46 @@ describe("agent runs", () => {
     ]);
     expect(reply).toMatchObject({ from: "agent" });
     expect(reply.text).toContain("✓");
+  });
+
+  it("undoes the agent's change to a scene's code", async () => {
+    const built = await builtVideo();
+    const file = path.join(root, "src", "generated", built.code!.scenes[1].file);
+    const first = fs.readFileSync(file, "utf-8");
+    await api.agent.message({
+      runId: built.id,
+      text: "Show it as one thing turning into another",
+      attachments: [{ sceneIndex: 1, label: "Scene 2" }],
+    });
+    const changed = await until(
+      built.id,
+      (run) => run.status === "done" && run.messages?.length === 2,
+    );
+    expect(changed.code?.scenes[1].history).toEqual([
+      {
+        version: 1,
+        description: "A badge with the step number",
+        changedBy: "one thing turning into another",
+      },
+    ]);
+    expect(changed.messages![1].text).toContain("Undo");
+    const rewritten = fs.readFileSync(file, "utf-8");
+    expect(rewritten).not.toBe(first);
+    const run = await api.agent.undoScene({ runId: built.id, sceneIndex: 1 });
+    expect(run.code?.scenes[1]).toMatchObject({
+      version: 1,
+      description: "A badge with the step number",
+      history: [],
+    });
+    expect(fs.readFileSync(file, "utf-8")).toBe(first);
+    // the rewritten code is kept too
+    expect(
+      fs.readFileSync(path.join(root, "db", "code-versions", "p1", "scene-2.v2.tsx"), "utf-8"),
+    ).toBe(rewritten);
+    // nothing earlier than version 1
+    await expect(
+      api.agent.undoScene({ runId: built.id, sceneIndex: 1 }),
+    ).rejects.toMatchObject({ code: "BAD_REQUEST" });
   });
 
   it("asks back when the message is not clear", async () => {
@@ -591,7 +612,10 @@ describe("agent runs", () => {
     expect(run.script?.scenes[1]).toEqual(built.script?.scenes[1]);
     const names = run.steps.map((step) => step.name);
     expect(names).toContain("rewriteScene");
-    expect(names).toContain("editScene");
+    expect(names.filter((name) => name === "writeCode")).toHaveLength(
+      built.steps.filter((step) => step.name === "writeCode").length + 1,
+    );
+    expect(run.code?.scenes[0].version).toBe(2);
   });
 
   it("proposes a change to the whole video and waits for the button", async () => {
@@ -605,7 +629,7 @@ describe("agent runs", () => {
       (run) => lastMessage(run)?.proposal !== undefined,
     );
     // nothing changed yet – only the proposal
-    expect(proposed.motion).toEqual(built.motion);
+    expect(proposed.code).toEqual(built.code);
     const proposal = lastMessage(proposed);
     await api.agent.decide({
       runId: built.id,
@@ -618,9 +642,11 @@ describe("agent runs", () => {
         run.status === "done" &&
         run.messages?.find((m) => m.id === proposal.id)?.status === "done",
     );
-    expect(run.steps.filter((step) => step.name === "pickMotion")).toHaveLength(
-      built.steps.filter((step) => step.name === "pickMotion").length + 1,
+    // every scene written again, in one Claude Code run
+    expect(run.steps.filter((step) => step.name === "writeCode")).toHaveLength(
+      built.steps.filter((step) => step.name === "writeCode").length + 1,
     );
+    expect(run.code?.scenes.every((scene) => scene.version === 2)).toBe(true);
     expect(lastMessage(run).text).toContain("✓");
   });
 
@@ -635,7 +661,7 @@ describe("agent runs", () => {
       // round 2 found it again – no better – so the agent stopped there
       expect(names.filter((name) => name === "reviewFrames")).toHaveLength(2);
       expect(names.slice(names.indexOf("reviewFrames"))).toContain(
-        "editScene",
+        "writeCode",
       );
       const said = run.messages!.map((message) => message.text);
       expect(said[0]).toMatch(/^Self-review, round 1: .*Fixing scene\(s\) 2/s);
@@ -669,7 +695,7 @@ describe("agent runs", () => {
     );
     expect(run.steps.map((step) => step.name)).toContain("reviewFrames");
     // nothing changed by the review itself
-    expect(run.blocks).toEqual(built.blocks);
+    expect(run.code).toEqual(built.code);
     const proposal = lastMessage(run);
     expect(proposal.text).toContain("Scene 2: two diagrams of the same weight");
     expect(proposal.proposal?.targets).toEqual([
@@ -739,8 +765,7 @@ describe("agent runs", () => {
     expect(run.steps.filter((s) => s.name === "writeScript")).toHaveLength(
       scripts,
     );
-    expect(run.blocks?.scenes.length).toBeGreaterThan(0);
-    expect(run.motion?.scenes.length).toBeGreaterThan(0);
+    expect(run.code?.scenes.length).toBeGreaterThan(0);
   });
 
   it("leaves the video as it is when the proposal is declined", async () => {
@@ -761,7 +786,7 @@ describe("agent runs", () => {
     const run = await until(built.id, (run) =>
       lastMessage(run).text.startsWith("OK"),
     );
-    expect(run.motion).toEqual(built.motion);
+    expect(run.code).toEqual(built.code);
   });
 
   it("writes new hooks while a hook is being picked", async () => {

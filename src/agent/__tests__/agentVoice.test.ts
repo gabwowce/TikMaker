@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import { createEmptyProject } from "../../schema/project";
 import { computeSceneTimings } from "../../utils/duration";
 import { voicedSceneSeconds, withAgentVoice } from "../agentVoice";
-import { projectFromBlocks } from "../projectFromBlocks";
+import { projectFromCode } from "../projectFromCode";
 import { projectFromScript } from "../projectFromScript";
 import type { AgentRun } from "../run/run";
 
@@ -37,23 +37,13 @@ const run = {
       needsRecording: false,
     })),
   },
-  blocks: {
+  code: {
     problems: [],
     wishes: [],
+    keywords: ["Claude", "result"],
     scenes: [
-      {
-        stage: "top",
-        keywords: [],
-        blocks: [
-          { onWord: "Claude", kind: "logos", ids: ["claude"] },
-          { onWord: "commit", kind: "badge", text: "01" },
-        ],
-      },
-      {
-        stage: "top",
-        keywords: [],
-        blocks: [{ onWord: "Pick", kind: "list", items: ["Pick", "Check"] }],
-      },
+      { file: "p/scene-1.tsx", description: "Two logos join", version: 1 },
+      { file: "p/scene-2.tsx", description: "A checklist", stage: "full", version: 1 },
     ],
   },
   voice: {
@@ -88,11 +78,44 @@ describe("the agent's voiceover in the project", () => {
     expect(twice.audioClips).toHaveLength(2);
   });
 
-  it("puts the blocks on the words as they are really spoken", () => {
-    const project = projectFromBlocks(base, run);
-    const [, commit] = project.scenes[0].content.visuals ?? [];
-    // "commit" is word 7: spoken at 7 × 0.25 s = 1.75 s
-    expect(commit.delay).toBe(Math.round(1.75 * 30));
+  it("turns the agent's scenes into code scenes timed to the voice", () => {
+    const project = projectFromCode(base, run);
+    expect(project.scenes.map((scene) => scene.type)).toEqual(["code", "code"]);
+    expect(project.scenes[0].code).toEqual({ file: "p/scene-1.tsx" });
+    expect(project.scenes[0].stage).toBe("top");
+    expect(project.scenes[1].stage).toBe("full");
+    expect(project.scenes[0].background).toBe("stage");
+    expect(project.captions?.keywords).toEqual(["Claude", "result"]);
     expect(project.audioClips).toHaveLength(2);
+  });
+
+  it("keeps the creator's fields and layers when a scene is rebuilt", () => {
+    const built = projectFromCode(base, run);
+    const edited = {
+      ...built,
+      scenes: built.scenes.map((scene, n) =>
+        n === 1
+          ? {
+              ...scene,
+              code: { file: "p/scene-2.tsx", params: { title: "Mine" } },
+              content: { richHeadline: [] },
+            }
+          : scene,
+      ),
+    };
+    const again = projectFromCode(edited, run, 1);
+    expect(again.scenes[1].code?.params).toEqual({ title: "Mine" });
+    expect(again.scenes[1].content).toEqual({ richHeadline: [] });
+    // a new file: the old fields no longer fit
+    const moved = {
+      ...run,
+      code: {
+        ...run.code!,
+        scenes: [run.code!.scenes[0], { ...run.code!.scenes[1], file: "p/other.tsx" }],
+      },
+    };
+    expect(projectFromCode(edited, moved, 1).scenes[1].code).toEqual({
+      file: "p/other.tsx",
+    });
   });
 });

@@ -30,8 +30,8 @@ import {
 //   1 Idea      the user fills the form and presses Start
 //   2 Angle     template → hooks → WAIT: the user picks one
 //   3 Script    script → check → WAIT: the user approves
-//   4 Building  layout → rules → fixes
-//   5 Result    voice → report → done
+//   4 Building  voice → the pictures as code (Claude Code with the skills)
+//   5 Result    self-review of the frames → done
 //   7 Talking   the user writes at any time; where the agent waits it takes
 //               the message up, changes what it is about and answers
 //               (docs/pokalbis-planas.md, docs/pokalbis-kodas.md)
@@ -114,22 +114,22 @@ async function runAgent(run: AgentRun): Promise<void> {
       return takeUpWork(job);
 
     case "awaiting_approval": // the user answered on screen 3
-      // "Approve": on to building the video (D7: step4Building).
+      // "Approve": on to building the video. The voiceover first (when the
+      // form asked for it, and not again when every scene has one), so the
+      // pictures are timed to the real words; then the pictures as code.
       if (job.run.script?.approved) {
-        // Built already (a run continued after a pause): not built again.
-        if (!job.run.blocks || !job.run.motion) {
-          await job.save({ status: "laying_out" });
-          await step4Building(job);
-          if (asking(job)) return;
-        }
-        // 5 Result: the voiceover, only when the form asked for it – and
-        // not again when every scene has one.
         const voiced =
           (job.run.voice?.scenes.length ?? 0) >=
           (job.run.script?.scenes.length ?? 0);
         if (job.run.input.generateVoice && !voiced) {
           await job.save({ status: "generating_voice" });
           await step5Voice(job);
+        }
+        // Built already (a run continued after a pause): not built again.
+        if (!job.run.code) {
+          await job.save({ status: "laying_out" });
+          await step4Building(job);
+          if (asking(job)) return;
         }
         // The agent looks at its own frames and fixes them (FR-15, FR-16).
         if (selfReview()) {

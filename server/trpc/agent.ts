@@ -12,6 +12,8 @@ import {
   sendMessageFromUser,
 } from "../../src/agent/run/7-chat.js";
 import { continueRun, resumeRun } from "../agent/agent.js";
+import { undoCodeScene } from "../agent/codeScenes.js";
+import { openJob } from "../agent/job.js";
 import { loadKnowledge } from "../agent/knowledge.js";
 import { getRun, listRuns } from "../agent/runs.js";
 import { step1Idea } from "../agent/steps/1-idea.js";
@@ -109,6 +111,21 @@ export const agentRouter = router({
     .input(z.object({ runId: z.string().min(1) }))
     .mutation(async ({ input }) => {
       await resumeRun(await findRun(input.runId));
+    }),
+  // Undo on a code scene: its code goes back to the version before the
+  // agent's last change (server/agent/codeVersions.ts). Returns the run.
+  undoScene: procedure
+    .input(z.object({ runId: z.string().min(1), sceneIndex: z.number().int().min(0) }))
+    .mutation(async ({ input }) => {
+      const run = await findRun(input.runId);
+      if (!["done", "error", "paused"].includes(run.status))
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message: "The agent is working on the video – undo when it stops",
+        });
+      const job = await openJob(run);
+      await asBadRequest(() => undoCodeScene(job, input.sceneIndex));
+      return findRun(run.id);
     }),
   // The answer to the agent's proposal – the "Do it" / "No" buttons.
   decide: procedure.input(decideFromUser).mutation(async ({ input }) => {

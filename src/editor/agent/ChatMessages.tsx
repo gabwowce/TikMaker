@@ -15,7 +15,7 @@ import { ReviewView } from "./ReviewView";
 // scene, so changes made by hand to other scenes stay.
 export function ChatMessages({ run }: { run: AgentRun }) {
   const applyScene = useProjectStore((s) => s.applyAgentSceneEdit);
-  const applyAll = useProjectStore((s) => s.applyAgentBlocks);
+  const applyAll = useProjectStore((s) => s.applyAgentCode);
   const apply = (targets: ChatTarget[]) => applyTargets(run, targets);
 
   // Applies what the targets changed: one scene at a time; the whole video's

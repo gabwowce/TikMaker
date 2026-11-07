@@ -9,6 +9,8 @@ const STEP_MODELS: Record<string, string> = {
   research: "sonnet",
   pickMotion: "sonnet",
   routeMessage: "sonnet",
+  // the pictures as code: the creative heart of the video
+  writeCode: "opus",
 };
 
 // The name of the step being run right now (job.ai), so the call deep inside

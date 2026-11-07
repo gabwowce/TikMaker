@@ -31,10 +31,13 @@ export async function renderStills(
     publicDir: path.join(ROOT, "public"),
   });
   const inputProps = { project };
+  // REMOTION_BROWSER_EXECUTABLE: a Chrome of the machine's own (remotion.config.ts)
+  const browserExecutable = process.env.REMOTION_BROWSER_EXECUTABLE ?? null;
   const composition = await selectComposition({
     serveUrl,
     id: "TikTokVideo",
     inputProps,
+    browserExecutable,
   });
   const stills: Still[] = [];
   for (const { sceneIndex, frame } of framesToReview(project)) {
@@ -47,8 +50,10 @@ export async function renderStills(
       output: file,
       imageFormat: "png",
       scale: SCALE,
+      browserExecutable,
     });
     stills.push({ sceneIndex, seconds: frame / project.fps, file });
   }
   return stills;
 }
+

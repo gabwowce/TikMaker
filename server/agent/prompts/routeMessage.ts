@@ -1,4 +1,4 @@
-import type { BlocksFromAi } from "../../../src/agent/run/4-blocks.js";
+import type { CodeInRun } from "../../../src/agent/run/4-code.js";
 import type { SceneFromAi } from "../../../src/agent/run/3-script.js";
 import {
   routeFromAi,
@@ -20,9 +20,9 @@ const KINDS: Record<ChatTargetKind, string> = {
   hook: "write the three hooks again with the instruction (the user picks one again; a script that exists is written again after that)",
   script: "write the script again with the instruction",
   pictures:
-    "pick one scene's pictures (blocks) again – needs sceneIndex; the words stay",
+    "write one scene's picture (its code) again – what it shows, its layout, how big things are; needs sceneIndex; the words stay",
   motion:
-    "plan the motion again – one scene (sceneIndex) or, without sceneIndex, the whole video",
+    "write how things move again – one scene (sceneIndex) or, without sceneIndex, every scene of the video (slow: minutes per scene)",
   words:
     "write one scene's voiceover again – needs sceneIndex; then its voice and its pictures are made again on the new words",
   review:
@@ -53,7 +53,7 @@ export async function routeMessage(
     allowed: ChatTargetKind[];
     hook?: string;
     scenes: SceneFromAi[];
-    blocks?: BlocksFromAi;
+    code?: CodeInRun;
   },
   model?: Parameters<typeof callStructured>[2],
 ): Promise<StructuredResult<RouteFromAi>> {
@@ -62,9 +62,9 @@ export async function routeMessage(
     .join("\n");
   const scenes = context.scenes
     .map((scene, n) => {
-      const picked = context.blocks?.scenes[n];
-      const pictures = picked
-        ? ` | pictures: ${picked.stage ?? "top"} – ${picked.blocks.map((b) => b.kind).join(", ") || "words only"}`
+      const picked = context.code?.scenes[n];
+      const pictures = picked?.description
+        ? ` | picture: ${picked.description}`
         : "";
       return `Scene ${n + 1} (${scene.role}): ${scene.voiceover}${pictures}`;
     })
