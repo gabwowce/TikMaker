@@ -1,7 +1,10 @@
 import { MIN_SCENE_SECONDS, voDurationSeconds } from "../../utils/pacing";
 import { wordFrame, wordIndex } from "../../utils/voWords";
 import {
+  coversCaption,
+  overlaps,
   STAGE_LAYOUTS,
+  zoneBand,
   type ZonePlacement,
 } from "../../video/stage/stageTypes";
 import { stage } from "../../video/stage/tokens";
@@ -19,21 +22,20 @@ import type { MotionFromAi, MotionProblem } from "../run/4-motion";
 
 const fps = videoDefaults.fps;
 const FRAME_HEIGHT = videoDefaults.height;
+const FRAME_WIDTH = videoDefaults.width;
 // A block is drawn in a box the size of the top zone, full width; its content
 // is stage.contentWidth wide.
-const ZONE_HEIGHT = stage.visualBottom - stage.visualTop;
 const MAX_SCALE = videoDefaults.width / stage.contentWidth;
+// A block may come with no entrance – already there – only this close to the
+// scene's start, on its first word (the hook's first picture): later it would
+// be on screen before its word is said.
+export const NONE_FRAMES = 3;
 // A carried block needs this long in the next scene before that scene's first
 // block takes its place – or there is nothing to see of the carry.
 export const MIN_CARRY_FRAMES = 12;
 
-// The vertical band (px) a block covers at a pose.
-function band(y: number, scale: number): [number, number] {
-  const half = (ZONE_HEIGHT * scale) / 2;
-  return [y - half, y + half];
-}
-const overlaps = (a: [number, number], b: [number, number]) =>
-  a[0] < b[1] && b[0] < a[1];
+// The vertical band (px) a block covers at a pose (stageTypes.ts).
+const band = zoneBand;
 
 export function checkMotion(
   motion: MotionFromAi,
@@ -84,11 +86,11 @@ export function checkMotion(
       if (!place) return;
       const last = i === scene.blocks.length - 1;
 
-      // A layer with no entrance is on screen from the scene's first frame,
-      // before its word is said.
-      if (block.entrance === "none")
+      // A layer with no entrance is on screen from the scene's first frame:
+      // right for a block on the first word, wrong for a later one.
+      if (block.entrance === "none" && slot.start > NONE_FRAMES)
         problem(
-          `entrance "none" shows it before "${picked.blocks[i].onWord}" is said – pick an entrance`,
+          `entrance "none" shows it before "${picked.blocks[i].onWord}" is said – "none" is only for a block on the scene's first word`,
           i,
         );
       const window = slot.leaves - slot.start;
@@ -123,10 +125,26 @@ export function checkMotion(
             `scale ${move.scale} is wider than the frame – at most ${MAX_SCALE.toFixed(2)}`,
             i,
           );
+        // sideways: the block's content (contentWidth wide) stays in the frame
+        if (move.x !== undefined) {
+          const half = (stage.contentWidth / 2) * move.scale;
+          const centre = (move.x / 100) * FRAME_WIDTH;
+          if (centre - half < 0 || centre + half > FRAME_WIDTH)
+            problem(
+              `the move on "${move.onWord}" takes it out of the frame sideways (x ${move.x}, scale ${move.scale}) – make it smaller to move it aside`,
+              i,
+            );
+        }
         const covers = band((move.y / 100) * FRAME_HEIGHT, move.scale);
         if (covers[0] < 0 || covers[1] > FRAME_HEIGHT)
           problem(
             `the move on "${move.onWord}" takes it out of the frame (y ${move.y}, scale ${move.scale})`,
+            i,
+          );
+        // the spoken words stay readable: a move never lands on them
+        if (coversCaption(picked.stage ?? "top", (move.y / 100) * FRAME_HEIGHT, move.scale))
+          problem(
+            `the move on "${move.onWord}" runs into the spoken words (y ${move.y}, scale ${move.scale}) – keep it above them, or make it smaller`,
             i,
           );
         places.forEach((other: ZonePlacement, zone) => {

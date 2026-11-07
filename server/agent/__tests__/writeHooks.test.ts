@@ -30,8 +30,14 @@ const [fits1, fits2] = formulas.filter((f) =>
 );
 const doesNotFit = formulas.find((f) => !template.hookTypes.includes(f.type))!;
 
+// The three hooks of an answer take three different angles: each new hook
+// gets the next one in turn.
+const ANGLES = ["curiosity", "outcome", "surprise"] as const;
+let made = 0;
 const hook = (text: string, formulaId: string | null) => ({
   text,
+  firstFrame: "The finished video playing full screen",
+  angle: ANGLES[made++ % 3],
   formulaId,
   score: 4,
 });
@@ -52,6 +58,30 @@ function fakeModel(...answers: object[]) {
 }
 
 describe("writeHooks with a fake model", () => {
+  it("asks again when the three hooks take the same angle", async () => {
+    const same = [
+      hook("One", null),
+      hook("Two", null),
+      hook("Three", null),
+    ].map((h) => ({ ...h, angle: "curiosity" }));
+    const different = [
+      hook("One", null),
+      hook("Two", null),
+      hook("Three", null),
+    ];
+    const result = await writeHooks(
+      input,
+      workspace,
+      template,
+      formulas,
+      fakeModel({ hooks: same }, { hooks: different }),
+    );
+    expect(result.attempts).toBe(2);
+    expect(result.data).toEqual(different);
+    // the model is told what this video can really show
+    expect(result.prompt.user).toContain("This video can show:");
+  });
+
   it("returns three hooks when two follow a formula", async () => {
     const hooks = [
       hook("3 shortcuts I wish I knew sooner", fits1.id),

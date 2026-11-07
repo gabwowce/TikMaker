@@ -66,14 +66,41 @@ describe("checkMotion", () => {
   });
 
   it("does not let a block show before its word", () => {
-    expect(messages(motion([{ ...calm, entrance: "none" }, calm]))[0]).toMatch(
-      /before "Claude" is said/,
+    // on the scene's first word "none" is fine – the picture is there at once
+    expect(messages(motion([{ ...calm, entrance: "none" }, calm]))).toEqual([]);
+    // a later block with no entrance would be there before its word
+    expect(messages(motion([calm, { ...calm, entrance: "none" }]))[0]).toMatch(
+      /is only for a block on the scene's first word/,
+    );
+  });
+
+  it("keeps a sideways move in the frame", () => {
+    const aside = (x: number, scale: number) => ({
+      ...calm,
+      moves: [{ onWord: "every", x, y: 27, scale: scale }],
+    });
+    // full width cannot move aside; half size can
+    expect(messages(motion([aside(25, 0.68), calm])).join()).toMatch(
+      /out of the frame sideways/,
+    );
+    expect(messages(motion([aside(30, 0.4), calm])).join()).not.toMatch(
+      /sideways/,
     );
   });
 
   it("wants the entrance and exit to fit the block's time", () => {
     const slow = { ...calm, enterFrames: 30, exitFrames: 30 };
     expect(messages(motion([calm, slow]))[0]).toMatch(/do not fit/);
+  });
+
+  it("keeps a move off the spoken words", () => {
+    // the split's captions start at 1340 px; centred at 1190, 80 % reaches 1530
+    const low = { ...calm, moves: [{ onWord: "every", y: 62, scale: 0.8 }] };
+    expect(messages(motion([low, calm])).join()).toMatch(
+      /runs into the spoken words/,
+    );
+    const up = { ...calm, moves: [{ onWord: "every", y: 30, scale: 0.5 }] };
+    expect(messages(motion([up, calm])).join()).not.toMatch(/spoken words/);
   });
 
   it("keeps a move in the frame and off the other place's picture", () => {

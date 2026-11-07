@@ -12,6 +12,11 @@ export const templateFromAi = z.object({
   videoTemplateId: z.string().min(1),
   score: z.number().int().min(1).max(5),
   reason: z.string().min(1),
+  // Whether the script needs facts from outside the idea (prices, numbers,
+  // news, how another company's tool works) looked up online first. False
+  // when the idea – or the channel's own product – gives everything: the
+  // search is the run's most expensive call (~18k tokens in test 10).
+  needsFacts: z.boolean(),
 });
 // Below this score nothing in the knowledge base really fits the idea (FR-05).
 export const MIN_FIT_SCORE = 3;
@@ -26,7 +31,9 @@ export const TEMPLATE_CHANGEABLE: RunStatus[] = ["awaiting_hook"];
 // The template the run goes on with: the model's pick, or the user's own
 // choice (form or "Change"), which has no score or reason.
 export const templateInRun = templateFromAi
-  .partial({ score: true, reason: true })
+  // a template chosen in the form says nothing about facts: they are looked
+  // up, as before
+  .partial({ score: true, reason: true, needsFacts: true })
   .extend({ pickedBy: z.enum(["agent", "user"]).default("agent") });
 
 // ── Hook ─────────────────────────────────────────────────────────────────
@@ -34,8 +41,26 @@ export const templateInRun = templateFromAi
 // One opening line the model proposes (it sends three): the text, the
 // knowledge-base formula it follows (null = its own idea) and how strong it
 // is (1–5).
+// The creative angle a hook takes – the three hooks for an idea take three
+// different ones, and knowing which one was picked lets us see later which
+// kind works best.
+export const hookAngle = z.enum([
+  "curiosity",
+  "outcome",
+  "surprise",
+  "problem",
+  "demonstration",
+]);
+
 export const hookFromAi = z.object({
   text: z.string().trim().min(1).max(150),
+  // What the viewer SEES in the first two seconds, under the line – a picture,
+  // never the words alone (in 88 analysed videos the first frame is almost
+  // always a person, the product working, the result or a striking image).
+  // Unset only in runs made before it existed.
+  firstFrame: z.string().trim().min(10).max(200).optional(),
+  // Unset only in runs made before it existed.
+  angle: hookAngle.optional(),
   formulaId: z.string().min(1).nullable(),
   score: z.number().int().min(1).max(5),
 });
@@ -55,6 +80,9 @@ export const chooseHookFromUser = z.union([
 // The hook the video opens with: one of the three, or the user's own text.
 export const hookInRun = z.object({
   text: z.string().trim().min(1).max(150),
+  // The picked hook's first frame; the user's own line has none – the script
+  // then decides what it shows.
+  firstFrame: z.string().trim().min(1).max(200).optional(),
   formulaId: z.string().min(1).nullable().optional(),
   pickedBy: z.enum(["agent", "user"]),
 });

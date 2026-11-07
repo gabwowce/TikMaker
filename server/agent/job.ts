@@ -7,7 +7,7 @@ import {
   type CallLog,
   type StructuredResult,
 } from "./llm.js";
-import { saveRun } from "./runs.js";
+import { updateRun } from "./runs.js";
 
 // What every step (steps/*.ts) works with: the run, the knowledge base and the
 // user's channel, plus two helpers that keep the run's file up to date, so the
@@ -36,8 +36,22 @@ export async function openJob(run: AgentRun): Promise<Job> {
     workspace,
 
     async save(changes) {
-      job.run = { ...job.run, ...changes };
-      await saveRun(job.run);
+      // The conversation is written from two places: the agent working here,
+      // and the endpoints taking the user's message or answer while it works
+      // (agent.message, agent.decide). Writing only the copy held here would
+      // drop what they added meanwhile, so the messages on disk are merged
+      // in first.
+      job.run = await updateRun(job.run.id, (onDisk) => {
+        const messages = mergeMessages(
+          changes.messages ?? job.run.messages,
+          onDisk?.messages,
+        );
+        return {
+          ...job.run,
+          ...changes,
+          ...(messages ? { messages } : {}),
+        };
+      });
     },
 
     async ai(name, call) {
@@ -78,5 +92,28 @@ function logged(name: string, startedAt: number, log: CallLog) {
     cachedInputTokens: log.usage.cachedInputTokens,
     outputTokens: log.usage.outputTokens,
     thinkingTokens: log.usage.thinkingTokens,
+    ...(log.usage.turns ? { turns: log.usage.turns } : {}),
   };
+}
+
+// The messages this job holds, with what was written to disk meanwhile: a
+// message only on disk (the user's, sent while the agent worked) is kept, in
+// time order; for a message in both, this job's copy wins – except a
+// proposal answered on disk (the buttons) that this copy has not seen yet.
+export function mergeMessages(
+  mine: AgentRun["messages"],
+  disk: AgentRun["messages"],
+): AgentRun["messages"] {
+  if (!disk?.length) return mine;
+  if (!mine?.length) return disk;
+  const byId = new Map(disk.map((message) => [message.id, message]));
+  const merged = mine.map((message) => {
+    const there = byId.get(message.id);
+    if (there?.proposal?.decision && !message.proposal?.decision)
+      return { ...message, proposal: there.proposal, status: there.status };
+    return message;
+  });
+  const known = new Set(mine.map((message) => message.id));
+  const added = disk.filter((message) => !known.has(message.id));
+  return [...merged, ...added].sort((a, b) => a.at - b.at);
 }

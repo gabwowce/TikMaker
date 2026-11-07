@@ -1,10 +1,11 @@
-import { Loader } from "@mantine/core";
+import { Button, Loader } from "@mantine/core";
 import type { AgentRun } from "../../agent/run/run";
 import type { RunStatus } from "../../agent/run/status";
-import { useAgentRun } from "../../api/agent";
+import { useAgentRun, useResume } from "../../api/agent";
 import { BuildCard } from "./BuildCard";
 import { VoiceCard } from "./VoiceCard";
 import { HookCard } from "./HookCard";
+import { ChatMessages } from "./ChatMessages";
 import { ScriptCard } from "./ScriptCard";
 import { TemplateCard } from "./TemplateCard";
 // The run's road as the user sees it: the plan's five steps, and which
@@ -19,17 +20,21 @@ const STEPS: { label: string; statuses: RunStatus[] }[] = [
   },
   { label: "Script", statuses: ["writing_script", "awaiting_approval"] },
   { label: "Building", statuses: ["laying_out", "checking"] },
-  { label: "Result", statuses: ["generating_voice"] },
+  { label: "Result", statuses: ["generating_voice", "reviewing"] },
 ];
 // Which step the run is on. Shared with the collapsed rail's dots, so both
 // count the same way.
 export function runRoad(run: AgentRun) {
-  const found = STEPS.findIndex((step) => step.statuses.includes(run.status));
+  // paused: on the step it was paused in
+  const status =
+    run.status === "paused" ? (run.pausedFrom ?? run.status) : run.status;
+  const found = STEPS.findIndex((step) => step.statuses.includes(status));
   // done = every step finished. error/cancelled are not on the road: the bar
   // stays on Angle, the first step the agent works on, and the error line
   // says why it stopped.
-  const active =
-    run.status === "done" ? STEPS.length : found === -1 ? 1 : found;
+  // Changing a scene comes after the video is built: every step stays done.
+  const built = run.status === "done" || run.status === "answering";
+  const active = built ? STEPS.length : found === -1 ? 1 : found;
   return { steps: STEPS, active };
 }
 
@@ -114,9 +119,64 @@ export function RunProgress({ runId }: { runId: string }) {
       <ScriptCard run={run} />
       <BuildCard run={run} />
       <VoiceCard run={run} />
+      <ChatMessages run={run} />
+      <ReviewingLine run={run} />
+      <PausedCard run={run} />
       {run.status === "error" ? (
         <p className="m-0 text-xs text-red-400">{run.error ?? "Failed"}</p>
       ) : null}
+    </div>
+  );
+}
+
+// While the agent looks at its own frames and fixes them (status "reviewing"):
+// a line under the conversation, so the panel never sits still with nothing
+// said. Each round's findings arrive above it as the agent's messages; the
+// video is put into the editor once it is done.
+function ReviewingLine({ run }: { run: AgentRun }) {
+  if (run.status !== "reviewing") return null;
+  const rounds = (run.messages ?? []).filter((message) =>
+    message.text.startsWith("Self-review, round"),
+  ).length;
+  return (
+    <div className="flex items-center gap-2 rounded-2xl rounded-bl-none border border-solid border-editor-border p-3 text-xs">
+      <Loader size={12} />
+      {rounds
+        ? "Fixing what it found, then looking again…"
+        : "Rendering frames and looking at them…"}
+      <span className="text-editor-muted">
+        The video goes into the editor when this is done.
+      </span>
+    </div>
+  );
+}
+
+// Paused at the model's usage limit (Claude Code's 5-hour limit): nothing is
+// lost – everything made so far is saved in the run. "Continue" goes on from
+// where it stopped once the limit has reset (the reason says when).
+function PausedCard({ run }: { run: AgentRun }) {
+  const resume = useResume();
+  if (run.status !== "paused") return null;
+  return (
+    <div className="flex flex-col gap-2 rounded-2xl rounded-bl-none border border-solid border-editor-accent p-3 text-xs text-editor-text">
+      <span className="font-semibold">Paused – the AI usage limit is reached</span>
+      <span className="text-editor-muted">{run.error}</span>
+      <span className="text-editor-muted">
+        Everything made so far is saved. Press Continue once the limit has
+        reset; the agent goes on from where it stopped.
+      </span>
+      <div className="flex items-center gap-2">
+        <Button
+          size="xs"
+          loading={resume.isPending}
+          onClick={() => resume.mutate({ runId: run.id })}
+        >
+          Continue
+        </Button>
+        {resume.error ? (
+          <span className="text-red-400">{resume.error.message}</span>
+        ) : null}
+      </div>
     </div>
   );
 }

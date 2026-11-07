@@ -29,12 +29,21 @@ export async function step4Building(job: Job): Promise<void> {
     problems: BlocksProblem[];
   }) =>
     job.ai("pickBlocks", () =>
-      pickBlocks(input, job.workspace, script.scenes, previous),
+      pickBlocks(
+        input,
+        job.workspace,
+        script.scenes,
+        job.knowledge.picturePrinciples,
+        previous,
+      ),
     );
   let blocks = await pick();
   let problems = checkBlocks(blocks, script, blockLibrary);
-  if (problems.length) {
-    blocks = await pick({ blocks, problems });
+  // Only what is broken goes back to the model; advice (taste) is shown to
+  // the user and costs no second call.
+  const broken = problems.filter((problem) => !problem.advice);
+  if (broken.length) {
+    blocks = await pick({ blocks, problems: broken });
     problems = checkBlocks(blocks, script, blockLibrary);
   }
   await job.save({ blocks: { ...blocks, problems } });

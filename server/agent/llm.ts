@@ -6,6 +6,7 @@ import {
   type LanguageModel,
   type LanguageModelUsage,
 } from "ai";
+import { readFileSync } from "node:fs";
 import { z } from "zod";
 import { callClaudeCode, claudeModel, WrongShapeError } from "./claudeCode.js";
 
@@ -61,6 +62,8 @@ export type TokenCount = {
   cachedInputTokens: number;
   outputTokens: number;
   thinkingTokens: number;
+  // Claude Code's rounds inside one call (0 for the Gemini API, which has none)
+  turns?: number;
 };
 function addUsage(total: TokenCount, usage: LanguageModelUsage | undefined) {
   total.inputTokens += usage?.inputTokens ?? 0;
@@ -77,10 +80,15 @@ export async function callStructured<T>(
   schema: z.ZodType<T>,
   prompt: { system: string; user: string },
   given?: LanguageModel,
+  // Claude Code only: a model for this call (the message router runs on
+  // Sonnet – a small decision, not worth Opus)
+  claude?: { model: string },
+  // PNG files the model looks at with the text (the review's frames)
+  images: string[] = [],
 ): Promise<StructuredResult<T>> {
   // A model passed in (the tests' fake one) always wins.
   if (!given && process.env.AGENT_PROVIDER === "claude-code")
-    return callStructuredClaude(schema, prompt);
+    return callStructuredClaude(schema, prompt, [], claude?.model);
   const model = given ?? agentModel();
   const level = thinkingLevel();
   const started = Date.now();
@@ -103,7 +111,23 @@ export async function callStructured<T>(
       const result = await generateText({
         model,
         instructions: prompt.system,
-        prompt: prompt.user,
+        ...(images.length
+          ? {
+              messages: [
+                {
+                  role: "user" as const,
+                  content: [
+                    { type: "text" as const, text: prompt.user },
+                    ...images.map((file) => ({
+                      type: "image" as const,
+                      image: readFileSync(file),
+                      mediaType: "image/png",
+                    })),
+                  ],
+                },
+              ],
+            }
+          : { prompt: prompt.user }),
         output: Output.object({ schema }),
         providerOptions: level
           ? { google: { thinkingConfig: { thinkingLevel: level } } }
@@ -131,6 +155,7 @@ async function callStructuredClaude<T>(
   schema: z.ZodType<T>,
   prompt: { system: string; user: string },
   tools: string[] = [],
+  model?: string,
 ): Promise<StructuredResult<T>> {
   const started = Date.now();
   const usage: TokenCount = {
@@ -152,10 +177,11 @@ async function callStructuredClaude<T>(
     usage.cachedInputTokens += more.cachedInputTokens;
     usage.outputTokens += more.outputTokens;
     usage.thinkingTokens += more.thinkingTokens;
+    usage.turns = (usage.turns ?? 0) + (more.turns ?? 0);
   };
   for (let attempt = 1; ; attempt++) {
     try {
-      const answer = await callClaudeCode(schema, prompt, tools);
+      const answer = await callClaudeCode(schema, prompt, tools, model);
       add(answer.usage);
       modelId = answer.model;
       return { ...log(attempt), data: answer.data };
@@ -168,6 +194,20 @@ async function callStructuredClaude<T>(
       throw new StructuredCallError(message, log(attempt));
     }
   }
+}
+
+// A call that looks at pictures (the review's frames). Claude Code reads each
+// file itself with its Read tool (the prompt lists the paths); the Gemini API
+// gets the PNGs attached to the message.
+export async function callWithImages<T>(
+  schema: z.ZodType<T>,
+  prompt: { system: string; user: string },
+  images: string[],
+  given?: LanguageModel,
+): Promise<StructuredResult<T>> {
+  if (!given && process.env.AGENT_PROVIDER === "claude-code")
+    return callStructuredClaude(schema, prompt, ["Read"]);
+  return callStructured(schema, prompt, given, undefined, images);
 }
 
 // A question answered with a web search: plain text back, and the pages it

@@ -44,6 +44,22 @@ export function checkScript(
       message: `About ${Math.round(total)} s long, more than ${Math.round(limit)} s (${targetSeconds} s + 15 %)`,
     });
 
+  // One scene, one thought: a scene longer than the knowledge base's limit
+  // carries more than one picture can show, so it is split in two – the
+  // blocks step otherwise crams two diagrams into one frame to keep up.
+  const maxScene = rules.find((rule) => rule.check === "sceneSeconds")?.max;
+  const maxHook = rules.find((rule) => rule.check === "hookSeconds")?.max;
+  script.scenes.forEach((scene, sceneIndex) => {
+    const max = sceneIndex === 0 ? maxHook : maxScene;
+    if (max === undefined) return;
+    const seconds = voDurationSeconds(scene.voiceover);
+    if (seconds > max)
+      problems.push({
+        sceneIndex,
+        message: `Scene ${sceneIndex + 1}: its voiceover takes about ${seconds.toFixed(1)} s, the limit is ${max} s – it says more than one thought; split it into two scenes, one thought each (or say it shorter)`,
+      });
+  });
+
   // Words on screen, by the knowledge base's own limit.
   const maxWords = rules.find(
     (rule) => rule.check === "onScreenWordsPerScene",

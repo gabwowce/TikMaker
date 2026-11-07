@@ -1,11 +1,12 @@
 import { ActionIcon } from "@mantine/core";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { useLatestRun } from "../../api/agent";
 import { loadCustomSfx } from "../../api/library";
 import { useEditorPrefs } from "../state/editorPrefs";
 import { useProjectStore } from "../state/projectStore";
 import { usePanelResize } from "../usePanelResize";
 import { AgentRail } from "./AgentRail";
+import { ChatInput } from "./ChatInput";
 import { IdeaForm } from "./IdeaForm";
 import { RunProgress } from "./RunProgress";
 
@@ -58,8 +59,18 @@ export function AgentPanel() {
       <div className="min-h-0 flex-1 overflow-auto p-3 text-sm text-editor-muted">
         <AgentPanelBody />
       </div>
+      <PanelChat />
     </aside>
   );
+}
+
+// The message box at the bottom, outside the scrolling conversation so it is
+// always in reach – as soon as the open project has a run.
+function PanelChat() {
+  const projectId = useProjectStore((s) => s.project.id);
+  const { run } = useLatestRun(projectId);
+  if (!run) return null;
+  return <ChatInput run={run} />;
 }
 
 // What the panel shows depends on the project, not on its history:
@@ -74,6 +85,8 @@ function AgentPanelBody() {
   const { loaded, run, working } = useLatestRun(projectId);
   // The video is built only once the agent is past building it: with a
   // voiceover that is after the voice step, so the scenes get its timings.
+  // The self-review ("reviewing") comes after that: the video is already in
+  // the editor while the agent looks at its frames.
   const built =
     run !== undefined &&
     !["laying_out", "checking", "generating_voice"].includes(run.status);
@@ -98,6 +111,16 @@ function AgentPanelBody() {
     if (!run || !awaitsBlocks) return;
     void withVoiceSounds(run).then(() => applyAgentBlocks(run));
   }, [run, awaitsBlocks, applyAgentBlocks]);
+  // The self-review ended (done, or paused at a limit): what it fixed goes
+  // into the editor – the whole video built again from the run; recordings and
+  // pictures put in meanwhile stay (projectFromBlocks keeps them).
+  const lastStatus = useRef(run?.status);
+  useEffect(() => {
+    const before = lastStatus.current;
+    lastStatus.current = run?.status;
+    if (!run || before !== "reviewing" || run.status === "reviewing") return;
+    void withVoiceSounds(run).then(() => applyAgentBlocks(run));
+  }, [run, applyAgentBlocks]);
 
   if (!loaded) return null;
   // While the agent works, and after it has built this project, the panel
@@ -119,7 +142,8 @@ function AgentPanelBody() {
     );
   return (
     <p className="m-0">
-      Select a scene and describe the change. Editing with the AI arrives in D8.
+      Changing a scene with the AI works on videos the agent built: start one
+      from an empty project.
     </p>
   );
 }

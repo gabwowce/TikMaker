@@ -93,6 +93,55 @@ describe("projectFromBlocks", () => {
     expect(last.keyframes).toBeUndefined();
   });
 
+  it("rebuilds only the scene the agent changed, keeping the rest", () => {
+    // a hand edit in scene 1, then the agent changes scene 2
+    const edited = {
+      ...project,
+      scenes: [{ ...first, notes: "moved by hand" }, second],
+    };
+    const changed = structuredClone(run);
+    changed.blocks!.scenes[1].blocks = [
+      { onWord: "Pick", kind: "number", value: 2, text: "Two" },
+    ];
+    const after = projectFromBlocks(edited, changed, 1);
+    expect(after.scenes[0]).toEqual(edited.scenes[0]);
+    const layers = after.scenes[1].content.visuals ?? [];
+    expect(layers).toHaveLength(1);
+    expect(layers[0].visual).toMatchObject({
+      type: "stage-block",
+      block: { kind: "number" },
+    });
+  });
+
+  it("keeps the creator's picture when the scene is rebuilt asking for the same one", () => {
+    const withPicture = structuredClone(run);
+    const picture = {
+      onWord: "Pick",
+      kind: "picture" as const,
+      text: "A robot hand",
+      find: "a robot hand holding a glowing globe, cut out",
+      look: "cutout" as const,
+    };
+    withPicture.blocks!.scenes[1].blocks = [picture];
+    const built = projectFromBlocks(project, withPicture, 1);
+    // the creator puts a file into the block (right-click → Replace asset)
+    const filled = structuredClone(built);
+    const layer = filled.scenes[1].content.visuals![0];
+    if (layer.visual.type === "stage-block") layer.visual.src = "/assets/hand.png";
+    // rebuilt with the same request: the file stays …
+    const again = projectFromBlocks(filled, withPicture, 1);
+    expect(again.scenes[1].content.visuals![0].visual).toMatchObject({
+      src: "/assets/hand.png",
+    });
+    // … asking for another picture: empty again
+    const other = structuredClone(withPicture);
+    other.blocks!.scenes[1].blocks = [{ ...picture, find: "a folder" }];
+    const changed = projectFromBlocks(filled, other, 1);
+    expect(changed.scenes[1].content.visuals![0].visual).not.toHaveProperty(
+      "src",
+    );
+  });
+
   it("turns the captions kinetic with the agent's key words", () => {
     expect(project.captions).toMatchObject({
       style: "kinetic",

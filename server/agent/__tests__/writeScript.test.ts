@@ -23,7 +23,7 @@ const input = (motionOnly = false) =>
     workspaceId: "dev",
     motionOnly,
   });
-const hook = "Stop panicking when you make a bad git commit.";
+const hook = { text: "Stop panicking when you make a bad git commit." };
 
 const scene = (role: string, needsRecording = false) => ({
   role,
@@ -64,7 +64,7 @@ describe("writeScript with a fake model", () => {
       fakeModel(script),
     );
     expect(result.data).toEqual(script);
-    expect(result.prompt.user).toContain(`Hook: ${hook}`);
+    expect(result.prompt.user).toContain(`Hook: ${hook.text}`);
     expect(result.prompt.user).toMatch(/hook .*\[required\]/);
     expect(result.prompt.user).toMatch(/\[repeatable\]/);
     // What the analysis found, from the knowledge base.
@@ -153,5 +153,19 @@ describe("writeScript with a fake model", () => {
     );
     expect(result.prompt.user).toContain("Your previous script:");
     expect(result.prompt.user).toContain("- Scene 2: 18 words on screen");
+  });
+});
+
+describe("ideaGivesOffer", () => {
+  it("finds an offer said in words, not only a link", async () => {
+    const { ideaGivesOffer } = await import("../prompts/writeScript.js");
+    expect(ideaGivesOffer("Link in bio for the template")).toBe(true);
+    expect(ideaGivesOffer("Comment GUIDE and I'll send it")).toBe(true);
+    expect(ideaGivesOffer("Nuoroda mano bio")).toBe(true);
+    expect(ideaGivesOffer("See tikmaker.app")).toBe(true);
+    // a comment prompt with no code word and no freebie is not an offer
+    expect(
+      ideaGivesOffer("Comment a topic and the agent will make the next video"),
+    ).toBe(false);
   });
 });

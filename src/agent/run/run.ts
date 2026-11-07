@@ -5,6 +5,7 @@ import { researchInRun, scriptInRun } from "./3-script";
 import { blocksInRun } from "./4-blocks";
 import { motionInRun } from "./4-motion";
 import { voiceInRun } from "./5-voice";
+import { chatMessage } from "./7-chat";
 import { logEntry } from "./log";
 import { runStatus } from "./status";
 // One agent run, as saved in db/agent-runs/<id>.json (server/agent/runs.ts):
@@ -17,8 +18,10 @@ export const agentRun = z.object({
   projectId: z.string().min(1),
   createdAt: z.number(),
   status: runStatus,
-  // Why the run stopped, when status is "error".
+  // Why the run stopped, when status is "error" or "paused".
   error: z.string().optional(),
+  // "paused": where the run was when the usage limit stopped it.
+  pausedFrom: runStatus.optional(),
 
   // 1 Idea
   input: ideaFromUser,
@@ -37,6 +40,9 @@ export const agentRun = z.object({
   motion: motionInRun.optional(),
   // 5 Result: the voiceover, when the form asked for it
   voice: voiceInRun.optional(),
+  // 7 The conversation: the user's messages and the agent's answers, oldest
+  // first (docs/pokalbis-planas.md)
+  messages: z.array(chatMessage).optional(),
   // Every call to the model, in order.
   steps: z.array(logEntry),
 });

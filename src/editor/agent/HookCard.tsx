@@ -22,6 +22,11 @@ export function HookCard({ run }: { run: AgentRun }) {
         <span className="text-sm font-semibold text-editor-text">
           “{run.hook.text}”
         </span>
+        {run.hook.firstFrame ? (
+          <span className="text-xs italic text-editor-muted">
+            Shows: {run.hook.firstFrame}
+          </span>
+        ) : null}
         {step ? <StepLog step={step} /> : null}
       </div>
     );
@@ -53,7 +58,13 @@ export function HookCard({ run }: { run: AgentRun }) {
           className="flex flex-col gap-1 rounded-lg border border-solid border-editor-border p-2 hover:border-editor-accent"
         >
           <span className="text-sm text-editor-text">{hook.text}</span>
+          {hook.firstFrame ? (
+            <span className="text-xs italic text-editor-muted">
+              Shows: {hook.firstFrame}
+            </span>
+          ) : null}
           <span className="text-[11px] text-editor-muted">
+            {hook.angle ? `${hook.angle} · ` : ""}
             {hook.formulaId ? "from a proven formula" : "the AI's own"} ·{" "}
             {hook.score}/5
           </span>

@@ -21,7 +21,7 @@ export async function step3Script(job: Job): Promise<void> {
         input,
         job.workspace,
         template,
-        hook.text,
+        hook,
         job.knowledge,
         revise,
         undefined,
@@ -34,7 +34,8 @@ export async function step3Script(job: Job): Promise<void> {
   // Looked up once per run; a rewrite after a comment reuses the facts. A
   // search that fails (no search quota on the key, the network) is logged and
   // the script is written from the idea alone, as before.
-  if (!job.run.research) {
+  // Only when the template step said the video needs outside facts.
+  if (!job.run.research && job.run.template?.needsFacts !== false) {
     try {
       const found = await job.ai("research", () =>
         research(input, job.workspace),
@@ -71,15 +72,6 @@ export async function step3Approve(run: AgentRun): Promise<void> {
 }
 
 // A comment on screen 3: agent.ts then has the script written again with it.
-export async function step3Revise(
-  run: AgentRun,
-  comment: string,
-): Promise<void> {
-  const script = scriptAwaitingAnswer(run);
-  const job = await openJob(run);
-  await job.save({ script: { ...script, comment } });
-}
-
 // The user answers only while the agent waits for them.
 function scriptAwaitingAnswer(run: AgentRun): ScriptInRun {
   if (run.status !== "awaiting_approval" || !run.script)

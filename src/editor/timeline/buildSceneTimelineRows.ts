@@ -40,6 +40,12 @@ export function buildSceneTimelineRows(
   const blocks = scene.content.blocks ?? [];
   const steps = scene.content.items ?? [];
   const sceneEnd = timing.durationInFrames;
+  // The "Scene text" row stands for the scene's own copy (eyebrow, headline,
+  // comparison columns). A scene with none of it – an agent's motion scene,
+  // whose words are the project's captions – gets no row: an empty bar across
+  // the whole scene would share a lane with its visuals and cover them.
+  const { eyebrow, headline, left, right } = scene.content;
+  const hasSceneText = Boolean(eyebrow || headline || left || right);
   function setVisual(index: number, patch: Record<string, unknown>) {
     return updateSceneVisuals(
       selectedSceneId,
@@ -92,7 +98,7 @@ export function buildSceneTimelineRows(
     return result;
   });
   const rows: TimelineRow[] = [
-    ...(lines.length === 0
+    ...(lines.length === 0 && hasSceneText
       ? [
           {
             id: "text-group",

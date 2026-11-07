@@ -1,17 +1,15 @@
-import { Button, Loader, Textarea } from "@mantine/core";
-import { useState } from "react";
+import { Button, Loader } from "@mantine/core";
 import type { ScriptInRun } from "../../agent/run/3-script";
 import type { AgentRun } from "../../agent/run/run";
-import { useApproveScript, useReviseScript } from "../../api/agent";
+import { useApproveScript } from "../../api/agent";
 import { StepLog } from "./StepLog";
 
 // 3 Script in the conversation: while the model writes, one line; then the
-// scenes to read, what the check still found, and the user's answer –
-// "Approve", or a comment to have it written again. Once approved, one line.
+// scenes to read, what the check still found, and "Approve". To have it
+// written again the user writes a message below (ChatInput) – a message
+// never approves, the button is the only way. Once approved, one line.
 export function ScriptCard({ run }: { run: AgentRun }) {
   const approve = useApproveScript();
-  const revise = useReviseScript();
-  const [comment, setComment] = useState("");
   const step = [...run.steps].reverse().find((s) => s.name === "writeScript");
   const script = run.script;
 
@@ -39,8 +37,8 @@ export function ScriptCard({ run }: { run: AgentRun }) {
   }
   if (run.status !== "awaiting_approval" || !script) return null;
 
-  const busy = approve.isPending || revise.isPending;
-  const error = approve.error ?? revise.error;
+  const busy = approve.isPending;
+  const error = approve.error;
   return (
     <div className="flex flex-col gap-2 rounded-2xl rounded-bl-none border border-solid border-editor-border p-3">
       <span className="text-xs text-editor-muted">
@@ -61,15 +59,7 @@ export function ScriptCard({ run }: { run: AgentRun }) {
           ))}
         </ul>
       ) : null}
-      <Textarea
-        placeholder="What to change? (e.g. shorter, scene 3 without a recording)"
-        autosize
-        minRows={1}
-        maxLength={500}
-        value={comment}
-        onChange={(event) => setComment(event.currentTarget.value)}
-      />
-      <div className="flex gap-2">
+      <div className="flex items-center gap-2">
         <Button
           size="xs"
           disabled={busy}
@@ -78,22 +68,9 @@ export function ScriptCard({ run }: { run: AgentRun }) {
         >
           Approve
         </Button>
-        {comment.trim().length >= 3 ? (
-          <Button
-            size="xs"
-            variant="default"
-            disabled={busy}
-            loading={revise.isPending}
-            onClick={() =>
-              revise.mutate(
-                { runId: run.id, comment: comment.trim() },
-                { onSuccess: () => setComment("") },
-              )
-            }
-          >
-            Rewrite with my comment
-          </Button>
-        ) : null}
+        <span className="text-[11px] text-editor-muted">
+          or write below what to change
+        </span>
       </div>
       {step ? <StepLog step={step} /> : null}
       {error ? (

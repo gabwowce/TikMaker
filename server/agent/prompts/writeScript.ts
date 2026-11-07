@@ -5,6 +5,7 @@ import {
   type ScriptFromAi,
 } from "../../../src/agent/run/3-script.js";
 import type { Knowledge } from "../knowledge.js";
+import { productScreens } from "./productScreens.js";
 import { callStructured, type StructuredResult } from "../llm.js";
 
 // Step 3: the script — the video as scenes, in words (FR-08). The model gets
@@ -34,7 +35,9 @@ When the idea has no fact for a scene, leave it out if it is optional; if it is 
 fill it with what the idea does say rather than with an invented claim.
 Its "creative" parts are yours to word.
 
-The first scene is the hook: say the chosen hook as it is, and show its key words.
+The first scene is the hook: say the chosen hook as it is, and show its key words. Its
+visual is the hook's first frame when one is given – a picture on screen from the very
+first word, never the words alone.
 The template's links ("→ next") and the transition phrases are examples of how scenes
 can follow each other; use them only where they read naturally. End the way that fits
 this video best: the CTA formulas show endings that have worked – use one, or write
@@ -42,26 +45,54 @@ your own, or none if no ending asks for one.
 The call to action never sends people to a link, a website, a download or a giveaway
 the idea does not mention – then pick a CTA formula that needs none of those.
 
-For every scene:
-- voiceover: what is said, natural spoken English
-- onScreen: the key words shown big, not the whole sentence
-- visual: what the viewer sees, concrete (a terminal running a command, a settings page,
-  an app icon), never "something engaging"
-- needsRecording: your call – true when the scene is shown best with the creator's own
-  screen recording rather than a picture the video editor draws.
+One scene = one thought, shown by one picture. When a part of the story has two
+thoughts (what a chatbot does, then what an agent does), it is two scenes, not one long
+voiceover – a long scene forces two pictures into one frame and neither reads.
 
-Keep within the limits. Each scene lasts about as long as its voiceover: fill the wanted
-length – add more steps or items with the repeatable scenes, keep the optional scenes
-that help – rather than stopping short.`;
+For every scene:
+- voiceover: what is said, natural spoken English. When a scene lists things (tools,
+  mistakes, steps), the voice names every one of them – the list on screen fills point by
+  point as each is named; a point that needs it gets a short sentence after its name
+- onScreen: the key words shown big, not the whole sentence
+- visual: what the viewer sees happening, concrete and with a verb – a terminal running a
+  command, a price counting down, the idea turning into a video – one picture for the
+  thought, understandable with the sound off; never "something engaging"
+- needsRecording: your call – true when the scene is shown best with the creator's own
+  screen recording rather than a picture the video editor draws. Then the voiceover says
+  what the recording shows while it shows it (the click, what appears). Keep recordings
+  for the moments where the real screen is the proof – about 3–4 in a video at most
+
+Keep within the limits. Each scene lasts about as long as its voiceover. Treat the wanted
+length as a target, not a requirement to fill at any cost: use the repeatable scenes and
+the optional scenes that genuinely help, but never add empty explanations, repeated
+statements or invented steps just to reach it. If the idea cannot support the length,
+write the strongest shorter version.
+
+Your job is WHAT the viewer sees (visual), not how it is drawn: the next step picks the
+recording, block or animation that shows it, knowing what the editor can really do – so
+do not limit the visual to what you think the editor has.`;
 
 // CTA types that send people somewhere or promise something, and what in the
-// idea counts as somewhere to send them.
+// idea counts as giving one: an address, or an offer said in words – a link in
+// the bio, a free PDF / guide / template, "comment GUIDE and I'll send…"
+// (English or Lithuanian). Without one, the script may not promise it.
 const OFFERS = ["link", "lead-magnet"];
 const LINK = /https?:\/\/|www\.|\b[\w-]+\.(com|io|dev|app|ai|lt)\b/i;
+const OFFER_WORDS =
+  /\b(bio|pdf|e-?book|guide|template|checklist|download|newsletter|sign up|dm me|i'?ll send|send you)\b|nuorod|atsisi[uų]s|atsi[uų]s|[sš]ablon/i;
+// "comment GUIDE": a code word in capitals (case matters, so no /i).
+const COMMENT_CODE =
+  /\b[Cc]omment\s+["'“]?[A-Z]{2,}\b|[Kk]omentuok\s+["'“]?[A-ZĄČĘĖĮŠŲŪŽ]{2,}/;
+export function ideaGivesOffer(idea: string): boolean {
+  return LINK.test(idea) || OFFER_WORDS.test(idea) || COMMENT_CODE.test(idea);
+}
 
 // What to change when writing again: the code's problems, or the user's
 // comment, with the script it is about.
 export type ScriptChange = { previous: ScriptFromAi; change: string[] };
+
+// The chosen hook: its line, and what it shows when the agent wrote it.
+export type HookForScript = { text: string; firstFrame?: string };
 
 // What the script needs from the knowledge base besides the template.
 export type ScriptKnowledge = Pick<
@@ -73,7 +104,7 @@ function userPrompt(
   input: IdeaFromUser,
   workspace: Workspace,
   template: VideoTemplate,
-  hook: string,
+  hook: HookForScript,
   knowledge: ScriptKnowledge,
   revise?: ScriptChange,
   facts?: string,
@@ -111,7 +142,7 @@ function userPrompt(
   // Only the CTA formulas whose type the template allows – and no link or
   // freebie unless the idea gives one, or the model makes one up.
   const ctaTypes = template.ctaTypes.filter(
-    (type) => !OFFERS.includes(type) || LINK.test(input.idea),
+    (type) => !OFFERS.includes(type) || ideaGivesOffer(input.idea),
   );
   const ctas = knowledge.ctaFormulas
     .filter((c) => ctaTypes.includes(c.type))
@@ -122,7 +153,7 @@ function userPrompt(
     knowledge.designRules.find((rule) => rule.check === check)?.max;
 
   const prompt = `Channel: ${workspace.name}. ${workspace.brief}
-Audience: ${workspace.audience}
+Audience: ${workspace.audience}${productScreens(workspace)}
 
 Idea: ${input.idea}
 ${
@@ -135,7 +166,12 @@ ${facts}
 }Wanted length: about ${input.targetSeconds} s
 Face on camera: ${input.withFace ? "yes" : "no, a faceless video"}
 ${input.motionOnly ? "Motion graphics only: no recordings at all (needsRecording is always false).\n" : ""}
-Hook: ${hook}
+Hook: ${hook.text}${
+    hook.firstFrame
+      ? `
+First frame (what the hook shows): ${hook.firstFrame}`
+      : ""
+  }
 
 Template: ${template.name} – ${template.oneLine}
 Scenes:
@@ -165,7 +201,7 @@ export async function writeScript(
   input: IdeaFromUser,
   workspace: Workspace,
   template: VideoTemplate,
-  hook: string,
+  hook: HookForScript,
   knowledge: ScriptKnowledge,
   revise?: ScriptChange,
   model?: Parameters<typeof callStructured>[2],

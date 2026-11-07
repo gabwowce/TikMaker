@@ -63,12 +63,25 @@ function fakeModel(...answers: object[]) {
   });
 }
 
+// Two principles, as the knowledge base gives them.
+const principles = [
+  {
+    id: "one-picture-per-thought",
+    priority: "must" as const,
+    principle: "One picture holds one whole thought.",
+    why: "A picture per word flickers.",
+    inTikMaker: "Usually one main block per sentence.",
+    sources: [],
+  },
+];
+
 describe("pickBlocks with a fake model", () => {
   it("returns the blocks and sends the catalogue, the ids and the voiceover", async () => {
     const result = await pickBlocks(
       input,
       workspace,
       scenes,
+      principles,
       undefined,
       fakeModel(answer),
     );
@@ -78,6 +91,11 @@ describe("pickBlocks with a fake model", () => {
     expect(result.prompt.user).toContain(blockLibrary.logos[0]);
     expect(result.prompt.user).toContain(scenes[0].voiceover);
     expect(result.prompt.user).toContain("- screen:");
+    // the knowledge, with its weight, and whether a scene asked for a recording
+    expect(result.prompt.user).toContain(
+      "- [must] One picture holds one whole thought.",
+    );
+    expect(result.prompt.user).toContain("Recording: no");
   });
 
   it("offers no screen card for motion graphics only", async () => {
@@ -85,6 +103,7 @@ describe("pickBlocks with a fake model", () => {
       { ...input, motionOnly: true },
       workspace,
       scenes,
+      principles,
       undefined,
       fakeModel(answer),
     );
@@ -96,6 +115,7 @@ describe("pickBlocks with a fake model", () => {
       input,
       workspace,
       scenes,
+      principles,
       {
         blocks: answer,
         problems: [{ sceneIndex: 0, message: "Scene 1: block 1 stays 4.0 s" }],

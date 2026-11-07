@@ -40,11 +40,6 @@ export const scriptFromAi = z.object({
 export const approveScriptFromUser = z.object({
   runId: z.string().min(1),
 });
-// A comment: the model writes the script again with it.
-export const reviseScriptFromUser = z.object({
-  runId: z.string().min(1),
-  comment: z.string().trim().min(3).max(500),
-});
 
 // ── In the run's file ────────────────────────────────────────────────────
 

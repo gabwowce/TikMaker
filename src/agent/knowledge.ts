@@ -47,6 +47,13 @@ export const workspaceSchema = z
     audience: z.string(),
     tone: z.string(),
     language: z.string().min(2),
+    // The channel's own product as it really looks (for a channel about its
+    // product): each screen and what is on it. Scenes that show the product
+    // and recording requests describe only these – the model does not know
+    // the product and would otherwise invent screens that cannot be recorded.
+    screens: z
+      .array(z.object({ name: z.string().min(1), shows: z.string().min(1) }))
+      .optional(),
   })
   .strict();
 
@@ -169,9 +176,15 @@ export const soundRuleSchema = z
 // works, what it means in TikMaker's own presets, and where it comes from. The
 // motion step gives these to the model as knowledge, not as rules – the code
 // checks only what follows from how the frame works (checkMotion).
+// A principle of motion or of pictures (shared/motion-principles.json,
+// shared/picture-principles.json): knowledge for the model, not a rule the
+// code enforces. `principle` and `why` are the general idea; `inTikMaker` how
+// it applies here, with TikMaker's own starting values. `priority`: how much
+// weight the model should give it.
 export const motionPrincipleSchema = z
   .object({
     id: z.string().min(1),
+    priority: z.enum(["must", "recommended", "optional"]),
     principle: z.string().min(1),
     why: z.string().min(1),
     inTikMaker: z.string().min(1),
@@ -179,6 +192,33 @@ export const motionPrincipleSchema = z
   })
   .strict();
 
+// What the review of the frames checks (shared/review-rubric.json, FR-15):
+// "fix" – the scene does not work, the agent changes it; "note" – a matter of
+// taste, said but not changed (a reviewer that fixed every taste note would
+// keep rewriting a video that already works).
+export const reviewCheckSchema = z
+  .object({
+    id: z.string().min(1),
+    level: z.enum(["fix", "note"]),
+    check: z.string().min(1),
+    fails: z.string().min(1),
+  })
+  .strict();
+
+// A sheet of good frames the review compares against
+// (shared/reference-frames.json; the image beside it in reference-frames/).
+export const referenceSheetSchema = z
+  .object({
+    id: z.string().min(1),
+    file: z.string().min(1), // relative to shared/
+    source: z.string().min(1),
+    tiles: z.array(z.string().min(1)).min(1),
+    takeaways: z.array(z.string().min(1)).min(1),
+  })
+  .strict();
+
+export type ReviewCheck = z.infer<typeof reviewCheckSchema>;
+export type ReferenceSheet = z.infer<typeof referenceSheetSchema>;
 export type Workspace = z.infer<typeof workspaceSchema>;
 export type WorkspaceStyle = z.infer<typeof workspaceStyleSchema>;
 export type SceneSlot = z.infer<typeof sceneSlotSchema>;

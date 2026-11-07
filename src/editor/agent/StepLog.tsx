@@ -12,6 +12,7 @@ export function StepLog({ step }: { step: LogEntry }) {
     step.attempts && step.attempts > 1 ? `${step.attempts} tries` : undefined,
     step.cachedInputTokens ? `${step.cachedInputTokens} cached` : undefined,
     step.thinkingTokens ? `${step.thinkingTokens} thinking` : undefined,
+    step.turns && step.turns > 1 ? `${step.turns} rounds` : undefined,
   ].filter(Boolean);
 
   return (

@@ -75,7 +75,12 @@ export async function step2ChooseHook(
   if (!option)
     throw new Error(`There is no hook number ${choice.hookIndex + 1}`);
   await job.save({
-    hook: { text: option.text, formulaId: option.formulaId, pickedBy: "agent" },
+    hook: {
+      text: option.text,
+      formulaId: option.formulaId,
+      firstFrame: option.firstFrame,
+      pickedBy: "agent",
+    },
   });
 }
 

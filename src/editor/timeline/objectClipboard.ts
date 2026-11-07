@@ -267,7 +267,31 @@ export function replaceVisualAsset(
   if (!visuals.some((entry) => entry.id === id)) return false;
   state.updateSceneVisuals(
     sceneId,
-    visuals.map((entry) => (entry.id === id ? { ...entry, visual } : entry)),
+    visuals.map((entry) =>
+      entry.id === id
+        ? { ...entry, visual: fillScreen(entry.visual, visual) }
+        : entry,
+    ),
   );
   return true;
+}
+
+// A motion scene's screen block (the REC slot) or picture block keeps being
+// the block when a recording or a picture is put into it: the media fills the
+// slot – the card, the cut-out, or the whole frame on a "full" stage – instead
+// of replacing the block with a differently sized layer. A picture block
+// takes a still only.
+function fillScreen(
+  current: PositionedVisualEntry["visual"],
+  next: PositionedVisualEntry["visual"],
+): PositionedVisualEntry["visual"] {
+  if (current.type !== "stage-block") return next;
+  const kind = current.block.kind;
+  const media =
+    next.type === "image" || (kind === "screen" && next.type === "recording")
+      ? next.src
+      : undefined;
+  if ((kind !== "screen" && kind !== "picture") || media === undefined)
+    return next;
+  return { ...current, src: media };
 }

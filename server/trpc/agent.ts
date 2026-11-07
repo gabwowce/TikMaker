@@ -5,11 +5,12 @@ import {
   changeTemplateFromUser,
   chooseHookFromUser,
 } from "../../src/agent/run/2-angle.js";
+import { approveScriptFromUser } from "../../src/agent/run/3-script.js";
 import {
-  approveScriptFromUser,
-  reviseScriptFromUser,
-} from "../../src/agent/run/3-script.js";
-import { continueRun } from "../agent/agent.js";
+  decideFromUser,
+  sendMessageFromUser,
+} from "../../src/agent/run/7-chat.js";
+import { continueRun, resumeRun } from "../agent/agent.js";
 import { loadKnowledge } from "../agent/knowledge.js";
 import { getRun, listRuns } from "../agent/runs.js";
 import { step1Idea } from "../agent/steps/1-idea.js";
@@ -17,7 +18,8 @@ import {
   step2ChangeTemplate,
   step2ChooseHook,
 } from "../agent/steps/2-angle.js";
-import { step3Approve, step3Revise } from "../agent/steps/3-script.js";
+import { step3Approve } from "../agent/steps/3-script.js";
+import { step7Decide, step7Message } from "../agent/steps/7-chat.js";
 import { KNOWLEDGE_DIR } from "../config.js";
 import { procedure, router } from "./init.js";
 
@@ -76,14 +78,32 @@ export const agentRouter = router({
       continueRun(await findRun(run.id));
     }),
 
-  // Screen 3: a comment – the agent writes the script again with it.
-  reviseScript: procedure
-    .input(reviseScriptFromUser)
-    .mutation(async ({ input }) => {
-      const run = await findRun(input.runId);
-      await asBadRequest(() => step3Revise(run, input.comment));
+  // The conversation: a message at any time. It waits until the agent stops
+  // where it can take it up, then the agent works on it and answers.
+  message: procedure.input(sendMessageFromUser).mutation(async ({ input }) => {
+    const run = await findRun(input.runId);
+    try {
+      await asBadRequest(() => step7Message(run, input));
+    } finally {
+      // even when the message is refused because an earlier one still waits:
+      // after a server restart nothing is working on that one, and this
+      // wakes the agent up for it (continueRun never starts a second worker)
       continueRun(await findRun(run.id));
+    }
+  }),
+
+  // The answer to the agent's proposal – the "Do it" / "No" buttons.
+  // "Continue" on a run paused at the model's usage limit.
+  resume: procedure
+    .input(z.object({ runId: z.string().min(1) }))
+    .mutation(async ({ input }) => {
+      await resumeRun(await findRun(input.runId));
     }),
+  decide: procedure.input(decideFromUser).mutation(async ({ input }) => {
+    const run = await findRun(input.runId);
+    await asBadRequest(() => step7Decide(run, input));
+    continueRun(await findRun(run.id));
+  }),
 });
 
 async function findRun(id: string) {

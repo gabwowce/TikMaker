@@ -23,6 +23,11 @@ export type ClaudeCodeAnswer<T> = {
     cachedInputTokens: number;
     outputTokens: number;
     thinkingTokens: number;
+    // How many rounds the session took: with a JSON schema Claude Code may
+    // need more than one to give a valid answer, and every round sends the
+    // whole prompt again – which is what makes a call cost several times its
+    // prompt.
+    turns: number;
   };
 };
 
@@ -50,6 +55,7 @@ export function readAnswer<T>(
 ): ClaudeCodeAnswer<T> {
   let result: {
     is_error?: boolean;
+    num_turns?: number;
     result?: string;
     structured_output?: unknown;
     modelUsage?: Record<string, unknown>;
@@ -80,6 +86,7 @@ export function readAnswer<T>(
       cachedInputTokens: usage.cache_read_input_tokens ?? 0,
       outputTokens: usage.output_tokens ?? 0,
       thinkingTokens: usage.output_tokens_details?.thinking_tokens ?? 0,
+      turns: result.num_turns ?? 1,
     },
   };
   if (result.structured_output === undefined)
@@ -108,13 +115,23 @@ export class WrongShapeError extends Error {
 // One `claude -p` run; the prompt goes in through stdin (long text and quotes
 // on a Windows command line break). `tools` – the Claude Code tools this call
 // may use (e.g. WebSearch for research); none by default.
+// The empty folder every call runs in. Files a call must read (the review's
+// frames) are put inside it: Claude Code reads freely only in its own folder.
+export function agentFolder(): string {
+  const cwd = path.join(os.tmpdir(), "tikmaker-agent");
+  mkdirSync(cwd, { recursive: true });
+  return cwd;
+}
+
 export function runClaudeCode(
   prompt: { system: string; user: string },
   jsonSchema: unknown,
   tools: string[] = [],
+  // a model for this call only (e.g. "sonnet" for the cheap message router);
+  // unset – AGENT_CLAUDE_MODEL
+  model?: string,
 ): Promise<string> {
-  const cwd = path.join(os.tmpdir(), "tikmaker-agent");
-  mkdirSync(cwd, { recursive: true });
+  const cwd = agentFolder();
   const env = { ...process.env };
   for (const name of NOT_SUBSCRIPTION) delete env[name];
   const args = [
@@ -129,7 +146,7 @@ export function runClaudeCode(
     tools.join(","),
     ...(tools.length ? ["--allowedTools", tools.join(",")] : []),
     "--model",
-    claudeModel(),
+    model ?? claudeModel(),
     "--system-prompt",
     prompt.system,
     "--no-session-persistence",
@@ -163,11 +180,13 @@ export async function callClaudeCode<T>(
   schema: z.ZodType<T>,
   prompt: { system: string; user: string },
   tools: string[] = [],
+  model?: string,
 ): Promise<ClaudeCodeAnswer<T>> {
   const stdout = await runClaudeCode(
     prompt,
     zodSchema(schema).jsonSchema,
     tools,
+    model,
   );
   return readAnswer(stdout, schema);
 }

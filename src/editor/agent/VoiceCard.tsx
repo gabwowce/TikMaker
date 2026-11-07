@@ -17,10 +17,23 @@ export function VoiceCard({ run }: { run: AgentRun }) {
     );
   }
   if (!done) return null;
+  // ElevenLabs is not a language model: it counts characters, not tokens.
+  const characters = (run.script?.scenes ?? [])
+    .slice(0, done)
+    .reduce((sum, scene) => sum + scene.voiceover.length, 0);
+  const seconds = (run.voice?.scenes ?? []).reduce(
+    (sum, scene) => sum + (scene.words[scene.words.length - 1]?.end ?? 0),
+    0,
+  );
   return (
-    <div className="rounded-2xl rounded-bl-none border border-solid border-editor-border p-3 text-xs text-editor-muted">
-      <span className="text-green-400">✓</span> Voiceover · {done} of {total}{" "}
-      scenes
+    <div className="flex flex-col gap-0.5 rounded-2xl rounded-bl-none border border-solid border-editor-border p-3 text-xs text-editor-muted">
+      <span>
+        <span className="text-green-400">✓</span> Voiceover · {done} of {total}{" "}
+        scenes
+      </span>
+      <span className="pl-4 text-[11px]">
+        {characters} characters · {seconds.toFixed(1)} s of voice
+      </span>
     </div>
   );
 }

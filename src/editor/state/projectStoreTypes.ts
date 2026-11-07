@@ -55,6 +55,7 @@ export type ProjectStore = {
   applyAgentScript: (run: AgentRun) => void;
   // A motion video: the agent's blocks become the scenes' layers.
   applyAgentBlocks: (run: AgentRun) => void;
+  applyAgentSceneEdit: (run: AgentRun, sceneIndex: number) => void;
   addScene: (type: SceneType) => void;
   insertScene: (scene: Scene) => void;
   removeScene: (id: string) => void;

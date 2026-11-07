@@ -14,6 +14,8 @@ const POLL_MS = 1000;
 // a hook picked, hooks written for a template that was then changed, or the
 // script approved or commented on.
 function waitsForUser(run: AgentRun): boolean {
+  // a message the agent has not answered yet: it is about to move
+  if (talking(run)) return false;
   if (run.status === "awaiting_hook")
     return !run.hook && run.hooksFor === run.template?.videoTemplateId;
   if (run.status === "awaiting_approval")
@@ -22,6 +24,16 @@ function waitsForUser(run: AgentRun): boolean {
 }
 // Statuses after which the agent is no longer working on a project.
 const FINISHED: RunStatus[] = ["done", "error", "cancelled"];
+// Paused at the usage limit: nothing moves until "Continue", so not polled.
+const STILL: RunStatus[] = [...FINISHED, "paused"];
+// Work from the conversation – the user's message, or a proposal the user
+// accepted – waiting for the agent or being done: a run that waits for the
+// user (or is finished) moves again until the agent answers.
+export function talking(run: AgentRun): boolean {
+  return (run.messages ?? []).some(
+    (message) => message.status === "waiting" || message.status === "working",
+  );
+}
 
 // Starts a run for a project. Afterwards the project's run list is asked for
 // again, so the panel's history shows the new run at once.
@@ -45,7 +57,9 @@ export function useAgentRun(runId: string | undefined) {
     trpc.agent.get.queryOptions(runId ?? skipToken, {
       refetchInterval: (query) => {
         const run = query.state.data;
-        return run && (FINISHED.includes(run.status) || waitsForUser(run))
+        return run &&
+          !talking(run) &&
+          (STILL.includes(run.status) || waitsForUser(run))
           ? false
           : POLL_MS;
       },
@@ -96,10 +110,22 @@ export function useApproveScript() {
     trpc.agent.approveScript.mutationOptions({ onSuccess: askForRunAgain }),
   );
 }
-// Screen 3: a comment – the agent writes the script again with it.
-export function useReviseScript() {
+// The conversation: a message to the agent at any step it takes one.
+export function useSendMessage() {
   return useMutation(
-    trpc.agent.reviseScript.mutationOptions({ onSuccess: askForRunAgain }),
+    trpc.agent.message.mutationOptions({ onSuccess: askForRunAgain }),
+  );
+}
+// "Continue" on a run paused at the usage limit.
+export function useResume() {
+  return useMutation(
+    trpc.agent.resume.mutationOptions({ onSuccess: askForRunAgain }),
+  );
+}
+// The answer to the agent's proposal: "Do it" or "No".
+export function useDecide() {
+  return useMutation(
+    trpc.agent.decide.mutationOptions({ onSuccess: askForRunAgain }),
   );
 }
 // After an answer: ask for the run again, since one that waits for the user is

@@ -18,12 +18,18 @@ export const motionTransition = z.enum([
   "slideRight",
   "slideUp",
   "slideDown",
+  "zoomThrough",
+  "fromDepth",
+  "flip",
 ]);
 
 // A move while the block is on screen (becomes a keyframe): from the word
-// `onWord` on, its centre is at `y` (% of the frame's height) at `scale`.
+// `onWord` on, its centre is at `x` (% of the frame's width, unset – where it
+// was) and `y` (% of the frame's height) at `scale`. A change of composition –
+// the diagram slides aside so the result can appear next to it.
 export const blockMove = z.object({
   onWord: z.string().trim().min(1),
+  x: z.number().min(0).max(100).optional(),
   y: z.number().min(0).max(100),
   scale: z.number().min(0.3).max(1.2),
 });

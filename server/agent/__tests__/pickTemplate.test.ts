@@ -37,7 +37,7 @@ function fakeModel(...answers: object[]) {
 
 describe("pickTemplate with a fake model", () => {
   it("returns the model's pick when it names a real template", async () => {
-    const pick = { videoTemplateId: "pain-to-fix", score: 4, reason: "Fits." };
+    const pick = { videoTemplateId: "pain-to-fix", score: 4, reason: "Fits.", needsFacts: true };
     const result = await pickTemplate(
       input("How to undo the last git commit in a few seconds"),
       workspace,
@@ -54,8 +54,8 @@ describe("pickTemplate with a fake model", () => {
       workspace,
       templates,
       fakeModel(
-        { videoTemplateId: "no-such-template", score: 5, reason: "Made up." },
-        { videoTemplateId: "how-to-steps", score: 4, reason: "Steps." },
+        { videoTemplateId: "no-such-template", score: 5, reason: "Made up.", needsFacts: true },
+        { videoTemplateId: "how-to-steps", score: 4, reason: "Steps.", needsFacts: true },
       ),
     );
     expect(result.data.videoTemplateId).toBe("how-to-steps");
@@ -66,7 +66,7 @@ describe("pickTemplate with a fake model", () => {
 });
 describe("a call that gives up", () => {
   it("still reports what it sent, how often and what it cost", async () => {
-    const madeUp = { videoTemplateId: "no-such", score: 5, reason: "Made up." };
+    const madeUp = { videoTemplateId: "no-such", score: 5, reason: "Made up.", needsFacts: true };
     const error = await pickTemplate(
       input("How to undo the last git commit in a few seconds"),
       workspace,

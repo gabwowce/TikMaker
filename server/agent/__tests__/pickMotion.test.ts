@@ -83,6 +83,11 @@ describe("pickMotion with a fake model", () => {
     expect(user).toContain("- zoomSettleRight:");
     expect(user).toContain("- burstOut:");
     expect(user).toContain(knowledge.motionPrinciples[0].principle);
+    // "why" stays in the knowledge base – the call gets the rule and its use
+    expect(user).not.toContain(knowledge.motionPrinciples[0].why);
+    // where a carried block may land, and "none" among the entrances
+    expect(user).toContain("A carry from the previous scene can land here:");
+    expect(user).toContain("- none:");
     expect(user).not.toContain("Your previous answer");
   });
 

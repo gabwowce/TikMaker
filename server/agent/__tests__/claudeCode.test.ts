@@ -35,6 +35,8 @@ describe("readAnswer", () => {
         cachedInputTokens: 10,
         outputTokens: 73,
         thinkingTokens: 5,
+        // the fake answer gives no num_turns: one round
+        turns: 1,
       },
     });
   });

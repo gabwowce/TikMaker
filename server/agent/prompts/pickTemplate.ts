@@ -24,7 +24,11 @@ does not fit, however close its topic is.
 Never invent a template: answer only with an id from the list.
 score: 5 = made for this idea and the idea has every fact it needs, 3 = workable,
 1 = nothing in the list fits.
-reason: one or two sentences for the creator, in plain English, about this idea.`;
+reason: one or two sentences for the creator, in plain English, about this idea.
+needsFacts: true when the script will need facts from outside the idea that should be
+checked online first – prices, numbers, dates, news, how another company's tool works;
+false when the idea itself (or the channel's own product, which the channel knows) gives
+everything the video says.`;
 
 // The facts a template's required scenes are built on ("fixed" slots), once
 // each: what the idea must already say for the template to work.

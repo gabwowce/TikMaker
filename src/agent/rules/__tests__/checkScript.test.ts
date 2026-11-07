@@ -80,6 +80,23 @@ describe("checkScript", () => {
     ]);
   });
 
+  it("asks to split a scene whose voiceover runs past the scene limit", () => {
+    const limits: DesignRule[] = [
+      { id: "scene-length", check: "sceneSeconds", max: 9, level: "warning" },
+      { id: "hook-length", check: "hookSeconds", max: 5, level: "warning" },
+    ];
+    // 37 words ≈ 12 s (the chatbot-vs-agent scene of test 10); 16 ≈ 5.5 s.
+    const long = Array(37).fill("word").join(" ");
+    const hook = Array(16).fill("word").join(" ");
+    const script = {
+      scenes: [scene("hook", hook), scene("item", long), scene("payoff")],
+      skipped: [],
+    };
+    const problems = checkScript(script, 60, limits);
+    expect(problems.map((p) => p.sceneIndex)).toEqual([0, 1]);
+    expect(problems[1].message).toMatch(/split it into two scenes/);
+  });
+
   it("times a scene by whichever takes longer: speaking or reading", () => {
     expect(sceneSeconds(scene("hook", "One two."))).toBe(2); // the floor
     const spoken = Array(16).fill("word").join(" "); // 16 / 3.2 + 0.5

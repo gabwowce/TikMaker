@@ -11,36 +11,77 @@ import type { AgentRun } from "../../src/agent/run/run.js";
 const root = fs.mkdtempSync(path.join(os.tmpdir(), "tikmaker-agent-"));
 process.env.TIKMAKER_ROOT = root;
 process.env.TIKMAKER_KNOWLEDGE = path.resolve("knowledge");
+// The self-review at the end of the build is tried in its own test below;
+// everywhere else the build ends where it did before it existed.
+process.env.AGENT_SELF_REVIEW = "off";
 
+let limitOn = true;
 // No real model in tests: a made-up answer per kind of question, so a run
 // moves on in milliseconds and costs nothing. pickTemplate.test.ts and
 // writeHooks.test.ts have the optional tests against real Gemini.
 const fakeModel = new MockLanguageModelV4({
   doGenerate: async (options) => {
     const prompt = JSON.stringify(options.prompt);
+    // The usage limit: while it is on, the blocks step of an idea saying so
+    // stops on it (every attempt, as a real limit does).
+    if (
+      limitOn &&
+      prompt.includes("HIT THE LIMIT") &&
+      prompt.includes("Blocks:") &&
+      !prompt.includes("Allowed now:")
+    )
+      throw new Error("You've hit your 5-hour limit · resets 5pm");
     // Hooks: the first two formulas the prompt offers, and one of its own.
     const [first, second] = [...prompt.matchAll(/- id: ([\w-]+)/g)].map(
       (match) => match[1],
     );
-    const answer = prompt.includes("Entrances:")
-      ? fakeMotion(prompt)
-      : prompt.includes("Blocks:")
-        ? fakeBlocks(prompt)
-        : prompt.includes("Transition phrases:")
-          ? fakeScript(prompt)
-          : prompt.includes("Formulas:")
-            ? {
-                hooks: [
-                  { text: "Hook one", formulaId: first, score: 4 },
-                  { text: "Hook two", formulaId: second, score: 4 },
-                  { text: "Hook three", formulaId: null, score: 3 },
-                ],
-              }
-            : {
-                videoTemplateId: "how-to-steps",
-                score: 4,
-                reason: "A clear how-to.",
-              };
+    const answer = prompt.includes("Example frames:")
+      ? FAKE_REVIEW
+      : prompt.includes("Allowed now:")
+      ? fakeRoute(prompt)
+      : prompt.includes("Rewrite scene")
+        ? { voiceover: "A simpler short line.", onScreen: "Simpler" }
+        : prompt.includes("Entrances:")
+          ? fakeMotion(prompt)
+          : prompt.includes("wants scene")
+            ? FAKE_EDIT
+            : prompt.includes("Blocks:")
+              ? fakeBlocks(prompt)
+              : prompt.includes("Transition phrases:")
+                ? fakeScript(prompt)
+                : prompt.includes("Formulas:")
+                  ? {
+                      hooks: [
+                        {
+                          text: "Hook one",
+                          firstFrame: "A screen recording mid-action",
+                          angle: "curiosity",
+                          formulaId: first,
+                          score: 4,
+                        },
+                        {
+                          text: "Hook two",
+                          firstFrame: "A screen recording mid-action",
+                          angle: "outcome",
+                          formulaId: second,
+                          score: 4,
+                        },
+                        {
+                          text: "Hook three",
+                          firstFrame: "A screen recording mid-action",
+                          angle: "surprise",
+                          formulaId: null,
+                          score: 3,
+                        },
+                      ],
+                    }
+                  : {
+                      videoTemplateId: "how-to-steps",
+                      score: 4,
+                      reason: "A clear how-to.",
+                      // an idea that says so needs no search
+                      needsFacts: !prompt.includes("NO OUTSIDE FACTS"),
+                    };
     return {
       content: [{ type: "text", text: JSON.stringify(answer) }],
       finishReason: { unified: "stop", raw: undefined },
@@ -88,15 +129,96 @@ function fakeMotion(prompt: string) {
     }));
   return { idea: "Calm fades all the way through.", scenes };
 }
-// Blocks (motion video): one badge per scene, on the first word of its
-// voiceover ("A short line."), so the code's check finds nothing.
+// Blocks (motion video): one block per scene, on the first word of its
+// voiceover ("A short line."), taking turns between four looks so no look
+// comes more than twice – the code's check finds nothing.
+const FAKE_BLOCKS = [
+  { onWord: "A", kind: "badge", text: "01" },
+  { onWord: "A", kind: "number", value: 2, text: "Two" },
+  { onWord: "A", kind: "progress", value: 50, text: "Half" },
+  { onWord: "A", kind: "keys", items: ["A"], partWords: ["A"] },
+];
+// The message router: what the message asks for, by its words.
+function fakeRoute(prompt: string) {
+  const says = (words: string) => prompt.includes(`Message: ${words}`);
+  if (says("Make it shorter"))
+    return {
+      reply: "I'll make the script shorter.",
+      targets: [{ kind: "script", instruction: "Make it shorter" }],
+      confirm: false,
+    };
+  if (says("Show it as one thing turning into another"))
+    // no sceneIndex: the code takes the one scene that was attached
+    return {
+      reply: "I'll change that scene's pictures.",
+      targets: [
+        { kind: "pictures", instruction: "one thing turning into another" },
+      ],
+      confirm: false,
+    };
+  if (says("Say scene 1 simpler"))
+    return {
+      reply: "I'll rewrite scene 1's words.",
+      targets: [{ kind: "words", sceneIndex: 0, instruction: "simpler" }],
+      confirm: false,
+    };
+  if (says("Slower motion everywhere"))
+    return {
+      reply: "I can slow down the motion of the whole video.",
+      targets: [{ kind: "motion", instruction: "slower" }],
+      confirm: false, // the code still asks: the whole video
+    };
+  if (says("Review the frames"))
+    return {
+      reply: "I'll look at the frames.",
+      targets: [{ kind: "review" }],
+      confirm: false,
+    };
+  if (says("Different hooks please"))
+    return {
+      reply: "I'll write three new hooks.",
+      targets: [{ kind: "hook", instruction: "different" }],
+      confirm: false,
+    };
+  return { reply: "Which scene do you mean?", targets: [], confirm: false };
+}
+// The review of the frames: scene 1 is fine, scene 2's pictures need a fix.
+const FAKE_REVIEW = {
+  scenes: [
+    { sceneIndex: 0, sees: "A terminal", verdict: "good", problems: [] },
+    {
+      sceneIndex: 1,
+      sees: "Two diagrams",
+      verdict: "fix",
+      problems: ["two diagrams of the same weight"],
+      change: { kind: "pictures", instruction: "one thing turning into another" },
+    },
+  ],
+};
+// Editing a scene: the one scene again, as a transform – a look no other
+// scene uses, so the check finds nothing.
+const FAKE_EDIT = {
+  happens: "One line turns into a finished video",
+  stage: "top",
+  blocks: [
+    {
+      onWord: "A",
+      kind: "transform",
+      nodes: [{ label: "Line" }, { label: "Video" }],
+      partWords: ["A", "A"],
+    },
+  ],
+  keywords: ["short"],
+  wishes: [],
+};
 function fakeBlocks(prompt: string) {
   const scenes = prompt
     .split(/Scene \d+ \(/)
     .slice(1)
     .map((_, i) => ({
+      happens: "A badge with the step number appears",
       stage: i % 2 ? "bottom" : "top",
-      blocks: [{ onWord: "A", kind: "badge", text: "01" }],
+      blocks: [FAKE_BLOCKS[i % FAKE_BLOCKS.length]],
       keywords: ["short"],
     }));
   return { scenes, wishes: [] };
@@ -113,6 +235,18 @@ vi.mock("@ai-sdk/google", () => ({
         }),
       },
     }),
+}));
+
+// No Remotion in tests: the review gets two tiny "frames" written to disk.
+vi.mock("../agent/stills.js", () => ({
+  renderStills: async (_project: unknown, folder: string) => {
+    fs.mkdirSync(folder, { recursive: true });
+    return [0, 1].map((sceneIndex) => {
+      const file = path.join(folder, `scene-${sceneIndex + 1}.png`);
+      fs.writeFileSync(file, "png");
+      return { sceneIndex, seconds: 1, file };
+    });
+  },
 }));
 
 const { appRouter } = await import("../trpc/router.js");
@@ -192,6 +326,7 @@ describe("agent runs", () => {
       videoTemplateId: "how-to-steps",
       score: 4,
       reason: "A clear how-to.",
+      needsFacts: true,
       pickedBy: "agent",
     });
     expect(run.steps).toMatchObject([
@@ -315,6 +450,7 @@ describe("agent runs", () => {
     expect(run.hook).toEqual({
       text: waiting.hooks![1].text,
       formulaId: waiting.hooks![1].formulaId,
+      firstFrame: waiting.hooks![1].firstFrame,
       pickedBy: "agent",
     });
   });
@@ -380,21 +516,267 @@ describe("agent runs", () => {
     expect(run.steps[run.steps.length - 1].name).toBe("pickMotion");
   });
 
-  it("writes the script again with the user's comment (FR-10)", async () => {
-    const waiting = await waitingForApproval();
-    await api.agent.reviseScript({
-      runId: waiting.id,
-      comment: "Make it shorter",
+  // A built video, for the conversation tests.
+  async function builtVideo() {
+    const { id } = await waitingForApproval();
+    await api.agent.approveScript({ runId: id });
+    return until(id, (run) => run.status === "done");
+  }
+  const lastMessage = (run: AgentRun) =>
+    run.messages![run.messages!.length - 1];
+
+  it("changes the pictures of the scene a message is attached to", async () => {
+    const built = await builtVideo();
+    await api.agent.message({
+      runId: built.id,
+      text: "Show it as one thing turning into another",
+      attachments: [{ sceneIndex: 1, label: "Scene 2" }],
     });
-    // Waiting again, with one more call in the log: the script was rewritten.
+    const run = await until(
+      built.id,
+      (run) => run.status === "done" && run.messages?.length === 2,
+    );
+    // that scene has the new picture; the others are as they were
+    expect(run.blocks?.scenes[1].blocks[0].kind).toBe("transform");
+    expect(run.blocks?.scenes[0]).toEqual(built.blocks?.scenes[0]);
+    expect(run.steps.map((step) => step.name)).toContain("routeMessage");
+    const [mine, reply] = run.messages!;
+    expect(mine).toMatchObject({ from: "user", status: "done" });
+    // the router left the scene out; the code took the attached one
+    expect(mine.targets).toEqual([
+      {
+        kind: "pictures",
+        sceneIndex: 1,
+        instruction: "one thing turning into another",
+      },
+    ]);
+    expect(reply).toMatchObject({ from: "agent" });
+    expect(reply.text).toContain("✓");
+  });
+
+  it("asks back when the message is not clear", async () => {
+    const built = await builtVideo();
+    await api.agent.message({ runId: built.id, text: "Make it more fun" });
+    const run = await until(built.id, (run) => run.messages?.length === 2);
+    expect(lastMessage(run).text).toBe("Which scene do you mean?");
+    expect(run.messages![0].status).toBe("done");
+  });
+
+  it("rewrites one scene's words and its pictures on them", async () => {
+    const built = await builtVideo();
+    await api.agent.message({ runId: built.id, text: "Say scene 1 simpler" });
+    const run = await until(
+      built.id,
+      (run) => run.status === "done" && run.messages?.length === 2,
+    );
+    expect(run.script?.scenes[0].voiceover).toBe("A simpler short line.");
+    expect(run.script?.scenes[1]).toEqual(built.script?.scenes[1]);
+    const names = run.steps.map((step) => step.name);
+    expect(names).toContain("rewriteScene");
+    expect(names).toContain("editScene");
+  });
+
+  it("proposes a change to the whole video and waits for the button", async () => {
+    const built = await builtVideo();
+    await api.agent.message({
+      runId: built.id,
+      text: "Slower motion everywhere",
+    });
+    const proposed = await until(
+      built.id,
+      (run) => lastMessage(run)?.proposal !== undefined,
+    );
+    // nothing changed yet – only the proposal
+    expect(proposed.motion).toEqual(built.motion);
+    const proposal = lastMessage(proposed);
+    await api.agent.decide({
+      runId: built.id,
+      messageId: proposal.id,
+      accept: true,
+    });
+    const run = await until(
+      built.id,
+      (run) =>
+        run.status === "done" &&
+        run.messages?.find((m) => m.id === proposal.id)?.status === "done",
+    );
+    expect(run.steps.filter((step) => step.name === "pickMotion")).toHaveLength(
+      built.steps.filter((step) => step.name === "pickMotion").length + 1,
+    );
+    expect(lastMessage(run).text).toContain("✓");
+  });
+
+  it("reviews its own frames at the end of the build and fixes what it found", async () => {
+    process.env.AGENT_SELF_REVIEW = "on";
+    try {
+      const { id } = await waitingForApproval();
+      await api.agent.approveScript({ runId: id });
+      const run = await until(id, (run) => run.status === "done");
+      const names = run.steps.map((step) => step.name);
+      // round 1 found scene 2 and fixed it (its pictures picked again);
+      // round 2 found it again – no better – so the agent stopped there
+      expect(names.filter((name) => name === "reviewFrames")).toHaveLength(2);
+      expect(names.slice(names.indexOf("reviewFrames"))).toContain(
+        "editScene",
+      );
+      const said = run.messages!.map((message) => message.text);
+      expect(said[0]).toMatch(/^Self-review, round 1: .*Fixing scene\(s\) 2/s);
+      expect(said[said.length - 1]).toMatch(/round 2: .*did not make it better/s);
+      // nothing waits for a button: the creator's decisions stay three
+      expect(run.messages!.some((message) => message.proposal)).toBe(false);
+      // every round carries its list for the panel
+      expect(run.messages![0].review).toMatchObject({ round: 1, next: "fixing" });
+      expect(run.messages![run.messages!.length - 1].review?.next).toBe("stopped");
+    } finally {
+      process.env.AGENT_SELF_REVIEW = "off";
+    }
+  });
+
+  it("reviews the frames and proposes a fix for the scene that needs one", async () => {
+    const built = await builtVideo();
+    // the review looks at the project as the editor saved it
+    const { createEmptyProject } = await import("../../src/schema/project.js");
+    fs.mkdirSync(path.join(root, "db", "projects"), { recursive: true });
+    fs.writeFileSync(
+      path.join(root, "db", "projects", `${built.projectId}.json`),
+      JSON.stringify(createEmptyProject(built.projectId, "Built")),
+    );
+    await api.agent.message({
+      runId: built.id,
+      text: "Review the frames of the video and tell me what to fix",
+    });
+    const run = await until(
+      built.id,
+      (run) => lastMessage(run)?.proposal !== undefined,
+    );
+    expect(run.steps.map((step) => step.name)).toContain("reviewFrames");
+    // nothing changed by the review itself
+    expect(run.blocks).toEqual(built.blocks);
+    const proposal = lastMessage(run);
+    expect(proposal.text).toContain("Scene 2: two diagrams of the same weight");
+    expect(proposal.proposal?.targets).toEqual([
+      {
+        kind: "pictures",
+        sceneIndex: 1,
+        instruction: "one thing turning into another",
+      },
+    ]);
+    expect(run.status).toBe("done");
+  });
+
+  it("pauses at the usage limit and goes on from there on Continue", async () => {
+    const { id } = await api.agent.start({
+      projectId: "p1",
+      input: {
+        idea: "HIT THE LIMIT while building",
+        workspaceId: "dev",
+        hook: "My own opening line",
+      },
+    });
+    await until(id, (run) => run.status === "awaiting_approval");
+    await api.agent.approveScript({ runId: id });
+    const paused = await until(id, (run) => run.status === "paused");
+    expect(paused.pausedFrom).toBe("laying_out");
+    expect(paused.error).toMatch(/5-hour limit/);
+    // what was made before the limit is kept: the script is not written again
+    const scripts = paused.steps.filter((s) => s.name === "writeScript").length;
+    limitOn = false; // the limit has reset
+    await api.agent.resume({ runId: id });
+    const run = await until(id, (run) => run.status === "done");
+    expect(run.error).toBeUndefined();
+    expect(run.pausedFrom).toBeUndefined();
+    expect(run.steps.filter((s) => s.name === "writeScript")).toHaveLength(
+      scripts,
+    );
+    expect(run.blocks?.scenes.length).toBeGreaterThan(0);
+    expect(run.motion?.scenes.length).toBeGreaterThan(0);
+  });
+
+  it("leaves the video as it is when the proposal is declined", async () => {
+    const built = await builtVideo();
+    await api.agent.message({
+      runId: built.id,
+      text: "Slower motion everywhere",
+    });
+    const proposed = await until(
+      built.id,
+      (run) => lastMessage(run)?.proposal !== undefined,
+    );
+    await api.agent.decide({
+      runId: built.id,
+      messageId: lastMessage(proposed).id,
+      accept: false,
+    });
+    const run = await until(built.id, (run) =>
+      lastMessage(run).text.startsWith("OK"),
+    );
+    expect(run.motion).toEqual(built.motion);
+  });
+
+  it("writes new hooks while a hook is being picked", async () => {
+    const { id } = await startFor("p-hooks");
+    const waiting = await until(id, (run) => run.status === "awaiting_hook");
+    await api.agent.message({ runId: id, text: "Different hooks please" });
+    const run = await until(
+      id,
+      (run) => run.status === "awaiting_hook" && run.messages?.length === 2,
+    );
+    expect(run.steps.filter((step) => step.name === "writeHooks")).toHaveLength(
+      waiting.steps.filter((step) => step.name === "writeHooks").length + 1,
+    );
+  });
+
+  it("takes up a message sent while the agent works, once it stops", async () => {
+    const { id } = await api.agent.start({
+      projectId: "p-busy",
+      input: { idea, workspaceId: "dev", hook: "My own opening line" },
+    });
+    // sent at once – the agent is still picking the template
+    await api.agent.message({ runId: id, text: "Make it shorter" });
+    const run = await until(
+      id,
+      (run) =>
+        run.status === "awaiting_approval" &&
+        run.messages?.[0]?.status === "done",
+    );
+    // the script was written, then written again with the message
+    expect(
+      run.steps.filter((step) => step.name === "writeScript").length,
+    ).toBeGreaterThanOrEqual(2);
+  });
+
+  it("skips the web search when the video needs no outside facts", async () => {
+    const { id } = await api.agent.start({
+      projectId: "p-facts",
+      input: {
+        idea: "Our own editor, shown step by step. NO OUTSIDE FACTS",
+        workspaceId: "dev",
+        hook: "My own opening line",
+      },
+    });
+    const run = await until(id, (run) => run.status === "awaiting_approval");
+    expect(run.template?.needsFacts).toBe(false);
+    expect(run.steps.map((step) => step.name)).not.toContain("research");
+  });
+
+  it("writes the script again with the user's message (FR-10)", async () => {
+    const waiting = await waitingForApproval();
+    await api.agent.message({ runId: waiting.id, text: "Make it shorter" });
+    // Waiting again, with one more call in the log: the script was rewritten,
+    // and the agent said so.
     const run = await until(
       waiting.id,
       (run) =>
         run.status === "awaiting_approval" &&
-        run.steps.length > waiting.steps.length,
+        run.messages?.[0]?.status === "done",
     );
     expect(run.steps[run.steps.length - 1].name).toBe("writeScript");
+    expect(run.steps.length).toBeGreaterThan(waiting.steps.length);
     expect(run.script?.comment).toBeUndefined();
+    expect(run.messages![0].targets).toEqual([
+      { kind: "script", instruction: "Make it shorter" },
+    ]);
+    expect(run.messages![1]).toMatchObject({ from: "agent" });
   });
 
   it("refuses an approval before there is a script", async () => {

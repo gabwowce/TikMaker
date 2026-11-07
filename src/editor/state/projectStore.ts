@@ -214,6 +214,11 @@ export const useProjectStore = create<ProjectStore>()(
       applyAgentBlocks(run) {
         set({ project: projectFromBlocks(get().project, run) });
       },
+      // The agent changed one scene (6 Editing): only that scene is built
+      // again from the run, the rest stay as they are.
+      applyAgentSceneEdit(run, sceneIndex) {
+        set({ project: projectFromBlocks(get().project, run, sceneIndex) });
+      },
       addScene(type) {
         const def = getSceneDefinition(type);
         set((state) => {

@@ -1,4 +1,5 @@
 import type { AgentRun } from "../../agent/run/run";
+import { FoldCard } from "./FoldCard";
 import { StepLog } from "./StepLog";
 
 // 4 Building of a motion video, after the pictures: how the agent made them
@@ -10,10 +11,14 @@ export function MotionCard({ run }: { run: AgentRun }) {
   if (!motion) return null;
   const step = [...run.steps].reverse().find((s) => s.name === "pickMotion");
   return (
-    <div className="flex flex-col gap-2 rounded-2xl rounded-bl-none border border-solid border-editor-border p-3">
-      <span className="text-xs text-editor-muted">
-        <span className="text-green-400">✓</span> Motion planned
-      </span>
+    <FoldCard
+      title="Motion planned"
+      summary={
+        motion.problems.length
+          ? `${motion.problems.length} problems`
+          : undefined
+      }
+    >
       <span className="text-xs text-editor-text">{motion.idea}</span>
       <ol className="m-0 flex flex-col gap-1.5 pl-4 text-xs text-editor-text">
         {motion.scenes.map((scene, index) => (
@@ -41,6 +46,6 @@ export function MotionCard({ run }: { run: AgentRun }) {
         </ul>
       ) : null}
       {step ? <StepLog step={step} /> : null}
-    </div>
+    </FoldCard>
   );
 }

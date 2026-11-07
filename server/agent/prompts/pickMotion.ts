@@ -1,5 +1,6 @@
 import type { MotionPrinciple } from "../../../src/agent/knowledge.js";
 import { blockTimeline } from "../../../src/agent/blockTimeline.js";
+import { MIN_CARRY_FRAMES } from "../../../src/agent/rules/checkMotion.js";
 import type { SceneFromAi } from "../../../src/agent/run/3-script.js";
 import type { BlocksFromAi } from "../../../src/agent/run/4-blocks.js";
 import {
@@ -33,7 +34,8 @@ const fps = videoDefaults.fps;
 
 // What every preset looks like (src/video/motion/entrances.ts, exits.ts,
 // kenBurns.ts). "Slides" travel in from / out past the frame's edge.
-const ENTRANCES: Record<Exclude<EntrancePreset, "none">, string> = {
+const ENTRANCES: Record<EntrancePreset, string> = {
+  none: "no entrance – already there on the first frame; only for a block on the scene's first word (the hook's first picture), never just to skip animating",
   fade: "appears softly in place",
   slideUp: "travels in from below, moving up",
   slideDown: "travels in from above, moving down",
@@ -89,6 +91,11 @@ const TRANSITIONS = {
   slideRight: "the next scene pushes in from the left, moving right",
   slideUp: "the next scene pushes in from below, moving up",
   slideDown: "the next scene pushes in from above, moving down",
+  zoomThrough:
+    "the camera flies forward into the next scene: it starts huge and blurred and settles – spatial, strong",
+  fromDepth:
+    "the next scene rises from far behind the frame, tipped back, and stands up – spatial",
+  flip: "the next scene turns in like a card around its vertical axis – spatial",
 };
 
 const list = (entries: Record<string, string>) =>
@@ -104,8 +111,11 @@ For every scene pick the transition into it. For every block, in order, pick:
 - entrance and enterFrames: how it arrives on its word
 - exit and exitFrames: how it leaves when the next block takes its place (or the scene ends)
 - drift (optional): slow motion while it holds the screen
-- moves (optional): on a later word of the voiceover it moves to y (% of the frame's
-  height, its centre) at scale – a deliberate change of place or size, not a nudge
+- moves (optional): on a later word of the voiceover its centre moves to x (% of the
+  frame's width; leave it out to stay where it is) and y (% of the height) at scale – a
+  deliberate change of composition (the diagram shrinks and slides left so the next thing
+  has room), never a nudge; to move a block sideways, make it smaller so it stays in frame;
+  never onto the spoken words (below the picture on top/split, above it on bottom)
 - carry (optional, only the scene's last block): it stays into the next scene and glides
   to that scene's first place instead of leaving; the next transition is then "cut"
 And in "idea", say in a sentence or two what your motion is: the main direction, which
@@ -113,7 +123,12 @@ move marks which kind of moment.
 
 Each block already animates its own content inside itself (list items, nodes, numbers
 counting); you decide how the block as a whole arrives, moves and leaves.
-Use the principles below as knowledge of what works and why – the choices are yours.
+Read the video as one flow: look at how each scene ends before choosing how the next one
+begins – direction, position and what carries over are choices, not accidents. Not every
+element needs an animation just because one is available.
+Use the principles below as knowledge of what works and why – "must" ones carry the most
+weight, "recommended" ones are strong defaults, "optional" ones help when they fit; the
+numbers in them are TikMaker's starting values, not laws. The choices are yours.
 Answer with one entry per scene and one per block, in the same order as given.`;
 
 function userPrompt(
@@ -151,14 +166,33 @@ function userPrompt(
           return `  ${i + 1}. on "${block.onWord}", ${seconds(slot.start)}–${seconds(slot.leaves)} s, place ${slot.zone + 1}: ${JSON.stringify(content)}`;
         })
         .join("\n");
+      // Whether the previous scene's last block may be carried in: there is a
+      // place for it and time to see it before this scene's first block takes
+      // over – the same rule checkMotion applies, told up front so the model
+      // does not plan a carry that is then sent back (test 10).
+      const landing =
+        places.length > 0 && (slots[0]?.start ?? end) >= MIN_CARRY_FRAMES;
       return `Scene ${n + 1} – ${stage} (${where || "no picture, words only"}), ${seconds(end)} s
+  A carry from the previous scene can land here: ${landing ? "yes" : "no"}
   Voiceover: ${voiceover}
+  Shows: ${scenes[n]?.visual ?? ""}${
+    picked.happens
+      ? `
+  Happens: ${picked.happens}`
+      : ""
+  }
 ${shown || "  (no blocks)"}`;
     })
     .join("\n\n");
 
   const knowledge = principles
-    .map((p) => `- ${p.principle} Why: ${p.why} In this video: ${p.inTikMaker}`)
+    .map(
+      (p) =>
+        // "why" stays in the knowledge base (and the thesis); the call gets
+        // the rule and how it applies here – the prompt is about a third
+        // shorter, and this call runs once per video and again per scene edit
+        `- [${p.priority}] ${p.principle} In TikMaker: ${p.inTikMaker}`,
+    )
     .join("\n");
 
   const prompt = `Principles:
@@ -194,10 +228,15 @@ export async function pickMotion(
   principles: MotionPrinciple[],
   previous?: { motion: MotionFromAi; problems: MotionProblem[] },
   model?: Parameters<typeof callStructured>[2],
+  // the conversation: what the creator wants changed in the motion
+  request?: string,
 ): Promise<StructuredResult<MotionFromAi>> {
-  return callStructured(
-    motionFromAi,
-    { system: SYSTEM, user: userPrompt(scenes, blocks, principles, previous) },
-    model,
-  );
+  const user =
+    userPrompt(scenes, blocks, principles, previous) +
+    (request
+      ? `
+
+The creator asks about the motion: ${request}`
+      : "");
+  return callStructured(motionFromAi, { system: SYSTEM, user }, model);
 }

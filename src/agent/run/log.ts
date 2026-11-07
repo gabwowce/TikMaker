@@ -17,6 +17,8 @@ export const logEntry = z.object({
   cachedInputTokens: z.number().optional(),
   outputTokens: z.number().optional(),
   thinkingTokens: z.number().optional(),
+  // Claude Code: rounds the call took (each sends the whole prompt again)
+  turns: z.number().optional(),
   output: z.unknown().optional(),
   error: z.string().optional(),
 });

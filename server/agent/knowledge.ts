@@ -7,6 +7,10 @@ import {
   hookFormulaSchema,
   motionPrincipleSchema,
   soundRuleSchema,
+  reviewCheckSchema,
+  referenceSheetSchema,
+  type ReviewCheck,
+  type ReferenceSheet,
   titleFormulaSchema,
   transitionPhraseSchema,
   videoTemplateSchema,
@@ -37,6 +41,9 @@ import {
 //   shared/design-rules.json
 //   shared/sound-rules.json
 //   shared/motion-principles.json
+//   shared/picture-principles.json
+//   shared/review-rubric.json
+//   shared/reference-frames.json       + the sheets in shared/reference-frames/
 //   workspaces/<id>/workspace.json     + style.json
 
 export type KnowledgeError = {
@@ -56,6 +63,11 @@ export type Knowledge = {
   designRules: DesignRule[];
   soundRules: SoundRule[];
   motionPrinciples: MotionPrinciple[];
+  // The same kind of knowledge for picking the pictures (the blocks step).
+  picturePrinciples: MotionPrinciple[];
+  // The review of the frames: what it checks, and good frames to compare with.
+  reviewRubric: ReviewCheck[];
+  referenceSheets: ReferenceSheet[];
   workspaces: WorkspaceEntry[];
 };
 
@@ -189,6 +201,15 @@ export async function loadKnowledge(
       "shared/motion-principles.json",
       motionPrincipleSchema,
     ),
+    picturePrinciples: await readList(
+      "shared/picture-principles.json",
+      motionPrincipleSchema,
+    ),
+    reviewRubric: await readList("shared/review-rubric.json", reviewCheckSchema),
+    referenceSheets: await readList(
+      "shared/reference-frames.json",
+      referenceSheetSchema,
+    ),
     workspaces: await readWorkspaces(),
   };
 
@@ -201,6 +222,9 @@ export async function loadKnowledge(
     ["shared/title-formulas.json", knowledge.titleFormulas],
     ["shared/design-rules.json", knowledge.designRules],
     ["shared/motion-principles.json", knowledge.motionPrinciples],
+    ["shared/picture-principles.json", knowledge.picturePrinciples],
+    ["shared/review-rubric.json", knowledge.reviewRubric],
+    ["shared/reference-frames.json", knowledge.referenceSheets],
     ["workspaces", knowledge.workspaces.map((entry) => entry.workspace)],
   ];
   for (const [file, items] of idGroups) {
