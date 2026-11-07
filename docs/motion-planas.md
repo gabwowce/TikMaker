@@ -30,7 +30,243 @@ vienodus fade, kartojimąsi, išlendantį tekstą → sutvarkyta (žr. „Judesi
 2 tema paleista be „Motion only“ – dar senu maketų keliu (todėl jis ir pašalintas).
 3 tema – naudotojai „po truputį pradeda patikti“; ką taisyti, aptarsim kitoje sesijoje.
 
+**Po 3 temos pastabų (2026-11-05, padaryta):**
+- Laiko juosta: tuščia „Scene text“ juosta nebeužlenda ant agento blokų.
+- „full“ – tikrai visas kadras: ekrano blokas (REC) užpildo 1080x1920, apačioje patamsėja
+  po subtitrais; įkeltas įrašas („Replace asset…“) užpildo patį bloką (kortelę ar visą kadrą).
+- Užrašas (badge) be linijos į niekur; aprašytas kaip numeris / žingsnis, ne pavadinimas.
+- Sąrašas: kiekvienas punktas ant savo žodžio (`partWords`), patikra reikalauja, kad balsas
+  įvardintų kiekvieną punktą; scenarijaus promptas liepia juos įvardinti.
+- Kartojimasis: daugiau nei 2 tie patys stage tipai iš eilės – patikra parodo modeliui jo seką;
+  prompte paaiškintas ritmas.
+- Ekrano blokas: `record` (ką tiksliai įrašyti) ir `seconds` (apytikrė trukmė); skydelyje
+  sąrašas „To record“.
+- Erdviniai perėjimai: `zoomThrough`, `fromDepth`, `flip` + principas žiniose.
+- Statiniai vaizdai: 4 SVG juodraščiai (varnelė, telefonas 9:16, kūrėjas be veido,
+  chronometras) – laukia patvirtinimo prieš dedant į `props/`.
+
+**Vienas vaizdas mintims, ne žodžiams (2026-11-05):** pagal 4 InsiderForce aprašus
+(`docs/bd/analizes/`) ir 88 video statistiką – vienas vaizdas laikosi ~5 s, viduje kas ~1–3 s
+kažkas įvyksta. Mūsų 7 testas: ~1,6 s vienam vaizdui (atsitiktiniai paveikslėliai žodžiams).
+Pakeista: agentas pirma rašo `happens` (kas vyksta, suprantama be garso), tada renkasi
+dažniausiai vieną vaizdą sakiniui; dalys (sąrašo punktai, logotipai, schemos mazgai) atsiranda
+ant savo žodžių (`partWords`). Patikra: kas ≤3 s turi kažkas įvykti (naujas vaizdas ar dalis),
+vaizdas ne trumpiau 2 s. Taisyklė „naujas paveikslėlis kas 3 s“ pašalinta.
+
+**Įvairovė (2026-11-05, po 8 testo):** 8 teste – 5 sąrašai, 3 schemos, kitų blokų nė vieno
+(agentas matė tik 10 blokų, o taisyklė „kas 3 s kažkas įvyksta“ tiko tik sąrašui ir schemai).
+Pridėta: sąrašo formos `rows` / `grid` / `orbit` / `stack`, schemos `chain` / `zigzag` / `hub`,
+punktų ikonos (`itemIcons`), 5 nauji blokai stage stiliumi – `phone`, `browser`, `progress`,
+`keys`, `transform` (`src/video/stage/StageShapes.tsx`). Patikra: ta pati išvaizda (blokas +
+forma) ne daugiau 2 kartų per video, modelis mato savo vaizdų seką. Taip pat sutvarkyta:
+tuščias blokas iki pirmo punkto ir klaidingas „flickers“ split scenose. Katalogas
+(`StageCatalog`) dabar piešia per tą patį `StageBlock` kaip agentas – visos formos matomos ten.
+
+**Kabliuko pirmas kadras (2026-11-05):** kabliukas buvo tik sakinys. Dabar kiekvienas kabliukas
+turi `firstFrame` – ką žiūrovas mato pirmas 2 s (rezultatas / įrodymas, produktas veikia,
+prieš–po, ryškus vaizdas; pagal 88 analizių `hook.firstFrame` – beveik niekada ne tik tekstas).
+Pasirinkto kabliuko kadras eina į scenarijų (1 scenos `visual`) ir blokus; patikra: kabliuko
+scena ne `statement`, vaizdas ant 1–2 žodžio. Skydelyje rodoma „Shows: …“.
+
+**Po 9 testo („What can an AI agent actually do?“, 2026-11-05):** naujas blokas `chat`
+(`messages` – burbuliukai su „rašo…“ taškais; `comments` – komentarai su širdele); schemos
+forma `loop` (ratas su oranžine rodykle atgal); rodyklės tiesios / laužtos (UML), ne kreivos;
+`transform` perpieštas: A viršuje → rodyklė → B apačioje; orbita didesnė. Patikra: vienoje
+scenoje ne daugiau 1 įrašo; kabliuko įrašas – tik `full`. Prompte: palyginimas tik kai „po“
+pakeičia blogesnį „prieš“ (ne įėjimas → rezultatas); vaizdas turi būti suprantamas iš karto.
+**Scenos taisymas su DI (6 žingsnis, 2026-11-05):** baigtame video pasirenki sceną, skydelyje
+parašai, ką pakeisti → agentas (`editScene`) perrenka tik tos scenos blokus, matydamas visą
+video, patikra + 1 pataisymas, tada judesį (iš naujo suplanuoto paimama tik ta scena).
+Projekte perstatoma tik ta scena (`projectFromBlocks(..., only)`), kitos su rankiniais
+pakeitimais lieka. Tekstas ir balsas nesikeičia (vėliau – galimybė keisti ir žodžius).
+Failai: `src/agent/run/6-edit.ts`, `server/agent/steps/6-edit.ts`, `editSceneBlocks`
+(`pickBlocks.ts`), `agent.editScene`, `SceneEditCard.tsx`; būsena `editing_scene`.
+
 **Toliau (dar nepadaryta):**
+
+### Planas po 9 testo (2026-11-06) – eilės tvarka
+
+Kryptis: **agentas pats daro gerus video iš žinių, o ne kodas jį taiso taisyklėmis.** Kodas
+tikrina tik tai, kas techniškai būtina; skonis (tempas, įvairovė, judesys) – žiniose.
+Ir: **su agentu kalbiesi bet kuriuo etapu**, kaip su Claude Code.
+
+Žetonai 9 teste (vienas video): ~100 tūkst. įvesties. Didžiausi: `pickBlocks` 24 tūkst.,
+`pickMotion` 26 tūkst., `research` 19 tūkst. Balso kortelėje žetonų nėra, nes balsas –
+ElevenLabs, ne kalbos modelis (jis skaičiuoja simbolius) → rodyti simbolius ir sekundes.
+
+#### 1. Žinios vietoj patikrų (principai)
+
+`knowledge/shared/motion-principles.json` papildyti ir patikslinti (~20 principų, ne 35):
+- **pataisyti:** `one-focus` → „vienas PAGRINDINIS dėmesio taškas; antrinis judesys
+  leidžiamas, jei palaiko pagrindinį ir nekonkuruoja“; `stagger-groups` ir `one-focus`
+  atskirti (seka ≠ konkurencija); `size-and-distance-set-duration` ir
+  `exit-shorter-than-entrance` – kaip pradinės vertės, ne formulė; prie kiekvieno principo
+  atskirti **universalų principą** nuo **TikMaker numatytosios vertės** (pvz. 6–8 kadrų išėjimas);
+- **pridėti:** `visual-hierarchy`, `typography-follows-speech`, `rhythm-and-audio-sync`,
+  `negative-space`, `follow-through`, `secondary-action`, `appeal`; pasirinktinai `arcs`,
+  `squash-and-stretch` (tik jei kodas tai gali nupiešti – kitaip žinios be veiksmo);
+- prie kiekvieno: prioritetas (būtinas / rekomenduojamas / pasirenkamas), šaltinis
+  (Material Choreography, Duration & Easing, IxDF 12 principų, IBM Classic principles);
+- **toks pat žinių failas vaizdams** (`picture-principles.json`): „vienas vaizdas mintims“,
+  „forma yra mintis“, „rodyk patį daiktą“, įvairovė, ritmas – dabar tai įrašyta prompto
+  tekste, perkelti į žinias, kad būtų vienoje vietoje ir matoma BD.
+
+**Patikros (`checkBlocks`, `checkMotion`) suskirstyti į dvi rūšis:**
+
+| Rūšis | Pavyzdžiai | Kas vyksta |
+|---|---|---|
+| Būtina (techniška) | žodis ne balse, id ne bibliotekoje, trūksta lauko, išeina iš kadro, tuščias blokas, 1 įrašas scenoje | grąžinama DI taisyti (kaip dabar) |
+| Patarimas (skonis) | „kas 3 s įvykis“, „≥2 s vaizdas“, „ta pati išvaizda ≤2“, „stage ≤2 iš eilės“, kabliuko vaizdas ant 1–2 žodžio | NEgrąžinama taisyti; rodoma tau kaip pastaba; DI tai žino iš žinių |
+
+Taip mažiau perrašymų (pigiau) ir DI pats sprendžia, kada išimtis tinka.
+
+#### 2. Pokalbio skydelis visais etapais (kaip Claude Code)
+
+Dabar: kalbėti galima tik su scenarijumi (komentaras) ir su viena scena (taisymas);
+„Approve“ ir komentaras šalia – lengva supainioti.
+
+Kaip turėtų būti:
+- skydelio apačioje **visada** žinutės laukelis (bet kuriuo etapu, ir po „done“);
+- veiksmų mygtukai (Approve script, Use this hook…) – **atskirai**, prie kortelės, kurios
+  sprendimas laukia; žinutės siuntimas niekada nepatvirtina;
+- žinutė turi **taikinį**: virš laukelio „žymė“, ką keiti – `Hook`, `Script`, `Scene 3`,
+  `Pictures · scene 3`, `Motion` … Žymė užsipildo pati (pasirinkta scena / dabartinis
+  etapas), gali pakeisti. Be žymės → mažas pigus DI kvietimas nuspręsti, kam žinutė skirta;
+- pakeitus ankstesnį etapą (pvz. kabliuką, kai jau yra scenarijus) agentas paklausia:
+  „perrašyti ir scenarijų / vaizdus?“ – nieko neperrašo tyliai;
+- visos žinutės ir agento atsakymai – run faile (`messages`), istorija matosi.
+
+Kaip veiks kodas (trumpai): `agent.message({ runId, target, text })` → serveris įrašo
+žinutę → `agent.ts` pagal `target` paleidžia to etapo žingsnį su komentaru (kabliukai,
+scenarijus, vienos scenos blokai, judesys) → skydelis pritaiko rezultatą. Dabartinis
+„scenos taisymas“ (6 žingsnis) tampa vienu šio mechanizmo atveju (`target: scene N`), o
+`reviseScript` – kitu. Prieš rašant kodą – atskiras aprašas su schema ir srautu.
+
+**Agentas klausia, kai ko nors nežino (2026-11-06, idėja – dar nedaryta).**
+Kaip Claude: jei idėjoje trūksta fakto, paieška nieko neranda arba agentas nežino, kaip
+atrodo produktas, jis ne spėja, o paklausia. Kur ir kaip:
+- **Kada:** tik kai atsakymas pakeis video (trūksta skaičiaus, nežinoma, ką rodo ekranas,
+  neaišku, kam skirtas video); ne daugiau 3 klausimų vienu metu; kitaip – tęsia ir parašo,
+  ką prielaidai pasirinko.
+- **Kur:** be papildomų kvietimų – klausimus grąžina jau vykstantys žingsniai:
+  šablono žingsnis (idėja neaiški, trūksta faktų), paieška (nerado), scenarijus (vietoj
+  išgalvoto fakto), blokai (ką tiksliai rodo ekranas įrašui).
+- **Kaip atrodo:** paleidimas sustoja būsenoje „laukia atsakymų“; pokalbyje agento
+  žinutė su klausimais (prie kiekvieno – kodėl klausia, gal siūlomi variantai); atsakai
+  žinute arba spaudi „spręsk pats“.
+- **Atsakymai** saugomi paleidime ir eina į visus vėlesnius promptus kaip „faktai iš
+  kūrėjos“; pažymėjus „prisimink“ – įrašomi į kanalo žinias (pvz. apie TikMaker), kad kitą
+  kartą nebereikėtų klausti.
+
+#### 3. Promptų pataisos
+
+**Kabliukai (`writeHooks.ts`):**
+- SYSTEM perrašyti pagal pateiktą variantą: 5 principai (curiosity gap, specificity,
+  unexpectedness, relevance, payoff promise), ko vengti, trys TIKRAI skirtingi kampai,
+  firstFrame – konkretus veiksmas/objektas (blogų ir gerų pavyzdžių sąrašas), griežtas
+  vertinimas (5 – retai), galutinė savikontrolė;
+- naujas laukas `angle` (curiosity / outcome / surprise / problem / demonstration);
+  kodas tikrina, kad trijų `angle` skirtingi (techniška patikra);
+- į userPrompt paduoti, ką video realiai turi: bibliotekos logotipus ir objektus, ar
+  galimi įrašai (`motionOnly`), motion blokų sąrašą.
+
+**Scenarijus (`writeScript.ts`):**
+- ilgis – tikslas, ne prievolė: „never add empty explanations… write the strongest shorter
+  version“ (vietoj „fill the wanted length“);
+- CTA patikra: ne tik URL – ar idėjoje minimas pasiūlymas („PDF“, „bio“, „comment X“,
+  „atsiųsiu“); geriau leisti DI pažymėti, iš kur CTA (idėjos sakinys), ir tikrinti, kad
+  toks sakinys yra;
+- vaidmenys aiškūs: scenarijus rašo, KĄ žiūrovas mato (`visual`), nežinodamas bibliotekos;
+  KAIP (įrašas / blokas / tekstas) sprendžia blokų žingsnis, kuris žino tikras galimybes.
+  Taip jau yra – įrašyti į promptą aiškiai.
+
+**Blokai (`pickBlocks.ts`):**
+- paduoti `needsRecording` (dabar neperduodamas – tikra spraga);
+- įrašui: „atkartojamas žmogaus pagal instrukciją; jokių neminėtų mygtukų / funkcijų;
+  vienas ištisinis įrašas, veiksmai eilės tvarka“.
+
+**Judesys (`pickMotion.ts`):**
+- paduoti ir scenos `visual`, ne tik `happens`;
+- tęstinumo taisyklė žiniose: kryptis / pozicija tarp scenų – sąmoningas pasirinkimas;
+- leisti `none` įėjimą, kai elementas turi būti matomas nuo pirmo kadro (kabliuko
+  vaizdas); dabar uždrausta, o kodas `none` keičia į `fade`;
+- `moves` su `x` (redaktoriaus raktiniai kadrai x palaiko): kompozicijos pakeitimui
+  (schema pasislenka kairėn – dešinėje atsiranda naujas), ne smulkiems judesiams.
+
+#### 4. Vizualų skiltis redaktoriuje
+
+- aiškesnis dizainas: paieška pagal pavadinimą, grupės, didesnės peržiūros;
+- rodyti tik tai, ką naudoja agentas (stage blokai ir formos); kitus (senus vizualus,
+  kurių agentas negauna) paslėpti po „Daugiau“ arba pašalinti, jei nereikalingi;
+- iš skilties galima: pasirinkti bloką scenai pačiai, arba parašyti pavadinimą
+  („pokalbis burbuliukais“) ir DI priskiria – tai tas pats pokalbio mechanizmas (2).
+
+#### 5. Žetonų taupymas
+
+- scenos taisymui – ne visas video kontekstas: tik ta scena, kaimynės ir trumpa „kokios
+  išvaizdos jau naudojamos“ santrauka; judesys – tik tai scenai (ne viso video 26 tūkst.);
+- patarimai nebegrąžinami perrašyti (1 dalis) → mažiau antrų kvietimų;
+- pastovią prompto dalį (sistemos tekstas, katalogas, žinios) laikyti pradžioje, kad
+  veiktų talpykla (`cached` jau matosi žurnale);
+- `research` (19 tūkst.) – tik kai idėjai reikia faktų.
+
+#### Kas jau aišku apie scenos taisymą (6 žingsnis)
+
+Dabar jis keičia tik vienos scenos vaizdus ir judesį; žodžių, kabliuko ar scenarijaus
+juo nepakeisi, ir jis brangus (~50 tūkst. žetonų). Todėl jis netaps atskira funkcija –
+jis įeis į pokalbio skydelį (2) kaip vienas taikinys, o žetonai sumažinti pagal 5.
+
+#### Padaryta (2026-11-06): 1 ir 3 dalys
+
+- **Principai:** `motion-principles.json` perrašytas (20 principų, kiekvienas su `priority`;
+  `one-focus`, `stagger-groups`, trukmės – pataisyti; nauji `rhythm-and-audio-sync`, `appeal`,
+  `follow-through`, `secondary-action`, `composition-moves`); naujas `picture-principles.json`
+  (11 principų blokų žingsniui: vienas vaizdas mintims, be garso, rodyk daiktą, forma yra
+  mintis, hierarchija, laisva erdvė, tekstas seka kalbą, įvairovė, stage ritmas, kabliukas,
+  įrašas – vienas ištisinis). `arcs`, `squash-and-stretch` nepridėti – agentas negali jų nupiešti.
+- **Patikros:** `checkBlocks` problemos turi `advice` žymę; skonio (tempas, mirgėjimas,
+  įvairovė, stage ritmas, kabliuko laikas) – tik pastabos, DI jų neperrašo; kortelėse
+  „Notes“ atskirai nuo problemų (`FindingsList.tsx`).
+- **Kabliukai:** naujas SYSTEM pagal pateiktą variantą; `angle` laukas; kodas reikalauja
+  trijų skirtingų kampų (kitaip klausiama iš naujo); prompte „This video can show“ (įrašai,
+  blokai, logotipai, objektai).
+- **Scenarijus:** ilgis – tikslas, ne prievolė; scenarijus rašo KĄ, ne KAIP;
+  CTA pažadas atpažįstamas ir iš žodžių (`ideaGivesOffer`).
+- **Blokai:** principai iš žinių failo (SYSTEM sutrumpintas); `Recording: yes/no` iš
+  `needsRecording`; įrašas – vienas ištisinis, atkartojamas.
+- **Judesys:** `none` leidžiamas blokui pirmame scenos žodyje; `moves` su `x` (patikra – kad
+  neišeitų iš kadro šonu); prompte scenos `Shows` ir tęstinumo sakinys; principai su prioritetu.
+- **Balso kortelė:** simboliai ir sekundės.
+
+#### Po 10 testo (2026-11-06) – sutvarkyta
+
+10 testas (`run-mw4nasvv`, projektas „10 testas“): blokai iš 1 kvietimo, daug įvairesni;
+~97 tūkst. žetonų. Pataisyta:
+1. **Tikri TikMaker ekranai** kanalo žiniose (`workspace.json` → `screens`), perduodami
+   scenarijui ir blokams (`productScreens.ts`) – įrašai aprašo tik tai, kas yra. Įrašų –
+   iki ~4 per video (principas, scenarijaus promptas, pastaba `MAX_RECORDINGS`).
+2. **„Split“ be tekstinių blokų** (`TEXT_BLOCKS`: list, chat, code, terminal, browser, phone) –
+   būtina patikra; stage aprašyme tai pasakyta.
+3. **Įrašas nebelaikomas „stovinčiu“** – „nothing happens“ pastaba ekrano blokams netaikoma.
+4. **Perkėlimas:** judesio prompte prie kiekvienos scenos – ar į ją gali nusileisti perkeltas
+   blokas (tas pats `MIN_CARRY_FRAMES`), kad nebūtų antro kvietimo.
+5. **Judesio kaina:** žurnale `turns` (Claude Code vidiniai ratai); promptas ~9,4 tūkst.
+   žetonų, 2 ratai + talpyklos kūrimas → ~30 tūkst.; principuose prompte nebėra „why“.
+6. **Faktų paieška** tik kai šablono žingsnis pasako `needsFacts: true`.
+7. **Subtitrai:** sena frazė išnyksta iki naujos pirmo žodžio (nebepersidengia).
+
+#### Sprendimai (2026-11-06)
+
+1. **Patikros:** skonio patikros (kas 3 s įvykis, ≥2 s vaizdas, ta pati išvaizda ≤2, stage ≤2
+   iš eilės, kabliuko vaizdas ant 1–2 žodžio) tampa **tik pastabomis** – DI jų neperrašinėja,
+   tai žino iš principų; tu matai pastabą kortelėje. Būtinos (techninės) lieka kaip dabar.
+2. **Pokalbio taikinys:** ką pažymėjai redaktoriuje (sceną, vizualą, tekstą, bet kurį
+   objektą) – tas matosi pokalbyje kaip pridėtas dalykas („žymė“), ir aprašai, ką pakeisti.
+   Jei nieko nepažymėta – DI iš teksto supranta, ką nori keisti (pigus atskiras kvietimas).
+3. **Seni vizualai:** paslėpti po „Daugiau“, nešalinti (seni projektai ir rankinis darbas).
+4. **Eilė:** 1 (principai) ir 3 (promptai) → 2 (pokalbis) → 5 (žetonai) → 4 (vizualų skiltis).
+
+Senesni punktai:
 - Naudotojos pastabos po 3 temos (kita sesija).
 - **Kartojimasis** (sutarta, nepadaryta): `pickBlocks` prompte paaiškinti, kodėl
   kartojimas nuobodus, ir parodyti modeliui jo paties vaizdų seką – žinios, ne taisyklė;
