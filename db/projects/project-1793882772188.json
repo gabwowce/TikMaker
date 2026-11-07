@@ -1,0 +1,1381 @@
+{
+  "id": "project-1793882772188",
+  "title": "9 testas",
+  "workspaceId": "dev",
+  "videoTemplateId": "build-it-fast",
+  "fps": 30,
+  "width": 1080,
+  "height": 1920,
+  "storyPlan": {
+    "premise": "What can an AI agent actually do? This video is the proof: it was made by an AI agent.\n\nHook: open on the finished video itself (a TikMaker motion video playing full screen) and\nsay this whole video was made by an AI agent from one sentence – then promise to show how.\n\nExplain what an AI agent is and how it differs from a chatbot: a chatbot answers, an agent\ndoes – it uses tools, works in steps and turns one instruction into a finished result.\nUse TikMaker as the real example, with screen recordings: the user types a one-line idea;\nthe agent picks a hook, writes the script and splits it into scenes; it picks the pictures\nand the motion; it generates the voiceover; the final vertical video plays. Show each step\non the real product while the voice explains what the agent is doing.\n\nCTA: comment a topic and the agent will turn it into the next video.vvv"
+  },
+  "scenes": [
+    {
+      "id": "scene-run-mw3jn2vw-1",
+      "plan": {
+        "role": "hook",
+        "visualBrief": "The finished TikMaker motion video plays full screen from the first frame. The one-line idea that started it sits typed in a small prompt box in the corner."
+      },
+      "durationSeconds": 4.344,
+      "vo": "This whole video was made by an AI agent from one sentence. Here's how.",
+      "notes": "🎥 Your own recording",
+      "background": "stage",
+      "content": {
+        "visuals": [
+          {
+            "id": "scene-run-mw3jn2vw-1-block-1",
+            "visual": {
+              "type": "stage-block",
+              "block": {
+                "onWord": "This",
+                "kind": "screen",
+                "text": "The finished video, playing",
+                "record": "Play the finished TikMaker video full screen from its first frame. Overlay a small prompt box in a corner with the one-line idea typed in it. Record about 4 s of playback.",
+                "seconds": 4.4
+              }
+            },
+            "x": 50,
+            "y": 27.083333333333332,
+            "scale": 0.68,
+            "entrance": "zoomSettleTop",
+            "entranceDuration": 12,
+            "exit": "slideLeft",
+            "exitDuration": 7,
+            "delay": 0,
+            "exitAt": 130,
+            "sfx": "none",
+            "exitSfx": "none",
+            "lane": 0
+          },
+          {
+            "id": "scene-run-mw3jn2vw-1-block-2",
+            "visual": {
+              "type": "stage-block",
+              "block": {
+                "onWord": "made",
+                "kind": "transform",
+                "partWords": [
+                  "made",
+                  "sentence"
+                ],
+                "nodes": [
+                  {
+                    "label": "One sentence",
+                    "id": "document"
+                  },
+                  {
+                    "label": "This video",
+                    "id": "screen-panel"
+                  }
+                ]
+              },
+              "partAts": [
+                0,
+                45
+              ]
+            },
+            "x": 50,
+            "y": 57.8125,
+            "scale": 0.68,
+            "entrance": "slideUp",
+            "entranceDuration": 10,
+            "exit": "slideLeft",
+            "exitDuration": 7,
+            "delay": 29,
+            "exitAt": 130,
+            "sfx": "none",
+            "exitSfx": "none",
+            "lane": 1
+          }
+        ]
+      },
+      "stage": "split",
+      "motion": {
+        "entrance": "none",
+        "transition": "cut"
+      },
+      "type": "visual-explainer"
+    },
+    {
+      "id": "scene-run-mw3jn2vw-2",
+      "plan": {
+        "role": "mechanism",
+        "visualBrief": "Split screen. Left: a chat bubble gets one reply and stops. Right: an agent icon picks up tool icons one after another and moves step by step toward a check mark labeled 'Result'."
+      },
+      "durationSeconds": 8.988,
+      "vo": "A chatbot answers one question at a time. An agent goes after a goal: it uses tools, works in steps, and turns one instruction into a finished result.",
+      "background": "stage",
+      "content": {
+        "visuals": [
+          {
+            "id": "scene-run-mw3jn2vw-2-block-1",
+            "visual": {
+              "type": "stage-block",
+              "block": {
+                "onWord": "chatbot",
+                "kind": "phone",
+                "text": "Chatbot",
+                "items": [
+                  "You: a question",
+                  "Bot: one answer",
+                  "…and it stops"
+                ],
+                "partWords": [
+                  "chatbot",
+                  "answers",
+                  "time"
+                ]
+              },
+              "partAts": [
+                0,
+                12,
+                49
+              ]
+            },
+            "x": 50,
+            "y": 34.11458333333333,
+            "scale": 1,
+            "entrance": "slideLeft",
+            "entranceDuration": 10,
+            "exit": "flipOut",
+            "exitDuration": 7,
+            "delay": 4,
+            "exitAt": 105,
+            "sfx": "none",
+            "exitSfx": "none",
+            "lane": 0
+          },
+          {
+            "id": "scene-run-mw3jn2vw-2-block-2",
+            "visual": {
+              "type": "stage-block",
+              "block": {
+                "onWord": "goal",
+                "kind": "schema",
+                "shape": "zigzag",
+                "partWords": [
+                  "goal",
+                  "tools",
+                  "steps",
+                  "result"
+                ],
+                "nodes": [
+                  {
+                    "label": "Goal",
+                    "id": "target"
+                  },
+                  {
+                    "label": "Tools",
+                    "id": "puzzle-piece"
+                  },
+                  {
+                    "label": "Steps",
+                    "id": "layer-stack"
+                  },
+                  {
+                    "label": "Result"
+                  }
+                ]
+              },
+              "partAts": [
+                0,
+                30,
+                59,
+                134
+              ]
+            },
+            "x": 50,
+            "y": 34.11458333333333,
+            "scale": 1,
+            "entrance": "flipIn",
+            "entranceDuration": 12,
+            "exit": "fade",
+            "exitDuration": 6,
+            "delay": 105,
+            "exitAt": 270,
+            "sfx": "none",
+            "exitSfx": "none",
+            "lane": 1
+          }
+        ]
+      },
+      "stage": "top",
+      "motion": {
+        "entrance": "none",
+        "transition": "slideLeft"
+      },
+      "type": "visual-explainer"
+    },
+    {
+      "id": "scene-run-mw3jn2vw-3",
+      "plan": {
+        "role": "demo",
+        "visualBrief": "Screen recording of the real TikMaker editor: the one-line idea is typed into the prompt field and sent, and the agent panel starts working."
+      },
+      "durationSeconds": 6.061999999999999,
+      "vo": "First, I type one sentence into TikMaker and send it. That's the only instruction the agent gets from me.",
+      "notes": "🎥 Your own recording",
+      "background": "stage",
+      "content": {
+        "visuals": [
+          {
+            "id": "scene-run-mw3jn2vw-3-block-1",
+            "visual": {
+              "type": "stage-block",
+              "block": {
+                "onWord": "First",
+                "kind": "screen",
+                "text": "Type the one-line idea",
+                "record": "TikMaker editor: click the prompt field and type the one-line idea. Stop just before clicking Send.",
+                "seconds": 2.9
+              },
+              "full": true
+            },
+            "x": 50,
+            "y": 50,
+            "scale": 1,
+            "entrance": "fade",
+            "entranceDuration": 10,
+            "exit": "slideLeft",
+            "exitDuration": 7,
+            "delay": 0,
+            "exitAt": 81,
+            "sfx": "none",
+            "exitSfx": "none",
+            "lane": 0
+          },
+          {
+            "id": "scene-run-mw3jn2vw-3-block-2",
+            "visual": {
+              "type": "stage-block",
+              "block": {
+                "onWord": "send",
+                "kind": "screen",
+                "text": "Send – the agent starts",
+                "record": "TikMaker editor: click Send with the idea typed in. Stop when the agent panel shows it has started working.",
+                "seconds": 3
+              },
+              "full": true
+            },
+            "x": 50,
+            "y": 50,
+            "scale": 1,
+            "entrance": "slideLeft",
+            "entranceDuration": 10,
+            "exit": "slideLeft",
+            "exitDuration": 7,
+            "delay": 81,
+            "exitAt": 182,
+            "sfx": "none",
+            "exitSfx": "none",
+            "lane": 1
+          }
+        ]
+      },
+      "stage": "full",
+      "motion": {
+        "entrance": "none",
+        "transition": "fromDepth"
+      },
+      "type": "visual-explainer"
+    },
+    {
+      "id": "scene-run-mw3jn2vw-4",
+      "plan": {
+        "role": "demo",
+        "visualBrief": "Screen recording of the real TikMaker agent panel filling in, one entry after another: the hook, the script, the scenes, the pictures and motion, then the voiceover."
+      },
+      "durationSeconds": 8.013,
+      "vo": "Second, the agent works on its own: it picks a hook, writes the script, splits it into scenes, picks the pictures and motion, and generates the voiceover.",
+      "notes": "🎥 Your own recording",
+      "background": "stage",
+      "content": {
+        "visuals": [
+          {
+            "id": "scene-run-mw3jn2vw-4-block-1",
+            "visual": {
+              "type": "stage-block",
+              "block": {
+                "onWord": "Second",
+                "kind": "screen",
+                "text": "The agent starts on its own",
+                "record": "TikMaker agent panel right after sending: record the first entries starting to appear. About 3 s; speed up waits.",
+                "seconds": 2.7
+              }
+            },
+            "x": 50,
+            "y": 34.11458333333333,
+            "scale": 1,
+            "entrance": "slideLeft",
+            "entranceDuration": 10,
+            "exit": "slideLeft",
+            "exitDuration": 7,
+            "delay": 0,
+            "exitAt": 76,
+            "sfx": "none",
+            "exitSfx": "none",
+            "lane": 0
+          },
+          {
+            "id": "scene-run-mw3jn2vw-4-block-2",
+            "visual": {
+              "type": "stage-block",
+              "block": {
+                "onWord": "hook",
+                "kind": "list",
+                "items": [
+                  "Hook + script",
+                  "Scenes",
+                  "Pictures & motion",
+                  "Voiceover"
+                ],
+                "shape": "orbit",
+                "partWords": [
+                  "hook",
+                  "scenes",
+                  "pictures",
+                  "voiceover"
+                ],
+                "id": "robot-helpers"
+              },
+              "partAts": [
+                0,
+                55,
+                79,
+                132
+              ]
+            },
+            "x": 50,
+            "y": 34.11458333333333,
+            "scale": 1,
+            "entrance": "slideLeft",
+            "entranceDuration": 10,
+            "exit": "slideLeft",
+            "exitDuration": 7,
+            "delay": 76,
+            "exitAt": 240,
+            "sfx": "none",
+            "exitSfx": "none",
+            "lane": 1
+          }
+        ]
+      },
+      "stage": "top",
+      "motion": {
+        "entrance": "none",
+        "transition": "slideLeft"
+      },
+      "type": "visual-explainer"
+    },
+    {
+      "id": "scene-run-mw3jn2vw-5",
+      "plan": {
+        "role": "mechanism",
+        "visualBrief": "Screen recording of the TikMaker agent panel: a check runs on the agent's output, a problem is flagged and sent back, the agent fixes it, and the check passes."
+      },
+      "durationSeconds": 7.177,
+      "vo": "Third, it checks itself. The agent writes, the code checks its work, and anything wrong gets sent back to fix until it passes.",
+      "notes": "🎥 Your own recording",
+      "background": "stage",
+      "content": {
+        "visuals": [
+          {
+            "id": "scene-run-mw3jn2vw-5-block-1",
+            "visual": {
+              "type": "stage-block",
+              "block": {
+                "onWord": "Third",
+                "kind": "schema",
+                "shape": "chain",
+                "partWords": [
+                  "Third",
+                  "code",
+                  "wrong",
+                  "passes"
+                ],
+                "nodes": [
+                  {
+                    "label": "Agent writes",
+                    "id": "pen"
+                  },
+                  {
+                    "label": "Code checks",
+                    "id": "eye"
+                  },
+                  {
+                    "label": "Wrong → back",
+                    "id": "uturn"
+                  },
+                  {
+                    "label": "Passes"
+                  }
+                ]
+              },
+              "full": true,
+              "partAts": [
+                0,
+                80,
+                133,
+                184
+              ]
+            },
+            "x": 50,
+            "y": 50,
+            "scale": 1,
+            "entrance": "fade",
+            "entranceDuration": 10,
+            "exit": "fade",
+            "exitDuration": 8,
+            "delay": 0,
+            "exitAt": 215,
+            "sfx": "none",
+            "exitSfx": "none",
+            "lane": 0
+          }
+        ]
+      },
+      "stage": "full",
+      "motion": {
+        "entrance": "none",
+        "transition": "slideLeft"
+      },
+      "type": "visual-explainer"
+    },
+    {
+      "id": "scene-run-mw3jn2vw-6",
+      "plan": {
+        "role": "proof",
+        "visualBrief": "Screen recording: the final vertical video plays in the TikMaker editor preview, the same video from the opening."
+      },
+      "durationSeconds": 6.294,
+      "vo": "And here's the result: the finished vertical video. One sentence in. It doesn't just answer, it does.",
+      "notes": "🎥 Your own recording",
+      "background": "stage",
+      "content": {
+        "visuals": [
+          {
+            "id": "scene-run-mw3jn2vw-6-block-1",
+            "visual": {
+              "type": "stage-block",
+              "block": {
+                "onWord": "here's",
+                "kind": "screen",
+                "text": "The final video in preview",
+                "record": "TikMaker editor preview: play the final vertical video (the same one from the opening) for about 2.5 s.",
+                "seconds": 2.5
+              }
+            },
+            "x": 50,
+            "y": 34.11458333333333,
+            "scale": 1,
+            "entrance": "scaleIn",
+            "entranceDuration": 12,
+            "exit": "slideLeft",
+            "exitDuration": 6,
+            "delay": 9,
+            "exitAt": 90,
+            "sfx": "none",
+            "exitSfx": "none",
+            "kenBurns": "zoomIn",
+            "lane": 0
+          },
+          {
+            "id": "scene-run-mw3jn2vw-6-block-2",
+            "visual": {
+              "type": "stage-block",
+              "block": {
+                "onWord": "One",
+                "kind": "compare",
+                "before": {
+                  "label": "In",
+                  "value": "1 sentence"
+                },
+                "after": {
+                  "label": "Out",
+                  "value": "1 video"
+                }
+              }
+            },
+            "x": 50,
+            "y": 34.11458333333333,
+            "scale": 1,
+            "entrance": "pop",
+            "entranceDuration": 12,
+            "exit": "fade",
+            "exitDuration": 7,
+            "delay": 90,
+            "exitAt": 189,
+            "sfx": "none",
+            "exitSfx": "none",
+            "lane": 1
+          }
+        ]
+      },
+      "stage": "top",
+      "motion": {
+        "entrance": "none",
+        "transition": "zoomThrough"
+      },
+      "type": "visual-explainer"
+    },
+    {
+      "id": "scene-run-mw3jn2vw-7",
+      "plan": {
+        "role": "cta",
+        "visualBrief": "A comment bubble pops up with a topic typed in it and drops into the TikMaker prompt field, ready to send."
+      },
+      "durationSeconds": 3.5540000000000003,
+      "vo": "Comment a topic, and the agent will turn it into the next video.",
+      "background": "stage",
+      "content": {
+        "visuals": [
+          {
+            "id": "scene-run-mw3jn2vw-7-block-1",
+            "visual": {
+              "type": "stage-block",
+              "block": {
+                "onWord": "Comment",
+                "kind": "transform",
+                "partWords": [
+                  "Comment",
+                  "turn"
+                ],
+                "nodes": [
+                  {
+                    "label": "Your topic",
+                    "id": "user-avatar"
+                  },
+                  {
+                    "label": "Next video",
+                    "id": "robot-helpers"
+                  }
+                ]
+              },
+              "partAts": [
+                0,
+                53
+              ]
+            },
+            "x": 50,
+            "y": 56.25,
+            "scale": 1,
+            "entrance": "slideUp",
+            "entranceDuration": 12,
+            "exit": "fade",
+            "exitDuration": 8,
+            "delay": 0,
+            "exitAt": 107,
+            "sfx": "none",
+            "exitSfx": "none",
+            "lane": 0
+          }
+        ]
+      },
+      "stage": "bottom",
+      "motion": {
+        "entrance": "none",
+        "transition": "slideUp"
+      },
+      "type": "visual-explainer"
+    }
+  ],
+  "captions": {
+    "font": "tanker",
+    "style": "pill",
+    "keywords": [
+      "AI agent",
+      "one sentence",
+      "answers",
+      "agent",
+      "finished result",
+      "TikMaker",
+      "on its own",
+      "hook",
+      "voiceover",
+      "checks itself",
+      "passes",
+      "result",
+      "does",
+      "Comment",
+      "next video"
+    ]
+  },
+  "savedAt": 1793890259969,
+  "audioClips": [
+    {
+      "id": "audio-run-mw3jn2vw-scene-run-mw3jn2vw-1",
+      "sfxId": "vo-run-mw3jn2vw-scene-1-mw3jypl7",
+      "from": 0,
+      "durationInFrames": 130,
+      "volume": 1,
+      "voiceText": "This whole video was made by an AI agent from one sentence. Here's how.",
+      "words": [
+        {
+          "text": "This",
+          "start": 0,
+          "end": 0.197
+        },
+        {
+          "text": "whole",
+          "start": 0.244,
+          "end": 0.418
+        },
+        {
+          "text": "video",
+          "start": 0.441,
+          "end": 0.743
+        },
+        {
+          "text": "was",
+          "start": 0.789,
+          "end": 0.894
+        },
+        {
+          "text": "made",
+          "start": 0.952,
+          "end": 1.103
+        },
+        {
+          "text": "by",
+          "start": 1.138,
+          "end": 1.219
+        },
+        {
+          "text": "an",
+          "start": 1.254,
+          "end": 1.312
+        },
+        {
+          "text": "AI",
+          "start": 1.382,
+          "end": 1.695
+        },
+        {
+          "text": "agent",
+          "start": 1.73,
+          "end": 1.997
+        },
+        {
+          "text": "from",
+          "start": 2.032,
+          "end": 2.171
+        },
+        {
+          "text": "one",
+          "start": 2.276,
+          "end": 2.426
+        },
+        {
+          "text": "sentence.",
+          "start": 2.461,
+          "end": 2.961
+        },
+        {
+          "text": "Here's",
+          "start": 3.204,
+          "end": 3.448
+        },
+        {
+          "text": "how.",
+          "start": 3.483,
+          "end": 3.994
+        }
+      ]
+    },
+    {
+      "id": "audio-run-mw3jn2vw-scene-run-mw3jn2vw-2",
+      "sfxId": "vo-run-mw3jn2vw-scene-2-mw3jyq43",
+      "from": 130,
+      "durationInFrames": 270,
+      "volume": 1,
+      "voiceText": "A chatbot answers one question at a time. An agent goes after a goal: it uses tools, works in steps, and turns one instruction into a finished result.",
+      "words": [
+        {
+          "text": "A",
+          "start": 0,
+          "end": 0.081
+        },
+        {
+          "text": "chatbot",
+          "start": 0.139,
+          "end": 0.499
+        },
+        {
+          "text": "answers",
+          "start": 0.546,
+          "end": 0.848
+        },
+        {
+          "text": "one",
+          "start": 0.952,
+          "end": 1.149
+        },
+        {
+          "text": "question",
+          "start": 1.184,
+          "end": 1.509
+        },
+        {
+          "text": "at",
+          "start": 1.567,
+          "end": 1.672
+        },
+        {
+          "text": "a",
+          "start": 1.707,
+          "end": 1.73
+        },
+        {
+          "text": "time.",
+          "start": 1.765,
+          "end": 2.148
+        },
+        {
+          "text": "An",
+          "start": 2.426,
+          "end": 2.554
+        },
+        {
+          "text": "agent",
+          "start": 2.612,
+          "end": 2.937
+        },
+        {
+          "text": "goes",
+          "start": 2.972,
+          "end": 3.135
+        },
+        {
+          "text": "after",
+          "start": 3.17,
+          "end": 3.379
+        },
+        {
+          "text": "a",
+          "start": 3.425,
+          "end": 3.448
+        },
+        {
+          "text": "goal:",
+          "start": 3.495,
+          "end": 3.831
+        },
+        {
+          "text": "it",
+          "start": 4.04,
+          "end": 4.133
+        },
+        {
+          "text": "uses",
+          "start": 4.191,
+          "end": 4.458
+        },
+        {
+          "text": "tools,",
+          "start": 4.505,
+          "end": 4.957
+        },
+        {
+          "text": "works",
+          "start": 5.108,
+          "end": 5.329
+        },
+        {
+          "text": "in",
+          "start": 5.364,
+          "end": 5.433
+        },
+        {
+          "text": "steps,",
+          "start": 5.48,
+          "end": 5.921
+        },
+        {
+          "text": "and",
+          "start": 6.026,
+          "end": 6.153
+        },
+        {
+          "text": "turns",
+          "start": 6.188,
+          "end": 6.42
+        },
+        {
+          "text": "one",
+          "start": 6.525,
+          "end": 6.699
+        },
+        {
+          "text": "instruction",
+          "start": 6.734,
+          "end": 7.152
+        },
+        {
+          "text": "into",
+          "start": 7.233,
+          "end": 7.43
+        },
+        {
+          "text": "a",
+          "start": 7.512,
+          "end": 7.546
+        },
+        {
+          "text": "finished",
+          "start": 7.616,
+          "end": 7.918
+        },
+        {
+          "text": "result.",
+          "start": 7.953,
+          "end": 8.638
+        }
+      ]
+    },
+    {
+      "id": "audio-run-mw3jn2vw-scene-run-mw3jn2vw-3",
+      "sfxId": "vo-run-mw3jn2vw-scene-3-mw3jyqkf",
+      "from": 400,
+      "durationInFrames": 182,
+      "volume": 1,
+      "voiceText": "First, I type one sentence into TikMaker and send it. That's the only instruction the agent gets from me.",
+      "words": [
+        {
+          "text": "First,",
+          "start": 0,
+          "end": 0.511
+        },
+        {
+          "text": "I",
+          "start": 0.662,
+          "end": 0.708
+        },
+        {
+          "text": "type",
+          "start": 0.813,
+          "end": 1.01
+        },
+        {
+          "text": "one",
+          "start": 1.057,
+          "end": 1.207
+        },
+        {
+          "text": "sentence",
+          "start": 1.242,
+          "end": 1.625
+        },
+        {
+          "text": "into",
+          "start": 1.66,
+          "end": 1.8
+        },
+        {
+          "text": "TikMaker",
+          "start": 1.858,
+          "end": 2.334
+        },
+        {
+          "text": "and",
+          "start": 2.485,
+          "end": 2.659
+        },
+        {
+          "text": "send",
+          "start": 2.705,
+          "end": 2.879
+        },
+        {
+          "text": "it.",
+          "start": 2.937,
+          "end": 3.158
+        },
+        {
+          "text": "That's",
+          "start": 3.309,
+          "end": 3.541
+        },
+        {
+          "text": "the",
+          "start": 3.576,
+          "end": 3.657
+        },
+        {
+          "text": "only",
+          "start": 3.738,
+          "end": 3.971
+        },
+        {
+          "text": "instruction",
+          "start": 4.005,
+          "end": 4.4
+        },
+        {
+          "text": "the",
+          "start": 4.435,
+          "end": 4.516
+        },
+        {
+          "text": "agent",
+          "start": 4.574,
+          "end": 4.853
+        },
+        {
+          "text": "gets",
+          "start": 4.888,
+          "end": 5.05
+        },
+        {
+          "text": "from",
+          "start": 5.085,
+          "end": 5.213
+        },
+        {
+          "text": "me.",
+          "start": 5.248,
+          "end": 5.712
+        }
+      ]
+    },
+    {
+      "id": "audio-run-mw3jn2vw-scene-run-mw3jn2vw-4",
+      "sfxId": "vo-run-mw3jn2vw-scene-4-mw3jyr9j",
+      "from": 582,
+      "durationInFrames": 240,
+      "volume": 1,
+      "voiceText": "Second, the agent works on its own: it picks a hook, writes the script, splits it into scenes, picks the pictures and motion, and generates the voiceover.",
+      "words": [
+        {
+          "text": "Second,",
+          "start": 0,
+          "end": 0.499
+        },
+        {
+          "text": "the",
+          "start": 0.685,
+          "end": 0.789
+        },
+        {
+          "text": "agent",
+          "start": 0.848,
+          "end": 1.126
+        },
+        {
+          "text": "works",
+          "start": 1.161,
+          "end": 1.37
+        },
+        {
+          "text": "on",
+          "start": 1.405,
+          "end": 1.474
+        },
+        {
+          "text": "its",
+          "start": 1.509,
+          "end": 1.614
+        },
+        {
+          "text": "own:",
+          "start": 1.649,
+          "end": 1.962
+        },
+        {
+          "text": "it",
+          "start": 2.113,
+          "end": 2.206
+        },
+        {
+          "text": "picks",
+          "start": 2.241,
+          "end": 2.438
+        },
+        {
+          "text": "a",
+          "start": 2.473,
+          "end": 2.496
+        },
+        {
+          "text": "hook,",
+          "start": 2.543,
+          "end": 2.844
+        },
+        {
+          "text": "writes",
+          "start": 2.949,
+          "end": 3.181
+        },
+        {
+          "text": "the",
+          "start": 3.216,
+          "end": 3.286
+        },
+        {
+          "text": "script,",
+          "start": 3.32,
+          "end": 3.657
+        },
+        {
+          "text": "splits",
+          "start": 3.762,
+          "end": 4.04
+        },
+        {
+          "text": "it",
+          "start": 4.075,
+          "end": 4.145
+        },
+        {
+          "text": "into",
+          "start": 4.18,
+          "end": 4.307
+        },
+        {
+          "text": "scenes,",
+          "start": 4.365,
+          "end": 4.76
+        },
+        {
+          "text": "picks",
+          "start": 4.83,
+          "end": 5.039
+        },
+        {
+          "text": "the",
+          "start": 5.074,
+          "end": 5.143
+        },
+        {
+          "text": "pictures",
+          "start": 5.178,
+          "end": 5.492
+        },
+        {
+          "text": "and",
+          "start": 5.538,
+          "end": 5.642
+        },
+        {
+          "text": "motion,",
+          "start": 5.689,
+          "end": 6.107
+        },
+        {
+          "text": "and",
+          "start": 6.235,
+          "end": 6.362
+        },
+        {
+          "text": "generates",
+          "start": 6.42,
+          "end": 6.803
+        },
+        {
+          "text": "the",
+          "start": 6.838,
+          "end": 6.908
+        },
+        {
+          "text": "voiceover.",
+          "start": 6.943,
+          "end": 7.663
+        }
+      ]
+    },
+    {
+      "id": "audio-run-mw3jn2vw-scene-run-mw3jn2vw-5",
+      "sfxId": "vo-run-mw3jn2vw-scene-5-mw3jyrpa",
+      "from": 822,
+      "durationInFrames": 215,
+      "volume": 1,
+      "voiceText": "Third, it checks itself. The agent writes, the code checks its work, and anything wrong gets sent back to fix until it passes.",
+      "words": [
+        {
+          "text": "Third,",
+          "start": 0,
+          "end": 0.395
+        },
+        {
+          "text": "it",
+          "start": 0.58,
+          "end": 0.697
+        },
+        {
+          "text": "checks",
+          "start": 0.731,
+          "end": 0.94
+        },
+        {
+          "text": "itself.",
+          "start": 0.975,
+          "end": 1.393
+        },
+        {
+          "text": "The",
+          "start": 1.521,
+          "end": 1.625
+        },
+        {
+          "text": "agent",
+          "start": 1.672,
+          "end": 1.916
+        },
+        {
+          "text": "writes,",
+          "start": 1.939,
+          "end": 2.334
+        },
+        {
+          "text": "the",
+          "start": 2.519,
+          "end": 2.612
+        },
+        {
+          "text": "code",
+          "start": 2.659,
+          "end": 2.856
+        },
+        {
+          "text": "checks",
+          "start": 2.891,
+          "end": 3.123
+        },
+        {
+          "text": "its",
+          "start": 3.158,
+          "end": 3.262
+        },
+        {
+          "text": "work,",
+          "start": 3.297,
+          "end": 3.634
+        },
+        {
+          "text": "and",
+          "start": 3.785,
+          "end": 3.959
+        },
+        {
+          "text": "anything",
+          "start": 4.063,
+          "end": 4.4
+        },
+        {
+          "text": "wrong",
+          "start": 4.435,
+          "end": 4.667
+        },
+        {
+          "text": "gets",
+          "start": 4.714,
+          "end": 4.876
+        },
+        {
+          "text": "sent",
+          "start": 4.911,
+          "end": 5.074
+        },
+        {
+          "text": "back",
+          "start": 5.108,
+          "end": 5.248
+        },
+        {
+          "text": "to",
+          "start": 5.294,
+          "end": 5.352
+        },
+        {
+          "text": "fix",
+          "start": 5.422,
+          "end": 5.666
+        },
+        {
+          "text": "until",
+          "start": 5.77,
+          "end": 5.991
+        },
+        {
+          "text": "it",
+          "start": 6.037,
+          "end": 6.095
+        },
+        {
+          "text": "passes.",
+          "start": 6.13,
+          "end": 6.827
+        }
+      ]
+    },
+    {
+      "id": "audio-run-mw3jn2vw-scene-run-mw3jn2vw-6",
+      "sfxId": "vo-run-mw3jn2vw-scene-6-mw3jys3c",
+      "from": 1037,
+      "durationInFrames": 189,
+      "volume": 1,
+      "voiceText": "And here's the result: the finished vertical video. One sentence in. It doesn't just answer, it does.",
+      "words": [
+        {
+          "text": "And",
+          "start": 0,
+          "end": 0.244
+        },
+        {
+          "text": "here's",
+          "start": 0.302,
+          "end": 0.499
+        },
+        {
+          "text": "the",
+          "start": 0.534,
+          "end": 0.604
+        },
+        {
+          "text": "result:",
+          "start": 0.639,
+          "end": 1.068
+        },
+        {
+          "text": "the",
+          "start": 1.277,
+          "end": 1.382
+        },
+        {
+          "text": "finished",
+          "start": 1.451,
+          "end": 1.776
+        },
+        {
+          "text": "vertical",
+          "start": 1.846,
+          "end": 2.148
+        },
+        {
+          "text": "video.",
+          "start": 2.206,
+          "end": 2.728
+        },
+        {
+          "text": "One",
+          "start": 3.007,
+          "end": 3.204
+        },
+        {
+          "text": "sentence",
+          "start": 3.239,
+          "end": 3.553
+        },
+        {
+          "text": "in.",
+          "start": 3.587,
+          "end": 3.843
+        },
+        {
+          "text": "It",
+          "start": 4.122,
+          "end": 4.226
+        },
+        {
+          "text": "doesn't",
+          "start": 4.261,
+          "end": 4.493
+        },
+        {
+          "text": "just",
+          "start": 4.528,
+          "end": 4.69
+        },
+        {
+          "text": "answer,",
+          "start": 4.737,
+          "end": 5.12
+        },
+        {
+          "text": "it",
+          "start": 5.224,
+          "end": 5.329
+        },
+        {
+          "text": "does.",
+          "start": 5.364,
+          "end": 5.944
+        }
+      ]
+    },
+    {
+      "id": "audio-run-mw3jn2vw-scene-run-mw3jn2vw-7",
+      "sfxId": "vo-run-mw3jn2vw-scene-7-mw3jysen",
+      "from": 1226,
+      "durationInFrames": 107,
+      "volume": 1,
+      "voiceText": "Comment a topic, and the agent will turn it into the next video.",
+      "words": [
+        {
+          "text": "Comment",
+          "start": 0,
+          "end": 0.325
+        },
+        {
+          "text": "a",
+          "start": 0.36,
+          "end": 0.383
+        },
+        {
+          "text": "topic,",
+          "start": 0.418,
+          "end": 0.813
+        },
+        {
+          "text": "and",
+          "start": 0.94,
+          "end": 1.138
+        },
+        {
+          "text": "the",
+          "start": 1.184,
+          "end": 1.265
+        },
+        {
+          "text": "agent",
+          "start": 1.324,
+          "end": 1.591
+        },
+        {
+          "text": "will",
+          "start": 1.614,
+          "end": 1.741
+        },
+        {
+          "text": "turn",
+          "start": 1.765,
+          "end": 1.916
+        },
+        {
+          "text": "it",
+          "start": 1.95,
+          "end": 2.02
+        },
+        {
+          "text": "into",
+          "start": 2.067,
+          "end": 2.218
+        },
+        {
+          "text": "the",
+          "start": 2.264,
+          "end": 2.334
+        },
+        {
+          "text": "next",
+          "start": 2.368,
+          "end": 2.543
+        },
+        {
+          "text": "video.",
+          "start": 2.577,
+          "end": 3.204
+        }
+      ]
+    }
+  ]
+}

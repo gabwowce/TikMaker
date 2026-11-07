@@ -566,7 +566,7 @@
             "exitAt": 97,
             "sfx": "none",
             "exitSfx": "none",
-            "lane": 0
+            "lane": 1
           },
           {
             "id": "scene-run-mw3eucnm-7-block-3",
@@ -614,6 +614,9 @@
       "notes": "🎥 Your own recording",
       "background": "stage",
       "content": {
+        "items": [],
+        "richHeadline": [],
+        "blocks": [],
         "visuals": [
           {
             "id": "scene-run-mw3eucnm-8-block-1",
@@ -661,7 +664,7 @@
             "sfx": "none",
             "exitSfx": "none",
             "kenBurns": "float",
-            "lane": 0
+            "lane": 1
           },
           {
             "id": "scene-run-mw3eucnm-8-block-3",
@@ -708,7 +711,7 @@
             "sfx": "none",
             "exitSfx": "none",
             "kenBurns": "zoomIn",
-            "lane": 0
+            "lane": 1
           }
         ]
       },
@@ -845,7 +848,7 @@
     }
   ],
   "captions": {
-    "style": "kinetic",
+    "style": "pill",
     "keywords": [
       "two minutes",
       "tech topic",
@@ -864,7 +867,7 @@
       "ready to post"
     ]
   },
-  "savedAt": 1793875550445,
+  "savedAt": 1793877134625,
   "audioClips": [
     {
       "id": "audio-run-mw3eucnm-scene-run-mw3eucnm-1",

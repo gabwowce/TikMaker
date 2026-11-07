@@ -1,0 +1,2163 @@
+{
+  "id": "run-mw3ib6vu",
+  "projectId": "project-1793880792290",
+  "createdAt": 1793880798618,
+  "status": "done",
+  "input": {
+    "idea": "Video idea: Introducing TikMaker – AI-powered educational video creation\n\nA short promotional video showcasing TikMaker, an AI-powered tool designed for creating educational, informational and technology-related short-form videos. Demonstrate how users can transform a simple idea into a structured script and visually engaging motion graphics video without manually designing and animating every scene. Highlight its ability to generate scene-by-scene content, animated typography, diagrams, icons and transitions in a vertical 9:16 format. Target tech creators, educators, AI enthusiasts and faceless content creators who want to publish engaging educational videos consistently.",
+    "workspaceId": "dev",
+    "targetSeconds": 45,
+    "motionOnly": false,
+    "withFace": false,
+    "generateVoice": true
+  },
+  "template": {
+    "videoTemplateId": "product-promo",
+    "score": 5,
+    "reason": "This idea promotes one product, TikMaker. It shows its benefits one at a time (idea to script, scene-by-scene generation, animated typography, diagrams and icons, vertical 9:16 output) and can end on where to get it. At 45 s it runs longer than the template's usual 30 s, so either keep each benefit scene short or let it run a little long.",
+    "pickedBy": "agent"
+  },
+  "hooks": [
+    {
+      "text": "So, you want educational videos without animating every scene yourself...",
+      "formulaId": "so-you-want",
+      "score": 4
+    },
+    {
+      "text": "Got an idea to explain? What if it animated itself?",
+      "formulaId": "got-something-to",
+      "score": 4
+    },
+    {
+      "text": "Type one idea, get a full animated explainer video back.",
+      "formulaId": null,
+      "score": 5
+    }
+  ],
+  "hooksFor": "product-promo",
+  "hook": {
+    "text": "Type one idea, get a full animated explainer video back.",
+    "formulaId": null,
+    "pickedBy": "agent"
+  },
+  "research": {
+    "facts": "- Short-form video uses a vertical 9:16 frame. The standard size for TikTok, Instagram Reels and YouTube Shorts is 1080 × 1920 pixels.\n- In October 2024, YouTube raised the maximum length of a Short from 60 seconds to 3 minutes.\n- Platform buttons and captions sit on top of the edges of a vertical video, so creators keep text and key visuals inside a central \"safe zone\" where they won't be covered.\n- Motion graphics are traditionally made by hand in tools like Adobe After Effects. One industry comparison estimates it takes 100–200 hours to become proficient.\n- AI text-to-video tools let you type a topic or script and get a video back with the visuals, on-screen text and narration already made. Revid.ai, for example, turns a topic into a \"Did You Know?\"-style TikTok clip.\n- Some AI video tools can also take static diagrams, charts and slides and animate them into moving explainer scenes. Mootion is one example.",
+    "sources": [
+      {
+        "url": "https://adaptlypost.com/blog/vertical-video-dimensions",
+        "title": "Vertical Video Dimensions for TikTok, Reels, Shorts, and More"
+      },
+      {
+        "url": "https://viberoll.questera.ai/learn/short-form-video-specs/",
+        "title": "Short-form video specs: TikTok, Instagram Reels and YouTube Shorts"
+      },
+      {
+        "url": "https://engadget.com/entertainment/youtube/youtube-shorts-can-now-run-up-to-three-minutes-160002081.html",
+        "title": "YouTube Shorts can now run up to three minutes (Engadget)"
+      },
+      {
+        "url": "https://www.x-pilot.ai/blog/best-motion-graphics-tools-course-creation-2026",
+        "title": "Best Motion Graphics Tools for Course Creation 2026 (X-Pilot)"
+      },
+      {
+        "url": "https://www.revid.ai/tools/ai-learning-explainer-video-generator",
+        "title": "AI Learning Explainer Video Generator (Revid.ai)"
+      },
+      {
+        "url": "https://mootion.com/ugc/en/use-case/ai-educational-video-generator",
+        "title": "Generate Cinematic Educational Videos (Mootion)"
+      }
+    ]
+  },
+  "script": {
+    "scenes": [
+      {
+        "role": "hook",
+        "voiceover": "Type one idea, get a full animated explainer video back. This is TikMaker.",
+        "onScreen": "One idea → full animated explainer",
+        "visual": "One line of text is typed into a box. A vertical phone frame fills with an animated explainer, and the TikMaker logo snaps in on top.",
+        "needsRecording": false
+      },
+      {
+        "role": "problem",
+        "voiceover": "Tech concepts click when you show them: diagrams, animated text, icons. But those motion graphics are usually animated by hand, scene by scene, in tools like After Effects.",
+        "onScreen": "Show it → but animated by hand",
+        "visual": "A simple diagram of an API request animates on the left. On the right, a hand drags keyframes one by one across a crowded After Effects-style timeline.",
+        "needsRecording": false
+      },
+      {
+        "role": "demo",
+        "voiceover": "First, you type your idea: a topic, or loose thoughts in any order.",
+        "onScreen": "1. Type your idea",
+        "visual": "Screen recording: the creator types a rough idea for a tech explainer into the TikMaker input field and clicks generate.",
+        "needsRecording": true
+      },
+      {
+        "role": "demo",
+        "voiceover": "Second, TikMaker turns it into a structured script, scene by scene, each with its own voiceover and on-screen text.",
+        "onScreen": "2. Structured script, scene by scene",
+        "visual": "Screen recording: the scene list appears in TikMaker. Each card shows its role, its voiceover and the words that go on screen.",
+        "needsRecording": true
+      },
+      {
+        "role": "demo",
+        "voiceover": "Third, every scene becomes motion graphics: animated typography, diagrams, icons and transitions.",
+        "onScreen": "3. Typography · Diagrams · Icons · Transitions",
+        "visual": "Screen recording: the TikMaker preview plays. Words animate in, a diagram draws its arrows, icons pop in, and the scene slides into the next one.",
+        "needsRecording": true
+      },
+      {
+        "role": "benefit",
+        "voiceover": "All in vertical 9:16, 1080 by 1920, with the text kept in the safe zone, away from the platform buttons.",
+        "onScreen": "9:16 · 1080×1920 · Safe zone",
+        "visual": "A vertical frame with TikTok-style buttons along the edges. A central safe zone lights up, and the explainer's text and diagram stay inside it.",
+        "needsRecording": false
+      },
+      {
+        "role": "benefit",
+        "voiceover": "So tech creators, educators and faceless channels can publish explainers consistently, without animating a single frame.",
+        "onScreen": "Tech creators · Educators · Faceless channels",
+        "visual": "Three vertical explainer videos, one on AI, one on science and one on code, drop into a posting calendar one after another.",
+        "needsRecording": false
+      },
+      {
+        "role": "payoff",
+        "voiceover": "One idea in, an explainer out. That's TikMaker.",
+        "onScreen": "One idea in. Explainer out.",
+        "visual": "The typed idea flies into the TikMaker logo, and a finished vertical explainer with animated diagrams comes out and starts playing.",
+        "needsRecording": false
+      }
+    ],
+    "skipped": [
+      {
+        "role": "cta",
+        "reason": "Only the 'none' CTA type is allowed and the idea gives no link, so the video ends on the payoff."
+      }
+    ],
+    "problems": [],
+    "approved": true
+  },
+  "steps": [
+    {
+      "name": "pickTemplate",
+      "startedAt": 1793880798663,
+      "ms": 9079,
+      "model": "claude-opus-5-5",
+      "attempts": 1,
+      "prompt": {
+        "system": "You are the producer of a short-video channel (TikTok, Reels, Shorts).\nYour job in this step: choose how the video will be told, by picking ONE template\nfrom the list you are given. You do not write the video yet.\n\nYou get the channel, the video idea and the templates.\nPick the template whose \"when to use\" fits the idea best; the length matters less.\nA template's \"needs\" are the facts its required scenes are built on. Pick one the idea\ncan fill with its OWN facts: a rise-to-success story needs a success to show, a how-to\nneeds steps, a list needs items. If the idea lacks what a template needs, that template\ndoes not fit, however close its topic is.\nNever invent a template: answer only with an id from the list.\nscore: 5 = made for this idea and the idea has every fact it needs, 3 = workable,\n1 = nothing in the list fits.\nreason: one or two sentences for the creator, in plain English, about this idea.",
+        "user": "Channel: TikMaker and AI coding. Mostly TikMaker itself: what it can do, how a video gets made with it, new features and how it is being built with AI (build in public). Around that, short concrete videos about other AI tools, vibe coding and Claude Code: one problem or one feature per video, shown on screen rather than told.\nAudience: Creators who want to make short videos faster with AI, and developers or beginners who build apps with AI and want to work faster without breaking things.\n\nIdea: Video idea: Introducing TikMaker – AI-powered educational video creation\n\nA short promotional video showcasing TikMaker, an AI-powered tool designed for creating educational, informational and technology-related short-form videos. Demonstrate how users can transform a simple idea into a structured script and visually engaging motion graphics video without manually designing and animating every scene. Highlight its ability to generate scene-by-scene content, animated typography, diagrams, icons and transitions in a vertical 9:16 format. Target tech creators, educators, AI enthusiasts and faceless content creators who want to publish engaging educational videos consistently.\nWanted length: about 45 s\nFace on camera: no, a faceless video\n\nTemplates:\n- id: analogy-explainer\n  name: Explained with characters\n  what: A concept explained through a small invented world or everyday analogy\n  when to use: An idea that is an abstract concept (economics, health, finance) that becomes clear as a story.\n  needs: problem, step, concept-term, real-case, lesson\n  length: 26–63 s\n- id: app-list\n  name: Free apps list\n  what: A quick list of apps, one per scene, each shown on screen\n  when to use: An idea that recommends several apps or tools for one device or audience.\n  needs: app-count, device-or-audience, app-name, app-feature\n  length: 14–62 s\n- id: brand-origin\n  name: Rise of a brand\n  what: From a humble start, through hardship, to a big brand\n  when to use: An idea that is the history of a brand, product or founder that has already grown big: the idea gives the success to show (users, money, years). Not a creator telling why they built their own tool.\n  needs: year-or-result, brand, founder, start, hardship, time-jump, result-number\n  length: 43–80 s\n- id: build-it-fast\n  name: Build it fast\n  what: Show the finished thing, then every step that built it\n  when to use: An idea where the viewer can build something real in minutes with a tool.\n  needs: result, time, tool-name, step, screen-recording\n  length: 20–51 s\n- id: dark-true-story\n  name: Creepy true story\n  what: A dark or strange true story told step by step to a shocking ending\n  when to use: An idea that is a real crime, legend or eerie event.\n  needs: place-or-person, event, ending\n  length: 15–51 s\n- id: explained-in-time\n  name: Explained in 60 seconds\n  what: A complex topic explained in a promised short time, often to an unlikely audience\n  when to use: An idea that is a complex topic the viewer finds hard and wants explained quickly.\n  needs: nothing special\n  length: 35–54 s\n- id: how-to-steps\n  name: How-to steps\n  what: A how-to promise followed by numbered steps on screen\n  when to use: An idea that is a concrete task the viewer wants to do with a tool, in a few steps.\n  needs: task, tool-name\n  length: 32–43 s\n- id: myth-vs-reality\n  name: Myth vs reality\n  what: What people think, then how it really works, with the proof\n  when to use: An idea that corrects a common belief or reveals a hidden side of something familiar.\n  needs: belief, background, reality, step, twist\n  length: 26–59 s\n- id: new-tool-news\n  name: New tool news\n  what: A just-released free tool, its benefits, a quick demo and a comment-keyword offer\n  when to use: An idea that is news about a newly released or newly free tool.\n  needs: who-released, tool-name, benefit, keyword, resource\n  length: 30–107 s\n- id: pain-to-fix\n  name: Problem then fix\n  what: The broken or painful way first, then the tool that fixes it, shown working\n  when to use: An idea where a tool fixes a pain the audience recognises, including a creator telling why they built their own tool: the pain they had, then the tool that fixes it.\n  needs: pain, task, screen-recording\n  length: 30–40 s\n- id: plot-recap\n  name: Story recap\n  what: A plot, journey or character backstory retold event by event\n  when to use: An idea that recaps an episode, myth, game lore or a character's story.\n  needs: story-name, setting, ending\n  length: 48–181 s\n- id: product-promo\n  name: Product promo\n  what: A product's benefits shown one by one through its interface, ending on where to get it\n  when to use: An idea that promotes one product or service.\n  needs: product-name\n  length: 11–30 s\n- id: question-answered\n  name: Big question answered\n  what: A why or how question, answered step by step with diagrams\n  when to use: An idea that is a question the audience has wondered about.\n  needs: question\n  length: 43–71 s\n- id: ranked-countdown\n  name: Top N countdown\n  what: Ranked items counted down to number one\n  when to use: An idea that ranks a set of things by some measure.\n  needs: rank-count, ranked-thing, rank-number, item-name, item-detail\n  length: 25–60 s\n- id: rapid-facts\n  name: Rapid-fire facts\n  what: Many short facts in a row, one per scene, with the strongest kept for last\n  when to use: An idea that is a collection of short surprising facts around one theme.\n  needs: theme, fact\n  length: 40–56 s\n- id: single-fact\n  name: One surprising fact\n  what: One fact built up line by line to a short reveal\n  when to use: An idea that is a single surprising or eerie fact that fits in under 20 seconds.\n  needs: topic\n  length: 7–16 s\n- id: software-tutorial\n  name: Software how-to\n  what: A finished result first, then the steps to make it in the software\n  when to use: An idea that is a specific thing to make in a common program (PowerPoint, GitHub, a no-code tool).\n  needs: result, software\n  length: 14–53 s\n- id: tool-deep-dive\n  name: Tool explained\n  what: What a tool is, how it differs, and what it really does\n  when to use: An idea that explains one popular tool or model and how to think about it.\n  needs: tool-name, difference, main-point\n  length: 49–78 s\n- id: tool-spotlight\n  name: Tool spotlight\n  what: One website or tool shown working, often as a numbered series part\n  when to use: An idea that is a single useful website, repo or tool the viewer probably has not seen.\n  needs: tool-category, series-part, screen-recording\n  length: 10–56 s\n- id: tool-tips-keyword\n  name: Tool tips list\n  what: Numbered tips for one tool, each named and then shown working, ending with a comment-keyword offer\n  when to use: An idea that is a handful of concrete tips, skills or add-ons for one tool the audience already uses.\n  needs: tool-name, tip-count, tip-number, tip-name, keyword, resource\n  length: 47–88 s"
+      },
+      "inputTokens": 15398,
+      "cachedInputTokens": 0,
+      "outputTokens": 216,
+      "thinkingTokens": 0,
+      "output": {
+        "videoTemplateId": "product-promo",
+        "score": 5,
+        "reason": "This idea promotes one product, TikMaker. It shows its benefits one at a time (idea to script, scene-by-scene generation, animated typography, diagrams and icons, vertical 9:16 output) and can end on where to get it. At 45 s it runs longer than the template's usual 30 s, so either keep each benefit scene short or let it run a little long."
+      }
+    },
+    {
+      "name": "writeHooks",
+      "startedAt": 1793880807752,
+      "ms": 7003,
+      "model": "claude-opus-5-5",
+      "attempts": 1,
+      "prompt": {
+        "system": "You write the opening line (hook) of a short vertical video (TikTok, Reels, Shorts):\nthe words shown and spoken in the first two seconds, which decide whether people keep watching.\n\nWrite THREE different hooks for the idea.\nThe formulas show openings that have worked: follow one where it fits this idea (fill it\nin, do not copy its example) or write your own. formulaId = the formula's id, or null for\na hook of your own.\nFill a formula only with what the idea says: never claim something it does not\n(no \"I switched from…\", no number, no result the idea does not give).\nEach hook: one line, at most 12 words, plain spoken English, no hashtags, no emojis.\nscore: 5 = people stop scrolling, 3 = fine, 1 = weak.",
+        "user": "Channel: TikMaker and AI coding. Mostly TikMaker itself: what it can do, how a video gets made with it, new features and how it is being built with AI (build in public). Around that, short concrete videos about other AI tools, vibe coding and Claude Code: one problem or one feature per video, shown on screen rather than told.\nAudience: Creators who want to make short videos faster with AI, and developers or beginners who build apps with AI and want to work faster without breaking things.\n\nIdea: Video idea: Introducing TikMaker – AI-powered educational video creation\n\nA short promotional video showcasing TikMaker, an AI-powered tool designed for creating educational, informational and technology-related short-form videos. Demonstrate how users can transform a simple idea into a structured script and visually engaging motion graphics video without manually designing and animating every scene. Highlight its ability to generate scene-by-scene content, animated typography, diagrams, icons and transitions in a vertical 9:16 format. Target tech creators, educators, AI enthusiasts and faceless content creators who want to publish engaging educational videos consistently.\nTemplate: Product promo – A product's benefits shown one by one through its interface, ending on where to get it\n\nFormulas:\n- id: free-alternative-to\n  type: news\n  formula: This is a free and [quality] alternative to [popular tool].\n  example: This is a free and open source alternative to Claude Code\n- id: did-you-know-you-can-in-tool\n  type: question\n  formula: Did you know that you can [desired result] directly in [tool]?\n  example: Did you know that you can visualize data structures directly in VS Code?\n- id: got-something-to\n  type: question\n  formula: Got [something] to [action]? [Second question]?\n  example: Got something to create?\n- id: a-vs-b-side-by-side\n  type: visual-first\n  formula: [Subject A] vs [Subject B], shown side by side with no words\n  example: MESSI RONALDO\n- id: why-does-feel-so-good\n  type: question\n  formula: Why does [subject] feel so good? Let's try it so you don't have to.\n  example: Why does cocaine feel so good? Let's try it so you don't have to.\n- id: how-does-topic-work\n  type: question\n  formula: How does [topic] work?\n  example: How does AI work?\n- id: if-you-want-follow-my-steps\n  type: how-to\n  formula: If you want to [result] using [tool], then follow my steps.\n  example: If you want to upload your project on GitHub using Visual Studio Code, then follow my steps.\n- id: open-app-do-this\n  type: how-to\n  formula: Open [app], [do the first action]...\n  example: Open the Claude desktop app, switch to Cowork mode\n- id: want-to-next-level\n  type: question\n  formula: Want to [goal] and take your [project] to the next level?\n  example: Want to promote your app and take your mobile app promo to the next level?\n- id: did-you-know-this-resource\n  type: question\n  formula: Did you know if you go to this [resource], you'll find [valuable items]?\n  example: Did you know if you go to this GitHub repo, you'll find a huge library of APIs by category, including sports and fitness, entertainment, and everything else.\n- id: why-does-entity-have-anomaly\n  type: question\n  formula: Why does [entity] have [anomaly]?\n  example: Why does Florida have this panhandle? Why does it end here and not here? Or why isn't it part of Alabama?\n- id: could-this-beat-leader\n  type: question\n  formula: Could this be the [thing] that finally beats [market leader]?\n  example: Could this be the AI that finally beats ChatGPT?\n- id: did-you-know-short\n  type: question\n  formula: Did you know [a common assumption is wrong]?\n  example: Did you know\n- id: heres-how-i-use-tool\n  type: how-to\n  formula: Here's how I use [tool] to do [task].\n  example: Here's how I use Claude to do technical analysis, and it's a game changer.\n- id: so-you-want\n  type: question\n  formula: So, you want [desired result]...\n  example: So, you want a clean motion ad for your product,\n- id: credible-person-released\n  type: news\n  formula: This [credible person] just released their entire [asset] for free.\n  example: This Anthropic hackathon winner just released his entire Claude Code setup for free.\n- id: company-just-launched\n  type: news\n  formula: [Company] just launched a [adjective] [category] tool that lets you [benefit] without [pain].\n  example: Google just launched a free AI coding tool that lets you vibe code full mobile apps without writing a single line of code.\n- id: what-why-what-can-you-do\n  type: question\n  formula: [Topic]. What is it? Why does it happen? And what can you do?\n  example: Around one in three of you could suffer from a panic attack\n- id: app-in-motion\n  type: visual-first\n  formula: [App] shown moving, with a one-word action on screen\n  example: Пополняйте\n- id: how-to-action\n  type: how-to\n  formula: How to [action] [object or platform]\n  example: How to upload a project to GitHub\n- id: did-you-know-there-is-a-place\n  type: question\n  formula: Did you know in [location] there's a [place] where [something happened]?\n  example: Did you know in the United States there's a bridge where a man\n- id: tool-gaining-momentum\n  type: news\n  formula: [Tool] has been gaining so much momentum in how [audience] are using it to [benefit].\n  example: Claude Code has been gaining so much momentum in how companies are using it to automate their operations.\n- id: why-does-use-n\n  type: question\n  formula: Why does [subject] use [N] [items]? Not [x], not [y], [N].\n  example: Why does Western music use twelve notes? Not ten, not twenty, twelve.\n- id: product-name-reveal\n  type: news\n  formula: [Product name], typed or revealed letter by letter\n  example: G P T - 5"
+      },
+      "inputTokens": 3783,
+      "cachedInputTokens": 0,
+      "outputTokens": 168,
+      "thinkingTokens": 0,
+      "output": [
+        {
+          "text": "So, you want educational videos without animating every scene yourself...",
+          "formulaId": "so-you-want",
+          "score": 4
+        },
+        {
+          "text": "Got an idea to explain? What if it animated itself?",
+          "formulaId": "got-something-to",
+          "score": 4
+        },
+        {
+          "text": "Type one idea, get a full animated explainer video back.",
+          "formulaId": null,
+          "score": 5
+        }
+      ]
+    },
+    {
+      "name": "research",
+      "startedAt": 1793880830336,
+      "ms": 24026,
+      "model": "claude-opus-5-5",
+      "attempts": 1,
+      "prompt": {
+        "system": "You research the facts for a short vertical video (TikTok, Reels, Shorts).\nSearch the web for the idea's topic and answer with 4 to 6 short facts that help explain\nit to the video's audience: what it is, how it works, a clear example or number.\nOne fact per line, starting with \"- \", plain English, each one true and checkable.\nNo opinions, no advice, nothing about the creator – only the topic.\n\nPut your answer in \"text\" and every page you used in \"sources\".",
+        "user": "Audience: Creators who want to make short videos faster with AI, and developers or beginners who build apps with AI and want to work faster without breaking things.\n\nIdea: Video idea: Introducing TikMaker – AI-powered educational video creation\n\nA short promotional video showcasing TikMaker, an AI-powered tool designed for creating educational, informational and technology-related short-form videos. Demonstrate how users can transform a simple idea into a structured script and visually engaging motion graphics video without manually designing and animating every scene. Highlight its ability to generate scene-by-scene content, animated typography, diagrams, icons and transitions in a vertical 9:16 format. Target tech creators, educators, AI enthusiasts and faceless content creators who want to publish engaging educational videos consistently."
+      },
+      "inputTokens": 19912,
+      "cachedInputTokens": 1693,
+      "outputTokens": 1292,
+      "thinkingTokens": 202,
+      "output": {
+        "text": "- Short-form video uses a vertical 9:16 frame. The standard size for TikTok, Instagram Reels and YouTube Shorts is 1080 × 1920 pixels.\n- In October 2024, YouTube raised the maximum length of a Short from 60 seconds to 3 minutes.\n- Platform buttons and captions sit on top of the edges of a vertical video, so creators keep text and key visuals inside a central \"safe zone\" where they won't be covered.\n- Motion graphics are traditionally made by hand in tools like Adobe After Effects. One industry comparison estimates it takes 100–200 hours to become proficient.\n- AI text-to-video tools let you type a topic or script and get a video back with the visuals, on-screen text and narration already made. Revid.ai, for example, turns a topic into a \"Did You Know?\"-style TikTok clip.\n- Some AI video tools can also take static diagrams, charts and slides and animate them into moving explainer scenes. Mootion is one example.",
+        "sources": [
+          {
+            "url": "https://adaptlypost.com/blog/vertical-video-dimensions",
+            "title": "Vertical Video Dimensions for TikTok, Reels, Shorts, and More"
+          },
+          {
+            "url": "https://viberoll.questera.ai/learn/short-form-video-specs/",
+            "title": "Short-form video specs: TikTok, Instagram Reels and YouTube Shorts"
+          },
+          {
+            "url": "https://engadget.com/entertainment/youtube/youtube-shorts-can-now-run-up-to-three-minutes-160002081.html",
+            "title": "YouTube Shorts can now run up to three minutes (Engadget)"
+          },
+          {
+            "url": "https://www.x-pilot.ai/blog/best-motion-graphics-tools-course-creation-2026",
+            "title": "Best Motion Graphics Tools for Course Creation 2026 (X-Pilot)"
+          },
+          {
+            "url": "https://www.revid.ai/tools/ai-learning-explainer-video-generator",
+            "title": "AI Learning Explainer Video Generator (Revid.ai)"
+          },
+          {
+            "url": "https://mootion.com/ugc/en/use-case/ai-educational-video-generator",
+            "title": "Generate Cinematic Educational Videos (Mootion)"
+          }
+        ]
+      }
+    },
+    {
+      "name": "writeScript",
+      "startedAt": 1793880854366,
+      "ms": 19607,
+      "model": "claude-opus-5-5",
+      "attempts": 1,
+      "prompt": {
+        "system": "You write the script of a short vertical video (TikTok, Reels, Shorts).\n\nTell ONE connected story. The idea may be written as loose thoughts in any order: sort\nthem into the order the template's scenes tell (the problem before the fix, the cause\nbefore the result), and let every scene follow from the one before it – the voiceovers\nread in a row must make sense as one spoken text. A scene that promises something (\"what I learned\", \"here's why\") is\nfollowed by the scene that says it.\n\nThe template is a guide: a structure that has worked for videos like this – its scenes,\ntheir order and how they link. Follow it where it serves this idea; change the order,\nleave a scene out or add one when that tells this story better. A \"repeatable\" scene\nmay appear several times in a row (one per step or item). Put every template scene you\nleave out in \"skipped\" with a short reason.\nA scene's \"facts\" come from the idea and the facts found online only – never invent a\ntool, a number or a result.\nWhen the idea has no fact for a scene, leave it out if it is optional; if it is required,\nfill it with what the idea does say rather than with an invented claim.\nIts \"creative\" parts are yours to word.\n\nThe first scene is the hook: say the chosen hook as it is, and show its key words.\nThe template's links (\"→ next\") and the transition phrases are examples of how scenes\ncan follow each other; use them only where they read naturally. End the way that fits\nthis video best: the CTA formulas show endings that have worked – use one, or write\nyour own, or none if no ending asks for one.\nThe call to action never sends people to a link, a website, a download or a giveaway\nthe idea does not mention – then pick a CTA formula that needs none of those.\n\nFor every scene:\n- voiceover: what is said, natural spoken English. When a scene lists things (tools,\n  mistakes, steps), the voice names every one of them – the list on screen fills point by\n  point as each is named; a point that needs it gets a short sentence after its name\n- onScreen: the key words shown big, not the whole sentence\n- visual: what the viewer sees happening, concrete and with a verb – a terminal running a\n  command, a price counting down, the idea turning into a video – one picture for the\n  thought, understandable with the sound off; never \"something engaging\"\n- needsRecording: your call – true when the scene is shown best with the creator's own\n  screen recording rather than a picture the video editor draws. Then the voiceover says\n  what the recording shows while it shows it (the click, what appears)\n\nKeep within the limits. Each scene lasts about as long as its voiceover: fill the wanted\nlength – add more steps or items with the repeatable scenes, keep the optional scenes\nthat help – rather than stopping short.",
+        "user": "Channel: TikMaker and AI coding. Mostly TikMaker itself: what it can do, how a video gets made with it, new features and how it is being built with AI (build in public). Around that, short concrete videos about other AI tools, vibe coding and Claude Code: one problem or one feature per video, shown on screen rather than told.\nAudience: Creators who want to make short videos faster with AI, and developers or beginners who build apps with AI and want to work faster without breaking things.\n\nIdea: Video idea: Introducing TikMaker – AI-powered educational video creation\n\nA short promotional video showcasing TikMaker, an AI-powered tool designed for creating educational, informational and technology-related short-form videos. Demonstrate how users can transform a simple idea into a structured script and visually engaging motion graphics video without manually designing and animating every scene. Highlight its ability to generate scene-by-scene content, animated typography, diagrams, icons and transitions in a vertical 9:16 format. Target tech creators, educators, AI enthusiasts and faceless content creators who want to publish engaging educational videos consistently.\n\nFacts found online (true – use them to explain the idea):\n- Short-form video uses a vertical 9:16 frame. The standard size for TikTok, Instagram Reels and YouTube Shorts is 1080 × 1920 pixels.\n- In October 2024, YouTube raised the maximum length of a Short from 60 seconds to 3 minutes.\n- Platform buttons and captions sit on top of the edges of a vertical video, so creators keep text and key visuals inside a central \"safe zone\" where they won't be covered.\n- Motion graphics are traditionally made by hand in tools like Adobe After Effects. One industry comparison estimates it takes 100–200 hours to become proficient.\n- AI text-to-video tools let you type a topic or script and get a video back with the visuals, on-screen text and narration already made. Revid.ai, for example, turns a topic into a \"Did You Know?\"-style TikTok clip.\n- Some AI video tools can also take static diagrams, charts and slides and animate them into moving explainer scenes. Mootion is one example.\nWanted length: about 45 s\nFace on camera: no, a faceless video\n\nHook: Type one idea, get a full animated explainer video back.\n\nTemplate: Product promo – A product's benefits shown one by one through its interface, ending on where to get it\nScenes:\n- opening / hook (1.8–4.5 s): Asks what the viewer wants, or shows the product. [required] → next: question-answer; facts: product-name; creative: desire\n- build / benefit (2–5 s): States a benefit. [optional] [repeatable] → next: escalation; facts: benefit\n- core / demo (2–3 s): Shows the product in use. [optional] [repeatable] → next: sequence; facts: screen-recording\n- core / benefit (2–5 s): Adds benefits one after another. [optional] [repeatable] → next: sequence; facts: benefit\n- close / cta (2–3.6 s): Says where to get it. [optional] → next: none; facts: link-target\n\nTransition phrases:\n- sequence: First, | Second, | Third, | First is | Second is | Third is\n- escalation: And it gets even better | But that's not all. | Plus | Plus, you still get | and here you get | that lets you\n- question-answer: The answer is | It's because of | Well, | But how do | Did you know | So where did the ROAD part come from?\n\nCTA formulas (types allowed: none):\n- none: end on the last scene, without a call to action (skip the cta scene)\n\nLimits, from the analysis of successful videos:\n- speak at most 3.4 words per second\n- a scene lasts at most 9 s, the hook at most 5 s\n- at most 15 words on screen in a scene"
+      },
+      "inputTokens": 3645,
+      "cachedInputTokens": 0,
+      "outputTokens": 1565,
+      "thinkingTokens": 441,
+      "output": {
+        "scenes": [
+          {
+            "role": "hook",
+            "voiceover": "Type one idea, get a full animated explainer video back. This is TikMaker.",
+            "onScreen": "One idea → full animated explainer",
+            "visual": "A single line of text is typed into a box, and a vertical phone frame fills with an animated explainer video. The TikMaker logo snaps in on top.",
+            "needsRecording": false
+          },
+          {
+            "role": "problem",
+            "voiceover": "Motion graphics are usually animated by hand in tools like After Effects, and one comparison says it takes 100 to 200 hours just to get good at it.",
+            "onScreen": "After Effects: 100–200 hours to learn",
+            "visual": "A crowded After Effects timeline with dozens of keyframe layers, while a clock counter climbs from 0 to 200 hours.",
+            "needsRecording": false
+          },
+          {
+            "role": "demo",
+            "voiceover": "TikMaker skips that. First, you type your idea into TikMaker. Loose thoughts in any order are fine.",
+            "onScreen": "1. Type your idea",
+            "visual": "Screen recording: the creator types a rough video idea into the TikMaker input field and clicks generate.",
+            "needsRecording": true
+          },
+          {
+            "role": "demo",
+            "voiceover": "Second, it turns those thoughts into a structured script, scene by scene: the hook, the core and the ending, each with its own voiceover.",
+            "onScreen": "2. Script, scene by scene",
+            "visual": "Screen recording: the scene list appears in TikMaker. Each card shows a role, its voiceover and its on-screen text.",
+            "needsRecording": true
+          },
+          {
+            "role": "demo",
+            "voiceover": "Third, every scene gets its motion graphics: animated typography, diagrams, icons, and transitions between scenes.",
+            "onScreen": "3. Typography · Diagrams · Icons · Transitions",
+            "visual": "Screen recording: the TikMaker preview plays as words animate in, a diagram draws itself, icons pop in and the scene slides into the next one.",
+            "needsRecording": true
+          },
+          {
+            "role": "benefit",
+            "voiceover": "And it's all made for vertical: 9:16, 1080 by 1920, with text kept in the safe zone so the platform buttons don't cover it.",
+            "onScreen": "9:16 · 1080×1920 · Safe zone",
+            "visual": "A vertical frame with TikTok-style buttons on the edges, and a highlighted central safe zone where the video's text stays readable.",
+            "needsRecording": false
+          },
+          {
+            "role": "benefit",
+            "voiceover": "Plus you never design or animate a scene by hand, so tech creators, educators and faceless channels can publish explainers every week.",
+            "onScreen": "No manual animation. Publish consistently.",
+            "visual": "A calendar fills up as finished vertical videos drop into each week, one after another.",
+            "needsRecording": false
+          },
+          {
+            "role": "payoff",
+            "voiceover": "One idea in, a finished explainer out. That's TikMaker.",
+            "onScreen": "One idea in. Explainer out.",
+            "visual": "The typed idea flies into the TikMaker logo, and a finished vertical video comes out and starts playing.",
+            "needsRecording": false
+          }
+        ],
+        "skipped": [
+          {
+            "role": "cta",
+            "reason": "Only the 'none' CTA type is allowed and the idea gives no link to point to, so the video ends on the payoff."
+          }
+        ]
+      }
+    },
+    {
+      "name": "writeScript",
+      "startedAt": 1793880910534,
+      "ms": 26455,
+      "model": "claude-opus-5-5",
+      "attempts": 1,
+      "prompt": {
+        "system": "You write the script of a short vertical video (TikTok, Reels, Shorts).\n\nTell ONE connected story. The idea may be written as loose thoughts in any order: sort\nthem into the order the template's scenes tell (the problem before the fix, the cause\nbefore the result), and let every scene follow from the one before it – the voiceovers\nread in a row must make sense as one spoken text. A scene that promises something (\"what I learned\", \"here's why\") is\nfollowed by the scene that says it.\n\nThe template is a guide: a structure that has worked for videos like this – its scenes,\ntheir order and how they link. Follow it where it serves this idea; change the order,\nleave a scene out or add one when that tells this story better. A \"repeatable\" scene\nmay appear several times in a row (one per step or item). Put every template scene you\nleave out in \"skipped\" with a short reason.\nA scene's \"facts\" come from the idea and the facts found online only – never invent a\ntool, a number or a result.\nWhen the idea has no fact for a scene, leave it out if it is optional; if it is required,\nfill it with what the idea does say rather than with an invented claim.\nIts \"creative\" parts are yours to word.\n\nThe first scene is the hook: say the chosen hook as it is, and show its key words.\nThe template's links (\"→ next\") and the transition phrases are examples of how scenes\ncan follow each other; use them only where they read naturally. End the way that fits\nthis video best: the CTA formulas show endings that have worked – use one, or write\nyour own, or none if no ending asks for one.\nThe call to action never sends people to a link, a website, a download or a giveaway\nthe idea does not mention – then pick a CTA formula that needs none of those.\n\nFor every scene:\n- voiceover: what is said, natural spoken English. When a scene lists things (tools,\n  mistakes, steps), the voice names every one of them – the list on screen fills point by\n  point as each is named; a point that needs it gets a short sentence after its name\n- onScreen: the key words shown big, not the whole sentence\n- visual: what the viewer sees happening, concrete and with a verb – a terminal running a\n  command, a price counting down, the idea turning into a video – one picture for the\n  thought, understandable with the sound off; never \"something engaging\"\n- needsRecording: your call – true when the scene is shown best with the creator's own\n  screen recording rather than a picture the video editor draws. Then the voiceover says\n  what the recording shows while it shows it (the click, what appears)\n\nKeep within the limits. Each scene lasts about as long as its voiceover: fill the wanted\nlength – add more steps or items with the repeatable scenes, keep the optional scenes\nthat help – rather than stopping short.",
+        "user": "Channel: TikMaker and AI coding. Mostly TikMaker itself: what it can do, how a video gets made with it, new features and how it is being built with AI (build in public). Around that, short concrete videos about other AI tools, vibe coding and Claude Code: one problem or one feature per video, shown on screen rather than told.\nAudience: Creators who want to make short videos faster with AI, and developers or beginners who build apps with AI and want to work faster without breaking things.\n\nIdea: Video idea: Introducing TikMaker – AI-powered educational video creation\n\nA short promotional video showcasing TikMaker, an AI-powered tool designed for creating educational, informational and technology-related short-form videos. Demonstrate how users can transform a simple idea into a structured script and visually engaging motion graphics video without manually designing and animating every scene. Highlight its ability to generate scene-by-scene content, animated typography, diagrams, icons and transitions in a vertical 9:16 format. Target tech creators, educators, AI enthusiasts and faceless content creators who want to publish engaging educational videos consistently.\n\nFacts found online (true – use them to explain the idea):\n- Short-form video uses a vertical 9:16 frame. The standard size for TikTok, Instagram Reels and YouTube Shorts is 1080 × 1920 pixels.\n- In October 2024, YouTube raised the maximum length of a Short from 60 seconds to 3 minutes.\n- Platform buttons and captions sit on top of the edges of a vertical video, so creators keep text and key visuals inside a central \"safe zone\" where they won't be covered.\n- Motion graphics are traditionally made by hand in tools like Adobe After Effects. One industry comparison estimates it takes 100–200 hours to become proficient.\n- AI text-to-video tools let you type a topic or script and get a video back with the visuals, on-screen text and narration already made. Revid.ai, for example, turns a topic into a \"Did You Know?\"-style TikTok clip.\n- Some AI video tools can also take static diagrams, charts and slides and animate them into moving explainer scenes. Mootion is one example.\nWanted length: about 45 s\nFace on camera: no, a faceless video\n\nHook: Type one idea, get a full animated explainer video back.\n\nTemplate: Product promo – A product's benefits shown one by one through its interface, ending on where to get it\nScenes:\n- opening / hook (1.8–4.5 s): Asks what the viewer wants, or shows the product. [required] → next: question-answer; facts: product-name; creative: desire\n- build / benefit (2–5 s): States a benefit. [optional] [repeatable] → next: escalation; facts: benefit\n- core / demo (2–3 s): Shows the product in use. [optional] [repeatable] → next: sequence; facts: screen-recording\n- core / benefit (2–5 s): Adds benefits one after another. [optional] [repeatable] → next: sequence; facts: benefit\n- close / cta (2–3.6 s): Says where to get it. [optional] → next: none; facts: link-target\n\nTransition phrases:\n- sequence: First, | Second, | Third, | First is | Second is | Third is\n- escalation: And it gets even better | But that's not all. | Plus | Plus, you still get | and here you get | that lets you\n- question-answer: The answer is | It's because of | Well, | But how do | Did you know | So where did the ROAD part come from?\n\nCTA formulas (types allowed: none):\n- none: end on the last scene, without a call to action (skip the cta scene)\n\nLimits, from the analysis of successful videos:\n- speak at most 3.4 words per second\n- a scene lasts at most 9 s, the hook at most 5 s\n- at most 15 words on screen in a scene\n\nYour previous script:\n{\n  \"scenes\": [\n    {\n      \"role\": \"hook\",\n      \"voiceover\": \"Type one idea, get a full animated explainer video back. This is TikMaker.\",\n      \"onScreen\": \"One idea → full animated explainer\",\n      \"visual\": \"A single line of text is typed into a box, and a vertical phone frame fills with an animated explainer video. The TikMaker logo snaps in on top.\",\n      \"needsRecording\": false\n    },\n    {\n      \"role\": \"problem\",\n      \"voiceover\": \"Motion graphics are usually animated by hand in tools like After Effects, and one comparison says it takes 100 to 200 hours just to get good at it.\",\n      \"onScreen\": \"After Effects: 100–200 hours to learn\",\n      \"visual\": \"A crowded After Effects timeline with dozens of keyframe layers, while a clock counter climbs from 0 to 200 hours.\",\n      \"needsRecording\": false\n    },\n    {\n      \"role\": \"demo\",\n      \"voiceover\": \"TikMaker skips that. First, you type your idea into TikMaker. Loose thoughts in any order are fine.\",\n      \"onScreen\": \"1. Type your idea\",\n      \"visual\": \"Screen recording: the creator types a rough video idea into the TikMaker input field and clicks generate.\",\n      \"needsRecording\": true\n    },\n    {\n      \"role\": \"demo\",\n      \"voiceover\": \"Second, it turns those thoughts into a structured script, scene by scene: the hook, the core and the ending, each with its own voiceover.\",\n      \"onScreen\": \"2. Script, scene by scene\",\n      \"visual\": \"Screen recording: the scene list appears in TikMaker. Each card shows a role, its voiceover and its on-screen text.\",\n      \"needsRecording\": true\n    },\n    {\n      \"role\": \"demo\",\n      \"voiceover\": \"Third, every scene gets its motion graphics: animated typography, diagrams, icons, and transitions between scenes.\",\n      \"onScreen\": \"3. Typography · Diagrams · Icons · Transitions\",\n      \"visual\": \"Screen recording: the TikMaker preview plays as words animate in, a diagram draws itself, icons pop in and the scene slides into the next one.\",\n      \"needsRecording\": true\n    },\n    {\n      \"role\": \"benefit\",\n      \"voiceover\": \"And it's all made for vertical: 9:16, 1080 by 1920, with text kept in the safe zone so the platform buttons don't cover it.\",\n      \"onScreen\": \"9:16 · 1080×1920 · Safe zone\",\n      \"visual\": \"A vertical frame with TikTok-style buttons on the edges, and a highlighted central safe zone where the video's text stays readable.\",\n      \"needsRecording\": false\n    },\n    {\n      \"role\": \"benefit\",\n      \"voiceover\": \"Plus you never design or animate a scene by hand, so tech creators, educators and faceless channels can publish explainers every week.\",\n      \"onScreen\": \"No manual animation. Publish consistently.\",\n      \"visual\": \"A calendar fills up as finished vertical videos drop into each week, one after another.\",\n      \"needsRecording\": false\n    },\n    {\n      \"role\": \"payoff\",\n      \"voiceover\": \"One idea in, a finished explainer out. That's TikMaker.\",\n      \"onScreen\": \"One idea in. Explainer out.\",\n      \"visual\": \"The typed idea flies into the TikMaker logo, and a finished vertical video comes out and starts playing.\",\n      \"needsRecording\": false\n    }\n  ],\n  \"skipped\": [\n    {\n      \"role\": \"cta\",\n      \"reason\": \"Only the 'none' CTA type is allowed and the idea gives no link to point to, so the video ends on the payoff.\"\n    }\n  ]\n}\n\nWrite it again and change this:\n- Please revise the video concept to better reflect TikMaker's actual purpose and target audience.\n\nTikMaker is not a general-purpose video editor or simply a tool for saving editing time. Its focus is generating educational, informational and technology-related short-form videos using motion graphics.\n\nA few changes I'd like:\n\nRemove the \"~7 hours per video\" statistic. It feels outdated and is not relevant anymore, considering how quickly modern AI tools can generate videos.\n\nShift the problem fr"
+      },
+      "inputTokens": 3304,
+      "cachedInputTokens": 1744,
+      "outputTokens": 2280,
+      "thinkingTokens": 1096,
+      "output": {
+        "scenes": [
+          {
+            "role": "hook",
+            "voiceover": "Type one idea, get a full animated explainer video back. This is TikMaker.",
+            "onScreen": "One idea → full animated explainer",
+            "visual": "One line of text is typed into a box. A vertical phone frame fills with an animated explainer, and the TikMaker logo snaps in on top.",
+            "needsRecording": false
+          },
+          {
+            "role": "problem",
+            "voiceover": "A tech concept clicks when you show it: diagrams, animated text, icons. But those motion graphics are usually designed by hand, scene by scene, in tools like After Effects.",
+            "onScreen": "Show it, don't tell it → but animated by hand",
+            "visual": "A simple diagram of an API request animates on the left. On the right, a hand drags keyframes one by one across a crowded After Effects-style timeline.",
+            "needsRecording": false
+          },
+          {
+            "role": "demo",
+            "voiceover": "TikMaker builds them for you. First, you type your idea: a topic, or loose thoughts in any order.",
+            "onScreen": "1. Type your idea",
+            "visual": "Screen recording: the creator types a rough idea for an educational tech video into the TikMaker input field and clicks generate.",
+            "needsRecording": true
+          },
+          {
+            "role": "demo",
+            "voiceover": "Second, it turns that into a structured script, scene by scene: the hook, the explanation and the ending, each with its own voiceover and on-screen text.",
+            "onScreen": "2. Structured script, scene by scene",
+            "visual": "Screen recording: the scene list appears in TikMaker. Each card shows its role, its voiceover and the words that go on screen.",
+            "needsRecording": true
+          },
+          {
+            "role": "demo",
+            "voiceover": "Third, every scene becomes motion graphics: animated typography, diagrams that draw themselves, icons, and transitions into the next scene.",
+            "onScreen": "3. Typography · Diagrams · Icons · Transitions",
+            "visual": "Screen recording: the TikMaker preview plays. Words animate in, a diagram draws its arrows, icons pop in, and the scene slides into the next one.",
+            "needsRecording": true
+          },
+          {
+            "role": "benefit",
+            "voiceover": "And it's made for vertical: 9:16, 1080 by 1920, with the text kept in the safe zone, away from the platform buttons.",
+            "onScreen": "9:16 · 1080×1920 · Safe zone",
+            "visual": "A vertical frame with TikTok-style buttons along the edges. A central safe zone lights up, and the explainer's text and diagram stay inside it.",
+            "needsRecording": false
+          },
+          {
+            "role": "benefit",
+            "voiceover": "So tech creators, educators and faceless channels can publish clear explainers again and again, without animating a single frame themselves.",
+            "onScreen": "Tech creators · Educators · Faceless channels",
+            "visual": "Three vertical explainer videos, one on AI, one on a science topic and one on code, drop into a posting calendar one after another.",
+            "needsRecording": false
+          },
+          {
+            "role": "payoff",
+            "voiceover": "One idea in, a motion graphics explainer out. That's TikMaker.",
+            "onScreen": "One idea in. Explainer out.",
+            "visual": "The typed idea flies into the TikMaker logo, and a finished vertical explainer with animated diagrams comes out and starts playing.",
+            "needsRecording": false
+          }
+        ],
+        "skipped": [
+          {
+            "role": "cta",
+            "reason": "Only the 'none' CTA type is allowed and the idea gives no link, so the video ends on the payoff."
+          }
+        ]
+      }
+    },
+    {
+      "name": "writeScript",
+      "startedAt": 1793880936992,
+      "ms": 19886,
+      "model": "claude-opus-5-5",
+      "attempts": 1,
+      "prompt": {
+        "system": "You write the script of a short vertical video (TikTok, Reels, Shorts).\n\nTell ONE connected story. The idea may be written as loose thoughts in any order: sort\nthem into the order the template's scenes tell (the problem before the fix, the cause\nbefore the result), and let every scene follow from the one before it – the voiceovers\nread in a row must make sense as one spoken text. A scene that promises something (\"what I learned\", \"here's why\") is\nfollowed by the scene that says it.\n\nThe template is a guide: a structure that has worked for videos like this – its scenes,\ntheir order and how they link. Follow it where it serves this idea; change the order,\nleave a scene out or add one when that tells this story better. A \"repeatable\" scene\nmay appear several times in a row (one per step or item). Put every template scene you\nleave out in \"skipped\" with a short reason.\nA scene's \"facts\" come from the idea and the facts found online only – never invent a\ntool, a number or a result.\nWhen the idea has no fact for a scene, leave it out if it is optional; if it is required,\nfill it with what the idea does say rather than with an invented claim.\nIts \"creative\" parts are yours to word.\n\nThe first scene is the hook: say the chosen hook as it is, and show its key words.\nThe template's links (\"→ next\") and the transition phrases are examples of how scenes\ncan follow each other; use them only where they read naturally. End the way that fits\nthis video best: the CTA formulas show endings that have worked – use one, or write\nyour own, or none if no ending asks for one.\nThe call to action never sends people to a link, a website, a download or a giveaway\nthe idea does not mention – then pick a CTA formula that needs none of those.\n\nFor every scene:\n- voiceover: what is said, natural spoken English. When a scene lists things (tools,\n  mistakes, steps), the voice names every one of them – the list on screen fills point by\n  point as each is named; a point that needs it gets a short sentence after its name\n- onScreen: the key words shown big, not the whole sentence\n- visual: what the viewer sees happening, concrete and with a verb – a terminal running a\n  command, a price counting down, the idea turning into a video – one picture for the\n  thought, understandable with the sound off; never \"something engaging\"\n- needsRecording: your call – true when the scene is shown best with the creator's own\n  screen recording rather than a picture the video editor draws. Then the voiceover says\n  what the recording shows while it shows it (the click, what appears)\n\nKeep within the limits. Each scene lasts about as long as its voiceover: fill the wanted\nlength – add more steps or items with the repeatable scenes, keep the optional scenes\nthat help – rather than stopping short.",
+        "user": "Channel: TikMaker and AI coding. Mostly TikMaker itself: what it can do, how a video gets made with it, new features and how it is being built with AI (build in public). Around that, short concrete videos about other AI tools, vibe coding and Claude Code: one problem or one feature per video, shown on screen rather than told.\nAudience: Creators who want to make short videos faster with AI, and developers or beginners who build apps with AI and want to work faster without breaking things.\n\nIdea: Video idea: Introducing TikMaker – AI-powered educational video creation\n\nA short promotional video showcasing TikMaker, an AI-powered tool designed for creating educational, informational and technology-related short-form videos. Demonstrate how users can transform a simple idea into a structured script and visually engaging motion graphics video without manually designing and animating every scene. Highlight its ability to generate scene-by-scene content, animated typography, diagrams, icons and transitions in a vertical 9:16 format. Target tech creators, educators, AI enthusiasts and faceless content creators who want to publish engaging educational videos consistently.\n\nFacts found online (true – use them to explain the idea):\n- Short-form video uses a vertical 9:16 frame. The standard size for TikTok, Instagram Reels and YouTube Shorts is 1080 × 1920 pixels.\n- In October 2024, YouTube raised the maximum length of a Short from 60 seconds to 3 minutes.\n- Platform buttons and captions sit on top of the edges of a vertical video, so creators keep text and key visuals inside a central \"safe zone\" where they won't be covered.\n- Motion graphics are traditionally made by hand in tools like Adobe After Effects. One industry comparison estimates it takes 100–200 hours to become proficient.\n- AI text-to-video tools let you type a topic or script and get a video back with the visuals, on-screen text and narration already made. Revid.ai, for example, turns a topic into a \"Did You Know?\"-style TikTok clip.\n- Some AI video tools can also take static diagrams, charts and slides and animate them into moving explainer scenes. Mootion is one example.\nWanted length: about 45 s\nFace on camera: no, a faceless video\n\nHook: Type one idea, get a full animated explainer video back.\n\nTemplate: Product promo – A product's benefits shown one by one through its interface, ending on where to get it\nScenes:\n- opening / hook (1.8–4.5 s): Asks what the viewer wants, or shows the product. [required] → next: question-answer; facts: product-name; creative: desire\n- build / benefit (2–5 s): States a benefit. [optional] [repeatable] → next: escalation; facts: benefit\n- core / demo (2–3 s): Shows the product in use. [optional] [repeatable] → next: sequence; facts: screen-recording\n- core / benefit (2–5 s): Adds benefits one after another. [optional] [repeatable] → next: sequence; facts: benefit\n- close / cta (2–3.6 s): Says where to get it. [optional] → next: none; facts: link-target\n\nTransition phrases:\n- sequence: First, | Second, | Third, | First is | Second is | Third is\n- escalation: And it gets even better | But that's not all. | Plus | Plus, you still get | and here you get | that lets you\n- question-answer: The answer is | It's because of | Well, | But how do | Did you know | So where did the ROAD part come from?\n\nCTA formulas (types allowed: none):\n- none: end on the last scene, without a call to action (skip the cta scene)\n\nLimits, from the analysis of successful videos:\n- speak at most 3.4 words per second\n- a scene lasts at most 9 s, the hook at most 5 s\n- at most 15 words on screen in a scene\n\nYour previous script:\n{\n  \"scenes\": [\n    {\n      \"role\": \"hook\",\n      \"voiceover\": \"Type one idea, get a full animated explainer video back. This is TikMaker.\",\n      \"onScreen\": \"One idea → full animated explainer\",\n      \"visual\": \"One line of text is typed into a box. A vertical phone frame fills with an animated explainer, and the TikMaker logo snaps in on top.\",\n      \"needsRecording\": false\n    },\n    {\n      \"role\": \"problem\",\n      \"voiceover\": \"A tech concept clicks when you show it: diagrams, animated text, icons. But those motion graphics are usually designed by hand, scene by scene, in tools like After Effects.\",\n      \"onScreen\": \"Show it, don't tell it → but animated by hand\",\n      \"visual\": \"A simple diagram of an API request animates on the left. On the right, a hand drags keyframes one by one across a crowded After Effects-style timeline.\",\n      \"needsRecording\": false\n    },\n    {\n      \"role\": \"demo\",\n      \"voiceover\": \"TikMaker builds them for you. First, you type your idea: a topic, or loose thoughts in any order.\",\n      \"onScreen\": \"1. Type your idea\",\n      \"visual\": \"Screen recording: the creator types a rough idea for an educational tech video into the TikMaker input field and clicks generate.\",\n      \"needsRecording\": true\n    },\n    {\n      \"role\": \"demo\",\n      \"voiceover\": \"Second, it turns that into a structured script, scene by scene: the hook, the explanation and the ending, each with its own voiceover and on-screen text.\",\n      \"onScreen\": \"2. Structured script, scene by scene\",\n      \"visual\": \"Screen recording: the scene list appears in TikMaker. Each card shows its role, its voiceover and the words that go on screen.\",\n      \"needsRecording\": true\n    },\n    {\n      \"role\": \"demo\",\n      \"voiceover\": \"Third, every scene becomes motion graphics: animated typography, diagrams that draw themselves, icons, and transitions into the next scene.\",\n      \"onScreen\": \"3. Typography · Diagrams · Icons · Transitions\",\n      \"visual\": \"Screen recording: the TikMaker preview plays. Words animate in, a diagram draws its arrows, icons pop in, and the scene slides into the next one.\",\n      \"needsRecording\": true\n    },\n    {\n      \"role\": \"benefit\",\n      \"voiceover\": \"And it's made for vertical: 9:16, 1080 by 1920, with the text kept in the safe zone, away from the platform buttons.\",\n      \"onScreen\": \"9:16 · 1080×1920 · Safe zone\",\n      \"visual\": \"A vertical frame with TikTok-style buttons along the edges. A central safe zone lights up, and the explainer's text and diagram stay inside it.\",\n      \"needsRecording\": false\n    },\n    {\n      \"role\": \"benefit\",\n      \"voiceover\": \"So tech creators, educators and faceless channels can publish clear explainers again and again, without animating a single frame themselves.\",\n      \"onScreen\": \"Tech creators · Educators · Faceless channels\",\n      \"visual\": \"Three vertical explainer videos, one on AI, one on a science topic and one on code, drop into a posting calendar one after another.\",\n      \"needsRecording\": false\n    },\n    {\n      \"role\": \"payoff\",\n      \"voiceover\": \"One idea in, a motion graphics explainer out. That's TikMaker.\",\n      \"onScreen\": \"One idea in. Explainer out.\",\n      \"visual\": \"The typed idea flies into the TikMaker logo, and a finished vertical explainer with animated diagrams comes out and starts playing.\",\n      \"needsRecording\": false\n    }\n  ],\n  \"skipped\": [\n    {\n      \"role\": \"cta\",\n      \"reason\": \"Only the 'none' CTA type is allowed and the idea gives no link, so the video ends on the payoff.\"\n    }\n  ]\n}\n\nWrite it again and change this:\n- About 53 s long, more than 52 s (45 s + 15 %)"
+      },
+      "inputTokens": 3228,
+      "cachedInputTokens": 1744,
+      "outputTokens": 1803,
+      "thinkingTokens": 675,
+      "output": {
+        "scenes": [
+          {
+            "role": "hook",
+            "voiceover": "Type one idea, get a full animated explainer video back. This is TikMaker.",
+            "onScreen": "One idea → full animated explainer",
+            "visual": "One line of text is typed into a box. A vertical phone frame fills with an animated explainer, and the TikMaker logo snaps in on top.",
+            "needsRecording": false
+          },
+          {
+            "role": "problem",
+            "voiceover": "Tech concepts click when you show them: diagrams, animated text, icons. But those motion graphics are usually animated by hand, scene by scene, in tools like After Effects.",
+            "onScreen": "Show it → but animated by hand",
+            "visual": "A simple diagram of an API request animates on the left. On the right, a hand drags keyframes one by one across a crowded After Effects-style timeline.",
+            "needsRecording": false
+          },
+          {
+            "role": "demo",
+            "voiceover": "First, you type your idea: a topic, or loose thoughts in any order.",
+            "onScreen": "1. Type your idea",
+            "visual": "Screen recording: the creator types a rough idea for a tech explainer into the TikMaker input field and clicks generate.",
+            "needsRecording": true
+          },
+          {
+            "role": "demo",
+            "voiceover": "Second, TikMaker turns it into a structured script, scene by scene, each with its own voiceover and on-screen text.",
+            "onScreen": "2. Structured script, scene by scene",
+            "visual": "Screen recording: the scene list appears in TikMaker. Each card shows its role, its voiceover and the words that go on screen.",
+            "needsRecording": true
+          },
+          {
+            "role": "demo",
+            "voiceover": "Third, every scene becomes motion graphics: animated typography, diagrams, icons and transitions.",
+            "onScreen": "3. Typography · Diagrams · Icons · Transitions",
+            "visual": "Screen recording: the TikMaker preview plays. Words animate in, a diagram draws its arrows, icons pop in, and the scene slides into the next one.",
+            "needsRecording": true
+          },
+          {
+            "role": "benefit",
+            "voiceover": "All in vertical 9:16, 1080 by 1920, with the text kept in the safe zone, away from the platform buttons.",
+            "onScreen": "9:16 · 1080×1920 · Safe zone",
+            "visual": "A vertical frame with TikTok-style buttons along the edges. A central safe zone lights up, and the explainer's text and diagram stay inside it.",
+            "needsRecording": false
+          },
+          {
+            "role": "benefit",
+            "voiceover": "So tech creators, educators and faceless channels can publish explainers consistently, without animating a single frame.",
+            "onScreen": "Tech creators · Educators · Faceless channels",
+            "visual": "Three vertical explainer videos, one on AI, one on science and one on code, drop into a posting calendar one after another.",
+            "needsRecording": false
+          },
+          {
+            "role": "payoff",
+            "voiceover": "One idea in, an explainer out. That's TikMaker.",
+            "onScreen": "One idea in. Explainer out.",
+            "visual": "The typed idea flies into the TikMaker logo, and a finished vertical explainer with animated diagrams comes out and starts playing.",
+            "needsRecording": false
+          }
+        ],
+        "skipped": [
+          {
+            "role": "cta",
+            "reason": "Only the 'none' CTA type is allowed and the idea gives no link, so the video ends on the payoff."
+          }
+        ]
+      }
+    },
+    {
+      "name": "pickBlocks",
+      "startedAt": 1793880984461,
+      "ms": 44053,
+      "model": "claude-opus-5-5",
+      "attempts": 1,
+      "prompt": {
+        "system": "You turn the approved script of a short vertical motion video into pictures.\nEvery frame shows a stage: big pictures (blocks) and the spoken words, which the code\ndraws from the voiceover by itself.\n\nHow good videos of this kind work: one picture holds a whole thought – about 5 seconds,\noften a whole sentence – and keeps changing INSIDE: its parts appear as the voice names\nthem, a number counts up, arrows draw from one step to the next. The viewer understands\nthe idea from the picture alone, with the sound off. A new picture on every other word\ndoes the opposite: each one flickers past before it is read, and together they look like\nrandom clip art for single words.\n\nFor every scene, in this order:\n1. happens: one sentence with a verb – what the viewer SEES HAPPENING, so the scene is\n   understood with the sound off. Not a list of things – an action, a change, a relation:\n   \"the idea drops into TikMaker and a phone with the finished video comes out\", \"three\n   tools light up one by one in a row\", \"the price counts down from $49 to $0.016\".\n2. stage: which stage tells it best – your call, from what happens and what comes before\n   and after.\n3. blocks: the pictures that show what happens. Usually ONE main picture for the\n   sentence, built up on the words (partWords); a new block only when the thought really\n   changes. Show the thing itself – the tool, the screen, the command, the number, the\n   result, how one leads to another. A prop that only stands for a word is a last resort.\n   - onWord: the word of THAT scene's voiceover on which the block appears; the blocks\n     go in the order their words are said; the first on the scene's first or second word\n   - something has to happen at least every 3 seconds (about 9 spoken words): a part of\n     the picture appearing on its word, or a new picture\n   - a picture stays at least 2 seconds – shorter flickers\n   - fill exactly the fields the catalogue gives that block\n4. keywords: 1–4 words of the voiceover to stand out in the spoken text (the names, the\n   numbers, the one word that carries the scene)\n\nRhythm: look at the stages of the whole video as one sequence. The same stage scene after\nscene reads as one frame repeated and the viewer stops noticing it changes. Change the\nstage where the story changes (a new part, a contrast, a statement, a demo), and keep it\nwhere the story goes on.\n\nUse only the logo and prop ids given. When you want a logo or an object that is not\nthere, show the scene another way and write what you wanted in wishes (e.g.\n\"Notion logo\"). Answer with one entry per scene, in the same order.",
+        "user": "Channel: TikMaker and AI coding. Mostly TikMaker itself: what it can do, how a video gets made with it, new features and how it is being built with AI (build in public). Around that, short concrete videos about other AI tools, vibe coding and Claude Code: one problem or one feature per video, shown on screen rather than told.\nIdea: Video idea: Introducing TikMaker – AI-powered educational video creation\n\nA short promotional video showcasing TikMaker, an AI-powered tool designed for creating educational, informational and technology-related short-form videos. Demonstrate how users can transform a simple idea into a structured script and visually engaging motion graphics video without manually designing and animating every scene. Highlight its ability to generate scene-by-scene content, animated typography, diagrams, icons and transitions in a vertical 9:16 format. Target tech creators, educators, AI enthusiasts and faceless content creators who want to publish engaging educational videos consistently.\n\nStages:\n- top: one picture above, the spoken words below\n- bottom: the spoken words above, one picture below\n- statement: no picture – only the spoken words, big, over the whole frame; blocks: []\n- full: one picture over the whole frame, the spoken words over it\n- split: two pictures at once, one above the other, the spoken words below; at least 2 blocks\n\nBlocks:\n- logos: ids: 2–4 logo or prop ids; partWords: the word each one appears on – when tools, apps or companies are named\n- code: file, lines: 2–6 lines of code, at most 35 characters each; start the key line with \"+ \" – when the scene is about code or a setting\n- terminal: lines: the command first, then 1–2 lines of its output – the command types itself, the output follows – when the scene is about a command\n- screen: text: a short label shown in the empty slot (e.g. \"Type the idea, click Generate\"); record: exactly what the user should record – which app or page, what to click, what has to appear on screen, where to start and stop; seconds: about how long showing that takes – the click, the wait, the result coming up – when a real app has to be shown\n- list: items: 2–4 short points, at most 24 characters each; partWords: the word each point appears on. A list of tools appears on their names; a general point (\"Side effects\") appears when it is named and stays while the voice explains it – benefits, steps, mistakes\n- number: value, prefix (e.g. $), suffix (e.g. %, k), text: what the number means; it counts up to the value – a price, a time, a percentage, something growing\n- compare: before and after: { label, value }, e.g. \"Official price\" \"$49/mo\" → \"With TikMaker\" \"$0.016\" – before / after, expensive / cheap\n- badge: text: a number or a step label – \"01\", \"Step 2\", \"Mistake 3\" – numbers the next point of a series the video goes through; not a name, a title, a slogan or a call to action\n- object: id: one prop id – a metaphor; rare: a thing that only stands for a word says less than the real thing doing something\n- schema: nodes: 2–4 { label, id? }; partWords: the word each node appears on – the arrows draw themselves from one to the next – how something works, what turns into what, A → B → C\n\nLogos: bolt, chatgpt, claude, claude-ai-symbol, claude-svg, cloudflare, discord, elevenlabs, figma, gemini, github, gmail, google-chrome, grok, kilo-code, lovable, midjourney, netlify, reddit, remotion, remotion, stripe, supabase, vercel, vs-code, x\nProps: broken-glass, broom, browser-window, bug, card-declined, clock, coin, credit-card, database, document, dollar-cupure, envelope, eye, frustration, fuel-gauge, idea, key, layer-stack, link, padlock, paper-documents, pen, pin, plane, pricetag, puzzle-joined, puzzle-piece, question, robot-helpers, screen-panel, shop, sync-arrows, target, tower-leaning, two-users, user-avatar, uturn, wallet\n\nScene 1 (hook, ~4.1 s)\n  Voiceover: Type one idea, get a full animated explainer video back. This is TikMaker.\n  Shows: One line of text is typed into a box. A vertical phone frame fills with an animated explainer, and the TikMaker logo snaps in on top.\n\nScene 2 (problem, ~8.8 s)\n  Voiceover: Tech concepts click when you show them: diagrams, animated text, icons. But those motion graphics are usually animated by hand, scene by scene, in tools like After Effects.\n  Shows: A simple diagram of an API request animates on the left. On the right, a hand drags keyframes one by one across a crowded After Effects-style timeline.\n\nScene 3 (demo, ~4.1 s)\n  Voiceover: First, you type your idea: a topic, or loose thoughts in any order.\n  Shows: Screen recording: the creator types a rough idea for a tech explainer into the TikMaker input field and clicks generate.\n\nScene 4 (demo, ~5.9 s)\n  Voiceover: Second, TikMaker turns it into a structured script, scene by scene, each with its own voiceover and on-screen text.\n  Shows: Screen recording: the scene list appears in TikMaker. Each card shows its role, its voiceover and the words that go on screen.\n\nScene 5 (demo, ~3.8 s)\n  Voiceover: Third, every scene becomes motion graphics: animated typography, diagrams, icons and transitions.\n  Shows: Screen recording: the TikMaker preview plays. Words animate in, a diagram draws its arrows, icons pop in, and the scene slides into the next one.\n\nScene 6 (benefit, ~6.3 s)\n  Voiceover: All in vertical 9:16, 1080 by 1920, with the text kept in the safe zone, away from the platform buttons.\n  Shows: A vertical frame with TikTok-style buttons along the edges. A central safe zone lights up, and the explainer's text and diagram stay inside it.\n\nScene 7 (benefit, ~5.0 s)\n  Voiceover: So tech creators, educators and faceless channels can publish explainers consistently, without animating a single frame.\n  Shows: Three vertical explainer videos, one on AI, one on science and one on code, drop into a posting calendar one after another.\n\nScene 8 (payoff, ~2.5 s)\n  Voiceover: One idea in, an explainer out. That's TikMaker.\n  Shows: The typed idea flies into the TikMaker logo, and a finished vertical explainer with animated diagrams comes out and starts playing."
+      },
+      "inputTokens": 22485,
+      "cachedInputTokens": 2301,
+      "outputTokens": 4005,
+      "thinkingTokens": 992,
+      "output": {
+        "scenes": [
+          {
+            "happens": "An idea turns into TikMaker, which turns it into a finished explainer video, with an arrow drawing between each step.",
+            "stage": "full",
+            "blocks": [
+              {
+                "onWord": "Type",
+                "kind": "schema",
+                "partWords": [
+                  "Type",
+                  "explainer",
+                  "TikMaker"
+                ],
+                "nodes": [
+                  {
+                    "label": "One idea",
+                    "id": "idea"
+                  },
+                  {
+                    "label": "Explainer video",
+                    "id": "video"
+                  },
+                  {
+                    "label": "TikMaker",
+                    "id": "tm"
+                  }
+                ]
+              }
+            ],
+            "keywords": [
+              "idea",
+              "TikMaker"
+            ]
+          },
+          {
+            "happens": "An API diagram builds itself piece by piece above, while below, the hand-made workflow stacks up one painful step at a time.",
+            "stage": "split",
+            "blocks": [
+              {
+                "onWord": "Tech",
+                "kind": "schema",
+                "partWords": [
+                  "show",
+                  "diagrams",
+                  "icons"
+                ],
+                "nodes": [
+                  {
+                    "label": "Client",
+                    "id": "c"
+                  },
+                  {
+                    "label": "API",
+                    "id": "a"
+                  },
+                  {
+                    "label": "Server",
+                    "id": "s"
+                  }
+                ]
+              },
+              {
+                "onWord": "But",
+                "kind": "list",
+                "items": [
+                  "Keyframes by hand",
+                  "Scene by scene",
+                  "In After Effects"
+                ],
+                "partWords": [
+                  "hand",
+                  "scene",
+                  "After"
+                ]
+              }
+            ],
+            "keywords": [
+              "diagrams",
+              "by hand",
+              "After Effects"
+            ]
+          },
+          {
+            "happens": "Step 1 lights up as the creator types a rough idea into TikMaker and clicks Generate.",
+            "stage": "split",
+            "blocks": [
+              {
+                "onWord": "First",
+                "kind": "badge",
+                "text": "Step 1"
+              },
+              {
+                "onWord": "type",
+                "kind": "screen",
+                "text": "Type the idea, click Generate",
+                "record": "TikMaker home page: click the idea field, type a rough tech idea (e.g. 'how an API request works'), click Generate. Stop when loading starts.",
+                "seconds": 4
+              }
+            ],
+            "keywords": [
+              "First",
+              "idea"
+            ]
+          },
+          {
+            "happens": "Step 2 appears, and the scene cards fill in one after another, each with its role, voiceover and on-screen text.",
+            "stage": "split",
+            "blocks": [
+              {
+                "onWord": "Second",
+                "kind": "badge",
+                "text": "Step 2"
+              },
+              {
+                "onWord": "TikMaker",
+                "kind": "screen",
+                "text": "The script appears scene by scene",
+                "record": "TikMaker after Generate: the scene list loads. Slowly scroll the cards so each role, voiceover and on-screen text is readable. Start as the first card appears, stop after 3-4 cards.",
+                "seconds": 6
+              }
+            ],
+            "keywords": [
+              "Second",
+              "script",
+              "scene by scene"
+            ]
+          },
+          {
+            "happens": "Step 3 appears, and the preview plays: words animate in, a diagram draws its arrows, icons pop in and the scene slides into the next.",
+            "stage": "split",
+            "blocks": [
+              {
+                "onWord": "Third",
+                "kind": "badge",
+                "text": "Step 3"
+              },
+              {
+                "onWord": "every",
+                "kind": "screen",
+                "text": "The preview plays the motion graphics",
+                "record": "TikMaker preview: press play. Show text animating in, a diagram drawing its arrows, icons popping in and one transition to the next scene. Stop after the transition.",
+                "seconds": 4
+              }
+            ],
+            "keywords": [
+              "Third",
+              "motion graphics"
+            ]
+          },
+          {
+            "happens": "The format specs stack up one by one: vertical 9:16, 1080 × 1920, and text kept inside the safe zone.",
+            "stage": "top",
+            "blocks": [
+              {
+                "onWord": "All",
+                "kind": "list",
+                "items": [
+                  "Vertical 9:16",
+                  "1080 × 1920",
+                  "Text in the safe zone"
+                ],
+                "partWords": [
+                  "vertical",
+                  "1080",
+                  "safe"
+                ]
+              }
+            ],
+            "keywords": [
+              "9:16",
+              "1080 by 1920",
+              "safe zone"
+            ]
+          },
+          {
+            "happens": "The three audiences appear one after another as the voice names them: tech creators, educators, faceless channels.",
+            "stage": "bottom",
+            "blocks": [
+              {
+                "onWord": "So",
+                "kind": "list",
+                "items": [
+                  "Tech creators",
+                  "Educators",
+                  "Faceless channels"
+                ],
+                "partWords": [
+                  "tech",
+                  "educators",
+                  "faceless"
+                ]
+              }
+            ],
+            "keywords": [
+              "consistently",
+              "without animating"
+            ]
+          },
+          {
+            "happens": "The closing line fills the frame in big type: one idea in, an explainer out, TikMaker.",
+            "stage": "statement",
+            "blocks": [],
+            "keywords": [
+              "One idea",
+              "TikMaker"
+            ]
+          }
+        ],
+        "wishes": [
+          "TikMaker logo",
+          "After Effects logo",
+          "TikTok logo",
+          "Posting calendar prop",
+          "Phone / vertical video frame prop"
+        ]
+      }
+    },
+    {
+      "name": "pickBlocks",
+      "startedAt": 1793881028519,
+      "ms": 63978,
+      "model": "claude-opus-5-5",
+      "attempts": 1,
+      "prompt": {
+        "system": "You turn the approved script of a short vertical motion video into pictures.\nEvery frame shows a stage: big pictures (blocks) and the spoken words, which the code\ndraws from the voiceover by itself.\n\nHow good videos of this kind work: one picture holds a whole thought – about 5 seconds,\noften a whole sentence – and keeps changing INSIDE: its parts appear as the voice names\nthem, a number counts up, arrows draw from one step to the next. The viewer understands\nthe idea from the picture alone, with the sound off. A new picture on every other word\ndoes the opposite: each one flickers past before it is read, and together they look like\nrandom clip art for single words.\n\nFor every scene, in this order:\n1. happens: one sentence with a verb – what the viewer SEES HAPPENING, so the scene is\n   understood with the sound off. Not a list of things – an action, a change, a relation:\n   \"the idea drops into TikMaker and a phone with the finished video comes out\", \"three\n   tools light up one by one in a row\", \"the price counts down from $49 to $0.016\".\n2. stage: which stage tells it best – your call, from what happens and what comes before\n   and after.\n3. blocks: the pictures that show what happens. Usually ONE main picture for the\n   sentence, built up on the words (partWords); a new block only when the thought really\n   changes. Show the thing itself – the tool, the screen, the command, the number, the\n   result, how one leads to another. A prop that only stands for a word is a last resort.\n   - onWord: the word of THAT scene's voiceover on which the block appears; the blocks\n     go in the order their words are said; the first on the scene's first or second word\n   - something has to happen at least every 3 seconds (about 9 spoken words): a part of\n     the picture appearing on its word, or a new picture\n   - a picture stays at least 2 seconds – shorter flickers\n   - fill exactly the fields the catalogue gives that block\n4. keywords: 1–4 words of the voiceover to stand out in the spoken text (the names, the\n   numbers, the one word that carries the scene)\n\nRhythm: look at the stages of the whole video as one sequence. The same stage scene after\nscene reads as one frame repeated and the viewer stops noticing it changes. Change the\nstage where the story changes (a new part, a contrast, a statement, a demo), and keep it\nwhere the story goes on.\n\nUse only the logo and prop ids given. When you want a logo or an object that is not\nthere, show the scene another way and write what you wanted in wishes (e.g.\n\"Notion logo\"). Answer with one entry per scene, in the same order.",
+        "user": "Channel: TikMaker and AI coding. Mostly TikMaker itself: what it can do, how a video gets made with it, new features and how it is being built with AI (build in public). Around that, short concrete videos about other AI tools, vibe coding and Claude Code: one problem or one feature per video, shown on screen rather than told.\nIdea: Video idea: Introducing TikMaker – AI-powered educational video creation\n\nA short promotional video showcasing TikMaker, an AI-powered tool designed for creating educational, informational and technology-related short-form videos. Demonstrate how users can transform a simple idea into a structured script and visually engaging motion graphics video without manually designing and animating every scene. Highlight its ability to generate scene-by-scene content, animated typography, diagrams, icons and transitions in a vertical 9:16 format. Target tech creators, educators, AI enthusiasts and faceless content creators who want to publish engaging educational videos consistently.\n\nStages:\n- top: one picture above, the spoken words below\n- bottom: the spoken words above, one picture below\n- statement: no picture – only the spoken words, big, over the whole frame; blocks: []\n- full: one picture over the whole frame, the spoken words over it\n- split: two pictures at once, one above the other, the spoken words below; at least 2 blocks\n\nBlocks:\n- logos: ids: 2–4 logo or prop ids; partWords: the word each one appears on – when tools, apps or companies are named\n- code: file, lines: 2–6 lines of code, at most 35 characters each; start the key line with \"+ \" – when the scene is about code or a setting\n- terminal: lines: the command first, then 1–2 lines of its output – the command types itself, the output follows – when the scene is about a command\n- screen: text: a short label shown in the empty slot (e.g. \"Type the idea, click Generate\"); record: exactly what the user should record – which app or page, what to click, what has to appear on screen, where to start and stop; seconds: about how long showing that takes – the click, the wait, the result coming up – when a real app has to be shown\n- list: items: 2–4 short points, at most 24 characters each; partWords: the word each point appears on. A list of tools appears on their names; a general point (\"Side effects\") appears when it is named and stays while the voice explains it – benefits, steps, mistakes\n- number: value, prefix (e.g. $), suffix (e.g. %, k), text: what the number means; it counts up to the value – a price, a time, a percentage, something growing\n- compare: before and after: { label, value }, e.g. \"Official price\" \"$49/mo\" → \"With TikMaker\" \"$0.016\" – before / after, expensive / cheap\n- badge: text: a number or a step label – \"01\", \"Step 2\", \"Mistake 3\" – numbers the next point of a series the video goes through; not a name, a title, a slogan or a call to action\n- object: id: one prop id – a metaphor; rare: a thing that only stands for a word says less than the real thing doing something\n- schema: nodes: 2–4 { label, id? }; partWords: the word each node appears on – the arrows draw themselves from one to the next – how something works, what turns into what, A → B → C\n\nLogos: bolt, chatgpt, claude, claude-ai-symbol, claude-svg, cloudflare, discord, elevenlabs, figma, gemini, github, gmail, google-chrome, grok, kilo-code, lovable, midjourney, netlify, reddit, remotion, remotion, stripe, supabase, vercel, vs-code, x\nProps: broken-glass, broom, browser-window, bug, card-declined, clock, coin, credit-card, database, document, dollar-cupure, envelope, eye, frustration, fuel-gauge, idea, key, layer-stack, link, padlock, paper-documents, pen, pin, plane, pricetag, puzzle-joined, puzzle-piece, question, robot-helpers, screen-panel, shop, sync-arrows, target, tower-leaning, two-users, user-avatar, uturn, wallet\n\nScene 1 (hook, ~4.1 s)\n  Voiceover: Type one idea, get a full animated explainer video back. This is TikMaker.\n  Shows: One line of text is typed into a box. A vertical phone frame fills with an animated explainer, and the TikMaker logo snaps in on top.\n\nScene 2 (problem, ~8.8 s)\n  Voiceover: Tech concepts click when you show them: diagrams, animated text, icons. But those motion graphics are usually animated by hand, scene by scene, in tools like After Effects.\n  Shows: A simple diagram of an API request animates on the left. On the right, a hand drags keyframes one by one across a crowded After Effects-style timeline.\n\nScene 3 (demo, ~4.1 s)\n  Voiceover: First, you type your idea: a topic, or loose thoughts in any order.\n  Shows: Screen recording: the creator types a rough idea for a tech explainer into the TikMaker input field and clicks generate.\n\nScene 4 (demo, ~5.9 s)\n  Voiceover: Second, TikMaker turns it into a structured script, scene by scene, each with its own voiceover and on-screen text.\n  Shows: Screen recording: the scene list appears in TikMaker. Each card shows its role, its voiceover and the words that go on screen.\n\nScene 5 (demo, ~3.8 s)\n  Voiceover: Third, every scene becomes motion graphics: animated typography, diagrams, icons and transitions.\n  Shows: Screen recording: the TikMaker preview plays. Words animate in, a diagram draws its arrows, icons pop in, and the scene slides into the next one.\n\nScene 6 (benefit, ~6.3 s)\n  Voiceover: All in vertical 9:16, 1080 by 1920, with the text kept in the safe zone, away from the platform buttons.\n  Shows: A vertical frame with TikTok-style buttons along the edges. A central safe zone lights up, and the explainer's text and diagram stay inside it.\n\nScene 7 (benefit, ~5.0 s)\n  Voiceover: So tech creators, educators and faceless channels can publish explainers consistently, without animating a single frame.\n  Shows: Three vertical explainer videos, one on AI, one on science and one on code, drop into a posting calendar one after another.\n\nScene 8 (payoff, ~2.5 s)\n  Voiceover: One idea in, an explainer out. That's TikMaker.\n  Shows: The typed idea flies into the TikMaker logo, and a finished vertical explainer with animated diagrams comes out and starts playing.\n\nYour previous answer:\n{\"scenes\":[{\"happens\":\"An idea turns into TikMaker, which turns it into a finished explainer video, with an arrow drawing between each step.\",\"stage\":\"full\",\"blocks\":[{\"onWord\":\"Type\",\"kind\":\"schema\",\"partWords\":[\"Type\",\"explainer\",\"TikMaker\"],\"nodes\":[{\"label\":\"One idea\",\"id\":\"idea\"},{\"label\":\"Explainer video\",\"id\":\"video\"},{\"label\":\"TikMaker\",\"id\":\"tm\"}]}],\"keywords\":[\"idea\",\"TikMaker\"]},{\"happens\":\"An API diagram builds itself piece by piece above, while below, the hand-made workflow stacks up one painful step at a time.\",\"stage\":\"split\",\"blocks\":[{\"onWord\":\"Tech\",\"kind\":\"schema\",\"partWords\":[\"show\",\"diagrams\",\"icons\"],\"nodes\":[{\"label\":\"Client\",\"id\":\"c\"},{\"label\":\"API\",\"id\":\"a\"},{\"label\":\"Server\",\"id\":\"s\"}]},{\"onWord\":\"But\",\"kind\":\"list\",\"items\":[\"Keyframes by hand\",\"Scene by scene\",\"In After Effects\"],\"partWords\":[\"hand\",\"scene\",\"After\"]}],\"keywords\":[\"diagrams\",\"by hand\",\"After Effects\"]},{\"happens\":\"Step 1 lights up as the creator types a rough idea into TikMaker and clicks Generate.\",\"stage\":\"split\",\"blocks\":[{\"onWord\":\"First\",\"kind\":\"badge\",\"text\":\"Step 1\"},{\"onWord\":\"type\",\"kind\":\"screen\",\"text\":\"Type the idea, click Generate\",\"record\":\"TikMaker home page: click the idea field, type a rough tech idea (e.g. 'how an API request works'), click Generate. Stop when loading starts.\",\"seconds\":4}],\"keywords\":[\"First\",\"idea\"]},{\"happens\":\"Step 2 appears, and the scene cards fill in one after another, each with its role, voiceover and on-screen text.\",\"stage\":\"split\",\"blocks\":[{\"onWord\":\"Second\",\"kind\":\"badge\",\"text\":\"Step 2\"},{\"onWord\":\"TikMaker\",\"kind\":\"screen\",\"text\":\"The script appears scene by scene\",\"record\":\"TikMaker after Generate: the scene list loads. Slowly scroll the cards so each role, voiceover and on-screen text is readable. Start as the first card appears, stop after 3-4 cards.\",\"seconds\":6}],\"keywords\":[\"Second\",\"script\",\"scene by scene\"]},{\"happens\":\"Step 3 appears, and the preview plays: words animate in, a diagram draws its arrows, icons pop in and the scene slides into the next.\",\"stage\":\"split\",\"blocks\":[{\"onWord\":\"Third\",\"kind\":\"badge\",\"text\":\"Step 3\"},{\"onWord\":\"every\",\"kind\":\"screen\",\"text\":\"The preview plays the motion graphics\",\"record\":\"TikMaker preview: press play. Show text animating in, a diagram drawing its arrows, icons popping in and one transition to the next scene. Stop after the transition.\",\"seconds\":4}],\"keywords\":[\"Third\",\"motion graphics\"]},{\"happens\":\"The format specs stack up one by one: vertical 9:16, 1080 × 1920, and text kept inside the safe zone.\",\"stage\":\"top\",\"blocks\":[{\"onWord\":\"All\",\"kind\":\"list\",\"items\":[\"Vertical 9:16\",\"1080 × 1920\",\"Text in the safe zone\"],\"partWords\":[\"vertical\",\"1080\",\"safe\"]}],\"keywords\":[\"9:16\",\"1080 by 1920\",\"safe zone\"]},{\"happens\":\"The three audiences appear one after another as the voice names them: tech creators, educators, faceless channels.\",\"stage\":\"bottom\",\"blocks\":[{\"onWord\":\"So\",\"kind\":\"list\",\"items\":[\"Tech creators\",\"Educators\",\"Faceless channels\"],\"partWords\":[\"tech\",\"educators\",\"faceless\"]}],\"keywords\":[\"consistently\",\"without animating\"]},{\"happens\":\"The closing line fills the frame in big type: one idea in, an explainer out, TikMaker.\",\"stage\":\"statement\",\"blocks\":[],\"keywords\":[\"One idea\",\"TikMaker\"]}],\"wishes\":[\"TikMaker logo\",\"After Effects logo\",\"TikTok logo\",\"Posting calendar prop\",\"Phone / vertical video frame prop\"]}\n\nThe code found these problems – fix them, keep the rest:\n- Scene 1: block 1 (schema) needs \"video\" is not in the library – put it in wishes, \"tm\" is not in the library – put it in wishes\n- Scene 2: block 1 (schema) needs \"c\" is not in the library – put it in wishes, \"a\" is not in the library – put it in wishes, \"s\" is not in the library – put it in wishes\n- Scene 3: block 1 is on screen only 0.6 s – it flickers past; keep one picture for the thought and let it build up (partWords) instead of swapping it\n- Scene 3: block 2: nothing happens for 3.9 s – let a part appear on a word (partWords) or change the picture, at least every 3 s\n- Scene 4: block 1 is on screen only 0.3 s – it flickers past; keep one picture for the thought and let it build up (partWords) instead of swapping it\n- Scene 4: block 2: nothing happens for 6.1 s – let a part appear on a word (partWords) or change the picture, at least every 3 s\n- Scene 5: block 1 is on screen only 0.3 s – it flickers past; keep one picture for the thought and let it build up (partWords) instead of swapping it\n- Scene 5: block 2: nothing happens for 3.9 s – let a part appear on a word (partWords) or change the picture, at least every 3 s\n- Scene 7: block 1: nothing happens for 3.9 s – let a part appear on a word (partWords) or change the picture, at least every 3 s\n- Scenes 2–4 are all \"split\" (your stages: full, split, split, split, split, top, bottom, statement) – the same frame again and again gets dull; change the stage where the story changes"
+      },
+      "inputTokens": 26241,
+      "cachedInputTokens": 4602,
+      "outputTokens": 6207,
+      "thinkingTokens": 3171,
+      "output": {
+        "scenes": [
+          {
+            "happens": "A typed idea becomes an animated explainer video, and an arrow draws on to TikMaker as the name appears.",
+            "stage": "full",
+            "blocks": [
+              {
+                "onWord": "Type",
+                "kind": "schema",
+                "partWords": [
+                  "Type",
+                  "explainer",
+                  "TikMaker"
+                ],
+                "nodes": [
+                  {
+                    "label": "One idea",
+                    "id": "idea"
+                  },
+                  {
+                    "label": "Explainer video"
+                  },
+                  {
+                    "label": "TikMaker"
+                  }
+                ]
+              }
+            ],
+            "keywords": [
+              "idea",
+              "TikMaker"
+            ]
+          },
+          {
+            "happens": "An API diagram builds itself piece by piece, then gets replaced by the hand-made workflow stacking up one painful step at a time.",
+            "stage": "top",
+            "blocks": [
+              {
+                "onWord": "Tech",
+                "kind": "schema",
+                "partWords": [
+                  "show",
+                  "diagrams",
+                  "icons"
+                ],
+                "nodes": [
+                  {
+                    "label": "Client"
+                  },
+                  {
+                    "label": "API"
+                  },
+                  {
+                    "label": "Server"
+                  }
+                ]
+              },
+              {
+                "onWord": "But",
+                "kind": "list",
+                "items": [
+                  "Keyframes by hand",
+                  "Scene by scene",
+                  "In After Effects"
+                ],
+                "partWords": [
+                  "hand",
+                  "scene",
+                  "After"
+                ]
+              }
+            ],
+            "keywords": [
+              "diagrams",
+              "by hand",
+              "After Effects"
+            ]
+          },
+          {
+            "happens": "The creator types a rough idea into TikMaker and clicks Generate, while the kinds of input it takes appear below.",
+            "stage": "split",
+            "blocks": [
+              {
+                "onWord": "First",
+                "kind": "screen",
+                "text": "Type the idea, click Generate",
+                "record": "TikMaker home page: click the idea field, type a rough tech idea (e.g. 'how an API request works'), click Generate. Stop when loading starts.",
+                "seconds": 4
+              },
+              {
+                "onWord": "topic",
+                "kind": "list",
+                "items": [
+                  "A topic",
+                  "Loose thoughts"
+                ],
+                "partWords": [
+                  "topic",
+                  "thoughts"
+                ]
+              }
+            ],
+            "keywords": [
+              "First",
+              "idea"
+            ]
+          },
+          {
+            "happens": "The idea turns into a script, and arrows draw on to each scene's voiceover and its on-screen text.",
+            "stage": "full",
+            "blocks": [
+              {
+                "onWord": "Second",
+                "kind": "schema",
+                "partWords": [
+                  "Second",
+                  "script",
+                  "voiceover",
+                  "on-screen"
+                ],
+                "nodes": [
+                  {
+                    "label": "Your idea",
+                    "id": "idea"
+                  },
+                  {
+                    "label": "Scene script"
+                  },
+                  {
+                    "label": "Voiceover"
+                  },
+                  {
+                    "label": "On-screen text"
+                  }
+                ]
+              }
+            ],
+            "keywords": [
+              "Second",
+              "script",
+              "scene by scene"
+            ]
+          },
+          {
+            "happens": "The TikMaker preview plays its motion graphics while the parts tick in below as the voice names them.",
+            "stage": "split",
+            "blocks": [
+              {
+                "onWord": "Third",
+                "kind": "screen",
+                "text": "The preview plays the motion graphics",
+                "record": "TikMaker preview: press play. Show text animating in, a diagram drawing its arrows, icons popping in and one transition to the next scene. Stop after the transition.",
+                "seconds": 4
+              },
+              {
+                "onWord": "motion",
+                "kind": "list",
+                "items": [
+                  "Animated typography",
+                  "Diagrams",
+                  "Icons",
+                  "Transitions"
+                ],
+                "partWords": [
+                  "motion",
+                  "diagrams",
+                  "icons",
+                  "transitions"
+                ]
+              }
+            ],
+            "keywords": [
+              "Third",
+              "motion graphics"
+            ]
+          },
+          {
+            "happens": "The format specs stack up one by one: vertical 9:16, 1080 × 1920, and text kept inside the safe zone.",
+            "stage": "top",
+            "blocks": [
+              {
+                "onWord": "All",
+                "kind": "list",
+                "items": [
+                  "Vertical 9:16",
+                  "1080 × 1920",
+                  "Text in the safe zone"
+                ],
+                "partWords": [
+                  "vertical",
+                  "1080",
+                  "safe"
+                ]
+              }
+            ],
+            "keywords": [
+              "9:16",
+              "1080 by 1920",
+              "safe zone"
+            ]
+          },
+          {
+            "happens": "The three audiences appear one after another as the voice names them, then the payoff: zero frames animated by hand.",
+            "stage": "bottom",
+            "blocks": [
+              {
+                "onWord": "So",
+                "kind": "list",
+                "items": [
+                  "Tech creators",
+                  "Educators",
+                  "Faceless channels",
+                  "0 frames animated"
+                ],
+                "partWords": [
+                  "tech",
+                  "educators",
+                  "faceless",
+                  "without"
+                ]
+              }
+            ],
+            "keywords": [
+              "consistently",
+              "without animating"
+            ]
+          },
+          {
+            "happens": "The closing line fills the frame in big type: one idea in, an explainer out, TikMaker.",
+            "stage": "statement",
+            "blocks": [],
+            "keywords": [
+              "One idea",
+              "TikMaker"
+            ]
+          }
+        ],
+        "wishes": [
+          "TikMaker logo",
+          "After Effects logo",
+          "TikTok logo",
+          "Posting calendar prop",
+          "Phone / vertical video frame prop",
+          "Video / play-button prop",
+          "Server / API prop"
+        ]
+      }
+    },
+    {
+      "name": "pickMotion",
+      "startedAt": 1793881092509,
+      "ms": 14964,
+      "model": "claude-opus-5-5",
+      "attempts": 1,
+      "prompt": {
+        "system": "You are the motion designer of a short vertical motion video (1080x1920, 30 fps).\nThe script and the pictures (blocks) are decided; your only job is how everything moves,\nso the whole video reads as one flow instead of a row of separate slides.\n\nFor every scene pick the transition into it. For every block, in order, pick:\n- entrance and enterFrames: how it arrives on its word\n- exit and exitFrames: how it leaves when the next block takes its place (or the scene ends)\n- drift (optional): slow motion while it holds the screen\n- moves (optional): on a later word of the voiceover it moves to y (% of the frame's\n  height, its centre) at scale – a deliberate change of place or size, not a nudge\n- carry (optional, only the scene's last block): it stays into the next scene and glides\n  to that scene's first place instead of leaving; the next transition is then \"cut\"\nAnd in \"idea\", say in a sentence or two what your motion is: the main direction, which\nmove marks which kind of moment.\n\nEach block already animates its own content inside itself (list items, nodes, numbers\ncounting); you decide how the block as a whole arrives, moves and leaves.\nUse the principles below as knowledge of what works and why – the choices are yours.\nAnswer with one entry per scene and one per block, in the same order as given.",
+        "user": "Principles:\n- At any moment one thing moves and holds the eye; everything else is still or settles. Why: The viewer can follow only one moving thing. Several pictures animating at once in the same place read as a pile, not as a sequence – nothing is understood and the frame looks unstable. In this video: Never let two blocks enter or travel in the same place at the same time. When a new block arrives, the old one has already left or is leaving the opposite way.\n- Every move says something: arriving, leaving, growing in importance, turning into something else, moving on. Why: Motion without a reason is decoration; decoration on every element is noise. When each move matches what the voice says at that moment, the motion explains instead of distracting. In this video: Pick an entrance for what the block MEANS at that word: a number that is the payoff can pop or zoomSettle; a next item in a list slides in from the same side as the previous one; a calm explanation can just fade.\n- Keep one direction of travel for things that are 'the next one' – a list, steps, the story moving on. Why: A consistent direction builds a mental map: new things come from the right, old ones leave to the left, so 'forward' always looks the same. A different direction on every cut reads as random. In this video: Choose a main direction for the video (e.g. in from the right, out to the left) and use it for every 'next' moment. Change direction only to mark a real change: a contrast, a turn in the story, a new chapter.\n- Carry something across a cut: the same object, the same position, the same shape or the same direction of movement. Why: A cut where nothing connects resets the viewer's attention to zero. A match – one element staying, or the motion of the outgoing scene continuing into the incoming one – makes two scenes feel like one flow. In this video: When the same logo or object is in two consecutive scenes, carry it (link) instead of letting it leave and come back. When nothing is shared, let the outgoing block leave in the same direction the incoming one arrives from, so the motion continues.\n- Carry at most one element across a cut. Why: One carried element guides the eye to the next scene; several moving at once cross paths and the eye loses which one to follow. In this video: One link per cut. Everything else leaves.\n- Arrivals slow down into place; departures speed up and leave. Why: Real objects accelerate and decelerate. Something that arrives fast and settles feels confident; something that leaves accelerating feels gone. Linear motion looks mechanical. In this video: The code already eases every entrance out and every exit in. Use keyframe moves for deliberate travel, not for small nudges.\n- Leaving is quicker than arriving. Why: The viewer cares about what is coming, not about what is going. A long exit holds attention on something that no longer matters. In this video: Exits about 6–8 frames, entrances about 8–12 frames at 30 fps. Longer only for a deliberate, dramatic reveal.\n- Bigger changes take longer; small ones are quick. Why: A move across the whole frame in a few frames is a jump; a tiny fade over a second is sluggish. Duration should match how far and how much something changes. In this video: A full-frame transition or a long keyframe travel: 12–18 frames. A badge or a small element appearing: 6–10 frames.\n- A small overshoot and settle gives an element weight – use it for the few moments that matter. Why: Overshoot draws attention because it is a little surprising. On every element it stops being a surprise and the video feels bouncy and cheap. In this video: pop, bounceIn and zoomSettle* are the overshooting presets – reserve them for the hook, the key number and the verdict. Most blocks should arrive calmly (fade, slide, scaleIn).\n- Prepare the viewer just before the payoff. Why: A brief build-up – a pause, a small zoom in, the previous element clearing the stage – makes the reveal land harder than if it simply appears. In this video: Before the key moment, let the stage clear (the previous block leaves early) or give the incoming block a slower, larger entrance than the rest.\n- When several things belong together, they arrive one after another in reading order, not all at once. Why: A staggered arrival shows the order to read them in; everything at once is a wall the viewer has to sort out themselves. In this video: List items, schema nodes and logos already stagger inside their block. Do not add a second stagger on top of it.\n- Text and numbers must stop moving long enough to be read. Why: The eye cannot read moving text. Continuous drift is fine for a picture, not for a sentence or a number the viewer has to take in. In this video: Ken Burns (zoomIn, float…) suits objects and screenshots held longer than about 2 s, not code, terminals, lists or numbers.\n- Vary the motion between beats, but from a small set used consistently. Why: The same fade on every element for a minute is boring; twenty different effects look like a template demo. Two or three entrances with a clear role each read as a style. In this video: Give each kind of moment its own move (next item, contrast, payoff, calm explanation) and keep that pairing through the whole video.\n- A frame with no picture is a pause – the cut into it should feel like the stage clearing. Why: A statement scene works because it is empty. If the previous picture lingers or is pushed out noisily, the pause is lost. In this video: Before a statement scene, let the last block leave cleanly (fade or a short exit) by the end of its scene.\n- A move through depth – flying into the frame, something rising from far behind it, a card turning over – says 'we are going somewhere else', not 'the next one'. Why: Slides move across the flat frame, so they read as the story going on in the same place. Depth changes the space itself, so the viewer feels a step into a different part. Used on every cut it stops meaning anything and the video gets dizzy. In this video: Keep the slides for the ordinary 'next' cuts. Use zoomThrough, fromDepth or flip for the one to three cuts that open a new part: from the problem into the solution, into the demo, into the verdict. zoomThrough is the strongest – at most once or twice a video.\n\nEntrances:\n- fade: appears softly in place\n- slideUp: travels in from below, moving up\n- slideDown: travels in from above, moving down\n- slideLeft: travels in from the right, moving left\n- slideRight: travels in from the left, moving right\n- scaleIn: grows in from slightly smaller\n- pop: pops in with a small bounce\n- zoomSettleRight: flies in from the right, overshoots its size, settles – strong\n- zoomSettleLeft: flies in from the left, overshoots its size, settles – strong\n- zoomSettleTop: flies in from above, overshoots its size, settles – strong\n- zoomSettleBottom: flies in from below, overshoots its size, settles – strong\n- zoomIn: comes in from bigger, shrinking into place\n- blurIn: comes into focus from a blur\n- spinIn: spins in\n- flipIn: flips in around its vertical axis (3D)\n- bounceIn: bounces in\n- dropIn: falls in from above the frame\n- rollIn: rolls in from the left\n\nExits:\n- none: no exit – cut away on its last frame\n- fade: fades out in place\n- slideUp: speeds away upwards, out of the frame\n- slideDown: speeds away downwards, out of the frame\n- slideLeft: speeds away to the left, out of the frame\n- slideRight: speeds away to the right, out of the frame\n- scaleOut: shrinks a little as it fades\n- burstOut: punches up in size and turns as it fades – strong\n- zoomOut: grows past the viewer as it fades\n- blurOut: blurs away\n- spinOut: spins away, shrinking\n- flipOut: flips away around its vertical axis (3D)\n- dropOut: falls out of the bottom of the frame\n- rollOut: rolls away to the right\n\nDrifts:\n- zoomIn: slowly grows\n- zoomOut: slowly shrinks\n- panLeft: slowly moves left\n- panRight: slowly moves right\n- panUp: slowly moves up\n- panDown: slowly moves down\n- float: drifts and tilts gently around its place\n- rotateCW: turns slowly clockwise\n- rotateCCW: turns slowly anticlockwise\n\nTransitions into a scene:\n- cut: a hard cut – the next scene is simply there\n- slideLeft: the next scene pushes in from the right, moving left\n- slideRight: the next scene pushes in from the left, moving right\n- slideUp: the next scene pushes in from below, moving up\n- slideDown: the next scene pushes in from above, moving down\n- zoomThrough: the camera flies forward into the next scene: it starts huge and blurred and settles – spatial, strong\n- fromDepth: the next scene rises from far behind the frame, tipped back, and stands up – spatial\n- flip: the next scene turns in like a card around its vertical axis – spatial\n\nThe video:\nScene 1 – full (place 1 at y 50% scale 1), 4.6 s\n  Voiceover: Type one idea, get a full animated explainer video back. This is TikMaker.\n  Happens: A typed idea becomes an animated explainer video, and an arrow draws on to TikMaker as the name appears.\n  1. on \"Type\", 0.0–4.6 s, place 1: {\"kind\":\"schema\",\"partWords\":[\"Type\",\"explainer\",\"TikMaker\"],\"nodes\":[{\"label\":\"One idea\",\"id\":\"idea\"},{\"label\":\"Explainer video\"},{\"label\":\"TikMaker\"}]}\n\nScene 2 – top (place 1 at y 34% scale 1), 9.3 s\n  Voiceover: Tech concepts click when you show them: diagrams, animated text, icons. But those motion graphics are usually animated by hand, scene by scene, in tools like After Effects.\n  Happens: An API diagram builds itself piece by piece, then gets replaced by the hand-made workflow stacking up one painful step at a time.\n  1. on \"Tech\", 0.0–3.4 s, place 1: {\"kind\":\"schema\",\"partWords\":[\"show\",\"diagrams\",\"icons\"],\"nodes\":[{\"label\":\"Client\"},{\"label\":\"API\"},{\"label\":\"Server\"}]}\n  2. on \"But\", 3.4–9.3 s, place 1: {\"kind\":\"list\",\"items\":[\"Keyframes by hand\",\"Scene by scene\",\"In After Effects\"],\"partWords\":[\"hand\",\"scene\",\"After\"]}\n\nScene 3 – split (place 1 at y 27% scale 0.68, place 2 at y 58% scale 0.68), 4.6 s\n  Voiceover: First, you type your idea: a topic, or loose thoughts in any order.\n  Happens: The creator types a rough idea into TikMaker and clicks Generate, while the kinds of input it takes appear below.\n  1. on \"First\", 0.0–4.6 s, place 1: {\"kind\":\"screen\",\"text\":\"Type the idea, click Generate\",\"record\":\"TikMaker home page: click the idea field, type a rough tech idea (e.g. 'how an API request works'), click Generate. Stop when loading starts.\",\"seconds\":4}\n  2. on \"topic\", 1.9–4.6 s, place 2: {\"kind\":\"list\",\"items\":[\"A topic\",\"Loose thoughts\"],\"partWords\":[\"topic\",\"thoughts\"]}\n\nScene 4 – full (place 1 at y 50% scale 1), 6.4 s\n  Voiceover: Second, TikMaker turns it into a structured script, scene by scene, each with its own voiceover and on-screen text.\n  Happens: The idea turns into a script, and arrows draw on to each scene's voiceover and its on-screen text.\n  1. on \"Second\", 0.0–6.4 s, place 1: {\"kind\":\"schema\",\"partWords\":[\"Second\",\"script\",\"voiceover\",\"on-screen\"],\"nodes\":[{\"label\":\"Your idea\",\"id\":\"idea\"},{\"label\":\"Scene script\"},{\"label\":\"Voiceover\"},{\"label\":\"On-screen text\"}]}\n\nScene 5 – split (place 1 at y 27% scale 0.68, place 2 at y 58% scale 0.68), 4.3 s\n  Voiceover: Third, every scene becomes motion graphics: animated typography, diagrams, icons and transitions.\n  Happens: The TikMaker preview plays its motion graphics while the parts tick in below as the voice names them.\n  1. on \"Third\", 0.0–4.3 s, place 1: {\"kind\":\"screen\",\"text\":\"The preview plays the motion graphics\",\"record\":\"TikMaker preview: press play. Show text animating in, a diagram drawing its arrows, icons popping in and one transition to the next scene. Stop after the transition.\",\"seconds\":4}\n  2. on \"motion\", 1.3–4.3 s, place 2: {\"kind\":\"list\",\"items\":[\"Animated typography\",\"Diagrams\",\"Icons\",\"Transitions\"],\"partWords\":[\"motion\",\"diagrams\",\"icons\",\"transitions\"]}\n\nScene 6 – top (place 1 at y 34% scale 1), 6.8 s\n  Voiceover: All in vertical 9:16, 1080 by 1920, with the text kept in the safe zone, away from the platform buttons.\n  Happens: The format specs stack up one by one: vertical 9:16, 1080 × 1920, and text kept inside the safe zone.\n  1. on \"All\", 0.0–6.8 s, place 1: {\"kind\":\"list\",\"items\":[\"Vertical 9:16\",\"1080 × 1920\",\"Text in the safe zone\"],\"partWords\":[\"vertical\",\"1080\",\"safe\"]}\n\nScene 7 – bottom (place 1 at y 56% scale 1), 5.5 s\n  Voiceover: So tech creators, educators and faceless channels can publish explainers consistently, without animating a single frame.\n  Happens: The three audiences appear one after another as the voice names them, then the payoff: zero frames animated by hand.\n  1. on \"So\", 0.0–5.5 s, place 1: {\"kind\":\"list\",\"items\":[\"Tech creators\",\"Educators\",\"Faceless channels\",\"0 frames animated\"],\"partWords\":[\"tech\",\"educators\",\"faceless\",\"without\"]}\n\nScene 8 – statement (no picture, words only), 3.0 s\n  Voiceover: One idea in, an explainer out. That's TikMaker.\n  Happens: The closing line fills the frame in big type: one idea in, an explainer out, TikMaker.\n  (no blocks)"
+      },
+      "inputTokens": 7107,
+      "cachedInputTokens": 0,
+      "outputTokens": 1203,
+      "thinkingTokens": 409,
+      "output": {
+        "idea": "Forward always comes from the right and leaves to the left: ordinary next beats use slideLeft. The 'But' turn of the problem drops in from above as a contrast. Depth marks the two new parts: fromDepth opens the solution steps and zoomThrough opens the payoff. Overshoot is saved for the hook and the payoff list. The stage fades clean before the closing statement.",
+        "scenes": [
+          {
+            "transition": "cut",
+            "blocks": [
+              {
+                "entrance": "zoomSettleRight",
+                "enterFrames": 14,
+                "exit": "slideLeft",
+                "exitFrames": 7
+              }
+            ]
+          },
+          {
+            "transition": "slideLeft",
+            "blocks": [
+              {
+                "entrance": "slideLeft",
+                "enterFrames": 10,
+                "exit": "slideDown",
+                "exitFrames": 7
+              },
+              {
+                "entrance": "slideDown",
+                "enterFrames": 12,
+                "exit": "fade",
+                "exitFrames": 7
+              }
+            ]
+          },
+          {
+            "transition": "fromDepth",
+            "blocks": [
+              {
+                "entrance": "scaleIn",
+                "enterFrames": 12,
+                "exit": "slideLeft",
+                "exitFrames": 7,
+                "drift": "zoomIn"
+              },
+              {
+                "entrance": "slideLeft",
+                "enterFrames": 10,
+                "exit": "slideLeft",
+                "exitFrames": 7
+              }
+            ]
+          },
+          {
+            "transition": "slideLeft",
+            "blocks": [
+              {
+                "entrance": "slideLeft",
+                "enterFrames": 10,
+                "exit": "slideLeft",
+                "exitFrames": 7
+              }
+            ]
+          },
+          {
+            "transition": "slideLeft",
+            "blocks": [
+              {
+                "entrance": "slideLeft",
+                "enterFrames": 10,
+                "exit": "slideLeft",
+                "exitFrames": 7,
+                "drift": "zoomIn"
+              },
+              {
+                "entrance": "slideLeft",
+                "enterFrames": 10,
+                "exit": "slideLeft",
+                "exitFrames": 7
+              }
+            ]
+          },
+          {
+            "transition": "slideLeft",
+            "blocks": [
+              {
+                "entrance": "slideLeft",
+                "enterFrames": 10,
+                "exit": "fade",
+                "exitFrames": 7
+              }
+            ]
+          },
+          {
+            "transition": "zoomThrough",
+            "blocks": [
+              {
+                "entrance": "zoomSettleBottom",
+                "enterFrames": 14,
+                "exit": "fade",
+                "exitFrames": 8,
+                "moves": [
+                  {
+                    "onWord": "without",
+                    "y": 50,
+                    "scale": 1.1
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "transition": "cut",
+            "blocks": []
+          }
+        ]
+      }
+    }
+  ],
+  "blocks": {
+    "scenes": [
+      {
+        "happens": "A typed idea becomes an animated explainer video, and an arrow draws on to TikMaker as the name appears.",
+        "stage": "full",
+        "blocks": [
+          {
+            "onWord": "Type",
+            "kind": "schema",
+            "partWords": [
+              "Type",
+              "explainer",
+              "TikMaker"
+            ],
+            "nodes": [
+              {
+                "label": "One idea",
+                "id": "idea"
+              },
+              {
+                "label": "Explainer video"
+              },
+              {
+                "label": "TikMaker"
+              }
+            ]
+          }
+        ],
+        "keywords": [
+          "idea",
+          "TikMaker"
+        ]
+      },
+      {
+        "happens": "An API diagram builds itself piece by piece, then gets replaced by the hand-made workflow stacking up one painful step at a time.",
+        "stage": "top",
+        "blocks": [
+          {
+            "onWord": "Tech",
+            "kind": "schema",
+            "partWords": [
+              "show",
+              "diagrams",
+              "icons"
+            ],
+            "nodes": [
+              {
+                "label": "Client"
+              },
+              {
+                "label": "API"
+              },
+              {
+                "label": "Server"
+              }
+            ]
+          },
+          {
+            "onWord": "But",
+            "kind": "list",
+            "items": [
+              "Keyframes by hand",
+              "Scene by scene",
+              "In After Effects"
+            ],
+            "partWords": [
+              "hand",
+              "scene",
+              "After"
+            ]
+          }
+        ],
+        "keywords": [
+          "diagrams",
+          "by hand",
+          "After Effects"
+        ]
+      },
+      {
+        "happens": "The creator types a rough idea into TikMaker and clicks Generate, while the kinds of input it takes appear below.",
+        "stage": "split",
+        "blocks": [
+          {
+            "onWord": "First",
+            "kind": "screen",
+            "text": "Type the idea, click Generate",
+            "record": "TikMaker home page: click the idea field, type a rough tech idea (e.g. 'how an API request works'), click Generate. Stop when loading starts.",
+            "seconds": 4
+          },
+          {
+            "onWord": "topic",
+            "kind": "list",
+            "items": [
+              "A topic",
+              "Loose thoughts"
+            ],
+            "partWords": [
+              "topic",
+              "thoughts"
+            ]
+          }
+        ],
+        "keywords": [
+          "First",
+          "idea"
+        ]
+      },
+      {
+        "happens": "The idea turns into a script, and arrows draw on to each scene's voiceover and its on-screen text.",
+        "stage": "full",
+        "blocks": [
+          {
+            "onWord": "Second",
+            "kind": "schema",
+            "partWords": [
+              "Second",
+              "script",
+              "voiceover",
+              "on-screen"
+            ],
+            "nodes": [
+              {
+                "label": "Your idea",
+                "id": "idea"
+              },
+              {
+                "label": "Scene script"
+              },
+              {
+                "label": "Voiceover"
+              },
+              {
+                "label": "On-screen text"
+              }
+            ]
+          }
+        ],
+        "keywords": [
+          "Second",
+          "script",
+          "scene by scene"
+        ]
+      },
+      {
+        "happens": "The TikMaker preview plays its motion graphics while the parts tick in below as the voice names them.",
+        "stage": "split",
+        "blocks": [
+          {
+            "onWord": "Third",
+            "kind": "screen",
+            "text": "The preview plays the motion graphics",
+            "record": "TikMaker preview: press play. Show text animating in, a diagram drawing its arrows, icons popping in and one transition to the next scene. Stop after the transition.",
+            "seconds": 4
+          },
+          {
+            "onWord": "motion",
+            "kind": "list",
+            "items": [
+              "Animated typography",
+              "Diagrams",
+              "Icons",
+              "Transitions"
+            ],
+            "partWords": [
+              "motion",
+              "diagrams",
+              "icons",
+              "transitions"
+            ]
+          }
+        ],
+        "keywords": [
+          "Third",
+          "motion graphics"
+        ]
+      },
+      {
+        "happens": "The format specs stack up one by one: vertical 9:16, 1080 × 1920, and text kept inside the safe zone.",
+        "stage": "top",
+        "blocks": [
+          {
+            "onWord": "All",
+            "kind": "list",
+            "items": [
+              "Vertical 9:16",
+              "1080 × 1920",
+              "Text in the safe zone"
+            ],
+            "partWords": [
+              "vertical",
+              "1080",
+              "safe"
+            ]
+          }
+        ],
+        "keywords": [
+          "9:16",
+          "1080 by 1920",
+          "safe zone"
+        ]
+      },
+      {
+        "happens": "The three audiences appear one after another as the voice names them, then the payoff: zero frames animated by hand.",
+        "stage": "bottom",
+        "blocks": [
+          {
+            "onWord": "So",
+            "kind": "list",
+            "items": [
+              "Tech creators",
+              "Educators",
+              "Faceless channels",
+              "0 frames animated"
+            ],
+            "partWords": [
+              "tech",
+              "educators",
+              "faceless",
+              "without"
+            ]
+          }
+        ],
+        "keywords": [
+          "consistently",
+          "without animating"
+        ]
+      },
+      {
+        "happens": "The closing line fills the frame in big type: one idea in, an explainer out, TikMaker.",
+        "stage": "statement",
+        "blocks": [],
+        "keywords": [
+          "One idea",
+          "TikMaker"
+        ]
+      }
+    ],
+    "wishes": [
+      "TikMaker logo",
+      "After Effects logo",
+      "TikTok logo",
+      "Posting calendar prop",
+      "Phone / vertical video frame prop",
+      "Video / play-button prop",
+      "Server / API prop"
+    ],
+    "problems": [
+      {
+        "sceneIndex": 2,
+        "message": "Scene 3: block 1 is on screen only 1.9 s – it flickers past; keep one picture for the thought and let it build up (partWords) instead of swapping it"
+      },
+      {
+        "sceneIndex": 4,
+        "message": "Scene 5: block 1 is on screen only 1.3 s – it flickers past; keep one picture for the thought and let it build up (partWords) instead of swapping it"
+      }
+    ]
+  },
+  "motion": {
+    "idea": "Forward always comes from the right and leaves to the left: ordinary next beats use slideLeft. The 'But' turn of the problem drops in from above as a contrast. Depth marks the two new parts: fromDepth opens the solution steps and zoomThrough opens the payoff. Overshoot is saved for the hook and the payoff list. The stage fades clean before the closing statement.",
+    "scenes": [
+      {
+        "transition": "cut",
+        "blocks": [
+          {
+            "entrance": "zoomSettleRight",
+            "enterFrames": 14,
+            "exit": "slideLeft",
+            "exitFrames": 7
+          }
+        ]
+      },
+      {
+        "transition": "slideLeft",
+        "blocks": [
+          {
+            "entrance": "slideLeft",
+            "enterFrames": 10,
+            "exit": "slideDown",
+            "exitFrames": 7
+          },
+          {
+            "entrance": "slideDown",
+            "enterFrames": 12,
+            "exit": "fade",
+            "exitFrames": 7
+          }
+        ]
+      },
+      {
+        "transition": "fromDepth",
+        "blocks": [
+          {
+            "entrance": "scaleIn",
+            "enterFrames": 12,
+            "exit": "slideLeft",
+            "exitFrames": 7,
+            "drift": "zoomIn"
+          },
+          {
+            "entrance": "slideLeft",
+            "enterFrames": 10,
+            "exit": "slideLeft",
+            "exitFrames": 7
+          }
+        ]
+      },
+      {
+        "transition": "slideLeft",
+        "blocks": [
+          {
+            "entrance": "slideLeft",
+            "enterFrames": 10,
+            "exit": "slideLeft",
+            "exitFrames": 7
+          }
+        ]
+      },
+      {
+        "transition": "slideLeft",
+        "blocks": [
+          {
+            "entrance": "slideLeft",
+            "enterFrames": 10,
+            "exit": "slideLeft",
+            "exitFrames": 7,
+            "drift": "zoomIn"
+          },
+          {
+            "entrance": "slideLeft",
+            "enterFrames": 10,
+            "exit": "slideLeft",
+            "exitFrames": 7
+          }
+        ]
+      },
+      {
+        "transition": "slideLeft",
+        "blocks": [
+          {
+            "entrance": "slideLeft",
+            "enterFrames": 10,
+            "exit": "fade",
+            "exitFrames": 7
+          }
+        ]
+      },
+      {
+        "transition": "zoomThrough",
+        "blocks": [
+          {
+            "entrance": "zoomSettleBottom",
+            "enterFrames": 14,
+            "exit": "fade",
+            "exitFrames": 8,
+            "moves": [
+              {
+                "onWord": "without",
+                "y": 50,
+                "scale": 1.1
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "transition": "cut",
+        "blocks": []
+      }
+    ],
+    "problems": []
+  },
+  "voice": {
+    "scenes": [
+      {
+        "sfxId": "vo-run-mw3ib6vu-scene-1-mw3ihtrf",
+        "words": [
+          {
+            "text": "Type",
+            "start": 0,
+            "end": 0.255
+          },
+          {
+            "text": "one",
+            "start": 0.29,
+            "end": 0.395
+          },
+          {
+            "text": "idea,",
+            "start": 0.43,
+            "end": 0.894
+          },
+          {
+            "text": "get",
+            "start": 1.045,
+            "end": 1.173
+          },
+          {
+            "text": "a",
+            "start": 1.207,
+            "end": 1.231
+          },
+          {
+            "text": "full",
+            "start": 1.335,
+            "end": 1.556
+          },
+          {
+            "text": "animated",
+            "start": 1.625,
+            "end": 2.02
+          },
+          {
+            "text": "explainer",
+            "start": 2.067,
+            "end": 2.438
+          },
+          {
+            "text": "video",
+            "start": 2.473,
+            "end": 2.717
+          },
+          {
+            "text": "back.",
+            "start": 2.763,
+            "end": 3.065
+          },
+          {
+            "text": "This",
+            "start": 3.274,
+            "end": 3.553
+          },
+          {
+            "text": "is",
+            "start": 3.704,
+            "end": 3.855
+          },
+          {
+            "text": "TikMaker.",
+            "start": 3.913,
+            "end": 4.644
+          }
+        ]
+      },
+      {
+        "sfxId": "vo-run-mw3ib6vu-scene-2-mw3ihuc3",
+        "words": [
+          {
+            "text": "Tech",
+            "start": 0,
+            "end": 0.244
+          },
+          {
+            "text": "concepts",
+            "start": 0.29,
+            "end": 0.697
+          },
+          {
+            "text": "click",
+            "start": 0.743,
+            "end": 0.94
+          },
+          {
+            "text": "when",
+            "start": 0.987,
+            "end": 1.115
+          },
+          {
+            "text": "you",
+            "start": 1.149,
+            "end": 1.219
+          },
+          {
+            "text": "show",
+            "start": 1.265,
+            "end": 1.405
+          },
+          {
+            "text": "them:",
+            "start": 1.451,
+            "end": 1.753
+          },
+          {
+            "text": "diagrams,",
+            "start": 2.032,
+            "end": 2.682
+          },
+          {
+            "text": "animated",
+            "start": 2.786,
+            "end": 3.228
+          },
+          {
+            "text": "text,",
+            "start": 3.262,
+            "end": 3.704
+          },
+          {
+            "text": "icons.",
+            "start": 3.855,
+            "end": 4.458
+          },
+          {
+            "text": "But",
+            "start": 4.737,
+            "end": 4.876
+          },
+          {
+            "text": "those",
+            "start": 4.911,
+            "end": 5.097
+          },
+          {
+            "text": "motion",
+            "start": 5.132,
+            "end": 5.352
+          },
+          {
+            "text": "graphics",
+            "start": 5.399,
+            "end": 5.828
+          },
+          {
+            "text": "are",
+            "start": 5.875,
+            "end": 6.049
+          },
+          {
+            "text": "usually",
+            "start": 6.107,
+            "end": 6.385
+          },
+          {
+            "text": "animated",
+            "start": 6.444,
+            "end": 6.861
+          },
+          {
+            "text": "by",
+            "start": 6.908,
+            "end": 7.036
+          },
+          {
+            "text": "hand,",
+            "start": 7.117,
+            "end": 7.546
+          },
+          {
+            "text": "scene",
+            "start": 7.732,
+            "end": 7.976
+          },
+          {
+            "text": "by",
+            "start": 8.011,
+            "end": 8.127
+          },
+          {
+            "text": "scene,",
+            "start": 8.208,
+            "end": 8.557
+          },
+          {
+            "text": "in",
+            "start": 8.626,
+            "end": 8.742
+          },
+          {
+            "text": "tools",
+            "start": 8.789,
+            "end": 9.044
+          },
+          {
+            "text": "like",
+            "start": 9.079,
+            "end": 9.23
+          },
+          {
+            "text": "After",
+            "start": 9.276,
+            "end": 9.555
+          },
+          {
+            "text": "Effects.",
+            "start": 9.601,
+            "end": 10.217
+          }
+        ]
+      },
+      {
+        "sfxId": "vo-run-mw3ib6vu-scene-3-mw3ihuq5",
+        "words": [
+          {
+            "text": "First,",
+            "start": 0,
+            "end": 0.453
+          },
+          {
+            "text": "you",
+            "start": 0.731,
+            "end": 0.836
+          },
+          {
+            "text": "type",
+            "start": 0.894,
+            "end": 1.08
+          },
+          {
+            "text": "your",
+            "start": 1.115,
+            "end": 1.231
+          },
+          {
+            "text": "idea:",
+            "start": 1.265,
+            "end": 1.672
+          },
+          {
+            "text": "a",
+            "start": 1.95,
+            "end": 2.009
+          },
+          {
+            "text": "topic,",
+            "start": 2.067,
+            "end": 2.519
+          },
+          {
+            "text": "or",
+            "start": 2.67,
+            "end": 2.902
+          },
+          {
+            "text": "loose",
+            "start": 3.007,
+            "end": 3.228
+          },
+          {
+            "text": "thoughts",
+            "start": 3.262,
+            "end": 3.587
+          },
+          {
+            "text": "in",
+            "start": 3.669,
+            "end": 3.796
+          },
+          {
+            "text": "any",
+            "start": 3.901,
+            "end": 4.122
+          },
+          {
+            "text": "order.",
+            "start": 4.18,
+            "end": 4.737
+          }
+        ]
+      },
+      {
+        "sfxId": "vo-run-mw3ib6vu-scene-4-mw3ihv4c",
+        "words": [
+          {
+            "text": "Second,",
+            "start": 0,
+            "end": 0.488
+          },
+          {
+            "text": "TikMaker",
+            "start": 0.697,
+            "end": 1.138
+          },
+          {
+            "text": "turns",
+            "start": 1.184,
+            "end": 1.37
+          },
+          {
+            "text": "it",
+            "start": 1.405,
+            "end": 1.474
+          },
+          {
+            "text": "into",
+            "start": 1.521,
+            "end": 1.683
+          },
+          {
+            "text": "a",
+            "start": 1.753,
+            "end": 1.776
+          },
+          {
+            "text": "structured",
+            "start": 1.823,
+            "end": 2.171
+          },
+          {
+            "text": "script,",
+            "start": 2.206,
+            "end": 2.601
+          },
+          {
+            "text": "scene",
+            "start": 2.705,
+            "end": 2.914
+          },
+          {
+            "text": "by",
+            "start": 2.949,
+            "end": 3.053
+          },
+          {
+            "text": "scene,",
+            "start": 3.111,
+            "end": 3.46
+          },
+          {
+            "text": "each",
+            "start": 3.611,
+            "end": 3.773
+          },
+          {
+            "text": "with",
+            "start": 3.808,
+            "end": 3.936
+          },
+          {
+            "text": "its",
+            "start": 3.971,
+            "end": 4.075
+          },
+          {
+            "text": "own",
+            "start": 4.122,
+            "end": 4.249
+          },
+          {
+            "text": "voiceover",
+            "start": 4.296,
+            "end": 4.714
+          },
+          {
+            "text": "and",
+            "start": 4.783,
+            "end": 4.899
+          },
+          {
+            "text": "on-screen",
+            "start": 5.004,
+            "end": 5.387
+          },
+          {
+            "text": "text.",
+            "start": 5.433,
+            "end": 6.037
+          }
+        ]
+      },
+      {
+        "sfxId": "vo-run-mw3ib6vu-scene-5-mw3ihvjs",
+        "words": [
+          {
+            "text": "Third,",
+            "start": 0,
+            "end": 0.464
+          },
+          {
+            "text": "every",
+            "start": 0.801,
+            "end": 1.045
+          },
+          {
+            "text": "scene",
+            "start": 1.091,
+            "end": 1.312
+          },
+          {
+            "text": "becomes",
+            "start": 1.347,
+            "end": 1.73
+          },
+          {
+            "text": "motion",
+            "start": 1.834,
+            "end": 2.125
+          },
+          {
+            "text": "graphics:",
+            "start": 2.171,
+            "end": 2.694
+          },
+          {
+            "text": "animated",
+            "start": 3.03,
+            "end": 3.483
+          },
+          {
+            "text": "typography,",
+            "start": 3.518,
+            "end": 4.238
+          },
+          {
+            "text": "diagrams,",
+            "start": 4.389,
+            "end": 5.108
+          },
+          {
+            "text": "icons",
+            "start": 5.213,
+            "end": 5.712
+          },
+          {
+            "text": "and",
+            "start": 5.77,
+            "end": 5.933
+          },
+          {
+            "text": "transitions.",
+            "start": 5.979,
+            "end": 6.827
+          }
+        ]
+      },
+      {
+        "sfxId": "vo-run-mw3ib6vu-scene-6-mw3ihw2o",
+        "words": [
+          {
+            "text": "All",
+            "start": 0,
+            "end": 0.186
+          },
+          {
+            "text": "in",
+            "start": 0.232,
+            "end": 0.29
+          },
+          {
+            "text": "vertical",
+            "start": 0.337,
+            "end": 0.673
+          },
+          {
+            "text": "9:16,",
+            "start": 0.824,
+            "end": 1.625
+          },
+          {
+            "text": "1080",
+            "start": 1.776,
+            "end": 2.183
+          },
+          {
+            "text": "by",
+            "start": 2.241,
+            "end": 2.322
+          },
+          {
+            "text": "1920,",
+            "start": 2.368,
+            "end": 3.123
+          },
+          {
+            "text": "with",
+            "start": 3.309,
+            "end": 3.46
+          },
+          {
+            "text": "the",
+            "start": 3.495,
+            "end": 3.564
+          },
+          {
+            "text": "text",
+            "start": 3.599,
+            "end": 3.866
+          },
+          {
+            "text": "kept",
+            "start": 3.913,
+            "end": 4.145
+          },
+          {
+            "text": "in",
+            "start": 4.203,
+            "end": 4.272
+          },
+          {
+            "text": "the",
+            "start": 4.307,
+            "end": 4.377
+          },
+          {
+            "text": "safe",
+            "start": 4.412,
+            "end": 4.609
+          },
+          {
+            "text": "zone,",
+            "start": 4.632,
+            "end": 4.957
+          },
+          {
+            "text": "away",
+            "start": 5.166,
+            "end": 5.399
+          },
+          {
+            "text": "from",
+            "start": 5.433,
+            "end": 5.561
+          },
+          {
+            "text": "the",
+            "start": 5.596,
+            "end": 5.666
+          },
+          {
+            "text": "platform",
+            "start": 5.7,
+            "end": 6.072
+          },
+          {
+            "text": "buttons.",
+            "start": 6.107,
+            "end": 6.734
+          }
+        ]
+      },
+      {
+        "sfxId": "vo-run-mw3ib6vu-scene-7-mw3ihwjr",
+        "words": [
+          {
+            "text": "So",
+            "start": 0,
+            "end": 0.244
+          },
+          {
+            "text": "tech",
+            "start": 0.348,
+            "end": 0.592
+          },
+          {
+            "text": "creators,",
+            "start": 0.639,
+            "end": 1.196
+          },
+          {
+            "text": "educators",
+            "start": 1.324,
+            "end": 1.916
+          },
+          {
+            "text": "and",
+            "start": 1.974,
+            "end": 2.113
+          },
+          {
+            "text": "faceless",
+            "start": 2.218,
+            "end": 2.624
+          },
+          {
+            "text": "channels",
+            "start": 2.659,
+            "end": 3.03
+          },
+          {
+            "text": "can",
+            "start": 3.239,
+            "end": 3.367
+          },
+          {
+            "text": "publish",
+            "start": 3.402,
+            "end": 3.669
+          },
+          {
+            "text": "explainers",
+            "start": 3.715,
+            "end": 4.18
+          },
+          {
+            "text": "consistently,",
+            "start": 4.238,
+            "end": 4.992
+          },
+          {
+            "text": "without",
+            "start": 5.143,
+            "end": 5.41
+          },
+          {
+            "text": "animating",
+            "start": 5.457,
+            "end": 5.909
+          },
+          {
+            "text": "a",
+            "start": 5.979,
+            "end": 6.014
+          },
+          {
+            "text": "single",
+            "start": 6.118,
+            "end": 6.432
+          },
+          {
+            "text": "frame.",
+            "start": 6.467,
+            "end": 7.105
+          }
+        ]
+      },
+      {
+        "sfxId": "vo-run-mw3ib6vu-scene-8-mw3ihwwl",
+        "words": [
+          {
+            "text": "One",
+            "start": 0,
+            "end": 0.151
+          },
+          {
+            "text": "idea",
+            "start": 0.186,
+            "end": 0.418
+          },
+          {
+            "text": "in,",
+            "start": 0.499,
+            "end": 0.72
+          },
+          {
+            "text": "an",
+            "start": 0.755,
+            "end": 0.859
+          },
+          {
+            "text": "explainer",
+            "start": 0.894,
+            "end": 1.265
+          },
+          {
+            "text": "out.",
+            "start": 1.312,
+            "end": 1.498
+          },
+          {
+            "text": "That's",
+            "start": 1.649,
+            "end": 1.916
+          },
+          {
+            "text": "TikMaker.",
+            "start": 1.985,
+            "end": 2.786
+          }
+        ]
+      }
+    ]
+  }
+}
