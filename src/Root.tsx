@@ -9,6 +9,7 @@ import { StageTypes, STAGE_TYPES_FRAMES } from "./video/stage/StageTypesDemo";
 import { TikTokVideo } from "./video/TikTokVideo";
 import { CodeVideo } from "./experiments/codeVideo/CodeVideo";
 import { FreeVideo } from "./experiments/codeVideo/FreeVideo";
+import { BrandVideo } from "./experiments/codeVideo/BrandVideo";
 import codeVideoProjectJson from "../db/projects/project-1793969945652.json";
 import { videoDefaults } from "./video/typography/tokens";
 const showcaseProject = parseProject(showcaseProjectJson);
@@ -36,6 +37,16 @@ export function RemotionRoot() {
       <Composition
         id="CodeVideo"
         component={CodeVideo}
+        durationInFrames={projectDurationInFrames(codeVideoProject)}
+        fps={videoDefaults.fps}
+        width={videoDefaults.width}
+        height={videoDefaults.height}
+        defaultProps={{ project: codeVideoProject }}
+      />
+      {/* Test 4: official skill + explainer motion skill + our brand kit */}
+      <Composition
+        id="CodeVideoBrand"
+        component={BrandVideo}
         durationInFrames={projectDurationInFrames(codeVideoProject)}
         fps={videoDefaults.fps}
         width={videoDefaults.width}
