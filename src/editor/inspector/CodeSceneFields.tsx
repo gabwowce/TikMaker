@@ -18,6 +18,7 @@ import { loadCodeScene } from "../../video/code/loadCodeScene";
 import { sceneParams } from "../../video/code/params";
 import type { CodeSceneModule } from "../../video/code/types";
 import { useAgentRun, useUndoScene } from "../../api/agent";
+import { useSaveVisual } from "../../api/visuals";
 import { forgetCodeScene } from "../../video/code/loadCodeScene";
 import { useProjectStore } from "../state/projectStore";
 import { AssetSelect } from "./AssetSelect";
@@ -68,6 +69,7 @@ export function CodeSceneFields({ scene }: { scene: Scene }) {
           change it.
         </Note>
       )}
+      <SaveAsVisual scene={scene} description={module.description} />
     </Fieldset>
   );
 }
@@ -175,6 +177,75 @@ export function visualSrc(visual: VisualConfig | undefined): string {
   if (visual.type === "prop") return getProp(visual.asset)?.src ?? "";
   if (visual.type === "logo") return getLogo(visual.logo)?.src ?? "";
   return "";
+}
+
+// "Save as my visual": the scene's code, a frame of it and what it shows go
+// into the channel's visuals (Visuals tab); the agent sees them next time.
+function SaveAsVisual({ scene, description }: { scene: Scene; description?: string }) {
+  const project = useProjectStore((s) => s.project);
+  const save = useSaveVisual();
+  const [title, setTitle] = useState("");
+  const [open, setOpen] = useState(false);
+  if (!open)
+    return (
+      <div className="mt-3 flex items-center gap-2">
+        <Button size="compact-xs" variant="default" onClick={() => setOpen(true)}>
+          ☆ Save as my visual
+        </Button>
+        {save.isSuccess ? (
+          <span className="text-[11px] text-green-400">
+            Saved – see Visuals › My visuals
+          </span>
+        ) : null}
+      </div>
+    );
+  return (
+    <div className="mt-3 flex flex-col gap-1.5">
+      <TextInput
+        size="xs"
+        label="Name of the visual"
+        placeholder="e.g. Fuel gauge draining"
+        value={title}
+        onChange={(e) => setTitle(e.currentTarget.value)}
+      />
+      <div className="flex gap-1.5">
+        <Button
+          size="compact-xs"
+          disabled={title.trim().length < 2}
+          loading={save.isPending}
+          onClick={() =>
+            save.mutate(
+              {
+                workspaceId: project.workspaceId ?? "dev",
+                project,
+                sceneId: scene.id,
+                title: title.trim(),
+                ...(description ? { description } : {}),
+              },
+              {
+                onSuccess: () => {
+                  setOpen(false);
+                  setTitle("");
+                },
+              },
+            )
+          }
+        >
+          Save
+        </Button>
+        <Button size="compact-xs" variant="subtle" onClick={() => setOpen(false)}>
+          Cancel
+        </Button>
+      </div>
+      {save.error ? (
+        <span className="text-[11px] text-[#ff8a65]">{save.error.message}</span>
+      ) : null}
+      <span className="text-[11px] text-editor-muted">
+        The code, a frame and its description are kept for the channel; the
+        agent can use it in later videos.
+      </span>
+    </div>
+  );
 }
 
 // The scene's version and Undo: the agent keeps every earlier version of

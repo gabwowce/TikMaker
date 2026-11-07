@@ -13,6 +13,7 @@ import type { VisualConfig } from "../../schema/visual";
 import { readImageSize } from "../../utils/imageSize";
 import { splitCornerProps } from "../../utils/normalizeProject";
 import { useCustomAssets } from "../../api/library";
+import { useRemoveVisual, useVisuals, visualFrameUrl } from "../../api/visuals";
 import type { VisualSlot } from "../state/projectStore";
 import { useProjectStore } from "../state/projectStore";
 import { VisualThumb } from "./VisualThumb";
@@ -37,8 +38,8 @@ const STACK_POSITIONS = 4;
 
 // The Visuals tab (docs/perziura-kodas.md, part 10): what is used most comes
 // first. A search over everything; "ask the agent" for the selected scene of
-// the agent's video; the agent's own blocks (the same ones it picks from,
-// drawn by the same component); your imports, logos and props; the older
+// the agent's video; the channel's saved visuals (code scenes); blocks to put
+// on top of a scene as layers; your imports, logos and props; the older
 // presets folded under "More".
 
 // "List · *grid*" → "List · grid"
@@ -88,7 +89,7 @@ function AskAgent({ sceneId }: { sceneId: string | null }) {
             send.mutate(
               {
                 runId: run.id,
-                text: `Change this scene's pictures: ${text.trim()}`,
+                text: `Change this scene's picture: ${text.trim()}`,
                 attachments: [{ sceneIndex, label: `Scene ${sceneIndex + 1}` }],
               },
               { onSuccess: () => setText("") },
@@ -104,6 +105,81 @@ function AskAgent({ sceneId }: { sceneId: string | null }) {
     </div>
   );
 }
+// "My visuals" (docs/tikmaker-kryptis.md): the channel's saved code scenes –
+// a frame, the name and what it shows. "Use here" asks the agent to put one
+// into the selected scene of its video, fitted to that scene's words.
+function MyVisuals({ sceneId, query }: { sceneId: string | null; query: string }) {
+  const projectId = useProjectStore((s) => s.project.id);
+  const workspaceId = useProjectStore((s) => s.project.workspaceId ?? "dev");
+  const { data: visuals = [] } = useVisuals(workspaceId);
+  const remove = useRemoveVisual();
+  const { run } = useLatestRun(projectId);
+  const send = useSendMessage();
+  const prefix = run ? `scene-${run.id}-` : "";
+  const sceneIndex =
+    run && run.status === "done" && sceneId?.startsWith(prefix)
+      ? Number(sceneId.slice(prefix.length)) - 1
+      : -1;
+  const shown = visuals.filter((v) => matches(query, v.title, v.description));
+  if (!shown.length) return null;
+  return (
+    <>
+      <SectionTitle>My visuals</SectionTitle>
+      <div className="grid grid-cols-2 gap-1.5">
+        {shown.map((visual) => (
+          <div
+            key={visual.id}
+            className="grid min-w-0 gap-1 rounded-md border border-solid border-editor-border bg-editor-panel-raised p-1.5 text-[10px]"
+          >
+            {visual.hasFrame ? (
+              <img
+                src={visualFrameUrl(workspaceId, visual.id)}
+                alt={visual.title}
+                className="w-full aspect-[9/16] object-cover rounded"
+              />
+            ) : (
+              <div className="w-full aspect-[9/16] rounded bg-black/40" />
+            )}
+            <div className="font-semibold text-[11px]">{visual.title}</div>
+            <div className="text-editor-muted line-clamp-3">{visual.description}</div>
+            <div className="flex gap-1">
+              <Button
+                size="compact-xs"
+                className="flex-1"
+                disabled={sceneIndex < 0}
+                loading={send.isPending}
+                title={
+                  sceneIndex < 0
+                    ? "Select a scene of the agent's finished video"
+                    : `Ask the agent to use it in scene ${sceneIndex + 1}`
+                }
+                onClick={() =>
+                  run &&
+                  send.mutate({
+                    runId: run.id,
+                    text: `Use my saved visual "${visual.title}" (${visual.id}) in this scene – adapt its code to this scene's words.`,
+                    attachments: [{ sceneIndex, label: `Scene ${sceneIndex + 1}` }],
+                  })
+                }
+              >
+                {sceneIndex < 0 ? "Use here" : `Use in scene ${sceneIndex + 1}`}
+              </Button>
+              <Button
+                size="compact-xs"
+                variant="subtle"
+                aria-label={`Delete ${visual.title}`}
+                onClick={() => remove.mutate({ workspaceId, id: visual.id })}
+              >
+                ×
+              </Button>
+            </div>
+          </div>
+        ))}
+      </div>
+    </>
+  );
+}
+
 export function VisualLibrary() {
   const selectedSceneId = useProjectStore((s) => s.selectedSceneId);
   const scene = useProjectStore((s) =>
@@ -178,10 +254,11 @@ export function VisualLibrary() {
         onChange={(event) => setQuery(event.currentTarget.value)}
       />
       <AskAgent sceneId={selectedSceneId} />
+      <MyVisuals sceneId={selectedSceneId} query={query} />
 
       {blocks.length ? (
         <>
-          <SectionTitle>Blocks · the agent's</SectionTitle>
+          <SectionTitle>Blocks · layers on top</SectionTitle>
           <div className="grid grid-cols-2 gap-1.5">
             {blocks.map((entry) => (
               <UnstyledButton

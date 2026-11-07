@@ -1,0 +1,11 @@
+{
+  "id": "endless-session-terminal-mw67mlh6",
+  "title": "Endless session terminal",
+  "description": "A Claude Code terminal full of a day's chat history: a one-line question is typed and the whole history lights up as sent with it, while banknotes burn below",
+  "savedAt": 1794044256475,
+  "from": {
+    "projectId": "code-try",
+    "file": "code-try/scene-1.tsx"
+  },
+  "hasFrame": true
+}

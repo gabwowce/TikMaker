@@ -13,6 +13,7 @@ import { router } from "./init.js";
 import { jsonFileRouter } from "./jsonFile.js";
 import { rendersRouter } from "./renders.js";
 import { sfxRouter } from "./sfx.js";
+import { visualsRouter } from "./visuals.js";
 import { voiceRouter } from "./voice.js";
 
 // Every procedure the editor can call, e.g. trpc.projects.list or
@@ -35,6 +36,8 @@ export const appRouter = router({
   voice: voiceRouter,
   renders: rendersRouter,
   agent: agentRouter,
+  // the channel's saved code scenes ("Mano vizualai")
+  visuals: visualsRouter,
 });
 
 export type AppRouter = typeof appRouter;

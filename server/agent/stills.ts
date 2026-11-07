@@ -57,3 +57,34 @@ export async function renderStills(
   return stills;
 }
 
+// One frame of `project` to a PNG – a saved visual's picture (visuals.ts).
+export async function renderFrame(
+  project: VideoProject,
+  frame: number,
+  file: string,
+): Promise<void> {
+  const serveUrl = await bundle({
+    entryPoint: path.join(ROOT, "src", "index.ts"),
+    webpackOverride: enableTailwind,
+    publicDir: path.join(ROOT, "public"),
+  });
+  const inputProps = { project };
+  const browserExecutable = process.env.REMOTION_BROWSER_EXECUTABLE ?? null;
+  const composition = await selectComposition({
+    serveUrl,
+    id: "TikTokVideo",
+    inputProps,
+    browserExecutable,
+  });
+  fs.mkdirSync(path.dirname(file), { recursive: true });
+  await renderStill({
+    serveUrl,
+    composition,
+    inputProps,
+    frame,
+    output: file,
+    imageFormat: "png",
+    scale: SCALE,
+    browserExecutable,
+  });
+}

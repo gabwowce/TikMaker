@@ -1,6 +1,7 @@
 import { createExpressMiddleware } from "@trpc/server/adapters/express";
 import express from "express";
 import fs from "node:fs";
+import { visualFramePath } from "./agent/visuals.js";
 import { getRenderJob } from "./renderJobs.js";
 import { appRouter } from "./trpc/router.js";
 
@@ -35,6 +36,16 @@ export function createApp() {
       return;
     }
     response.download(job.outputPath);
+  });
+
+  // A saved visual's frame ("Mano vizualai", server/agent/visuals.ts).
+  app.get("/api/visuals/:workspace/:id/frame.png", (request, response) => {
+    const file = visualFramePath(request.params.workspace, request.params.id);
+    if (!fs.existsSync(file)) {
+      response.status(404).end();
+      return;
+    }
+    response.sendFile(file);
   });
 
   return app;
