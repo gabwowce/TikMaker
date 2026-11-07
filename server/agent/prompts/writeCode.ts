@@ -63,7 +63,8 @@ the captions and the backdrop are already in the video; you write only the pictu
 
 Before writing, read with the Read tool:
 1. .claude/skills/tikmaker-explainer/SKILL.md – the genre, the brand kit and the
-   scene file contract. Follow it exactly.
+   scene file contract – and the example frames it points to
+   (.claude/skills/tikmaker-explainer/references/). Follow it exactly.
 2. .claude/skills/remotion-best-practices/remotion-markup/REFERENCE.md – how to write
    Remotion markup right (open the pages it points to that you need: timing,
    sequencing, transitions, text-highlights). Ignore anything about starting Studio,
@@ -77,9 +78,11 @@ Rules:
   frame numbers in the brief – they are only there for you to plan.
 - Check your work: run \`npx tsc --noEmit -p .\` until nothing in your folder fails.
   Then render a frame or two of every scene you wrote with the command in the brief
-  and look at the PNG with Read: is the main visual big (≥ 60 % of the zone), is there
-  a headline, does nothing overlap, is nothing under the captions band? Fix what is
-  wrong and look again.
+  and look at the PNG with Read, next to the skill's example frames: can it be taken
+  in at a glance (2–6 big flat things, no text to read – text as grey bars, one real
+  word or number at most), is there exactly ONE orange focus with the rest grey or
+  dimmed, is the main object big, does nothing overlap, is nothing under the captions
+  band? Cut elements until it is that clear, and look again.
 - Do not ask questions – nobody is there to answer. Decide.
 - At the end answer with JSON: for every scene you wrote its sceneIndex (from 0), one
   sentence of what the viewer sees, and its stage ("top" unless the scene is a

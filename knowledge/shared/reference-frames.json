@@ -1,5 +1,24 @@
 [
   {
+    "id": "icon-minimal",
+    "file": "reference-frames/icon-minimal.png",
+    "source": "The creator's chosen example (a YouTube explainer channel, 2026-11-07): the look TikMaker videos should have – clear without text",
+    "tiles": [
+      "1: two avatar circles in the middle, four flat icons around them (timer, palette, note, camera); two icons bright, two dimmed – nothing to read",
+      "2: the same two avatars; the icons have flown into ONE card under them with an orange folder – the idea 'everything in one place' shown by grouping",
+      "3: a pipeline: an orange mascot, the card with the icons, three empty cards joined by one thin line – text is grey bars, not words",
+      "4: two app windows side by side: the left one alive (preview, timeline, one orange pause button), the right one blurred under a lock with ONE number '48,193 waiting' and one button",
+      "5: one label 'huashu-motion' with a GitHub icon over four video cards drawn as simple grey shapes"
+    ],
+    "takeaways": [
+      "Almost no words: text is drawn as grey rounded bars; the only real words are the one thing that matters (a name, a number, a button).",
+      "Few big flat shapes and icons (2–6 per frame), a lot of empty dark space around them.",
+      "ONE accent colour (orange) marks where to look; everything else is grey, dimmed or blurred.",
+      "The story is told by what the shapes do – gathering into a card, lining up into a chain, one window locked – not by labels.",
+      "No code, no logs, no file names, no small UI details anyone would try to read."
+    ]
+  },
+  {
     "id": "insiderforce",
     "file": "reference-frames/insiderforce.png",
     "source": "InsiderForce (TikTok), 10 frames, docs/bd/kadrai/insiderforce/ – the channel the stage style is built on",

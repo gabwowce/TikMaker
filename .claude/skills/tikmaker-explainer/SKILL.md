@@ -1,6 +1,6 @@
 ---
 name: tikmaker-explainer
-description: The TikMaker genre and brand kit – short educational / story TikToks that hook, explained with simple but striking motion, in the channel's own look. How to write a TikMaker code scene (src/generated/<project>/scene-N.tsx). Use together with the official Remotion skill (remotion-best-practices).
+description: The TikMaker genre and brand kit – short educational / story TikToks explained with few big flat shapes and icons, text drawn as grey bars, one orange focus, in the channel's own look. How to write a TikMaker code scene (src/generated/<project>/scene-N.tsx). Use together with the official Remotion skill (remotion-best-practices).
 ---
 
 # TikMaker explainer
@@ -15,45 +15,59 @@ Every scene of a video is a **code scene**: one file
 picture. The video around it is already there – the backdrop, the voice and
 the captions; the scene draws only the picture.
 
-## The genre
+## The look: clear at a glance, not detailed
 
-1. **One main visual per scene – and it is BIG.** The main visual takes **at
-   least 60 % of the picture zone** (zone below): ≥ 860 px wide and ≥ 520 px
-   tall on a 1080x1920 frame. Never a collage of small things, never two
-   diagrams of the same weight. A card of 600x400 in the middle of the zone is
-   too small (test 4's main weakness).
-2. **Every scene has a headline.** A short headline at the top of the zone
-   (2–5 words, big: ≥ 84 px, one key word in the accent colour or boxed), the
-   visual under it. Pattern labels where the video has them: "MISTAKE 01" /
-   "FIX 01" as a small pill above the headline – the same place in every scene.
-   The headline is a field (`field.text`) so the creator can change it.
-3. **It flows from scene to scene.** The main element of one scene morphs into
-   the next one's (a terminal shrinks into a counter, the counter cracks into a
-   leaking pipe…). Put shared pieces (the card, the gauge, helpers) in
-   `src/generated/<project>/shared.tsx`; each scene starts from the shape the
-   previous scene ended in and morphs to its own over its first 14–22 frames.
-   Cut hard only to punch a moment (at most 2–3 times in the video).
-4. **Stickers for the punch.** A tilted sticker ("3 FIXES", "$0.00", "×3")
-   slams in with an overshoot on the word it belongs to – 2–4 per video.
-5. **Bookends.** The first scene's main visual comes back at the end in its
-   resolved state (e.g. a fuel gauge empty → full) – it closes the story.
-6. **Build on the voice.** Every element lands 2–3 frames before the word that
-   names it. Take the frame from `words` at run time (`wordFrame(words, "dollars")`)
-   – never hard-code frame numbers from the brief: the voice may be made again
-   and its timings change. Inside one idea the visual changes in small steps on
-   the words instead of new things appearing around it.
-7. **Never still.** Idle float ±6–8 px, a slow push-in (1.0 → 1.03), typing
-   cursors, counters ticking. Nothing frozen > 0.6 s.
-8. **Real things beat drawings.** Where a real screen or a real photo proves
-   the point better than a drawing, use a slot (below) – a recording when the
-   viewer must SEE the tool do it; a photo (cut-out or card) for a metaphor, a
-   person, a real object. One or two photos make a video feel alive. Developer
-   tools (terminals, editors, file trees) you may draw yourself – convincingly.
-9. **A slot is big and alone.** A photo or recording slot is at least 500 px
-   wide (a recording ≥ 860 px – it IS the main visual), sits in its own place
-   and **never over or under another element** (test 4 put a small photo on top
-   of a card's corner – never again). If a photo is the main visual of the
-   scene, nothing else competes with it.
+A TikTok viewer gives a scene one or two seconds. They will not read, and
+they will not study details. **Clarity beats detail; a shape beats a word.**
+Look at the creator's chosen examples first (Read them):
+`.claude/skills/tikmaker-explainer/references/example-1.jpg` … `example-5.jpg`
+– two avatars and four flat icons; the icons gather into one card; a chain
+of cards; a live app window next to a locked, blurred one with one number;
+one label over four simple video cards. That is the level and the style.
+
+1. **Few, big, flat things.** 2–6 objects in a frame, each big (icons
+   ≥ 120 px, cards ≥ 300 px wide), simple flat shapes and icons, rounded,
+   with a lot of dark empty space around them. If you can remove an element
+   and the scene still says the same thing – remove it.
+2. **No text to read.** Text inside pictures is drawn as **grey rounded bars**
+   (skeleton lines), not words: a chat message, a file, a list row, a code
+   line, a log line – all bars. Real words only for the ONE thing that is the
+   point (a command like `/clear`, a number like `48,193`, a name, a button),
+   at ≥ 64 px. Never code listings, terminal logs, file trees with names,
+   lists of labels, small UI captions, "Read src/…" lines.
+3. **One place to look.** Exactly one focal element per moment, in the accent
+   colour (orange) – everything else grey (`textSoft`, `#3a3d44`-ish fills).
+   What is not the point right now is **dimmed (opacity 0.3–0.5) or blurred**,
+   like the locked window in example 4. When the focus moves, the old focus
+   dims and the new one lights up.
+4. **The shapes tell the story.** Show the idea with what the objects DO:
+   icons fly together into one card (= all in one place), cards line up on a
+   line (= a pipeline), a window gets a lock and blurs (= blocked), a bar
+   fills, a counter ticks, a thing shrinks, two things swap. One clear action
+   per idea, landing on the word that names it (2–3 frames before it).
+5. **A label only when the picture cannot say it.** No headline by default
+   – the captions already say the words. At most ONE short label per scene
+   (1–3 words, or the one number), the biggest text in the frame, e.g. the
+   command being shown. Pattern pills ("01", "FIX") only when the video counts
+   steps, small, always in the same place.
+6. **Draw tools as icons, not as screenshots.** A terminal is a dark window
+   with a title bar, a few grey bars and ONE bright command line; an editor
+   is a window with bars and one highlighted bar; an app is a window with the
+   one control that matters. Logos (`<Logo>`) are fine as big icons.
+7. **It flows.** The main object of one scene becomes the next scene's (the
+   card moves to the side and a second card joins it…). Shared pieces (the
+   card, the avatars, the icons) go in `src/generated/<project>/shared.tsx`;
+   each scene starts from where the previous one left them and moves on over
+   its first 14–22 frames. Hard cuts only to punch a moment (2–3 per video).
+8. **Calm, never frozen.** Slow drift (±6 px), a slow push-in (1.0 → 1.03),
+   a pulse on the focal element. No shaking, no confetti, no many stickers –
+   at most one punch sticker per video, and only for the payoff number.
+9. **Real things where they prove it.** A screen recording slot (≥ 860 px
+   wide, it IS the main picture, nothing over it) when the viewer must see the
+   real tool; a photo slot (≥ 500 px, alone) for a person or a real object.
+
+The squint test: blur the frame in your head – is it still obvious where to
+look and what is happening? If not, cut elements until it is.
 
 ## The picture zone
 
@@ -103,24 +117,22 @@ import { field, PhotoSlot, useBrand, wordFrame } from "../../video/brand/kit";
 import type { CodeSceneProps } from "../../video/code/types";
 
 // One line: what the viewer sees (shown in the editor and to the reviewer).
-export const description = "A token counter racing up while a dollar bill burns";
+export const description = "One chat window grows taller and taller; its fuel bar drains to red";
 
 // What the creator may change without code – every field with a default.
 export const schema = z.object({
-  pill: field.text("Strip", "MISTAKE 01"),
-  headline: field.text("Headline (*word* – key word)", "One *endless* session"),
-  tokens: field.number("Tokens at the end", 184000, { min: 0 }),
-  photo: field.photo("Burning dollar", "Cut-out: a dollar bill on fire, no background"),
-  burnsOn: field.word("Photo appears on", "dollars"),
+  label: field.text("The one label", "/clear"),
+  messages: field.number("Chat bubbles", 8, { min: 2, max: 12 }),
+  drainsOn: field.word("Fuel drains on", "everything"),
 });
 type Params = z.infer<typeof schema>;
 
 export default function Scene3({ words, durationInFrames, params }: CodeSceneProps<Params>) {
   const frame = useCurrentFrame();
   const c = useBrand();
-  const burn = wordFrame(words, params.burnsOn, 30) - 3;
-  // …
-  return <AbsoluteFill>{/* headline at y≈230, main visual y≈420–1060 */}</AbsoluteFill>;
+  const drain = wordFrame(words, params.drainsOn, 30) - 3;
+  // … one window (grey bars for the messages), one orange fuel bar
+  return <AbsoluteFill>{/* the main object centred in y 200–1080 */}</AbsoluteFill>;
 }
 ```
 
@@ -128,8 +140,9 @@ The contract:
 - `export default` the component; it gets `index`, `durationInFrames`,
   `voiceover`, `words` (every spoken word: `text`, `frame`, `endFrame`, frames
   from the scene's start) and `params` (the schema's values).
-- `export const schema` – the texts on screen, the numbers that matter, the
-  photo / recording slots and the words things happen on, made with `field.*`
+- `export const schema` – the few words on screen (the one label), the
+  numbers that matter, the photo / recording slots and the words things
+  happen on, made with `field.*`
   (`text`, `number`, `toggle`, `choice`, `photo`, `recording`, `word`). The
   creator edits them in a form; everything else (layout, motion) stays in code.
 - `export const description` – one sentence, what the picture shows.

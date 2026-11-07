@@ -198,3 +198,23 @@ Palyginimas (`docs/eksperimentai/kodo-scenos-palyginimas.jpg`, 70 % scenos):
 
 Ką toliau: skilui – „pagrindinis vaizdas iki y 1060, ne trumpiau“, „jokių
 tuščių placeholder eilučių“; balsas šioje aplinkoje (leisti `api.elevenlabs.io`).
+
+### Aiškus stilius (po 6 žingsnio, kūrėjo pavyzdžiai)
+
+Pastaba: per daug smulkių detalių ir teksto – TikTok žiūrovas nespėja
+perskaityti ir nežino, kur žiūrėti. Pavyzdžiai (YouTube kūrėjas):
+`.claude/skills/tikmaker-explainer/references/example-1…5.jpg`.
+
+Pakeista:
+- `tikmaker-explainer` skilas: 2–6 dideli plokšti objektai ir piktogramos,
+  **tekstas – pilki brūkšniai**, tikras žodis tik vienas (komanda, skaičius),
+  **vienas oranžinis fokusas**, kita pilka / pritemdyta / sulieta; istoriją
+  pasakoja tai, ką daro formos; antraštė tik kai paveikslas negali pasakyti;
+  „suspaudimo“ (squint) testas. Ankstesnė taisyklė „kiekviena scena su
+  antrašte“ atsisakyta.
+- Peržiūra: rubrikoje nauja „fix“ patikra `glanceable` (> ~6 dalykų ar
+  skaitomas tekstas), pavyzdinis lapas `reference-frames/icon-minimal.png`.
+
+Bandymas su tuo pačiu scenarijumi (projektas `code-clear`, `run-clearlook`):
+vaizdai 7 min, savipatikra – „visos scenos skaitosi gerai“ (3 pastabos).
+Palyginimas `docs/eksperimentai/aiskus-stilius-pries-po.jpg`.

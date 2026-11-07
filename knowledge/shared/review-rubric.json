@@ -12,6 +12,12 @@
     "fails": "Two or more things of the same size and weight compete (two diagrams, two equal cards), so the eye has nowhere to land."
   },
   {
+    "id": "glanceable",
+    "level": "fix",
+    "check": "Can the whole frame be taken in at a glance – in the second it is on screen?",
+    "fails": "It has more than ~6 things to look at, or text the viewer would have to read (code lines, logs, file names, lists of labels, small UI text): a TikTok viewer will not read it, so it is noise that hides where to look."
+  },
+  {
     "id": "readable",
     "level": "fix",
     "check": "Can every word be read on a phone?",
@@ -44,7 +50,7 @@
   {
     "id": "matches-examples",
     "level": "note",
-    "check": "Does it reach the level of the example frames (one big object, big words with the key word stressed, a lot of calm space)?",
+    "check": "Does it reach the level of the example frames (few big flat shapes and icons, text drawn as grey bars, one orange accent where to look, a lot of calm space)?",
     "fails": "It looks like a slide or a diagram dump next to the examples."
   }
 ]
