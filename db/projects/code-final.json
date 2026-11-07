@@ -1,0 +1,147 @@
+{
+  "id": "code-final",
+  "title": "6 žingsnis: pilnas bandymas",
+  "workspaceId": "dev",
+  "videoTemplateId": "tool-tips-keyword",
+  "fps": 30,
+  "width": 1080,
+  "height": 1920,
+  "storyPlan": {
+    "premise": "3 Claude Code commands most people never use: /compact to shrink a long session without losing the thread, /rewind to undo the last changes, and plan mode (Shift+Tab) to see the plan before any file is touched. Show each one working."
+  },
+  "scenes": [
+    {
+      "id": "scene-run-mw67ocbd-1",
+      "plan": {
+        "role": "hook",
+        "visualBrief": "Three files in a Claude Code editor break and turn orange on 'broke', /rewind is typed below, and a U-turn arrow sweeps over them as they come back clean."
+      },
+      "vo": "Claude Code just broke three files? One command undoes it.",
+      "background": "stage",
+      "content": {},
+      "code": {
+        "file": "code-final/scene-1.tsx"
+      },
+      "stage": "top",
+      "motion": {
+        "entrance": "none",
+        "transition": "cut"
+      },
+      "type": "code"
+    },
+    {
+      "id": "scene-run-mw67ocbd-2",
+      "plan": {
+        "role": "bridge",
+        "visualBrief": "The editor folds away, three empty numbered slots drop in under a headline whose counter clicks up to 3, and each slot gets a '0 uses' tag on 'never'."
+      },
+      "vo": "It's one of three Claude Code commands most people never use.",
+      "background": "stage",
+      "content": {},
+      "code": {
+        "file": "code-final/scene-2.tsx"
+      },
+      "stage": "top",
+      "motion": {
+        "entrance": "none",
+        "transition": "cut"
+      },
+      "type": "code"
+    },
+    {
+      "id": "scene-run-mw67ocbd-3",
+      "plan": {
+        "role": "item",
+        "visualBrief": "The slots shrink into a row and slot 1 fills with /rewind; in the terminal the command runs, 3 edits roll back one by one and the three broken files turn clean."
+      },
+      "vo": "First, slash rewind. Type it, and Claude Code undoes its last changes. Those three broken files? Clean again.",
+      "background": "stage",
+      "content": {},
+      "code": {
+        "file": "code-final/scene-3.tsx"
+      },
+      "stage": "top",
+      "motion": {
+        "entrance": "none",
+        "transition": "cut"
+      },
+      "type": "code"
+    },
+    {
+      "id": "scene-run-mw67ocbd-4",
+      "plan": {
+        "role": "item",
+        "visualBrief": "Slot 2 fills with /compact, and a long scrolling chat history squeezes into a two-line summary box as the thread line stays unbroken. The big '182k → 14k' sits under it, with a smaller 'THREAD KEPT' sticker slamming in below the numbers."
+      },
+      "vo": "Second, slash compact. When a session gets long and heavy, it shrinks it down, without losing the thread of what you're building.",
+      "background": "stage",
+      "content": {},
+      "code": {
+        "file": "code-final/scene-4.tsx"
+      },
+      "stage": "top",
+      "motion": {
+        "entrance": "none",
+        "transition": "cut"
+      },
+      "type": "code"
+    },
+    {
+      "id": "scene-run-mw67ocbd-5",
+      "plan": {
+        "role": "item",
+        "visualBrief": "Slot 3 fills with Plan mode; the Shift and Tab keys press down, a numbered plan unfolds in the terminal and the files beside it stay locked with padlocks."
+      },
+      "vo": "Third, plan mode. Press Shift Tab, and Claude shows you its plan first. Not a single file is touched until you're happy with it.",
+      "background": "stage",
+      "content": {},
+      "code": {
+        "file": "code-final/scene-5.tsx"
+      },
+      "stage": "top",
+      "motion": {
+        "entrance": "none",
+        "transition": "cut"
+      },
+      "type": "code"
+    },
+    {
+      "id": "scene-run-mw67ocbd-6",
+      "plan": {
+        "role": "cta",
+        "visualBrief": "The finished three-command list slides to the left as a comment bubble pops up on the right and a Follow button pulses under it."
+      },
+      "vo": "Drop a comment if you want more Claude Code tips like these, and follow so you don't miss the next one.",
+      "background": "stage",
+      "content": {},
+      "code": {
+        "file": "code-final/scene-6.tsx"
+      },
+      "stage": "top",
+      "motion": {
+        "entrance": "none",
+        "transition": "cut"
+      },
+      "type": "code"
+    }
+  ],
+  "captions": {
+    "style": "kinetic",
+    "keywords": [
+      "broke",
+      "undoes",
+      "three",
+      "never",
+      "rewind",
+      "Clean",
+      "compact",
+      "thread",
+      "Shift",
+      "touched",
+      "comment",
+      "follow"
+    ]
+  },
+  "savedAt": 1794045055128,
+  "audioClips": []
+}

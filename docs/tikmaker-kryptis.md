@@ -162,3 +162,39 @@ formoje, launch filmukų.
 1 etapas keičia vieną agento žingsnį: vietoj „išdėstymas iš bibliotekos“
 lieka „vaizdai kodu pagal skilus“. Reikalavimus apie išdėstymo parinkimą
 (FR-11 ir gretimus) reikėtų peržiūrėti su vadovu.
+
+## Įgyvendinta (šaka experiment/code-video, 2026-11-07)
+
+| Žingsnis | Kas padaryta | Kur |
+|---|---|---|
+| 1 Kodo scena | scenos tipas `code`: `scene.code = { file, params }`, kodas `src/generated/<projektas>/scene-N.tsx`; Player (Vite) ir renderis (webpack) krauna tuo pačiu dinaminiu importu; scena gauna savo žodžius iš balso (`sceneWords`); sugedęs kodas rodo klaidą tik toje scenoje. 4 bandymas perkeltas į projektą `code-video-brand` | `src/video/code/`, `src/video/SceneRenderer.tsx`, `src/generated/code-video-brand/` |
+| 2 Laukai | `export const schema = z.object({...})` su `field.text/number/word/photo/recording/...` → forma Inspector'iuje; nuotraukų ir įrašų vietos per `AssetSelect` (Import…); brand kit `src/video/brand/` | `src/video/brand/fields.ts`, `src/editor/inspector/CodeSceneFields.tsx` |
+| 3 Agentas | 4 žingsnis = Claude Code (`claude -p`, opus) projekto aplanke su skilais `.claude/skills/remotion-best-practices` + `.claude/skills/tikmaker-explainer`; rašyti leidžiama tik `src/generated/<projektas>/`; pats paleidžia `tsc` ir `remotion still`, žiūri kadrus; serveris dar kartą tikrina `tsc`, vieną kartą grąžina klaidas, nepavykus – paprasta scena su klaida. Balsas dabar daromas prieš vaizdus. Blokų kelias (`pickBlocks`, `pickMotion`, `projectFromBlocks`, `checkBlocks/Motion`) išmestas | `server/agent/codeScenes.ts`, `server/agent/prompts/writeCode.ts` |
+| 4 Taisymas žinute | `pictures`/`motion`/`words` perrašo tos scenos failą (peržiūra – visas taisytinas scenas vienu paleidimu); senas kodas `db/code-versions/`, Undo Inspector'iuje | `server/agent/codeVersions.ts`, `agent.undoScene` |
+| 5 Mano vizualai | „☆ Save as my visual“ → `knowledge/workspaces/<id>/visuals/<id>/` (kodas, shared, kadras, aprašas, laukai); Visuals › My visuals su „Use in scene N“; agentas sąrašą gauna rašydamas vaizdus | `server/agent/visuals.ts`, `src/editor/library/VisualLibrary.tsx` |
+
+### 6 žingsnis: pilnas bandymas
+
+Idėja: „3 Claude Code commands most people never use“ (/rewind, /compact,
+plan mode), 35 s, „motion graphics only“, **be balso** (šioje aplinkoje
+ElevenLabs nepasiekiamas – todėl ir be subtitrų). Projektas `code-final`,
+paleidimas `run-mw67ocbd`, MP4 `out/6-ingsnis-pilnas-bandymas-*.mp4` (ne git).
+
+Laikas: šablonas+hookai+scenarijus ~0,5 min; **vaizdai kodu 7,6 min
+(6 scenos)**; savipatikra 2 ratai (kadrai 36 + 31 s, 4 scenos taisymas 82 s) –
+iš viso ~10,6 min modelio darbo. Pirmas ratas rado lipduką ant santraukos
+(4 sc.) ir pataisė; antras rado tą patį 3 scenoje ir sustojo („ne geriau“).
+
+Palyginimas (`docs/eksperimentai/kodo-scenos-palyginimas.jpg`, 70 % scenos):
+- **Naujas** laiko tavo stilių kaip CodeVideoBrand (fonas, šriftas, oranžinė),
+  bet geriau: **kiekviena scena su antrašte ir „COMMAND 0N“ juosta**, per visą
+  video eina 1-2-3 skirtukų juosta (tęstinumas tarp atskirų scenų failų),
+  lipdukai ant žodžių, nieko neužlipa po savipatikros (išskyrus 3 sc. lipduką).
+- Silpniau: pagrindinis vaizdas vis dar ~65–70 % zonos aukščio, ne visa zona;
+  2 scena – trys tušti pilki laukeliai (atrodo kaip šablonas); be balso
+  apatinė pusė tuščia (subtitrų juostos nėra).
+- **CodeVideoOfficial** lieka drąsiausias (didesni vaizdai, ryškios spalvos,
+  didelės antraštės) – bet ne tavo stilius ir neredaguojamas.
+
+Ką toliau: skilui – „pagrindinis vaizdas iki y 1060, ne trumpiau“, „jokių
+tuščių placeholder eilučių“; balsas šioje aplinkoje (leisti `api.elevenlabs.io`).
