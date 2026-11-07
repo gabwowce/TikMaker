@@ -1,15 +1,20 @@
 import type { CSSProperties } from "react";
 import { Img, Sequence } from "remotion";
-import { assetUrl } from "../../../utils/assetUrl";
-import { LibraryIcon } from "../../../video/stage/StageBlocks";
-import { usePack } from "../../../video/stage/pack";
-import { ScreenRecording } from "../../../video/visuals/media/ScreenRecording";
-import { photos, recordings } from "./media";
+import { assetUrl } from "../../utils/assetUrl";
+import { spokenWords } from "../../utils/voWords";
+import type { SceneWord } from "../code/types";
+import { LibraryIcon } from "../stage/StageBlocks";
+import { usePack } from "../stage/pack";
+import { ScreenRecording } from "../visuals/media/ScreenRecording";
 
-// The channel's brand kit for generated videos (skill: brand-kit). The shell
-// already draws the backdrop and the captions; the generated code takes its
-// colours and its ONE font family from useBrand(), and uses these slots for
-// what the creator supplies: a real photo, a real screen recording, a logo.
+export { field } from "./fields";
+
+// The channel's brand kit for code scenes (skill: tikmaker-explainer). The
+// video already draws the backdrop and the captions; the scene's code takes
+// its colours and its ONE font family from useBrand(), and uses these slots
+// for what the creator supplies: a real photo, a real screen recording, a
+// logo. The file of a photo or a recording comes from the scene's fields
+// (field.photo / field.recording) – the creator picks it in the Inspector.
 
 // The caption band the shell draws in – keep the picture above it.
 export const CAPTION_TOP = 1130;
@@ -25,19 +30,19 @@ export const MONO = '"JetBrains Mono", "Cascadia Code", Consolas, monospace';
 
 type Box = { width: number; height: number; style?: CSSProperties };
 
-// A real picture the creator puts in (photos[id]): "cutout" – without a
-// background, with a soft shadow; "card" – a photo in a white-bordered card.
-// Until then: a dashed place saying what to find.
+// A real picture the creator puts in (`src`, from a field.photo): "cutout" –
+// without a background, with a soft shadow; "card" – a photo in a
+// white-bordered card. Until then: a dashed place saying what to find.
+// Give it room (at least ~500 px wide) and never put it over another element.
 export function PhotoSlot({
-  id,
+  src,
   find,
   look = "cutout",
   width,
   height,
   style,
-}: Box & { id: string; find: string; look?: "cutout" | "card" }) {
+}: Box & { src?: string; find: string; look?: "cutout" | "card" }) {
   const c = useBrand();
-  const src = photos[id];
   if (!src)
     return (
       <Placeholder
@@ -88,18 +93,17 @@ export function PhotoSlot({
   );
 }
 
-// A real screen recording the creator (or, later, the agent) puts in
-// (recordings[id]); it plays from the frame `at`. Until then: a dashed place
-// saying exactly what to record.
+// A real screen recording the creator (or, later, the agent) puts in (`src`,
+// from a field.recording); it plays from the frame `at`. Until then: a dashed
+// place saying exactly what to record.
 export function RecordingSlot({
-  id,
+  src,
   record,
   at = 0,
   width,
   height,
   style,
-}: Box & { id: string; record: string; at?: number }) {
-  const src = recordings[id];
+}: Box & { src?: string; record: string; at?: number }) {
   if (!src)
     return (
       <Placeholder
@@ -160,4 +164,19 @@ function Placeholder({
       </div>
     </div>
   );
+}
+
+// The frame (from the scene's start) the voice says `word` on – the first
+// time at or after word number `from`; `fallback` when it is not said.
+export function wordFrame(
+  words: SceneWord[],
+  word: string,
+  fallback = 0,
+  from = 0,
+): number {
+  const target = spokenWords(word)[0];
+  if (!target) return fallback;
+  for (let i = from; i < words.length; i++)
+    if (spokenWords(words[i].text).includes(target)) return words[i].frame;
+  return fallback;
 }

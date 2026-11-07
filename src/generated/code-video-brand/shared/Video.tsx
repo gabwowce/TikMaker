@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import { AbsoluteFill, interpolate, useCurrentFrame } from "remotion";
 import type { FreeVideoProps } from "../../../experiments/codeVideo/FreeVideo";
-import { EASE, makeTimeline, popScale, TimelineContext, useTimeline, type Timeline } from "./anim";
+import { EASE, headlineParts, makeTimeline, popScale, TimelineContext, useFields, useTimeline, type Timeline } from "./anim";
 import { BOXES, STATES, type Box } from "./states";
 import { CARD_BORDER, CARD_SHADOW, Headline, Pill, type Part } from "./ui";
 
@@ -113,12 +113,25 @@ function StateLayer({ inAt, outAt, first, children }: { inAt: number; outAt: num
   return <div style={{ position: "absolute", inset: 0, opacity: fadeIn * fadeOut, translate: `0px ${(1 - fadeIn) * 24}px` }}>{children}</div>;
 }
 
+// A scene's copy with the creator's fields (code scene params) put in.
+function withFields(copy: Copy, fields: ReturnType<typeof useFields>): Copy {
+  return {
+    ...copy,
+    ...(fields.pill !== undefined ? { pill: fields.pill || undefined } : {}),
+    ...(fields.headline !== undefined
+      ? { lines: fields.headline.trim() ? [{ parts: headlineParts(fields.headline) }] : [] }
+      : {}),
+  };
+}
+
 function Titles() {
   const t = useTimeline();
+  const fields = useFields();
   const n = t.scenes.length;
   return (
     <>
-      {COPY.slice(0, n).map((copy, s) => {
+      {COPY.slice(0, n).map((own, s) => {
+        const copy = s === fields.s ? withFields(own, fields) : own;
         const inAt = s === 0 ? 2 : t.cut(s);
         const outAt = s + 1 < n ? t.cut(s + 1) - 6 : t.end(n - 1) + 30;
         return (

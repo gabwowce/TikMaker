@@ -82,3 +82,22 @@ export function useTimeline(): Timeline {
   if (!t) throw new Error("TimelineContext missing");
   return t;
 }
+
+// The fields of the scene being drawn (its code scene's params): the strip
+// and the headline over the card, the photo. Unset – what test 4 wrote.
+export type SceneFields = { s: number; pill?: string; headline?: string; photo?: string };
+export const FieldsContext = createContext<SceneFields>({ s: -1 });
+export const useFields = () => useContext(FieldsContext);
+
+// "One *endless* session" → the headline's parts, the starred word the key.
+export function headlineParts(text: string): { t: string; key?: boolean }[] {
+  return text
+    .split(/(\*[^*]+\*)/)
+    .map((part) => part.trim())
+    .filter(Boolean)
+    .map((part) =>
+      part.startsWith("*") && part.endsWith("*")
+        ? { t: part.slice(1, -1), key: true }
+        : { t: part },
+    );
+}

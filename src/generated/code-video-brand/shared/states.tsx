@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 import { random, useCurrentFrame } from "remotion";
-import { PhotoSlot, useBrand } from "../../../experiments/codeVideo/brand/kit";
-import { BOUNCE, EXIT, lerp, ramp, typed, useTimeline } from "./anim";
+import { PhotoSlot, useBrand } from "../../../video/brand/kit";
+import { BOUNCE, EXIT, lerp, ramp, typed, useFields, useTimeline } from "./anim";
 import { Cursor, Gauge, INK, Sticker, TitleBar, counter, fmt, mono } from "./ui";
 
 // One state of the main card per scene. `Inner` draws inside the (clipped)
@@ -176,6 +176,7 @@ const cost: CardState = {
     const f = useCurrentFrame();
     const c = useBrand();
     const t = useTimeline();
+    const fields = useFields();
     const leakAt = t.w(s, 12) + 2;
     const out = ramp(f, t.cut(s + 1) - 6, t.cut(s + 1), EXIT);
     const photo = ramp(f, t.w(s, 4) - 3, t.w(s, 4) + 10, BOUNCE);
@@ -214,7 +215,7 @@ const cost: CardState = {
             })
           : null}
         <div style={{ position: "absolute", left: -30, top: h - 50, rotate: `${-12 + (1 - photo) * -20}deg`, scale: `${(0.3 + 0.7 * photo) * (1 - out * 0.4)}`, opacity: Math.min(1, photo * 3) * (1 - out) }}>
-          <PhotoSlot id="burning-dollar" look="cutout" width={300} height={200} find="Cut-out: a US dollar bill on fire, flames at one corner, no background" />
+          <PhotoSlot src={fields.photo} look="cutout" width={300} height={200} find="Cut-out: a US dollar bill on fire, flames at one corner, no background" />
         </div>
       </>
     );

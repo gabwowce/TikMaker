@@ -1,5 +1,6 @@
 import { Button, Fieldset, TextInput, Textarea } from "@mantine/core";
 import type { Scene, StepItem } from "../../schema/scene";
+import { CodeSceneFields } from "./CodeSceneFields";
 import { VisualThumb } from "../library/VisualThumb";
 import { useProjectStore } from "../state/projectStore";
 import { SceneObjectList, StackPositionFields } from "./SceneObjectList";
@@ -53,7 +54,8 @@ export function SceneContentSettings({ scene }: { scene: Scene }) {
   }
   return (
     <>
-      <Fieldset legend="Content">
+      {scene.type === "code" ? <CodeSceneFields scene={scene} /> : null}
+      <Fieldset legend={scene.type === "code" ? "Layers on top" : "Content"}>
         {!isSteps && !isComparison ? (
           <>
             <Fieldset

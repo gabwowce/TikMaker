@@ -1,6 +1,6 @@
 import type { CSSProperties, ReactNode } from "react";
 import { useCurrentFrame } from "remotion";
-import { Logo, MONO, useBrand } from "../../../experiments/codeVideo/brand/kit";
+import { Logo, MONO, useBrand } from "../../../video/brand/kit";
 import { BOUNCE, EASE, EXIT, lerp, ramp } from "./anim";
 
 export const INK = "#0F0F12"; // dark text on the accent
