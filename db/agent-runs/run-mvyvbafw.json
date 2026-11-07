@@ -2,7 +2,7 @@
   "id": "run-mvyvbafw",
   "projectId": "project-1793600302151",
   "createdAt": 1793600307356,
-  "status": "laying_out",
+  "status": "paused",
   "input": {
     "idea": "How to undo the last git commit in a few seconds",
     "workspaceId": "dev",
@@ -210,5 +210,7 @@
         ]
       }
     }
-  ]
+  ],
+  "pausedFrom": "laying_out",
+  "error": "The server restarted while the agent was working."
 }

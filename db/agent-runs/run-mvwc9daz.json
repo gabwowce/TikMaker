@@ -2,7 +2,7 @@
   "id": "run-mvwc9daz",
   "projectId": "project-1793447356977",
   "createdAt": 1793447372699,
-  "status": "writing_script",
+  "status": "paused",
   "input": {
     "idea": "Why vibe-coded apps break when real users sign up",
     "workspaceId": "dev",
@@ -93,5 +93,7 @@
         }
       ]
     }
-  ]
+  ],
+  "pausedFrom": "writing_script",
+  "error": "The server restarted while the agent was working."
 }
