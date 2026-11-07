@@ -2,7 +2,7 @@
   "id": "run-mw69ieut",
   "projectId": "project-1794047271868",
   "createdAt": 1794047417525,
-  "status": "paused",
+  "status": "laying_out",
   "input": {
     "idea": "How I make a TikTok with one sentence: I type an idea, the AI agent writes 3 hooks, I pick one, it writes the script, then it draws every scene as code and checks its own frames – and I get an MP4. Show the idea flowing through each step like a pipeline, ending in a finished phone video.",
     "workspaceId": "dev",
@@ -134,7 +134,7 @@
   "voice": {
     "scenes": [
       {
-        "sfxId": "vo-run-mw69ieut-scene-1-mw6b8ddh",
+        "sfxId": "vo-run-mw69ieut-scene-1-mw6dvuzf",
         "words": [
           {
             "text": "I",
@@ -195,6 +195,501 @@
             "text": "TikTok.",
             "start": 2.624,
             "end": 3.297
+          }
+        ]
+      },
+      {
+        "sfxId": "vo-run-mw69ieut-scene-2-mw6dvva0",
+        "words": [
+          {
+            "text": "Here's",
+            "start": 0,
+            "end": 0.255
+          },
+          {
+            "text": "the",
+            "start": 0.29,
+            "end": 0.36
+          },
+          {
+            "text": "whole",
+            "start": 0.406,
+            "end": 0.592
+          },
+          {
+            "text": "pipeline,",
+            "start": 0.615,
+            "end": 1.091
+          },
+          {
+            "text": "from",
+            "start": 1.219,
+            "end": 1.37
+          },
+          {
+            "text": "one",
+            "start": 1.451,
+            "end": 1.602
+          },
+          {
+            "text": "sentence",
+            "start": 1.637,
+            "end": 1.997
+          },
+          {
+            "text": "to",
+            "start": 2.032,
+            "end": 2.101
+          },
+          {
+            "text": "a",
+            "start": 2.171,
+            "end": 2.194
+          },
+          {
+            "text": "video",
+            "start": 2.229,
+            "end": 2.531
+          },
+          {
+            "text": "you",
+            "start": 2.589,
+            "end": 2.659
+          },
+          {
+            "text": "can",
+            "start": 2.694,
+            "end": 2.798
+          },
+          {
+            "text": "post.",
+            "start": 2.833,
+            "end": 3.39
+          }
+        ]
+      },
+      {
+        "sfxId": "vo-run-mw69ieut-scene-3-mw6dvvko",
+        "words": [
+          {
+            "text": "It",
+            "start": 0,
+            "end": 0.139
+          },
+          {
+            "text": "all",
+            "start": 0.174,
+            "end": 0.279
+          },
+          {
+            "text": "runs",
+            "start": 0.325,
+            "end": 0.534
+          },
+          {
+            "text": "inside",
+            "start": 0.58,
+            "end": 0.917
+          },
+          {
+            "text": "TikMaker's",
+            "start": 0.952,
+            "end": 1.416
+          },
+          {
+            "text": "AI",
+            "start": 1.474,
+            "end": 1.73
+          },
+          {
+            "text": "agent.",
+            "start": 1.776,
+            "end": 2.368
+          }
+        ]
+      },
+      {
+        "sfxId": "vo-run-mw69ieut-scene-4-mw6dvvuq",
+        "words": [
+          {
+            "text": "First,",
+            "start": 0,
+            "end": 0.383
+          },
+          {
+            "text": "I",
+            "start": 0.453,
+            "end": 0.499
+          },
+          {
+            "text": "type",
+            "start": 0.604,
+            "end": 0.789
+          },
+          {
+            "text": "the",
+            "start": 0.813,
+            "end": 0.882
+          },
+          {
+            "text": "idea",
+            "start": 0.929,
+            "end": 1.242
+          },
+          {
+            "text": "and",
+            "start": 1.347,
+            "end": 1.451
+          },
+          {
+            "text": "hit",
+            "start": 1.498,
+            "end": 1.625
+          },
+          {
+            "text": "Start.",
+            "start": 1.683,
+            "end": 2.276
+          }
+        ]
+      },
+      {
+        "sfxId": "vo-run-mw69ieut-scene-5-mw6dvw84",
+        "words": [
+          {
+            "text": "Second,",
+            "start": 0,
+            "end": 0.476
+          },
+          {
+            "text": "the",
+            "start": 0.662,
+            "end": 0.766
+          },
+          {
+            "text": "agent",
+            "start": 0.824,
+            "end": 1.103
+          },
+          {
+            "text": "writes",
+            "start": 1.126,
+            "end": 1.335
+          },
+          {
+            "text": "three",
+            "start": 1.393,
+            "end": 1.591
+          },
+          {
+            "text": "hooks,",
+            "start": 1.625,
+            "end": 1.95
+          },
+          {
+            "text": "each",
+            "start": 2.101,
+            "end": 2.299
+          },
+          {
+            "text": "with",
+            "start": 2.345,
+            "end": 2.485
+          },
+          {
+            "text": "what",
+            "start": 2.519,
+            "end": 2.647
+          },
+          {
+            "text": "it",
+            "start": 2.682,
+            "end": 2.752
+          },
+          {
+            "text": "shows.",
+            "start": 2.786,
+            "end": 3.228
+          },
+          {
+            "text": "I",
+            "start": 3.379,
+            "end": 3.437
+          },
+          {
+            "text": "pick",
+            "start": 3.518,
+            "end": 3.669
+          },
+          {
+            "text": "one.",
+            "start": 3.738,
+            "end": 4.18
+          }
+        ]
+      },
+      {
+        "sfxId": "vo-run-mw69ieut-scene-6-mw6dvwo2",
+        "words": [
+          {
+            "text": "Third,",
+            "start": 0,
+            "end": 0.395
+          },
+          {
+            "text": "it",
+            "start": 0.604,
+            "end": 0.743
+          },
+          {
+            "text": "writes",
+            "start": 0.778,
+            "end": 0.998
+          },
+          {
+            "text": "the",
+            "start": 1.033,
+            "end": 1.126
+          },
+          {
+            "text": "script",
+            "start": 1.161,
+            "end": 1.416
+          },
+          {
+            "text": "scene",
+            "start": 1.451,
+            "end": 1.683
+          },
+          {
+            "text": "by",
+            "start": 1.718,
+            "end": 1.834
+          },
+          {
+            "text": "scene.",
+            "start": 1.904,
+            "end": 2.252
+          },
+          {
+            "text": "I",
+            "start": 2.531,
+            "end": 2.577
+          },
+          {
+            "text": "read",
+            "start": 2.682,
+            "end": 2.833
+          },
+          {
+            "text": "it",
+            "start": 2.879,
+            "end": 2.949
+          },
+          {
+            "text": "and",
+            "start": 3.007,
+            "end": 3.111
+          },
+          {
+            "text": "hit",
+            "start": 3.158,
+            "end": 3.286
+          },
+          {
+            "text": "Approve.",
+            "start": 3.32,
+            "end": 3.994
+          }
+        ]
+      },
+      {
+        "sfxId": "vo-run-mw69ieut-scene-7-mw6dvwyv",
+        "words": [
+          {
+            "text": "Then",
+            "start": 0,
+            "end": 0.174
+          },
+          {
+            "text": "it",
+            "start": 0.209,
+            "end": 0.267
+          },
+          {
+            "text": "draws",
+            "start": 0.302,
+            "end": 0.546
+          },
+          {
+            "text": "every",
+            "start": 0.627,
+            "end": 0.871
+          },
+          {
+            "text": "scene",
+            "start": 0.917,
+            "end": 1.115
+          },
+          {
+            "text": "as",
+            "start": 1.149,
+            "end": 1.219
+          },
+          {
+            "text": "code",
+            "start": 1.277,
+            "end": 1.556
+          },
+          {
+            "text": "and",
+            "start": 1.591,
+            "end": 1.695
+          },
+          {
+            "text": "checks",
+            "start": 1.741,
+            "end": 1.974
+          },
+          {
+            "text": "its",
+            "start": 2.009,
+            "end": 2.113
+          },
+          {
+            "text": "own",
+            "start": 2.148,
+            "end": 2.252
+          },
+          {
+            "text": "frames.",
+            "start": 2.299,
+            "end": 2.926
+          }
+        ]
+      },
+      {
+        "sfxId": "vo-run-mw69ieut-scene-8-mw6dvxbw",
+        "words": [
+          {
+            "text": "The",
+            "start": 0,
+            "end": 0.128
+          },
+          {
+            "text": "scenes",
+            "start": 0.163,
+            "end": 0.383
+          },
+          {
+            "text": "fill",
+            "start": 0.418,
+            "end": 0.557
+          },
+          {
+            "text": "the",
+            "start": 0.604,
+            "end": 0.673
+          },
+          {
+            "text": "timeline,",
+            "start": 0.708,
+            "end": 1.196
+          },
+          {
+            "text": "I",
+            "start": 1.347,
+            "end": 1.393
+          },
+          {
+            "text": "hit",
+            "start": 1.463,
+            "end": 1.579
+          },
+          {
+            "text": "Render",
+            "start": 1.625,
+            "end": 1.834
+          },
+          {
+            "text": "MP4,",
+            "start": 1.892,
+            "end": 2.508
+          },
+          {
+            "text": "and",
+            "start": 2.612,
+            "end": 2.728
+          },
+          {
+            "text": "the",
+            "start": 2.763,
+            "end": 2.833
+          },
+          {
+            "text": "file",
+            "start": 2.879,
+            "end": 3.123
+          },
+          {
+            "text": "is",
+            "start": 3.158,
+            "end": 3.228
+          },
+          {
+            "text": "ready",
+            "start": 3.274,
+            "end": 3.448
+          },
+          {
+            "text": "to",
+            "start": 3.483,
+            "end": 3.529
+          },
+          {
+            "text": "download.",
+            "start": 3.576,
+            "end": 4.226
+          }
+        ]
+      },
+      {
+        "sfxId": "vo-run-mw69ieut-scene-9-mw6dvxof",
+        "words": [
+          {
+            "text": "One",
+            "start": 0,
+            "end": 0.163
+          },
+          {
+            "text": "sentence",
+            "start": 0.197,
+            "end": 0.511
+          },
+          {
+            "text": "in.",
+            "start": 0.546,
+            "end": 0.743
+          },
+          {
+            "text": "A",
+            "start": 0.894,
+            "end": 0.952
+          },
+          {
+            "text": "finished",
+            "start": 1.022,
+            "end": 1.289
+          },
+          {
+            "text": "TikTok",
+            "start": 1.324,
+            "end": 1.614
+          },
+          {
+            "text": "out.",
+            "start": 1.672,
+            "end": 2.09
           }
         ]
       }
@@ -382,8 +877,147 @@
           }
         ]
       }
+    },
+    {
+      "name": "writeCode",
+      "startedAt": 1794054766936,
+      "ms": 472553,
+      "model": "claude-opus-5-5",
+      "attempts": 1,
+      "prompt": {
+        "system": "You are the motion designer of TikMaker: you write the pictures of a short\nvertical video (1080x1920, 30 fps) as Remotion code – one file per scene. The voice,\nthe captions and the backdrop are already in the video; you write only the pictures.\n\nBefore writing, read with the Read tool:\n1. .claude/skills/tikmaker-explainer/SKILL.md – the genre, the brand kit and the\n   scene file contract – and the example frames it points to: the STYLE examples\n   (.claude/skills/tikmaker-explainer/references/ – how things are drawn: flat shapes,\n   grey bars for text, one orange focus) and the COMPOSITION sheet\n   (knowledge/shared/reference-frames/insiderforce.png – how a frame is laid out: one\n   dominant thing, big, a lot of calm space). Follow it exactly.\n2. .claude/skills/remotion-best-practices/remotion-markup/REFERENCE.md – how to write\n   Remotion markup right (open the pages it points to that you need: timing,\n   sequencing, transitions, text-highlights). Ignore anything about starting Studio,\n   creating projects or installing packages.\n3. src/video/brand/kit.tsx, src/video/brand/fields.ts and src/video/code/types.ts.\n\nRules:\n- Write ONLY in the folder you are given (src/generated/<folder>/). Never touch other\n  files. Shared helpers for several scenes go in <folder>/shared.tsx.\n- Time everything by the `words` prop (wordFrame) and `durationInFrames`, never by the\n  frame numbers in the brief – they are only there for you to plan.\n- Check your work: run `npx tsc --noEmit -p .` until nothing in your folder fails.\n  Then render a frame or two of every scene you wrote with the command in the brief\n  and look at the PNG with Read, next to the skill's example frames: can it be taken\n  in at a glance (2–6 big flat things, no text to read – text as grey bars, one real\n  word or number at most), is there exactly ONE orange focus with the rest grey or\n  dimmed, is the main object big, does nothing overlap, is nothing under the captions\n  band? Cut elements until it is that clear, and look again.\n- Do not ask questions – nobody is there to answer. Decide.\n- At the end answer with JSON: for every scene you wrote its sceneIndex (from 0), one\n  sentence of what the viewer sees, and its stage (\"top\" unless the scene is a\n  full-screen recording); the voiceover words the captions should draw bold\n  (keywords, 1–2 per scene); and wishes – what the kit or the logo library lacked.\n- Sound: for every scene, 0–2 sound effects on its key moments (sounds: the spoken\n  word the moment lands on, and the kind). Never play sound in the code – the video\n  puts these on the timeline from its library. Only moments the picture makes: the\n  main move, the payoff. At most ~3 per 10 seconds in the whole video; a calm scene\n  gets none. Kinds:\n  - whoosh: a big move: the main object flies in, swaps or morphs\n  - slide: a card or window slides in or aside\n  - pop: something small appears (an icon, a badge, a sticker)\n  - enter: a solid thing lands (a card, a big number)\n  - ping: attention on one thing (the focus lights up)\n  - tick: a small step (one of several items marks)\n  - count: a counter runs up\n  - success: it works: the payoff, a green check\n  - fix: a fix clicks in\n  - break: something breaks, fails, gets locked\n  - type: a command is typed (one short burst)\n  - message: a chat bubble arrives\n  - reveal: a build-up to a reveal (use once a video at most)\n  - check: a check mark",
+        "user": "Channel: TikMaker and AI coding\nWhat it is about: Mostly TikMaker itself: what it can do, how a video gets made with it, new features and how it is being built with AI (build in public). Around that, short concrete videos about other AI tools, vibe coding and Claude Code: one problem or one feature per video, shown on screen rather than told.\nAudience: Creators who want to make short videos faster with AI, and developers or beginners who build apps with AI and want to work faster without breaking things.\nTone: Direct and practical; real screens, real results and numbers instead of hype. Honest about what does not work yet.\nProduct screen \"New video form\": The AI agent panel on the right of the TikMaker editor, on an empty project: a 'Video idea' text box, length in seconds, a template picker ('Let the AI pick'), an optional own hook, checkboxes 'With face', 'Motion graphics only', 'Generate the voiceover', and a 'Start' button.\nProduct screen \"Agent at work\": The same panel as a conversation: a progress bar with five steps (Idea, Angle, Script, Building, Result) ticking off, and a card appearing for each step – the chosen template, three hooks to pick from (each with what it shows), the script scene by scene with an 'Approve' button, 'Pictures picked', 'Motion planned' and 'Voiceover' (folded cards that open on click).\nProduct screen \"Editor with the built video\": Once built: the scene strip along the bottom fills with the video's scenes, the timeline shows each scene's blocks, voice and captions as clips, the vertical preview in the middle plays the video with its kinetic captions.\nProduct screen \"Preview playing\": The vertical 9:16 preview player in the middle of the editor playing the finished video with play / pause, time and fullscreen.\nProduct screen \"Render\": The 'Render MP4' button top right: a progress bar, then the finished MP4 file to download.\nProduct screen \"Storyboard\": The Storyboard tab: the script as a list of beats – each scene's voiceover and on-screen words – with the total length against the target.\n\nThe video: How I make a TikTok with one sentence: I type an idea, the AI agent writes 3 hooks, I pick one, it writes the script, then it draws every scene as code and checks its own frames – and I get an MP4. Show the idea flowing through each step like a pipeline, ending in a finished phone video.\nFolder: src/generated/project-1794047271868/\n\nWrite every scene's file (1, 2, 3, 4, 5, 6, 7, 8, 9).\n\nThe channel's saved visuals (\"my visuals\") – reuse one (copy and adapt its code) where it fits, or when asked:\n- Endless session terminal: A Claude Code terminal full of a day's chat history: a one-line question is typed and the whole history lights up as sent with it, while banknotes burn below (code: knowledge/workspaces/dev/visuals/endless-session-terminal-mw67mlh6/scene.tsx, frame: knowledge/workspaces/dev/visuals/endless-session-terminal-mw67mlh6/frame.png)\n\n## Scene 1 (hook) – WRITE src/generated/project-1794047271868/scene-1.tsx\n109 frames (3.6 s); global frames 0–108\nVoiceover: I typed this one sentence. It came back as a finished TikTok.\nWords (word@frame from the scene's start): I@0 typed@13 this@19 one@25 sentence.@30 It@49 came@53 back@59 as@64 a@67 finished@69 TikTok.@79\nOn screen (the script's words): ONE sentence → finished TikTok\nThe script's idea for the picture: Screen recording: the one-line idea is typed into the 'Video idea' box in TikMaker, then the finished vertical MP4 plays inside a phone block right next to it.\nThe creator's own screen recording belongs here (a RecordingSlot – say exactly what to record)\nRender a frame: npx remotion still TikTokVideo out/agent/project-1794047271868/scene-1.png --props=out/agent/project-1794047271868/props.json --frame=76 --scale=0.5\n\n## Scene 2 (setup) – WRITE src/generated/project-1794047271868/scene-2.tsx\n112 frames (3.7 s); global frames 109–220\nVoiceover: Here's the whole pipeline, from one sentence to a video you can post.\nWords (word@frame from the scene's start): Here's@0 the@9 whole@12 pipeline,@18 from@37 one@44 sentence@49 to@61 a@65 video@67 you@78 can@81 post.@85\nOn screen (the script's words): Idea → Hooks → Script → Scenes → MP4\nThe script's idea for the picture: A horizontal pipeline draws itself across the screen: five connected stations labelled Idea, Hooks, Script, Scenes, MP4, with an empty phone at the far end.\nRender a frame: npx remotion still TikTokVideo out/agent/project-1794047271868/scene-2.png --props=out/agent/project-1794047271868/props.json --frame=187 --scale=0.5\n\n## Scene 3 (reveal) – WRITE src/generated/project-1794047271868/scene-3.tsx\n82 frames (2.7 s); global frames 221–302\nVoiceover: It all runs inside TikMaker's AI agent.\nWords (word@frame from the scene's start): It@0 all@5 runs@10 inside@17 TikMaker's@29 AI@44 agent.@53\nOn screen (the script's words): TikMaker AI agent\nThe script's idea for the picture: The pipeline slides into a panel labelled 'TikMaker AI agent', which lights up as the engine driving every station.\nRender a frame: npx remotion still TikTokVideo out/agent/project-1794047271868/scene-3.png --props=out/agent/project-1794047271868/props.json --frame=278 --scale=0.5\n\n## Scene 4 (demo) – WRITE src/generated/project-1794047271868/scene-4.tsx\n79 frames (2.6 s); global frames 303–381\nVoiceover: First, I type the idea and hit Start.\nWords (word@frame from the scene's start): First,@0 I@14 type@18 the@24 idea@28 and@40 hit@45 Start.@50\nOn screen (the script's words): 1. Type the idea\nThe script's idea for the picture: A single line of text drops into the first station of the pipeline, a 'Start' button is pressed, and the sentence starts flowing down the pipe.\nRender a frame: npx remotion still TikTokVideo out/agent/project-1794047271868/scene-4.png --props=out/agent/project-1794047271868/props.json --frame=358 --scale=0.5\n\n## Scene 5 (demo) – WRITE src/generated/project-1794047271868/scene-5.tsx\n136 frames (4.5 s); global frames 382–517\nVoiceover: Second, the agent writes three hooks, each with what it shows. I pick one.\nWords (word@frame from the scene's start): Second,@0 the@20 agent@25 writes@34 three@42 hooks,@49 each@63 with@70 what@76 it@80 shows.@84 I@101 pick@106 one.@112\nOn screen (the script's words): 2. Three hooks → pick one\nThe script's idea for the picture: Screen recording: in the agent panel the progress bar ticks to the next step and a card with three hooks appears; the cursor clicks one of them.\nThe creator's own screen recording belongs here (a RecordingSlot – say exactly what to record)\nRender a frame: npx remotion still TikTokVideo out/agent/project-1794047271868/scene-5.png --props=out/agent/project-1794047271868/props.json --frame=477 --scale=0.5\n\n## Scene 6 (demo) – WRITE src/generated/project-1794047271868/scene-6.tsx\n130 frames (4.3 s); global frames 518–647\nVoiceover: Third, it writes the script scene by scene. I read it and hit Approve.\nWords (word@frame from the scene's start): Third,@0 it@18 writes@23 the@31 script@35 scene@44 by@52 scene.@57 I@76 read@80 it@86 and@90 hit@95 Approve.@100\nOn screen (the script's words): 3. Script → Approve\nThe script's idea for the picture: Screen recording: the script card lists each scene's voiceover and on-screen words; the cursor scrolls through and clicks 'Approve'.\nThe creator's own screen recording belongs here (a RecordingSlot – say exactly what to record)\nRender a frame: npx remotion still TikTokVideo out/agent/project-1794047271868/scene-6.png --props=out/agent/project-1794047271868/props.json --frame=609 --scale=0.5\n\n## Scene 7 (demo) – WRITE src/generated/project-1794047271868/scene-7.tsx\n98 frames (3.3 s); global frames 648–745\nVoiceover: Then it draws every scene as code and checks its own frames.\nWords (word@frame from the scene's start): Then@0 it@6 draws@9 every@19 scene@28 as@34 code@38 and@48 checks@52 its@60 own@64 frames.@69\nOn screen (the script's words): 4. Scenes drawn as code + frames checked\nThe script's idea for the picture: At the Scenes station, lines of code turn into vertical frames one by one, and a checkmark stamps onto each frame as it passes inspection.\nRender a frame: npx remotion still TikTokVideo out/agent/project-1794047271868/scene-7.png --props=out/agent/project-1794047271868/props.json --frame=717 --scale=0.5\n\n## Scene 8 (demo) – WRITE src/generated/project-1794047271868/scene-8.tsx\n137 frames (4.6 s); global frames 746–882\nVoiceover: The scenes fill the timeline, I hit Render MP4, and the file is ready to download.\nWords (word@frame from the scene's start): The@0 scenes@5 fill@13 the@18 timeline,@21 I@40 hit@44 Render@49 MP4,@57 and@78 the@83 file@86 is@95 ready@98 to@104 download.@107\nOn screen (the script's words): 5. Render MP4\nThe script's idea for the picture: Screen recording: the scene strip and timeline fill with the video's scenes, the cursor clicks 'Render MP4' top right, a progress bar runs, then the finished MP4 file appears to download.\nThe creator's own screen recording belongs here (a RecordingSlot – say exactly what to record)\nRender a frame: npx remotion still TikTokVideo out/agent/project-1794047271868/scene-8.png --props=out/agent/project-1794047271868/props.json --frame=842 --scale=0.5\n\n## Scene 9 (payoff) – WRITE src/generated/project-1794047271868/scene-9.tsx\n73 frames (2.4 s); global frames 883–955\nVoiceover: One sentence in. A finished TikTok out.\nWords (word@frame from the scene's start): One@0 sentence@6 in.@16 A@27 finished@31 TikTok@40 out.@50\nOn screen (the script's words): 1 sentence in. TikTok out.\nThe script's idea for the picture: The MP4 shoots out the end of the pipeline into the phone, which starts playing the finished vertical video with its kinetic captions.\nRender a frame: npx remotion still TikTokVideo out/agent/project-1794047271868/scene-9.png --props=out/agent/project-1794047271868/props.json --frame=934 --scale=0.5"
+      },
+      "inputTokens": 169688,
+      "cachedInputTokens": 3628604,
+      "outputTokens": 40945,
+      "thinkingTokens": 9954,
+      "turns": 74,
+      "output": {
+        "scenes": [
+          {
+            "sceneIndex": 0,
+            "description": "A big framed screen recording of the TikMaker editor: one sentence is typed into the 'Video idea' box, then the finished vertical video plays, and the frame lights up orange on 'finished'.",
+            "stage": "top",
+            "sounds": [
+              {
+                "onWord": "typed",
+                "sound": "type"
+              }
+            ]
+          },
+          {
+            "sceneIndex": 1,
+            "description": "Five icon stations (idea, hooks, script, scenes, play) draw themselves along one pipe that bends down into an empty phone, and an orange dot runs the whole way into it.",
+            "stage": "top",
+            "sounds": [
+              {
+                "onWord": "pipeline,",
+                "sound": "whoosh"
+              }
+            ]
+          },
+          {
+            "sceneIndex": 2,
+            "description": "The pipeline glides into one big card headed 'AI agent', whose spark icon and border light up orange as the engine around every station.",
+            "stage": "top",
+            "sounds": [
+              {
+                "onWord": "TikMaker's",
+                "sound": "ping"
+              }
+            ]
+          },
+          {
+            "sceneIndex": 3,
+            "description": "The pipeline rises to the top; an orange line types itself into an input box, the big 'Start' button is pressed and the line flies up into the first station.",
+            "stage": "top",
+            "sounds": [
+              {
+                "onWord": "Start.",
+                "sound": "pop"
+              }
+            ]
+          },
+          {
+            "sceneIndex": 4,
+            "description": "The hooks station lights orange on the pipeline above the real agent panel recording, where three hooks appear and the cursor picks one.",
+            "stage": "top",
+            "sounds": [
+              {
+                "onWord": "Second,",
+                "sound": "tick"
+              }
+            ]
+          },
+          {
+            "sceneIndex": 5,
+            "description": "The script station lights orange above the real agent panel recording, where the script card scrolls scene by scene and 'Approve' is clicked.",
+            "stage": "top",
+            "sounds": [
+              {
+                "onWord": "Approve.",
+                "sound": "check"
+              }
+            ]
+          },
+          {
+            "sceneIndex": 6,
+            "description": "Under the lit scenes station a code window turns out four vertical frames one by one, then a check stamps onto each frame in turn.",
+            "stage": "top",
+            "sounds": [
+              {
+                "onWord": "checks",
+                "sound": "check"
+              }
+            ]
+          },
+          {
+            "sceneIndex": 7,
+            "description": "The play station lights orange above the real editor recording: the timeline fills, 'Render MP4' is clicked and the finished file appears to download.",
+            "stage": "top",
+            "sounds": [
+              {
+                "onWord": "ready",
+                "sound": "success"
+              }
+            ]
+          },
+          {
+            "sceneIndex": 8,
+            "description": "An orange dot runs through all five checked stations and shoots out of the play station into a big phone, which lights up playing the finished video.",
+            "stage": "top",
+            "sounds": [
+              {
+                "onWord": "finished",
+                "sound": "whoosh"
+              }
+            ]
+          }
+        ],
+        "keywords": [
+          "sentence",
+          "finished TikTok",
+          "pipeline",
+          "AI agent",
+          "Start",
+          "three hooks",
+          "Approve",
+          "code",
+          "checks",
+          "Render MP4",
+          "download",
+          "out"
+        ],
+        "wishes": [
+          "A TikMaker logo in the logo library: the 'AI agent' card had to use a drawn spark icon instead of the product's own mark",
+          "A shared phone-mockup component in the kit that plays a finished vertical video (it was copied by hand into shared.tsx)",
+          "A shared pipeline/station-row component in the kit with icon glyphs (idea, hooks, script, scenes, play) for step-by-step videos",
+          "A way to render several stills from one bundle: each still re-bundles and copies 229 MB of public/, so checking 9 scenes is slow",
+          "Station glyph icons as library assets (chat bubble, list, page, frames, play) instead of hand-drawn SVG"
+        ]
+      }
     }
   ],
-  "pausedFrom": "generating_voice",
-  "error": "The server restarted while the agent was working."
+  "statusAt": 1794054766929
 }
