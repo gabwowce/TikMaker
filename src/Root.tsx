@@ -8,6 +8,7 @@ import { StageDemo, STAGE_DEMO_FRAMES } from "./video/stage/StageDemo";
 import { StageTypes, STAGE_TYPES_FRAMES } from "./video/stage/StageTypesDemo";
 import { TikTokVideo } from "./video/TikTokVideo";
 import { CodeVideo } from "./experiments/codeVideo/CodeVideo";
+import { FreeVideo } from "./experiments/codeVideo/FreeVideo";
 import codeVideoProjectJson from "../db/projects/project-1793969945652.json";
 import { videoDefaults } from "./video/typography/tokens";
 const showcaseProject = parseProject(showcaseProjectJson);
@@ -40,6 +41,25 @@ export function RemotionRoot() {
         width={videoDefaults.width}
         height={videoDefaults.height}
         defaultProps={{ project: codeVideoProject }}
+      />
+      {/* The same experiment without any of our design, one skill each */}
+      <Composition
+        id="CodeVideoOfficial"
+        component={FreeVideo}
+        durationInFrames={projectDurationInFrames(codeVideoProject)}
+        fps={videoDefaults.fps}
+        width={videoDefaults.width}
+        height={videoDefaults.height}
+        defaultProps={{ project: codeVideoProject, variant: "official" }}
+      />
+      <Composition
+        id="CodeVideoOnetake"
+        component={FreeVideo}
+        durationInFrames={projectDurationInFrames(codeVideoProject)}
+        fps={videoDefaults.fps}
+        width={videoDefaults.width}
+        height={videoDefaults.height}
+        defaultProps={{ project: codeVideoProject, variant: "onetake" }}
       />
       {/* Pavyzdinė „stage“ scena (docs/motion-planas.md) */}
       <Composition
