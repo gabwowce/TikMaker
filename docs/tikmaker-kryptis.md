@@ -71,21 +71,88 @@ Viename kanale vienas stilius, todėl pasirinkimų formoje nereikia.
 | take-one | palyginti jų peržiūros eigą su mūsų | tik pažiūrėti |
 | huashu-motion, rossark, explainroo, HyperFrames | ne mūsų formatas arba kitas variklis | – |
 
-## Planas
+## Eksperimento rezultatai (šaka experiment/code-video, 2026-11-07)
 
-0. **Užbaigti eksperimentą (4 bandymas):** official skilas + paaiškinamojo
-   motion skilas + prekės ženklo rinkinys su nuotraukų ir įrašų vietomis,
-   tame pačiame 11 teste. Žiūrim MP4 ir nusprendžiam.
-1. **Kodo scenos agente:** vaizdų žingsnis rašo scenas, peržiūra jas tikrina,
-   redaktoriuje kodo scena su redaguojamais laukais, pokalbis jas taiso.
-   Blokų rinkimo žingsnis išmetamas.
-2. **Automatiniai ekrano įrašai** (argo idėja) TikMaker ekranams.
-3. **Garsas:** efektai ant tinkamų kadrų, muzika.
-4. **Antras kanalas – istorijos:** savo prekės ženklo rinkinys, istorijų
-   skilas, nuotraukų vietos (vėliau galbūt generuojami vaizdai).
-5. **Personažas su veidu** per kokį nors API – vėliau. Bet jau 1 etape
-   paliekam jam vietą kadre („presenter“).
-6. **Kitiems žmonėms:** workspace kūrimas formoje, „made with TikMaker“ pabaigoje.
+Tas pats 11 testo scenarijus ir balsas („3 Claude Code mistakes that burn your
+tokens“), vaizdus rašo Claude Code fone (`claude -p`, Opus, ~11–14 min vienam
+video). Kompozicijos `src/Root.tsx`, kodas `src/experiments/codeVideo/`.
+
+| Kompozicija | Skilai | Rezultatas |
+|---|---|---|
+| `CodeVideo` | mūsų pirmas skilas `.claude/skills/motion-video` | vientisas HUD stilius, bet vaizdai maži, viršuje |
+| `CodeVideoOnetake` | `skills/one-take` | viena kortelė virsta kita, ramu, bet monotoniška |
+| `CodeVideoOfficial` | oficialus Remotion skilas, jokio mūsų dizaino | **geriausias**: drąsus, spalvingas, didelės antraštės, lipdukai |
+| `CodeVideoBrand` | oficialus + `skills/tikmaker-explainer` + brand kit | tavo stilius išlaikytas (fonas, subtitrai, šriftas), viena kortelė, MISTAKE/FIX, lipdukai; silpniau: kortelė per maža, nuotraukos vieta užlipo ant kito elemento |
+
+MP4: `out/code-video-brand.mp4`, `out/code-video-official.mp4` (neįrašyti į git).
+Išvada: kryptis pasiteisino – Claude su skilais smarkiai lenkia bibliotekos
+blokų rinkimą; skilas ir brand kit laiko stilių.
+
+## Kaip veiks (sprendimas)
+
+**Biblioteka keičiasi.** Agento žingsnis „rink blokus + judesį“
+(`pickBlocks`/`pickMotion`) išmetamas; jį keičia „parašyk scenos kodą pagal
+skilus“. Lieka statybinės dalys (brand kit): fonas, subtitrai, šriftas ir
+spalvos, nuotraukų ir įrašų vietos, logotipai, garsai. Atsiranda nauja
+biblioteka – **„Mano vizualai“** (Claude padarytos scenos, kurias išsaugai).
+
+**Projekte:** video lieka scenų sąrašas; scena gali būti **kodo scena** –
+kodas faile (`generated/<projektas>/scene-N.tsx`), projekte nuoroda ir
+parametrai. Player ją rodo, renderis renderina, laiko juostoje trukmė, balsas
+ir subtitrai kaip dabar.
+
+**Redagavimas, nuo paprasčiausio:**
+1. **Forma Inspector'iuje** – skilas reikalauja, kad kodas išvardintų, ką
+   galima keisti (tekstai, skaičiai, nuotraukų/įrašų vietos, ant kurio žodžio
+   kas atsiranda). Kodo neliečiam.
+2. **Įprasti sluoksniai** ant kodo scenos viršaus (logotipas, tekstas, rodyklė).
+3. **Žinute agentui** – išdėstymas, judesys, visas vaizdas: perrašo tik tą
+   sceną, pasitikrina kadrus; ankstesnė versija išsaugoma, Undo grąžina.
+
+**Pakartotinis naudojimas:** „Išsaugoti kaip mano vizualą“ → kodas + kadras +
+aprašas į kanalo vizualų biblioteką; agentas ją mato ir gali pritaikyti; gali
+paprašyti „naudok kuro rodyklę iš praeito video“.
+
+**Agento eiga:** idėja → hook → scenarijus → vaizdai kodu (Remotion skilas +
+TikMaker skilas + brand kit + mano vizualai) → patikra (kompiliuojasi,
+renderinasi) → kadrai → peržiūra akimis → taisymas (iki 3 ratų) → balsas,
+subtitrai → redaktorius.
+
+**Rizikos:** ~12–15 min ir Opus limitai vienam video (pauzė ties limitu jau
+yra); sugedęs kodas – agentas taiso, nepavykus scena lieka paprasta su klaidos
+žinute; seni projektai su blokais toliau atsidaro ir renderinasi.
+
+## Planas – 6 žingsniai
+
+Kiekvienas žingsnis patikrinamas atskirai (testai + naršyklė).
+
+1. **Kodo scena projekte.** Naujas scenos tipas (`code`): kodas faile, Player
+   (Vite dinaminis importas) ir Remotion renderis jį rodo; laiko juosta rodo
+   trukmę, balsą, subtitrus. 4 bandymo video (`CodeVideoBrand`) perkeliamas į
+   tikrą projektą, kad atsidarytų redaktoriuje.
+2. **Redaguojami laukai.** Kodo scena eksportuoja parametrų schemą (Zod):
+   tekstai, skaičiai, nuotraukų/įrašų vietos, žodžių inkarai. Inspector'ius
+   rodo formą; nuotraukų/įrašų vietos pildomos per esamą `AssetSelect`
+   (Import…) vietoj `brand/media.ts`. Brand kit perkeliamas iš eksperimento į
+   `src/video/brand/`.
+3. **Agento žingsnis: vaizdai kodu.** `server/agent/steps/4-building.ts`
+   vietoj `pickBlocks`/`pickMotion` paleidžia Claude Code (`claude -p` su
+   Write/Read/Edit ir `tsc` + `remotion still`) su skilais
+   (`remotion-best-practices`, `tikmaker-explainer` + brand kit taisyklės,
+   pataisytos pagal 4 bandymą: pagrindinis vaizdas ≥ 60 % zonos, nuotraukos
+   vieta didelė ir niekada ant kito elemento, kiekviena scena su antrašte).
+   Toliau – esama peržiūra akimis ir pauzė ties limitu. `projectFromBlocks`
+   keičia kodo scenų statymas. Blokų rinkimo kelias išmetamas.
+4. **Taisymas žinute.** Pokalbio `pictures`/`motion` taikiniai perrašo vienos
+   kodo scenos failą; versijų istorija (ankstesnis kodas išsaugomas), Undo.
+5. **„Mano vizualai“.** Mygtukas išsaugoti kodo sceną (kodas + kadras +
+   aprašas) į `knowledge/workspaces/<id>/visuals/`; agentas mato sąrašą ir
+   gali pritaikyti; Visuals skiltyje rodomi.
+6. **Pilnas bandymas.** Naujas video per agentą nuo idėjos iki MP4 su visais
+   1–5; palyginimas su `CodeVideoBrand`/`CodeVideoOfficial`.
+
+Po 6 (atskirai): automatiniai ekrano įrašai (argo, Playwright), garsas
+(earshot idėja), istorijų kanalas, personažas su veidu, TikMaker kitiems.
 
 **Ko nedarom:** naujų bibliotekos blokų, dviejų režimų, stilių pasirinkimų
 formoje, launch filmukų.
