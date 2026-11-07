@@ -1,0 +1,389 @@
+{
+  "id": "run-mw69ieut",
+  "projectId": "project-1794047271868",
+  "createdAt": 1794047417525,
+  "status": "paused",
+  "input": {
+    "idea": "How I make a TikTok with one sentence: I type an idea, the AI agent writes 3 hooks, I pick one, it writes the script, then it draws every scene as code and checks its own frames – and I get an MP4. Show the idea flowing through each step like a pipeline, ending in a finished phone video.",
+    "workspaceId": "dev",
+    "targetSeconds": 40,
+    "motionOnly": false,
+    "withFace": false,
+    "generateVoice": true
+  },
+  "template": {
+    "videoTemplateId": "pain-to-fix",
+    "score": 3,
+    "reason": "The idea shows TikMaker turning one sentence into a finished MP4, step by step, which is a pipeline demo. Problem-then-fix fits best: the slow manual way to make a video, then TikMaker doing it on screen. Build-it-fast also needs a tool and a screen recording, but this idea has no \"build in minutes\" angle for the viewer to follow.",
+    "needsFacts": false,
+    "pickedBy": "agent"
+  },
+  "hooks": [
+    {
+      "text": "Hooks, script, scenes, editing. I skip all of it with one sentence.",
+      "firstFrame": "A list block showing Hooks, Script, Scenes, Edit. Each item gets crossed out and the list shrinks into one text box with a single typed idea.",
+      "angle": "problem",
+      "formulaId": null,
+      "score": 3
+    },
+    {
+      "text": "I typed this one sentence. It came back as a finished TikTok.",
+      "firstFrame": "Screen recording of the one-line idea typed into TikMaker, then the finished vertical MP4 plays inside a phone block right next to it.",
+      "angle": "demonstration",
+      "formulaId": null,
+      "score": 4
+    },
+    {
+      "text": "My AI agent draws every scene in code, then checks its own frames.",
+      "firstFrame": "A code block on the left renders into a video frame on the right while an eye object scans the frame and a check badge pops up.",
+      "angle": "curiosity",
+      "formulaId": null,
+      "score": 4
+    }
+  ],
+  "hooksFor": "pain-to-fix",
+  "hook": {
+    "text": "I typed this one sentence. It came back as a finished TikTok.",
+    "firstFrame": "Screen recording of the one-line idea typed into TikMaker, then the finished vertical MP4 plays inside a phone block right next to it.",
+    "formulaId": null,
+    "pickedBy": "agent"
+  },
+  "script": {
+    "scenes": [
+      {
+        "role": "hook",
+        "voiceover": "I typed this one sentence. It came back as a finished TikTok.",
+        "onScreen": "ONE sentence → finished TikTok",
+        "visual": "Screen recording: the one-line idea is typed into the 'Video idea' box in TikMaker, then the finished vertical MP4 plays inside a phone block right next to it.",
+        "needsRecording": true
+      },
+      {
+        "role": "setup",
+        "voiceover": "Here's the whole pipeline, from one sentence to a video you can post.",
+        "onScreen": "Idea → Hooks → Script → Scenes → MP4",
+        "visual": "A horizontal pipeline draws itself across the screen: five connected stations labelled Idea, Hooks, Script, Scenes, MP4, with an empty phone at the far end.",
+        "needsRecording": false
+      },
+      {
+        "role": "reveal",
+        "voiceover": "It all runs inside TikMaker's AI agent.",
+        "onScreen": "TikMaker AI agent",
+        "visual": "The pipeline slides into a panel labelled 'TikMaker AI agent', which lights up as the engine driving every station.",
+        "needsRecording": false
+      },
+      {
+        "role": "demo",
+        "voiceover": "First, I type the idea and hit Start.",
+        "onScreen": "1. Type the idea",
+        "visual": "A single line of text drops into the first station of the pipeline, a 'Start' button is pressed, and the sentence starts flowing down the pipe.",
+        "needsRecording": false
+      },
+      {
+        "role": "demo",
+        "voiceover": "Second, the agent writes three hooks, each with what it shows. I pick one.",
+        "onScreen": "2. Three hooks → pick one",
+        "visual": "Screen recording: in the agent panel the progress bar ticks to the next step and a card with three hooks appears; the cursor clicks one of them.",
+        "needsRecording": true
+      },
+      {
+        "role": "demo",
+        "voiceover": "Third, it writes the script scene by scene. I read it and hit Approve.",
+        "onScreen": "3. Script → Approve",
+        "visual": "Screen recording: the script card lists each scene's voiceover and on-screen words; the cursor scrolls through and clicks 'Approve'.",
+        "needsRecording": true
+      },
+      {
+        "role": "demo",
+        "voiceover": "Then it draws every scene as code and checks its own frames.",
+        "onScreen": "4. Scenes drawn as code + frames checked",
+        "visual": "At the Scenes station, lines of code turn into vertical frames one by one, and a checkmark stamps onto each frame as it passes inspection.",
+        "needsRecording": false
+      },
+      {
+        "role": "demo",
+        "voiceover": "The scenes fill the timeline, I hit Render MP4, and the file is ready to download.",
+        "onScreen": "5. Render MP4",
+        "visual": "Screen recording: the scene strip and timeline fill with the video's scenes, the cursor clicks 'Render MP4' top right, a progress bar runs, then the finished MP4 file appears to download.",
+        "needsRecording": true
+      },
+      {
+        "role": "payoff",
+        "voiceover": "One sentence in. A finished TikTok out.",
+        "onScreen": "1 sentence in. TikTok out.",
+        "visual": "The MP4 shoots out the end of the pipeline into the phone, which starts playing the finished vertical video with its kinetic captions.",
+        "needsRecording": false
+      }
+    ],
+    "skipped": [
+      {
+        "role": "problem",
+        "reason": "The idea doesn't describe a painful old way, so I didn't make one up. The hook and pipeline carry the story."
+      },
+      {
+        "role": "cta",
+        "reason": "Only the 'none' CTA type is allowed, so the video ends on the payoff."
+      },
+      {
+        "role": "benefit",
+        "reason": "Folded into the closing payoff line so the same point isn't made twice."
+      }
+    ],
+    "problems": [],
+    "approved": true
+  },
+  "voice": {
+    "scenes": [
+      {
+        "sfxId": "vo-run-mw69ieut-scene-1-mw6b8ddh",
+        "words": [
+          {
+            "text": "I",
+            "start": 0,
+            "end": 0.325
+          },
+          {
+            "text": "typed",
+            "start": 0.43,
+            "end": 0.615
+          },
+          {
+            "text": "this",
+            "start": 0.639,
+            "end": 0.766
+          },
+          {
+            "text": "one",
+            "start": 0.824,
+            "end": 0.964
+          },
+          {
+            "text": "sentence.",
+            "start": 0.998,
+            "end": 1.474
+          },
+          {
+            "text": "It",
+            "start": 1.625,
+            "end": 1.73
+          },
+          {
+            "text": "came",
+            "start": 1.765,
+            "end": 1.927
+          },
+          {
+            "text": "back",
+            "start": 1.95,
+            "end": 2.09
+          },
+          {
+            "text": "as",
+            "start": 2.125,
+            "end": 2.194
+          },
+          {
+            "text": "a",
+            "start": 2.229,
+            "end": 2.252
+          },
+          {
+            "text": "finished",
+            "start": 2.31,
+            "end": 2.589
+          },
+          {
+            "text": "TikTok.",
+            "start": 2.624,
+            "end": 3.297
+          }
+        ]
+      }
+    ]
+  },
+  "messages": [
+    {
+      "id": "msg-mw69il95ilfw",
+      "at": 1794047425817,
+      "from": "agent",
+      "text": "What I assumed (template): You have screen recordings of the real pipeline: idea typed, 3 hooks, script, scene frames, final MP4. · The pain opening is the usual slow way to make a short video: writing hooks, scripting and editing by hand. · No exact time or cost is claimed, because the idea doesn't give one."
+    },
+    {
+      "id": "msg-mw69jwvjztxk",
+      "at": 1794047487535,
+      "from": "agent",
+      "text": "What I assumed (script): The template's 'wrong way' opening is replaced by the given hook, because the idea has no pain point to show. · The frame-checking step is drawn as an animation, because none of the real screens show it. · The total runs about 38 s (around 110 words), which is enough for the five steps without filler."
+    }
+  ],
+  "steps": [
+    {
+      "name": "pickTemplate",
+      "startedAt": 1794047417601,
+      "ms": 8212,
+      "model": "claude-sonnet-5-5",
+      "attempts": 1,
+      "prompt": {
+        "system": "You are the producer of a short-video channel (TikTok, Reels, Shorts).\nYour job in this step: choose how the video will be told, by picking ONE template\nfrom the list you are given. You do not write the video yet.\n\nYou get the channel, the video idea and the templates.\nPick the template whose \"when to use\" fits the idea best; the length matters less.\nA template's \"needs\" are the facts its required scenes are built on. Pick one the idea\ncan fill with its OWN facts: a rise-to-success story needs a success to show, a how-to\nneeds steps, a list needs items. If the idea lacks what a template needs, that template\ndoes not fit, however close its topic is.\nNever invent a template: answer only with an id from the list.\nscore: 5 = made for this idea and the idea has every fact it needs, 3 = workable,\n1 = nothing in the list fits.\nreason: one or two sentences for the creator, in plain English, about this idea.\nneedsFacts: true when the script will need facts from outside the idea that should be\nchecked online first – prices, numbers, dates, news, how another company's tool works;\nfalse when the idea itself (or the channel's own product, which the channel knows) gives\neverything the video says.",
+        "user": "Channel: TikMaker and AI coding. Mostly TikMaker itself: what it can do, how a video gets made with it, new features and how it is being built with AI (build in public). Around that, short concrete videos about other AI tools, vibe coding and Claude Code: one problem or one feature per video, shown on screen rather than told.\nAudience: Creators who want to make short videos faster with AI, and developers or beginners who build apps with AI and want to work faster without breaking things.\n\nIdea: How I make a TikTok with one sentence: I type an idea, the AI agent writes 3 hooks, I pick one, it writes the script, then it draws every scene as code and checks its own frames – and I get an MP4. Show the idea flowing through each step like a pipeline, ending in a finished phone video.\nWanted length: about 40 s\nFace on camera: no, a faceless video\n\nTemplates:\n- id: analogy-explainer\n  name: Explained with characters\n  what: A concept explained through a small invented world or everyday analogy\n  when to use: An idea that is an abstract concept (economics, health, finance) that becomes clear as a story.\n  needs: problem, step, concept-term, real-case, lesson\n  length: 26–63 s\n- id: app-list\n  name: Free apps list\n  what: A quick list of apps, one per scene, each shown on screen\n  when to use: An idea that recommends several apps or tools for one device or audience.\n  needs: app-count, device-or-audience, app-name, app-feature\n  length: 14–62 s\n- id: brand-origin\n  name: Rise of a brand\n  what: From a humble start, through hardship, to a big brand\n  when to use: An idea that is the history of a brand, product or founder that has already grown big: the idea gives the success to show (users, money, years). Not a creator telling why they built their own tool.\n  needs: year-or-result, brand, founder, start, hardship, time-jump, result-number\n  length: 43–80 s\n- id: build-it-fast\n  name: Build it fast\n  what: Show the finished thing, then every step that built it\n  when to use: An idea where the viewer can build something real in minutes with a tool.\n  needs: result, time, tool-name, step, screen-recording\n  length: 20–51 s\n- id: dark-true-story\n  name: Creepy true story\n  what: A dark or strange true story told step by step to a shocking ending\n  when to use: An idea that is a real crime, legend or eerie event.\n  needs: place-or-person, event, ending\n  length: 15–51 s\n- id: explained-in-time\n  name: Explained in 60 seconds\n  what: A complex topic explained in a promised short time, often to an unlikely audience\n  when to use: An idea that is a complex topic the viewer finds hard and wants explained quickly.\n  needs: nothing special\n  length: 35–54 s\n- id: how-to-steps\n  name: How-to steps\n  what: A how-to promise followed by numbered steps on screen\n  when to use: An idea that is a concrete task the viewer wants to do with a tool, in a few steps.\n  needs: task, tool-name\n  length: 32–43 s\n- id: myth-vs-reality\n  name: Myth vs reality\n  what: What people think, then how it really works, with the proof\n  when to use: An idea that corrects a common belief or reveals a hidden side of something familiar.\n  needs: belief, background, reality, step, twist\n  length: 26–59 s\n- id: new-tool-news\n  name: New tool news\n  what: A just-released free tool, its benefits, a quick demo and a comment-keyword offer\n  when to use: An idea that is news about a newly released or newly free tool.\n  needs: who-released, tool-name, benefit, keyword, resource\n  length: 30–107 s\n- id: pain-to-fix\n  name: Problem then fix\n  what: The broken or painful way first, then the tool that fixes it, shown working\n  when to use: An idea where a tool fixes a pain the audience recognises, including a creator telling why they built their own tool: the pain they had, then the tool that fixes it.\n  needs: pain, task, screen-recording\n  length: 30–40 s\n- id: plot-recap\n  name: Story recap\n  what: A plot, journey or character backstory retold event by event\n  when to use: An idea that recaps an episode, myth, game lore or a character's story.\n  needs: story-name, setting, ending\n  length: 48–181 s\n- id: product-promo\n  name: Product promo\n  what: A product's benefits shown one by one through its interface, ending on where to get it\n  when to use: An idea that promotes one product or service.\n  needs: product-name\n  length: 11–30 s\n- id: question-answered\n  name: Big question answered\n  what: A why or how question, answered step by step with diagrams\n  when to use: An idea that is a question the audience has wondered about.\n  needs: question\n  length: 43–71 s\n- id: ranked-countdown\n  name: Top N countdown\n  what: Ranked items counted down to number one\n  when to use: An idea that ranks a set of things by some measure.\n  needs: rank-count, ranked-thing, rank-number, item-name, item-detail\n  length: 25–60 s\n- id: rapid-facts\n  name: Rapid-fire facts\n  what: Many short facts in a row, one per scene, with the strongest kept for last\n  when to use: An idea that is a collection of short surprising facts around one theme.\n  needs: theme, fact\n  length: 40–56 s\n- id: single-fact\n  name: One surprising fact\n  what: One fact built up line by line to a short reveal\n  when to use: An idea that is a single surprising or eerie fact that fits in under 20 seconds.\n  needs: topic\n  length: 7–16 s\n- id: software-tutorial\n  name: Software how-to\n  what: A finished result first, then the steps to make it in the software\n  when to use: An idea that is a specific thing to make in a common program (PowerPoint, GitHub, a no-code tool).\n  needs: result, software\n  length: 14–53 s\n- id: tool-deep-dive\n  name: Tool explained\n  what: What a tool is, how it differs, and what it really does\n  when to use: An idea that explains one popular tool or model and how to think about it.\n  needs: tool-name, difference, main-point\n  length: 49–78 s\n- id: tool-spotlight\n  name: Tool spotlight\n  what: One website or tool shown working, often as a numbered series part\n  when to use: An idea that is a single useful website, repo or tool the viewer probably has not seen.\n  needs: tool-category, series-part, screen-recording\n  length: 10–56 s\n- id: tool-tips-keyword\n  name: Tool tips list\n  what: Numbered tips for one tool, each named and then shown working, ending with a comment-keyword offer\n  when to use: An idea that is a handful of concrete tips, skills or add-ons for one tool the audience already uses.\n  needs: tool-name, tip-count, tip-number, tip-name, keyword, resource\n  length: 47–88 s\n\nquestions (optional, at most 3): ask the creator only when the answer would change the\nvideo and neither the idea nor the facts say it – a real number or result, what the\nproduct really does, what a screen really shows. Each says why it matters and, when the\nanswer is one of a few, 2–4 short options. Otherwise decide yourself – never invent a\nfact – and write in assumptions (at most 3) what you assumed, so the creator sees it."
+      },
+      "inputTokens": 4451,
+      "cachedInputTokens": 0,
+      "outputTokens": 373,
+      "thinkingTokens": 0,
+      "turns": 2,
+      "output": {
+        "assumptions": [
+          "You have screen recordings of the real pipeline: idea typed, 3 hooks, script, scene frames, final MP4.",
+          "The pain opening is the usual slow way to make a short video: writing hooks, scripting and editing by hand.",
+          "No exact time or cost is claimed, because the idea doesn't give one."
+        ],
+        "videoTemplateId": "pain-to-fix",
+        "score": 3,
+        "reason": "The idea shows TikMaker turning one sentence into a finished MP4, step by step, which is a pipeline demo. Problem-then-fix fits best: the slow manual way to make a video, then TikMaker doing it on screen. Build-it-fast also needs a tool and a screen recording, but this idea has no \"build in minutes\" angle for the viewer to follow.",
+        "needsFacts": false
+      }
+    },
+    {
+      "name": "writeHooks",
+      "startedAt": 1794047425828,
+      "ms": 12768,
+      "model": "claude-opus-5-5",
+      "attempts": 1,
+      "prompt": {
+        "system": "You are an expert short-form video strategist and hook writer for TikTok, Reels and\nYouTube Shorts. Create THREE genuinely different hooks for the video idea.\n\nA hook is the first 1–2 seconds of the video. It combines the opening words (spoken and\nshown), the first visual frame, and the curiosity or emotion that makes someone keep\nwatching.\n\n## 1. What makes a strong hook\nUse one or more of these – not all of them in every hook:\n- CURIOSITY GAP: the viewer wants to find out something they don't know yet.\n- SPECIFICITY: concrete details instead of vague promises.\n- UNEXPECTEDNESS: a surprising angle, contrast or observation.\n- RELEVANCE: tied to something this audience cares about.\n- PAYOFF PROMISE: a valuable result, insight or discovery the viewer gets by watching.\n\nAvoid: openings like \"Today we're going to talk about…\"; obvious questions with\npredictable answers; empty clickbait that promises more than the video delivers; vague\nclaims like \"This will change everything\"; hooks that only announce the topic.\n\n## 2. Three different approaches\nThe three hooks take genuinely different creative angles – for example curiosity (how or\nwhy something works), outcome (a valuable result), surprise (an assumption challenged),\nproblem (the pain the viewer knows), demonstration (the thing shown working). Pick the\nthree strongest for this idea and name each one's angle; all three angles are different.\nNever three rewordings of one hook.\n\n## 3. Formulas\nThe formulas given are proven structures. Use one when it truly improves the hook and\nfill it only with what the idea supports (formulaId = its id); or write your own\n(formulaId = null). Never invent personal experiences, results, statistics, product\ncapabilities or comparisons the idea does not give. Create interest without misleading.\n\n## 4. Writing\nOne short line, at most 12 words, natural spoken English, understood at once, no hashtags,\nno emojis, no filler words, concrete rather than marketing language. It should sound like\na real person talking, not an ad or an AI headline.\n\n## 5. First frame – the visual hook\nfirstFrame: exactly what the viewer SEES in the first two seconds – ONE concrete\ncomposition: an action or an object, not a mood. The words create curiosity or give\ncontext; the picture proves, demonstrates or makes the idea more interesting.\nPrefer, in this order: the actual result; the product or tool performing an action; a\nbefore / after; the problem shown; a striking object or visual metaphor.\nBad: \"A futuristic AI animation\", \"An exciting digital scene\", \"Technology comes to life\".\nGood: \"A screen recording of an AI agent generating a complete video from one text\nprompt\", \"The finished vertical video appears next to the one-line idea that made it\".\nUse only what this video can really show – listed under \"This video can show\". Never\nassume footage, faces or stock images it does not have. Words on an empty background are\nthe weakest opening; avoid them when a meaningful picture is possible.\n\n## 6. Score\nScore each complete opening – words AND first frame together – from 1 to 5, judging\nclarity, curiosity, relevance to the audience and visual potential:\n1 weak, generic or unclear · 2 understandable but little reason to stay · 3 clear and\nrelevant, not memorable · 4 specific, interesting, visually strong · 5 exceptional: grabs\nat once and makes people need to see what happens. Be critical – 5 is rare; polish alone\nis not a reason for a high score.\n\n## 7. Before answering\nCheck: three different angles; each supported by the idea; each first frame concrete and\nshowable; the picture adds something the words don't; understood within two seconds; no\nmisleading clickbait.",
+        "user": "Channel: TikMaker and AI coding. Mostly TikMaker itself: what it can do, how a video gets made with it, new features and how it is being built with AI (build in public). Around that, short concrete videos about other AI tools, vibe coding and Claude Code: one problem or one feature per video, shown on screen rather than told.\nAudience: Creators who want to make short videos faster with AI, and developers or beginners who build apps with AI and want to work faster without breaking things.\n\nIdea: How I make a TikTok with one sentence: I type an idea, the AI agent writes 3 hooks, I pick one, it writes the script, then it draws every scene as code and checks its own frames – and I get an MP4. Show the idea flowing through each step like a pipeline, ending in a finished phone video.\nTemplate: Problem then fix – The broken or painful way first, then the tool that fixes it, shown working\n\nThis video can show:\n- the creator's own screen recordings (the product, an app, a website in use)\n- motion blocks: logos, code, terminal, screen, list, number, compare, badge, object, schema, phone, browser, progress, keys, transform, chat, picture\n- logos: bolt, chatgpt, claude, claude-ai-symbol, claude-svg, cloudflare, discord, elevenlabs, figma, gemini, github, gmail, google-chrome, grok, kilo-code, lovable, midjourney, netlify, reddit, remotion, remotion, stripe, supabase, vercel, vs-code, x\n- objects: broken-glass, broom, browser-window, bug, card-declined, clock, coin, credit-card, database, document, dollar-cupure, envelope, eye, frustration, fuel-gauge, idea, key, layer-stack, link, padlock, paper-documents, pen, pin, plane, pricetag, puzzle-joined, puzzle-piece, question, robot-helpers, screen-panel, shop, sync-arrows, target, tower-leaning, two-users, user-avatar, uturn, wallet\n\nFormulas:\n- id: everyone-uses-it-wrong\n  type: pain-shown\n  formula: Everyone's using [tool] like [wrong analogy].\n  example: Everyone's using Claude Code like it's a magic wand.\n- id: in-year-subject-did\n  type: story\n  formula: In [year or era], [subject] [did something].\n  example: In 1946, four brothers named Kashio\n- id: saw-someone-doing-it-like-this\n  type: pain-shown\n  formula: Saw [someone] [doing a task] like this\n  example: Saw the intern visualizing his data like this\n- id: everyone-uses-but\n  type: contrarian\n  formula: Everyone's using [trending tool] to [goal], but [pain].\n  example: Everyone's using Claude Code to build AI agents\n- id: characters-live-in-two-places\n  type: story\n  formula: [Characters] live in two [places]: [A] and [B].\n  example: Gorillas live in two countries\n- id: did-you-know-spooky-place\n  type: story\n  formula: Did you know that in [spooky place]...\n  example: Did you know that in an old house on the outskirts of Hiroshima...\n- id: dramatic-quote\n  type: story\n  formula: \"[The most dramatic line spoken in the story]\"\n  example: Why did you kill my wife and daughter ?\n- id: i-switched-from\n  type: story\n  formula: I switched from [tool A] to [tool B].\n  example: I switched from Cursor to Claude Code.\n- id: everyone-without-is-wasting\n  type: contrarian\n  formula: Everyone using [tool] without [feature] is just wasting their [resource].\n  example: Everyone using Claude without skills is just wasting their tokens.\n- id: you-are-the-only\n  type: contrarian\n  formula: You are the only [statement that sounds impossible].\n  example: You are the only person alive.\n- id: you-might-think\n  type: contrarian\n  formula: When you [everyday action], you might think [misconception]...\n  example: When you visit a website, you might think that your computer is connecting with\n- id: characters-on-a-job\n  type: story\n  formula: Alright guys, we've got a [job] to do. Where's the [problem] this time?\n  example: Alright guys, we've got a job to do. Where's the pain this time?\n- id: imagine-you-have\n  type: story\n  formula: Imagine you have [valuable thing] in your [place].\n  example: Imagine you have ten thousand dollars"
+      },
+      "inputTokens": 4240,
+      "cachedInputTokens": 0,
+      "outputTokens": 781,
+      "thinkingTokens": 425,
+      "turns": 2,
+      "output": [
+        {
+          "text": "Hooks, script, scenes, editing. I skip all of it with one sentence.",
+          "firstFrame": "A list block showing Hooks, Script, Scenes, Edit. Each item gets crossed out and the list shrinks into one text box with a single typed idea.",
+          "angle": "problem",
+          "formulaId": null,
+          "score": 3
+        },
+        {
+          "text": "I typed this one sentence. It came back as a finished TikTok.",
+          "firstFrame": "Screen recording of the one-line idea typed into TikMaker, then the finished vertical MP4 plays inside a phone block right next to it.",
+          "angle": "demonstration",
+          "formulaId": null,
+          "score": 4
+        },
+        {
+          "text": "My AI agent draws every scene in code, then checks its own frames.",
+          "firstFrame": "A code block on the left renders into a video frame on the right while an eye object scans the frame and a check badge pops up.",
+          "angle": "curiosity",
+          "formulaId": null,
+          "score": 4
+        }
+      ]
+    },
+    {
+      "name": "writeScript",
+      "startedAt": 1794047461367,
+      "ms": 26164,
+      "model": "claude-opus-5-5",
+      "attempts": 1,
+      "prompt": {
+        "system": "You write the script of a short vertical video (TikTok, Reels, Shorts).\n\nTell ONE connected story. The idea may be written as loose thoughts in any order: sort\nthem into the order the template's scenes tell (the problem before the fix, the cause\nbefore the result), and let every scene follow from the one before it – the voiceovers\nread in a row must make sense as one spoken text. A scene that promises something (\"what I learned\", \"here's why\") is\nfollowed by the scene that says it.\n\nThe template is a guide: a structure that has worked for videos like this – its scenes,\ntheir order and how they link. Follow it where it serves this idea; change the order,\nleave a scene out or add one when that tells this story better. A \"repeatable\" scene\nmay appear several times in a row (one per step or item). Put every template scene you\nleave out in \"skipped\" with a short reason.\nA scene's \"facts\" come from the idea and the facts found online only – never invent a\ntool, a number or a result.\nWhen the idea has no fact for a scene, leave it out if it is optional; if it is required,\nfill it with what the idea does say rather than with an invented claim.\nIts \"creative\" parts are yours to word.\n\nThe first scene is the hook: say the chosen hook as it is, and show its key words. Its\nvisual is the hook's first frame when one is given – a picture on screen from the very\nfirst word, never the words alone.\nThe template's links (\"→ next\") and the transition phrases are examples of how scenes\ncan follow each other; use them only where they read naturally. End the way that fits\nthis video best: the CTA formulas show endings that have worked – use one, or write\nyour own, or none if no ending asks for one.\nThe call to action never sends people to a link, a website, a download or a giveaway\nthe idea does not mention – then pick a CTA formula that needs none of those.\n\nOne scene = one thought, shown by one picture. When a part of the story has two\nthoughts (what a chatbot does, then what an agent does), it is two scenes, not one long\nvoiceover – a long scene forces two pictures into one frame and neither reads.\n\nFor every scene:\n- voiceover: what is said, natural spoken English. When a scene lists things (tools,\n  mistakes, steps), the voice names every one of them – the list on screen fills point by\n  point as each is named; a point that needs it gets a short sentence after its name\n- onScreen: the key words shown big, not the whole sentence\n- visual: what the viewer sees happening, concrete and with a verb – a terminal running a\n  command, a price counting down, the idea turning into a video – one picture for the\n  thought, understandable with the sound off; never \"something engaging\"\n- needsRecording: your call – true when the scene is shown best with the creator's own\n  screen recording rather than a picture the video editor draws. Then the voiceover says\n  what the recording shows while it shows it (the click, what appears). Keep recordings\n  for the moments where the real screen is the proof – about 3–4 in a video at most\n\nKeep within the limits. Each scene lasts about as long as its voiceover. Treat the wanted\nlength as a target, not a requirement to fill at any cost: use the repeatable scenes and\nthe optional scenes that genuinely help, but never add empty explanations, repeated\nstatements or invented steps just to reach it. If the idea cannot support the length,\nwrite the strongest shorter version.\n\nYour job is WHAT the viewer sees (visual), not how it is drawn: the next step picks the\nrecording, block or animation that shows it, knowing what the editor can really do – so\ndo not limit the visual to what you think the editor has.",
+        "user": "Channel: TikMaker and AI coding. Mostly TikMaker itself: what it can do, how a video gets made with it, new features and how it is being built with AI (build in public). Around that, short concrete videos about other AI tools, vibe coding and Claude Code: one problem or one feature per video, shown on screen rather than told.\nAudience: Creators who want to make short videos faster with AI, and developers or beginners who build apps with AI and want to work faster without breaking things.\n\nThe product's real screens – when a scene shows the product, or asks for a recording of\nit, describe only what these screens really show; never invent cards, buttons, previews\nor animations they do not have:\n- New video form: The AI agent panel on the right of the TikMaker editor, on an empty project: a 'Video idea' text box, length in seconds, a template picker ('Let the AI pick'), an optional own hook, checkboxes 'With face', 'Motion graphics only', 'Generate the voiceover', and a 'Start' button.\n- Agent at work: The same panel as a conversation: a progress bar with five steps (Idea, Angle, Script, Building, Result) ticking off, and a card appearing for each step – the chosen template, three hooks to pick from (each with what it shows), the script scene by scene with an 'Approve' button, 'Pictures picked', 'Motion planned' and 'Voiceover' (folded cards that open on click).\n- Editor with the built video: Once built: the scene strip along the bottom fills with the video's scenes, the timeline shows each scene's blocks, voice and captions as clips, the vertical preview in the middle plays the video with its kinetic captions.\n- Preview playing: The vertical 9:16 preview player in the middle of the editor playing the finished video with play / pause, time and fullscreen.\n- Render: The 'Render MP4' button top right: a progress bar, then the finished MP4 file to download.\n- Storyboard: The Storyboard tab: the script as a list of beats – each scene's voiceover and on-screen words – with the total length against the target.\n\nIdea: How I make a TikTok with one sentence: I type an idea, the AI agent writes 3 hooks, I pick one, it writes the script, then it draws every scene as code and checks its own frames – and I get an MP4. Show the idea flowing through each step like a pipeline, ending in a finished phone video.\nWanted length: about 40 s\nFace on camera: no, a faceless video\n\nHook: I typed this one sentence. It came back as a finished TikTok.\nFirst frame (what the hook shows): Screen recording of the one-line idea typed into TikMaker, then the finished vertical MP4 plays inside a phone block right next to it.\n\nTemplate: Problem then fix – The broken or painful way first, then the tool that fixes it, shown working\nScenes:\n- opening / hook (2–2.8 s): Shows or states the wrong way people do it. [required] → next: contrast; facts: pain; creative: who\n- build / setup (2.4–4 s): Sets the scene of the task. [required] → next: sequence; facts: task\n- build / problem (3–7 s): Names what goes wrong. [optional] [repeatable] → next: open-loop-payoff; facts: problem\n- core / reveal (2.2–4.6 s): Names the fix. [optional] [repeatable] → next: sequence; facts: tool-name\n- core / demo (3–7 s): Shows the fix working on screen. [required] [repeatable] → next: sequence; facts: screen-recording\n- climax / benefit (3.4–6.6 s): States what changed. [optional] → next: bridge; facts: gain\n- close / cta (3–3 s): Points to the full guide. [optional] → next: none; facts: resource\n\nTransition phrases:\n- sequence: First, | Second, | Third, | First is | Second is | Third is\n- contrast: But | Instead | Instead of just | But instead, | but in reality, | but that's not how\n- bridge: So if you want | So just | To get the full | For a PDF | So want to try it for yourself? | Now you might be wondering...\n- open-loop-payoff: It's called | You have probably heard of | Here's the easiest way | All roads lead to Rome... | And that's why... | Anthropic just dropped\n\nCTA formulas (types allowed: none):\n- none: end on the last scene, without a call to action (skip the cta scene)\n\nLimits, from the analysis of successful videos:\n- speak at most 3.4 words per second\n- a scene lasts at most 9 s, the hook at most 5 s\n- at most 15 words on screen in a scene\n\nquestions (optional, at most 3): ask the creator only when the answer would change the\nvideo and neither the idea nor the facts say it – a real number or result, what the\nproduct really does, what a screen really shows. Each says why it matters and, when the\nanswer is one of a few, 2–4 short options. Otherwise decide yourself – never invent a\nfact – and write in assumptions (at most 3) what you assumed, so the creator sees it."
+      },
+      "inputTokens": 2296,
+      "cachedInputTokens": 2245,
+      "outputTokens": 2310,
+      "thinkingTokens": 938,
+      "turns": 2,
+      "output": {
+        "assumptions": [
+          "The template's 'wrong way' opening is replaced by the given hook, because the idea has no pain point to show.",
+          "The frame-checking step is drawn as an animation, because none of the real screens show it.",
+          "The total runs about 38 s (around 110 words), which is enough for the five steps without filler."
+        ],
+        "scenes": [
+          {
+            "role": "hook",
+            "voiceover": "I typed this one sentence. It came back as a finished TikTok.",
+            "onScreen": "ONE sentence → finished TikTok",
+            "visual": "Screen recording: the one-line idea is typed into the 'Video idea' box in TikMaker, then the finished vertical MP4 plays inside a phone block right next to it.",
+            "needsRecording": true
+          },
+          {
+            "role": "setup",
+            "voiceover": "Here's the whole pipeline, from one sentence to a video you can post.",
+            "onScreen": "Idea → Hooks → Script → Scenes → MP4",
+            "visual": "A horizontal pipeline draws itself across the screen: five connected stations labelled Idea, Hooks, Script, Scenes, MP4, with an empty phone at the far end.",
+            "needsRecording": false
+          },
+          {
+            "role": "reveal",
+            "voiceover": "It all runs inside TikMaker's AI agent.",
+            "onScreen": "TikMaker AI agent",
+            "visual": "The pipeline slides into a panel labelled 'TikMaker AI agent', which lights up as the engine driving every station.",
+            "needsRecording": false
+          },
+          {
+            "role": "demo",
+            "voiceover": "First, I type the idea and hit Start.",
+            "onScreen": "1. Type the idea",
+            "visual": "A single line of text drops into the first station of the pipeline, a 'Start' button is pressed, and the sentence starts flowing down the pipe.",
+            "needsRecording": false
+          },
+          {
+            "role": "demo",
+            "voiceover": "Second, the agent writes three hooks, each with what it shows. I pick one.",
+            "onScreen": "2. Three hooks → pick one",
+            "visual": "Screen recording: in the agent panel the progress bar ticks to the next step and a card with three hooks appears; the cursor clicks one of them.",
+            "needsRecording": true
+          },
+          {
+            "role": "demo",
+            "voiceover": "Third, it writes the script scene by scene. I read it and hit Approve.",
+            "onScreen": "3. Script → Approve",
+            "visual": "Screen recording: the script card lists each scene's voiceover and on-screen words; the cursor scrolls through and clicks 'Approve'.",
+            "needsRecording": true
+          },
+          {
+            "role": "demo",
+            "voiceover": "Then it draws every scene as code and checks its own frames.",
+            "onScreen": "4. Scenes drawn as code + frames checked",
+            "visual": "At the Scenes station, lines of code turn into vertical frames one by one, and a checkmark stamps onto each frame as it passes inspection.",
+            "needsRecording": false
+          },
+          {
+            "role": "demo",
+            "voiceover": "The scenes fill the timeline, I hit Render MP4, and the file is ready to download.",
+            "onScreen": "5. Render MP4",
+            "visual": "Screen recording: the scene strip and timeline fill with the video's scenes, the cursor clicks 'Render MP4' top right, a progress bar runs, then the finished MP4 file appears to download.",
+            "needsRecording": true
+          },
+          {
+            "role": "payoff",
+            "voiceover": "One sentence in. A finished TikTok out.",
+            "onScreen": "1 sentence in. TikTok out.",
+            "visual": "The MP4 shoots out the end of the pipeline into the phone, which starts playing the finished vertical video with its kinetic captions.",
+            "needsRecording": false
+          }
+        ],
+        "skipped": [
+          {
+            "role": "problem",
+            "reason": "The idea doesn't describe a painful old way, so I didn't make one up. The hook and pipeline carry the story."
+          },
+          {
+            "role": "cta",
+            "reason": "Only the 'none' CTA type is allowed, so the video ends on the payoff."
+          },
+          {
+            "role": "benefit",
+            "reason": "Folded into the closing payoff line so the same point isn't made twice."
+          }
+        ]
+      }
+    }
+  ],
+  "pausedFrom": "generating_voice",
+  "error": "The server restarted while the agent was working."
+}

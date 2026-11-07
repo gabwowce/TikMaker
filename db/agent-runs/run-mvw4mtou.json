@@ -1,6 +1,8 @@
 {
   "id": "run-mvw4mtou",
   "projectId": "project-1793434562051",
+  "createdAt": 1793434563534,
+  "status": "paused",
   "input": {
     "idea": "Why vibe-coded apps break when real users sign up",
     "workspaceId": "dev",
@@ -9,7 +11,12 @@
     "withFace": false,
     "generateVoice": false
   },
-  "status": "writing_hooks",
+  "template": {
+    "videoTemplateId": "myth-vs-reality",
+    "score": 5,
+    "reason": "This template is a great fit for contrasting the illusion of easy vibe coding with the harsh reality of scale when users arrive.",
+    "pickedBy": "agent"
+  },
   "steps": [
     {
       "name": "pickTemplate",
@@ -24,11 +31,6 @@
       }
     }
   ],
-  "createdAt": 1793434563534,
-  "template": {
-    "videoTemplateId": "myth-vs-reality",
-    "score": 5,
-    "reason": "This template is a great fit for contrasting the illusion of easy vibe coding with the harsh reality of scale when users arrive.",
-    "pickedBy": "agent"
-  }
+  "pausedFrom": "writing_hooks",
+  "error": "The server restarted while the agent was working."
 }

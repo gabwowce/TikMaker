@@ -2,7 +2,7 @@
   "id": "run-mvwadbmg",
   "projectId": "project-1793439847470",
   "createdAt": 1793444197912,
-  "status": "writing_script",
+  "status": "paused",
   "input": {
     "idea": "How to undo the last git commit in a few seconds",
     "workspaceId": "dev",
@@ -123,5 +123,7 @@
         }
       ]
     }
-  ]
+  ],
+  "pausedFrom": "writing_script",
+  "error": "The server restarted while the agent was working."
 }

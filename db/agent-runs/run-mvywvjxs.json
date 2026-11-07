@@ -2,7 +2,7 @@
   "id": "run-mvywvjxs",
   "projectId": "project-1793600951712",
   "createdAt": 1793602932400,
-  "status": "laying_out",
+  "status": "paused",
   "input": {
     "idea": "How to turn on auto save in VS Code settings",
     "workspaceId": "dev",
@@ -214,5 +214,7 @@
         ]
       }
     }
-  ]
+  ],
+  "pausedFrom": "laying_out",
+  "error": "The server restarted while the agent was working."
 }

@@ -1,6 +1,8 @@
 {
   "id": "run-mvw4jij1",
   "projectId": "project-1793434326769",
+  "createdAt": 1793434409101,
+  "status": "paused",
   "input": {
     "idea": "Three Claude Code shortcuts that save me an hour a day",
     "workspaceId": "dev",
@@ -9,7 +11,12 @@
     "withFace": false,
     "generateVoice": false
   },
-  "status": "writing_hooks",
+  "template": {
+    "videoTemplateId": "tool-tips-keyword",
+    "score": 5,
+    "reason": "This template is a perfect fit for showcasing a handful of concrete shortcuts for a specific tool like Claude Code.",
+    "pickedBy": "agent"
+  },
   "steps": [
     {
       "name": "pickTemplate",
@@ -24,11 +31,6 @@
       }
     }
   ],
-  "createdAt": 1793434409101,
-  "template": {
-    "videoTemplateId": "tool-tips-keyword",
-    "score": 5,
-    "reason": "This template is a perfect fit for showcasing a handful of concrete shortcuts for a specific tool like Claude Code.",
-    "pickedBy": "agent"
-  }
+  "pausedFrom": "writing_hooks",
+  "error": "The server restarted while the agent was working."
 }

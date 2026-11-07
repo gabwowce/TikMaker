@@ -1,0 +1,179 @@
+{
+  "id": "project-1794047225429",
+  "title": "2v-1bandymas-motion only",
+  "workspaceId": "dev",
+  "videoTemplateId": "build-it-fast",
+  "fps": 30,
+  "width": 1080,
+  "height": 1920,
+  "storyPlan": {
+    "premise": "How I make a TikTok with one sentence: I type an idea, the AI agent writes 3 hooks, I pick one, it writes the script, then it draws every scene as code and checks its own frames – and I get an MP4. Show the idea flowing through each step like a pipeline, ending in a finished phone video."
+  },
+  "scenes": [
+    {
+      "id": "scene-run-mw69ekpq-1",
+      "plan": {
+        "role": "hook",
+        "visualBrief": "A finished vertical video plays on a phone mockup. Beside it, a chat bubble holds the one-line idea that made it. A glowing pipe runs from the bubble to the phone."
+      },
+      "vo": "One sentence in, finished TikTok out. Here's every step between.",
+      "background": "solid-dark",
+      "content": {
+        "richHeadline": [
+          {
+            "text": "One sentence in → finished TikTok out",
+            "size": "hero",
+            "lane": 0
+          }
+        ]
+      },
+      "type": "hook-centered"
+    },
+    {
+      "id": "scene-run-mw69ekpq-2",
+      "plan": {
+        "role": "demo",
+        "visualBrief": "The sentence types itself into the 'Video idea' box of the agent panel. The Start button is pressed, and the sentence drops into the pipe as a glowing token. The progress bar ticks 'Idea'."
+      },
+      "vo": "First, I type one sentence into the video idea box and hit Start.",
+      "background": "solid-dark",
+      "content": {
+        "richHeadline": [
+          {
+            "text": "1. Type the idea → Start",
+            "size": "title"
+          }
+        ]
+      },
+      "type": "visual-explainer"
+    },
+    {
+      "id": "scene-run-mw69ekpq-3",
+      "plan": {
+        "role": "demo",
+        "visualBrief": "The token reaches the first station and splits into three hook cards side by side. One card is tapped and lights up, the other two fade, and the chosen one moves on down the pipe."
+      },
+      "vo": "Second, the agent writes three hooks, each with what it shows, and I pick one.",
+      "background": "solid-dark",
+      "content": {
+        "richHeadline": [
+          {
+            "text": "2. Three hooks → pick one",
+            "size": "title"
+          }
+        ]
+      },
+      "type": "visual-explainer"
+    },
+    {
+      "id": "scene-run-mw69ekpq-4",
+      "plan": {
+        "role": "demo",
+        "visualBrief": "The hook unrolls into a script card, scene after scene stacking up line by line. An 'Approve' button is pressed and the card clicks into the pipe. The progress bar ticks 'Script'."
+      },
+      "vo": "Third, it writes the script scene by scene, and I hit Approve.",
+      "background": "solid-dark",
+      "content": {
+        "richHeadline": [
+          {
+            "text": "3. Script → Approve",
+            "size": "title"
+          }
+        ]
+      },
+      "type": "visual-explainer"
+    },
+    {
+      "id": "scene-run-mw69ekpq-5",
+      "plan": {
+        "role": "demo",
+        "visualBrief": "Lines of code scroll past and turn into vertical scene frames, one after another, dropping into a scene strip along the bottom until it is full. The progress bar ticks 'Building'."
+      },
+      "vo": "Then it draws every scene as code, and the scene strip fills up.",
+      "background": "solid-dark",
+      "content": {
+        "richHeadline": [
+          {
+            "text": "4. Every scene drawn as code",
+            "size": "title"
+          }
+        ]
+      },
+      "type": "visual-explainer"
+    },
+    {
+      "id": "scene-run-mw69ekpq-6",
+      "plan": {
+        "role": "demo",
+        "visualBrief": "A magnifying glass sweeps across the row of frames; a green check mark pops onto each frame as it passes."
+      },
+      "vo": "And it checks its own frames before it calls the video done.",
+      "background": "solid-dark",
+      "content": {
+        "richHeadline": [
+          {
+            "text": "5. Checks its own frames",
+            "size": "title"
+          }
+        ]
+      },
+      "type": "visual-explainer"
+    },
+    {
+      "id": "scene-run-mw69ekpq-7",
+      "plan": {
+        "role": "demo",
+        "visualBrief": "The 'Render MP4' button is pressed, a progress bar fills to 100%, and an MP4 file icon slides out of the end of the pipe. The progress bar ticks 'Result'."
+      },
+      "vo": "Last, I hit Render MP4, and the file is ready to download.",
+      "background": "solid-dark",
+      "content": {
+        "richHeadline": [
+          {
+            "text": "6. Render MP4",
+            "size": "title"
+          }
+        ]
+      },
+      "type": "visual-explainer"
+    },
+    {
+      "id": "scene-run-mw69ekpq-8",
+      "plan": {
+        "role": "proof",
+        "visualBrief": "The MP4 file flies into the phone mockup and the finished vertical video plays with its kinetic captions. The chat bubble with the original sentence sits beside it, and the whole pipeline glows behind them."
+      },
+      "vo": "One sentence, one finished TikTok, playing on my phone.",
+      "background": "solid-dark",
+      "content": {
+        "richHeadline": [
+          {
+            "text": "1 sentence = 1 TikTok",
+            "size": "title"
+          }
+        ]
+      },
+      "type": "visual-explainer"
+    },
+    {
+      "id": "scene-run-mw69ekpq-9",
+      "plan": {
+        "role": "cta",
+        "visualBrief": "The phone keeps playing while a comment bubble pops up below it and the TikMaker name appears."
+      },
+      "vo": "Drop a comment if you want more videos made with TikMaker.",
+      "background": "solid-dark",
+      "content": {
+        "richHeadline": [
+          {
+            "text": "Comment for more TikMaker",
+            "size": "headline"
+          }
+        ]
+      },
+      "type": "takeaway"
+    }
+  ],
+  "savedAt": 1794050345372,
+  "audioClips": []
+}
