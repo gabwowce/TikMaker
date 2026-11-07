@@ -1,0 +1,50 @@
+[
+  {
+    "id": "understood-silent",
+    "level": "fix",
+    "check": "With the sound off, is it clear in one second what the scene is about?",
+    "fails": "The picture does not show what the voiceover says, or shows something the viewer cannot name."
+  },
+  {
+    "id": "one-dominant",
+    "level": "fix",
+    "check": "Is there ONE element the eye lands on first?",
+    "fails": "Two or more things of the same size and weight compete (two diagrams, two equal cards), so the eye has nowhere to land."
+  },
+  {
+    "id": "readable",
+    "level": "fix",
+    "check": "Can every word be read on a phone?",
+    "fails": "A label or line looks smaller than about a third of the spoken caption's letters in these frames – on the phone it is too small to read."
+  },
+  {
+    "id": "nothing-covered",
+    "level": "fix",
+    "check": "Is everything inside the frame and clear of the spoken caption?",
+    "fails": "A picture runs under the caption, off the frame, or two elements overlap where they should not."
+  },
+  {
+    "id": "fits-together",
+    "level": "fix",
+    "check": "Do the scene's pictures belong to one idea?",
+    "fails": "Two pictures in one frame tell different things, or a picture has nothing to do with the words said with it."
+  },
+  {
+    "id": "empty-or-crowded",
+    "level": "note",
+    "check": "Is there room around the main element?",
+    "fails": "The frame is crowded edge to edge, or one small thing floats in a big empty frame."
+  },
+  {
+    "id": "same-as-neighbours",
+    "level": "note",
+    "check": "Does the scene look different enough from the one before?",
+    "fails": "It repeats the previous scene's look, so the cut reads as nothing happening."
+  },
+  {
+    "id": "matches-examples",
+    "level": "note",
+    "check": "Does it reach the level of the example frames (one big object, big words with the key word stressed, a lot of calm space)?",
+    "fails": "It looks like a slide or a diagram dump next to the examples."
+  }
+]

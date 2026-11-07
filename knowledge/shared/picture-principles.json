@@ -1,0 +1,96 @@
+[
+  {
+    "id": "one-picture-per-thought",
+    "priority": "must",
+    "principle": "One picture holds one whole thought – usually a sentence – and keeps changing inside it.",
+    "why": "In good short videos one picture stays about 5 seconds while its parts appear, a number counts or arrows draw. A new picture on every other word flickers past before it is read, and together such pictures look like random clip art for single words.",
+    "inTikMaker": "Usually one main block per sentence; a new block only when the thought really changes. A picture shorter than about 2 s flickers. Something should happen at least every ~3 s – a part appearing on its word (partWords) or a new picture.",
+    "sources": [
+      "https://m1.material.io/motion/choreography.html"
+    ]
+  },
+  {
+    "id": "happens-without-sound",
+    "priority": "must",
+    "principle": "The picture shows what HAPPENS, so the scene is understood with the sound off.",
+    "why": "Many people watch muted, and even with sound the eye leads. An action, a change or a relation (this turns into that, these three join, the price drops) explains; a row of nouns only decorates.",
+    "inTikMaker": "Write happens first – one sentence with a verb – then pick the stage and the blocks that show exactly that.",
+    "sources": []
+  },
+  {
+    "id": "show-the-thing",
+    "priority": "must",
+    "principle": "Show the thing itself: the tool, the screen, the command, the number, the result.",
+    "why": "A concrete picture proves and teaches; a metaphor only hints. A prop that just stands for a word (a clock for 'fast') says less than the real thing doing something.",
+    "inTikMaker": "Prefer recordings, logos, terminal, code, numbers, chats and schemas of the real thing. An object prop is a last resort, and only when it truly fits.",
+    "sources": []
+  },
+  {
+    "id": "shape-is-the-idea",
+    "priority": "must",
+    "principle": "Pick the block whose shape IS the idea, so it is understood at a glance by someone who does not know the video.",
+    "why": "A conversation drawn as chat bubbles, a cycle drawn as a loop, 'this becomes that' drawn as a transform are read instantly. A card with a vague label and a loosely fitting icon says nothing.",
+    "inTikMaker": "Conversation → chat messages; comments → chat comments; a repeating process → schema loop; one thing and many around it → schema hub or list orbit; input → output → transform; something replacing a worse thing → compare; a shortcut → keys; progress → progress; something arriving on a device → phone.",
+    "sources": []
+  },
+  {
+    "id": "visual-hierarchy",
+    "priority": "must",
+    "principle": "The viewer sees at once what matters most in the frame.",
+    "why": "When everything is the same size and weight the eye has nowhere to land. One dominant element – the number, the result, the key word – with the rest clearly secondary reads in a second.",
+    "inTikMaker": "If the voice says 'save 10 hours', the 10 is the picture (a number block), not a word in a list. Put the main point in the block, supporting detail in the spoken words.",
+    "sources": [
+      "https://m1.material.io/motion/choreography.html"
+    ]
+  },
+  {
+    "id": "negative-space",
+    "priority": "recommended",
+    "principle": "Leave space empty so the important element stands out.",
+    "why": "A frame filled in every corner has no focus. Empty space around one big element makes it feel important and easy to read on a phone.",
+    "inTikMaker": "One block per place, never decoration for its own sake; at most four parts in a block; a statement scene is deliberately empty.",
+    "sources": []
+  },
+  {
+    "id": "typography-follows-speech",
+    "priority": "must",
+    "principle": "Text appears when it is said, and the stressed words stand out.",
+    "why": "Words on screen ahead of the voice spoil it; words after it lag. Highlighting the one word that carries the sentence guides the eye better than animating the whole phrase the same way.",
+    "inTikMaker": "The captions follow the voice by themselves. Choose keywords – the names, the numbers, the one word that carries the scene – so they stand out; put each part of a block on the word that names it.",
+    "sources": [
+      "https://www.ibm.com/design/language/animation/classic-principles/"
+    ]
+  },
+  {
+    "id": "variety-of-looks",
+    "priority": "must",
+    "principle": "Vary how the pictures look across the video.",
+    "why": "A video where every picture is a list or a schema reads as one slide repeated, and the viewer stops noticing that it changes.",
+    "inTikMaker": "Use the whole catalogue and every shape; the same look (block + shape) about twice in a video at most. Repeat on purpose only when the repeat means something (the same badge numbering a series).",
+    "sources": []
+  },
+  {
+    "id": "stage-rhythm",
+    "priority": "recommended",
+    "principle": "The layout changes where the story changes, and stays where it goes on.",
+    "why": "The same layout scene after scene – picture on top, words below – reads as one frame repeated. A change of layout marks a new part, a contrast, a statement or a demo.",
+    "inTikMaker": "Look at the stages of the whole video as one sequence; avoid three of the same in a row unless the scenes are one continuous run.",
+    "sources": []
+  },
+  {
+    "id": "hook-shows-at-once",
+    "priority": "must",
+    "principle": "The hook's picture is there from its first words and shows its first frame.",
+    "why": "The first two seconds decide whether people stay; words on an empty frame are the weakest opening there is.",
+    "inTikMaker": "Scene 1's first block lands on the first or second word and shows the hook's first frame (its Shows line). A recording in the hook goes on the full stage, over the whole frame.",
+    "sources": []
+  },
+  {
+    "id": "recording-is-one-take",
+    "priority": "must",
+    "principle": "A recording request is one continuous take a person can reproduce from the instructions – and a video asks for only a few of them.",
+    "why": "The creator records what the instructions say. Two slots for one action make them record the same moment twice; asking for buttons or results that do not exist makes the recording impossible; six recordings for one short video is an afternoon of work for a few seconds each.",
+    "inTikMaker": "One screen block per scene and about 3–4 recordings a video at most – keep them for the moments where the real screen is the proof; a step that is only explained can be a block. In record, list the actions in order (open, type, click, what appears) and where to start and stop, only on the product's real screens; never ask for a button, feature or result that does not exist. Estimate seconds honestly.",
+    "sources": []
+  }
+]

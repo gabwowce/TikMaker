@@ -4,5 +4,31 @@
   "brief": "Mostly TikMaker itself: what it can do, how a video gets made with it, new features and how it is being built with AI (build in public). Around that, short concrete videos about other AI tools, vibe coding and Claude Code: one problem or one feature per video, shown on screen rather than told.",
   "audience": "Creators who want to make short videos faster with AI, and developers or beginners who build apps with AI and want to work faster without breaking things.",
   "tone": "Direct and practical; real screens, real results and numbers instead of hype. Honest about what does not work yet.",
-  "language": "en"
+  "language": "en",
+  "screens": [
+    {
+      "name": "New video form",
+      "shows": "The AI agent panel on the right of the TikMaker editor, on an empty project: a 'Video idea' text box, length in seconds, a template picker ('Let the AI pick'), an optional own hook, checkboxes 'With face', 'Motion graphics only', 'Generate the voiceover', and a 'Start' button."
+    },
+    {
+      "name": "Agent at work",
+      "shows": "The same panel as a conversation: a progress bar with five steps (Idea, Angle, Script, Building, Result) ticking off, and a card appearing for each step – the chosen template, three hooks to pick from (each with what it shows), the script scene by scene with an 'Approve' button, 'Pictures picked', 'Motion planned' and 'Voiceover' (folded cards that open on click)."
+    },
+    {
+      "name": "Editor with the built video",
+      "shows": "Once built: the scene strip along the bottom fills with the video's scenes, the timeline shows each scene's blocks, voice and captions as clips, the vertical preview in the middle plays the video with its kinetic captions."
+    },
+    {
+      "name": "Preview playing",
+      "shows": "The vertical 9:16 preview player in the middle of the editor playing the finished video with play / pause, time and fullscreen."
+    },
+    {
+      "name": "Render",
+      "shows": "The 'Render MP4' button top right: a progress bar, then the finished MP4 file to download."
+    },
+    {
+      "name": "Storyboard",
+      "shows": "The Storyboard tab: the script as a list of beats – each scene's voiceover and on-screen words – with the total length against the target."
+    }
+  ]
 }

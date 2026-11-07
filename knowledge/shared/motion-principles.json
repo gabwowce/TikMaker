@@ -1,9 +1,10 @@
 [
   {
     "id": "one-focus",
-    "principle": "At any moment one thing moves and holds the eye; everything else is still or settles.",
-    "why": "The viewer can follow only one moving thing. Several pictures animating at once in the same place read as a pile, not as a sequence – nothing is understood and the frame looks unstable.",
-    "inTikMaker": "Never let two blocks enter or travel in the same place at the same time. When a new block arrives, the old one has already left or is leaving the opposite way.",
+    "priority": "must",
+    "principle": "One primary focal point at a time. Secondary motion is allowed when it supports the main action and does not compete for attention.",
+    "why": "The viewer follows one moving thing at a time. Several things animating with equal weight in the same place read as a pile, not a sequence. A small supporting move – a label settling under the card that just arrived, a background drifting – helps the main action instead of fighting it.",
+    "inTikMaker": "Never let two blocks enter or travel in the same place at the same time: when a new block arrives, the old one has already left or is leaving. The parts inside a block (items, nodes, coins) are secondary to the block arriving – they follow it, they do not all burst in with it.",
     "sources": [
       "https://ixdf.org/literature/article/ui-animation-how-to-apply-disney-s-12-principles-of-animation-to-ui-design",
       "https://m1.material.io/motion/choreography.html"
@@ -11,25 +12,28 @@
   },
   {
     "id": "motion-means-something",
+    "priority": "must",
     "principle": "Every move says something: arriving, leaving, growing in importance, turning into something else, moving on.",
     "why": "Motion without a reason is decoration; decoration on every element is noise. When each move matches what the voice says at that moment, the motion explains instead of distracting.",
-    "inTikMaker": "Pick an entrance for what the block MEANS at that word: a number that is the payoff can pop or zoomSettle; a next item in a list slides in from the same side as the previous one; a calm explanation can just fade.",
+    "inTikMaker": "Pick an entrance for what the block MEANS at that word: a number that is the payoff can pop or zoomSettle; the next item in a series slides in from the same side as the previous one; a calm explanation can just fade; something that must already be there from the first frame needs no entrance at all.",
     "sources": [
       "https://ixdf.org/literature/article/ui-animation-how-to-apply-disney-s-12-principles-of-animation-to-ui-design"
     ]
   },
   {
     "id": "consistent-direction",
+    "priority": "must",
     "principle": "Keep one direction of travel for things that are 'the next one' – a list, steps, the story moving on.",
-    "why": "A consistent direction builds a mental map: new things come from the right, old ones leave to the left, so 'forward' always looks the same. A different direction on every cut reads as random.",
-    "inTikMaker": "Choose a main direction for the video (e.g. in from the right, out to the left) and use it for every 'next' moment. Change direction only to mark a real change: a contrast, a turn in the story, a new chapter.",
+    "why": "A consistent direction builds a mental map: new things come from one side, old ones leave by the other, so 'forward' always looks the same. A different direction on every cut reads as random.",
+    "inTikMaker": "Choose a main direction for the video (e.g. in from the right, out to the left) and use it for every 'next' moment. Change direction only to mark a real change – a contrast, a turn in the story, a new chapter – and do it on purpose.",
     "sources": ["https://m1.material.io/motion/choreography.html"]
   },
   {
     "id": "continuity-across-cuts",
+    "priority": "must",
     "principle": "Carry something across a cut: the same object, the same position, the same shape or the same direction of movement.",
-    "why": "A cut where nothing connects resets the viewer's attention to zero. A match – one element staying, or the motion of the outgoing scene continuing into the incoming one – makes two scenes feel like one flow.",
-    "inTikMaker": "When the same logo or object is in two consecutive scenes, carry it (link) instead of letting it leave and come back. When nothing is shared, let the outgoing block leave in the same direction the incoming one arrives from, so the motion continues.",
+    "why": "A cut where nothing connects resets the viewer's attention to zero. A match – one element staying, or the outgoing motion continuing into the incoming one – makes two scenes feel like one flow.",
+    "inTikMaker": "Look at how each scene ends before choosing how the next begins. When the same object is in two consecutive scenes, carry it instead of letting it leave and come back. When nothing is shared, let the outgoing block leave in the direction the incoming one arrives from, so the motion continues. Breaking continuity is allowed, but as a choice.",
     "sources": [
       "https://morphic.com/ai-glossary/match-cut",
       "https://m1.material.io/motion/choreography.html"
@@ -37,46 +41,37 @@
   },
   {
     "id": "few-carried",
+    "priority": "must",
     "principle": "Carry at most one element across a cut.",
-    "why": "One carried element guides the eye to the next scene; several moving at once cross paths and the eye loses which one to follow.",
-    "inTikMaker": "One link per cut. Everything else leaves.",
+    "why": "One carried element guides the eye into the next scene; several moving at once cross paths and the eye loses which one to follow. This is the limit on continuity-across-cuts, not a second idea.",
+    "inTikMaker": "One carry per cut. Everything else leaves.",
     "sources": ["https://m1.material.io/motion/choreography.html"]
   },
   {
     "id": "ease-in-ease-out",
+    "priority": "must",
     "principle": "Arrivals slow down into place; departures speed up and leave.",
     "why": "Real objects accelerate and decelerate. Something that arrives fast and settles feels confident; something that leaves accelerating feels gone. Linear motion looks mechanical.",
-    "inTikMaker": "The code already eases every entrance out and every exit in. Use keyframe moves for deliberate travel, not for small nudges.",
+    "inTikMaker": "The code already eases every entrance out and every exit in; moves (keyframes) are eased too. Use moves for deliberate travel, not for small nudges.",
     "sources": [
       "https://m1.material.io/motion/duration-easing.html",
       "https://ixdf.org/literature/article/ui-animation-how-to-apply-disney-s-12-principles-of-animation-to-ui-design"
     ]
   },
   {
-    "id": "exit-shorter-than-entrance",
-    "principle": "Leaving is quicker than arriving.",
-    "why": "The viewer cares about what is coming, not about what is going. A long exit holds attention on something that no longer matters.",
-    "inTikMaker": "Exits about 6–8 frames, entrances about 8–12 frames at 30 fps. Longer only for a deliberate, dramatic reveal.",
-    "sources": ["https://m1.material.io/motion/duration-easing.html"]
-  },
-  {
-    "id": "size-and-distance-set-duration",
-    "principle": "Bigger changes take longer; small ones are quick.",
-    "why": "A move across the whole frame in a few frames is a jump; a tiny fade over a second is sluggish. Duration should match how far and how much something changes.",
-    "inTikMaker": "A full-frame transition or a long keyframe travel: 12–18 frames. A badge or a small element appearing: 6–10 frames.",
-    "sources": ["https://m1.material.io/motion/duration-easing.html"]
-  },
-  {
-    "id": "overshoot-for-emphasis",
-    "principle": "A small overshoot and settle gives an element weight – use it for the few moments that matter.",
-    "why": "Overshoot draws attention because it is a little surprising. On every element it stops being a surprise and the video feels bouncy and cheap.",
-    "inTikMaker": "pop, bounceIn and zoomSettle* are the overshooting presets – reserve them for the hook, the key number and the verdict. Most blocks should arrive calmly (fade, slide, scaleIn).",
+    "id": "rhythm-and-audio-sync",
+    "priority": "must",
+    "principle": "Motion follows the rhythm of the voice: its pace, its pauses and its stressed words.",
+    "why": "When everything animates at one even tempo the video feels mechanical and the voice and picture drift apart. Quick beats under quick speech, a held frame under a pause and a bigger move on the stressed word make the two feel like one performance.",
+    "inTikMaker": "Blocks and their parts already land on their words. Choose the speed with the voice: items named in quick succession get short entrances (4–8 frames); the beat after a pause, or the big claim after a list, gets a slower, larger entrance. Do not animate every beat the same.",
     "sources": [
-      "https://ixdf.org/literature/article/ui-animation-how-to-apply-disney-s-12-principles-of-animation-to-ui-design"
+      "https://m1.material.io/motion/duration-easing.html",
+      "https://www.ibm.com/design/language/animation/classic-principles/"
     ]
   },
   {
     "id": "anticipation-before-payoff",
+    "priority": "must",
     "principle": "Prepare the viewer just before the payoff.",
     "why": "A brief build-up – a pause, a small zoom in, the previous element clearing the stage – makes the reveal land harder than if it simply appears.",
     "inTikMaker": "Before the key moment, let the stage clear (the previous block leaves early) or give the incoming block a slower, larger entrance than the rest.",
@@ -86,20 +81,23 @@
   },
   {
     "id": "stagger-groups",
-    "principle": "When several things belong together, they arrive one after another in reading order, not all at once.",
-    "why": "A staggered arrival shows the order to read them in; everything at once is a wall the viewer has to sort out themselves.",
-    "inTikMaker": "List items, schema nodes and logos already stagger inside their block. Do not add a second stagger on top of it.",
+    "priority": "must",
+    "principle": "Things that belong together arrive one after another in reading order, not all at once.",
+    "why": "A staggered arrival shows the order to read them in; everything at once is a wall the viewer has to sort out. This is about ORDER inside one group; one-focus is about COMPETITION between groups – three icons may arrive one by one, but the group as a whole must not fight another group for attention.",
+    "inTikMaker": "List items, schema nodes, logos, keys and chat bubbles already stagger inside their block, on their own words. Do not add a second stagger on top of it.",
     "sources": ["https://m1.material.io/motion/choreography.html"]
   },
   {
     "id": "hold-still-to-read",
+    "priority": "must",
     "principle": "Text and numbers must stop moving long enough to be read.",
     "why": "The eye cannot read moving text. Continuous drift is fine for a picture, not for a sentence or a number the viewer has to take in.",
-    "inTikMaker": "Ken Burns (zoomIn, float…) suits objects and screenshots held longer than about 2 s, not code, terminals, lists or numbers.",
-    "sources": []
+    "inTikMaker": "Drift (zoomIn, float…) suits objects, screens and phones held longer than about 2 s – not code, terminals, lists, numbers or chats.",
+    "sources": ["https://m1.material.io/motion/duration-easing.html"]
   },
   {
     "id": "variety-without-chaos",
+    "priority": "must",
     "principle": "Vary the motion between beats, but from a small set used consistently.",
     "why": "The same fade on every element for a minute is boring; twenty different effects look like a template demo. Two or three entrances with a clear role each read as a style.",
     "inTikMaker": "Give each kind of moment its own move (next item, contrast, payoff, calm explanation) and keep that pairing through the whole video.",
@@ -109,10 +107,85 @@
     ]
   },
   {
+    "id": "appeal",
+    "priority": "must",
+    "principle": "The motion has a character the viewer enjoys watching: confident, clear and of one personality.",
+    "why": "Viewers stay with motion that feels designed – deliberate timing, clean arrivals, a recognisable style – and scroll past motion that feels random or cheap, even when the content is good.",
+    "inTikMaker": "Prefer few, clean, confident moves over many small ones. When unsure between two presets, pick the calmer one and save the strong ones (zoomSettle, burstOut, zoomThrough) for the moments that matter.",
+    "sources": [
+      "https://ixdf.org/literature/article/ui-animation-how-to-apply-disney-s-12-principles-of-animation-to-ui-design",
+      "https://www.ibm.com/design/language/animation/classic-principles/"
+    ]
+  },
+  {
+    "id": "exit-shorter-than-entrance",
+    "priority": "recommended",
+    "principle": "Leaving is usually quicker than arriving.",
+    "why": "The viewer cares about what is coming, not about what is going. A long exit holds attention on something that no longer matters.",
+    "inTikMaker": "TikMaker's starting values: exits about 6–8 frames, entrances about 8–12 frames at 30 fps. These are defaults, not a law – a dramatic reveal, a slow voice or a deliberate hand-over can take longer.",
+    "sources": ["https://m1.material.io/motion/duration-easing.html"]
+  },
+  {
+    "id": "size-and-distance-set-duration",
+    "priority": "recommended",
+    "principle": "Bigger changes take longer; small ones are quick.",
+    "why": "A move across the whole frame in a few frames is a jump; a tiny fade over a second is sluggish. Duration should match how far and how much something changes – and the pace of the voice around it.",
+    "inTikMaker": "TikMaker's starting values: a full-frame transition or a long move 12–18 frames; a badge or a small element 6–10 frames. Adjust to the voice and the moment rather than applying them as a formula.",
+    "sources": ["https://m1.material.io/motion/duration-easing.html"]
+  },
+  {
+    "id": "overshoot-for-emphasis",
+    "priority": "recommended",
+    "principle": "A small overshoot and settle gives an element weight – use it for the few moments that matter.",
+    "why": "Overshoot draws attention because it is a little surprising. On every element it stops being a surprise and the video feels bouncy and cheap.",
+    "inTikMaker": "pop, bounceIn and zoomSettle* are the overshooting presets – reserve them for the hook, the key number and the verdict. Most blocks arrive calmly (fade, slide, scaleIn).",
+    "sources": [
+      "https://ixdf.org/literature/article/ui-animation-how-to-apply-disney-s-12-principles-of-animation-to-ui-design"
+    ]
+  },
+  {
+    "id": "follow-through",
+    "priority": "recommended",
+    "principle": "When the main element stops, what belongs to it settles a moment later.",
+    "why": "Everything stopping on the same frame looks stiff. A card that lands and then has its title and icon settle just after reads as one object with weight. This differs from stagger-groups: those are separate items in an order; this is the parts of ONE thing finishing its move.",
+    "inTikMaker": "The blocks draw this themselves (a card's contents arrive after the card, a coin's icon after the coin). Choose a block entrance that lets it show – a slide or scaleIn rather than a hard cut.",
+    "sources": [
+      "https://ixdf.org/literature/article/ui-animation-how-to-apply-disney-s-12-principles-of-animation-to-ui-design",
+      "https://www.ibm.com/design/language/animation/classic-principles/"
+    ]
+  },
+  {
+    "id": "secondary-action",
+    "priority": "recommended",
+    "principle": "A small secondary motion can support the main one – never replace or compete with it.",
+    "why": "A slight drift under a held screen or a gentle float under an object keeps the frame alive while the voice explains. If the secondary motion is as big as the main one, it becomes a second focus.",
+    "inTikMaker": "Drift (float, zoomIn, panLeft…) is the secondary action: on pictures held for a while, slow and small. Not on text, and not on two neighbouring blocks at once.",
+    "sources": [
+      "https://ixdf.org/literature/article/ui-animation-how-to-apply-disney-s-12-principles-of-animation-to-ui-design"
+    ]
+  },
+  {
     "id": "statement-is-a-breath",
+    "priority": "recommended",
     "principle": "A frame with no picture is a pause – the cut into it should feel like the stage clearing.",
     "why": "A statement scene works because it is empty. If the previous picture lingers or is pushed out noisily, the pause is lost.",
     "inTikMaker": "Before a statement scene, let the last block leave cleanly (fade or a short exit) by the end of its scene.",
-    "sources": []
+    "sources": ["https://m1.material.io/motion/choreography.html"]
+  },
+  {
+    "id": "depth-marks-a-new-space",
+    "priority": "recommended",
+    "principle": "A move through depth – flying into the frame, something rising from far behind it, a card turning over – says 'we are going somewhere else', not 'the next one'.",
+    "why": "Slides move across the flat frame, so they read as the story going on in the same place. Depth changes the space itself, so the viewer feels a step into a different part. Used on every cut it stops meaning anything and the video gets dizzy.",
+    "inTikMaker": "Keep the slides for the ordinary 'next' cuts. Use zoomThrough, fromDepth or flip for the one to three cuts that open a new part: from the problem into the solution, into the demo, into the verdict. zoomThrough is the strongest – at most once or twice a video.",
+    "sources": ["https://m1.material.io/motion/choreography.html"]
+  },
+  {
+    "id": "composition-moves",
+    "priority": "optional",
+    "principle": "A held picture can change its composition: move aside or shrink to make room for what comes next.",
+    "why": "Instead of replacing a picture, moving it makes the relation between the old and the new visible – the diagram slides left and the result appears on the right, the screen shrinks to the top and its detail opens below.",
+    "inTikMaker": "moves (x, y, scale on a later word) are for these deliberate changes of composition, a few per video at most – never for small nudges.",
+    "sources": ["https://m1.material.io/motion/choreography.html"]
   }
 ]

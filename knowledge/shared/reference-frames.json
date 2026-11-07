@@ -1,0 +1,89 @@
+[
+  {
+    "id": "insiderforce",
+    "file": "reference-frames/insiderforce.png",
+    "source": "InsiderForce (TikTok), 10 frames, docs/bd/kadrai/insiderforce/ – the channel the stage style is built on",
+    "tiles": [
+      "1: three tool logos on a thin line at the top, ONE big pricing card in the middle – a single dominant thing",
+      "2: two logos, a video frame, then the headline in three sizes with the key phrase in a black box",
+      "3: price cards stacked in one repeated form; only the new price is in the accent colour",
+      "4: a globe joined by one line to a big character – one object fills the frame, the caption below with the key word bigger and bold",
+      "5: four logos in a diamond, dashed lines to one globe with a warning sign – a whole problem as one small, airy diagram",
+      "6: a character top left, one dashed curve to a logo bottom right, the words between them",
+      "7: a badge \"01\" on a line down to one screenshot card – the step and its result joined",
+      "8: a big character with a gear and three short rows with icons – few rows, very big",
+      "9: one character filling the frame, a two-line caption under it",
+      "10: a small strip of photos at the top, three short rows with ✦, the closing phrase bold"
+    ],
+    "takeaways": [
+      "One thing dominates every frame; everything else is clearly smaller or a thin line.",
+      "Words are big: the caption is 2–3 lines with the key words bold or boxed – never small labels to read.",
+      "A diagram has at most four nodes, lots of space between them, and one link drawn at a time.",
+      "Lots of calm space; nothing touches the edges or the caption.",
+      "The background colour is theirs (light) – judge the composition, not the colours."
+    ]
+  },
+  {
+    "id": "explain",
+    "file": "reference-frames/explain.png",
+    "source": "Explainer frames from several creators, docs/bd/kadrai/geri/ (mechanism, setup, item, problem)",
+    "tiles": [
+      "1: a level title on top, ONE vertical diagram in the middle: three boxes, input → model → output, thin dashed arrows",
+      "2: the same title, the diagram replaced by two big rows with ✗ – what it cannot do",
+      "3: a simple drawing (an island with gorillas) with two tiny labels where it changed – the idea as one picture",
+      "4: one coloured ring of letters, the name big below – a whole concept as one shape",
+      "5: spotlight: one node bright, everything else dark and blurred, the key words in bold yellow below",
+      "6: a word on top, a drawing with ONE curved arrow showing what moves",
+      "7: the step number, the feature as a big pill, the tool's window under it",
+      "8: a counter in the corner, one animated map filling the frame, the caption at the bottom",
+      "9: a huge STEP and number in opposite corners, framing the speaker",
+      "10: a few words above one broken object (a cracked 'Tokens' plate) – the problem as one thing"
+    ],
+    "takeaways": [
+      "A diagram has 3–4 boxes in ONE direction with lots of space – never two diagrams in one frame.",
+      "When the explanation moves on, the picture is REPLACED (diagram → two ✗ rows) instead of squeezing a second one in.",
+      "One shape carries the concept (a ring, an island, a broken plate); labels are few and big.",
+      "Spotlight: to point at one part, everything else is dimmed."
+    ]
+  },
+  {
+    "id": "open-close",
+    "file": "reference-frames/open-close.png",
+    "source": "Hooks, reveals, proof and CTA frames from several creators, docs/bd/kadrai/geri/",
+    "tiles": [
+      "1: the result on top, the claim in two big lines, the tools' logos in a zigzag below",
+      "2: text only – lines in different sizes, the brand set as one of the lines in its colours",
+      "3: two names stacked, one icon overlapping the other, the time promise below",
+      "4: a short line over one tool card, decorations only in the corners",
+      "5: three lines in three weights, the last in a black box",
+      "6: the browser cropped bottom right, the address big and readable",
+      "7: before/after as two equal cards stacked, a one-word label on each",
+      "8: a phone on the left, ONE benefit word on the right",
+      "9: one sentence in the middle, the key words in the accent colour",
+      "10: the comment keyword the biggest thing, the gift (an e-book) as an object"
+    ],
+    "takeaways": [
+      "The hook's first frame says the promise in 2–3 big lines with one word boxed or coloured.",
+      "Two equal things are right only for a before/after – then they get one word each.",
+      "A CTA makes the one keyword the biggest thing on screen.",
+      "Text-only frames are fine when the type itself has hierarchy: sizes, weights, one box."
+    ]
+  },
+  {
+    "id": "pictures",
+    "file": "reference-frames/pictures.png",
+    "source": "InsiderForce frames that carry a real picture, docs/bd/kadrai/geri/picture-01..04",
+    "tiles": [
+      "1: a metaphor as a cut-out picture – a robot hand holding a glowing globe fills the top half; the claim below in big type, the last word boxed",
+      "2: a cut-out object (a blue folder labelled API's) with two hands reaching to it (Michelangelo) – the thing and the promise around it",
+      "3: a cut-out photo of the real person, black and white, over an accent shape; the headline beside him",
+      "4: four photo cards, tilted with shadows, in the corners around one number in a ring – real examples around the key fact"
+    ],
+    "takeaways": [
+      "One or two real pictures make a video feel alive: a metaphor, the real thing, the real person, real examples.",
+      "Pictures are cut out (no background) with a soft shadow, or set as tilted cards with a white border – never a flat rectangle pasted in.",
+      "The picture is big – it is the frame's main element, the words go above or beside it.",
+      "Black-and-white photos plus one accent colour keep a mixed set of pictures in one style."
+    ]
+  }
+]
