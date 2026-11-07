@@ -15,8 +15,6 @@ import { callStructured, type StructuredResult } from "../llm.js";
 // own instruction) and whether to ask before doing it. It never does the
 // work – the step each target belongs to does.
 
-export const ROUTER_MODEL = "sonnet";
-
 // What each kind of target does, as the model is told.
 const KINDS: Record<ChatTargetKind, string> = {
   hook: "write the three hooks again with the instruction (the user picks one again; a script that exists is written again after that)",
@@ -85,7 +83,5 @@ Attached (selected in the editor):
 ${attached}
 
 Message: ${message.text}`;
-  return callStructured(routeFromAi, { system: SYSTEM, user }, model, {
-    model: ROUTER_MODEL,
-  });
+  return callStructured(routeFromAi, { system: SYSTEM, user }, model);
 }

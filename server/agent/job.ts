@@ -2,6 +2,7 @@ import type { AgentRun } from "../../src/agent/run/run.js";
 import type { Workspace } from "../../src/agent/knowledge.js";
 import { KNOWLEDGE_DIR } from "../config.js";
 import { loadKnowledge, type Knowledge } from "./knowledge.js";
+import { inStep } from "./models.js";
 import {
   StructuredCallError,
   type CallLog,
@@ -62,7 +63,7 @@ export async function openJob(run: AgentRun): Promise<Job> {
     async ai(name, call) {
       const startedAt = Date.now();
       try {
-        const result = await call();
+        const result = await inStep(name, call);
         const step = {
           ...logged(name, startedAt, result),
           output: result.data,

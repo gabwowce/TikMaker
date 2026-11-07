@@ -8,7 +8,8 @@ import {
 } from "ai";
 import { readFileSync } from "node:fs";
 import { z } from "zod";
-import { callClaudeCode, claudeModel, WrongShapeError } from "./claudeCode.js";
+import { callClaudeCode, WrongShapeError } from "./claudeCode.js";
+import { claudeModel } from "./models.js";
 
 // The one place that talks to a language model. Every agent step goes through
 // callStructured, so the answer is always checked against a Zod schema and the
@@ -80,15 +81,12 @@ export async function callStructured<T>(
   schema: z.ZodType<T>,
   prompt: { system: string; user: string },
   given?: LanguageModel,
-  // Claude Code only: a model for this call (the message router runs on
-  // Sonnet – a small decision, not worth Opus)
-  claude?: { model: string },
   // PNG files the model looks at with the text (the review's frames)
   images: string[] = [],
 ): Promise<StructuredResult<T>> {
   // A model passed in (the tests' fake one) always wins.
   if (!given && process.env.AGENT_PROVIDER === "claude-code")
-    return callStructuredClaude(schema, prompt, [], claude?.model);
+    return callStructuredClaude(schema, prompt);
   const model = given ?? agentModel();
   const level = thinkingLevel();
   const started = Date.now();
@@ -155,7 +153,6 @@ async function callStructuredClaude<T>(
   schema: z.ZodType<T>,
   prompt: { system: string; user: string },
   tools: string[] = [],
-  model?: string,
 ): Promise<StructuredResult<T>> {
   const started = Date.now();
   const usage: TokenCount = {
@@ -181,7 +178,7 @@ async function callStructuredClaude<T>(
   };
   for (let attempt = 1; ; attempt++) {
     try {
-      const answer = await callClaudeCode(schema, prompt, tools, model);
+      const answer = await callClaudeCode(schema, prompt, tools);
       add(answer.usage);
       modelId = answer.model;
       return { ...log(attempt), data: answer.data };
@@ -207,7 +204,7 @@ export async function callWithImages<T>(
 ): Promise<StructuredResult<T>> {
   if (!given && process.env.AGENT_PROVIDER === "claude-code")
     return callStructuredClaude(schema, prompt, ["Read"]);
-  return callStructured(schema, prompt, given, undefined, images);
+  return callStructured(schema, prompt, given, images);
 }
 
 // A question answered with a web search: plain text back, and the pages it

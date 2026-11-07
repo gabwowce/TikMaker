@@ -4,6 +4,7 @@ import { mkdirSync } from "node:fs";
 import os from "node:os";
 import path from "node:path";
 import type { z } from "zod";
+import { claudeModel } from "./models.js";
 
 // A model call through Claude Code on the user's own subscription
 // (docs/motion-planas.md, "Sprendimai 2026-11-05"). The server runs
@@ -12,7 +13,8 @@ import type { z } from "zod";
 // Every call is a new session with no memory: the prompt carries all context.
 //
 // CLAUDE_CODE_PATH   where claude.exe is (default: where the installer puts it)
-// AGENT_CLAUDE_MODEL which model: sonnet | opus | haiku (default: sonnet)
+// AGENT_CLAUDE_MODEL which model: sonnet | opus | haiku (default: sonnet);
+//                    a step can have its own (models.ts)
 
 // What one call returns: the checked answer and what it cost.
 export type ClaudeCodeAnswer<T> = {
@@ -45,7 +47,6 @@ const NOT_SUBSCRIPTION = [
 const claudePath = () =>
   process.env.CLAUDE_CODE_PATH ??
   path.join(os.homedir(), ".local", "bin", "claude.exe");
-export const claudeModel = () => process.env.AGENT_CLAUDE_MODEL ?? "sonnet";
 
 // Claude Code's answer (stdout) → checked data. Kept apart from running it,
 // so it can be tested without a real call.
@@ -127,9 +128,6 @@ export function runClaudeCode(
   prompt: { system: string; user: string },
   jsonSchema: unknown,
   tools: string[] = [],
-  // a model for this call only (e.g. "sonnet" for the cheap message router);
-  // unset – AGENT_CLAUDE_MODEL
-  model?: string,
 ): Promise<string> {
   const cwd = agentFolder();
   const env = { ...process.env };
@@ -146,7 +144,7 @@ export function runClaudeCode(
     tools.join(","),
     ...(tools.length ? ["--allowedTools", tools.join(",")] : []),
     "--model",
-    model ?? claudeModel(),
+    claudeModel(),
     "--system-prompt",
     prompt.system,
     "--no-session-persistence",
@@ -180,13 +178,11 @@ export async function callClaudeCode<T>(
   schema: z.ZodType<T>,
   prompt: { system: string; user: string },
   tools: string[] = [],
-  model?: string,
 ): Promise<ClaudeCodeAnswer<T>> {
   const stdout = await runClaudeCode(
     prompt,
     zodSchema(schema).jsonSchema,
     tools,
-    model,
   );
   return readAnswer(stdout, schema);
 }
