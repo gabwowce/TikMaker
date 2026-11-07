@@ -4,192 +4,187 @@ import { field, useBrand, wordFrame } from "../../video/brand/kit";
 import type { CodeSceneProps } from "../../video/code/types";
 import {
   Bar,
+  cardStyle,
+  ChatRows,
   clamp,
-  EASE_OUT,
+  EASE_IN,
   FileCard,
   fileRects,
   GREY,
-  ITEM_TERM,
   lerpRect,
   prog,
+  pulse,
+  rectStyle,
   rowRects,
-  Slots,
+  S3_FILES_H,
+  S3_FILES_Y,
+  S3_TERM,
+  Slot,
+  Stage,
   Terminal,
   type Rect,
 } from "./shared";
 
 export const description =
-  "Slot 2 fills with /compact; a tall scrolling chat history squeezes down into one short block while the thread line from its first to its last message stays unbroken";
+  "Slot 2 fills with /compact; a tall scrolling chat history squeezes down into a short block inside the outline of its old size, while an orange thread line from start to finish stays unbroken";
 
 export const schema = z.object({
-  command: field.text("Command", "/compact"),
-  labelOn: field.word("Slot fills on", "compact"),
-  longOn: field.word("History speeds up on", "long"),
-  shrinkOn: field.word("History squeezes on", "shrinks"),
-  threadOn: field.word("Thread lights up on", "thread"),
+  command: field.text("The command", "/compact"),
+  slotOn: field.word("Slot fills on", "compact"),
+  growOn: field.word("History grows on", "long"),
+  shrinkOn: field.word("Shrinks on", "shrinks"),
+  threadOn: field.word("Thread lights up on", "without"),
 });
 type Params = z.infer<typeof schema>;
 
-const TALL: Rect = { x: 140, y: 410, w: 800, h: 660 };
-const SHORT: Rect = { x: 140, y: 570, w: 800, h: 340 };
-const START: Rect = { x: 90, y: 800, w: 900, h: 250 };
-
-// one chat bubble: side, width share, rows
-const BUBBLES = [
-  [1, 0.7, 2],
-  [0, 0.55, 1],
-  [1, 0.8, 3],
-  [0, 0.6, 2],
-  [1, 0.5, 1],
-  [0, 0.75, 2],
-  [1, 0.65, 2],
-  [0, 0.5, 1],
-] as const;
-const BUBBLE_GAP = 22;
-const bubbleH = (rows: number) => 30 + rows * 22 + (rows - 1) * 14;
-const LIST_H = BUBBLES.reduce((s, b) => s + bubbleH(b[2]) + BUBBLE_GAP, 0);
+const SHORT: Rect = { x: 140, y: 470, w: 800, h: 380 };
+const TALL: Rect = { x: 140, y: 400, w: 800, h: 660 };
+const SMALL: Rect = { x: 140, y: 600, w: 800, h: 250 };
 
 export default function Scene4({ words, durationInFrames, params }: CodeSceneProps<Params>) {
   const frame = useCurrentFrame();
   const c = useBrand();
 
-  const labelAt = wordFrame(words, params.labelOn, 19) - 3;
-  const longAt = wordFrame(words, params.longOn, 66) - 3;
+  const slotAt = wordFrame(words, params.slotOn, 19) - 3;
+  const growAt = wordFrame(words, params.growOn, 66) - 3;
   const shrinkAt = wordFrame(words, params.shrinkOn, 103) - 3;
-  const threadAt = wordFrame(words, params.threadOn, 159) - 3;
+  const threadAt = wordFrame(words, params.threadOn, 131) - 3;
 
-  const move = prog(frame, 0, 18);
+  // the row: slot 1 wide → slot 2 wide
+  const swap = prog(frame, slotAt, 12);
   const from = rowRects(0);
   const to = rowRects(1);
-  const label = prog(frame, labelAt, 10);
-  const slotHot = frame >= labelAt && frame < shrinkAt ? 1 : 0;
+  const slotHot = interpolate(frame, [slotAt, slotAt + 6, threadAt, threadAt + 8], [0, 1, 1, 0], clamp);
 
-  const sq = interpolate(frame, [shrinkAt, shrinkAt + 14], [0, 1], { ...clamp, easing: EASE_OUT });
-  const win = lerpRect(lerpRect(ITEM_TERM, TALL, move), SHORT, sq);
-  const threadHot = prog(frame, threadAt, 8);
-  const summaryHot = frame >= shrinkAt && frame < threadAt ? 1 : 0;
-  const push = interpolate(frame, [0, durationInFrames], [1, 1.03], clamp);
-  const drift = Math.sin(frame / 24) * 5;
+  // the previous scene's terminal and files leave
+  const out = prog(frame, 0, 9, EASE_IN);
 
-  // the history scrolls up; faster once it "gets long"
-  const scroll = frame * 1.4 + interpolate(frame, [longAt, shrinkAt], [0, 260], clamp);
-  const offset = scroll % LIST_H;
-  const filesOut = interpolate(frame, [0, 8], [1, 0], clamp);
+  // the history: enters short, grows tall, then squeezes small
+  const enter = prog(frame, 8, 12);
+  const grow = prog(frame, growAt, 22);
+  const squeeze = prog(frame, shrinkAt, 16);
+  const card = lerpRect(lerpRect(SHORT, TALL, grow), SMALL, squeeze);
+  const scroll = frame * 1.6 + grow * 260;
+  const longRows = 1 - prog(frame, shrinkAt + 4, 8);
+  const summary = prog(frame, shrinkAt + 8, 10);
+  const ghost = prog(frame, shrinkAt + 4, 10) * 0.35;
 
-  const looks = from.map((r, i) => ({
-    rect: lerpRect(r, to[i], move),
-    label: i === 1 && label > 0 ? params.command : undefined,
-    hot: i === 1 ? slotHot : 0,
-    filled: i === 0 ? 1 : i === 1 ? label : 0,
-    dim: i === 1 ? 1 : 0.5,
-  }));
-
-  const bodyH = win.h - 64;
-  const threadX = 46;
+  const thread = prog(frame, threadAt, 8);
+  const glow = thread * (0.6 + 0.4 * pulse(frame, 30));
+  const threadColor = thread > 0.5 ? c.accent : "#5a5d66";
+  const dot = 34;
 
   return (
-    <AbsoluteFill style={{ scale: `${push}` }}>
-      <Slots looks={looks} />
-
-      {filesOut > 0
-        ? fileRects(START.y, START.h).map((r, i) => (
-            <FileCard key={i} rect={r} clean={1} style={{ opacity: filesOut * 0.55, translate: `0px ${(1 - filesOut) * 40}px` }} />
-          ))
-        : null}
-
-      <Terminal
-        rect={{ ...win, y: win.y + drift * move }}
-        style={{ border: summaryHot ? `3px solid ${c.accent}` : undefined }}
-      >
-        {/* the history (bubbles), clipped and scrolling */}
-        <div
-          style={{
-            position: "absolute",
-            left: 0,
-            right: 0,
-            top: 0,
-            height: bodyH,
-            overflow: "hidden",
-            opacity: (1 - sq) * move,
-          }}
-        >
-          <div style={{ position: "absolute", left: threadX + 44, right: 36, top: 24 - offset }}>
-            {[...BUBBLES, ...BUBBLES, ...BUBBLES].map(([side, share, rows], i) => (
-              <div key={i} style={{ display: "flex", justifyContent: side ? "flex-end" : "flex-start", marginBottom: BUBBLE_GAP }}>
-                <div
-                  style={{
-                    width: `${share * 100}%`,
-                    height: bubbleH(rows),
-                    boxSizing: "border-box",
-                    padding: "15px 22px",
-                    borderRadius: 22,
-                    background: side ? "#2a2c32" : "rgba(255,255,255,0.04)",
-                    display: "flex",
-                    flexDirection: "column",
-                    gap: 14,
-                  }}
-                >
-                  {Array.from({ length: rows }).map((_, k) => (
-                    <Bar key={k} w={`${k === rows - 1 && rows > 1 ? 60 : 100}%`} h={22} color={side ? "#454850" : GREY} />
-                  ))}
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* the summary block it squeezes into */}
-        <div
-          style={{
-            position: "absolute",
-            left: threadX + 44,
-            right: 36,
-            top: 30,
-            bottom: 30,
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "center",
-            gap: 24,
-            opacity: sq,
-            scale: `${interpolate(sq, [0, 1], [1.2, 1])} ${interpolate(sq, [0, 1], [2.2, 1])}`,
-          }}
-        >
-          <Bar w="92%" h={28} color="#4a4d55" />
-          <Bar w="78%" h={28} color="#4a4d55" />
-          <Bar w="54%" h={28} color="#4a4d55" />
-        </div>
-
-        {/* the thread: first message → last message, never broken */}
-        <div
-          style={{
-            position: "absolute",
-            left: threadX - 4,
-            top: 30,
-            bottom: 30,
-            width: 8,
-            borderRadius: 4,
-            background: threadHot > 0.5 ? c.accent : "#5a5d66",
-            boxShadow: `0 0 ${threadHot * 26}px ${c.accent}`,
-            opacity: move,
-          }}
-        />
-        {[0, 1].map((end) => (
-          <div
-            key={end}
-            style={{
-              position: "absolute",
-              left: threadX - 15,
-              ...(end ? { bottom: 18 } : { top: 18 }),
-              width: 30,
-              height: 30,
-              borderRadius: 15,
-              background: threadHot > 0.5 ? c.accent : "#8a8d96",
-              opacity: move,
-              scale: `${1 + 0.25 * Math.sin(Math.PI * prog(frame, threadAt, 12))}`,
+    <AbsoluteFill>
+      <Stage frame={frame} duration={durationInFrames}>
+        {from.map((r, i) => (
+          <Slot
+            key={i}
+            n={i + 1}
+            look={{
+              rect: lerpRect(r, to[i], swap),
+              label: i === 0 ? "/rewind" : i === 1 ? params.command : undefined,
+              hot: i === 1 ? slotHot : 0,
+              filled: i === 0 ? 1 : i === 1 ? Math.max(swap, prog(frame, threadAt, 8)) : 0,
+              dim: i === 1 ? 1 : 0.5,
             }}
           />
         ))}
-      </Terminal>
+
+        {out < 1 ? (
+          <div style={{ position: "absolute", inset: 0, opacity: 1 - out, translate: `0px ${out * 60}px` }}>
+            <Terminal rect={S3_TERM} style={{ opacity: 0.4 }} />
+            {fileRects(S3_FILES_Y, S3_FILES_H).map((r, i) => (
+              <FileCard key={i} rect={r} clean={1} />
+            ))}
+          </div>
+        ) : null}
+
+        {/* the outline of the old, long session */}
+        <div
+          style={{
+            ...rectStyle(TALL),
+            borderRadius: 30,
+            border: "4px dashed rgba(255,255,255,0.5)",
+            boxSizing: "border-box",
+            opacity: ghost,
+          }}
+        />
+
+        <div
+          style={{
+            ...rectStyle(card),
+            ...cardStyle(card.w),
+            opacity: enter,
+            scale: `${interpolate(enter, [0, 1], [0.95, 1])}`,
+          }}
+        >
+          {/* long history */}
+          <div
+            style={{
+              position: "absolute",
+              left: 130,
+              right: 50,
+              top: 30,
+              bottom: 30,
+              overflow: "hidden",
+              opacity: longRows,
+              maskImage: "linear-gradient(to bottom, transparent, black 15%, black 85%, transparent)",
+            }}
+          >
+            <ChatRows width={620} offset={scroll % (12 * 74)} />
+          </div>
+          {/* the compact summary */}
+          <div
+            style={{
+              position: "absolute",
+              left: 130,
+              right: 50,
+              top: 0,
+              bottom: 0,
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+              gap: 30,
+              opacity: summary,
+              translate: `0px ${(1 - summary) * 16}px`,
+            }}
+          >
+            {[0.92, 0.74, 0.55].map((f, i) => (
+              <Bar key={i} w={620 * f} h={32} color={i === 0 ? "#55585f" : GREY} />
+            ))}
+          </div>
+          {/* the thread: start → finish, never broken */}
+          <div
+            style={{
+              position: "absolute",
+              left: 62,
+              top: 40 + dot / 2,
+              bottom: 40 + dot / 2,
+              width: 10,
+              marginLeft: -5,
+              borderRadius: 5,
+              background: threadColor,
+              boxShadow: `0 0 ${24 * glow}px ${c.accent}`,
+            }}
+          />
+          {[0, 1].map((k) => (
+            <div
+              key={k}
+              style={{
+                position: "absolute",
+                left: 62 - dot / 2,
+                ...(k === 0 ? { top: 40 } : { bottom: 40 }),
+                width: dot,
+                height: dot,
+                borderRadius: dot / 2,
+                background: threadColor,
+                boxShadow: `0 0 ${30 * glow}px ${c.accent}`,
+              }}
+            />
+          ))}
+        </div>
+      </Stage>
     </AbsoluteFill>
   );
 }

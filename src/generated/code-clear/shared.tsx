@@ -4,14 +4,16 @@ import { Logo, MONO, useBrand } from "../../video/brand/kit";
 
 // Shared pieces of "3 Claude Code commands": the row of three command slots
 // (it carries through scenes 2–6), the terminal window, the file cards that
-// break and come back clean, keycaps and small icons.
+// break and come back clean, the chat history, keycaps and small icons.
 
 export const EASE_OUT = Easing.bezier(0.16, 1, 0.3, 1);
 export const EASE_BOUNCE = Easing.bezier(0.34, 1.56, 0.64, 1);
+export const EASE_IN = Easing.bezier(0.5, 0, 0.75, 0);
 export const clamp = { extrapolateLeft: "clamp", extrapolateRight: "clamp" } as const;
 
 export const GREY = "#3a3d44";
 export const CARD_BG = "#1c1e23";
+export const LIGHT = "#e6e6e8";
 
 // 0 → 1 over `len` frames from `at`.
 export function prog(frame: number, at: number, len = 12, easing = EASE_OUT) {
@@ -22,6 +24,14 @@ export function prog(frame: number, at: number, len = 12, easing = EASE_OUT) {
 export function popScale(frame: number, at: number, from = 0.94) {
   return interpolate(frame, [at, at + 9, at + 14], [from, 1.02, 1], { ...clamp, easing: EASE_OUT });
 }
+
+// A small icon / sticker entrance (bouncy).
+export function bounceIn(frame: number, at: number, len = 10) {
+  return interpolate(frame, [at, at + len], [0, 1], { ...clamp, easing: EASE_BOUNCE });
+}
+
+// A slow pulse 0..1 (for the focus).
+export const pulse = (frame: number, period = 36) => (Math.sin((frame / period) * Math.PI * 2) + 1) / 2;
 
 export const mix = (a: number, b: number, t: number) => a + (b - a) * t;
 
@@ -54,17 +64,34 @@ export function Bar({ w, h = 22, color = GREY, style }: { w: number | string; h?
   return <div style={{ width: w, height: h, borderRadius: h / 2, background: color, flexShrink: 0, ...style }} />;
 }
 
+// The whole picture: a slow push-in and a gentle drift (calm, never frozen).
+export function Stage({ frame, duration, children }: { frame: number; duration: number; children: ReactNode }) {
+  const push = interpolate(frame, [0, duration], [1, 1.025], clamp);
+  return (
+    <div
+      style={{
+        position: "absolute",
+        inset: 0,
+        scale: `${push}`,
+        transformOrigin: "540px 640px",
+        translate: `0px ${Math.sin(frame / 40) * 5}px`,
+      }}
+    >
+      {children}
+    </div>
+  );
+}
+
 // ── The three command slots ────────────────────────────────────────────
-// The slots sit in a row at the top of the picture zone; the active one is
-// wide and shows its command, the others are narrow and show their number.
+// A row at the top of the picture zone; the active one is wide and shows its
+// command, the others are narrow and show their number.
 export const ROW_Y = 215;
 export const SLOT_H = 132;
 
 // The slot rects for: -1 = three equal empty slots, 0/1/2 = that one wide.
 export function rowRects(active: number): Rect[] {
   const gap = 15;
-  const widths =
-    active < 0 ? [290, 290, 290] : [0, 1, 2].map((i) => (i === active ? 560 : 155));
+  const widths = active < 0 ? [290, 290, 290] : [0, 1, 2].map((i) => (i === active ? 560 : 155));
   let x = 90;
   return widths.map((w) => {
     const r = { x, y: ROW_Y, w, h: SLOT_H };
@@ -75,7 +102,7 @@ export function rowRects(active: number): Rect[] {
 
 // The slots as a column on the left (the CTA).
 export function columnRects(): Rect[] {
-  return [0, 1, 2].map((i) => ({ x: 90, y: 330 + i * 190, w: 330, h: 160 }));
+  return [0, 1, 2].map((i) => ({ x: 90, y: 300 + i * 200, w: 300, h: 170 }));
 }
 
 export type SlotLook = {
@@ -98,7 +125,6 @@ export function Slot({ n, look }: { n: number; look: SlotLook }) {
         ...rectStyle(rect),
         ...cardStyle(560),
         borderRadius: 30,
-        background: CARD_BG,
         border: hot > 0.01 ? `3px solid rgba(255,112,36,${hot})` : "1px solid rgba(255,255,255,0.12)",
         display: "flex",
         alignItems: "center",
@@ -146,16 +172,6 @@ export function Slot({ n, look }: { n: number; look: SlotLook }) {
   );
 }
 
-export function Slots({ looks }: { looks: SlotLook[] }) {
-  return (
-    <>
-      {looks.map((l, i) => (
-        <Slot key={i} n={i + 1} look={l} />
-      ))}
-    </>
-  );
-}
-
 // ── The terminal ───────────────────────────────────────────────────────
 export function Terminal({ rect, children, style }: { rect: Rect; children?: ReactNode; style?: CSSProperties }) {
   return (
@@ -189,9 +205,9 @@ export function CommandLine({
   text,
   frame,
   typedFrom,
-  perChar = 1.6,
+  perChar = 1.4,
   color,
-  size = 68,
+  size = 76,
 }: {
   text: string;
   frame: number;
@@ -233,6 +249,7 @@ export function FileCard({
   hot = 1,
   locked = 0,
   lockHot = 0,
+  badge: showBadge = 1,
   style,
 }: {
   rect: Rect;
@@ -240,13 +257,14 @@ export function FileCard({
   hot?: number; // how orange the broken state is
   locked?: number; // 0..1 padlock badge
   lockHot?: number;
+  badge?: number; // 0..1 how visible the badge is
   style?: CSSProperties;
 }) {
   const c = useBrand();
   const broken = 1 - clean;
   const glow = broken * hot;
   const inner = rect.w - 60;
-  const badge = Math.round(rect.w * 0.3);
+  const badge = Math.round(Math.min(rect.w, 300) * 0.3);
   return (
     <div
       style={{
@@ -264,7 +282,7 @@ export function FileCard({
           inset: 0,
           overflow: "hidden",
           borderRadius: rect.w * 0.038,
-          padding: `${rect.h * 0.13}px 30px`,
+          padding: `${rect.h * 0.14}px 30px`,
           boxSizing: "border-box",
           display: "flex",
           flexDirection: "column",
@@ -275,13 +293,12 @@ export function FileCard({
           <Bar
             key={i}
             w={inner * f}
-            h={Math.max(14, rect.h * 0.06)}
+            h={Math.max(14, rect.h * 0.065)}
             color={glow > 0.4 ? `rgba(255,112,36,${0.35 + glow * 0.4})` : GREY}
             style={{ translate: `${KNOCK[i] * broken}px 0px`, rotate: `${(i % 2 ? -4 : 5) * broken}deg` }}
           />
         ))}
       </div>
-      {/* badge: ! when broken, ✓ when clean */}
       <div
         style={{
           position: "absolute",
@@ -290,9 +307,9 @@ export function FileCard({
           width: badge,
           height: badge,
           borderRadius: badge / 2,
-          background: locked > 0.01 ? (lockHot > 0.5 ? c.accent : "#e6e6e8") : broken > 0.5 ? c.accent : "#e6e6e8",
-          opacity: locked > 0.01 ? locked : glow > 0.5 || clean > 0.5 ? 1 : 0.5,
-          scale: `${locked > 0.01 ? interpolate(locked, [0, 1], [0.5, 1]) : 1}`,
+          background: locked > 0.01 ? (lockHot > 0.5 ? c.accent : LIGHT) : broken > 0.5 ? c.accent : LIGHT,
+          opacity: (locked > 0.01 ? locked : glow > 0.5 || clean > 0.5 ? 1 : 0.5) * showBadge,
+          scale: `${locked > 0.01 ? interpolate(locked, [0, 1], [0.5, 1]) : interpolate(showBadge, [0, 1], [0.5, 1])}`,
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
@@ -329,20 +346,52 @@ export function Padlock({ size, color }: { size: number; color: string }) {
 }
 
 // The three files of the hook and of /rewind – a row in the given band.
-export function fileRects(y: number, h: number): Rect[] {
-  const w = 260;
+export function fileRects(y: number, h: number, w = 260): Rect[] {
   const gap = (900 - 3 * w) / 2;
   return [0, 1, 2].map((i) => ({ x: 90 + i * (w + gap), y, w, h }));
 }
 
 // The hook's layout (scene 1) – scene 2 starts from it.
-export const FILES_Y = 360;
-export const FILES_H = 320;
-export const HOOK_TERM: Rect = { x: 90, y: 770, w: 900, h: 260 };
+export const HOOK_FILES_Y = 330;
+export const HOOK_FILES_H = 340;
+export const HOOK_TERM: Rect = { x: 90, y: 780, w: 900, h: 260 };
 // The big Claude Code window of the bridge (scene 2).
 export const S2_TERM: Rect = { x: 90, y: 420, w: 900, h: 620 };
-// The terminal of the item scenes (3–5) sits under the slot row.
-export const ITEM_TERM: Rect = { x: 90, y: 420, w: 900, h: 330 };
+// /rewind (scene 3): the terminal under the slot row, the files below it.
+export const S3_TERM: Rect = { x: 90, y: 400, w: 900, h: 340 };
+export const S3_FILES_Y = 800;
+export const S3_FILES_H = 250;
+
+// The U-turn "undo" arrow over the hook's files: from the right file round
+// to the left one. `t` 0..1 – how much of it is drawn.
+export function UTurnArrow({ t, color, opacity = 1 }: { t: number; color: string; opacity?: number }) {
+  const path = "M 860 316 C 860 160, 220 160, 220 300";
+  const head = t > 0.96 ? 1 : 0;
+  return (
+    <svg width={1080} height={1920} style={{ position: "absolute", left: 0, top: 0, opacity, overflow: "visible" }}>
+      <path
+        d={path}
+        pathLength={1}
+        fill="none"
+        stroke={color}
+        strokeWidth={22}
+        strokeLinecap="round"
+        strokeDasharray="1 1"
+        strokeDashoffset={1 - t}
+        style={{ filter: `drop-shadow(0 0 18px ${color}66)` }}
+      />
+      <path
+        d="M 186 268 L 220 322 L 254 268"
+        fill="none"
+        stroke={color}
+        strokeWidth={22}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        opacity={head}
+      />
+    </svg>
+  );
+}
 
 // A keycap.
 export function Key({ label, w, h, press, hot, style }: { label: string; w: number; h: number; press: number; hot: number; style?: CSSProperties }) {
@@ -373,6 +422,30 @@ export function Key({ label, w, h, press, hot, style }: { label: string; w: numb
       >
         {label}
       </div>
+    </div>
+  );
+}
+
+// ── The chat history (scene 4) ─────────────────────────────────────────
+// Message rows as grey bars, alternating "you" (right) and "Claude" (left).
+const MSG = [0.62, 0.8, 0.45, 0.72, 0.55, 0.85, 0.4, 0.68, 0.76, 0.5, 0.64, 0.82];
+export const MSG_ROW = 74;
+
+export function ChatRows({ width, offset, count = 36 }: { width: number; offset: number; count?: number }) {
+  return (
+    <div style={{ position: "absolute", left: 0, right: 0, top: -offset }}>
+      {Array.from({ length: count }).map((_, i) => {
+        const mine = i % 3 === 1;
+        const f = MSG[i % MSG.length];
+        return (
+          <div
+            key={i}
+            style={{ height: MSG_ROW, display: "flex", alignItems: "center", justifyContent: mine ? "flex-end" : "flex-start" }}
+          >
+            <Bar w={width * f * (mine ? 0.7 : 1)} h={30} color={mine ? "#4a4d55" : GREY} />
+          </div>
+        );
+      })}
     </div>
   );
 }

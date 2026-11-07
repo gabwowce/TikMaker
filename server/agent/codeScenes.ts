@@ -203,6 +203,7 @@ async function checkAndFix(
         description: said?.description ?? was?.description ?? "",
         ...(history ? { history } : {}),
         ...(said?.stage ?? was?.stage ? { stage: said?.stage ?? was?.stage } : {}),
+        ...((said?.sounds ?? was?.sounds) ? { sounds: said?.sounds ?? was?.sounds } : {}),
         version: (was?.version ?? 0) + 1,
         ...(errors.has(n) ? { error: errors.get(n)!.join("\n") } : {}),
       };

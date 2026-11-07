@@ -19,11 +19,15 @@ the captions; the scene draws only the picture.
 
 A TikTok viewer gives a scene one or two seconds. They will not read, and
 they will not study details. **Clarity beats detail; a shape beats a word.**
-Look at the creator's chosen examples first (Read them):
+Two sets of examples, for two things. The **style** examples – how things
+are drawn – are the creator's choice (Read them):
 `.claude/skills/tikmaker-explainer/references/example-1.jpg` … `example-5.jpg`
 – two avatars and four flat icons; the icons gather into one card; a chain
 of cards; a live app window next to a locked, blurred one with one number;
 one label over four simple video cards. That is the level and the style.
+The **composition** sheet – how a vertical frame is laid out: one dominant
+thing, big, a lot of calm space, the words big – is
+`knowledge/shared/reference-frames/insiderforce.png`.
 
 1. **Few, big, flat things.** 2–6 objects in a frame, each big (icons
    ≥ 120 px, cards ≥ 300 px wide), simple flat shapes and icons, rounded,
@@ -65,6 +69,11 @@ one label over four simple video cards. That is the level and the style.
 9. **Real things where they prove it.** A screen recording slot (≥ 860 px
    wide, it IS the main picture, nothing over it) when the viewer must see the
    real tool; a photo slot (≥ 500 px, alone) for a person or a real object.
+
+10. **Sound marks the moment, not every motion.** Each scene gets 0–2 sound
+   effects on its key moments (the main move, the payoff), named in your
+   answer – never `<Audio>` in the code: the video lays them on the timeline
+   from its library so the creator can edit them. A calm scene has none.
 
 The squint test: blur the frame in your head – is it still obvious where to
 look and what is happening? If not, cut elements until it is.

@@ -2,7 +2,7 @@
   {
     "id": "icon-minimal",
     "file": "reference-frames/icon-minimal.png",
-    "source": "The creator's chosen example (a YouTube explainer channel, 2026-11-07): the look TikMaker videos should have – clear without text",
+    "source": "STYLE – how things are drawn (the creator's chosen YouTube explainer, 2026-11-07): flat shapes and icons, text as grey bars, one orange focus. Judge how simple and clear the drawing is against this.",
     "tiles": [
       "1: two avatar circles in the middle, four flat icons around them (timer, palette, note, camera); two icons bright, two dimmed – nothing to read",
       "2: the same two avatars; the icons have flown into ONE card under them with an orange folder – the idea 'everything in one place' shown by grouping",
@@ -21,7 +21,7 @@
   {
     "id": "insiderforce",
     "file": "reference-frames/insiderforce.png",
-    "source": "InsiderForce (TikTok), 10 frames, docs/bd/kadrai/insiderforce/ – the channel the stage style is built on",
+    "source": "COMPOSITION – how a vertical frame is laid out (InsiderForce, TikTok, 10 frames, docs/bd/kadrai/insiderforce/): one dominant thing, big words, calm space. Judge the layout of the frame against this.",
     "tiles": [
       "1: three tool logos on a thin line at the top, ONE big pricing card in the middle – a single dominant thing",
       "2: two logos, a video frame, then the headline in three sizes with the key phrase in a black box",

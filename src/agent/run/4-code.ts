@@ -11,12 +11,38 @@ import { z } from "zod";
 // captions over its lower part.
 export const codeStage = z.enum(["top", "full"]);
 
+// The sound effects a scene asks for: which kind, on which spoken word. The
+// project puts them on the timeline as clips from the library
+// (src/agent/soundCues.ts) – the creator edits them like any other clip.
+export const soundKind = z.enum([
+  "whoosh",
+  "slide",
+  "pop",
+  "enter",
+  "ping",
+  "tick",
+  "count",
+  "success",
+  "fix",
+  "break",
+  "type",
+  "message",
+  "reveal",
+  "check",
+]);
+export const soundCue = z.object({
+  onWord: z.string().trim().min(1),
+  sound: soundKind,
+});
+
 // What Claude Code says about each scene it wrote.
 export const codeSceneFromAi = z.object({
   sceneIndex: z.number().int().min(0),
   // what the viewer sees, in one sentence
   description: z.string().trim().min(5).max(300),
   stage: codeStage.optional(),
+  // 0–2 sound effects on the scene's key moments
+  sounds: z.array(soundCue).max(3).optional(),
 });
 
 export const codeFromAi = z.object({
@@ -33,6 +59,7 @@ export const codeSceneInRun = z.object({
   file: z.string(),
   description: z.string(),
   stage: codeStage.optional(),
+  sounds: z.array(soundCue).optional(),
   // how many times the scene's code was written (1 – the first); the older
   // versions are kept (server/agent/codeVersions.ts)
   version: z.number().int().min(1).default(1),
@@ -60,6 +87,8 @@ export const codeInRun = z.object({
   problems: z.array(z.string()),
 });
 
+export type SoundKind = z.infer<typeof soundKind>;
+export type SoundCue = z.infer<typeof soundCue>;
 export type CodeStage = z.infer<typeof codeStage>;
 export type CodeSceneFromAi = z.infer<typeof codeSceneFromAi>;
 export type CodeFromAi = z.infer<typeof codeFromAi>;

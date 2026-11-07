@@ -9,111 +9,119 @@ import {
   FileCard,
   fileRects,
   GREY,
-  ITEM_TERM,
   lerpRect,
+  popScale,
   prog,
+  pulse,
   rowRects,
   S2_TERM,
-  Slots,
+  S3_FILES_H,
+  S3_FILES_Y,
+  S3_TERM,
+  Slot,
+  Stage,
   Terminal,
 } from "./shared";
 
 export const description =
-  "Slot 1 fills with /rewind; in the terminal the command runs and its last three edits roll back one by one, then the three orange broken files below turn clean";
+  "Slot 1 fills with /rewind; the command runs in the terminal, three edit lines roll back one by one, and the three broken files below snap back clean";
 
 export const schema = z.object({
-  command: field.text("Command", "/rewind"),
-  labelOn: field.word("Slot fills on", "rewind"),
-  typeOn: field.word("Command types on", "Type"),
-  undoOn: field.word("Edits roll back on", "undoes"),
-  filesOn: field.word("Broken files light up on", "Those"),
-  cleanOn: field.word("Files turn clean on", "Clean"),
+  command: field.text("The command", "/rewind"),
+  slotOn: field.word("Slot fills on", "rewind"),
+  typeOn: field.word("Typed on", "Type"),
+  undoOn: field.word("Edits roll back from", "undoes"),
+  filesOn: field.word("Files light up on", "Those"),
+  cleanOn: field.word("Files clean on", "Clean"),
 });
 type Params = z.infer<typeof schema>;
 
-const FILES3_Y = 800;
 const EDITS = [0.72, 0.5, 0.62];
 
 export default function Scene3({ words, durationInFrames, params }: CodeSceneProps<Params>) {
   const frame = useCurrentFrame();
   const c = useBrand();
 
-  const labelAt = wordFrame(words, params.labelOn, 19) - 3;
-  const typeAt = wordFrame(words, params.typeOn, 28) - 4;
+  const slotAt = wordFrame(words, params.slotOn, 19) - 3;
+  const typeAt = wordFrame(words, params.typeOn, 28) - 2;
   const undoAt = wordFrame(words, params.undoOn, 75) - 3;
-  const filesAt = wordFrame(words, params.filesOn, 113) - 3;
-  const cleanAt = wordFrame(words, params.cleanOn, 150) - 3;
+  const filesAt = wordFrame(words, params.filesOn, 113) - 2;
+  const cleanAt = wordFrame(words, params.cleanOn, 150) - 4;
 
-  const move = prog(frame, 0, 18);
-  const term = lerpRect(S2_TERM, ITEM_TERM, move);
+  // the row: three equal → slot 1 wide
+  const widen = prog(frame, slotAt, 12);
   const from = rowRects(-1);
   const to = rowRects(0);
-  const label = prog(frame, labelAt, 10);
-  const slotHot = frame >= labelAt && frame < typeAt + 4 ? 1 : 0;
-  const filesIn = prog(frame, 10, 14);
-  const filesHot = prog(frame, filesAt, 8);
-  const termDim = interpolate(frame, [filesAt, filesAt + 8], [1, 0.45], clamp);
-  const cmdHot = frame >= typeAt && frame < undoAt;
-  const push = interpolate(frame, [0, durationInFrames], [1, 1.03], clamp);
-  const drift = Math.sin(frame / 24) * 5;
+  const slotHot = interpolate(frame, [slotAt, slotAt + 6, typeAt + 4, typeAt + 12], [0, 1, 1, 0], clamp);
+  const slotDone = prog(frame, cleanAt + 12, 8);
 
-  const looks = from.map((r, i) => ({
-    rect: lerpRect(r, to[i], move),
-    label: i === 0 ? params.command : undefined,
-    hot: i === 0 ? slotHot : 0,
-    filled: i === 0 ? label : 0,
-    dim: i === 0 ? 1 : 0.5,
-  }));
-  // the label only shows once it is said
-  looks[0].label = label > 0 ? params.command : undefined;
+  const term = lerpRect(S2_TERM, S3_TERM, prog(frame, 0, 18));
+  const termDim = interpolate(frame, [filesAt, filesAt + 8], [1, 0.4], clamp);
+  const files = fileRects(S3_FILES_Y, S3_FILES_H);
+  const filesIn = prog(frame, 10, 12);
+  const filesHot = interpolate(frame, [filesAt, filesAt + 6], [0.35, 1], clamp) * (0.85 + 0.15 * pulse(frame, 24));
 
   return (
-    <AbsoluteFill style={{ scale: `${push}` }}>
-      <Slots looks={looks} />
-
-      <Terminal rect={{ ...term, y: term.y + drift * move }} style={{ opacity: termDim }}>
-        <div style={{ position: "absolute", left: 56, top: 34 }}>
-          <CommandLine text={params.command} frame={frame} typedFrom={typeAt} perChar={1.4} color={cmdHot ? c.accent : c.text} />
-        </div>
-        {/* the last three edits – they roll back one by one (newest first) */}
-        <div style={{ position: "absolute", left: 56, top: 150, display: "flex", flexDirection: "column", gap: 26, opacity: move }}>
-          {EDITS.map((f, i) => {
-            const at = undoAt + (EDITS.length - 1 - i) * 8;
-            const rolling = interpolate(frame, [at, at + 4], [0, 1], clamp);
-            const gone = prog(frame, at + 4, 8);
-            return (
-              <div key={i} style={{ display: "flex", alignItems: "center", gap: 20, opacity: 1 - gone, translate: `${-gone * 120}px 0px` }}>
-                <div
-                  style={{
-                    width: 26,
-                    height: 26,
-                    borderRadius: 8,
-                    background: rolling > 0.5 && gone < 0.9 ? c.accent : GREY,
-                  }}
-                />
-                <Bar w={780 * f} h={24} color={rolling > 0.5 ? "rgba(255,112,36,0.55)" : GREY} />
-              </div>
-            );
-          })}
-        </div>
-      </Terminal>
-
-      {fileRects(FILES3_Y, 250).map((r, i) => {
-        const at = cleanAt + i * 5;
-        return (
-          <FileCard
+    <AbsoluteFill>
+      <Stage frame={frame} duration={durationInFrames}>
+        {from.map((r, i) => (
+          <Slot
             key={i}
-            rect={r}
-            clean={prog(frame, at, 8)}
-            hot={0.35 + filesHot * 0.65}
-            style={{
-              opacity: filesIn * (0.55 + 0.45 * filesHot),
-              translate: `0px ${(1 - filesIn) * 40 + Math.sin((frame + i * 20) / 22) * 5}px`,
-              scale: `${1 + 0.04 * Math.sin(Math.PI * prog(frame, at, 10))}`,
+            n={i + 1}
+            look={{
+              rect: lerpRect(r, to[i], widen),
+              label: i === 0 ? params.command : undefined,
+              hot: i === 0 ? slotHot : 0,
+              filled: i === 0 ? Math.max(widen, slotDone) : 0,
+              dim: i === 0 ? 1 : 0.5,
             }}
           />
-        );
-      })}
+        ))}
+
+        <Terminal rect={term} style={{ opacity: termDim }}>
+          <div style={{ position: "absolute", left: 56, top: 22 }}>
+            <CommandLine text={params.command} frame={frame} typedFrom={typeAt} size={78} />
+          </div>
+          {/* the last edits, rolled back one by one */}
+          <div style={{ position: "absolute", left: 60, right: 60, top: 128, display: "flex", flexDirection: "column", gap: 18 }}>
+            {EDITS.map((f, i) => {
+              const at = undoAt + i * 11;
+              const appear = prog(frame, typeAt + 14 + i * 3, 8);
+              const back = prog(frame, at, 10);
+              const active = interpolate(frame, [at - 2, at, at + 10], [0, 1, 0], clamp);
+              return (
+                <div key={i} style={{ display: "flex", alignItems: "center", gap: 22, opacity: appear * (1 - back * 0.85) }}>
+                  <Bar w={30} h={30} color={active > 0.2 ? c.accent : "#4a4d55"} style={{ borderRadius: 10 }} />
+                  <Bar
+                    w={680 * f}
+                    h={26}
+                    color={active > 0.2 ? c.accent : GREY}
+                    style={{ translate: `${-back * 90}px 0px` }}
+                  />
+                </div>
+              );
+            })}
+          </div>
+        </Terminal>
+
+        {files.map((r, i) => {
+          const clean = prog(frame, cleanAt + i * 5, 7);
+          const pop = clean > 0 ? interpolate(frame, [cleanAt + i * 5, cleanAt + i * 5 + 6, cleanAt + i * 5 + 12], [1, 1.06, 1], clamp) : 1;
+          return (
+            <FileCard
+              key={i}
+              rect={r}
+              clean={clean}
+              hot={filesHot}
+              style={{
+                opacity: filesIn,
+                translate: `0px ${(1 - filesIn) * 40}px`,
+                scale: `${frame < 24 ? popScale(frame, 10 + i * 2) : pop}`,
+              }}
+            />
+          );
+        })}
+      </Stage>
     </AbsoluteFill>
   );
 }

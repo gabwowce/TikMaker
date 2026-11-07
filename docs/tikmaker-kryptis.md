@@ -218,3 +218,20 @@ Pakeista:
 Bandymas su tuo pačiu scenarijumi (projektas `code-clear`, `run-clearlook`):
 vaizdai 7 min, savipatikra – „visos scenos skaitosi gerai“ (3 pastabos).
 Palyginimas `docs/eksperimentai/aiskus-stilius-pries-po.jpg`.
+
+### Garsai ir pavyzdžių vaidmenys
+
+- **Garso efektai:** agentas savo atsakyme kiekvienai scenai pažymi 0–2
+  akimirkas (`sounds: [{ onWord, sound }]`, rūšys: whoosh, slide, pop, enter,
+  ping, tick, count, success, fix, break, type, message, reveal, check).
+  Sistema (`src/agent/soundCues.ts`) jas paverčia garso klipais iš bibliotekos
+  laiko juostoje ant to žodžio (2 kadrai anksčiau, garsumas 0,55) – juos galima
+  perstumti, nutildyti, ištrinti. Kode `<Audio>` agentas nededa. Riba – ~3
+  per 10 s (dizaino taisyklė `sfx-density`). Perrašius sceną, perstatomi tik
+  jos garsai; ranka pridėti lieka.
+- **Pavyzdžiai:** du rinkiniai, du vaidmenys – STILIUS (kūrėjo pavyzdžiai,
+  `icon-minimal`: kaip piešiama) ir KOMPOZICIJA (`insiderforce`: kaip
+  išdėstytas kadras). Agentas abu mato ir rašydamas kodą, ir peržiūroje;
+  peržiūra kiekvieną kadrą lygina su abiem, kiekvieną savo dalykui.
+- Bandymas `code-clear` iš naujo: 7 min, 11 garsų per 36 s, savipatikra –
+  „visos scenos skaitosi gerai“.

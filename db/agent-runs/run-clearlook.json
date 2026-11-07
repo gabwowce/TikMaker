@@ -252,133 +252,192 @@
     },
     {
       "name": "writeCode",
-      "startedAt": 1794045735839,
-      "ms": 411526,
+      "startedAt": 1794049255680,
+      "ms": 417162,
       "model": "claude-opus-5-5",
       "attempts": 1,
       "prompt": {
-        "system": "You are the motion designer of TikMaker: you write the pictures of a short\nvertical video (1080x1920, 30 fps) as Remotion code – one file per scene. The voice,\nthe captions and the backdrop are already in the video; you write only the pictures.\n\nBefore writing, read with the Read tool:\n1. .claude/skills/tikmaker-explainer/SKILL.md – the genre, the brand kit and the\n   scene file contract – and the example frames it points to\n   (.claude/skills/tikmaker-explainer/references/). Follow it exactly.\n2. .claude/skills/remotion-best-practices/remotion-markup/REFERENCE.md – how to write\n   Remotion markup right (open the pages it points to that you need: timing,\n   sequencing, transitions, text-highlights). Ignore anything about starting Studio,\n   creating projects or installing packages.\n3. src/video/brand/kit.tsx, src/video/brand/fields.ts and src/video/code/types.ts.\n\nRules:\n- Write ONLY in the folder you are given (src/generated/<folder>/). Never touch other\n  files. Shared helpers for several scenes go in <folder>/shared.tsx.\n- Time everything by the `words` prop (wordFrame) and `durationInFrames`, never by the\n  frame numbers in the brief – they are only there for you to plan.\n- Check your work: run `npx tsc --noEmit -p .` until nothing in your folder fails.\n  Then render a frame or two of every scene you wrote with the command in the brief\n  and look at the PNG with Read, next to the skill's example frames: can it be taken\n  in at a glance (2–6 big flat things, no text to read – text as grey bars, one real\n  word or number at most), is there exactly ONE orange focus with the rest grey or\n  dimmed, is the main object big, does nothing overlap, is nothing under the captions\n  band? Cut elements until it is that clear, and look again.\n- Do not ask questions – nobody is there to answer. Decide.\n- At the end answer with JSON: for every scene you wrote its sceneIndex (from 0), one\n  sentence of what the viewer sees, and its stage (\"top\" unless the scene is a\n  full-screen recording); the voiceover words the captions should draw bold\n  (keywords, 1–2 per scene); and wishes – what the kit or the logo library lacked.",
+        "system": "You are the motion designer of TikMaker: you write the pictures of a short\nvertical video (1080x1920, 30 fps) as Remotion code – one file per scene. The voice,\nthe captions and the backdrop are already in the video; you write only the pictures.\n\nBefore writing, read with the Read tool:\n1. .claude/skills/tikmaker-explainer/SKILL.md – the genre, the brand kit and the\n   scene file contract – and the example frames it points to: the STYLE examples\n   (.claude/skills/tikmaker-explainer/references/ – how things are drawn: flat shapes,\n   grey bars for text, one orange focus) and the COMPOSITION sheet\n   (knowledge/shared/reference-frames/insiderforce.png – how a frame is laid out: one\n   dominant thing, big, a lot of calm space). Follow it exactly.\n2. .claude/skills/remotion-best-practices/remotion-markup/REFERENCE.md – how to write\n   Remotion markup right (open the pages it points to that you need: timing,\n   sequencing, transitions, text-highlights). Ignore anything about starting Studio,\n   creating projects or installing packages.\n3. src/video/brand/kit.tsx, src/video/brand/fields.ts and src/video/code/types.ts.\n\nRules:\n- Write ONLY in the folder you are given (src/generated/<folder>/). Never touch other\n  files. Shared helpers for several scenes go in <folder>/shared.tsx.\n- Time everything by the `words` prop (wordFrame) and `durationInFrames`, never by the\n  frame numbers in the brief – they are only there for you to plan.\n- Check your work: run `npx tsc --noEmit -p .` until nothing in your folder fails.\n  Then render a frame or two of every scene you wrote with the command in the brief\n  and look at the PNG with Read, next to the skill's example frames: can it be taken\n  in at a glance (2–6 big flat things, no text to read – text as grey bars, one real\n  word or number at most), is there exactly ONE orange focus with the rest grey or\n  dimmed, is the main object big, does nothing overlap, is nothing under the captions\n  band? Cut elements until it is that clear, and look again.\n- Do not ask questions – nobody is there to answer. Decide.\n- At the end answer with JSON: for every scene you wrote its sceneIndex (from 0), one\n  sentence of what the viewer sees, and its stage (\"top\" unless the scene is a\n  full-screen recording); the voiceover words the captions should draw bold\n  (keywords, 1–2 per scene); and wishes – what the kit or the logo library lacked.\n- Sound: for every scene, 0–2 sound effects on its key moments (sounds: the spoken\n  word the moment lands on, and the kind). Never play sound in the code – the video\n  puts these on the timeline from its library. Only moments the picture makes: the\n  main move, the payoff. At most ~3 per 10 seconds in the whole video; a calm scene\n  gets none. Kinds:\n  - whoosh: a big move: the main object flies in, swaps or morphs\n  - slide: a card or window slides in or aside\n  - pop: something small appears (an icon, a badge, a sticker)\n  - enter: a solid thing lands (a card, a big number)\n  - ping: attention on one thing (the focus lights up)\n  - tick: a small step (one of several items marks)\n  - count: a counter runs up\n  - success: it works: the payoff, a green check\n  - fix: a fix clicks in\n  - break: something breaks, fails, gets locked\n  - type: a command is typed (one short burst)\n  - message: a chat bubble arrives\n  - reveal: a build-up to a reveal (use once a video at most)\n  - check: a check mark",
         "user": "Channel: TikMaker and AI coding\nWhat it is about: Mostly TikMaker itself: what it can do, how a video gets made with it, new features and how it is being built with AI (build in public). Around that, short concrete videos about other AI tools, vibe coding and Claude Code: one problem or one feature per video, shown on screen rather than told.\nAudience: Creators who want to make short videos faster with AI, and developers or beginners who build apps with AI and want to work faster without breaking things.\nTone: Direct and practical; real screens, real results and numbers instead of hype. Honest about what does not work yet.\nProduct screen \"New video form\": The AI agent panel on the right of the TikMaker editor, on an empty project: a 'Video idea' text box, length in seconds, a template picker ('Let the AI pick'), an optional own hook, checkboxes 'With face', 'Motion graphics only', 'Generate the voiceover', and a 'Start' button.\nProduct screen \"Agent at work\": The same panel as a conversation: a progress bar with five steps (Idea, Angle, Script, Building, Result) ticking off, and a card appearing for each step – the chosen template, three hooks to pick from (each with what it shows), the script scene by scene with an 'Approve' button, 'Pictures picked', 'Motion planned' and 'Voiceover' (folded cards that open on click).\nProduct screen \"Editor with the built video\": Once built: the scene strip along the bottom fills with the video's scenes, the timeline shows each scene's blocks, voice and captions as clips, the vertical preview in the middle plays the video with its kinetic captions.\nProduct screen \"Preview playing\": The vertical 9:16 preview player in the middle of the editor playing the finished video with play / pause, time and fullscreen.\nProduct screen \"Render\": The 'Render MP4' button top right: a progress bar, then the finished MP4 file to download.\nProduct screen \"Storyboard\": The Storyboard tab: the script as a list of beats – each scene's voiceover and on-screen words – with the total length against the target.\n\nThe video: 3 Claude Code commands most people never use: /compact to shrink a long session without losing the thread, /rewind to undo the last changes, and plan mode (Shift+Tab) to see the plan before any file is touched. Show each one working.\nFolder: src/generated/code-clear/\n\nWrite every scene's file (1, 2, 3, 4, 5, 6).\n\nThe channel's saved visuals (\"my visuals\") – reuse one (copy and adapt its code) where it fits, or when asked:\n- Endless session terminal: A Claude Code terminal full of a day's chat history: a one-line question is typed and the whole history lights up as sent with it, while banknotes burn below (code: knowledge/workspaces/dev/visuals/endless-session-terminal-mw67mlh6/scene.tsx, frame: knowledge/workspaces/dev/visuals/endless-session-terminal-mw67mlh6/frame.png)\n\n## Scene 1 (hook) – WRITE src/generated/code-clear/scene-1.tsx\n109 frames (3.6 s); global frames 0–108\nVoiceover: Claude Code just broke three files? One command undoes it.\nWords (word@frame from the scene's start): Claude@0 Code@9 just@19 broke@28 three@38 files?@47 One@56 command@66 undoes@75 it.@84\nOn screen (the script's words): Broke 3 files? ONE command undoes it\nThe script's idea for the picture: A code editor shows three files highlighted in red as broken. \"/rewind\" types into a terminal below, and a U-turn arrow sweeps over the files as they turn back to clean code.\nRender a frame: npx remotion still TikTokVideo out/agent/code-clear/scene-1.png --props=out/agent/code-clear/props.json --frame=76 --scale=0.5\n\n## Scene 2 (bridge) – WRITE src/generated/code-clear/scene-2.tsx\n118 frames (3.9 s); global frames 109–226\nVoiceover: It's one of three Claude Code commands most people never use.\nWords (word@frame from the scene's start): It's@0 one@9 of@19 three@28 Claude@38 Code@47 commands@56 most@66 people@75 never@84 use.@94\nOn screen (the script's words): 3 Claude Code commands nobody uses\nThe script's idea for the picture: A list with three empty numbered slots drops in next to the Claude Code terminal. A counter clicks to 3.\nRender a frame: npx remotion still TikTokVideo out/agent/code-clear/scene-2.png --props=out/agent/code-clear/props.json --frame=192 --scale=0.5\n\n## Scene 3 (item) – WRITE src/generated/code-clear/scene-3.tsx\n184 frames (6.1 s); global frames 227–410\nVoiceover: First, slash rewind. Type it, and Claude Code undoes its last changes. Those three broken files? Clean again.\nWords (word@frame from the scene's start): First,@0 slash@9 rewind.@19 Type@28 it,@38 and@47 Claude@56 Code@66 undoes@75 its@84 last@94 changes.@103 Those@113 three@122 broken@131 files?@141 Clean@150 again.@159\nOn screen (the script's words): 1. /rewind → undo the last changes\nThe script's idea for the picture: Slot 1 fills with \"/rewind\". In the terminal the command runs, the last edits roll back one by one, and the three red files turn green.\nRender a frame: npx remotion still TikTokVideo out/agent/code-clear/scene-3.png --props=out/agent/code-clear/props.json --frame=356 --scale=0.5\n\n## Scene 4 (item) – WRITE src/generated/code-clear/scene-4.tsx\n221 frames (7.4 s); global frames 411–631\nVoiceover: Second, slash compact. When a session gets long and heavy, it shrinks it down, without losing the thread of what you're building.\nWords (word@frame from the scene's start): Second,@0 slash@9 compact.@19 When@28 a@38 session@47 gets@56 long@66 and@75 heavy,@84 it@94 shrinks@103 it@113 down,@122 without@131 losing@141 the@150 thread@159 of@169 what@178 you're@188 building.@197\nOn screen (the script's words): 2. /compact → shrink the session, keep the thread\nThe script's idea for the picture: Slot 2 fills with \"/compact\". A tall scrolling chat history squeezes down into a short block, while a thread line connecting start to finish stays unbroken.\nRender a frame: npx remotion still TikTokVideo out/agent/code-clear/scene-4.png --props=out/agent/code-clear/props.json --frame=566 --scale=0.5\n\n## Scene 5 (item) – WRITE src/generated/code-clear/scene-5.tsx\n240 frames (8.0 s); global frames 632–871\nVoiceover: Third, plan mode. Press Shift Tab, and Claude shows you its plan first. Not a single file is touched until you're happy with it.\nWords (word@frame from the scene's start): Third,@0 plan@9 mode.@19 Press@28 Shift@38 Tab,@47 and@56 Claude@66 shows@75 you@84 its@94 plan@103 first.@113 Not@122 a@131 single@141 file@150 is@159 touched@169 until@178 you're@188 happy@197 with@206 it.@216\nOn screen (the script's words): 3. Plan mode (Shift+Tab) → plan before any edit\nThe script's idea for the picture: Slot 3 fills with \"Plan mode\". The Shift and Tab keys press down, a numbered plan unfolds in the terminal, and the file icons beside it stay locked with a padlock.\nRender a frame: npx remotion still TikTokVideo out/agent/code-clear/scene-5.png --props=out/agent/code-clear/props.json --frame=800 --scale=0.5\n\n## Scene 6 (cta) – WRITE src/generated/code-clear/scene-6.tsx\n212 frames (7.1 s); global frames 872–1083\nVoiceover: Drop a comment if you want more Claude Code tips like these, and follow so you don't miss the next one.\nWords (word@frame from the scene's start): Drop@0 a@9 comment@19 if@28 you@38 want@47 more@56 Claude@66 Code@75 tips@84 like@94 these,@103 and@113 follow@122 so@131 you@141 don't@150 miss@159 the@169 next@178 one.@188\nOn screen (the script's words): Want more Claude Code tips? Comment + Follow\nThe script's idea for the picture: The finished three-item list shrinks to the side as a comment bubble pops up and a follow button pulses.\nRender a frame: npx remotion still TikTokVideo out/agent/code-clear/scene-6.png --props=out/agent/code-clear/props.json --frame=1020 --scale=0.5"
       },
-      "inputTokens": 71417,
-      "cachedInputTokens": 1366468,
-      "outputTokens": 38382,
-      "thinkingTokens": 9778,
+      "inputTokens": 95789,
+      "cachedInputTokens": 1801711,
+      "outputTokens": 37747,
+      "thinkingTokens": 9613,
       "turns": 54,
       "output": {
         "scenes": [
           {
             "sceneIndex": 0,
-            "description": "Three file cards break and glow orange, /rewind types into a terminal below, and an orange U-turn arrow sweeps over the files, turning them clean one by one.",
-            "stage": "top"
+            "description": "Three file cards break and glow orange, /rewind is typed in the terminal below, and an orange U-turn arrow sweeps over them as they snap back clean with checks.",
+            "stage": "top",
+            "sounds": [
+              {
+                "onWord": "broke",
+                "sound": "break"
+              },
+              {
+                "onWord": "undoes",
+                "sound": "whoosh"
+              }
+            ]
           },
           {
             "sceneIndex": 1,
-            "description": "The terminal grows into a big Claude Code window while three empty numbered slots drop in above it one by one, landing on 3.",
-            "stage": "top"
+            "description": "The terminal grows into a big Claude Code window while three empty numbered slots drop in above it and a big orange counter clicks 1, 2, 3.",
+            "stage": "top",
+            "sounds": [
+              {
+                "onWord": "three",
+                "sound": "count"
+              }
+            ]
           },
           {
             "sceneIndex": 2,
-            "description": "Slot 1 widens with /rewind, the command runs in the terminal and its last three edits roll back, then the three orange broken files below turn clean.",
-            "stage": "top"
+            "description": "Slot 1 fills with /rewind, the command is typed, three edit lines roll back one by one, and the three broken files below light up and snap back clean.",
+            "stage": "top",
+            "sounds": [
+              {
+                "onWord": "Type",
+                "sound": "type"
+              },
+              {
+                "onWord": "Clean",
+                "sound": "success"
+              }
+            ]
           },
           {
             "sceneIndex": 3,
-            "description": "Slot 2 widens with /compact, and a tall scrolling chat history squeezes into one short block while the thread line from first to last message stays whole and lights orange.",
-            "stage": "top"
+            "description": "Slot 2 fills with /compact; a tall scrolling chat history squeezes into a short block inside the dashed outline of its old size, while an orange thread line from start to finish stays unbroken.",
+            "stage": "top",
+            "sounds": [
+              {
+                "onWord": "shrinks",
+                "sound": "whoosh"
+              },
+              {
+                "onWord": "thread",
+                "sound": "ping"
+              }
+            ]
           },
           {
             "sceneIndex": 4,
-            "description": "Slot 3 widens with Plan mode, the Shift and Tab keys press down, then a numbered plan unfolds in the terminal while the files beside it get orange padlocks.",
-            "stage": "top"
+            "description": "Slot 3 fills with Plan mode, big Shift and Tab keys press down, a numbered plan unfolds in the terminal, and the three files beside it lock with orange padlocks.",
+            "stage": "top",
+            "sounds": [
+              {
+                "onWord": "Shift",
+                "sound": "tick"
+              },
+              {
+                "onWord": "Not",
+                "sound": "break"
+              }
+            ]
           },
           {
             "sceneIndex": 5,
-            "description": "The three filled slots shrink into a column on the left, a comment bubble pops up beside them, then a Follow button lights orange and pulses.",
-            "stage": "top"
+            "description": "The three filled command slots shrink into a column on the left, a comment bubble pops up beside them, then a big Follow button lights orange and pulses.",
+            "stage": "top",
+            "sounds": [
+              {
+                "onWord": "comment",
+                "sound": "message"
+              },
+              {
+                "onWord": "follow",
+                "sound": "ping"
+              }
+            ]
           }
         ],
         "keywords": [
+          "broke",
           "undoes",
           "three",
+          "never",
           "rewind",
+          "Clean",
           "compact",
           "thread",
           "Shift",
-          "Tab",
+          "plan",
           "comment",
           "follow"
         ],
         "wishes": [
-          "A shared FileCard / file-icon primitive in the kit (broken / clean / locked states) – every coding video needs one",
-          "A Terminal window primitive in the kit with the Claude Code look, so projects don't each redraw it",
-          "A keycap component in the kit for keyboard shortcuts",
-          "A status colour for 'fixed / success' (the brief asked for green files; the kit has only the one accent, so clean files are drawn grey with a white check)",
-          "A Claude Code (terminal CLI) logo separate from the Claude app logo in the logo library",
-          "A lighter way to check renders: my extra test stills (scene-1b, scene-4b, scene-5b.png in out/agent/code-clear/) couldn't be deleted without approval"
+          "A kit-level success colour (green) or a 'clean' state token – the script asked files to turn green but the kit has only the one orange accent",
+          "Ready-made kit components for a terminal window, a file card and a keycap so every video doesn't redraw them",
+          "A U-turn / undo arrow icon in the logo/icon library",
+          "A chat-bubble and follow-button CTA component in the kit, since almost every video ends with one",
+          "A greyscale/monochrome variant of the Claude logo for when it must sit next to the orange focus"
         ]
       }
     },
     {
       "name": "reviewFrames",
-      "startedAt": 1794046169119,
-      "ms": 25236,
+      "startedAt": 1794049695353,
+      "ms": 27446,
       "model": "claude-opus-5-5",
       "attempts": 1,
       "prompt": {
-        "system": "You are the motion designer who checks a short vertical video (TikTok, Reels,\nShorts) before it is posted. You get frames of every scene, rendered exactly as the\nviewer will see them on a phone, with what is said in that scene.\n\nFirst read the example sheet(s) with the Read tool: frames of a channel whose videos\nwork – that is the level to reach. Then read every frame of the video.\n\nFor every scene, look as a viewer scrolling with the sound off, and go through the\nrubric:\n- sees: in one sentence, what you take from the frame in one second\n- verdict \"fix\" only when a \"fix\" check of the rubric fails – the viewer would be lost,\n  the eye has nowhere to land, text cannot be read, something is covered. Then give\n  at most 3 problems as you see them and ONE change:\n  - pictures: the scene's picture (its code) is written again – say concretely what it\n    should show instead (one main picture of what, how big, what to drop)\n  - words: the voiceover says too much for one picture – say how to say it shorter or\n    simpler (its voice and pictures are then made again)\n  - motion: the picture is right but sits or moves badly (too small, too low, over the\n    caption, something on top of something else) – say where it should be and how big\n- A dashed \"● REC\" or \"▣ PHOTO\" slot is a place the creator fills with their own\n  recording or picture later: judge where it sits and what it asks for, not that it is\n  empty.\n- verdict \"good\" otherwise. A \"note\" check that fails goes into problems of a \"good\"\n  scene and is NOT changed – it is said to the creator. Do not invent problems.",
-        "user": "Rubric:\n- [fix] With the sound off, is it clear in one second what the scene is about? Fails when: The picture does not show what the voiceover says, or shows something the viewer cannot name.\n- [fix] Is there ONE element the eye lands on first? Fails when: Two or more things of the same size and weight compete (two diagrams, two equal cards), so the eye has nowhere to land.\n- [fix] Can the whole frame be taken in at a glance – in the second it is on screen? Fails when: It has more than ~6 things to look at, or text the viewer would have to read (code lines, logs, file names, lists of labels, small UI text): a TikTok viewer will not read it, so it is noise that hides where to look.\n- [fix] Can every word be read on a phone? Fails when: A label or line looks smaller than about a third of the spoken caption's letters in these frames – on the phone it is too small to read.\n- [fix] Is everything inside the frame and clear of the spoken caption? Fails when: A picture runs under the caption, off the frame, or two elements overlap where they should not.\n- [fix] Do the scene's pictures belong to one idea? Fails when: Two pictures in one frame tell different things, or a picture has nothing to do with the words said with it.\n- [note] Is there room around the main element? Fails when: The frame is crowded edge to edge, or one small thing floats in a big empty frame.\n- [note] Does the scene look different enough from the one before? Fails when: It repeats the previous scene's look, so the cut reads as nothing happening.\n- [note] Does it reach the level of the example frames (few big flat shapes and icons, text drawn as grey bars, one orange accent where to look, a lot of calm space)? Fails when: It looks like a slide or a diagram dump next to the examples.\n\nExample frames:\n- /tmp/tikmaker-agent/review/run-clearlook/1794046159783/example-icon-minimal.png\n  The creator's chosen example (a YouTube explainer channel, 2026-11-07): the look TikMaker videos should have – clear without text\n  Tiles: 1: two avatar circles in the middle, four flat icons around them (timer, palette, note, camera); two icons bright, two dimmed – nothing to read | 2: the same two avatars; the icons have flown into ONE card under them with an orange folder – the idea 'everything in one place' shown by grouping | 3: a pipeline: an orange mascot, the card with the icons, three empty cards joined by one thin line – text is grey bars, not words | 4: two app windows side by side: the left one alive (preview, timeline, one orange pause button), the right one blurred under a lock with ONE number '48,193 waiting' and one button | 5: one label 'huashu-motion' with a GitHub icon over four video cards drawn as simple grey shapes\n  What makes them work: Almost no words: text is drawn as grey rounded bars; the only real words are the one thing that matters (a name, a number, a button). Few big flat shapes and icons (2–6 per frame), a lot of empty dark space around them. ONE accent colour (orange) marks where to look; everything else is grey, dimmed or blurred. The story is told by what the shapes do – gathering into a card, lining up into a chain, one window locked – not by labels. No code, no logs, no file names, no small UI details anyone would try to read.\n- /tmp/tikmaker-agent/review/run-clearlook/1794046159783/example-insiderforce.png\n  InsiderForce (TikTok), 10 frames, docs/bd/kadrai/insiderforce/ – the channel the stage style is built on\n  Tiles: 1: three tool logos on a thin line at the top, ONE big pricing card in the middle – a single dominant thing | 2: two logos, a video frame, then the headline in three sizes with the key phrase in a black box | 3: price cards stacked in one repeated form; only the new price is in the accent colour | 4: a globe joined by one line to a big character – one object fills the frame, the caption below with the key word bigger and bold | 5: four logos in a diamond, dashed lines to one globe with a warning sign – a whole problem as one small, airy diagram | 6: a character top left, one dashed curve to a logo bottom right, the words between them | 7: a badge \"01\" on a line down to one screenshot card – the step and its result joined | 8: a big character with a gear and three short rows with icons – few rows, very big | 9: one character filling the frame, a two-line caption under it | 10: a small strip of photos at the top, three short rows with ✦, the closing phrase bold\n  What makes them work: One thing dominates every frame; everything else is clearly smaller or a thin line. Words are big: the caption is 2–3 lines with the key words bold or boxed – never small labels to read. A diagram has at most four nodes, lots of space between them, and one link drawn at a time. Lots of calm space; nothing touches the edges or the caption. The background colour is theirs (light) – judge the composition, not the colours.\n- /tmp/tikmaker-agent/review/run-clearlook/1794046159783/example-explain.png\n  Explainer frames from several creators, docs/bd/kadrai/geri/ (mechanism, setup, item, problem)\n  Tiles: 1: a level title on top, ONE vertical diagram in the middle: three boxes, input → model → output, thin dashed arrows | 2: the same title, the diagram replaced by two big rows with ✗ – what it cannot do | 3: a simple drawing (an island with gorillas) with two tiny labels where it changed – the idea as one picture | 4: one coloured ring of letters, the name big below – a whole concept as one shape | 5: spotlight: one node bright, everything else dark and blurred, the key words in bold yellow below | 6: a word on top, a drawing with ONE curved arrow showing what moves | 7: the step number, the feature as a big pill, the tool's window under it | 8: a counter in the corner, one animated map filling the frame, the caption at the bottom | 9: a huge STEP and number in opposite corners, framing the speaker | 10: a few words above one broken object (a cracked 'Tokens' plate) – the problem as one thing\n  What makes them work: A diagram has 3–4 boxes in ONE direction with lots of space – never two diagrams in one frame. When the explanation moves on, the picture is REPLACED (diagram → two ✗ rows) instead of squeezing a second one in. One shape carries the concept (a ring, an island, a broken plate); labels are few and big. Spotlight: to point at one part, everything else is dimmed.\n- /tmp/tikmaker-agent/review/run-clearlook/1794046159783/example-open-close.png\n  Hooks, reveals, proof and CTA frames from several creators, docs/bd/kadrai/geri/\n  Tiles: 1: the result on top, the claim in two big lines, the tools' logos in a zigzag below | 2: text only – lines in different sizes, the brand set as one of the lines in its colours | 3: two names stacked, one icon overlapping the other, the time promise below | 4: a short line over one tool card, decorations only in the corners | 5: three lines in three weights, the last in a black box | 6: the browser cropped bottom right, the address big and readable | 7: before/after as two equal cards stacked, a one-word label on each | 8: a phone on the left, ONE benefit word on the right | 9: one sentence in the middle, the key words in the accent colour | 10: the comment keyword the biggest thing, the gift (an e-book) as an object\n  What makes them work: The hook's first frame says the promise in 2–3 big lines with one word boxed or coloured. Two equal things are right only for a before/after – then they get one word each. A CTA makes the one keyword the biggest thing on screen. Text-only frames are fine when the type itself has hierarchy: sizes, weights, one box.\n- /tmp/tikmaker-agent/review/run-clearlook/1794046159783/example-pictures.png\n  InsiderForce frames that carry a real picture, docs/bd/kadrai/geri/picture-01..04\n  Tiles: 1: a metaphor as a cut-out picture – a robot hand holding a glowing globe fills the top half; the claim below in big type, the last word boxed | 2: a cut-out object (a blue folder labelled API's) with two hands reaching to it (Michelangelo) – the thing and the promise around it | 3: a cut-out photo of the real person, black and white, over an accent shape; the headline beside him | 4: four photo cards, tilted with shadows, in the corners around one number in a ring – real examples around the key fact\n  What makes them work: One or two real pictures make a video feel alive: a metaphor, the real thing, the real person, real examples. Pictures are cut out (no background) with a soft shadow, or set as tilted cards with a white border – never a flat rectangle pasted in. The picture is big – it is the frame's main element, the words go above or beside it. Black-and-white photos plus one accent colour keep a mixed set of pictures in one style.\n\nPrinciples for the pictures:\n- [must] One picture holds one whole thought – usually a sentence – and keeps changing inside it. Why: In good short videos one picture stays about 5 seconds while its parts appear, a number counts or arrows draw. A new picture on every other word flickers past before it is read, and together such pictures look like random clip art for single words.\n- [must] The picture shows what HAPPENS, so the scene is understood with the sound off. Why: Many people watch muted, and even with sound the eye leads. An action, a change or a relation (this turns into that, these three join, the price drops) explains; a row of nouns only decorates.\n- [must] Show the thing itself: the tool, the screen, the command, the number, the result. Why: A concrete picture proves and teaches; a metaphor only hints. A prop that just stands for a word (a clock for 'fast') says less than the real thing doing something.\n- [must] Pick the block whose shape IS the idea, so it is understood at a glance by someone who does not know the video. Why: A conversation drawn as chat bubbles, a cycle drawn as a loop, 'this becomes that' drawn as a transform are read instantly. A card with a vague label and a loosely fitting icon says nothing.\n- [must] The viewer sees at once what matters most in the frame. Why: When everything is the same size and weight the eye has nowhere to land. One dominant element – the number, the result, the key word – with the rest clearly secondary reads in a second.\n- [recommended] Leave space empty so the important element stands out. Why: A frame filled in every corner has no focus. Empty space around one big element makes it feel important and easy to read on a phone.\n- [must] Text appears when it is said, and the stressed words stand out. Why: Words on screen ahead of the voice spoil it; words after it lag. Highlighting the one word that carries the sentence guides the eye better than animating the whole phrase the same way.\n- [must] Vary how the pictures look across the video. Why: A video where every picture is a list or a schema reads as one slide repeated, and the viewer stops noticing that it changes.\n- [recommended] The layout changes where the story changes, and stays where it goes on. Why: The same layout scene after scene – picture on top, words below – reads as one frame repeated. A change of layout marks a new part, a contrast, a statement or a demo.\n- [must] The hook's picture is there from its first words and shows its first frame. Why: The first two seconds decide whether people stay; words on an empty frame are the weakest opening there is.\n- [must] A recording request is one continuous take a person can reproduce from the instructions – and a video asks for only a few of them. Why: The creator records what the instructions say. Two slots for one action make them record the same moment twice; asking for buttons or results that do not exist makes the recording impossible; six recordings for one short video is an afternoon of work for a few seconds each.\n\nScene 1 (hook) – sceneIndex 0\n  Voiceover: Claude Code just broke three files? One command undoes it.\n  Pictures: Three file cards break and glow orange, /rewind types into a terminal below, and an orange U-turn arrow sweeps over the files, turning them clean one by one.\n  Frames:\n  - /tmp/tikmaker-agent/review/run-clearlook/1794046159783/scene-1-f49.png (at 1.6 s)\n  - /tmp/tikmaker-agent/review/run-clearlook/1794046159783/scene-1-f94.png (at 3.1 s)\n\nScene 2 (bridge) – sceneIndex 1\n  Voiceover: It's one of three Claude Code commands most people never use.\n  Pictures: The terminal grows into a big Claude Code window while three empty numbered slots drop in above it one by one, landing on 3.\n  Frames:\n  - /tmp/tikmaker-agent/review/run-clearlook/1794046159783/scene-2-f162.png (at 5.4 s)\n  - /tmp/tikmaker-agent/review/run-clearlook/1794046159783/scene-2-f212.png (at 7.1 s)\n\nScene 3 (item) – sceneIndex 2\n  Voiceover: First, slash rewind. Type it, and Claude Code undoes its last changes. Those three broken files? Clean again.\n  Pictures: Slot 1 widens with /rewind, the command runs in the terminal and its last three edits roll back, then the three orange broken files below turn clean.\n  Frames:\n  - /tmp/tikmaker-agent/review/run-clearlook/1794046159783/scene-3-f310.png (at 10.3 s)\n  - /tmp/tikmaker-agent/review/run-clearlook/1794046159783/scene-3-f396.png (at 13.2 s)\n\nScene 4 (item) – sceneIndex 3\n  Voiceover: Second, slash compact. When a session gets long and heavy, it shrinks it down, without losing the thread of what you're building.\n  Pictures: Slot 2 widens with /compact, and a tall scrolling chat history squeezes into one short block while the thread line from first to last message stays whole and lights orange.\n  Frames:\n  - /tmp/tikmaker-agent/review/run-clearlook/1794046159783/scene-4-f510.png (at 17.0 s)\n  - /tmp/tikmaker-agent/review/run-clearlook/1794046159783/scene-4-f617.png (at 20.6 s)\n\nScene 5 (item) – sceneIndex 4\n  Voiceover: Third, plan mode. Press Shift Tab, and Claude shows you its plan first. Not a single file is touched until you're happy with it.\n  Pictures: Slot 3 widens with Plan mode, the Shift and Tab keys press down, then a numbered plan unfolds in the terminal while the files beside it get orange padlocks.\n  Frames:\n  - /tmp/tikmaker-agent/review/run-clearlook/1794046159783/scene-5-f740.png (at 24.7 s)\n  - /tmp/tikmaker-agent/review/run-clearlook/1794046159783/scene-5-f857.png (at 28.6 s)\n\nScene 6 (cta) – sceneIndex 5\n  Voiceover: Drop a comment if you want more Claude Code tips like these, and follow so you don't miss the next one.\n  Pictures: The three filled slots shrink into a column on the left, a comment bubble pops up beside them, then a Follow button lights orange and pulses.\n  Frames:\n  - /tmp/tikmaker-agent/review/run-clearlook/1794046159783/scene-6-f967.png (at 32.2 s)\n  - /tmp/tikmaker-agent/review/run-clearlook/1794046159783/scene-6-f1069.png (at 35.6 s)\n\nAnswer with one entry per scene, in order."
+        "system": "You are the motion designer who checks a short vertical video (TikTok, Reels,\nShorts) before it is posted. You get frames of every scene, rendered exactly as the\nviewer will see them on a phone, with what is said in that scene.\n\nFirst read the example sheet(s) with the Read tool – that is the level to reach. Each\nsheet says what it is for: a STYLE sheet shows how things should be drawn (simple,\nflat, no text to read, one focus), a COMPOSITION sheet how the frame should be laid\nout (one dominant thing, big, calm space). Judge each frame against both, each for\nits own thing. Then read every frame of the video.\n\nFor every scene, look as a viewer scrolling with the sound off, and go through the\nrubric:\n- sees: in one sentence, what you take from the frame in one second\n- verdict \"fix\" only when a \"fix\" check of the rubric fails – the viewer would be lost,\n  the eye has nowhere to land, text cannot be read, something is covered. Then give\n  at most 3 problems as you see them and ONE change:\n  - pictures: the scene's picture (its code) is written again – say concretely what it\n    should show instead (one main picture of what, how big, what to drop)\n  - words: the voiceover says too much for one picture – say how to say it shorter or\n    simpler (its voice and pictures are then made again)\n  - motion: the picture is right but sits or moves badly (too small, too low, over the\n    caption, something on top of something else) – say where it should be and how big\n- A dashed \"● REC\" or \"▣ PHOTO\" slot is a place the creator fills with their own\n  recording or picture later: judge where it sits and what it asks for, not that it is\n  empty.\n- verdict \"good\" otherwise. A \"note\" check that fails goes into problems of a \"good\"\n  scene and is NOT changed – it is said to the creator. Do not invent problems.",
+        "user": "Rubric:\n- [fix] With the sound off, is it clear in one second what the scene is about? Fails when: The picture does not show what the voiceover says, or shows something the viewer cannot name.\n- [fix] Is there ONE element the eye lands on first? Fails when: Two or more things of the same size and weight compete (two diagrams, two equal cards), so the eye has nowhere to land.\n- [fix] Can the whole frame be taken in at a glance – in the second it is on screen? Fails when: It has more than ~6 things to look at, or text the viewer would have to read (code lines, logs, file names, lists of labels, small UI text): a TikTok viewer will not read it, so it is noise that hides where to look.\n- [fix] Can every word be read on a phone? Fails when: A label or line looks smaller than about a third of the spoken caption's letters in these frames – on the phone it is too small to read.\n- [fix] Is everything inside the frame and clear of the spoken caption? Fails when: A picture runs under the caption, off the frame, or two elements overlap where they should not.\n- [fix] Do the scene's pictures belong to one idea? Fails when: Two pictures in one frame tell different things, or a picture has nothing to do with the words said with it.\n- [note] Is there room around the main element? Fails when: The frame is crowded edge to edge, or one small thing floats in a big empty frame.\n- [note] Does the scene look different enough from the one before? Fails when: It repeats the previous scene's look, so the cut reads as nothing happening.\n- [note] Does it reach the level of the example frames (few big flat shapes and icons, text drawn as grey bars, one orange accent where to look, a lot of calm space)? Fails when: It looks like a slide or a diagram dump next to the examples.\n\nExample frames:\n- /tmp/tikmaker-agent/review/run-clearlook/1794049684942/example-icon-minimal.png\n  STYLE – how things are drawn (the creator's chosen YouTube explainer, 2026-11-07): flat shapes and icons, text as grey bars, one orange focus. Judge how simple and clear the drawing is against this.\n  Tiles: 1: two avatar circles in the middle, four flat icons around them (timer, palette, note, camera); two icons bright, two dimmed – nothing to read | 2: the same two avatars; the icons have flown into ONE card under them with an orange folder – the idea 'everything in one place' shown by grouping | 3: a pipeline: an orange mascot, the card with the icons, three empty cards joined by one thin line – text is grey bars, not words | 4: two app windows side by side: the left one alive (preview, timeline, one orange pause button), the right one blurred under a lock with ONE number '48,193 waiting' and one button | 5: one label 'huashu-motion' with a GitHub icon over four video cards drawn as simple grey shapes\n  What makes them work: Almost no words: text is drawn as grey rounded bars; the only real words are the one thing that matters (a name, a number, a button). Few big flat shapes and icons (2–6 per frame), a lot of empty dark space around them. ONE accent colour (orange) marks where to look; everything else is grey, dimmed or blurred. The story is told by what the shapes do – gathering into a card, lining up into a chain, one window locked – not by labels. No code, no logs, no file names, no small UI details anyone would try to read.\n- /tmp/tikmaker-agent/review/run-clearlook/1794049684942/example-insiderforce.png\n  COMPOSITION – how a vertical frame is laid out (InsiderForce, TikTok, 10 frames, docs/bd/kadrai/insiderforce/): one dominant thing, big words, calm space. Judge the layout of the frame against this.\n  Tiles: 1: three tool logos on a thin line at the top, ONE big pricing card in the middle – a single dominant thing | 2: two logos, a video frame, then the headline in three sizes with the key phrase in a black box | 3: price cards stacked in one repeated form; only the new price is in the accent colour | 4: a globe joined by one line to a big character – one object fills the frame, the caption below with the key word bigger and bold | 5: four logos in a diamond, dashed lines to one globe with a warning sign – a whole problem as one small, airy diagram | 6: a character top left, one dashed curve to a logo bottom right, the words between them | 7: a badge \"01\" on a line down to one screenshot card – the step and its result joined | 8: a big character with a gear and three short rows with icons – few rows, very big | 9: one character filling the frame, a two-line caption under it | 10: a small strip of photos at the top, three short rows with ✦, the closing phrase bold\n  What makes them work: One thing dominates every frame; everything else is clearly smaller or a thin line. Words are big: the caption is 2–3 lines with the key words bold or boxed – never small labels to read. A diagram has at most four nodes, lots of space between them, and one link drawn at a time. Lots of calm space; nothing touches the edges or the caption. The background colour is theirs (light) – judge the composition, not the colours.\n- /tmp/tikmaker-agent/review/run-clearlook/1794049684942/example-explain.png\n  Explainer frames from several creators, docs/bd/kadrai/geri/ (mechanism, setup, item, problem)\n  Tiles: 1: a level title on top, ONE vertical diagram in the middle: three boxes, input → model → output, thin dashed arrows | 2: the same title, the diagram replaced by two big rows with ✗ – what it cannot do | 3: a simple drawing (an island with gorillas) with two tiny labels where it changed – the idea as one picture | 4: one coloured ring of letters, the name big below – a whole concept as one shape | 5: spotlight: one node bright, everything else dark and blurred, the key words in bold yellow below | 6: a word on top, a drawing with ONE curved arrow showing what moves | 7: the step number, the feature as a big pill, the tool's window under it | 8: a counter in the corner, one animated map filling the frame, the caption at the bottom | 9: a huge STEP and number in opposite corners, framing the speaker | 10: a few words above one broken object (a cracked 'Tokens' plate) – the problem as one thing\n  What makes them work: A diagram has 3–4 boxes in ONE direction with lots of space – never two diagrams in one frame. When the explanation moves on, the picture is REPLACED (diagram → two ✗ rows) instead of squeezing a second one in. One shape carries the concept (a ring, an island, a broken plate); labels are few and big. Spotlight: to point at one part, everything else is dimmed.\n- /tmp/tikmaker-agent/review/run-clearlook/1794049684942/example-open-close.png\n  Hooks, reveals, proof and CTA frames from several creators, docs/bd/kadrai/geri/\n  Tiles: 1: the result on top, the claim in two big lines, the tools' logos in a zigzag below | 2: text only – lines in different sizes, the brand set as one of the lines in its colours | 3: two names stacked, one icon overlapping the other, the time promise below | 4: a short line over one tool card, decorations only in the corners | 5: three lines in three weights, the last in a black box | 6: the browser cropped bottom right, the address big and readable | 7: before/after as two equal cards stacked, a one-word label on each | 8: a phone on the left, ONE benefit word on the right | 9: one sentence in the middle, the key words in the accent colour | 10: the comment keyword the biggest thing, the gift (an e-book) as an object\n  What makes them work: The hook's first frame says the promise in 2–3 big lines with one word boxed or coloured. Two equal things are right only for a before/after – then they get one word each. A CTA makes the one keyword the biggest thing on screen. Text-only frames are fine when the type itself has hierarchy: sizes, weights, one box.\n- /tmp/tikmaker-agent/review/run-clearlook/1794049684942/example-pictures.png\n  InsiderForce frames that carry a real picture, docs/bd/kadrai/geri/picture-01..04\n  Tiles: 1: a metaphor as a cut-out picture – a robot hand holding a glowing globe fills the top half; the claim below in big type, the last word boxed | 2: a cut-out object (a blue folder labelled API's) with two hands reaching to it (Michelangelo) – the thing and the promise around it | 3: a cut-out photo of the real person, black and white, over an accent shape; the headline beside him | 4: four photo cards, tilted with shadows, in the corners around one number in a ring – real examples around the key fact\n  What makes them work: One or two real pictures make a video feel alive: a metaphor, the real thing, the real person, real examples. Pictures are cut out (no background) with a soft shadow, or set as tilted cards with a white border – never a flat rectangle pasted in. The picture is big – it is the frame's main element, the words go above or beside it. Black-and-white photos plus one accent colour keep a mixed set of pictures in one style.\n\nPrinciples for the pictures:\n- [must] One picture holds one whole thought – usually a sentence – and keeps changing inside it. Why: In good short videos one picture stays about 5 seconds while its parts appear, a number counts or arrows draw. A new picture on every other word flickers past before it is read, and together such pictures look like random clip art for single words.\n- [must] The picture shows what HAPPENS, so the scene is understood with the sound off. Why: Many people watch muted, and even with sound the eye leads. An action, a change or a relation (this turns into that, these three join, the price drops) explains; a row of nouns only decorates.\n- [must] Show the thing itself: the tool, the screen, the command, the number, the result. Why: A concrete picture proves and teaches; a metaphor only hints. A prop that just stands for a word (a clock for 'fast') says less than the real thing doing something.\n- [must] Pick the block whose shape IS the idea, so it is understood at a glance by someone who does not know the video. Why: A conversation drawn as chat bubbles, a cycle drawn as a loop, 'this becomes that' drawn as a transform are read instantly. A card with a vague label and a loosely fitting icon says nothing.\n- [must] The viewer sees at once what matters most in the frame. Why: When everything is the same size and weight the eye has nowhere to land. One dominant element – the number, the result, the key word – with the rest clearly secondary reads in a second.\n- [recommended] Leave space empty so the important element stands out. Why: A frame filled in every corner has no focus. Empty space around one big element makes it feel important and easy to read on a phone.\n- [must] Text appears when it is said, and the stressed words stand out. Why: Words on screen ahead of the voice spoil it; words after it lag. Highlighting the one word that carries the sentence guides the eye better than animating the whole phrase the same way.\n- [must] Vary how the pictures look across the video. Why: A video where every picture is a list or a schema reads as one slide repeated, and the viewer stops noticing that it changes.\n- [recommended] The layout changes where the story changes, and stays where it goes on. Why: The same layout scene after scene – picture on top, words below – reads as one frame repeated. A change of layout marks a new part, a contrast, a statement or a demo.\n- [must] The hook's picture is there from its first words and shows its first frame. Why: The first two seconds decide whether people stay; words on an empty frame are the weakest opening there is.\n- [must] A recording request is one continuous take a person can reproduce from the instructions – and a video asks for only a few of them. Why: The creator records what the instructions say. Two slots for one action make them record the same moment twice; asking for buttons or results that do not exist makes the recording impossible; six recordings for one short video is an afternoon of work for a few seconds each.\n\nScene 1 (hook) – sceneIndex 0\n  Voiceover: Claude Code just broke three files? One command undoes it.\n  Pictures: Three file cards break and glow orange, /rewind is typed in the terminal below, and an orange U-turn arrow sweeps over them as they snap back clean with checks.\n  Frames:\n  - /tmp/tikmaker-agent/review/run-clearlook/1794049684942/scene-1-f49.png (at 1.6 s)\n  - /tmp/tikmaker-agent/review/run-clearlook/1794049684942/scene-1-f94.png (at 3.1 s)\n\nScene 2 (bridge) – sceneIndex 1\n  Voiceover: It's one of three Claude Code commands most people never use.\n  Pictures: The terminal grows into a big Claude Code window while three empty numbered slots drop in above it and a big orange counter clicks 1, 2, 3.\n  Frames:\n  - /tmp/tikmaker-agent/review/run-clearlook/1794049684942/scene-2-f162.png (at 5.4 s)\n  - /tmp/tikmaker-agent/review/run-clearlook/1794049684942/scene-2-f212.png (at 7.1 s)\n\nScene 3 (item) – sceneIndex 2\n  Voiceover: First, slash rewind. Type it, and Claude Code undoes its last changes. Those three broken files? Clean again.\n  Pictures: Slot 1 fills with /rewind, the command is typed, three edit lines roll back one by one, and the three broken files below light up and snap back clean.\n  Frames:\n  - /tmp/tikmaker-agent/review/run-clearlook/1794049684942/scene-3-f310.png (at 10.3 s)\n  - /tmp/tikmaker-agent/review/run-clearlook/1794049684942/scene-3-f396.png (at 13.2 s)\n\nScene 4 (item) – sceneIndex 3\n  Voiceover: Second, slash compact. When a session gets long and heavy, it shrinks it down, without losing the thread of what you're building.\n  Pictures: Slot 2 fills with /compact; a tall scrolling chat history squeezes into a short block inside the dashed outline of its old size, while an orange thread line from start to finish stays unbroken.\n  Frames:\n  - /tmp/tikmaker-agent/review/run-clearlook/1794049684942/scene-4-f510.png (at 17.0 s)\n  - /tmp/tikmaker-agent/review/run-clearlook/1794049684942/scene-4-f617.png (at 20.6 s)\n\nScene 5 (item) – sceneIndex 4\n  Voiceover: Third, plan mode. Press Shift Tab, and Claude shows you its plan first. Not a single file is touched until you're happy with it.\n  Pictures: Slot 3 fills with Plan mode, big Shift and Tab keys press down, a numbered plan unfolds in the terminal, and the three files beside it lock with orange padlocks.\n  Frames:\n  - /tmp/tikmaker-agent/review/run-clearlook/1794049684942/scene-5-f740.png (at 24.7 s)\n  - /tmp/tikmaker-agent/review/run-clearlook/1794049684942/scene-5-f857.png (at 28.6 s)\n\nScene 6 (cta) – sceneIndex 5\n  Voiceover: Drop a comment if you want more Claude Code tips like these, and follow so you don't miss the next one.\n  Pictures: The three filled command slots shrink into a column on the left, a comment bubble pops up beside them, then a big Follow button lights orange and pulses.\n  Frames:\n  - /tmp/tikmaker-agent/review/run-clearlook/1794049684942/scene-6-f967.png (at 32.2 s)\n  - /tmp/tikmaker-agent/review/run-clearlook/1794049684942/scene-6-f1069.png (at 35.6 s)\n\nAnswer with one entry per scene, in order."
       },
-      "inputTokens": 23403,
-      "cachedInputTokens": 46763,
-      "outputTokens": 2298,
-      "thinkingTokens": 233,
+      "inputTokens": 24087,
+      "cachedInputTokens": 46771,
+      "outputTokens": 2482,
+      "thinkingTokens": 361,
       "turns": 20,
       "output": {
         "scenes": [
           {
             "sceneIndex": 0,
-            "sees": "Three broken orange files over an empty terminal, then /rewind is typed and an orange U-turn arrow turns them clean with checkmarks.",
+            "sees": "Three broken orange files, then /rewind typed and an orange U-turn arrow turns them back into clean files with checks.",
+            "verdict": "good",
+            "problems": [
+              "Everything sits in the top half and the lower half stays empty until the caption comes in. The files and terminal could be a bit bigger and lower."
+            ]
+          },
+          {
+            "sceneIndex": 1,
+            "sees": "Three numbered slots above a Claude Code window with a big glowing orange 3: 'there are three of these'.",
             "verdict": "good",
             "problems": []
           },
           {
-            "sceneIndex": 1,
-            "sees": "A big Claude Code window with the orange logo, and three empty numbered slots above it.",
-            "verdict": "good",
-            "problems": [
-              "The three slots are all the same and grey, so nothing marks the '3' the line lands on; you could make the 3 count up or light it orange for a moment."
-            ]
-          },
-          {
             "sceneIndex": 2,
-            "sees": "Slot 1 reads /rewind, the command runs in the terminal and the three broken files below turn clean.",
+            "sees": "Slot 1 becomes /rewind, the command runs, and the three broken files below turn clean with checks.",
             "verdict": "good",
             "problems": [
-              "It looks almost the same as the hook (same three file cards and terminal, broken then clean), so the cut feels like a repeat. The slot row on top is the only new thing."
+              "It looks a lot like the hook (three files, a terminal, /rewind, orange to checks), so the cut feels like a replay. The creator may accept this as the payoff of the hook."
             ]
           },
           {
             "sceneIndex": 3,
-            "sees": "Slot 2 lights up as /compact, and a long chat window shrinks into one short block with its thread line turning orange.",
+            "sees": "Slot 2 /compact: a tall chat block shrinks into a short card inside the dashed outline of its old size, and an orange thread runs down the side.",
             "verdict": "good",
             "problems": []
           },
           {
             "sceneIndex": 4,
-            "sees": "Slot 3 reads Plan mode, a numbered plan fills the terminal and the files beside it get orange padlocks.",
+            "sees": "Slot 3 'Plan mode': a numbered plan in the terminal, and the three files beside it get orange padlocks.",
             "verdict": "good",
             "problems": [
-              "In the early frame the files still have grey checkmarks before the padlocks come in. For a moment this reads as 'done' when it should read as 'untouched'.",
-              "The Shift and Tab key press does not show in the sampled frames. Check that it is big enough to notice."
+              "The big Shift and Tab keys from the scene plan don't show in either sampled frame, so the 'press Shift Tab' moment may be too short or missing.",
+              "The plan window and the column of files are close in weight. The locks only take the eye at the very end."
             ]
           },
           {
             "sceneIndex": 5,
-            "sees": "The three slots line up on the left, a comment bubble pops up, then a big orange Follow button glows.",
+            "sees": "The three numbered slots in a column, a comment bubble, and a big orange Follow button that is clearly the thing to look at.",
             "verdict": "good",
             "problems": [
-              "The slots in the column show only numbers, not the three command names, so they don't sum up what the video taught."
+              "The slots show only the numbers 1–3, not the command names, so the recap of what was learned is lost.",
+              "The comment bubble has no keyword to comment, so 'drop a comment' gives the viewer nothing specific to type."
             ]
           }
         ]
@@ -389,114 +448,173 @@
     "scenes": [
       {
         "file": "code-clear/scene-1.tsx",
-        "description": "Three file cards break and glow orange, /rewind types into a terminal below, and an orange U-turn arrow sweeps over the files, turning them clean one by one.",
+        "description": "Three file cards break and glow orange, /rewind is typed in the terminal below, and an orange U-turn arrow sweeps over them as they snap back clean with checks.",
         "stage": "top",
+        "sounds": [
+          {
+            "onWord": "broke",
+            "sound": "break"
+          },
+          {
+            "onWord": "undoes",
+            "sound": "whoosh"
+          }
+        ],
         "version": 1
       },
       {
         "file": "code-clear/scene-2.tsx",
-        "description": "The terminal grows into a big Claude Code window while three empty numbered slots drop in above it one by one, landing on 3.",
+        "description": "The terminal grows into a big Claude Code window while three empty numbered slots drop in above it and a big orange counter clicks 1, 2, 3.",
         "stage": "top",
+        "sounds": [
+          {
+            "onWord": "three",
+            "sound": "count"
+          }
+        ],
         "version": 1
       },
       {
         "file": "code-clear/scene-3.tsx",
-        "description": "Slot 1 widens with /rewind, the command runs in the terminal and its last three edits roll back, then the three orange broken files below turn clean.",
+        "description": "Slot 1 fills with /rewind, the command is typed, three edit lines roll back one by one, and the three broken files below light up and snap back clean.",
         "stage": "top",
+        "sounds": [
+          {
+            "onWord": "Type",
+            "sound": "type"
+          },
+          {
+            "onWord": "Clean",
+            "sound": "success"
+          }
+        ],
         "version": 1
       },
       {
         "file": "code-clear/scene-4.tsx",
-        "description": "Slot 2 widens with /compact, and a tall scrolling chat history squeezes into one short block while the thread line from first to last message stays whole and lights orange.",
+        "description": "Slot 2 fills with /compact; a tall scrolling chat history squeezes into a short block inside the dashed outline of its old size, while an orange thread line from start to finish stays unbroken.",
         "stage": "top",
+        "sounds": [
+          {
+            "onWord": "shrinks",
+            "sound": "whoosh"
+          },
+          {
+            "onWord": "thread",
+            "sound": "ping"
+          }
+        ],
         "version": 1
       },
       {
         "file": "code-clear/scene-5.tsx",
-        "description": "Slot 3 widens with Plan mode, the Shift and Tab keys press down, then a numbered plan unfolds in the terminal while the files beside it get orange padlocks.",
+        "description": "Slot 3 fills with Plan mode, big Shift and Tab keys press down, a numbered plan unfolds in the terminal, and the three files beside it lock with orange padlocks.",
         "stage": "top",
+        "sounds": [
+          {
+            "onWord": "Shift",
+            "sound": "tick"
+          },
+          {
+            "onWord": "Not",
+            "sound": "break"
+          }
+        ],
         "version": 1
       },
       {
         "file": "code-clear/scene-6.tsx",
-        "description": "The three filled slots shrink into a column on the left, a comment bubble pops up beside them, then a Follow button lights orange and pulses.",
+        "description": "The three filled command slots shrink into a column on the left, a comment bubble pops up beside them, then a big Follow button lights orange and pulses.",
         "stage": "top",
+        "sounds": [
+          {
+            "onWord": "comment",
+            "sound": "message"
+          },
+          {
+            "onWord": "follow",
+            "sound": "ping"
+          }
+        ],
         "version": 1
       }
     ],
     "keywords": [
+      "broke",
       "undoes",
       "three",
+      "never",
       "rewind",
+      "Clean",
       "compact",
       "thread",
       "Shift",
-      "Tab",
+      "plan",
       "comment",
       "follow"
     ],
     "wishes": [
-      "A shared FileCard / file-icon primitive in the kit (broken / clean / locked states) – every coding video needs one",
-      "A Terminal window primitive in the kit with the Claude Code look, so projects don't each redraw it",
-      "A keycap component in the kit for keyboard shortcuts",
-      "A status colour for 'fixed / success' (the brief asked for green files; the kit has only the one accent, so clean files are drawn grey with a white check)",
-      "A Claude Code (terminal CLI) logo separate from the Claude app logo in the logo library",
-      "A lighter way to check renders: my extra test stills (scene-1b, scene-4b, scene-5b.png in out/agent/code-clear/) couldn't be deleted without approval"
+      "A kit-level success colour (green) or a 'clean' state token – the script asked files to turn green but the kit has only the one orange accent",
+      "Ready-made kit components for a terminal window, a file card and a keycap so every video doesn't redraw them",
+      "A U-turn / undo arrow icon in the logo/icon library",
+      "A chat-bubble and follow-button CTA component in the kit, since almost every video ends with one",
+      "A greyscale/monochrome variant of the Claude logo for when it must sit next to the orange focus"
     ],
     "problems": []
   },
   "messages": [
     {
-      "id": "msg-mw68s721tejx",
-      "at": 1794046194361,
+      "id": "msg-mw6avtmcy3rl",
+      "at": 1794049722804,
       "from": "agent",
-      "text": "Self-review, round 1: I looked at the frames – every scene reads well.\nNote, scene 2 (left as it is): The three slots are all the same and grey, so nothing marks the '3' the line lands on; you could make the 3 count up or light it orange for a moment.\nNote, scene 3 (left as it is): It looks almost the same as the hook (same three file cards and terminal, broken then clean), so the cut feels like a repeat. The slot row on top is the only new thing.\nNote, scene 5 (left as it is): In the early frame the files still have grey checkmarks before the padlocks come in. For a moment this reads as 'done' when it should read as 'untouched'.; The Shift and Tab key press does not show in the sampled frames. Check that it is big enough to notice.\nNote, scene 6 (left as it is): The slots in the column show only numbers, not the three command names, so they don't sum up what the video taught.",
+      "text": "Self-review, round 1: I looked at the frames – every scene reads well.\nNote, scene 1 (left as it is): Everything sits in the top half and the lower half stays empty until the caption comes in. The files and terminal could be a bit bigger and lower.\nNote, scene 3 (left as it is): It looks a lot like the hook (three files, a terminal, /rewind, orange to checks), so the cut feels like a replay. The creator may accept this as the payoff of the hook.\nNote, scene 5 (left as it is): The big Shift and Tab keys from the scene plan don't show in either sampled frame, so the 'press Shift Tab' moment may be too short or missing.; The plan window and the column of files are close in weight. The locks only take the eye at the very end.\nNote, scene 6 (left as it is): The slots show only the numbers 1–3, not the command names, so the recap of what was learned is lost.; The comment bubble has no keyword to comment, so 'drop a comment' gives the viewer nothing specific to type.",
       "review": {
         "round": 1,
         "scenes": [
           {
             "sceneIndex": 0,
-            "sees": "Three broken orange files over an empty terminal, then /rewind is typed and an orange U-turn arrow turns them clean with checkmarks.",
+            "sees": "Three broken orange files, then /rewind typed and an orange U-turn arrow turns them back into clean files with checks.",
+            "verdict": "good",
+            "problems": [
+              "Everything sits in the top half and the lower half stays empty until the caption comes in. The files and terminal could be a bit bigger and lower."
+            ]
+          },
+          {
+            "sceneIndex": 1,
+            "sees": "Three numbered slots above a Claude Code window with a big glowing orange 3: 'there are three of these'.",
             "verdict": "good",
             "problems": []
           },
           {
-            "sceneIndex": 1,
-            "sees": "A big Claude Code window with the orange logo, and three empty numbered slots above it.",
-            "verdict": "good",
-            "problems": [
-              "The three slots are all the same and grey, so nothing marks the '3' the line lands on; you could make the 3 count up or light it orange for a moment."
-            ]
-          },
-          {
             "sceneIndex": 2,
-            "sees": "Slot 1 reads /rewind, the command runs in the terminal and the three broken files below turn clean.",
+            "sees": "Slot 1 becomes /rewind, the command runs, and the three broken files below turn clean with checks.",
             "verdict": "good",
             "problems": [
-              "It looks almost the same as the hook (same three file cards and terminal, broken then clean), so the cut feels like a repeat. The slot row on top is the only new thing."
+              "It looks a lot like the hook (three files, a terminal, /rewind, orange to checks), so the cut feels like a replay. The creator may accept this as the payoff of the hook."
             ]
           },
           {
             "sceneIndex": 3,
-            "sees": "Slot 2 lights up as /compact, and a long chat window shrinks into one short block with its thread line turning orange.",
+            "sees": "Slot 2 /compact: a tall chat block shrinks into a short card inside the dashed outline of its old size, and an orange thread runs down the side.",
             "verdict": "good",
             "problems": []
           },
           {
             "sceneIndex": 4,
-            "sees": "Slot 3 reads Plan mode, a numbered plan fills the terminal and the files beside it get orange padlocks.",
+            "sees": "Slot 3 'Plan mode': a numbered plan in the terminal, and the three files beside it get orange padlocks.",
             "verdict": "good",
             "problems": [
-              "In the early frame the files still have grey checkmarks before the padlocks come in. For a moment this reads as 'done' when it should read as 'untouched'.",
-              "The Shift and Tab key press does not show in the sampled frames. Check that it is big enough to notice."
+              "The big Shift and Tab keys from the scene plan don't show in either sampled frame, so the 'press Shift Tab' moment may be too short or missing.",
+              "The plan window and the column of files are close in weight. The locks only take the eye at the very end."
             ]
           },
           {
             "sceneIndex": 5,
-            "sees": "The three slots line up on the left, a comment bubble pops up, then a big orange Follow button glows.",
+            "sees": "The three numbered slots in a column, a comment bubble, and a big orange Follow button that is clearly the thing to look at.",
             "verdict": "good",
             "problems": [
-              "The slots in the column show only numbers, not the three command names, so they don't sum up what the video taught."
+              "The slots show only the numbers 1–3, not the command names, so the recap of what was learned is lost.",
+              "The comment bubble has no keyword to comment, so 'drop a comment' gives the viewer nothing specific to type."
             ]
           }
         ],

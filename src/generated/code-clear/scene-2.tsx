@@ -3,30 +3,29 @@ import { AbsoluteFill, interpolate, useCurrentFrame } from "remotion";
 import { field, Logo, useBrand, wordFrame } from "../../video/brand/kit";
 import type { CodeSceneProps } from "../../video/code/types";
 import {
-  Bar,
   clamp,
   EASE_BOUNCE,
+  EASE_OUT,
   FileCard,
   fileRects,
-  FILES_H,
-  FILES_Y,
+  HOOK_FILES_H,
+  HOOK_FILES_Y,
   HOOK_TERM,
   lerpRect,
   prog,
   rowRects,
-  Slots,
   S2_TERM,
+  Slot,
+  Stage,
   Terminal,
 } from "./shared";
 
 export const description =
-  "The terminal grows into a big Claude Code window while three empty numbered slots drop in above it one by one, the count landing on 3";
+  "The terminal grows into a big Claude Code window; three empty numbered slots drop in above it while a big orange counter clicks 1, 2, 3";
 
 export const schema = z.object({
-  firstOn: field.word("Slot 1 drops on", "one"),
-  secondOn: field.word("Slot 2 drops on", "of"),
-  thirdOn: field.word("Slot 3 drops on", "three"),
-  terminalOn: field.word("Terminal lights up on", "Claude"),
+  count: field.number("Commands", 3, { min: 1, max: 3 }),
+  dropOn: field.word("Slots drop on", "three"),
 });
 type Params = z.infer<typeof schema>;
 
@@ -34,69 +33,88 @@ export default function Scene2({ words, durationInFrames, params }: CodeScenePro
   const frame = useCurrentFrame();
   const c = useBrand();
 
-  const drops = [
-    wordFrame(words, params.firstOn, 9) - 3,
-    wordFrame(words, params.secondOn, 19) - 3,
-    wordFrame(words, params.thirdOn, 28) - 3,
-  ];
-  const termAt = wordFrame(words, params.terminalOn, 38) - 3;
+  const dropAt = wordFrame(words, params.dropOn, 28) - 4;
+  const step = 6;
+  const n = Math.round(params.count);
 
-  const move = prog(frame, 0, 18);
-  const term = lerpRect(HOOK_TERM, S2_TERM, move);
-  const filesOut = interpolate(frame, [0, 8], [1, 0], clamp);
-  const termHot = prog(frame, termAt, 8);
-  const push = interpolate(frame, [0, durationInFrames], [1, 1.03], clamp);
-  const drift = Math.sin(frame / 24) * 5;
-
-  // the newest slot is the focus until the terminal takes it
-  const newest = drops.filter((d) => frame >= d).length - 1;
-
-  const looks = rowRects(-1).map((r, i) => {
-    const d = prog(frame, drops[i], 12, EASE_BOUNCE);
-    return {
-      rect: { ...r, y: r.y - (1 - d) * 160 },
-      hot: i === newest && frame < termAt ? 1 : 0,
-      dim: prog(frame, drops[i], 6) * (frame >= termAt ? 0.55 : 1),
-    };
-  });
+  const grow = prog(frame, 4, 18);
+  const term = lerpRect(HOOK_TERM, S2_TERM, grow);
+  const filesOut = prog(frame, 0, 10);
+  const slots = rowRects(-1);
+  const shown = [0, 1, 2].filter((i) => i < n && frame >= dropAt + i * step).length;
+  const lastTick = dropAt + (shown - 1) * step;
+  const tickPop = shown > 0 ? interpolate(frame, [lastTick, lastTick + 8], [1.12, 1], { ...clamp, easing: EASE_OUT }) : 1;
+  const logoIn = prog(frame, 12, 14);
 
   return (
-    <AbsoluteFill style={{ scale: `${push}` }}>
-      {filesOut > 0
-        ? fileRects(FILES_Y, FILES_H).map((r, i) => (
-            <FileCard key={i} rect={r} clean={1} style={{ opacity: filesOut, translate: `0px ${(1 - filesOut) * -40}px` }} />
-          ))
-        : null}
+    <AbsoluteFill>
+      <Stage frame={frame} duration={durationInFrames}>
+        {/* the hook's files leave upwards */}
+        {fileRects(HOOK_FILES_Y, HOOK_FILES_H).map((r, i) =>
+          filesOut < 1 ? (
+            <FileCard
+              key={i}
+              rect={r}
+              clean={1}
+              style={{ opacity: 1 - filesOut, translate: `0px ${-filesOut * 80}px` }}
+            />
+          ) : null,
+        )}
 
-      <Slots looks={looks} />
+        <Terminal rect={term}>
+          <div
+            style={{
+              position: "absolute",
+              inset: 0,
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              justifyContent: "center",
+              gap: 10,
+            }}
+          >
+            <div
+              style={{
+                opacity: logoIn * interpolate(shown, [0, 1], [1, 0.4], clamp),
+                filter: shown > 0 ? "grayscale(1)" : undefined,
+                scale: `${0.8 + logoIn * 0.2}`,
+              }}
+            >
+              <Logo id="claude" size={190} />
+            </div>
+            <div
+              style={{
+                height: shown > 0 ? 300 : 0,
+                fontFamily: c.fontStrong,
+                fontSize: 300 * c.widthFactor,
+                lineHeight: "300px",
+                color: c.accent,
+                scale: `${tickPop}`,
+                opacity: shown > 0 ? 1 : 0,
+                textShadow: `0 0 60px ${c.accent}55`,
+              }}
+            >
+              {shown}
+            </div>
+          </div>
+        </Terminal>
 
-      <Terminal
-        rect={{ ...term, y: term.y + drift * move }}
-        style={{
-          border: termHot > 0.01 ? `3px solid rgba(255,112,36,${termHot})` : undefined,
-        }}
-      >
-        <div
-          style={{
-            position: "absolute",
-            inset: 0,
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            justifyContent: "center",
-            gap: 34,
-            opacity: move,
-          }}
-        >
-          <div style={{ scale: `${interpolate(termHot, [0, 1], [0.9, 1.08])}`, filter: `drop-shadow(0 0 ${termHot * 40}px ${c.accent}66)` }}>
-            <Logo id="claude" size={190} />
-          </div>
-          <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 22 }}>
-            <Bar w={520} h={26} />
-            <Bar w={380} h={26} />
-          </div>
-        </div>
-      </Terminal>
+        {slots.map((r, i) => {
+          if (i >= n) return null;
+          const at = dropAt + i * step;
+          const drop = interpolate(frame, [at, at + 11], [0, 1], { ...clamp, easing: EASE_BOUNCE });
+          return (
+            <Slot
+              key={i}
+              n={i + 1}
+              look={{
+                rect: { ...r, y: r.y - (1 - drop) * 140 },
+                dim: prog(frame, at, 6),
+              }}
+            />
+          );
+        })}
+      </Stage>
     </AbsoluteFill>
   );
 }

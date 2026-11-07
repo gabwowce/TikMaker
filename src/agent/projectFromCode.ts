@@ -1,6 +1,7 @@
 import type { VideoProject } from "../schema/project";
 import type { Scene } from "../schema/scene";
 import { withAgentVoice } from "./agentVoice";
+import { withSoundCues } from "./soundCues";
 import type { AgentRun } from "./run/run";
 
 // The agent's pictures (run.code) become the project's scenes: every scene a
@@ -40,7 +41,9 @@ export function projectFromCode(
         : scene.plan,
     };
   });
-  return withAgentVoice(
+  // the voice first: it sets how long the scenes are, and the sounds sit on
+  // its words
+  const voiced = withAgentVoice(
     {
       ...project,
       scenes,
@@ -52,4 +55,5 @@ export function projectFromCode(
     },
     run,
   );
+  return withSoundCues(voiced, run, only);
 }

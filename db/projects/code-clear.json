@@ -1,6 +1,6 @@
 {
   "id": "code-clear",
-  "title": "Aiškus stilius: tas pats scenarijus",
+  "title": "3 Claude Code commands most people never use: /compact to sh",
   "workspaceId": "dev",
   "videoTemplateId": "tool-tips-keyword",
   "fps": 30,
@@ -12,133 +12,225 @@
   "scenes": [
     {
       "id": "scene-run-clearlook-1",
-      "type": "code",
       "plan": {
         "role": "hook",
-        "visualBrief": "Three file cards break and glow orange, /rewind types into a terminal below, and an orange U-turn arrow sweeps over the files, turning them clean one by one."
+        "visualBrief": "Three file cards break and glow orange, /rewind is typed in the terminal below, and an orange U-turn arrow sweeps over them as they snap back clean with checks."
       },
       "vo": "Claude Code just broke three files? One command undoes it.",
       "background": "stage",
       "content": {},
-      "stage": "top",
-      "motion": {
-        "transition": "cut",
-        "entrance": "none"
-      },
       "code": {
         "file": "code-clear/scene-1.tsx"
-      }
+      },
+      "stage": "top",
+      "motion": {
+        "entrance": "none",
+        "transition": "cut"
+      },
+      "type": "code"
     },
     {
       "id": "scene-run-clearlook-2",
-      "type": "code",
       "plan": {
         "role": "bridge",
-        "visualBrief": "The terminal grows into a big Claude Code window while three empty numbered slots drop in above it one by one, landing on 3."
+        "visualBrief": "The terminal grows into a big Claude Code window while three empty numbered slots drop in above it and a big orange counter clicks 1, 2, 3."
       },
       "vo": "It's one of three Claude Code commands most people never use.",
       "background": "stage",
       "content": {},
-      "stage": "top",
-      "motion": {
-        "transition": "cut",
-        "entrance": "none"
-      },
       "code": {
         "file": "code-clear/scene-2.tsx"
-      }
+      },
+      "stage": "top",
+      "motion": {
+        "entrance": "none",
+        "transition": "cut"
+      },
+      "type": "code"
     },
     {
       "id": "scene-run-clearlook-3",
-      "type": "code",
       "plan": {
         "role": "item",
-        "visualBrief": "Slot 1 widens with /rewind, the command runs in the terminal and its last three edits roll back, then the three orange broken files below turn clean."
+        "visualBrief": "Slot 1 fills with /rewind, the command is typed, three edit lines roll back one by one, and the three broken files below light up and snap back clean."
       },
       "vo": "First, slash rewind. Type it, and Claude Code undoes its last changes. Those three broken files? Clean again.",
       "background": "stage",
       "content": {},
-      "stage": "top",
-      "motion": {
-        "transition": "cut",
-        "entrance": "none"
-      },
       "code": {
         "file": "code-clear/scene-3.tsx"
-      }
+      },
+      "stage": "top",
+      "motion": {
+        "entrance": "none",
+        "transition": "cut"
+      },
+      "type": "code"
     },
     {
       "id": "scene-run-clearlook-4",
-      "type": "code",
       "plan": {
         "role": "item",
-        "visualBrief": "Slot 2 widens with /compact, and a tall scrolling chat history squeezes into one short block while the thread line from first to last message stays whole and lights orange."
+        "visualBrief": "Slot 2 fills with /compact; a tall scrolling chat history squeezes into a short block inside the dashed outline of its old size, while an orange thread line from start to finish stays unbroken."
       },
       "vo": "Second, slash compact. When a session gets long and heavy, it shrinks it down, without losing the thread of what you're building.",
       "background": "stage",
       "content": {},
-      "stage": "top",
-      "motion": {
-        "transition": "cut",
-        "entrance": "none"
-      },
       "code": {
         "file": "code-clear/scene-4.tsx"
-      }
+      },
+      "stage": "top",
+      "motion": {
+        "entrance": "none",
+        "transition": "cut"
+      },
+      "type": "code"
     },
     {
       "id": "scene-run-clearlook-5",
-      "type": "code",
       "plan": {
         "role": "item",
-        "visualBrief": "Slot 3 widens with Plan mode, the Shift and Tab keys press down, then a numbered plan unfolds in the terminal while the files beside it get orange padlocks."
+        "visualBrief": "Slot 3 fills with Plan mode, big Shift and Tab keys press down, a numbered plan unfolds in the terminal, and the three files beside it lock with orange padlocks."
       },
       "vo": "Third, plan mode. Press Shift Tab, and Claude shows you its plan first. Not a single file is touched until you're happy with it.",
       "background": "stage",
       "content": {},
-      "stage": "top",
-      "motion": {
-        "transition": "cut",
-        "entrance": "none"
-      },
       "code": {
         "file": "code-clear/scene-5.tsx"
-      }
+      },
+      "stage": "top",
+      "motion": {
+        "entrance": "none",
+        "transition": "cut"
+      },
+      "type": "code"
     },
     {
       "id": "scene-run-clearlook-6",
-      "type": "code",
       "plan": {
         "role": "cta",
-        "visualBrief": "The three filled slots shrink into a column on the left, a comment bubble pops up beside them, then a Follow button lights orange and pulses."
+        "visualBrief": "The three filled command slots shrink into a column on the left, a comment bubble pops up beside them, then a big Follow button lights orange and pulses."
       },
       "vo": "Drop a comment if you want more Claude Code tips like these, and follow so you don't miss the next one.",
       "background": "stage",
       "content": {},
-      "stage": "top",
-      "motion": {
-        "transition": "cut",
-        "entrance": "none"
-      },
       "code": {
         "file": "code-clear/scene-6.tsx"
-      }
+      },
+      "stage": "top",
+      "motion": {
+        "entrance": "none",
+        "transition": "cut"
+      },
+      "type": "code"
     }
   ],
   "captions": {
     "style": "kinetic",
     "keywords": [
+      "broke",
       "undoes",
       "three",
+      "never",
       "rewind",
+      "Clean",
       "compact",
       "thread",
       "Shift",
-      "Tab",
+      "plan",
       "comment",
       "follow"
     ]
   },
-  "savedAt": 1794045055128,
-  "audioClips": []
+  "savedAt": 1794049765089,
+  "audioClips": [
+    {
+      "id": "sfx-run-clearlook-1-1",
+      "sfxId": "d-break",
+      "from": 26,
+      "durationInFrames": 9,
+      "lane": 1,
+      "volume": 0.55
+    },
+    {
+      "id": "sfx-run-clearlook-1-2",
+      "sfxId": "soft-whoosh",
+      "from": 73,
+      "durationInFrames": 17,
+      "lane": 1,
+      "volume": 0.55
+    },
+    {
+      "id": "sfx-run-clearlook-2-1",
+      "sfxId": "d-count-short",
+      "from": 135,
+      "durationInFrames": 39,
+      "lane": 1,
+      "volume": 0.55
+    },
+    {
+      "id": "sfx-run-clearlook-3-1",
+      "sfxId": "type-word",
+      "from": 253,
+      "durationInFrames": 7,
+      "lane": 1,
+      "volume": 0.55
+    },
+    {
+      "id": "sfx-run-clearlook-3-2",
+      "sfxId": "d-done",
+      "from": 375,
+      "durationInFrames": 7,
+      "lane": 1,
+      "volume": 0.55
+    },
+    {
+      "id": "sfx-run-clearlook-4-1",
+      "sfxId": "soft-whoosh",
+      "from": 512,
+      "durationInFrames": 17,
+      "lane": 1,
+      "volume": 0.55
+    },
+    {
+      "id": "sfx-run-clearlook-4-2",
+      "sfxId": "d-ping",
+      "from": 568,
+      "durationInFrames": 4,
+      "lane": 1,
+      "volume": 0.55
+    },
+    {
+      "id": "sfx-run-clearlook-5-1",
+      "sfxId": "d-tick",
+      "from": 668,
+      "durationInFrames": 2,
+      "lane": 1,
+      "volume": 0.55
+    },
+    {
+      "id": "sfx-run-clearlook-5-2",
+      "sfxId": "d-break",
+      "from": 752,
+      "durationInFrames": 9,
+      "lane": 1,
+      "volume": 0.55
+    },
+    {
+      "id": "sfx-run-clearlook-6-1",
+      "sfxId": "d-msg-in",
+      "from": 889,
+      "durationInFrames": 6,
+      "lane": 1,
+      "volume": 0.55
+    },
+    {
+      "id": "sfx-run-clearlook-6-2",
+      "sfxId": "d-ping",
+      "from": 992,
+      "durationInFrames": 4,
+      "lane": 1,
+      "volume": 0.55
+    }
+  ]
 }

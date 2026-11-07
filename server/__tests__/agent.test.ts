@@ -17,6 +17,9 @@ process.env.AGENT_SELF_REVIEW = "off";
 // No TypeScript compile of the written scenes in tests (the fake writes none
 // that could fail).
 process.env.TIKMAKER_TSC = "off";
+// The fake model below stands in for every call, whatever the machine's
+// .env says (an AGENT_PROVIDER of claude-code would go to the real one).
+delete process.env.AGENT_PROVIDER;
 
 let limitOn = true;
 // No real model in tests: a made-up answer per kind of question, so a run

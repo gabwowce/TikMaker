@@ -2,6 +2,7 @@ import type { Workspace } from "../../../src/agent/knowledge.js";
 import type { IdeaFromUser } from "../../../src/agent/run/1-idea.js";
 import type { SceneFromAi } from "../../../src/agent/run/3-script.js";
 import { codeFromAi, type CodeFromAi } from "../../../src/agent/run/4-code.js";
+import { SOUND_USES } from "../../../src/agent/soundCues.js";
 import type { SceneWord } from "../../../src/video/code/types.js";
 import { callClaudeCodeAgent, WrongShapeError } from "../claudeCode.js";
 import { claudeModel } from "../models.js";
@@ -63,8 +64,11 @@ the captions and the backdrop are already in the video; you write only the pictu
 
 Before writing, read with the Read tool:
 1. .claude/skills/tikmaker-explainer/SKILL.md – the genre, the brand kit and the
-   scene file contract – and the example frames it points to
-   (.claude/skills/tikmaker-explainer/references/). Follow it exactly.
+   scene file contract – and the example frames it points to: the STYLE examples
+   (.claude/skills/tikmaker-explainer/references/ – how things are drawn: flat shapes,
+   grey bars for text, one orange focus) and the COMPOSITION sheet
+   (knowledge/shared/reference-frames/insiderforce.png – how a frame is laid out: one
+   dominant thing, big, a lot of calm space). Follow it exactly.
 2. .claude/skills/remotion-best-practices/remotion-markup/REFERENCE.md – how to write
    Remotion markup right (open the pages it points to that you need: timing,
    sequencing, transitions, text-highlights). Ignore anything about starting Studio,
@@ -87,7 +91,15 @@ Rules:
 - At the end answer with JSON: for every scene you wrote its sceneIndex (from 0), one
   sentence of what the viewer sees, and its stage ("top" unless the scene is a
   full-screen recording); the voiceover words the captions should draw bold
-  (keywords, 1–2 per scene); and wishes – what the kit or the logo library lacked.`;
+  (keywords, 1–2 per scene); and wishes – what the kit or the logo library lacked.
+- Sound: for every scene, 0–2 sound effects on its key moments (sounds: the spoken
+  word the moment lands on, and the kind). Never play sound in the code – the video
+  puts these on the timeline from its library. Only moments the picture makes: the
+  main move, the payoff. At most ~3 per 10 seconds in the whole video; a calm scene
+  gets none. Kinds:
+${Object.entries(SOUND_USES)
+  .map(([kind, use]) => `  - ${kind}: ${use}`)
+  .join("\n")}`;
 
 export function writeCodePrompt(job: CodeJob): { system: string; user: string } {
   const channel = [
