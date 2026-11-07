@@ -34,10 +34,15 @@ export class VoiceError extends Error {
 
 export type GeneratedVoice = CustomSfx & { words: CaptionWord[] };
 
+// `around`: what is said just before and after this clip (the scenes next to
+// it). ElevenLabs reads it to keep the pace and the intonation of one
+// continuous voiceover – without it every scene is voiced on its own, and a
+// short punchy hook comes out faster and louder than the rest.
 export async function generateVoice(
   text: string,
   label?: string,
   overrides: Partial<VoiceSettings> = {},
+  around: { previous?: string; next?: string } = {},
 ): Promise<GeneratedVoice> {
   // Read at call time, not import time, so editing .env.local + restarting
   // is all it takes.
@@ -62,6 +67,8 @@ export async function generateVoice(
       body: JSON.stringify({
         text,
         model_id: settings.modelId,
+        ...(around.previous ? { previous_text: around.previous } : {}),
+        ...(around.next ? { next_text: around.next } : {}),
         voice_settings: {
           stability: settings.stability,
           similarity_boost: settings.similarityBoost,

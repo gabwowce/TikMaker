@@ -14,6 +14,7 @@ import { routeMessage } from "../prompts/routeMessage.js";
 import { writeHooks } from "../prompts/writeHooks.js";
 import { findTemplate } from "./2-angle.js";
 import { rewriteCodeScenes } from "../codeScenes.js";
+import { voiceAround } from "./5-voice.js";
 
 // 7 The conversation (docs/pokalbis-planas.md, docs/pokalbis-kodas.md).
 //
@@ -274,6 +275,8 @@ async function step7Words(
     const clip = await generateVoice(
       words.voiceover,
       `${job.run.id} scene ${n + 1}`,
+      {},
+      voiceAround(job.run.script?.scenes ?? [], n),
     );
     await job.save({
       voice: {
