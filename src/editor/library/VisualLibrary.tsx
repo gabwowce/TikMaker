@@ -1,5 +1,8 @@
-import { Button, UnstyledButton } from "@mantine/core";
-import { Fragment, useState } from "react";
+import { Button, TextInput, UnstyledButton } from "@mantine/core";
+import { Fragment, useState, type ReactNode } from "react";
+import { useLatestRun, useSendMessage } from "../../api/agent";
+import { catalogBlocks } from "../../video/stage/catalogBlocks";
+import { stage } from "../../video/stage/tokens";
 import { propList } from "../../registries/propRegistry";
 import { logoCategories, logoList } from "../../registries/logoRegistry";
 import {
@@ -31,6 +34,76 @@ const targetOptions: {
 ];
 const STACK_STEP = 12;
 const STACK_POSITIONS = 4;
+
+// The Visuals tab (docs/perziura-kodas.md, part 10): what is used most comes
+// first. A search over everything; "ask the agent" for the selected scene of
+// the agent's video; the agent's own blocks (the same ones it picks from,
+// drawn by the same component); your imports, logos and props; the older
+// presets folded under "More".
+
+// "List · *grid*" → "List · grid"
+const plainName = (name: string) => name.replace(/\*/g, "");
+const matches = (query: string, ...texts: (string | undefined)[]) =>
+  !query ||
+  texts.some((text) => text?.toLowerCase().includes(query.toLowerCase()));
+
+function SectionTitle({ children }: { children: ReactNode }) {
+  return (
+    <div className="text-[11px] uppercase tracking-[1px] text-editor-muted m-[12px_0_6px]">
+      {children}
+    </div>
+  );
+}
+
+// "Ask the agent": what this scene should show, in words – sent to the
+// conversation as a message about the selected scene, so the agent picks
+// its pictures again (the router makes it a "pictures" change).
+function AskAgent({ sceneId }: { sceneId: string | null }) {
+  const projectId = useProjectStore((s) => s.project.id);
+  const { run } = useLatestRun(projectId);
+  const send = useSendMessage();
+  const [text, setText] = useState("");
+  const prefix = run ? `scene-${run.id}-` : "";
+  const sceneIndex =
+    run && sceneId?.startsWith(prefix)
+      ? Number(sceneId.slice(prefix.length)) - 1
+      : -1;
+  if (!run || sceneIndex < 0 || run.status !== "done") return null;
+  return (
+    <div className="flex flex-col gap-1.5">
+      <SectionTitle>Ask the agent · scene {sceneIndex + 1}</SectionTitle>
+      <div className="flex gap-1.5">
+        <TextInput
+          className="flex-1"
+          size="xs"
+          placeholder="e.g. show the cost as a burning banknote"
+          value={text}
+          onChange={(event) => setText(event.currentTarget.value)}
+        />
+        <Button
+          size="xs"
+          disabled={text.trim().length < 2}
+          loading={send.isPending}
+          onClick={() =>
+            send.mutate(
+              {
+                runId: run.id,
+                text: `Change this scene's pictures: ${text.trim()}`,
+                attachments: [{ sceneIndex, label: `Scene ${sceneIndex + 1}` }],
+              },
+              { onSuccess: () => setText("") },
+            )
+          }
+        >
+          Ask
+        </Button>
+      </div>
+      <span className="text-[11px] text-editor-muted">
+        The answer comes in the AI agent panel.
+      </span>
+    </div>
+  );
+}
 export function VisualLibrary() {
   const selectedSceneId = useProjectStore((s) => s.selectedSceneId);
   const scene = useProjectStore((s) =>
@@ -42,12 +115,37 @@ export function VisualLibrary() {
   const setActiveVisualSlot = useProjectStore((s) => s.setActiveVisualSlot);
   const { assets: customAssets } = useCustomAssets();
   const [target, setTarget] = useState<Target>("layer");
+  const [query, setQuery] = useState("");
+  const blocks = catalogBlocks.filter((entry) =>
+    matches(query, plainName(entry.name), entry.block.kind),
+  );
+  const imports = customAssets.filter((asset) => matches(query, asset.label));
+  const props = propList.filter((prop) => matches(query, prop.name, prop.id));
+  const presets = visualTemplateRegistry.filter((preset) =>
+    matches(query, preset.label, preset.description),
+  );
   const disabled = !selectedSceneId;
   const isComparison = scene?.type === "comparison";
 
   const layersFull = false;
   const showTargets = isComparison;
   const effectiveTarget: Target = isComparison ? target : "layer";
+  // A block goes where the agent's blocks go: centred on the stage's top zone.
+  function assignBlock(block: (typeof catalogBlocks)[number]["block"]) {
+    if (!selectedSceneId || !scene) return;
+    const existing = scene.content.visuals ?? [];
+    updateSceneVisuals(selectedSceneId, [
+      ...existing,
+      {
+        id: `visual-${Date.now().toString(36)}`,
+        visual: { type: "stage-block", block: { onWord: "", ...block } },
+        x: 50,
+        y: (stage.visualCenterY / 1920) * 100,
+        scale: 1,
+      },
+    ]);
+  }
+
   function assign(visual: VisualConfig) {
     if (!selectedSceneId || !scene) return;
     if (effectiveTarget === "column") {
@@ -73,9 +171,41 @@ export function VisualLibrary() {
         <div className="text-[12px] text-editor-muted">No scene selected</div>
       ) : null}
 
-      <div className="text-[11px] uppercase tracking-[1px] text-editor-muted m-[12px_0_6px]">
-        Target
-      </div>
+      <TextInput
+        size="xs"
+        placeholder="Search blocks, logos, props…"
+        value={query}
+        onChange={(event) => setQuery(event.currentTarget.value)}
+      />
+      <AskAgent sceneId={selectedSceneId} />
+
+      {blocks.length ? (
+        <>
+          <SectionTitle>Blocks · the agent's</SectionTitle>
+          <div className="grid grid-cols-2 gap-1.5">
+            {blocks.map((entry) => (
+              <UnstyledButton
+                key={entry.name}
+                className="grid min-w-0 justify-items-center gap-1 rounded-md border border-solid border-editor-border bg-editor-panel-raised p-1.5 text-center text-[10px]"
+                aria-label={plainName(entry.name)}
+                onClick={() => assignBlock(entry.block)}
+              >
+                <VisualThumb
+                  visual={{
+                    type: "stage-block",
+                    block: { onWord: "", ...entry.block },
+                    settled: true,
+                  }}
+                  height={96}
+                />
+                {plainName(entry.name)}
+              </UnstyledButton>
+            ))}
+          </div>
+        </>
+      ) : null}
+
+      {showTargets ? <SectionTitle>Target</SectionTitle> : null}
       {showTargets ? (
         <div className="flex gap-1.5">
           {targetOptions.map((option) => (
@@ -111,13 +241,13 @@ export function VisualLibrary() {
         </>
       ) : null}
 
-      {customAssets.length > 0 ? (
+      {imports.length > 0 ? (
         <>
           <div className="text-[11px] uppercase tracking-[1px] text-editor-muted m-[12px_0_6px]">
             Your Imports
           </div>
           <div className="grid grid-cols-3 gap-1.5">
-            {customAssets.map((asset) => {
+            {imports.map((asset) => {
               const isVideo = asset.kind === "video";
               return (
                 <UnstyledButton
@@ -171,7 +301,10 @@ export function VisualLibrary() {
       ) : null}
 
       {logoCategories.map((category) => {
-        const logos = logoList.filter((logo) => logo.category === category.id);
+        const logos = logoList.filter(
+          (logo) =>
+            logo.category === category.id && matches(query, logo.name, logo.id),
+        );
         if (logos.length === 0) return null;
         return (
           <Fragment key={category.id}>
@@ -198,11 +331,9 @@ export function VisualLibrary() {
         );
       })}
 
-      <div className="text-[11px] uppercase tracking-[1px] text-editor-muted m-[12px_0_6px]">
-        Props
-      </div>
+      {props.length ? <SectionTitle>Props</SectionTitle> : null}
       <div className="grid grid-cols-3 gap-1.5">
-        {propList.map((prop) => (
+        {props.map((prop) => (
           <UnstyledButton
             className="grid min-w-0 justify-items-center gap-2 rounded-md border border-solid border-editor-border bg-editor-panel-raised px-2 py-3 text-center text-[10px] [overflow-wrap:anywhere]"
             key={prop.id}
@@ -218,34 +349,41 @@ export function VisualLibrary() {
         ))}
       </div>
 
-      {visualTemplateCategories.map((category) => {
-        const presets = visualTemplateRegistry.filter(
-          (preset) => preset.category === category.id,
-        );
-        if (presets.length === 0) return null;
-        return (
-          <Fragment key={category.id}>
-            <div className="text-[11px] uppercase tracking-[1px] text-editor-muted m-[12px_0_6px]">
-              {category.label}
-            </div>
-            <div className="flex flex-col gap-1.5">
-              {presets.map((preset) => (
-                <UnstyledButton
-                  className="block min-w-0 rounded-md p-2 text-left"
-                  key={preset.id}
-                  aria-label={preset.description}
-                  onClick={() => assign(preset.build())}
-                >
-                  <VisualThumb visual={preset.build()} />
-                  <div className="min-w-0">
-                    <div className="font-semibold">{preset.label}</div>
-                  </div>
-                </UnstyledButton>
-              ))}
-            </div>
-          </Fragment>
-        );
-      })}
+      {presets.length ? (
+        <details className="mt-3" open={Boolean(query)}>
+          <summary className="cursor-pointer text-[11px] uppercase tracking-[1px] text-editor-muted">
+            More · older presets ({presets.length})
+          </summary>
+          {visualTemplateCategories.map((category) => {
+            const inCategory = presets.filter(
+              (preset) => preset.category === category.id,
+            );
+            if (inCategory.length === 0) return null;
+            return (
+              <Fragment key={category.id}>
+                <div className="text-[11px] uppercase tracking-[1px] text-editor-muted m-[12px_0_6px]">
+                  {category.label}
+                </div>
+                <div className="flex flex-col gap-1.5">
+                  {inCategory.map((preset) => (
+                    <UnstyledButton
+                      className="block min-w-0 rounded-md p-2 text-left"
+                      key={preset.id}
+                      aria-label={preset.description}
+                      onClick={() => assign(preset.build())}
+                    >
+                      <VisualThumb visual={preset.build()} />
+                      <div className="min-w-0">
+                        <div className="font-semibold">{preset.label}</div>
+                      </div>
+                    </UnstyledButton>
+                  ))}
+                </div>
+              </Fragment>
+            );
+          })}
+        </details>
+      ) : null}
 
       {selectedSceneId && isComparison && effectiveTarget === "column" ? (
         <Button
