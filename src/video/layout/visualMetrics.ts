@@ -55,7 +55,10 @@ export function naturalVisualSize(visual: VisualConfig): Size {
     case "custom-scene":
       return { width: videoDefaults.width, height: videoDefaults.height };
     case "stage-block":
-      // the stage's top zone, which every block is drawn for
+      // the stage's top zone, which every block is drawn for – or the whole
+      // frame on a "full" stage
+      if (visual.full)
+        return { width: videoDefaults.width, height: videoDefaults.height };
       return {
         width: videoDefaults.width,
         height: stage.visualBottom - stage.visualTop,

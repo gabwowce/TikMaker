@@ -79,8 +79,11 @@ function Types() {
             from={i * SEGMENT}
             durationInFrames={SEGMENT}
           >
+            {sample.type === "full" ? (
+              <StageBlock block={sample.blocks[0]} at={6} full />
+            ) : null}
             {layout.visuals.map((place, v) =>
-              sample.blocks[v] ? (
+              sample.blocks[v] && sample.type !== "full" ? (
                 <StageZone key={v} place={place}>
                   <StageBlock block={sample.blocks[v]} at={6 + v * 10} />
                 </StageZone>

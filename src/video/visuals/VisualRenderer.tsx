@@ -139,7 +139,15 @@ export function VisualRenderer({ visual }: VisualRendererProps) {
         />
       );
     case "stage-block":
-      return <StageBlockVisual block={visual.block} settled={visual.settled} />;
+      return (
+        <StageBlockVisual
+          block={visual.block}
+          settled={visual.settled}
+          full={visual.full}
+          src={visual.src}
+          partAts={visual.partAts}
+        />
+      );
     case "custom-scene": {
       const Scene = customScenes[visual.component];
       return Scene ? <Scene /> : null;

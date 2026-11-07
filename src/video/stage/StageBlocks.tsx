@@ -1,7 +1,14 @@
-import { Img, interpolate, useCurrentFrame, useVideoConfig } from "remotion";
+import {
+  Img,
+  interpolate,
+  Sequence,
+  useCurrentFrame,
+  useVideoConfig,
+} from "remotion";
 import { getLogo } from "../../registries/logoRegistry";
 import { getProp } from "../../registries/propRegistry";
 import { assetUrl } from "../../utils/assetUrl";
+import { ScreenRecording } from "../visuals/media/ScreenRecording";
 import { usePack } from "./pack";
 import { BOLD_GLYPH_WIDTH, fitFontSize } from "./fitText";
 import { pop, ramp, settle } from "./pop";
@@ -108,17 +115,30 @@ export function TerminalBody({ lines, at }: { lines: string[]; at: number }) {
   );
 }
 
-// ── A screen in a card: the user's recording / screenshot (src) or a place
-// for it saying what to upload (like the REC slots in the current layouts).
-export function ScreenBody({ src, label }: { src?: string; label: string }) {
-  const c = usePack();
-  if (src)
+// ── A screen: the user's recording / screenshot (src) or, until there is one,
+// a place for it saying what to record and about how long. In a card it is
+// the card's body; on a "full" stage it fills the whole frame, darkened at the
+// bottom so the spoken words stay readable over it. A recording plays from
+// the frame the block appears on (`at`).
+const VIDEO_EXT = /\.(mp4|mov|webm|m4v)$/i;
+
+function ScreenMedia({ src, at }: { src: string; at: number }) {
+  if (!VIDEO_EXT.test(src))
     return (
       <Img
         src={assetUrl(src)}
         style={{ width: "100%", height: "100%", objectFit: "cover" }}
       />
     );
+  return (
+    <Sequence from={Math.round(at)} layout="none">
+      <ScreenRecording src={src} fit="cover" />
+    </Sequence>
+  );
+}
+
+function ScreenSlot({ label, seconds }: { label: string; seconds?: number }) {
+  const c = usePack();
   return (
     <div
       style={{
@@ -131,10 +151,11 @@ export function ScreenBody({ src, label }: { src?: string; label: string }) {
         border: `4px dashed ${c.border}`,
         borderRadius: 26,
         margin: 18,
+        boxSizing: "border-box",
       }}
     >
       <div style={{ fontFamily: c.fontStrong, fontSize: 56, color: c.accent }}>
-        ● REC
+        ● REC{seconds ? ` · ~${Math.round(seconds)} s` : ""}
       </div>
       <div
         style={{
@@ -147,6 +168,57 @@ export function ScreenBody({ src, label }: { src?: string; label: string }) {
       >
         {label}
       </div>
+    </div>
+  );
+}
+
+export function ScreenBody({
+  src,
+  label,
+  seconds,
+  at = 0,
+}: {
+  src?: string;
+  label: string;
+  seconds?: number;
+  at?: number;
+}) {
+  if (src) return <ScreenMedia src={src} at={at} />;
+  return <ScreenSlot label={label} seconds={seconds} />;
+}
+
+export function FullScreen({
+  src,
+  label,
+  seconds,
+  at,
+}: {
+  src?: string;
+  label: string;
+  seconds?: number;
+  at: number;
+}) {
+  const c = usePack();
+  return (
+    <div style={{ position: "absolute", inset: 0, overflow: "hidden" }}>
+      {src ? (
+        <ScreenMedia src={src} at={at} />
+      ) : (
+        <div style={{ position: "absolute", inset: 40, bottom: 560 }}>
+          <ScreenSlot label={label} seconds={seconds} />
+        </div>
+      )}
+      <div
+        style={{
+          position: "absolute",
+          left: 0,
+          right: 0,
+          bottom: 0,
+          height: 720,
+          background: `linear-gradient(to bottom, transparent, ${c.bg} 80%)`,
+          opacity: src ? 0.9 : 0,
+        }}
+      />
     </div>
   );
 }
@@ -487,5 +559,150 @@ export function FlowSchema({
         );
       })}
     </div>
+  );
+}
+
+// ── A picture the creator adds (docs/bd/kadrai/geri/picture-*): a metaphor,
+// the real thing, the real person. Until there is one, a place for it saying
+// what goes in – like the REC slot of a screen. "cutout": a picture without
+// a background, big, with a soft shadow, gently floating; "card": a photo in
+// a white-bordered card, tilted, with the deck's shadow. On a "full" stage it
+// fills the frame, darkened at the bottom for the spoken words.
+export function PictureBlock({
+  src,
+  label,
+  look = "cutout",
+  full,
+  at,
+}: {
+  src?: string;
+  label: string;
+  look?: "cutout" | "card";
+  full?: boolean;
+  at: number;
+}) {
+  const c = usePack();
+  const frame = useCurrentFrame();
+  const { fps } = useVideoConfig();
+  const p = pop(frame, at, fps);
+  // Drawn in frame coordinates, inside the top zone like every block.
+  const zoneHeight = stage.visualBottom - stage.visualTop;
+  if (!src) {
+    const slot = (
+      <div
+        style={{
+          height: "100%",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+          gap: 24,
+          border: `4px dashed ${c.border}`,
+          borderRadius: 26,
+          boxSizing: "border-box",
+        }}
+      >
+        <div style={{ fontFamily: c.fontStrong, fontSize: 56, color: c.accent }}>
+          ▣ PICTURE
+        </div>
+        <div
+          style={{
+            fontFamily: c.fontRegular,
+            fontSize: 38,
+            color: c.textSoft,
+            textAlign: "center",
+            padding: "0 60px",
+          }}
+        >
+          {label}
+        </div>
+      </div>
+    );
+    return (
+      <div
+        style={
+          full
+            ? { position: "absolute", inset: 40, bottom: 560 }
+            : {
+                position: "absolute",
+                left: LEFT,
+                width: stage.contentWidth,
+                top: stage.visualTop,
+                height: zoneHeight,
+              }
+        }
+      >
+        {slot}
+      </div>
+    );
+  }
+  if (full)
+    return (
+      <div style={{ position: "absolute", inset: 0, overflow: "hidden" }}>
+        <Img
+          src={assetUrl(src)}
+          style={{ width: "100%", height: "100%", objectFit: "cover" }}
+        />
+        <div
+          style={{
+            position: "absolute",
+            left: 0,
+            right: 0,
+            bottom: 0,
+            height: 720,
+            background: `linear-gradient(to bottom, transparent, ${c.bg} 80%)`,
+            opacity: 0.9,
+          }}
+        />
+      </div>
+    );
+  const scale = interpolate(p, [0, 1], [0.85, 1]);
+  if (look === "card") {
+    const width = 620;
+    const height = Math.min(zoneHeight - 60, 760);
+    return (
+      <div
+        style={{
+          position: "absolute",
+          left: (1080 - width) / 2,
+          top: stage.visualTop + (zoneHeight - height) / 2 + floatY(frame),
+          width,
+          height,
+          padding: 16,
+          boxSizing: "border-box",
+          background: "#fff",
+          borderRadius: 22,
+          boxShadow: shadows.card,
+          transform: `rotate(-3deg) scale(${scale})`,
+          opacity: Math.min(1, p * 2),
+        }}
+      >
+        <Img
+          src={assetUrl(src)}
+          style={{
+            width: "100%",
+            height: "100%",
+            objectFit: "cover",
+            borderRadius: 10,
+          }}
+        />
+      </div>
+    );
+  }
+  return (
+    <Img
+      src={assetUrl(src)}
+      style={{
+        position: "absolute",
+        left: LEFT,
+        top: stage.visualTop + floatY(frame),
+        width: stage.contentWidth,
+        height: zoneHeight,
+        objectFit: "contain",
+        filter: "drop-shadow(0 34px 40px rgba(0,0,0,0.55))",
+        transform: `scale(${scale})`,
+        opacity: Math.min(1, p * 2),
+      }}
+    />
   );
 }

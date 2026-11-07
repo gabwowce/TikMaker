@@ -57,10 +57,14 @@ export function KineticCaption({ phrases }: { phrases: CaptionPhrase[] }) {
         );
         const scale = mix(before?.scale ?? phrase.scale, phrase.scale, move, 1);
         const next = phrases[i + 1]?.words[0].at ?? Infinity;
-        if (frame < start - 2 || frame > next + EXIT_FRAMES) return null;
-        // Exit: the phrase rises and fades over EXIT_FRAMES frames
+        // Gone by the frame the next phrase's first word pops in: both stand
+        // in the same place, and a phrase still fading under the new one read
+        // as two lines on top of each other (test 10).
+        if (frame < start - 2 || frame >= next) return null;
+        // Exit: the phrase rises and fades over the EXIT_FRAMES frames before
+        // the next one starts
         const out = Number.isFinite(next)
-          ? ramp(frame, next - 1, EXIT_FRAMES)
+          ? ramp(frame, next - EXIT_FRAMES, EXIT_FRAMES)
           : 0;
         return (
           <div

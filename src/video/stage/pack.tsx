@@ -37,6 +37,9 @@ const fonts = {
   },
 };
 
+const UI_FONT =
+  '"Inter", "Segoe UI", -apple-system, "Helvetica Neue", Arial, sans-serif';
+
 // Colours and fonts in one place; `border` – a thin light line.
 export function usePack() {
   const pack = useContext(PackContext);
@@ -47,6 +50,10 @@ export function usePack() {
     fontStrong: font.strong,
     fontSemi: font.semi,
     fontRegular: font.regular,
+    // A plain app font for what imitates an app's own text (chat bubbles,
+    // comments): a display face there reads as a poster, not a message.
+    // Inter when it is in fonts/, otherwise the system's UI font.
+    fontUi: UI_FONT,
     brand: pack.brand,
     grid: pack.grid,
     // A wide font (Panchang) takes ~25 % more room – the text is made smaller

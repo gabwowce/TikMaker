@@ -92,6 +92,10 @@ export const transitionPresetSchema = z.enum([
   "slideRight",
   "slideUp",
   "slideDown",
+  // spatial: the next scene comes through depth instead of across the frame
+  "zoomThrough",
+  "fromDepth",
+  "flip",
 ]);
 export const richTextSizeSchema = z.enum([
   "hero",

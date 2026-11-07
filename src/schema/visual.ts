@@ -95,7 +95,14 @@ export type VisualConfig =
       sfx?: string;
     }
   | { type: "custom-scene"; component: string }
-  | { type: "stage-block"; block: BlockFromAi; settled?: boolean }
+  | {
+      type: "stage-block";
+      block: BlockFromAi;
+      settled?: boolean;
+      full?: boolean;
+      src?: string;
+      partAts?: number[];
+    }
   | {
       type: "checkpoint";
       label: string;
@@ -341,6 +348,13 @@ export const visualConfigSchema: z.ZodType<VisualConfig> = z.discriminatedUnion(
       // Carried in from the previous scene: drawn finished, without building
       // itself up again (projectFromBlocks).
       settled: z.boolean().optional(),
+      // On a "full" stage: drawn over the whole frame instead of the top zone.
+      full: z.boolean().optional(),
+      // A screen block filled with the user's recording or screenshot.
+      src: z.string().optional(),
+      // A list: when each item appears, in frames after the block's start
+      // (on its spoken word – projectFromBlocks).
+      partAts: z.array(z.number().min(0)).optional(),
     }),
     z.object({
       type: z.literal("checkpoint"),

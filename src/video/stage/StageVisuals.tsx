@@ -242,10 +242,13 @@ export function NumberBadge({
   label,
   at,
   top = stage.visualTop - 40,
+  line: withLine = true,
 }: {
   label: string;
   at: number;
   top?: number;
+  // the line down from it, to what comes below (off when nothing does)
+  line?: boolean;
 }) {
   const c = usePack();
   const frame = useCurrentFrame();
@@ -278,7 +281,7 @@ export function NumberBadge({
         style={{
           margin: "0 auto",
           width: 6,
-          height: 210 * line,
+          height: withLine ? 210 * line : 0,
           background: "rgba(255,255,255,0.3)",
         }}
       />
