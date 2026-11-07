@@ -18,7 +18,7 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "recordings:optimize": "tsx scripts/optimizeRecordings.ts",
-    "dev": "concurrently -n web,api \"vite\" \"tsx watch server/index.ts\"",
+    "dev": "concurrently -n web,api \"vite\" \"tsx watch --exclude db/** --exclude public/** server/index.ts\"",
     "knowledge:draft": "tsx scripts/buildKnowledgeDraft.ts"
   },
   "dependencies": {

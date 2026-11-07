@@ -161,11 +161,11 @@ function PausedCard({ run }: { run: AgentRun }) {
   if (run.status !== "paused") return null;
   return (
     <div className="flex flex-col gap-2 rounded-2xl rounded-bl-none border border-solid border-editor-accent p-3 text-xs text-editor-text">
-      <span className="font-semibold">Paused – the AI usage limit is reached</span>
+      <span className="font-semibold">Paused</span>
       <span className="text-editor-muted">{run.error}</span>
       <span className="text-editor-muted">
-        Everything made so far is saved. Press Continue once the limit has
-        reset; the agent goes on from where it stopped.
+        Everything made so far is saved. Press Continue (after a usage limit,
+        once it has reset); the agent goes on from where it stopped.
       </span>
       <div className="flex items-center gap-2">
         <Button

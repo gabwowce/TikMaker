@@ -44,13 +44,16 @@ export async function getRun(id: string): Promise<AgentRun | undefined> {
   return parsed.success ? parsed.data : undefined;
 }
 
+// Every run on disk (files that no longer match the schema are skipped).
+export async function allRuns(): Promise<AgentRun[]> {
+  return (await readAll(FOLDER)).flatMap((data) => {
+    const parsed = agentRun.safeParse(data);
+    return parsed.success ? [parsed.data] : [];
+  });
+}
+
 // One project's runs, newest first: the AI panel's history for the open project.
 export async function listRuns(projectId: string): Promise<AgentRun[]> {
-  const runs = (await readAll(FOLDER)).flatMap((data) => {
-    const parsed = agentRun.safeParse(data);
-    return parsed.success && parsed.data.projectId === projectId
-      ? [parsed.data]
-      : [];
-  });
+  const runs = (await allRuns()).filter((run) => run.projectId === projectId);
   return runs.sort((a, b) => b.createdAt - a.createdAt);
 }
