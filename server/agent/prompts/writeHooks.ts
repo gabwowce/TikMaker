@@ -1,3 +1,4 @@
+import { creatorFacts } from "./productScreens.js";
 import { z } from "zod";
 import type {
   HookFormula,
@@ -98,7 +99,7 @@ function userPrompt(
     )
     .join("\n");
   return `Channel: ${workspace.name}. ${workspace.brief}
-Audience: ${workspace.audience}
+Audience: ${workspace.audience}${creatorFacts(workspace)}
 
 Idea: ${input.idea}
 Template: ${template.name} – ${template.oneLine}

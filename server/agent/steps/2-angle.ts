@@ -7,6 +7,7 @@ import type { AgentRun } from "../../../src/agent/run/run.js";
 import { openJob, type Job } from "../job.js";
 import { pickTemplate } from "../prompts/pickTemplate.js";
 import { writeHooks } from "../prompts/writeHooks.js";
+import { askedBefore, askIfNeeded, withoutAsking } from "./ask.js";
 
 // 2 Angle, part one: which template the video follows – the one chosen in the
 // form, or else the model picks one.
@@ -19,9 +20,19 @@ export async function step2Template(job: Job): Promise<void> {
     return;
   }
   const template = await job.ai("pickTemplate", () =>
-    pickTemplate(job.run.input, job.workspace, job.knowledge.videoTemplates),
+    pickTemplate(
+      job.run.input,
+      job.workspace,
+      job.knowledge.videoTemplates,
+      undefined,
+      askedBefore(job.run, "pickTemplate"),
+    ),
   );
-  await job.save({ template: { ...template, pickedBy: "agent" } });
+  // the agent asked the creator instead of guessing: nothing saved yet
+  if (await askIfNeeded(job, "pickTemplate", template)) return;
+  await job.save({
+    template: { ...withoutAsking(template), pickedBy: "agent" },
+  });
 }
 
 // 2 Angle, part two: the opening line. Written in the form – used as it is;

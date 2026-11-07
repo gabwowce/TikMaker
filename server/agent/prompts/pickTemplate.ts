@@ -1,3 +1,4 @@
+import { creatorFacts, whenToAsk } from "./productScreens.js";
 import { z } from "zod";
 import type { IdeaFromUser } from "../../../src/agent/run/1-idea.js";
 import {
@@ -57,7 +58,7 @@ function userPrompt(
     )
     .join("\n");
   return `Channel: ${workspace.name}. ${workspace.brief}
-Audience: ${workspace.audience}
+Audience: ${workspace.audience}${creatorFacts(workspace)}
 
 Idea: ${input.idea}
 Wanted length: about ${input.targetSeconds} s
@@ -72,6 +73,8 @@ export async function pickTemplate(
   workspace: Workspace,
   templates: VideoTemplate[],
   model?: Parameters<typeof callStructured>[2],
+  // it asked the creator already in this run: decide, do not ask again
+  asked = false,
 ): Promise<StructuredResult<TemplateFromAi>> {
   const ids = templates.map((t) => t.id);
   if (ids.length === 0) throw new Error("The knowledge base has no templates");
@@ -82,7 +85,10 @@ export async function pickTemplate(
   });
   return callStructured(
     schema,
-    { system: SYSTEM, user: userPrompt(input, workspace, templates) },
+    {
+      system: SYSTEM,
+      user: userPrompt(input, workspace, templates) + whenToAsk(asked),
+    },
     model,
   );
 }

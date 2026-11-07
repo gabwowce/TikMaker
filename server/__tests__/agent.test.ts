@@ -110,7 +110,25 @@ function fakeScript(prompt: string) {
     visual: "a terminal",
     needsRecording: false,
   });
-  return { scenes: [scene("hook"), ...roles.map(scene)], skipped: [] };
+  // An idea saying "ASK ME" makes the script ask the creator first – until
+  // the prompt says it asked already.
+  const asks =
+    prompt.includes("ASK ME") && !prompt.includes("do not ask again");
+  return {
+    scenes: [scene("hook"), ...roles.map(scene)],
+    skipped: [],
+    ...(asks
+      ? {
+          questions: [
+            {
+              question: "How long does generating a video take?",
+              why: "The script says how fast it is",
+              options: ["~2 min", "~5 min"],
+            },
+          ],
+        }
+      : {}),
+  };
 }
 // Motion (motion video): a calm fade for every block the timeline lists.
 function fakeMotion(prompt: string) {
@@ -662,6 +680,39 @@ describe("agent runs", () => {
       },
     ]);
     expect(run.status).toBe("done");
+  });
+
+  it("asks when it does not know, waits, and writes the script with the answer", async () => {
+    const { id } = await api.agent.start({
+      projectId: "p1",
+      input: {
+        idea: "ASK ME how fast TikMaker is",
+        workspaceId: "dev",
+        hook: "My own opening line",
+      },
+    });
+    const waiting = await until(id, (run) => run.status === "awaiting_answers");
+    expect(waiting.pausedFrom).toBe("writing_script");
+    // the script it wrote while asking is not kept
+    expect(waiting.script).toBeUndefined();
+    const asked = waiting.messages!.find((m) => m.questions)!;
+    expect(asked.askedBy).toBe("writeScript");
+    expect(asked.questions![0].options).toEqual(["~2 min", "~5 min"]);
+    await api.agent.answer({
+      runId: id,
+      messageId: asked.id,
+      answers: [{ id: asked.questions![0].id, answer: "~2 min" }],
+    });
+    const run = await until(id, (run) => run.status === "awaiting_approval");
+    expect(run.script?.scenes.length).toBeGreaterThan(0);
+    expect(run.messages!.find((m) => m.id === asked.id)!.questions![0]).toMatchObject({
+      answer: "~2 min",
+    });
+    // the second script got the answer as a fact
+    const last = [...run.steps].reverse().find((s) => s.name === "writeScript")!;
+    expect(JSON.stringify(last.prompt)).toContain(
+      "How long does generating a video take? – ~2 min",
+    );
   });
 
   it("pauses at the usage limit and goes on from there on Continue", async () => {

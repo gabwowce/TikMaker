@@ -104,6 +104,8 @@ export const chatMessage = z.object({
   targets: z.array(chatTarget).optional(),
   proposal: chatProposal.optional(),
   questions: z.array(agentQuestion).optional(),
+  // the step that asked them (a step asks once; asked again it decides)
+  askedBy: z.string().optional(),
   // the review of the frames this message reports (the text says it too)
   review: reviewInMessage.optional(),
   // a user's message, or an agent's accepted proposal:
@@ -117,6 +119,23 @@ export const sendMessageFromUser = z.object({
   runId: z.string().min(1),
   text: z.string().trim().min(2).max(1000),
   attachments: z.array(chatAttachment).max(5).optional(),
+});
+// …the answers to the agent's questions (the questions card)…
+export const answerFromUser = z.object({
+  runId: z.string().min(1),
+  messageId: z.string().min(1),
+  answers: z
+    .array(
+      z.object({
+        id: z.string().min(1),
+        answer: z.string().trim().max(300).optional(),
+        // "decide yourself"
+        skipped: z.boolean().optional(),
+        // keep it in the channel's knowledge for every later video
+        remember: z.boolean().optional(),
+      }),
+    )
+    .min(1),
 });
 // …and the answer to a proposal (the "Do it" / "No" buttons).
 export const decideFromUser = z.object({
@@ -144,4 +163,5 @@ export type ChatProposal = z.infer<typeof chatProposal>;
 export type ChatMessage = z.infer<typeof chatMessage>;
 export type SendMessageFromUser = z.infer<typeof sendMessageFromUser>;
 export type DecideFromUser = z.infer<typeof decideFromUser>;
+export type AnswerFromUser = z.infer<typeof answerFromUser>;
 export type RouteFromAi = z.infer<typeof routeFromAi>;

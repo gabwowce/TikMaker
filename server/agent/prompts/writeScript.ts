@@ -5,7 +5,11 @@ import {
   type ScriptFromAi,
 } from "../../../src/agent/run/3-script.js";
 import type { Knowledge } from "../knowledge.js";
-import { productScreens } from "./productScreens.js";
+import {
+  creatorFacts,
+  productScreens,
+  whenToAsk,
+} from "./productScreens.js";
 import { callStructured, type StructuredResult } from "../llm.js";
 
 // Step 3: the script — the video as scenes, in words (FR-08). The model gets
@@ -153,7 +157,7 @@ function userPrompt(
     knowledge.designRules.find((rule) => rule.check === check)?.max;
 
   const prompt = `Channel: ${workspace.name}. ${workspace.brief}
-Audience: ${workspace.audience}${productScreens(workspace)}
+Audience: ${workspace.audience}${productScreens(workspace)}${creatorFacts(workspace)}
 
 Idea: ${input.idea}
 ${
@@ -206,6 +210,8 @@ export async function writeScript(
   revise?: ScriptChange,
   model?: Parameters<typeof callStructured>[2],
   facts?: string,
+  // it asked the creator already in this run: decide, do not ask again
+  asked = false,
 ): Promise<StructuredResult<ScriptFromAi>> {
   // Any scene role (the template is a guide, not a cage); the first scene is
   // the hook the user chose.
@@ -226,7 +232,7 @@ export async function writeScript(
         knowledge,
         revise,
         facts,
-      ),
+      ) + whenToAsk(asked),
     },
     model,
   );

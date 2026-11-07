@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { askingFromAi } from "./asking";
 import type { RunStatus } from "./status";
 
 // 2 Angle — how the video is told: first a template, then the opening line
@@ -9,6 +10,7 @@ import type { RunStatus } from "./status";
 
 // The model's pick: a template for the idea, how well it fits (1–5) and why.
 export const templateFromAi = z.object({
+  ...askingFromAi,
   videoTemplateId: z.string().min(1),
   score: z.number().int().min(1).max(5),
   reason: z.string().min(1),

@@ -33,7 +33,12 @@ export async function openJob(run: AgentRun): Promise<Job> {
   const job: Job = {
     run,
     knowledge,
-    workspace,
+    // what the creator told the agent – remembered for the channel and
+    // answered in this run – goes into every prompt as facts
+    get workspace() {
+      const facts = [...(workspace.facts ?? []), ...answeredFacts(job.run)];
+      return facts.length ? { ...workspace, facts } : workspace;
+    },
 
     async save(changes) {
       // The conversation is written from two places: the agent working here,
@@ -94,6 +99,15 @@ function logged(name: string, startedAt: number, log: CallLog) {
     thinkingTokens: log.usage.thinkingTokens,
     ...(log.usage.turns ? { turns: log.usage.turns } : {}),
   };
+}
+
+// What the creator answered in this run (the agent's questions), as facts.
+export function answeredFacts(run: AgentRun): string[] {
+  return (run.messages ?? []).flatMap((message) =>
+    (message.questions ?? []).flatMap((q) =>
+      q.answer ? [`${q.question} – ${q.answer}`] : [],
+    ),
+  );
 }
 
 // The messages this job holds, with what was written to disk meanwhile: a

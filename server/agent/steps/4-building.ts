@@ -11,6 +11,7 @@ import type {
 import type { Job } from "../job.js";
 import { blockLibrary, pickBlocks } from "../prompts/pickBlocks.js";
 import { pickMotion } from "../prompts/pickMotion.js";
+import { askedBefore, askIfNeeded, withoutAsking } from "./ask.js";
 
 // 4 Building (docs/motion-planas.md): every video is made of blocks on stage
 // types. The model picks the blocks for every scene of the approved script and
@@ -35,9 +36,13 @@ export async function step4Building(job: Job): Promise<void> {
         script.scenes,
         job.knowledge.picturePrinciples,
         previous,
+        undefined,
+        askedBefore(job.run, "pickBlocks"),
       ),
     );
   let blocks = await pick();
+  // the agent asked the creator instead of guessing: nothing saved yet
+  if (await askIfNeeded(job, "pickBlocks", blocks)) return;
   let problems = checkBlocks(blocks, script, blockLibrary);
   // Only what is broken goes back to the model; advice (taste) is shown to
   // the user and costs no second call.
@@ -46,7 +51,7 @@ export async function step4Building(job: Job): Promise<void> {
     blocks = await pick({ blocks, problems: broken });
     problems = checkBlocks(blocks, script, blockLibrary);
   }
-  await job.save({ blocks: { ...blocks, problems } });
+  await job.save({ blocks: { ...withoutAsking(blocks), problems } });
   await step4Motion(job, blocks);
 }
 

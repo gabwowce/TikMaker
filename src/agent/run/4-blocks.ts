@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { stageTypeIds } from "../../video/stage/stageTypes";
+import { askingFromAi } from "./asking";
 
 // 4 Building (motion) – blocks (docs/motion-planas.md, stage C). The model
 // turns the approved script into pictures: for every scene 1–4 blocks that
@@ -139,6 +140,7 @@ export const sceneBlocksFromAi = z.object({
 });
 
 export const blocksFromAi = z.object({
+  ...askingFromAi,
   scenes: z.array(sceneBlocksFromAi).min(1),
   // What the model wanted but the library lacks (e.g. "Notion logo") – a wish list.
   wishes: z.array(z.string().trim().min(3)).max(10),

@@ -94,6 +94,7 @@ async function runAgent(run: AgentRun): Promise<void> {
     case "created": // Start was pressed
       await job.save({ status: "picking_template" });
       await step2Template(job);
+      if (asking(job)) return;
       await job.save({ status: "writing_hooks" });
       await step2Hooks(job);
       // A hook written in the form: nothing to wait for.
@@ -119,6 +120,7 @@ async function runAgent(run: AgentRun): Promise<void> {
         if (!job.run.blocks || !job.run.motion) {
           await job.save({ status: "laying_out" });
           await step4Building(job);
+          if (asking(job)) return;
         }
         // 5 Result: the voiceover, only when the form asked for it – and
         // not again when every scene has one.
@@ -141,6 +143,9 @@ async function runAgent(run: AgentRun): Promise<void> {
 
     case "done": // the video is built; the user may still write
       return takeUpWork(job);
+
+    case "awaiting_answers": // the agent asked; the questions card answers
+      return;
   }
 }
 
@@ -165,8 +170,13 @@ const selfReview = () => process.env.AGENT_SELF_REVIEW !== "off";
 async function toScript(job: Job): Promise<void> {
   await job.save({ status: "writing_script" });
   await step3Script(job);
+  if (asking(job)) return;
   await job.save({ status: "awaiting_approval" });
 }
+
+// A step stopped to ask the creator (steps/ask.ts): the run waits for the
+// answers instead of going on.
+const asking = (job: Job) => job.run.status === "awaiting_answers";
 
 // 7 The conversation: the next message (routed first) or accepted proposal.
 async function takeUpWork(job: Job): Promise<void> {

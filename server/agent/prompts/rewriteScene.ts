@@ -3,7 +3,7 @@ import type { Workspace } from "../../../src/agent/knowledge.js";
 import type { IdeaFromUser } from "../../../src/agent/run/1-idea.js";
 import type { SceneFromAi } from "../../../src/agent/run/3-script.js";
 import { callStructured, type StructuredResult } from "../llm.js";
-import { productScreens } from "./productScreens.js";
+import { creatorFacts, productScreens } from "./productScreens.js";
 
 // 7 The conversation, target "words": one scene's voiceover written again
 // with the creator's instruction, after the video is built. Only that scene –
@@ -37,7 +37,7 @@ export async function rewriteScene(
         `${n === sceneIndex ? "→ " : "  "}Scene ${n + 1} (${scene.role}): ${scene.voiceover}`,
     )
     .join("\n");
-  const user = `Channel: ${workspace.name}. ${workspace.brief}${productScreens(workspace)}
+  const user = `Channel: ${workspace.name}. ${workspace.brief}${productScreens(workspace)}${creatorFacts(workspace)}
 Idea: ${input.idea}
 
 The video's scenes (→ the one to rewrite):

@@ -20,6 +20,8 @@ function waitsForUser(run: AgentRun): boolean {
     return !run.hook && run.hooksFor === run.template?.videoTemplateId;
   if (run.status === "awaiting_approval")
     return !run.script?.approved && !run.script?.comment;
+  // the agent asked: nothing moves until the questions are answered
+  if (run.status === "awaiting_answers") return true;
   return false;
 }
 // Statuses after which the agent is no longer working on a project.
@@ -114,6 +116,12 @@ export function useApproveScript() {
 export function useSendMessage() {
   return useMutation(
     trpc.agent.message.mutationOptions({ onSuccess: askForRunAgain }),
+  );
+}
+// The answers to the agent's questions (the questions card).
+export function useAnswer() {
+  return useMutation(
+    trpc.agent.answer.mutationOptions({ onSuccess: askForRunAgain }),
   );
 }
 // "Continue" on a run paused at the usage limit.

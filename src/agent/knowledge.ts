@@ -54,6 +54,10 @@ export const workspaceSchema = z
     screens: z
       .array(z.object({ name: z.string().min(1), shows: z.string().min(1) }))
       .optional(),
+    // What the creator told the agent and asked it to remember ("remember"
+    // on a question): true for every video of the channel, so every prompt
+    // gets them.
+    facts: z.array(z.string().min(1)).optional(),
   })
   .strict();
 

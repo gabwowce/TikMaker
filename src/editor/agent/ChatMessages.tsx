@@ -5,6 +5,7 @@ import type { AgentRun } from "../../agent/run/run";
 import { useDecide } from "../../api/agent";
 import { loadCustomSfx } from "../../api/library";
 import { useProjectStore } from "../state/projectStore";
+import { QuestionsCard } from "./QuestionsCard";
 import { ReviewView } from "./ReviewView";
 
 // 7 The conversation, under the step cards, oldest first: the user's messages
@@ -176,6 +177,9 @@ function AgentMessage({
       ) : (
         <span className="whitespace-pre-line">{message.text}</span>
       )}
+      {message.questions?.length ? (
+        <QuestionsCard run={run} message={message} />
+      ) : null}
       {proposal ? (
         <>
           <ul className="m-0 flex flex-col gap-1 pl-4 text-editor-muted">

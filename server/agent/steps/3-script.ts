@@ -5,6 +5,7 @@ import { openJob, type Job } from "../job.js";
 import { research } from "../prompts/research.js";
 import { writeScript, type ScriptChange } from "../prompts/writeScript.js";
 import { findTemplate } from "./2-angle.js";
+import { askedBefore, askIfNeeded, withoutAsking } from "./ask.js";
 
 // 3 Script: the model writes the script for the template and the hook; the
 // code checks it and, if anything is wrong, the model fixes it once.
@@ -26,6 +27,7 @@ export async function step3Script(job: Job): Promise<void> {
         revise,
         undefined,
         job.run.research?.facts,
+        askedBefore(job.run, "writeScript"),
       ),
     );
   const check = (script: ScriptChange["previous"]) =>
@@ -53,6 +55,8 @@ export async function step3Script(job: Job): Promise<void> {
       ? { previous: asWritten(previous), change: [previous.comment] }
       : undefined,
   );
+  // the agent asked the creator instead of guessing: nothing saved yet
+  if (await askIfNeeded(job, "writeScript", script)) return;
   let problems = check(script);
   if (problems.length) {
     script = await write({
@@ -61,7 +65,7 @@ export async function step3Script(job: Job): Promise<void> {
     });
     problems = check(script);
   }
-  await job.save({ script: { ...script, problems } });
+  await job.save({ script: { ...withoutAsking(script), problems } });
 }
 
 // "Approve" on screen 3: agent.ts then goes on to building the video.

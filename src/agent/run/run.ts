@@ -20,7 +20,7 @@ export const agentRun = z.object({
   status: runStatus,
   // Why the run stopped, when status is "error" or "paused".
   error: z.string().optional(),
-  // "paused": where the run was when the usage limit stopped it.
+  // "paused" / "awaiting_answers": where the run was when it stopped.
   pausedFrom: runStatus.optional(),
 
   // 1 Idea

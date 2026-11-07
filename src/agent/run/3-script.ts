@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { askingFromAi } from "./asking";
 import { scenePlanRoleSchema } from "../../schema/scene";
 
 // 3 Script — the video as scenes, in words only: what each scene is for, what
@@ -25,6 +26,7 @@ export const sceneFromAi = z.object({
 // The whole script: the scenes in order, and the optional template scenes the
 // model left out, each with why (FR-08).
 export const scriptFromAi = z.object({
+  ...askingFromAi,
   scenes: z.array(sceneFromAi).min(2),
   skipped: z.array(
     z.object({

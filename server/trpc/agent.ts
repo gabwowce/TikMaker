@@ -7,6 +7,7 @@ import {
 } from "../../src/agent/run/2-angle.js";
 import { approveScriptFromUser } from "../../src/agent/run/3-script.js";
 import {
+  answerFromUser,
   decideFromUser,
   sendMessageFromUser,
 } from "../../src/agent/run/7-chat.js";
@@ -20,6 +21,7 @@ import {
 } from "../agent/steps/2-angle.js";
 import { step3Approve } from "../agent/steps/3-script.js";
 import { step7Decide, step7Message } from "../agent/steps/7-chat.js";
+import { answerFromMessage, step3Answer } from "../agent/steps/ask.js";
 import { KNOWLEDGE_DIR } from "../config.js";
 import { procedure, router } from "./init.js";
 
@@ -83,7 +85,10 @@ export const agentRouter = router({
   message: procedure.input(sendMessageFromUser).mutation(async ({ input }) => {
     const run = await findRun(input.runId);
     try {
-      await asBadRequest(() => step7Message(run, input));
+      // while the agent waits for answers, a typed message is the answer
+      if (run.status === "awaiting_answers")
+        await asBadRequest(() => answerFromMessage(run, input.text));
+      else await asBadRequest(() => step7Message(run, input));
     } finally {
       // even when the message is refused because an earlier one still waits:
       // after a server restart nothing is working on that one, and this
@@ -92,13 +97,20 @@ export const agentRouter = router({
     }
   }),
 
-  // The answer to the agent's proposal – the "Do it" / "No" buttons.
+  // The answers to the agent's questions (the questions card): the asking
+  // step runs again with them.
+  answer: procedure.input(answerFromUser).mutation(async ({ input }) => {
+    const run = await findRun(input.runId);
+    await asBadRequest(() => step3Answer(run, input));
+    continueRun(await findRun(run.id));
+  }),
   // "Continue" on a run paused at the model's usage limit.
   resume: procedure
     .input(z.object({ runId: z.string().min(1) }))
     .mutation(async ({ input }) => {
       await resumeRun(await findRun(input.runId));
     }),
+  // The answer to the agent's proposal – the "Do it" / "No" buttons.
   decide: procedure.input(decideFromUser).mutation(async ({ input }) => {
     const run = await findRun(input.runId);
     await asBadRequest(() => step7Decide(run, input));

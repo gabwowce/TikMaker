@@ -21,7 +21,11 @@ import {
 } from "../../../src/agent/run/6-edit.js";
 import { VO_WORDS_PER_SECOND } from "../../../src/utils/pacing.js";
 import type { StageType } from "../../../src/video/stage/stageTypes.js";
-import { productScreens } from "./productScreens.js";
+import {
+  creatorFacts,
+  productScreens,
+  whenToAsk,
+} from "./productScreens.js";
 import { callStructured, type StructuredResult } from "../llm.js";
 
 // Stage C, parts 3–4: the approved script → blocks (docs/motion-planas.md).
@@ -150,7 +154,7 @@ function basePrompt(
   return `Principles:
 ${knowledge}
 
-Channel: ${workspace.name}. ${workspace.brief}${productScreens(workspace)}
+Channel: ${workspace.name}. ${workspace.brief}${productScreens(workspace)}${creatorFacts(workspace)}
 Idea: ${input.idea}
 
 Stages:
@@ -183,10 +187,15 @@ export async function pickBlocks(
   principles: MotionPrinciple[],
   previous?: { blocks: BlocksFromAi; problems: BlocksProblem[] },
   model?: Parameters<typeof callStructured>[2],
+  // it asked the creator already in this run: decide, do not ask again
+  asked = false,
 ): Promise<StructuredResult<BlocksFromAi>> {
   const user =
     basePrompt(input, workspace, scenes, principles) +
-    (previous ? fixPrompt(previous.blocks, previous.problems) : "");
+    // a fix of the answer it gave asks nothing new
+    (previous
+      ? fixPrompt(previous.blocks, previous.problems)
+      : whenToAsk(asked));
   // The schema does not fix the number of scenes: Gemini rejects such a
   // schema ("invalid argument"). checkBlocks checks there is one per scene.
   return callStructured(blocksFromAi, { system: SYSTEM, user }, model);
