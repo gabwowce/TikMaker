@@ -7,9 +7,13 @@ import { StageCatalog, STAGE_CATALOG_FRAMES } from "./video/stage/StageCatalog";
 import { StageDemo, STAGE_DEMO_FRAMES } from "./video/stage/StageDemo";
 import { StageTypes, STAGE_TYPES_FRAMES } from "./video/stage/StageTypesDemo";
 import { TikTokVideo } from "./video/TikTokVideo";
+import { CodeVideo } from "./experiments/codeVideo/CodeVideo";
+import codeVideoProjectJson from "../db/projects/project-1793969945652.json";
 import { videoDefaults } from "./video/typography/tokens";
 const showcaseProject = parseProject(showcaseProjectJson);
 const fallbackProject = createEmptyProject("empty", "Empty Project");
+// The experiment's video: test 11 (3 Claude Code mistakes that burn tokens).
+const codeVideoProject = parseProject(codeVideoProjectJson);
 export function RemotionRoot() {
   return (
     <>
@@ -26,6 +30,16 @@ export function RemotionRoot() {
             props.project ?? fallbackProject,
           ),
         })}
+      />
+      {/* Experiment: every scene's picture written as code by Claude Code */}
+      <Composition
+        id="CodeVideo"
+        component={CodeVideo}
+        durationInFrames={projectDurationInFrames(codeVideoProject)}
+        fps={videoDefaults.fps}
+        width={videoDefaults.width}
+        height={videoDefaults.height}
+        defaultProps={{ project: codeVideoProject }}
       />
       {/* Pavyzdinė „stage“ scena (docs/motion-planas.md) */}
       <Composition
