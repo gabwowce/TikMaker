@@ -1,0 +1,30 @@
+{
+  "id": "code-argo2",
+  "title": "2v-4 su argo (pataisytas)",
+  "workspaceId": "dev",
+  "videoTemplateId": "product-promo",
+  "fps": 30,
+  "width": 1080,
+  "height": 1920,
+  "storyPlan": {
+    "premise": "TikMaker, the AI video editor I am building: you type one video idea, the AI agent picks a template, writes 3 hooks, writes the script, then builds every scene and checks its own frames, and the finished video lands in the editor timeline ready to render. Show the real TikMaker screens for each step: the new video form, the agent panel at work, the editor with the built video."
+  },
+  "scenes": [],
+  "captions": {
+    "style": "kinetic",
+    "keywords": [
+      "one sentence",
+      "TikMaker",
+      "Start",
+      "template",
+      "three hooks",
+      "approve",
+      "every scene",
+      "checks",
+      "timeline",
+      "render"
+    ]
+  },
+  "savedAt": 1794129132971,
+  "audioClips": []
+}
