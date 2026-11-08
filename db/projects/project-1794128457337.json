@@ -1,0 +1,777 @@
+{
+  "id": "project-1794128457337",
+  "title": "2v-4bandymas",
+  "workspaceId": "dev",
+  "videoTemplateId": "product-promo",
+  "fps": 30,
+  "width": 1080,
+  "height": 1920,
+  "storyPlan": {
+    "premise": "TikMaker, the AI video editor I am building: you type one video idea, the AI agent picks a template, writes 3 hooks, writes the script, then builds every scene and checks its own frames, and the finished video lands in the editor timeline ready to render. Show the real TikMaker screens for each step: the new video form, the agent panel at work, the editor with the built video."
+  },
+  "scenes": [
+    {
+      "id": "scene-run-mw7lrnin-1",
+      "plan": {
+        "role": "hook",
+        "visualBrief": "Split screen: one orange line types into the idea box, an arrow draws across, and the finished vertical video lights up and plays on the right."
+      },
+      "durationSeconds": 2.951,
+      "vo": "I typed one sentence. This whole video came out of it.",
+      "notes": "🎥 Your own recording",
+      "background": "stage",
+      "content": {},
+      "code": {
+        "file": "project-1794128457337/scene-1.tsx"
+      },
+      "stage": "top",
+      "motion": {
+        "entrance": "none",
+        "transition": "cut"
+      },
+      "type": "code"
+    },
+    {
+      "id": "scene-run-mw7lrnin-2",
+      "plan": {
+        "role": "demo",
+        "visualBrief": "The real new video form in TikMaker's agent panel: the idea is typed in and the cursor clicks Start (the creator's recording)."
+      },
+      "durationSeconds": 5.087,
+      "vo": "I'm building TikMaker, an AI video editor. You type one video idea and hit Start.",
+      "notes": "🎥 Your own recording",
+      "background": "stage",
+      "content": {},
+      "code": {
+        "file": "project-1794128457337/scene-2.tsx"
+      },
+      "stage": "top",
+      "motion": {
+        "entrance": "none",
+        "transition": "slideLeft"
+      },
+      "type": "code"
+    },
+    {
+      "id": "scene-run-mw7lrnin-3",
+      "plan": {
+        "role": "mechanism",
+        "visualBrief": "Step 1: in the agent panel the first two progress dots tick off and an orange template card pops into the conversation."
+      },
+      "durationSeconds": 3.229,
+      "vo": "First, the agent picks a template that fits the idea.",
+      "background": "stage",
+      "content": {},
+      "code": {
+        "file": "project-1794128457337/scene-3.tsx"
+      },
+      "stage": "top",
+      "motion": {
+        "entrance": "none",
+        "transition": "slideLeft"
+      },
+      "type": "code"
+    },
+    {
+      "id": "scene-run-mw7lrnin-4",
+      "plan": {
+        "role": "mechanism",
+        "visualBrief": "Step 2: the real hooks card shows three hooks and the cursor clicks one (the creator's recording)."
+      },
+      "durationSeconds": 3.1830000000000003,
+      "vo": "Second, it writes three hooks, and you pick one.",
+      "notes": "🎥 Your own recording",
+      "background": "stage",
+      "content": {},
+      "code": {
+        "file": "project-1794128457337/scene-4.tsx"
+      },
+      "stage": "top",
+      "motion": {
+        "entrance": "none",
+        "transition": "slideLeft"
+      },
+      "type": "code"
+    },
+    {
+      "id": "scene-run-mw7lrnin-5",
+      "plan": {
+        "role": "mechanism",
+        "visualBrief": "Step 3: script rows fill the panel one scene at a time, then the cursor clicks the orange Approve button and it turns into a check."
+      },
+      "durationSeconds": 3.972,
+      "vo": "Third, it writes the script scene by scene, and you approve it.",
+      "background": "stage",
+      "content": {},
+      "code": {
+        "file": "project-1794128457337/scene-5.tsx"
+      },
+      "stage": "top",
+      "motion": {
+        "entrance": "none",
+        "transition": "slideLeft"
+      },
+      "type": "code"
+    },
+    {
+      "id": "scene-run-mw7lrnin-6",
+      "plan": {
+        "role": "escalation",
+        "visualBrief": "The panel reaches Building: folded cards for pictures, motion and voiceover land one by one, then a row of video frames gets checked off."
+      },
+      "durationSeconds": 7.13,
+      "vo": "Then it builds every scene: pictures, motion, voiceover. And it checks its own frames.",
+      "background": "stage",
+      "content": {},
+      "code": {
+        "file": "project-1794128457337/scene-6.tsx"
+      },
+      "stage": "top",
+      "motion": {
+        "entrance": "none",
+        "transition": "dissolve"
+      },
+      "type": "code"
+    },
+    {
+      "id": "scene-run-mw7lrnin-7",
+      "plan": {
+        "role": "payoff",
+        "visualBrief": "The real TikMaker editor with the built video: the scene strip, the timeline clips and the vertical preview playing (the creator's recording)."
+      },
+      "durationSeconds": 3.833,
+      "vo": "The finished video lands right in the editor timeline.",
+      "notes": "🎥 Your own recording",
+      "background": "stage",
+      "content": {},
+      "code": {
+        "file": "project-1794128457337/scene-7.tsx"
+      },
+      "stage": "top",
+      "motion": {
+        "entrance": "none",
+        "transition": "fromDepth"
+      },
+      "type": "code"
+    },
+    {
+      "id": "scene-run-mw7lrnin-8",
+      "plan": {
+        "role": "payoff",
+        "visualBrief": "The cursor clicks the orange Render MP4 button, a progress bar fills, and an MP4 file card lands with a download badge."
+      },
+      "durationSeconds": 2.858,
+      "vo": "Ready to render. One sentence in, one video out.",
+      "background": "stage",
+      "content": {},
+      "code": {
+        "file": "project-1794128457337/scene-8.tsx"
+      },
+      "stage": "top",
+      "motion": {
+        "entrance": "none",
+        "transition": "slideLeft"
+      },
+      "type": "code"
+    }
+  ],
+  "captions": {
+    "style": "kinetic",
+    "keywords": [
+      "one sentence",
+      "TikMaker",
+      "Start",
+      "template",
+      "three hooks",
+      "approve",
+      "every scene",
+      "checks",
+      "timeline",
+      "render"
+    ]
+  },
+  "savedAt": 1794129132971,
+  "audioClips": [
+    {
+      "id": "audio-run-mw7lrnin-scene-run-mw7lrnin-1",
+      "sfxId": "vo-run-mw7lrnin-scene-1-mw7luhlf",
+      "from": 0,
+      "durationInFrames": 89,
+      "volume": 1,
+      "voiceText": "I typed one sentence. This whole video came out of it.",
+      "words": [
+        {
+          "text": "I",
+          "start": 0,
+          "end": 0.07
+        },
+        {
+          "text": "typed",
+          "start": 0.151,
+          "end": 0.348
+        },
+        {
+          "text": "one",
+          "start": 0.406,
+          "end": 0.534
+        },
+        {
+          "text": "sentence.",
+          "start": 0.569,
+          "end": 1.068
+        },
+        {
+          "text": "This",
+          "start": 1.219,
+          "end": 1.382
+        },
+        {
+          "text": "whole",
+          "start": 1.416,
+          "end": 1.579
+        },
+        {
+          "text": "video",
+          "start": 1.602,
+          "end": 1.858
+        },
+        {
+          "text": "came",
+          "start": 1.904,
+          "end": 2.055
+        },
+        {
+          "text": "out",
+          "start": 2.078,
+          "end": 2.183
+        },
+        {
+          "text": "of",
+          "start": 2.218,
+          "end": 2.264
+        },
+        {
+          "text": "it.",
+          "start": 2.31,
+          "end": 2.601
+        }
+      ]
+    },
+    {
+      "id": "audio-run-mw7lrnin-scene-run-mw7lrnin-2",
+      "sfxId": "vo-run-mw7lrnin-scene-2-mw7lui33",
+      "from": 89,
+      "durationInFrames": 153,
+      "volume": 1,
+      "voiceText": "I'm building TikMaker, an AI video editor. You type one video idea and hit Start.",
+      "words": [
+        {
+          "text": "I'm",
+          "start": 0,
+          "end": 0.174
+        },
+        {
+          "text": "building",
+          "start": 0.209,
+          "end": 0.464
+        },
+        {
+          "text": "TikMaker,",
+          "start": 0.511,
+          "end": 1.068
+        },
+        {
+          "text": "an",
+          "start": 1.173,
+          "end": 1.3
+        },
+        {
+          "text": "AI",
+          "start": 1.382,
+          "end": 1.614
+        },
+        {
+          "text": "video",
+          "start": 1.695,
+          "end": 1.927
+        },
+        {
+          "text": "editor.",
+          "start": 1.985,
+          "end": 2.368
+        },
+        {
+          "text": "You",
+          "start": 2.577,
+          "end": 2.682
+        },
+        {
+          "text": "type",
+          "start": 2.717,
+          "end": 2.914
+        },
+        {
+          "text": "one",
+          "start": 2.961,
+          "end": 3.1
+        },
+        {
+          "text": "video",
+          "start": 3.135,
+          "end": 3.379
+        },
+        {
+          "text": "idea",
+          "start": 3.437,
+          "end": 3.704
+        },
+        {
+          "text": "and",
+          "start": 3.785,
+          "end": 3.901
+        },
+        {
+          "text": "hit",
+          "start": 3.947,
+          "end": 4.075
+        },
+        {
+          "text": "Start.",
+          "start": 4.133,
+          "end": 4.737
+        }
+      ]
+    },
+    {
+      "id": "audio-run-mw7lrnin-scene-run-mw7lrnin-3",
+      "sfxId": "vo-run-mw7lrnin-scene-3-mw7luijg",
+      "from": 242,
+      "durationInFrames": 97,
+      "volume": 1,
+      "voiceText": "First, the agent picks a template that fits the idea.",
+      "words": [
+        {
+          "text": "First,",
+          "start": 0,
+          "end": 0.395
+        },
+        {
+          "text": "the",
+          "start": 0.43,
+          "end": 0.546
+        },
+        {
+          "text": "agent",
+          "start": 0.604,
+          "end": 0.882
+        },
+        {
+          "text": "picks",
+          "start": 0.917,
+          "end": 1.103
+        },
+        {
+          "text": "a",
+          "start": 1.138,
+          "end": 1.161
+        },
+        {
+          "text": "template",
+          "start": 1.196,
+          "end": 1.544
+        },
+        {
+          "text": "that",
+          "start": 1.579,
+          "end": 1.707
+        },
+        {
+          "text": "fits",
+          "start": 1.765,
+          "end": 1.95
+        },
+        {
+          "text": "the",
+          "start": 1.985,
+          "end": 2.067
+        },
+        {
+          "text": "idea.",
+          "start": 2.113,
+          "end": 2.879
+        }
+      ]
+    },
+    {
+      "id": "audio-run-mw7lrnin-scene-run-mw7lrnin-4",
+      "sfxId": "vo-run-mw7lrnin-scene-4-mw7luiyv",
+      "from": 339,
+      "durationInFrames": 95,
+      "volume": 1,
+      "voiceText": "Second, it writes three hooks, and you pick one.",
+      "words": [
+        {
+          "text": "Second,",
+          "start": 0,
+          "end": 0.476
+        },
+        {
+          "text": "it",
+          "start": 0.58,
+          "end": 0.685
+        },
+        {
+          "text": "writes",
+          "start": 0.72,
+          "end": 0.929
+        },
+        {
+          "text": "three",
+          "start": 0.975,
+          "end": 1.161
+        },
+        {
+          "text": "hooks,",
+          "start": 1.196,
+          "end": 1.579
+        },
+        {
+          "text": "and",
+          "start": 1.614,
+          "end": 1.776
+        },
+        {
+          "text": "you",
+          "start": 1.834,
+          "end": 1.916
+        },
+        {
+          "text": "pick",
+          "start": 1.962,
+          "end": 2.113
+        },
+        {
+          "text": "one.",
+          "start": 2.183,
+          "end": 2.833
+        }
+      ]
+    },
+    {
+      "id": "audio-run-mw7lrnin-scene-run-mw7lrnin-5",
+      "sfxId": "vo-run-mw7lrnin-scene-5-mw7lujgh",
+      "from": 434,
+      "durationInFrames": 119,
+      "volume": 1,
+      "voiceText": "Third, it writes the script scene by scene, and you approve it.",
+      "words": [
+        {
+          "text": "Third,",
+          "start": 0,
+          "end": 0.453
+        },
+        {
+          "text": "it",
+          "start": 0.639,
+          "end": 0.743
+        },
+        {
+          "text": "writes",
+          "start": 0.778,
+          "end": 0.987
+        },
+        {
+          "text": "the",
+          "start": 1.022,
+          "end": 1.115
+        },
+        {
+          "text": "script",
+          "start": 1.161,
+          "end": 1.428
+        },
+        {
+          "text": "scene",
+          "start": 1.474,
+          "end": 1.695
+        },
+        {
+          "text": "by",
+          "start": 1.73,
+          "end": 1.846
+        },
+        {
+          "text": "scene,",
+          "start": 1.916,
+          "end": 2.31
+        },
+        {
+          "text": "and",
+          "start": 2.438,
+          "end": 2.624
+        },
+        {
+          "text": "you",
+          "start": 2.67,
+          "end": 2.752
+        },
+        {
+          "text": "approve",
+          "start": 2.798,
+          "end": 3.077
+        },
+        {
+          "text": "it.",
+          "start": 3.111,
+          "end": 3.622
+        }
+      ]
+    },
+    {
+      "id": "audio-run-mw7lrnin-scene-run-mw7lrnin-6",
+      "sfxId": "vo-run-mw7lrnin-scene-6-mw7luk1y",
+      "from": 553,
+      "durationInFrames": 214,
+      "volume": 1,
+      "voiceText": "Then it builds every scene: pictures, motion, voiceover. And it checks its own frames.",
+      "words": [
+        {
+          "text": "Then",
+          "start": 0,
+          "end": 0.29
+        },
+        {
+          "text": "it",
+          "start": 0.476,
+          "end": 0.627
+        },
+        {
+          "text": "builds",
+          "start": 0.662,
+          "end": 0.917
+        },
+        {
+          "text": "every",
+          "start": 1.022,
+          "end": 1.289
+        },
+        {
+          "text": "scene:",
+          "start": 1.324,
+          "end": 1.707
+        },
+        {
+          "text": "pictures,",
+          "start": 1.985,
+          "end": 2.566
+        },
+        {
+          "text": "motion,",
+          "start": 2.752,
+          "end": 3.332
+        },
+        {
+          "text": "voiceover.",
+          "start": 3.518,
+          "end": 4.11
+        },
+        {
+          "text": "And",
+          "start": 4.354,
+          "end": 4.505
+        },
+        {
+          "text": "it",
+          "start": 4.563,
+          "end": 4.632
+        },
+        {
+          "text": "checks",
+          "start": 4.667,
+          "end": 4.957
+        },
+        {
+          "text": "its",
+          "start": 5.062,
+          "end": 5.248
+        },
+        {
+          "text": "own",
+          "start": 5.329,
+          "end": 5.538
+        },
+        {
+          "text": "frames.",
+          "start": 5.596,
+          "end": 6.78
+        }
+      ]
+    },
+    {
+      "id": "audio-run-mw7lrnin-scene-run-mw7lrnin-7",
+      "sfxId": "vo-run-mw7lrnin-scene-7-mw7lukl8",
+      "from": 767,
+      "durationInFrames": 115,
+      "volume": 1,
+      "voiceText": "The finished video lands right in the editor timeline.",
+      "words": [
+        {
+          "text": "The",
+          "start": 0,
+          "end": 0.128
+        },
+        {
+          "text": "finished",
+          "start": 0.186,
+          "end": 0.476
+        },
+        {
+          "text": "video",
+          "start": 0.511,
+          "end": 0.894
+        },
+        {
+          "text": "lands",
+          "start": 1.022,
+          "end": 1.277
+        },
+        {
+          "text": "right",
+          "start": 1.347,
+          "end": 1.533
+        },
+        {
+          "text": "in",
+          "start": 1.579,
+          "end": 1.649
+        },
+        {
+          "text": "the",
+          "start": 1.683,
+          "end": 1.753
+        },
+        {
+          "text": "editor",
+          "start": 1.811,
+          "end": 2.055
+        },
+        {
+          "text": "timeline.",
+          "start": 2.101,
+          "end": 3.483
+        }
+      ]
+    },
+    {
+      "id": "audio-run-mw7lrnin-scene-run-mw7lrnin-8",
+      "sfxId": "vo-run-mw7lrnin-scene-8-mw7lukzp",
+      "from": 882,
+      "durationInFrames": 86,
+      "volume": 1,
+      "voiceText": "Ready to render. One sentence in, one video out.",
+      "words": [
+        {
+          "text": "Ready",
+          "start": 0,
+          "end": 0.209
+        },
+        {
+          "text": "to",
+          "start": 0.244,
+          "end": 0.29
+        },
+        {
+          "text": "render.",
+          "start": 0.337,
+          "end": 0.673
+        },
+        {
+          "text": "One",
+          "start": 0.801,
+          "end": 0.964
+        },
+        {
+          "text": "sentence",
+          "start": 0.998,
+          "end": 1.289
+        },
+        {
+          "text": "in,",
+          "start": 1.324,
+          "end": 1.521
+        },
+        {
+          "text": "one",
+          "start": 1.625,
+          "end": 1.776
+        },
+        {
+          "text": "video",
+          "start": 1.8,
+          "end": 2.055
+        },
+        {
+          "text": "out.",
+          "start": 2.113,
+          "end": 2.508
+        }
+      ]
+    },
+    {
+      "id": "sfx-run-mw7lrnin-1-1",
+      "sfxId": "type-word",
+      "from": 3,
+      "durationInFrames": 7,
+      "lane": 1,
+      "volume": 0.35
+    },
+    {
+      "id": "sfx-run-mw7lrnin-3-1",
+      "sfxId": "d-pop",
+      "from": 276,
+      "durationInFrames": 5,
+      "lane": 1,
+      "volume": 0.5
+    },
+    {
+      "id": "sfx-run-mw7lrnin-5-1",
+      "sfxId": "check",
+      "from": 516,
+      "durationInFrames": 7,
+      "lane": 1,
+      "volume": 0.4
+    },
+    {
+      "id": "sfx-run-mw7lrnin-6-1",
+      "sfxId": "d-pop",
+      "from": 611,
+      "durationInFrames": 5,
+      "lane": 1,
+      "volume": 0.5
+    },
+    {
+      "id": "sfx-run-mw7lrnin-6-2",
+      "sfxId": "d-tick",
+      "from": 691,
+      "durationInFrames": 2,
+      "lane": 1,
+      "volume": 0.35
+    },
+    {
+      "id": "sfx-run-mw7lrnin-7-1",
+      "sfxId": "d-enter",
+      "from": 796,
+      "durationInFrames": 5,
+      "lane": 1,
+      "volume": 0.5
+    },
+    {
+      "id": "sfx-run-mw7lrnin-8-1",
+      "sfxId": "d-done",
+      "from": 904,
+      "durationInFrames": 7,
+      "lane": 1,
+      "volume": 0.5
+    }
+  ]
+}

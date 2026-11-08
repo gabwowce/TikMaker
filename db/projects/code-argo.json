@@ -2,13 +2,16 @@
   "id": "code-argo",
   "title": "Argo bandymas: TikMaker įrašai",
   "workspaceId": "dev",
+  "videoTemplateId": "product-promo",
   "fps": 30,
   "width": 1080,
   "height": 1920,
+  "storyPlan": {
+    "premise": "TikMaker, the AI video editor I am building: you type one video idea, the AI agent picks a template, writes 3 hooks, writes the script, then builds every scene and checks its own frames, and the finished video lands in the editor timeline ready to render. Show the real TikMaker screens for each step: the new video form, the agent panel at work, the editor with the built video."
+  },
   "scenes": [
     {
       "id": "scene-run-mw7h6ktf-1",
-      "type": "code",
       "plan": {
         "role": "hook",
         "visualBrief": "The real TikMaker idea box with one typed sentence flies aside, and the real editor holding the agent-built video lands in its place while all five agent steps tick in the dock."
@@ -17,18 +20,18 @@
       "notes": "🎥 Your own recording",
       "background": "stage",
       "content": {},
-      "stage": "top",
-      "motion": {
-        "transition": "cut",
-        "entrance": "none"
-      },
       "code": {
         "file": "code-argo/scene-1.tsx"
-      }
+      },
+      "stage": "top",
+      "motion": {
+        "entrance": "none",
+        "transition": "cut"
+      },
+      "type": "code"
     },
     {
       "id": "scene-run-mw7h6ktf-2",
-      "type": "code",
       "plan": {
         "role": "demo",
         "visualBrief": "The real agent panel: the idea is typed into 'Video idea', the view glides down to the orange Start button and a cursor clicks it; Idea ticks in the dock."
@@ -37,18 +40,18 @@
       "notes": "🎥 Your own recording",
       "background": "stage",
       "content": {},
-      "stage": "top",
-      "motion": {
-        "transition": "zoomThrough",
-        "entrance": "none"
-      },
       "code": {
         "file": "code-argo/scene-2.tsx"
-      }
+      },
+      "stage": "top",
+      "motion": {
+        "entrance": "none",
+        "transition": "zoomThrough"
+      },
+      "type": "code"
     },
     {
       "id": "scene-run-mw7h6ktf-3",
-      "type": "code",
       "plan": {
         "role": "benefit",
         "visualBrief": "On a light blue scene the real agent card, cropped to its big 'Template · picked by the AI – Problem then fix' header, steps forward between two dimmed, blurred templates that weren't chosen and gets a green check."
@@ -56,18 +59,18 @@
       "vo": "The agent picks a template that fits it.",
       "background": "stage",
       "content": {},
-      "stage": "top",
-      "motion": {
-        "transition": "flash",
-        "entrance": "none"
-      },
       "code": {
         "file": "code-argo/scene-3.tsx"
-      }
+      },
+      "stage": "top",
+      "motion": {
+        "entrance": "none",
+        "transition": "flash"
+      },
+      "type": "code"
     },
     {
       "id": "scene-run-mw7h6ktf-4",
-      "type": "code",
       "plan": {
         "role": "benefit",
         "visualBrief": "Three real hook options from the agent panel stand as a glass deck under a big '3 hooks'; a cursor clicks the middle one, it glows orange while the other two sink back."
@@ -76,18 +79,18 @@
       "notes": "🎥 Your own recording",
       "background": "stage",
       "content": {},
-      "stage": "top",
-      "motion": {
-        "transition": "push",
-        "entrance": "none"
-      },
       "code": {
         "file": "code-argo/scene-4.tsx"
-      }
+      },
+      "stage": "top",
+      "motion": {
+        "entrance": "none",
+        "transition": "push"
+      },
+      "type": "code"
     },
     {
       "id": "scene-run-mw7h6ktf-5",
-      "type": "code",
       "plan": {
         "role": "benefit",
         "visualBrief": "The real script card scrolls scene by scene in a glass window, then a cursor clicks the orange Approve button and the dock moves from Script to Building."
@@ -96,18 +99,18 @@
       "notes": "🎥 Your own recording",
       "background": "stage",
       "content": {},
-      "stage": "top",
-      "motion": {
-        "transition": "push",
-        "entrance": "none"
-      },
       "code": {
         "file": "code-argo/scene-5.tsx"
-      }
+      },
+      "stage": "top",
+      "motion": {
+        "entrance": "none",
+        "transition": "push"
+      },
+      "type": "code"
     },
     {
       "id": "scene-run-mw7h6ktf-6",
-      "type": "code",
       "plan": {
         "role": "benefit",
         "visualBrief": "Three real agent cards pop in one after another (voiceover for 11 scenes, pictures written as code, self-review 'Good: 1–11'), and the self-review card gets a green check."
@@ -115,18 +118,18 @@
       "vo": "Plus, it builds every scene and checks its own frames.",
       "background": "stage",
       "content": {},
-      "stage": "top",
-      "motion": {
-        "transition": "slideUp",
-        "entrance": "none"
-      },
       "code": {
         "file": "code-argo/scene-6.tsx"
-      }
+      },
+      "stage": "top",
+      "motion": {
+        "entrance": "none",
+        "transition": "slideUp"
+      },
+      "type": "code"
     },
     {
       "id": "scene-run-mw7h6ktf-7",
-      "type": "code",
       "plan": {
         "role": "payoff",
         "visualBrief": "Light scene: the real TikMaker editor in a big card, with its timeline tracks and scene strip filling with clips from left to right as the Result step ticks."
@@ -135,18 +138,18 @@
       "notes": "🎥 Your own recording",
       "background": "stage",
       "content": {},
-      "stage": "top",
-      "motion": {
-        "transition": "flash",
-        "entrance": "none"
-      },
       "code": {
         "file": "code-argo/scene-7.tsx"
-      }
+      },
+      "stage": "top",
+      "motion": {
+        "entrance": "none",
+        "transition": "flash"
+      },
+      "type": "code"
     },
     {
       "id": "scene-run-mw7h6ktf-8",
-      "type": "code",
       "plan": {
         "role": "payoff",
         "visualBrief": "A cursor clicks the real 'Render MP4' button, a progress bar fills to 100% and turns into a finished video.mp4 file card with a green download button."
@@ -154,18 +157,18 @@
       "vo": "One click on Render MP4, and it's ready to post.",
       "background": "stage",
       "content": {},
-      "stage": "top",
-      "motion": {
-        "transition": "zoomThrough",
-        "entrance": "none"
-      },
       "code": {
         "file": "code-argo/scene-8.tsx"
-      }
+      },
+      "stage": "top",
+      "motion": {
+        "entrance": "none",
+        "transition": "zoomThrough"
+      },
+      "type": "code"
     },
     {
       "id": "scene-run-mw7h6ktf-9",
-      "type": "code",
       "plan": {
         "role": "cta",
         "visualBrief": "A vertical phone card plays the real agent log scrolling by, with blurred real screens at the sides, as an orange Follow button pops over it and is clicked to 'Following'."
@@ -173,100 +176,17 @@
       "vo": "I'm building TikMaker in public. Follow to watch it grow.",
       "background": "stage",
       "content": {},
-      "stage": "top",
-      "motion": {
-        "transition": "dissolve",
-        "entrance": "none"
-      },
       "code": {
         "file": "code-argo/scene-9.tsx"
-      }
+      },
+      "stage": "top",
+      "motion": {
+        "entrance": "none",
+        "transition": "dissolve"
+      },
+      "type": "code"
     }
   ],
-  "savedAt": 1794120768428,
-  "audioClips": [
-    {
-      "id": "sfx-run-mw7h6ktf-1-1",
-      "sfxId": "soft-whoosh",
-      "from": 64,
-      "volume": 0.55,
-      "lane": 1
-    },
-    {
-      "id": "sfx-run-mw7h6ktf-2-1",
-      "sfxId": "type-word",
-      "from": 135,
-      "volume": 0.55,
-      "lane": 1
-    },
-    {
-      "id": "sfx-run-mw7h6ktf-3-1",
-      "sfxId": "paper-slide",
-      "from": 244,
-      "volume": 0.55,
-      "lane": 1
-    },
-    {
-      "id": "sfx-run-mw7h6ktf-3-2",
-      "sfxId": "check",
-      "from": 281,
-      "volume": 0.55,
-      "lane": 1
-    },
-    {
-      "id": "sfx-run-mw7h6ktf-4-1",
-      "sfxId": "check",
-      "from": 381,
-      "volume": 0.55,
-      "lane": 1
-    },
-    {
-      "id": "sfx-run-mw7h6ktf-5-1",
-      "sfxId": "check",
-      "from": 498,
-      "volume": 0.55,
-      "lane": 1
-    },
-    {
-      "id": "sfx-run-mw7h6ktf-6-1",
-      "sfxId": "d-done",
-      "from": 607,
-      "volume": 0.55,
-      "lane": 1
-    },
-    {
-      "id": "sfx-run-mw7h6ktf-7-1",
-      "sfxId": "d-enter",
-      "from": 670,
-      "volume": 0.55,
-      "lane": 1
-    },
-    {
-      "id": "sfx-run-mw7h6ktf-8-1",
-      "sfxId": "d-count-short",
-      "from": 759,
-      "volume": 0.55,
-      "lane": 1
-    },
-    {
-      "id": "sfx-run-mw7h6ktf-8-2",
-      "sfxId": "d-done",
-      "from": 797,
-      "volume": 0.55,
-      "lane": 1
-    },
-    {
-      "id": "sfx-run-mw7h6ktf-9-1",
-      "sfxId": "d-pop",
-      "from": 887,
-      "volume": 0.55,
-      "lane": 1
-    }
-  ],
-  "storyPlan": {
-    "premise": "TikMaker, the AI video editor I am building: you type one video idea, the AI agent picks a template, writes 3 hooks, writes the script, then builds every scene and checks its own frames, and the finished video lands in the editor timeline ready to render. Show the real TikMaker screens for each step: the new video form, the agent panel at work, the editor with the built video."
-  },
-  "videoTemplateId": "product-promo",
   "captions": {
     "style": "kinetic",
     "keywords": [
@@ -288,5 +208,96 @@
       "Follow",
       "picks"
     ]
-  }
+  },
+  "savedAt": 1794128395035,
+  "audioClips": [
+    {
+      "id": "sfx-run-mw7h6ktf-1-1",
+      "sfxId": "soft-whoosh",
+      "from": 64,
+      "durationInFrames": 17,
+      "lane": 1,
+      "volume": 0.55
+    },
+    {
+      "id": "sfx-run-mw7h6ktf-2-1",
+      "sfxId": "type-word",
+      "from": 135,
+      "durationInFrames": 7,
+      "lane": 1,
+      "volume": 0.55
+    },
+    {
+      "id": "sfx-run-mw7h6ktf-3-1",
+      "sfxId": "paper-slide",
+      "from": 244,
+      "durationInFrames": 21,
+      "lane": 1,
+      "volume": 0.55
+    },
+    {
+      "id": "sfx-run-mw7h6ktf-3-2",
+      "sfxId": "check",
+      "from": 281,
+      "durationInFrames": 7,
+      "lane": 1,
+      "volume": 0.55
+    },
+    {
+      "id": "sfx-run-mw7h6ktf-4-1",
+      "sfxId": "check",
+      "from": 381,
+      "durationInFrames": 7,
+      "lane": 1,
+      "volume": 0.55
+    },
+    {
+      "id": "sfx-run-mw7h6ktf-5-1",
+      "sfxId": "check",
+      "from": 498,
+      "durationInFrames": 7,
+      "lane": 1,
+      "volume": 0.55
+    },
+    {
+      "id": "sfx-run-mw7h6ktf-6-1",
+      "sfxId": "d-done",
+      "from": 607,
+      "durationInFrames": 7,
+      "lane": 1,
+      "volume": 0.55
+    },
+    {
+      "id": "sfx-run-mw7h6ktf-7-1",
+      "sfxId": "d-enter",
+      "from": 670,
+      "durationInFrames": 5,
+      "lane": 1,
+      "volume": 0.55
+    },
+    {
+      "id": "sfx-run-mw7h6ktf-8-1",
+      "sfxId": "d-count-short",
+      "from": 759,
+      "durationInFrames": 39,
+      "lane": 1,
+      "volume": 0.55
+    },
+    {
+      "id": "sfx-run-mw7h6ktf-8-2",
+      "sfxId": "d-done",
+      "from": 797,
+      "durationInFrames": 7,
+      "lane": 1,
+      "volume": 0.55
+    },
+    {
+      "id": "sfx-run-mw7h6ktf-9-1",
+      "sfxId": "d-pop",
+      "from": 887,
+      "durationInFrames": 5,
+      "lane": 1,
+      "volume": 0.55
+    }
+  ]
 }

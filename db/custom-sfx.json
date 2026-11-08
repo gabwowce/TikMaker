@@ -761,5 +761,61 @@
     "file": "vo-run-mw6eoazf-scene-11-mw6euaao.mp3",
     "src": "/assets/voice/vo-run-mw6eoazf-scene-11-mw6euaao.mp3",
     "group": "voice"
+  },
+  {
+    "id": "vo-run-mw7lrnin-scene-1-mw7luhlf",
+    "label": "run-mw7lrnin scene 1",
+    "file": "vo-run-mw7lrnin-scene-1-mw7luhlf.mp3",
+    "src": "/assets/voice/vo-run-mw7lrnin-scene-1-mw7luhlf.mp3",
+    "group": "voice"
+  },
+  {
+    "id": "vo-run-mw7lrnin-scene-2-mw7lui33",
+    "label": "run-mw7lrnin scene 2",
+    "file": "vo-run-mw7lrnin-scene-2-mw7lui33.mp3",
+    "src": "/assets/voice/vo-run-mw7lrnin-scene-2-mw7lui33.mp3",
+    "group": "voice"
+  },
+  {
+    "id": "vo-run-mw7lrnin-scene-3-mw7luijg",
+    "label": "run-mw7lrnin scene 3",
+    "file": "vo-run-mw7lrnin-scene-3-mw7luijg.mp3",
+    "src": "/assets/voice/vo-run-mw7lrnin-scene-3-mw7luijg.mp3",
+    "group": "voice"
+  },
+  {
+    "id": "vo-run-mw7lrnin-scene-4-mw7luiyv",
+    "label": "run-mw7lrnin scene 4",
+    "file": "vo-run-mw7lrnin-scene-4-mw7luiyv.mp3",
+    "src": "/assets/voice/vo-run-mw7lrnin-scene-4-mw7luiyv.mp3",
+    "group": "voice"
+  },
+  {
+    "id": "vo-run-mw7lrnin-scene-5-mw7lujgh",
+    "label": "run-mw7lrnin scene 5",
+    "file": "vo-run-mw7lrnin-scene-5-mw7lujgh.mp3",
+    "src": "/assets/voice/vo-run-mw7lrnin-scene-5-mw7lujgh.mp3",
+    "group": "voice"
+  },
+  {
+    "id": "vo-run-mw7lrnin-scene-6-mw7luk1y",
+    "label": "run-mw7lrnin scene 6",
+    "file": "vo-run-mw7lrnin-scene-6-mw7luk1y.mp3",
+    "src": "/assets/voice/vo-run-mw7lrnin-scene-6-mw7luk1y.mp3",
+    "group": "voice"
+  },
+  {
+    "id": "vo-run-mw7lrnin-scene-7-mw7lukl8",
+    "label": "run-mw7lrnin scene 7",
+    "file": "vo-run-mw7lrnin-scene-7-mw7lukl8.mp3",
+    "src": "/assets/voice/vo-run-mw7lrnin-scene-7-mw7lukl8.mp3",
+    "group": "voice"
+  },
+  {
+    "id": "vo-run-mw7lrnin-scene-8-mw7lukzp",
+    "label": "run-mw7lrnin scene 8",
+    "file": "vo-run-mw7lrnin-scene-8-mw7lukzp.mp3",
+    "src": "/assets/voice/vo-run-mw7lrnin-scene-8-mw7lukzp.mp3",
+    "group": "voice"
   }
 ]
