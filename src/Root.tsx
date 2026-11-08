@@ -12,6 +12,7 @@ import { FreeVideo } from "./experiments/codeVideo/FreeVideo";
 import { BrandVideo } from "./experiments/codeVideo/BrandVideo";
 import codeVideoProjectJson from "../db/projects/project-1793969945652.json";
 import { videoDefaults } from "./video/typography/tokens";
+import { SoundKitDemo, soundKitFrames } from "./video/SoundKitDemo";
 const showcaseProject = parseProject(showcaseProjectJson);
 const fallbackProject = createEmptyProject("empty", "Empty Project");
 // The experiment's video: test 11 (3 Claude Code mistakes that burn tokens).
@@ -71,6 +72,15 @@ export function RemotionRoot() {
         width={videoDefaults.width}
         height={videoDefaults.height}
         defaultProps={{ project: codeVideoProject, variant: "onetake" }}
+      />
+      {/* Listening to the sound kit: npm run sfx:listen */}
+      <Composition
+        id="SoundKit"
+        component={SoundKitDemo}
+        durationInFrames={soundKitFrames()}
+        fps={videoDefaults.fps}
+        width={videoDefaults.width}
+        height={videoDefaults.height}
       />
       {/* Pavyzdinė „stage“ scena (docs/motion-planas.md) */}
       <Composition

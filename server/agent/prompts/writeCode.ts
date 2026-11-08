@@ -113,10 +113,11 @@ Rules:
     editor (a video, plus sharp 2x PNGs where you ask). Write the steps file in your
     folder: [{"project":"<project id>"}, {"click":"Visuals"},
     {"type":"my idea","into":"Video idea"}, {"select":"Visual style","option":"Depth"},
-    {"wait":800}, {"scroll":400}, {"still":"panel","of":"AI agent"}]. "project" opens
-    a project by id (ids: db/projects/*.json); "still" saves <name>-<still>.png – the
-    whole screen, or cropped to the card/panel around the text in "of". Use stills
-    for anything enlarged (the video is 1x and goes soft when scaled up).
+    {"wait":800}, {"scroll":400}, {"still":"panel","of":"AI agent","mark":["Start"]}].
+    "project" opens a project by id (ids: db/projects/*.json); "still" saves
+    <name>-<still>.png (sharp, 2x) – the whole screen, or cropped to the card/panel
+    around the text in "of"; "mark" prints where those texts are in the still (fractions
+    of its width/height) – use them for a cursor or a glow, never guess a position.
   If a command fails (no network, no key), draw that part instead and say so in wishes.
   Never draw a fake screenshot of a real website.
 - Transition: for every scene after the first, how it comes in from the one before

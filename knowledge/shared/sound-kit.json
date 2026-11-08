@@ -1,0 +1,19 @@
+{
+  "note": "Which library sound (an id from sfx/, see the Sound tab) each kind of moment uses, and how loud. Change a line to swap a sound – no code. `npm run sfx:generate` makes a fresh set (tm-<kind>-1…3) to pick from.",
+  "kinds": {
+    "whoosh": { "sfx": "soft-whoosh", "volume": 0.45 },
+    "slide": { "sfx": "paper-slide", "volume": 0.4 },
+    "pop": { "sfx": "d-pop", "volume": 0.5 },
+    "enter": { "sfx": "d-enter", "volume": 0.5 },
+    "ping": { "sfx": "d-ping", "volume": 0.4 },
+    "tick": { "sfx": "d-tick", "volume": 0.35 },
+    "count": { "sfx": "d-count-short", "volume": 0.4 },
+    "success": { "sfx": "d-done", "volume": 0.5 },
+    "fix": { "sfx": "d-fix", "volume": 0.45 },
+    "break": { "sfx": "d-break", "volume": 0.5 },
+    "type": { "sfx": "type-word", "volume": 0.35 },
+    "message": { "sfx": "d-msg-in", "volume": 0.45 },
+    "reveal": { "sfx": "riser", "volume": 0.4 },
+    "check": { "sfx": "check", "volume": 0.4 }
+  }
+}

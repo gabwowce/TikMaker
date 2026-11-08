@@ -19,7 +19,9 @@
     "test:watch": "vitest",
     "recordings:optimize": "tsx scripts/optimizeRecordings.ts",
     "dev": "concurrently -n web,api \"vite\" \"tsx watch --exclude db --exclude public server/index.ts\"",
-    "knowledge:draft": "tsx scripts/buildKnowledgeDraft.ts"
+    "knowledge:draft": "tsx scripts/buildKnowledgeDraft.ts",
+    "sfx:generate": "tsx scripts/sfxGenerate.ts",
+    "sfx:listen": "remotion render SoundKit out/sound-kit.mp4"
   },
   "dependencies": {
     "@ai-sdk/google": "^4.0.107",

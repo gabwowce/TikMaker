@@ -20,6 +20,26 @@ style shares.
 - Stage "full" (only for a full-screen recording): the picture may fill the
   frame; the captions sit at y 1400–1600 over it – keep that band calm.
 
+## Spacing and real screens
+
+- **Room between things.** Separate elements never touch: at least 40 px
+  between a card and the dock, a pill, the headline or another card (and
+  ≥ 24 px between chips in a row). Nothing overlaps another element unless
+  the overlap is the point (a sticker on a card's corner, a cursor) – then
+  at least a third of it sits inside, on purpose.
+- **Highlights on real screens must hit the real thing.** Never draw an
+  outline or a box where you guess a button is – it will be off. With a
+  `tikmaker` still, ask for `"mark": ["Approve"]`: you get where it is as
+  fractions of the still's width/height – put the cursor, a ripple or a
+  glow exactly there. Without a mark: a soft round glow (radial gradient,
+  no hard edge) behind the area, or zoom/crop the screen to it – never a
+  sharp border.
+- **Stills for what is still, recordings for what moves.** A screen that
+  just sits there is a `still` (a sharp 2x PNG) that your code animates
+  (a slow push-in, a cursor you draw, a crop moving); a recording only when
+  the real movement is the point (typing, a list filling, scrolling).
+  Recordings are 2x too, but an enlarged area is always sharper as a still.
+
 ## The brand kit (fixed – do not invent your own)
 
 Import from `src/video/brand/kit.tsx` (relative path from the scene file:
@@ -40,7 +60,7 @@ Import from `src/video/brand/kit.tsx` (relative path from the scene file:
 - `<Logo id size />` – a tool's logo from the library (ids:
   `src/registries/assets.generated.ts`).
 - `asset(path)` – the URL of a file the agent fetched with
-  `scripts/asset.ts` (it prints `/assets/agent/<folder>/<name>.png|svg|jpg|webm`)
+  `scripts/asset.ts` (it prints `/assets/agent/<folder>/<name>.png|svg|jpg|mp4`)
   for `<Img src={asset(...)}>` or `<OffthreadVideo src={asset(...)}>`.
 - `field` – the editable fields (below); `wordFrame(words, word, fallback)` –
   the frame a word is said on.

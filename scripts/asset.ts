@@ -13,11 +13,13 @@
 // tikmaker steps: [{ "project": "<project id>" }, { "click": "Visuals" },
 //                  { "type": "text", "into": "Video idea" }, { "select": "Visual style", "option": "Depth" },
 //                  { "wait": 1000 }, { "scroll": 400 },
-//                  { "still": "panel", "of": "AI agent" }]   – a sharp 2x PNG (<name>-panel.png) of the
-//                  whole screen, or cropped to the box around the text in "of"
+//                  { "still": "panel", "of": "AI agent", "mark": ["Start"] }] – a sharp 2x PNG
+//                  (<name>-panel.png) of the whole screen, or cropped to the box around the
+//                  text in "of"; "mark": where those texts are in it (fractions of its size)
 //                  – the editor must be running (npm run dev).
 import { ensureBrowser } from "@remotion/renderer";
 import { config as loadEnv } from "dotenv";
+import { spawnSync } from "node:child_process";
 import fs from "node:fs";
 import path from "node:path";
 import { chromium, type Page } from "playwright-core";
@@ -78,19 +80,50 @@ async function withPage<T>(
     if (options.video) fs.rmSync(options.video, { recursive: true, force: true });
   };
   try {
+    // A recording: the window twice as big and the page zoomed 2x, so the
+    // screencast (which sends CSS pixels) is as sharp as a 2x screenshot.
+    const zoom = options.video ? 2 : 1;
     const context = await browser.newContext({
-      viewport: { width: options.width, height: options.height },
-      deviceScaleFactor: 2,
+      viewport: { width: options.width * zoom, height: options.height * zoom },
+      deviceScaleFactor: options.video ? 1 : 2,
       colorScheme: options.dark ? "dark" : "light",
-      ...(options.video
-        ? { recordVideo: { dir: options.video, size: { width: options.width, height: options.height } } }
-        : {}),
     });
+    if (zoom !== 1)
+      await context.addInitScript((z) => {
+        const apply = () => document.documentElement.style.setProperty("zoom", String(z));
+        if (document.documentElement) apply();
+        document.addEventListener("DOMContentLoaded", apply);
+      }, zoom);
     const page = await context.newPage();
+    // A recording: every change of the screen as a sharp 2x PNG (Chrome's
+    // screencast), joined into an MP4 afterwards – far sharper than
+    // Playwright's own video (1x, low bitrate).
+    const frames: { file: string; at: number }[] = [];
+    const cdp = options.video ? await context.newCDPSession(page) : undefined;
+    if (cdp && options.video) {
+      const dir = options.video;
+      cdp.on("Page.screencastFrame", (event) => {
+        const file = path.join(dir, `f${String(frames.length).padStart(6, "0")}.png`);
+        fs.writeFileSync(file, Buffer.from(event.data, "base64"));
+        frames.push({ file, at: event.metadata.timestamp ?? Date.now() / 1000 });
+        void cdp.send("Page.screencastFrameAck", { sessionId: event.sessionId }).catch(() => {});
+      });
+      await cdp.send("Page.startScreencast", {
+        format: "png",
+        maxWidth: options.width * zoom,
+        maxHeight: options.height * zoom,
+        everyNthFrame: 1,
+      });
+    }
     const result = await work(page).catch((error: unknown) => {
       cleanUp();
       throw error;
     });
+    if (cdp && options.video) {
+      await page.waitForTimeout(400);
+      await cdp.send("Page.stopScreencast");
+      encodeFrames(frames, path.join(options.video, "out.mp4"));
+    }
     await context.close();
     return result;
   } finally {
@@ -168,9 +201,11 @@ async function tikmaker() {
       else if (typeof step.still === "string") {
         const file = `${name}-${step.still.replace(/[^\w-]/g, "-")}.png`;
         const out = path.join(outDir, file);
+        // the area the still shows, in the page's CSS pixels
+        let area = { x: 0, y: 0, width: page.viewportSize()!.width, height: page.viewportSize()!.height };
         if (typeof step.of === "string") {
           // the smallest box around the text at least 320x240 px (a card, a panel)
-          const box = await page
+          area = await page
             .getByText(step.of, { exact: false })
             .first()
             .evaluate((el) => {
@@ -180,9 +215,25 @@ async function tikmaker() {
               const r = (node ?? (el as HTMLElement)).getBoundingClientRect();
               return { x: r.x, y: r.y, width: r.width, height: r.height };
             });
-          await page.screenshot({ path: out, clip: box });
+          await page.screenshot({ path: out, clip: area });
         } else await page.screenshot({ path: out });
-        stills.push(publicPath(file));
+        // "mark": where things are in the still, as fractions of its width and
+        // height – a highlight or a cursor lands exactly on the real button
+        const marks: Record<string, { x: number; y: number; width: number; height: number }> = {};
+        for (const text of Array.isArray(step.mark) ? (step.mark as string[]) : []) {
+          const box = await page.getByText(text, { exact: false }).first().boundingBox().catch(() => null);
+          if (!box) continue;
+          marks[text] = {
+            x: +((box.x - area.x) / area.width).toFixed(4),
+            y: +((box.y - area.y) / area.height).toFixed(4),
+            width: +(box.width / area.width).toFixed(4),
+            height: +(box.height / area.height).toFixed(4),
+          };
+        }
+        if (Object.keys(marks).length) {
+          fs.writeFileSync(out.replace(/\.png$/, ".json"), JSON.stringify(marks, null, 2));
+          stills.push(`${publicPath(file)}  marks: ${JSON.stringify(marks)}`);
+        } else stills.push(publicPath(file));
       }
       else if (typeof step.click === "string")
         await page.getByText(step.click, { exact: false }).first().click({ timeout: 5000 });
@@ -198,11 +249,39 @@ async function tikmaker() {
   for (const still of stills) console.log(still);
 }
 
-// Playwright writes the video under a random name: give it ours.
+// The screencast's frames → an MP4 at 30 fps: each frame held until the
+// next one came (the screen sends a frame only when something changes).
+function encodeFrames(frames: { file: string; at: number }[], out: string) {
+  if (!frames.length) fail("The recording caught no frames");
+  const list = frames
+    .map((frame, i) => {
+      const next = frames[i + 1]?.at ?? frame.at + 0.5;
+      const seconds = Math.max(1 / 30, next - frame.at);
+      return `file '${frame.file.replace(/'/g, "'\\''")}'\nduration ${seconds.toFixed(4)}`;
+    })
+    .join("\n");
+  const listFile = path.join(path.dirname(out), "frames.txt");
+  // the last frame again: the concat format ignores the last duration
+  fs.writeFileSync(listFile, `${list}\nfile '${frames[frames.length - 1].file}'\n`);
+  const run = spawnSync(
+    "npx",
+    [
+      "remotion", "ffmpeg", "-y", "-loglevel", "error",
+      "-f", "concat", "-safe", "0", "-i", listFile,
+      "-vsync", "cfr", "-r", "30",
+      "-c:v", "libx264", "-crf", "14", "-preset", "medium", "-pix_fmt", "yuv420p",
+      out,
+    ],
+    { stdio: "inherit", shell: process.platform === "win32" },
+  );
+  if (run.status !== 0 || !fs.existsSync(out)) fail("Could not join the recording's frames");
+}
+
+// The recording under our name.
 function moveRecording(dir: string): string {
-  const video = fs.readdirSync(dir).find((f) => f.endsWith(".webm"));
+  const video = fs.readdirSync(dir).find((f) => f.endsWith(".mp4"));
   if (!video) fail("The recording was not written");
-  const file = `${name}.webm`;
+  const file = `${name}.mp4`;
   fs.renameSync(path.join(dir, video), path.join(outDir, file));
   fs.rmSync(dir, { recursive: true, force: true });
   return publicPath(file);

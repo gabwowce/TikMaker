@@ -1,3 +1,4 @@
+import soundKit from "../../knowledge/shared/sound-kit.json";
 import type { VideoProject } from "../schema/project";
 import { computeSceneTimings, projectDurationInFrames } from "../utils/duration";
 import { sceneWords } from "../utils/sceneWords";
@@ -12,23 +13,14 @@ import type { AgentRun } from "./run/run";
 // agent never plays sound inside its code – it could not be edited, and it
 // cannot hear how loud a file is.
 
-// Which library sound each kind is (src/registries/sfxRegistry.ts).
-export const SOUND_FILES: Record<SoundKind, string> = {
-  whoosh: "soft-whoosh",
-  slide: "paper-slide",
-  pop: "d-pop",
-  enter: "d-enter",
-  ping: "d-ping",
-  tick: "d-tick",
-  count: "d-count-short",
-  success: "d-done",
-  fix: "d-fix",
-  break: "d-break",
-  type: "type-word",
-  message: "d-msg-in",
-  reveal: "riser",
-  check: "check",
-};
+// Which library sound each kind is, and how loud – the channel's sound kit
+// (knowledge/shared/sound-kit.json), changed without code.
+type KitLine = { sfx: string; volume: number };
+const kit = (soundKit as { kinds: Record<string, KitLine> }).kinds;
+export const SOUND_FILES = Object.fromEntries(
+  Object.entries(kit).map(([kind, line]) => [kind, line.sfx]),
+) as Record<SoundKind, string>;
+const volumeOf = (kind: SoundKind) => kit[kind]?.volume ?? 0.5;
 
 // What the agent is told each kind is for.
 export const SOUND_USES: Record<SoundKind, string> = {
@@ -48,8 +40,6 @@ export const SOUND_USES: Record<SoundKind, string> = {
   check: "a check mark",
 };
 
-// How loud the effects sit under the voice.
-const VOLUME = 0.55;
 // A sound starts a hair before its word, as the picture does.
 const LEAD_FRAMES = 2;
 
@@ -86,7 +76,7 @@ export function withSoundCues(
           id: `${clipPrefix(run.id, n)}${i + 1}`,
           sfxId: SOUND_FILES[cue.sound],
           from: Math.max(timing.from, timing.from + word.frame - LEAD_FRAMES),
-          volume: VOLUME,
+          volume: volumeOf(cue.sound),
           lane: 1,
         },
       ];

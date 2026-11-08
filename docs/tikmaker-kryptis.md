@@ -291,3 +291,22 @@ pagal id), `select` (išskleidžiamas sąrašas), `still` (ryškus 2x PNG, visas
 ekranas arba apkirptas iki kortelės/panelės aplink tekstą). Dar trūksta:
 TikMaker logotipo bibliotekoje; peržiūros lange headless įraše kodo scenos
 negroja; renderio eigos įrašas (kad nepaleistų tikro renderio).
+
+### Kokybė, tarpai, paryškinimai, garsai (kūrėjos pastabos, 2026-11-08)
+
+1. **Ryškūs įrašai:** `tikmaker` / `scroll` įrašai nebe Playwright video (1x,
+   maža sparta). Langas 2x didesnis, puslapis `zoom: 2`, Chrome screencast
+   kiekvieną pakitimą duoda 3200×2000 PNG, Remotion ffmpeg sujungia į MP4
+   (x264, CRF 14, 30 fps). Nuotraukos (`still`) – 2x PNG.
+2. **Tarpai:** `tikmaker-scene` skile – ≥ 40 px tarp atskirų elementų (kortelė,
+   dock, pill, antraštė), ≥ 24 px tarp eilės elementų, persidengimas tik tyčinis.
+3. **Paryškinimai ant tikrų ekranų:** `still` su `"mark": ["Approve"]` grąžina
+   tikslią vietą (dalimis nuo nuotraukos dydžio, `.json` šalia) – kursorius,
+   bangelė ar švytėjimas ten; be mark – švelnus apvalus švytėjimas, niekada
+   kontūras „iš akies“. Stilius: nuotrauka tam, kas stovi, įrašas – kai judesys
+   yra esmė.
+4. **Garsai:** `knowledge/shared/sound-kit.json` – kokia biblioteka garsas ir
+   koks garsumas kiekvienai rūšiai (keičiama be kodo). `npm run sfx:generate`
+   per ElevenLabs Sound Effects sukuria nuosavą rinkinį (`sfx/tm-<rūšis>-1…3.mp3`,
+   garsumas suvienodintas -18 LUFS); `npm run sfx:listen` → `out/sound-kit.mp4`
+   (visos rūšys ir kandidatai iš eilės, kad išsirinktum).
