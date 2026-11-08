@@ -88,13 +88,14 @@ async function withPage<T>(
       deviceScaleFactor: options.video ? 1 : 2,
       colorScheme: options.dark ? "dark" : "light",
     });
-    if (zoom !== 1)
-      await context.addInitScript((z) => {
-        const apply = () => document.documentElement.style.setProperty("zoom", String(z));
-        if (document.documentElement) apply();
-        document.addEventListener("DOMContentLoaded", apply);
-      }, zoom);
+
     const page = await context.newPage();
+    // the 2x zoom as a style rule added on every page load (the app drops
+    // one added earlier)
+    if (zoom !== 1)
+      page.on("load", () => {
+        void page.addStyleTag({ content: `html { zoom: ${zoom} !important; }` }).catch(() => {});
+      });
     // A recording: every change of the screen as a sharp 2x PNG (Chrome's
     // screencast), joined into an MP4 afterwards – far sharper than
     // Playwright's own video (1x, low bitrate).
@@ -182,8 +183,25 @@ async function tikmaker() {
   const dir = fs.mkdtempSync(path.join(outDir, ".rec-"));
   const stills: string[] = [];
   await withPage({ width: 1600, height: 1000, video: dir }, async (page) => {
+    // Read-only: a recording never changes or starts anything. Every tRPC
+    // mutation (POST – Start, picking a hook, Approve, saving, rendering) is
+    // answered with a fake "done" instead of reaching the server, so the
+    // agent may click any button without starting a real (paid) run.
+    await page.route("**/trpc/**", (route) =>
+      route.request().method() === "POST"
+        ? route.fulfill({
+            status: 200,
+            contentType: "application/json",
+            body: JSON.stringify(
+              route.request().url().includes(",")
+                ? route.request().url().split("/trpc/")[1].split("?")[0].split(",").map(() => ({ result: { data: { id: "demo" } } }))
+                : { result: { data: { id: "demo" } } },
+            ),
+          })
+        : route.continue(),
+    );
     await page.goto(base, { waitUntil: "load" });
-    await page.waitForTimeout(2500);
+    await settle(page);
     for (const step of steps) {
       if (typeof step.goto === "string") await page.goto(new URL(step.goto, base).href);
       else if (typeof step.project === "string") {
@@ -195,10 +213,13 @@ async function tikmaker() {
           );
         }, step.project);
         await page.reload({ waitUntil: "load" });
-        await page.waitForTimeout(2500);
+        await settle(page);
       } else if (typeof step.select === "string")
         await page.getByLabel(step.select).first().selectOption({ label: String(step.option ?? "") });
       else if (typeof step.still === "string") {
+        // the preview and the code scenes load after the page: give them time
+        await page.waitForLoadState("networkidle").catch(() => {});
+        await page.waitForTimeout(1500);
         const file = `${name}-${step.still.replace(/[^\w-]/g, "-")}.png`;
         const out = path.join(outDir, file);
         // the area the still shows, in the page's CSS pixels
@@ -247,6 +268,14 @@ async function tikmaker() {
   });
   console.log(moveRecording(dir));
   for (const still of stills) console.log(still);
+}
+
+// Until the editor has loaded and drawn: the page, its requests, then the
+// preview's first code scene (a dynamic import) – a still taken earlier shows
+// a black preview.
+async function settle(page: Page) {
+  await page.waitForLoadState("networkidle").catch(() => {});
+  await page.waitForTimeout(4000);
 }
 
 // The screencast's frames → an MP4 at 30 fps: each frame held until the

@@ -61,6 +61,8 @@ export type CodeJob = {
   // the props file `remotion still` renders the video from
   propsFile: string;
   visuals: SavedVisualBrief[];
+  // TikMaker screens to open for a recording (codeScenes.ts tikmakerScreens)
+  screens?: string[];
   // the look of the pictures (src/agent/visualStyles.ts); unset – "clear"
   style?: VisualStyleId;
 };
@@ -120,6 +122,13 @@ Rules:
     <name>-<still>.png (sharp, 2x) – the whole screen, or cropped to the card/panel
     around the text in "of"; "mark" prints where those texts are in the still (fractions
     of its width/height) – use them for a cursor or a glow, never guess a position.
+    Recording is READ-ONLY: Start, picking a hook, Approve, Render, saving – nothing
+    reaches the server, so click whatever the scene needs; nothing is started or paid
+    for. "+ New" gives an empty project with the new-video form.
+  - Never leave a RecordingSlot empty for a screen you can reach (TikMaker, a website):
+    record it yourself and make it the field's default (field.recording("…", "…") and
+    pass params.<field> || "/assets/agent/…"). Leave one empty only for what you cannot
+    reach (another desktop app, the creator's face).
   If a command fails (no network, no key), draw that part instead and say so in wishes.
   Never draw a fake screenshot of a real website.
 - Transition: for every scene after the first, how it comes in from the one before
@@ -164,6 +173,9 @@ The script's idea for the picture: ${scene.visual}
 ${scene.needsRecording ? `The creator's own screen recording belongs here (a RecordingSlot – say exactly what to record)\n` : ""}${writing ? `Render a frame: ${still}` : ""}${current ? `\nIts code now:\n\`\`\`tsx\n${current}\n\`\`\`` : ""}`;
     })
     .join("\n\n");
+  const screens = job.screens?.length
+    ? `\n\nTikMaker screens you can open for a recording ("project" step):\n${job.screens.map((s) => `- ${s}`).join("\n")}`
+    : "";
   const visuals = job.visuals.length
     ? `\n\nThe channel's saved visuals ("my visuals") – reuse one (copy and adapt its code) where it fits, or when asked:\n${job.visuals
         .map(
@@ -186,7 +198,7 @@ Keep what was not asked to change. Keep the file name, keep the schema's field n
 The video: ${job.input.idea}
 Folder: src/generated/${job.folder}/
 
-${task}${errors}${visuals}
+${task}${errors}${visuals}${screens}
 
 ${scenes}`,
   };

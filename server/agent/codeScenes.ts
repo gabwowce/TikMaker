@@ -125,6 +125,7 @@ async function codeJob(
     propsFile,
     visuals: savedVisualsBrief(run.input.workspaceId),
     style: run.input.visualStyle ?? "clear",
+    screens: tikmakerScreens(),
   };
 }
 
@@ -335,4 +336,38 @@ export async function undoCodeScene(job: Job, n: number): Promise<void> {
       problems: code.problems.filter((p) => !p.startsWith(`Scene ${n + 1}:`)),
     },
   });
+}
+
+// TikMaker's own screens the agent can open for a recording (scripts/asset.ts
+// tikmaker, "project" step): the newest run of every project, by where it
+// stands – waiting for a hook pick, a script to approve, a finished video.
+const SCREEN_OF: Partial<Record<string, string>> = {
+  awaiting_hook: "the agent panel with three hooks to pick from",
+  awaiting_approval: "the agent panel with a script waiting for Approve",
+  done: "a finished video in the editor (scene strip, timeline, preview) with the agent's cards",
+};
+export function tikmakerScreens(): string[] {
+  const dir = path.join(ROOT, "db", "agent-runs");
+  if (!fs.existsSync(dir)) return [];
+  const newest = new Map<string, { status: string; at: number; title: string }>();
+  for (const name of fs.readdirSync(dir)) {
+    if (!name.endsWith(".json")) continue;
+    try {
+      const run = JSON.parse(fs.readFileSync(path.join(dir, name), "utf-8"));
+      const project = path.join(ROOT, "db", "projects", `${run.projectId}.json`);
+      if (!SCREEN_OF[run.status] || !fs.existsSync(project)) continue;
+      const seen = newest.get(run.projectId);
+      if (seen && seen.at > run.createdAt) continue;
+      const title = JSON.parse(fs.readFileSync(project, "utf-8")).title ?? "";
+      newest.set(run.projectId, { status: run.status, at: run.createdAt, title });
+    } catch {
+      // a file being written – skipped
+    }
+  }
+  const byStatus = new Map<string, string[]>();
+  for (const [id, { status, title }] of newest)
+    byStatus.set(status, [...(byStatus.get(status) ?? []), `${id} ("${title}")`]);
+  return [...byStatus].map(
+    ([status, ids]) => `${SCREEN_OF[status]}: ${ids.slice(0, 4).join(", ")}`,
+  );
 }
