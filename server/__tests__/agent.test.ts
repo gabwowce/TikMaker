@@ -771,6 +771,45 @@ describe("agent runs", () => {
     expect(run.code?.scenes.length).toBeGreaterThan(0);
   });
 
+  it("puts a change cut off by a restart back in line, and Continue does it", async () => {
+    const { pauseInterruptedRuns } = await import("../agent/agent.js");
+    const { getRun, saveRun } = await import("../agent/runs.js");
+    const built = await builtVideo();
+    // the server stopped while the agent was on an accepted proposal: the run
+    // still says done, the message says working, and no worker is left
+    const latest = (await getRun(built.id))!;
+    await saveRun({
+      ...latest,
+      messages: [
+        ...(latest.messages ?? []),
+        {
+          id: "msg-cut-off",
+          at: Date.now(),
+          from: "agent",
+          text: "Say scene 1 simpler?",
+          proposal: {
+            targets: [{ kind: "words", sceneIndex: 0, instruction: "Simpler" }],
+            decision: "yes",
+          },
+          status: "working",
+        },
+      ],
+    });
+    await pauseInterruptedRuns();
+    const paused = await api.agent.get(built.id);
+    expect(paused.status).toBe("paused");
+    expect(paused.pausedFrom).toBe("answering");
+    expect(lastMessage(paused).status).toBe("waiting");
+    await api.agent.resume({ runId: built.id });
+    const run = await until(
+      built.id,
+      (run) =>
+        run.status === "done" &&
+        run.messages!.find((m) => m.id === "msg-cut-off")?.status === "done",
+    );
+    expect(run.error).toBeUndefined();
+  });
+
   it("leaves the video as it is when the proposal is declined", async () => {
     const built = await builtVideo();
     await api.agent.message({

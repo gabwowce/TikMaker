@@ -4,8 +4,12 @@ import { PUBLIC_DIR } from "./config.js";
 import { slugify } from "./db.js";
 
 // A readable, unique id: "my-logo-mtq3k1z0" (slug + time in base 36).
+// Never the same twice in one server, even for two ids asked for in the
+// same millisecond (two runs started at once got one id and shared a file).
+let lastStamp = 0;
 export function newId(label: string): string {
-  return `${slugify(label)}-${Date.now().toString(36)}`;
+  lastStamp = Math.max(Date.now(), lastStamp + 1);
+  return `${slugify(label)}-${lastStamp.toString(36)}`;
 }
 
 // Writes a file into a folder under public/, where the editor and the Remotion
