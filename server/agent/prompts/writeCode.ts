@@ -109,9 +109,14 @@ Rules:
   - \`scroll <folder> <name> <url> [--seconds=6]\` – a video of a page scrolling down;
   - \`logo <folder> <name> <brand> [--white]\` – a brand logo as SVG (Simple Icons);
   - \`photo <folder> <name> "<what>"\` – a real photo (Pexels) when one is needed;
-  - \`tikmaker <folder> <name> <steps.json>\` – a recording of TikMaker itself, clicking
-    through its editor (write the steps file in your folder, e.g.
-    [{"click":"Visuals"},{"type":"my idea","into":"Video idea"},{"wait":800}]).
+  - \`tikmaker <folder> <name> <steps.json>\` – TikMaker itself, clicking through its
+    editor (a video, plus sharp 2x PNGs where you ask). Write the steps file in your
+    folder: [{"project":"<project id>"}, {"click":"Visuals"},
+    {"type":"my idea","into":"Video idea"}, {"select":"Visual style","option":"Depth"},
+    {"wait":800}, {"scroll":400}, {"still":"panel","of":"AI agent"}]. "project" opens
+    a project by id (ids: db/projects/*.json); "still" saves <name>-<still>.png – the
+    whole screen, or cropped to the card/panel around the text in "of". Use stills
+    for anything enlarged (the video is 1x and goes soft when scaled up).
   If a command fails (no network, no key), draw that part instead and say so in wishes.
   Never draw a fake screenshot of a real website.
 - Transition: for every scene after the first, how it comes in from the one before

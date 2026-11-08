@@ -275,3 +275,19 @@ analizės): 9 min, savipatikra – „visos scenos skaitosi gerai“. Palyginima
   Brand kit: `SCENE_COLORS`, `DARK_BG`, `LIGHT_BG`, `asset()`.
 - Bandymas `code-depth` (be interneto GitHub'ui): 11 min, agentas pats
   atsisiuntė Claude Code dokumentacijos ekranus ir logotipus.
+
+### Argo bandymas: TikMaker pats save įrašo
+
+Idėja apie TikMaker, Depth, be balso (projektas `code-argo`, `run-mw7h6ktf`).
+Agentas parašė 5 paspaudimų scenarijus (`src/generated/code-argo/steps-*.json`)
+ir pats įrašė redaktorių: formą, agento panelę, hookų kortelę, scenarijaus
+patvirtinimą, sukurtą video; 9 scenos su tikrais ekranais ir „dock“
+(Idea → Angle → Script → Building → Result). Vaizdai 18 min, savipatikra 2
+ratai (pataisė 3 sceną – per daug teksto). Kadrai
+`docs/eksperimentai/argo-tikmaker-irasai.jpg`.
+
+Pagal agento pageidavimus įrašytuvui pridėta: `project` (atidaro projektą
+pagal id), `select` (išskleidžiamas sąrašas), `still` (ryškus 2x PNG, visas
+ekranas arba apkirptas iki kortelės/panelės aplink tekstą). Dar trūksta:
+TikMaker logotipo bibliotekoje; peržiūros lange headless įraše kodo scenos
+negroja; renderio eigos įrašas (kad nepaleistų tikro renderio).

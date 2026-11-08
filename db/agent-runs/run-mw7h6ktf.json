@@ -1,0 +1,1035 @@
+{
+  "id": "run-mw7h6ktf",
+  "projectId": "code-argo",
+  "createdAt": 1794120768483,
+  "status": "done",
+  "statusAt": 1794122216669,
+  "input": {
+    "idea": "TikMaker, the AI video editor I am building: you type one video idea, the AI agent picks a template, writes 3 hooks, writes the script, then builds every scene and checks its own frames, and the finished video lands in the editor timeline ready to render. Show the real TikMaker screens for each step: the new video form, the agent panel at work, the editor with the built video.",
+    "workspaceId": "dev",
+    "targetSeconds": 35,
+    "motionOnly": false,
+    "withFace": false,
+    "generateVoice": false,
+    "visualStyle": "depth"
+  },
+  "template": {
+    "videoTemplateId": "product-promo",
+    "score": 4,
+    "reason": "This idea promotes one product, TikMaker, and shows its steps through the real screens: the new video form, the agent panel and the editor timeline. Product promo fits best, though it is built for shorter videos, so 35 s will need tight scenes.",
+    "needsFacts": false,
+    "pickedBy": "agent"
+  },
+  "hooks": [
+    {
+      "text": "I typed one sentence. My AI agent built this entire video.",
+      "firstFrame": "Screen recording: the one-line idea in TikMaker's new video form, next to the finished video sitting in the editor timeline",
+      "angle": "outcome",
+      "formulaId": null,
+      "score": 4
+    },
+    {
+      "text": "My AI video editor checks its own frames before showing me anything.",
+      "firstFrame": "Screen recording of TikMaker's agent panel at work, listing scenes as it builds and checks each one",
+      "angle": "curiosity",
+      "formulaId": null,
+      "score": 4
+    },
+    {
+      "text": "Open TikMaker, type one video idea, then just watch.",
+      "firstFrame": "Screen recording: cursor types an idea into the new video form and clicks create, and the agent panel starts picking a template",
+      "angle": "demonstration",
+      "formulaId": "open-app-do-this",
+      "score": 3
+    }
+  ],
+  "hooksFor": "product-promo",
+  "hook": {
+    "text": "I typed one sentence. My AI agent built this entire video.",
+    "firstFrame": "Screen recording: the one-line idea in TikMaker's new video form, next to the finished video sitting in the editor timeline",
+    "formulaId": null,
+    "pickedBy": "agent"
+  },
+  "script": {
+    "scenes": [
+      {
+        "role": "hook",
+        "voiceover": "I typed one sentence. My AI agent built this entire video.",
+        "onScreen": "ONE sentence → ENTIRE video",
+        "visual": "Screen recording: TikMaker's new video form shows the one-line idea in the 'Video idea' box, next to the finished video sitting in the editor timeline",
+        "needsRecording": true
+      },
+      {
+        "role": "demo",
+        "voiceover": "First, I type the idea into TikMaker and hit Start.",
+        "onScreen": "Type the idea → Start",
+        "visual": "The cursor types the idea into the 'Video idea' box of the agent panel and clicks the 'Start' button",
+        "needsRecording": true
+      },
+      {
+        "role": "benefit",
+        "voiceover": "The agent picks a template that fits it.",
+        "onScreen": "Picks the template",
+        "visual": "The agent panel's progress bar ticks from Idea to Angle and the chosen-template card slides in",
+        "needsRecording": false
+      },
+      {
+        "role": "benefit",
+        "voiceover": "Then it writes three hooks, and I pick one.",
+        "onScreen": "3 hooks",
+        "visual": "Screen recording: the card with three hooks appears, each with what it shows, and the cursor clicks one",
+        "needsRecording": true
+      },
+      {
+        "role": "benefit",
+        "voiceover": "Next, the whole script, scene by scene. I hit Approve.",
+        "onScreen": "Script, scene by scene",
+        "visual": "Screen recording: the script card lists the scenes one under another; the cursor clicks 'Approve' and the progress bar ticks to Building",
+        "needsRecording": true
+      },
+      {
+        "role": "benefit",
+        "voiceover": "Plus, it builds every scene and checks its own frames.",
+        "onScreen": "Builds every scene + checks its frames",
+        "visual": "The progress bar sits on Building while the folded cards 'Pictures picked', 'Motion planned' and 'Voiceover' pop in one after another",
+        "needsRecording": false
+      },
+      {
+        "role": "payoff",
+        "voiceover": "And the finished video lands right in the timeline.",
+        "onScreen": "Lands in the timeline",
+        "visual": "Screen recording: the scene strip along the bottom fills with scenes, the timeline fills with blocks, voice and caption clips, and the vertical preview plays with kinetic captions",
+        "needsRecording": true
+      },
+      {
+        "role": "payoff",
+        "voiceover": "One click on Render MP4, and it's ready to post.",
+        "onScreen": "Render MP4",
+        "visual": "The 'Render MP4' button top right is clicked, a progress bar fills, and the finished MP4 file appears to download",
+        "needsRecording": false
+      },
+      {
+        "role": "cta",
+        "voiceover": "I'm building TikMaker in public. Follow to watch it grow.",
+        "onScreen": "Building in public – follow",
+        "visual": "The finished vertical video loops in the preview player with a follow prompt over it",
+        "needsRecording": false
+      }
+    ],
+    "skipped": [],
+    "problems": [],
+    "approved": true
+  },
+  "messages": [
+    {
+      "id": "msg-mw7h6nz2r4kt",
+      "at": 1794120772574,
+      "from": "agent",
+      "text": "What I assumed (template): The video ends by telling viewers where to get or try TikMaker; you'll need to give the link or call to action. · You will supply screen recordings of the new video form, agent panel and editor."
+    },
+    {
+      "id": "msg-mw7h7kv33nch",
+      "at": 1794120815199,
+      "from": "agent",
+      "text": "What I assumed (script): The idea gives no link or launch date, so the video ends with a 'follow along' build-in-public line, not a link CTA. · No screen shows the agent checking its own frames, so that is only said in the voiceover, over the real Building step. · At about 85 words the video runs ~30 s, a bit under the 35 s target, so no filler was added."
+    },
+    {
+      "id": "msg-mw7hwjpnnbo8",
+      "at": 1794121980107,
+      "from": "agent",
+      "text": "Self-review, round 1: I looked at the frames. 1 scene(s) need a fix:\nScene 3: The 'Why:' block is 6+ lines of body text (it even mentions `git reset --soft HEAD~1`). It is text to read and pulls the eye away from the picked template.; It's not clear what the 'template' looks like. The card shows only words, nothing shaped like a template.\nGood as they are: 1, 2, 4, 5, 6, 7, 8, 9.\nNote, scene 1 (left as it is): The headline, card and dock all sit in the top half, and the bottom ~45% of the frame is empty, so the picture feels high on a phone.; The editor screenshot in the second frame is small UI that can't be read. It works as 'a real editor', but on its own it doesn't show that a finished video is there.\nNote, scene 2 (left as it is): Same layout as the hook (headline, dark glass card, dock), with only the glow colour changed, so the cut reads as a small step.\nNote, scene 4 (left as it is): In the first frame the three cards are the same size and weight until the click. That's fine because the click resolves it quickly.\nNote, scene 5 (left as it is): The scene card's small grey 'Shows:' line and the token stats under Approve are small text nobody will read. They are noise around the Approve button.; 'Scene by scene' only shows one scene card. A quick scroll through several cards would make 'whole script' easier to see.\nNote, scene 6 (left as it is): The card details ('1015 characters · 55.3 s of voice', '10 wishes', 'Good: 1·2·3…11') are small lines to read. Only the green check and the card titles come across.; At the start, two thin cards float in a mostly empty frame.\nNote, scene 7 (left as it is): The timeline is small inside a cropped editor screenshot, and the clips filling it are hard to see at phone size. A bigger crop on just the tracks would show 'lands' better.; The lower half of the frame is empty.\nNote, scene 9 (left as it is): The log text in the phone is tiny paragraphs. That's acceptable as background texture behind the button, but it adds noise.; In the first frame the cursor rests on the 'Result' chip instead of moving towards Follow.\nFixing scene(s) 3…",
+      "review": {
+        "round": 1,
+        "scenes": [
+          {
+            "sceneIndex": 0,
+            "sees": "One typed sentence in the TikMaker idea box turns into a whole video in the editor, and all five steps get ticked.",
+            "verdict": "good",
+            "problems": [
+              "The headline, card and dock all sit in the top half, and the bottom ~45% of the frame is empty, so the picture feels high on a phone.",
+              "The editor screenshot in the second frame is small UI that can't be read. It works as 'a real editor', but on its own it doesn't show that a finished video is there."
+            ]
+          },
+          {
+            "sceneIndex": 1,
+            "sees": "Typing an idea into the TikMaker panel, then a cursor clicks the big orange Start button.",
+            "verdict": "good",
+            "problems": [
+              "Same layout as the hook (headline, dark glass card, dock), with only the glow colour changed, so the cut reads as a small step."
+            ]
+          },
+          {
+            "sceneIndex": 2,
+            "sees": "A light card says the AI picked 'Problem then fix' and gets a green check, but under the title is a dense paragraph about git reset.",
+            "verdict": "fix",
+            "problems": [
+              "The 'Why:' block is 6+ lines of body text (it even mentions `git reset --soft HEAD~1`). It is text to read and pulls the eye away from the picked template.",
+              "It's not clear what the 'template' looks like. The card shows only words, nothing shaped like a template."
+            ],
+            "change": {
+              "kind": "pictures",
+              "instruction": "Keep the light scene and the real agent card, but crop it to just the picked-template header: '✓ Template · picked by the AI' and 'Problem then fix' set big (about twice the current size), with the short one-line description under it. Drop the 'Why:' paragraph completely, or blur it to grey bars. Behind it, fade in two dimmed, blurred template cards that weren't chosen, so 'picks one' reads as a choice. The green check lands on the picked card."
+            }
+          },
+          {
+            "sceneIndex": 3,
+            "sees": "Three hook cards under a big '3 hooks', and the middle one is clicked, glows orange and gets a check while the others blur.",
+            "verdict": "good",
+            "problems": [
+              "In the first frame the three cards are the same size and weight until the click. That's fine because the click resolves it quickly."
+            ]
+          },
+          {
+            "sceneIndex": 4,
+            "sees": "A script card for one scene is shown and a cursor clicks the orange Approve button, so the dock moves on to Building.",
+            "verdict": "good",
+            "problems": [
+              "The scene card's small grey 'Shows:' line and the token stats under Approve are small text nobody will read. They are noise around the Approve button.",
+              "'Scene by scene' only shows one scene card. A quick scroll through several cards would make 'whole script' easier to see."
+            ]
+          },
+          {
+            "sceneIndex": 5,
+            "sees": "Build steps tick off one by one and a self-review card ends with a big green check.",
+            "verdict": "good",
+            "problems": [
+              "The card details ('1015 characters · 55.3 s of voice', '10 wishes', 'Good: 1·2·3…11') are small lines to read. Only the green check and the card titles come across.",
+              "At the start, two thin cards float in a mostly empty frame."
+            ]
+          },
+          {
+            "sceneIndex": 6,
+            "sees": "A light scene with the TikMaker editor, its timeline filled with clips and every dock step ticked.",
+            "verdict": "good",
+            "problems": [
+              "The timeline is small inside a cropped editor screenshot, and the clips filling it are hard to see at phone size. A bigger crop on just the tracks would show 'lands' better.",
+              "The lower half of the frame is empty."
+            ]
+          },
+          {
+            "sceneIndex": 7,
+            "sees": "Clicking Render MP4 fills a progress bar and turns into a ready video.mp4 file with a green download button.",
+            "verdict": "good",
+            "problems": []
+          },
+          {
+            "sceneIndex": 8,
+            "sees": "A big orange Follow button over a phone showing the agent log is clicked and turns to 'Following', under 'Building in public'.",
+            "verdict": "good",
+            "problems": [
+              "The log text in the phone is tiny paragraphs. That's acceptable as background texture behind the button, but it adds noise.",
+              "In the first frame the cursor rests on the 'Result' chip instead of moving towards Follow."
+            ]
+          }
+        ],
+        "next": "fixing"
+      }
+    },
+    {
+      "id": "msg-mw7i1m8oqi4o",
+      "at": 1794122216664,
+      "from": "agent",
+      "text": "Self-review, round 2: I looked at the frames – every scene reads well.\nNote, scene 1 (left as it is): In the second frame the editor screenshot is small and dense, so it reads as 'an app' rather than 'a finished video'. A bigger crop of the video preview would make the payoff land harder.\nNote, scene 2 (left as it is): Same layout as the hook (headline, glass card, dock) on almost the same card, so the cut from scene 1 reads as a small change.\nNote, scene 3 (left as it is): The two rejected templates behind it are barely visible grey shapes, so 'picked from several' is weak.\nNote, scene 4 (left as it is): The hook cards are full sentences to read. They work because one is picked, but the text is on the small side for a phone.\nNote, scene 5 (left as it is): The token line ('2.7 s · 1535 in · 764 out tokens') under Approve is tiny noise. It could be cropped out.; Layout and card look repeat scenes 2 to 4 (headline, glass card, dock). Only the glow colour changes.\nNote, scene 6 (left as it is): Three stacked cards of small log text ('1015 characters · 55.3 s of voice', '10 wishes', '5 note(s)'): the viewer won't read them. Only the green check and 'Good: 1–11' carry the idea.; Feels like a log dump next to the examples. One big card showing 'Good ✓ 11/11' would read faster.\nNote, scene 7 (left as it is): The editor screenshot's UI text is tiny. It reads as 'a timeline with clips', which is enough, but a tighter crop on the clip tracks would make 'filling up' clearer.\nNote, scene 9 (left as it is): The log text in the phone is small and readable-looking, which pulls the eye a little. Blurring or dimming it more would keep the focus on the Follow button.",
+      "review": {
+        "round": 2,
+        "scenes": [
+          {
+            "sceneIndex": 0,
+            "sees": "One sentence typed into TikMaker turns into a whole editor with a built video, and all five steps get ticked.",
+            "verdict": "good",
+            "problems": [
+              "In the second frame the editor screenshot is small and dense, so it reads as 'an app' rather than 'a finished video'. A bigger crop of the video preview would make the payoff land harder."
+            ]
+          },
+          {
+            "sceneIndex": 1,
+            "sees": "You type an idea into the TikMaker box and click the big orange Start button.",
+            "verdict": "good",
+            "problems": [
+              "Same layout as the hook (headline, glass card, dock) on almost the same card, so the cut from scene 1 reads as a small change."
+            ]
+          },
+          {
+            "sceneIndex": 2,
+            "sees": "On a light background the AI's chosen template, 'Problem then fix', steps forward with a green check.",
+            "verdict": "good",
+            "problems": [
+              "The two rejected templates behind it are barely visible grey shapes, so 'picked from several' is weak."
+            ]
+          },
+          {
+            "sceneIndex": 3,
+            "sees": "Three hook cards under a big '3 hooks', and the middle one is clicked and glows orange.",
+            "verdict": "good",
+            "problems": [
+              "The hook cards are full sentences to read. They work because one is picked, but the text is on the small side for a phone."
+            ]
+          },
+          {
+            "sceneIndex": 4,
+            "sees": "A script scene card scrolls by, and the orange Approve button gets clicked.",
+            "verdict": "good",
+            "problems": [
+              "The token line ('2.7 s · 1535 in · 764 out tokens') under Approve is tiny noise. It could be cropped out.",
+              "Layout and card look repeat scenes 2 to 4 (headline, glass card, dock). Only the glow colour changes."
+            ]
+          },
+          {
+            "sceneIndex": 5,
+            "sees": "Build cards stack up, and the last one, the self-review, glows green with a big check.",
+            "verdict": "good",
+            "problems": [
+              "Three stacked cards of small log text ('1015 characters · 55.3 s of voice', '10 wishes', '5 note(s)'): the viewer won't read them. Only the green check and 'Good: 1–11' carry the idea.",
+              "Feels like a log dump next to the examples. One big card showing 'Good ✓ 11/11' would read faster."
+            ]
+          },
+          {
+            "sceneIndex": 6,
+            "sees": "On a light background the TikMaker editor shows a timeline filled with clips, and all steps are ticked.",
+            "verdict": "good",
+            "problems": [
+              "The editor screenshot's UI text is tiny. It reads as 'a timeline with clips', which is enough, but a tighter crop on the clip tracks would make 'filling up' clearer."
+            ]
+          },
+          {
+            "sceneIndex": 7,
+            "sees": "Clicking Render MP4 fills a progress bar that turns into a ready video.mp4 file with a download button.",
+            "verdict": "good",
+            "problems": []
+          },
+          {
+            "sceneIndex": 8,
+            "sees": "A big orange Follow button over a phone showing the agent log gets clicked to 'Following'.",
+            "verdict": "good",
+            "problems": [
+              "The log text in the phone is small and readable-looking, which pulls the eye a little. Blurring or dimming it more would keep the focus on the Follow button."
+            ]
+          }
+        ],
+        "next": "done"
+      }
+    }
+  ],
+  "steps": [
+    {
+      "name": "pickTemplate",
+      "startedAt": 1794120768523,
+      "ms": 4048,
+      "model": "claude-sonnet-5-5",
+      "attempts": 1,
+      "prompt": {
+        "system": "You are the producer of a short-video channel (TikTok, Reels, Shorts).\nYour job in this step: choose how the video will be told, by picking ONE template\nfrom the list you are given. You do not write the video yet.\n\nYou get the channel, the video idea and the templates.\nPick the template whose \"when to use\" fits the idea best; the length matters less.\nA template's \"needs\" are the facts its required scenes are built on. Pick one the idea\ncan fill with its OWN facts: a rise-to-success story needs a success to show, a how-to\nneeds steps, a list needs items. If the idea lacks what a template needs, that template\ndoes not fit, however close its topic is.\nNever invent a template: answer only with an id from the list.\nscore: 5 = made for this idea and the idea has every fact it needs, 3 = workable,\n1 = nothing in the list fits.\nreason: one or two sentences for the creator, in plain English, about this idea.\nneedsFacts: true when the script will need facts from outside the idea that should be\nchecked online first – prices, numbers, dates, news, how another company's tool works;\nfalse when the idea itself (or the channel's own product, which the channel knows) gives\neverything the video says.",
+        "user": "Channel: TikMaker and AI coding. Mostly TikMaker itself: what it can do, how a video gets made with it, new features and how it is being built with AI (build in public). Around that, short concrete videos about other AI tools, vibe coding and Claude Code: one problem or one feature per video, shown on screen rather than told.\nAudience: Creators who want to make short videos faster with AI, and developers or beginners who build apps with AI and want to work faster without breaking things.\n\nIdea: TikMaker, the AI video editor I am building: you type one video idea, the AI agent picks a template, writes 3 hooks, writes the script, then builds every scene and checks its own frames, and the finished video lands in the editor timeline ready to render. Show the real TikMaker screens for each step: the new video form, the agent panel at work, the editor with the built video.\nWanted length: about 35 s\nFace on camera: no, a faceless video\n\nTemplates:\n- id: analogy-explainer\n  name: Explained with characters\n  what: A concept explained through a small invented world or everyday analogy\n  when to use: An idea that is an abstract concept (economics, health, finance) that becomes clear as a story.\n  needs: problem, step, concept-term, real-case, lesson\n  length: 26–63 s\n- id: app-list\n  name: Free apps list\n  what: A quick list of apps, one per scene, each shown on screen\n  when to use: An idea that recommends several apps or tools for one device or audience.\n  needs: app-count, device-or-audience, app-name, app-feature\n  length: 14–62 s\n- id: brand-origin\n  name: Rise of a brand\n  what: From a humble start, through hardship, to a big brand\n  when to use: An idea that is the history of a brand, product or founder that has already grown big: the idea gives the success to show (users, money, years). Not a creator telling why they built their own tool.\n  needs: year-or-result, brand, founder, start, hardship, time-jump, result-number\n  length: 43–80 s\n- id: build-it-fast\n  name: Build it fast\n  what: Show the finished thing, then every step that built it\n  when to use: An idea where the viewer can build something real in minutes with a tool.\n  needs: result, time, tool-name, step, screen-recording\n  length: 20–51 s\n- id: dark-true-story\n  name: Creepy true story\n  what: A dark or strange true story told step by step to a shocking ending\n  when to use: An idea that is a real crime, legend or eerie event.\n  needs: place-or-person, event, ending\n  length: 15–51 s\n- id: explained-in-time\n  name: Explained in 60 seconds\n  what: A complex topic explained in a promised short time, often to an unlikely audience\n  when to use: An idea that is a complex topic the viewer finds hard and wants explained quickly.\n  needs: nothing special\n  length: 35–54 s\n- id: how-to-steps\n  name: How-to steps\n  what: A how-to promise followed by numbered steps on screen\n  when to use: An idea that is a concrete task the viewer wants to do with a tool, in a few steps.\n  needs: task, tool-name\n  length: 32–43 s\n- id: myth-vs-reality\n  name: Myth vs reality\n  what: What people think, then how it really works, with the proof\n  when to use: An idea that corrects a common belief or reveals a hidden side of something familiar.\n  needs: belief, background, reality, step, twist\n  length: 26–59 s\n- id: new-tool-news\n  name: New tool news\n  what: A just-released free tool, its benefits, a quick demo and a comment-keyword offer\n  when to use: An idea that is news about a newly released or newly free tool.\n  needs: who-released, tool-name, benefit, keyword, resource\n  length: 30–107 s\n- id: pain-to-fix\n  name: Problem then fix\n  what: The broken or painful way first, then the tool that fixes it, shown working\n  when to use: An idea where a tool fixes a pain the audience recognises, including a creator telling why they built their own tool: the pain they had, then the tool that fixes it.\n  needs: pain, task, screen-recording\n  length: 30–40 s\n- id: plot-recap\n  name: Story recap\n  what: A plot, journey or character backstory retold event by event\n  when to use: An idea that recaps an episode, myth, game lore or a character's story.\n  needs: story-name, setting, ending\n  length: 48–181 s\n- id: product-promo\n  name: Product promo\n  what: A product's benefits shown one by one through its interface, ending on where to get it\n  when to use: An idea that promotes one product or service.\n  needs: product-name\n  length: 11–30 s\n- id: question-answered\n  name: Big question answered\n  what: A why or how question, answered step by step with diagrams\n  when to use: An idea that is a question the audience has wondered about.\n  needs: question\n  length: 43–71 s\n- id: ranked-countdown\n  name: Top N countdown\n  what: Ranked items counted down to number one\n  when to use: An idea that ranks a set of things by some measure.\n  needs: rank-count, ranked-thing, rank-number, item-name, item-detail\n  length: 25–60 s\n- id: rapid-facts\n  name: Rapid-fire facts\n  what: Many short facts in a row, one per scene, with the strongest kept for last\n  when to use: An idea that is a collection of short surprising facts around one theme.\n  needs: theme, fact\n  length: 40–56 s\n- id: single-fact\n  name: One surprising fact\n  what: One fact built up line by line to a short reveal\n  when to use: An idea that is a single surprising or eerie fact that fits in under 20 seconds.\n  needs: topic\n  length: 7–16 s\n- id: software-tutorial\n  name: Software how-to\n  what: A finished result first, then the steps to make it in the software\n  when to use: An idea that is a specific thing to make in a common program (PowerPoint, GitHub, a no-code tool).\n  needs: result, software\n  length: 14–53 s\n- id: tool-deep-dive\n  name: Tool explained\n  what: What a tool is, how it differs, and what it really does\n  when to use: An idea that explains one popular tool or model and how to think about it.\n  needs: tool-name, difference, main-point\n  length: 49–78 s\n- id: tool-spotlight\n  name: Tool spotlight\n  what: One website or tool shown working, often as a numbered series part\n  when to use: An idea that is a single useful website, repo or tool the viewer probably has not seen.\n  needs: tool-category, series-part, screen-recording\n  length: 10–56 s\n- id: tool-tips-keyword\n  name: Tool tips list\n  what: Numbered tips for one tool, each named and then shown working, ending with a comment-keyword offer\n  when to use: An idea that is a handful of concrete tips, skills or add-ons for one tool the audience already uses.\n  needs: tool-name, tip-count, tip-number, tip-name, keyword, resource\n  length: 47–88 s\n\nquestions (optional, at most 3): ask the creator only when the answer would change the\nvideo and neither the idea nor the facts say it – a real number or result, what the\nproduct really does, what a screen really shows. Each says why it matters and, when the\nanswer is one of a few, 2–4 short options. Otherwise decide yourself – never invent a\nfact – and write in assumptions (at most 3) what you assumed, so the creator sees it."
+      },
+      "inputTokens": 5190,
+      "cachedInputTokens": 0,
+      "outputTokens": 288,
+      "thinkingTokens": 0,
+      "turns": 2,
+      "output": {
+        "assumptions": [
+          "The video ends by telling viewers where to get or try TikMaker; you'll need to give the link or call to action.",
+          "You will supply screen recordings of the new video form, agent panel and editor."
+        ],
+        "videoTemplateId": "product-promo",
+        "score": 4,
+        "reason": "This idea promotes one product, TikMaker, and shows its steps through the real screens: the new video form, the agent panel and the editor timeline. Product promo fits best, though it is built for shorter videos, so 35 s will need tight scenes.",
+        "needsFacts": false
+      }
+    },
+    {
+      "name": "writeHooks",
+      "startedAt": 1794120772579,
+      "ms": 5384,
+      "model": "claude-opus-5-5",
+      "attempts": 1,
+      "prompt": {
+        "system": "You are an expert short-form video strategist and hook writer for TikTok, Reels and\nYouTube Shorts. Create THREE genuinely different hooks for the video idea.\n\nA hook is the first 1–2 seconds of the video. It combines the opening words (spoken and\nshown), the first visual frame, and the curiosity or emotion that makes someone keep\nwatching.\n\n## 1. What makes a strong hook\nUse one or more of these – not all of them in every hook:\n- CURIOSITY GAP: the viewer wants to find out something they don't know yet.\n- SPECIFICITY: concrete details instead of vague promises.\n- UNEXPECTEDNESS: a surprising angle, contrast or observation.\n- RELEVANCE: tied to something this audience cares about.\n- PAYOFF PROMISE: a valuable result, insight or discovery the viewer gets by watching.\n\nAvoid: openings like \"Today we're going to talk about…\"; obvious questions with\npredictable answers; empty clickbait that promises more than the video delivers; vague\nclaims like \"This will change everything\"; hooks that only announce the topic.\n\n## 2. Three different approaches\nThe three hooks take genuinely different creative angles – for example curiosity (how or\nwhy something works), outcome (a valuable result), surprise (an assumption challenged),\nproblem (the pain the viewer knows), demonstration (the thing shown working). Pick the\nthree strongest for this idea and name each one's angle; all three angles are different.\nNever three rewordings of one hook.\n\n## 3. Formulas\nThe formulas given are proven structures. Use one when it truly improves the hook and\nfill it only with what the idea supports (formulaId = its id); or write your own\n(formulaId = null). Never invent personal experiences, results, statistics, product\ncapabilities or comparisons the idea does not give. Create interest without misleading.\n\n## 4. Writing\nOne short line, at most 12 words, natural spoken English, understood at once, no hashtags,\nno emojis, no filler words, concrete rather than marketing language. It should sound like\na real person talking, not an ad or an AI headline.\n\n## 5. First frame – the visual hook\nfirstFrame: exactly what the viewer SEES in the first two seconds – ONE concrete\ncomposition: an action or an object, not a mood. The words create curiosity or give\ncontext; the picture proves, demonstrates or makes the idea more interesting.\nPrefer, in this order: the actual result; the product or tool performing an action; a\nbefore / after; the problem shown; a striking object or visual metaphor.\nBad: \"A futuristic AI animation\", \"An exciting digital scene\", \"Technology comes to life\".\nGood: \"A screen recording of an AI agent generating a complete video from one text\nprompt\", \"The finished vertical video appears next to the one-line idea that made it\".\nUse only what this video can really show – listed under \"This video can show\". Never\nassume footage, faces or stock images it does not have. Words on an empty background are\nthe weakest opening; avoid them when a meaningful picture is possible.\n\n## 6. Score\nScore each complete opening – words AND first frame together – from 1 to 5, judging\nclarity, curiosity, relevance to the audience and visual potential:\n1 weak, generic or unclear · 2 understandable but little reason to stay · 3 clear and\nrelevant, not memorable · 4 specific, interesting, visually strong · 5 exceptional: grabs\nat once and makes people need to see what happens. Be critical – 5 is rare; polish alone\nis not a reason for a high score.\n\n## 7. Before answering\nCheck: three different angles; each supported by the idea; each first frame concrete and\nshowable; the picture adds something the words don't; understood within two seconds; no\nmisleading clickbait.",
+        "user": "Channel: TikMaker and AI coding. Mostly TikMaker itself: what it can do, how a video gets made with it, new features and how it is being built with AI (build in public). Around that, short concrete videos about other AI tools, vibe coding and Claude Code: one problem or one feature per video, shown on screen rather than told.\nAudience: Creators who want to make short videos faster with AI, and developers or beginners who build apps with AI and want to work faster without breaking things.\n\nIdea: TikMaker, the AI video editor I am building: you type one video idea, the AI agent picks a template, writes 3 hooks, writes the script, then builds every scene and checks its own frames, and the finished video lands in the editor timeline ready to render. Show the real TikMaker screens for each step: the new video form, the agent panel at work, the editor with the built video.\nTemplate: Product promo – A product's benefits shown one by one through its interface, ending on where to get it\n\nThis video can show:\n- the creator's own screen recordings (the product, an app, a website in use)\n- motion blocks: logos, code, terminal, screen, list, number, compare, badge, object, schema, phone, browser, progress, keys, transform, chat, picture\n- logos: bolt, chatgpt, claude, claude-ai-symbol, claude-svg, cloudflare, discord, elevenlabs, figma, gemini, github, gmail, google-chrome, grok, kilo-code, lovable, midjourney, netlify, reddit, remotion, remotion, stripe, supabase, vercel, vs-code, x\n- objects: broken-glass, broom, browser-window, bug, card-declined, clock, coin, credit-card, database, document, dollar-cupure, envelope, eye, frustration, fuel-gauge, idea, key, layer-stack, link, padlock, paper-documents, pen, pin, plane, pricetag, puzzle-joined, puzzle-piece, question, robot-helpers, screen-panel, shop, sync-arrows, target, tower-leaning, two-users, user-avatar, uturn, wallet\n\nFormulas:\n- id: free-alternative-to\n  type: news\n  formula: This is a free and [quality] alternative to [popular tool].\n  example: This is a free and open source alternative to Claude Code\n- id: did-you-know-you-can-in-tool\n  type: question\n  formula: Did you know that you can [desired result] directly in [tool]?\n  example: Did you know that you can visualize data structures directly in VS Code?\n- id: got-something-to\n  type: question\n  formula: Got [something] to [action]? [Second question]?\n  example: Got something to create?\n- id: a-vs-b-side-by-side\n  type: visual-first\n  formula: [Subject A] vs [Subject B], shown side by side with no words\n  example: MESSI RONALDO\n- id: why-does-feel-so-good\n  type: question\n  formula: Why does [subject] feel so good? Let's try it so you don't have to.\n  example: Why does cocaine feel so good? Let's try it so you don't have to.\n- id: how-does-topic-work\n  type: question\n  formula: How does [topic] work?\n  example: How does AI work?\n- id: if-you-want-follow-my-steps\n  type: how-to\n  formula: If you want to [result] using [tool], then follow my steps.\n  example: If you want to upload your project on GitHub using Visual Studio Code, then follow my steps.\n- id: open-app-do-this\n  type: how-to\n  formula: Open [app], [do the first action]...\n  example: Open the Claude desktop app, switch to Cowork mode\n- id: want-to-next-level\n  type: question\n  formula: Want to [goal] and take your [project] to the next level?\n  example: Want to promote your app and take your mobile app promo to the next level?\n- id: did-you-know-this-resource\n  type: question\n  formula: Did you know if you go to this [resource], you'll find [valuable items]?\n  example: Did you know if you go to this GitHub repo, you'll find a huge library of APIs by category, including sports and fitness, entertainment, and everything else.\n- id: why-does-entity-have-anomaly\n  type: question\n  formula: Why does [entity] have [anomaly]?\n  example: Why does Florida have this panhandle? Why does it end here and not here? Or why isn't it part of Alabama?\n- id: could-this-beat-leader\n  type: question\n  formula: Could this be the [thing] that finally beats [market leader]?\n  example: Could this be the AI that finally beats ChatGPT?\n- id: did-you-know-short\n  type: question\n  formula: Did you know [a common assumption is wrong]?\n  example: Did you know\n- id: heres-how-i-use-tool\n  type: how-to\n  formula: Here's how I use [tool] to do [task].\n  example: Here's how I use Claude to do technical analysis, and it's a game changer.\n- id: so-you-want\n  type: question\n  formula: So, you want [desired result]...\n  example: So, you want a clean motion ad for your product,\n- id: credible-person-released\n  type: news\n  formula: This [credible person] just released their entire [asset] for free.\n  example: This Anthropic hackathon winner just released his entire Claude Code setup for free.\n- id: company-just-launched\n  type: news\n  formula: [Company] just launched a [adjective] [category] tool that lets you [benefit] without [pain].\n  example: Google just launched a free AI coding tool that lets you vibe code full mobile apps without writing a single line of code.\n- id: what-why-what-can-you-do\n  type: question\n  formula: [Topic]. What is it? Why does it happen? And what can you do?\n  example: Around one in three of you could suffer from a panic attack\n- id: app-in-motion\n  type: visual-first\n  formula: [App] shown moving, with a one-word action on screen\n  example: Пополняйте\n- id: how-to-action\n  type: how-to\n  formula: How to [action] [object or platform]\n  example: How to upload a project to GitHub\n- id: did-you-know-there-is-a-place\n  type: question\n  formula: Did you know in [location] there's a [place] where [something happened]?\n  example: Did you know in the United States there's a bridge where a man\n- id: tool-gaining-momentum\n  type: news\n  formula: [Tool] has been gaining so much momentum in how [audience] are using it to [benefit].\n  example: Claude Code has been gaining so much momentum in how companies are using it to automate their operations.\n- id: why-does-use-n\n  type: question\n  formula: Why does [subject] use [N] [items]? Not [x], not [y], [N].\n  example: Why does Western music use twelve notes? Not ten, not twenty, twelve.\n- id: product-name-reveal\n  type: news\n  formula: [Product name], typed or revealed letter by letter\n  example: G P T - 5"
+      },
+      "inputTokens": 5903,
+      "cachedInputTokens": 0,
+      "outputTokens": 329,
+      "thinkingTokens": 0,
+      "turns": 2,
+      "output": [
+        {
+          "text": "I typed one sentence. My AI agent built this entire video.",
+          "firstFrame": "Screen recording: the one-line idea in TikMaker's new video form, next to the finished video sitting in the editor timeline",
+          "angle": "outcome",
+          "formulaId": null,
+          "score": 4
+        },
+        {
+          "text": "My AI video editor checks its own frames before showing me anything.",
+          "firstFrame": "Screen recording of TikMaker's agent panel at work, listing scenes as it builds and checks each one",
+          "angle": "curiosity",
+          "formulaId": null,
+          "score": 4
+        },
+        {
+          "text": "Open TikMaker, type one video idea, then just watch.",
+          "firstFrame": "Screen recording: cursor types an idea into the new video form and clicks create, and the agent panel starts picking a template",
+          "angle": "demonstration",
+          "formulaId": "open-app-do-this",
+          "score": 3
+        }
+      ]
+    },
+    {
+      "name": "writeScript",
+      "startedAt": 1794120790991,
+      "ms": 24204,
+      "model": "claude-opus-5-5",
+      "attempts": 1,
+      "prompt": {
+        "system": "You write the script of a short vertical video (TikTok, Reels, Shorts).\n\nTell ONE connected story. The idea may be written as loose thoughts in any order: sort\nthem into the order the template's scenes tell (the problem before the fix, the cause\nbefore the result), and let every scene follow from the one before it – the voiceovers\nread in a row must make sense as one spoken text. A scene that promises something (\"what I learned\", \"here's why\") is\nfollowed by the scene that says it.\n\nThe template is a guide: a structure that has worked for videos like this – its scenes,\ntheir order and how they link. Follow it where it serves this idea; change the order,\nleave a scene out or add one when that tells this story better. A \"repeatable\" scene\nmay appear several times in a row (one per step or item). Put every template scene you\nleave out in \"skipped\" with a short reason.\nA scene's \"facts\" come from the idea and the facts found online only – never invent a\ntool, a number or a result.\nWhen the idea has no fact for a scene, leave it out if it is optional; if it is required,\nfill it with what the idea does say rather than with an invented claim.\nIts \"creative\" parts are yours to word.\n\nThe first scene is the hook: say the chosen hook as it is, and show its key words. Its\nvisual is the hook's first frame when one is given – a picture on screen from the very\nfirst word, never the words alone.\nThe template's links (\"→ next\") and the transition phrases are examples of how scenes\ncan follow each other; use them only where they read naturally. End the way that fits\nthis video best: the CTA formulas show endings that have worked – use one, or write\nyour own, or none if no ending asks for one.\nThe call to action never sends people to a link, a website, a download or a giveaway\nthe idea does not mention – then pick a CTA formula that needs none of those.\n\nOne scene = one thought, shown by one picture. When a part of the story has two\nthoughts (what a chatbot does, then what an agent does), it is two scenes, not one long\nvoiceover – a long scene forces two pictures into one frame and neither reads.\n\nFor every scene:\n- voiceover: what is said, natural spoken English. When a scene lists things (tools,\n  mistakes, steps), the voice names every one of them – the list on screen fills point by\n  point as each is named; a point that needs it gets a short sentence after its name\n- onScreen: the key words shown big, not the whole sentence\n- visual: what the viewer sees happening, concrete and with a verb – a terminal running a\n  command, a price counting down, the idea turning into a video – one picture for the\n  thought, understandable with the sound off; never \"something engaging\"\n- needsRecording: your call – true when the scene is shown best with the creator's own\n  screen recording rather than a picture the video editor draws. Then the voiceover says\n  what the recording shows while it shows it (the click, what appears). Keep recordings\n  for the moments where the real screen is the proof – about 3–4 in a video at most\n\nKeep within the limits. Each scene lasts about as long as its voiceover. Treat the wanted\nlength as a target, not a requirement to fill at any cost: use the repeatable scenes and\nthe optional scenes that genuinely help, but never add empty explanations, repeated\nstatements or invented steps just to reach it. If the idea cannot support the length,\nwrite the strongest shorter version.\n\nYour job is WHAT the viewer sees (visual), not how it is drawn: the next step picks the\nrecording, block or animation that shows it, knowing what the editor can really do – so\ndo not limit the visual to what you think the editor has.",
+        "user": "Channel: TikMaker and AI coding. Mostly TikMaker itself: what it can do, how a video gets made with it, new features and how it is being built with AI (build in public). Around that, short concrete videos about other AI tools, vibe coding and Claude Code: one problem or one feature per video, shown on screen rather than told.\nAudience: Creators who want to make short videos faster with AI, and developers or beginners who build apps with AI and want to work faster without breaking things.\n\nThe product's real screens – when a scene shows the product, or asks for a recording of\nit, describe only what these screens really show; never invent cards, buttons, previews\nor animations they do not have:\n- New video form: The AI agent panel on the right of the TikMaker editor, on an empty project: a 'Video idea' text box, length in seconds, a template picker ('Let the AI pick'), an optional own hook, checkboxes 'With face', 'Motion graphics only', 'Generate the voiceover', and a 'Start' button.\n- Agent at work: The same panel as a conversation: a progress bar with five steps (Idea, Angle, Script, Building, Result) ticking off, and a card appearing for each step – the chosen template, three hooks to pick from (each with what it shows), the script scene by scene with an 'Approve' button, 'Pictures picked', 'Motion planned' and 'Voiceover' (folded cards that open on click).\n- Editor with the built video: Once built: the scene strip along the bottom fills with the video's scenes, the timeline shows each scene's blocks, voice and captions as clips, the vertical preview in the middle plays the video with its kinetic captions.\n- Preview playing: The vertical 9:16 preview player in the middle of the editor playing the finished video with play / pause, time and fullscreen.\n- Render: The 'Render MP4' button top right: a progress bar, then the finished MP4 file to download.\n- Storyboard: The Storyboard tab: the script as a list of beats – each scene's voiceover and on-screen words – with the total length against the target.\n\nIdea: TikMaker, the AI video editor I am building: you type one video idea, the AI agent picks a template, writes 3 hooks, writes the script, then builds every scene and checks its own frames, and the finished video lands in the editor timeline ready to render. Show the real TikMaker screens for each step: the new video form, the agent panel at work, the editor with the built video.\nWanted length: about 35 s\nFace on camera: no, a faceless video\n\nHook: I typed one sentence. My AI agent built this entire video.\nFirst frame (what the hook shows): Screen recording: the one-line idea in TikMaker's new video form, next to the finished video sitting in the editor timeline\n\nTemplate: Product promo – A product's benefits shown one by one through its interface, ending on where to get it\nScenes:\n- opening / hook (1.8–4.5 s): Asks what the viewer wants, or shows the product. [required] → next: question-answer; facts: product-name; creative: desire\n- build / benefit (2–5 s): States a benefit. [optional] [repeatable] → next: escalation; facts: benefit\n- core / demo (2–3 s): Shows the product in use. [optional] [repeatable] → next: sequence; facts: screen-recording\n- core / benefit (2–5 s): Adds benefits one after another. [optional] [repeatable] → next: sequence; facts: benefit\n- close / cta (2–3.6 s): Says where to get it. [optional] → next: none; facts: link-target\n\nTransition phrases:\n- sequence: First, | Second, | Third, | First is | Second is | Third is\n- escalation: And it gets even better | But that's not all. | Plus | Plus, you still get | and here you get | that lets you\n- question-answer: The answer is | It's because of | Well, | But how do | Did you know | So where did the ROAD part come from?\n\nCTA formulas (types allowed: link, none):\n- link: Head [here / to this website] if you want [benefit]. (e.g. \"Head to this website right here\")\n- link: [domain] (e.g. \"artinals.com\")\n- link: Available now (e.g. \"Available now\")\n- link: To get the full [resource], check the link in the description. (e.g. \"To get the full setup guide, check the link in the description.\")\n- link: Unlock more [benefit] in the full video. (e.g. \"Unlock more superpowers in the full video.\")\n\nLimits, from the analysis of successful videos:\n- speak at most 3.4 words per second\n- a scene lasts at most 9 s, the hook at most 5 s\n- at most 15 words on screen in a scene\n\nquestions (optional, at most 3): ask the creator only when the answer would change the\nvideo and neither the idea nor the facts say it – a real number or result, what the\nproduct really does, what a screen really shows. Each says why it matters and, when the\nanswer is one of a few, 2–4 short options. Otherwise decide yourself – never invent a\nfact – and write in assumptions (at most 3) what you assumed, so the creator sees it."
+      },
+      "inputTokens": 5307,
+      "cachedInputTokens": 0,
+      "outputTokens": 2336,
+      "thinkingTokens": 1212,
+      "turns": 2,
+      "output": {
+        "assumptions": [
+          "The idea gives no link or launch date, so the video ends with a 'follow along' build-in-public line, not a link CTA.",
+          "No screen shows the agent checking its own frames, so that is only said in the voiceover, over the real Building step.",
+          "At about 85 words the video runs ~30 s, a bit under the 35 s target, so no filler was added."
+        ],
+        "scenes": [
+          {
+            "role": "hook",
+            "voiceover": "I typed one sentence. My AI agent built this entire video.",
+            "onScreen": "ONE sentence → ENTIRE video",
+            "visual": "Screen recording: TikMaker's new video form shows the one-line idea in the 'Video idea' box, next to the finished video sitting in the editor timeline",
+            "needsRecording": true
+          },
+          {
+            "role": "demo",
+            "voiceover": "First, I type the idea into TikMaker and hit Start.",
+            "onScreen": "Type the idea → Start",
+            "visual": "The cursor types the idea into the 'Video idea' box of the agent panel and clicks the 'Start' button",
+            "needsRecording": true
+          },
+          {
+            "role": "benefit",
+            "voiceover": "The agent picks a template that fits it.",
+            "onScreen": "Picks the template",
+            "visual": "The agent panel's progress bar ticks from Idea to Angle and the chosen-template card slides in",
+            "needsRecording": false
+          },
+          {
+            "role": "benefit",
+            "voiceover": "Then it writes three hooks, and I pick one.",
+            "onScreen": "3 hooks",
+            "visual": "Screen recording: the card with three hooks appears, each with what it shows, and the cursor clicks one",
+            "needsRecording": true
+          },
+          {
+            "role": "benefit",
+            "voiceover": "Next, the whole script, scene by scene. I hit Approve.",
+            "onScreen": "Script, scene by scene",
+            "visual": "Screen recording: the script card lists the scenes one under another; the cursor clicks 'Approve' and the progress bar ticks to Building",
+            "needsRecording": true
+          },
+          {
+            "role": "benefit",
+            "voiceover": "Plus, it builds every scene and checks its own frames.",
+            "onScreen": "Builds every scene + checks its frames",
+            "visual": "The progress bar sits on Building while the folded cards 'Pictures picked', 'Motion planned' and 'Voiceover' pop in one after another",
+            "needsRecording": false
+          },
+          {
+            "role": "payoff",
+            "voiceover": "And the finished video lands right in the timeline.",
+            "onScreen": "Lands in the timeline",
+            "visual": "Screen recording: the scene strip along the bottom fills with scenes, the timeline fills with blocks, voice and caption clips, and the vertical preview plays with kinetic captions",
+            "needsRecording": true
+          },
+          {
+            "role": "payoff",
+            "voiceover": "One click on Render MP4, and it's ready to post.",
+            "onScreen": "Render MP4",
+            "visual": "The 'Render MP4' button top right is clicked, a progress bar fills, and the finished MP4 file appears to download",
+            "needsRecording": false
+          },
+          {
+            "role": "cta",
+            "voiceover": "I'm building TikMaker in public. Follow to watch it grow.",
+            "onScreen": "Building in public – follow",
+            "visual": "The finished vertical video loops in the preview player with a follow prompt over it",
+            "needsRecording": false
+          }
+        ],
+        "skipped": []
+      }
+    },
+    {
+      "name": "writeCode",
+      "startedAt": 1794120830716,
+      "ms": 1082098,
+      "model": "claude-opus-5-5",
+      "attempts": 1,
+      "prompt": {
+        "system": "You are the motion designer of TikMaker: you write the pictures of a short\nvertical video (1080x1920, 30 fps) as Remotion code – one file per scene. The voice,\nthe captions and the backdrop are already in the video; you write the pictures.\n\nThis video's visual style is \"depth\": Glass cards tilted in 3D, springy motion, a dock, a camera that never stops, a new background colour every scene.\n\nBefore writing, read with the Read tool:\n1. .claude/skills/tikmaker-scene/SKILL.md – how a scene file is written: the picture\n   zone, the brand kit, the editable fields, sound, the technical limits.\n2. .claude/skills/tikmaker-depth/SKILL.md – the LOOK of this style – and the example\n   frames and notes it points to (.claude/skills/tikmaker-depth/references/). Also the\n   COMPOSITION sheet knowledge/shared/reference-frames/insiderforce.png – how a vertical\n   frame is laid out: one dominant thing, big, calm space. Follow the style exactly; do\n   not mix in another style.\n3. .claude/skills/remotion-best-practices/remotion-markup/REFERENCE.md – how to write\n   Remotion markup right (open the pages it points to that you need: timing,\n   sequencing, transitions, text-highlights). Ignore anything about starting Studio,\n   creating projects or installing packages.\n4. src/video/brand/kit.tsx, src/video/brand/fields.ts and src/video/code/types.ts.\n\nRules:\n- Write ONLY in the folder you are given (src/generated/<folder>/). Never touch other\n  files. Shared helpers for several scenes go in <folder>/shared.tsx.\n- Time everything by the `words` prop (wordFrame) and `durationInFrames`, never by the\n  frame numbers in the brief – they are only there for you to plan.\n- Check your work: run `npx tsc --noEmit -p .` until nothing in your folder fails.\n  Then render a frame or two of every scene you wrote with the command in the brief\n  and look at the PNG with Read, next to the style's example frames: does it look like\n  this style, can it be taken in at a glance (one focal thing, no small text to read),\n  is the main object big, does nothing overlap, is nothing under the captions band?\n  Fix it and look again.\n- Do not ask questions – nobody is there to answer. Decide.\n- At the end answer with JSON: for every scene you wrote its sceneIndex (from 0), one\n  sentence of what the viewer sees, its stage (\"top\" unless the scene is a\n  full-screen recording) and its transition; the voiceover words the captions should draw bold\n  (keywords, 1–2 per scene); and wishes – what the kit or the logo library lacked.\n- Real pictures: this style is built on them – a drawn website or app looks cheap. Get the real thing\n  with `npx tsx scripts/asset.ts` (folder = your folder name; it prints the path to use\n  with `asset(path)` from the brand kit inside an <Img>, or as a field's default):\n  - `screenshot <folder> <name> <url> [--full] [--dark] [--width=1280 --height=800]` –\n    a website: the tool's official page, its GitHub repo, its docs, a pricing page;\n  - `scroll <folder> <name> <url> [--seconds=6]` – a video of a page scrolling down;\n  - `logo <folder> <name> <brand> [--white]` – a brand logo as SVG (Simple Icons);\n  - `photo <folder> <name> \"<what>\"` – a real photo (Pexels) when one is needed;\n  - `tikmaker <folder> <name> <steps.json>` – a recording of TikMaker itself, clicking\n    through its editor (write the steps file in your folder, e.g.\n    [{\"click\":\"Visuals\"},{\"type\":\"my idea\",\"into\":\"Video idea\"},{\"wait\":800}]).\n  If a command fails (no network, no key), draw that part instead and say so in wishes.\n  Never draw a fake screenshot of a real website.\n- Transition: for every scene after the first, how it comes in from the one before\n  (transition). The video draws BOTH scenes during the change (~12 frames): the old\n  one goes out the way the new one comes in – so do not fade your own scene in at its\n  start, and keep its first frame already composed. Kinds: cut, push / slideLeft /\n  slideRight / slideUp / slideDown (the next item of a list), zoomThrough (diving into\n  a detail), fromDepth, flip, dissolve (a soft change of mood), flash (a burst of light\n  – into a light scene, a reveal). Follow the style skill on which to use.\n- Sound: for every scene, 0–2 sound effects on its key moments (sounds: the spoken\n  word the moment lands on, and the kind). Never play sound in the code – the video\n  puts these on the timeline from its library. Only moments the picture makes: the\n  main move, the payoff. At most ~3 per 10 seconds in the whole video; a calm scene\n  gets none. Kinds:\n  - whoosh: a big move: the main object flies in, swaps or morphs\n  - slide: a card or window slides in or aside\n  - pop: something small appears (an icon, a badge, a sticker)\n  - enter: a solid thing lands (a card, a big number)\n  - ping: attention on one thing (the focus lights up)\n  - tick: a small step (one of several items marks)\n  - count: a counter runs up\n  - success: it works: the payoff, a green check\n  - fix: a fix clicks in\n  - break: something breaks, fails, gets locked\n  - type: a command is typed (one short burst)\n  - message: a chat bubble arrives\n  - reveal: a build-up to a reveal (use once a video at most)\n  - check: a check mark",
+        "user": "Channel: TikMaker and AI coding\nWhat it is about: Mostly TikMaker itself: what it can do, how a video gets made with it, new features and how it is being built with AI (build in public). Around that, short concrete videos about other AI tools, vibe coding and Claude Code: one problem or one feature per video, shown on screen rather than told.\nAudience: Creators who want to make short videos faster with AI, and developers or beginners who build apps with AI and want to work faster without breaking things.\nTone: Direct and practical; real screens, real results and numbers instead of hype. Honest about what does not work yet.\nProduct screen \"New video form\": The AI agent panel on the right of the TikMaker editor, on an empty project: a 'Video idea' text box, length in seconds, a template picker ('Let the AI pick'), an optional own hook, checkboxes 'With face', 'Motion graphics only', 'Generate the voiceover', and a 'Start' button.\nProduct screen \"Agent at work\": The same panel as a conversation: a progress bar with five steps (Idea, Angle, Script, Building, Result) ticking off, and a card appearing for each step – the chosen template, three hooks to pick from (each with what it shows), the script scene by scene with an 'Approve' button, 'Pictures picked', 'Motion planned' and 'Voiceover' (folded cards that open on click).\nProduct screen \"Editor with the built video\": Once built: the scene strip along the bottom fills with the video's scenes, the timeline shows each scene's blocks, voice and captions as clips, the vertical preview in the middle plays the video with its kinetic captions.\nProduct screen \"Preview playing\": The vertical 9:16 preview player in the middle of the editor playing the finished video with play / pause, time and fullscreen.\nProduct screen \"Render\": The 'Render MP4' button top right: a progress bar, then the finished MP4 file to download.\nProduct screen \"Storyboard\": The Storyboard tab: the script as a list of beats – each scene's voiceover and on-screen words – with the total length against the target.\n\nThe video: TikMaker, the AI video editor I am building: you type one video idea, the AI agent picks a template, writes 3 hooks, writes the script, then builds every scene and checks its own frames, and the finished video lands in the editor timeline ready to render. Show the real TikMaker screens for each step: the new video form, the agent panel at work, the editor with the built video.\nFolder: src/generated/code-argo/\n\nWrite every scene's file (1, 2, 3, 4, 5, 6, 7, 8, 9).\n\nThe channel's saved visuals (\"my visuals\") – reuse one (copy and adapt its code) where it fits, or when asked:\n- Endless session terminal: A Claude Code terminal full of a day's chat history: a one-line question is typed and the whole history lights up as sent with it, while banknotes burn below (code: knowledge/workspaces/dev/visuals/endless-session-terminal-mw67mlh6/scene.tsx, frame: knowledge/workspaces/dev/visuals/endless-session-terminal-mw67mlh6/frame.png)\n\n## Scene 1 (hook) – WRITE src/generated/code-argo/scene-1.tsx\n118 frames (3.9 s); global frames 0–117\nVoiceover: I typed one sentence. My AI agent built this entire video.\nWords (word@frame from the scene's start): I@0 typed@9 one@19 sentence.@28 My@38 AI@47 agent@56 built@66 this@75 entire@84 video.@94\nOn screen (the script's words): ONE sentence → ENTIRE video\nThe script's idea for the picture: Screen recording: TikMaker's new video form shows the one-line idea in the 'Video idea' box, next to the finished video sitting in the editor timeline\nThe creator's own screen recording belongs here (a RecordingSlot – say exactly what to record)\nRender a frame: npx remotion still TikTokVideo out/agent/code-argo/scene-1.png --props=out/agent/code-argo/props.json --frame=83 --scale=0.5\n\n## Scene 2 (demo) – WRITE src/generated/code-argo/scene-2.tsx\n109 frames (3.6 s); global frames 118–226\nVoiceover: First, I type the idea into TikMaker and hit Start.\nWords (word@frame from the scene's start): First,@0 I@9 type@19 the@28 idea@38 into@47 TikMaker@56 and@66 hit@75 Start.@84\nOn screen (the script's words): Type the idea → Start\nThe script's idea for the picture: The cursor types the idea into the 'Video idea' box of the agent panel and clicks the 'Start' button\nThe creator's own screen recording belongs here (a RecordingSlot – say exactly what to record)\nRender a frame: npx remotion still TikTokVideo out/agent/code-argo/scene-2.png --props=out/agent/code-argo/props.json --frame=194 --scale=0.5\n\n## Scene 3 (benefit) – WRITE src/generated/code-argo/scene-3.tsx\n90 frames (3.0 s); global frames 227–316\nVoiceover: The agent picks a template that fits it.\nWords (word@frame from the scene's start): The@0 agent@9 picks@19 a@28 template@38 that@47 fits@56 it.@66\nOn screen (the script's words): Picks the template\nThe script's idea for the picture: The agent panel's progress bar ticks from Idea to Angle and the chosen-template card slides in\nRender a frame: npx remotion still TikTokVideo out/agent/code-argo/scene-3.png --props=out/agent/code-argo/props.json --frame=290 --scale=0.5\n\n## Scene 4 (benefit) – WRITE src/generated/code-argo/scene-4.tsx\n99 frames (3.3 s); global frames 317–415\nVoiceover: Then it writes three hooks, and I pick one.\nWords (word@frame from the scene's start): Then@0 it@9 writes@19 three@28 hooks,@38 and@47 I@56 pick@66 one.@75\nOn screen (the script's words): 3 hooks\nThe script's idea for the picture: Screen recording: the card with three hooks appears, each with what it shows, and the cursor clicks one\nThe creator's own screen recording belongs here (a RecordingSlot – say exactly what to record)\nRender a frame: npx remotion still TikTokVideo out/agent/code-argo/scene-4.png --props=out/agent/code-argo/props.json --frame=386 --scale=0.5\n\n## Scene 5 (benefit) – WRITE src/generated/code-argo/scene-5.tsx\n109 frames (3.6 s); global frames 416–524\nVoiceover: Next, the whole script, scene by scene. I hit Approve.\nWords (word@frame from the scene's start): Next,@0 the@9 whole@19 script,@28 scene@38 by@47 scene.@56 I@66 hit@75 Approve.@84\nOn screen (the script's words): Script, scene by scene\nThe script's idea for the picture: Screen recording: the script card lists the scenes one under another; the cursor clicks 'Approve' and the progress bar ticks to Building\nThe creator's own screen recording belongs here (a RecordingSlot – say exactly what to record)\nRender a frame: npx remotion still TikTokVideo out/agent/code-argo/scene-5.png --props=out/agent/code-argo/props.json --frame=492 --scale=0.5\n\n## Scene 6 (benefit) – WRITE src/generated/code-argo/scene-6.tsx\n109 frames (3.6 s); global frames 525–633\nVoiceover: Plus, it builds every scene and checks its own frames.\nWords (word@frame from the scene's start): Plus,@0 it@9 builds@19 every@28 scene@38 and@47 checks@56 its@66 own@75 frames.@84\nOn screen (the script's words): Builds every scene + checks its frames\nThe script's idea for the picture: The progress bar sits on Building while the folded cards 'Pictures picked', 'Motion planned' and 'Voiceover' pop in one after another\nRender a frame: npx remotion still TikTokVideo out/agent/code-argo/scene-6.png --props=out/agent/code-argo/props.json --frame=601 --scale=0.5\n\n## Scene 7 (payoff) – WRITE src/generated/code-argo/scene-7.tsx\n99 frames (3.3 s); global frames 634–732\nVoiceover: And the finished video lands right in the timeline.\nWords (word@frame from the scene's start): And@0 the@9 finished@19 video@28 lands@38 right@47 in@56 the@66 timeline.@75\nOn screen (the script's words): Lands in the timeline\nThe script's idea for the picture: Screen recording: the scene strip along the bottom fills with scenes, the timeline fills with blocks, voice and caption clips, and the vertical preview plays with kinetic captions\nThe creator's own screen recording belongs here (a RecordingSlot – say exactly what to record)\nRender a frame: npx remotion still TikTokVideo out/agent/code-argo/scene-7.png --props=out/agent/code-argo/props.json --frame=703 --scale=0.5\n\n## Scene 8 (payoff) – WRITE src/generated/code-argo/scene-8.tsx\n109 frames (3.6 s); global frames 733–841\nVoiceover: One click on Render MP4, and it's ready to post.\nWords (word@frame from the scene's start): One@0 click@9 on@19 Render@28 MP4,@38 and@47 it's@56 ready@66 to@75 post.@84\nOn screen (the script's words): Render MP4\nThe script's idea for the picture: The 'Render MP4' button top right is clicked, a progress bar fills, and the finished MP4 file appears to download\nRender a frame: npx remotion still TikTokVideo out/agent/code-argo/scene-8.png --props=out/agent/code-argo/props.json --frame=809 --scale=0.5\n\n## Scene 9 (cta) – WRITE src/generated/code-argo/scene-9.tsx\n109 frames (3.6 s); global frames 842–950\nVoiceover: I'm building TikMaker in public. Follow to watch it grow.\nWords (word@frame from the scene's start): I'm@0 building@9 TikMaker@19 in@28 public.@38 Follow@47 to@56 watch@66 it@75 grow.@84\nOn screen (the script's words): Building in public – follow\nThe script's idea for the picture: The finished vertical video loops in the preview player with a follow prompt over it\nRender a frame: npx remotion still TikTokVideo out/agent/code-argo/scene-9.png --props=out/agent/code-argo/props.json --frame=918 --scale=0.5"
+      },
+      "inputTokens": 173162,
+      "cachedInputTokens": 7045686,
+      "outputTokens": 73855,
+      "thinkingTokens": 28815,
+      "turns": 134,
+      "output": {
+        "scenes": [
+          {
+            "sceneIndex": 0,
+            "description": "The real TikMaker idea box with one typed sentence flies aside, and the real editor holding the agent-built video lands in its place while all five agent steps tick in the dock.",
+            "stage": "top",
+            "sounds": [
+              {
+                "onWord": "built",
+                "sound": "whoosh"
+              }
+            ],
+            "transition": "cut"
+          },
+          {
+            "sceneIndex": 1,
+            "description": "The real agent panel: the idea is typed into 'Video idea', the view glides down to the orange Start button and a cursor clicks it; Idea ticks in the dock.",
+            "stage": "top",
+            "sounds": [
+              {
+                "onWord": "type",
+                "sound": "type"
+              }
+            ],
+            "transition": "zoomThrough"
+          },
+          {
+            "sceneIndex": 2,
+            "description": "Light scene: the real agent panel on step Angle glides down to the template card the agent picked ('Problem then fix'), which lights up with a green check.",
+            "stage": "top",
+            "sounds": [
+              {
+                "onWord": "template",
+                "sound": "slide"
+              }
+            ],
+            "transition": "flash"
+          },
+          {
+            "sceneIndex": 3,
+            "description": "Three real hook options from the agent panel stand as a glass deck under a big '3 hooks'; a cursor clicks the middle one, it glows orange while the other two sink back.",
+            "stage": "top",
+            "sounds": [
+              {
+                "onWord": "pick",
+                "sound": "check"
+              }
+            ],
+            "transition": "push"
+          },
+          {
+            "sceneIndex": 4,
+            "description": "The real script card scrolls scene by scene in a glass window, then a cursor clicks the orange Approve button and the dock moves from Script to Building.",
+            "stage": "top",
+            "sounds": [
+              {
+                "onWord": "Approve.",
+                "sound": "check"
+              }
+            ],
+            "transition": "push"
+          },
+          {
+            "sceneIndex": 5,
+            "description": "Three real agent cards pop in one after another (voiceover for 11 scenes, pictures written as code, self-review 'Good: 1–11'), and the self-review card gets a green check.",
+            "stage": "top",
+            "sounds": [
+              {
+                "onWord": "frames.",
+                "sound": "success"
+              }
+            ],
+            "transition": "slideUp"
+          },
+          {
+            "sceneIndex": 6,
+            "description": "Light scene: the real TikMaker editor in a big card, with its timeline tracks and scene strip filling with clips from left to right as the Result step ticks.",
+            "stage": "top",
+            "sounds": [
+              {
+                "onWord": "lands",
+                "sound": "enter"
+              }
+            ],
+            "transition": "flash"
+          },
+          {
+            "sceneIndex": 7,
+            "description": "A cursor clicks the real 'Render MP4' button, a progress bar fills to 100% and turns into a finished video.mp4 file card with a green download button.",
+            "stage": "top",
+            "sounds": [
+              {
+                "onWord": "Render",
+                "sound": "count"
+              },
+              {
+                "onWord": "ready",
+                "sound": "success"
+              }
+            ],
+            "transition": "zoomThrough"
+          },
+          {
+            "sceneIndex": 8,
+            "description": "A vertical phone card plays the real agent log scrolling by, with blurred real screens at the sides, as an orange Follow button pops over it and is clicked to 'Following'.",
+            "stage": "top",
+            "sounds": [
+              {
+                "onWord": "Follow",
+                "sound": "pop"
+              }
+            ],
+            "transition": "dissolve"
+          }
+        ],
+        "keywords": [
+          "sentence",
+          "entire",
+          "idea",
+          "Start",
+          "template",
+          "three",
+          "hooks",
+          "script",
+          "Approve",
+          "checks",
+          "frames",
+          "timeline",
+          "Render",
+          "MP4",
+          "public",
+          "Follow"
+        ],
+        "wishes": [
+          "A TikMaker logo in the logo library (there is none, so no scene shows the brand mark)",
+          "The tikmaker recorder needs a 'select' step for native dropdowns and a way to open a project by id or URL. I switched projects by typing into the 'Current project' dropdown, which is fragile.",
+          "The tikmaker recorder should be able to take a sharp 2x PNG at any step. Its videos are 1600x1000 at 1x, so close-ups of the agent panel look soft when scaled 2.4x.",
+          "In the headless recordings the editor's vertical preview stays empty (code scenes didn't render there), so no real footage of the finished video playing; scene 9 shows the agent log in the phone card instead",
+          "Render progress was not recorded, to avoid starting a real render: in scene 8 the progress bar and MP4 file card are drawn (the Render MP4 button is real)",
+          "Scene 7 uses a sharp screenshot of the default project's editor (not an agent-built one), because screenshots always open the default project",
+          "No saved run showed the 'Pictures picked / Motion planned' cards from the brief. Scene 6 uses the real cards of a finished run instead: Voiceover, Pictures written as code, Self-review.",
+          "Creator's own recordings can still replace the real crops in scenes 1, 2, 4, 5 and 7 (an optional 'Your recording' field on each scene)"
+        ]
+      }
+    },
+    {
+      "name": "reviewFrames",
+      "startedAt": 1794121939969,
+      "ms": 40132,
+      "model": "claude-opus-5-5",
+      "attempts": 1,
+      "prompt": {
+        "system": "You are the motion designer who checks a short vertical video (TikTok, Reels,\nShorts) before it is posted. You get frames of every scene, rendered exactly as the\nviewer will see them on a phone, with what is said in that scene.\n\nFirst read the example sheet(s) with the Read tool – that is the level to reach. Each\nsheet says what it is for: a STYLE sheet shows how things should be drawn (simple,\nflat, no text to read, one focus), a COMPOSITION sheet how the frame should be laid\nout (one dominant thing, big, calm space). Judge each frame against both, each for\nits own thing. Then read every frame of the video.\n\nFor every scene, look as a viewer scrolling with the sound off, and go through the\nrubric:\n- sees: in one sentence, what you take from the frame in one second\n- verdict \"fix\" only when a \"fix\" check of the rubric fails – the viewer would be lost,\n  the eye has nowhere to land, text cannot be read, something is covered. Then give\n  at most 3 problems as you see them and ONE change:\n  - pictures: the scene's picture (its code) is written again – say concretely what it\n    should show instead (one main picture of what, how big, what to drop)\n  - words: the voiceover says too much for one picture – say how to say it shorter or\n    simpler (its voice and pictures are then made again)\n  - motion: the picture is right but sits or moves badly (too small, too low, over the\n    caption, something on top of something else) – say where it should be and how big\n- A dashed \"● REC\" or \"▣ PHOTO\" slot is a place the creator fills with their own\n  recording or picture later: judge where it sits and what it asks for, not that it is\n  empty.\n- verdict \"good\" otherwise. A \"note\" check that fails goes into problems of a \"good\"\n  scene and is NOT changed – it is said to the creator. Do not invent problems.",
+        "user": "Rubric:\n- [fix] With the sound off, is it clear in one second what the scene is about? Fails when: The picture does not show what the voiceover says, or shows something the viewer cannot name.\n- [fix] Is there ONE element the eye lands on first? Fails when: Two or more things of the same size and weight compete (two diagrams, two equal cards), so the eye has nowhere to land.\n- [fix] Can the whole frame be taken in at a glance – in the second it is on screen? Fails when: It has more than ~6 things to look at, or text the viewer would have to read (code lines, logs, file names, lists of labels, small UI text): a TikTok viewer will not read it, so it is noise that hides where to look.\n- [fix] Can every word be read on a phone? Fails when: A label or line looks smaller than about a third of the spoken caption's letters in these frames – on the phone it is too small to read.\n- [fix] Is everything inside the frame and clear of the spoken caption? Fails when: A picture runs under the caption, off the frame, or two elements overlap where they should not.\n- [fix] Do the scene's pictures belong to one idea? Fails when: Two pictures in one frame tell different things, or a picture has nothing to do with the words said with it.\n- [note] Is there room around the main element? Fails when: The frame is crowded edge to edge, or one small thing floats in a big empty frame.\n- [note] Does the scene look different enough from the one before? Fails when: It repeats the previous scene's look, so the cut reads as nothing happening.\n- [note] Does it reach the level of the example frames (few big flat shapes and icons, text drawn as grey bars, one orange accent where to look, a lot of calm space)? Fails when: It looks like a slide or a diagram dump next to the examples.\n\nExample frames:\n- /tmp/tikmaker-agent/review/run-mw7h6ktf/1794121923520/example-depth-glass.png\n  STYLE depth – how things are drawn in this style (the creator's chosen videos, 2026-11-08): real logos and real website screenshots in glass cards, a coloured glow per scene, some light scenes, a giant faint motif behind, a persistent dock.\n  Tiles: 1: a big glass app-icon square with a huge '5', behind it tilted cards with REAL tool logos and blurred real website screenshots; a dock of 5 real tool icons under it; navy with a blue glow | 2: a two-line headline (white, then grey), a glass Claude Code window with the prompt and 5 tool chips and a blue progress bar; under it a timeline strip of real thumbnails with a playhead and a waveform | 3: three phones/tablets fanned out showing REAL websites; the middle one lists three words, the active one a solid blue pill; a waveform with a playhead below | 4: LIGHT scene – off-white background with huge faint HTML code behind; a browser card 'github.com/…' with the real logo on a white header, the name and a '★ 55k' pill; the dock with the active tool glowing | 5: LIGHT scene – a giant faint GitHub octocat silhouette, a teal glow, a huge number with a short line under it, stars and a rising line chart | 6: dark blue – faint code and a giant faint '2' behind; a browser card with the real Remotion logo on white, its name and a star pill; the dock, the active icon ringed in blue | 7: a blue 'render 100%' pill, a glass card with an icon and two words, film strips of the real logo crossing diagonally with motion blur | 8: vivid – the frame filled with a grid of real purple template cards, a magnifier lens enlarging one of them; dark headline on top | 9: purple glow – a huge '24' with the command names as a faint word cloud; a glass list of 3 commands, the first one lit; a blurred big example card below | 10: LIGHT scene – a real ocean video in a player card, an audio pill with a waveform and a pause button, a '1 000+' pill, a strip of real photo thumbnails | 11: amber glow – the real logo and the name, a browser card with the real site, a 'free' pill, a row of colour swatches | 12: a real video frame in a card, a button with a click ripple and a cursor, a row of thumbnails with the chosen one ringed in amber | 13: a big two-line headline, a browser card with the real site (mixkit.co) and its logo row, a teal/purple glow below\n  What makes them work: Real things everywhere: real logos, real website screenshots in browser cards with the URL in a pill, real photos and video thumbnails – almost nothing is a drawn mock-up. One glass focal card per frame with a coloured glow behind it; the colour changes per scene (blue, teal, purple, amber), and about one scene in four is LIGHT (off-white). A giant faint motif behind the card that belongs to the topic: code, a huge number, a logo silhouette, a grid of the product's cards, blurred side cards. Headline at the top in one or two lines (white, second line grey), clean bold sans; numbers are huge. Small supporting pieces that move: a dock of the video's tools, a star pill, a waveform with a playhead, a timeline strip, a cursor clicking.\n- /tmp/tikmaker-agent/review/run-mw7h6ktf/1794121923520/example-insiderforce.png\n  COMPOSITION – how a vertical frame is laid out (InsiderForce, TikTok, 10 frames, docs/bd/kadrai/insiderforce/): one dominant thing, big words, calm space. Judge the layout of the frame against this.\n  Tiles: 1: three tool logos on a thin line at the top, ONE big pricing card in the middle – a single dominant thing | 2: two logos, a video frame, then the headline in three sizes with the key phrase in a black box | 3: price cards stacked in one repeated form; only the new price is in the accent colour | 4: a globe joined by one line to a big character – one object fills the frame, the caption below with the key word bigger and bold | 5: four logos in a diamond, dashed lines to one globe with a warning sign – a whole problem as one small, airy diagram | 6: a character top left, one dashed curve to a logo bottom right, the words between them | 7: a badge \"01\" on a line down to one screenshot card – the step and its result joined | 8: a big character with a gear and three short rows with icons – few rows, very big | 9: one character filling the frame, a two-line caption under it | 10: a small strip of photos at the top, three short rows with ✦, the closing phrase bold\n  What makes them work: One thing dominates every frame; everything else is clearly smaller or a thin line. Words are big: the caption is 2–3 lines with the key words bold or boxed – never small labels to read. A diagram has at most four nodes, lots of space between them, and one link drawn at a time. Lots of calm space; nothing touches the edges or the caption. The background colour is theirs (light) – judge the composition, not the colours.\n- /tmp/tikmaker-agent/review/run-mw7h6ktf/1794121923520/example-explain.png\n  Explainer frames from several creators, docs/bd/kadrai/geri/ (mechanism, setup, item, problem)\n  Tiles: 1: a level title on top, ONE vertical diagram in the middle: three boxes, input → model → output, thin dashed arrows | 2: the same title, the diagram replaced by two big rows with ✗ – what it cannot do | 3: a simple drawing (an island with gorillas) with two tiny labels where it changed – the idea as one picture | 4: one coloured ring of letters, the name big below – a whole concept as one shape | 5: spotlight: one node bright, everything else dark and blurred, the key words in bold yellow below | 6: a word on top, a drawing with ONE curved arrow showing what moves | 7: the step number, the feature as a big pill, the tool's window under it | 8: a counter in the corner, one animated map filling the frame, the caption at the bottom | 9: a huge STEP and number in opposite corners, framing the speaker | 10: a few words above one broken object (a cracked 'Tokens' plate) – the problem as one thing\n  What makes them work: A diagram has 3–4 boxes in ONE direction with lots of space – never two diagrams in one frame. When the explanation moves on, the picture is REPLACED (diagram → two ✗ rows) instead of squeezing a second one in. One shape carries the concept (a ring, an island, a broken plate); labels are few and big. Spotlight: to point at one part, everything else is dimmed.\n- /tmp/tikmaker-agent/review/run-mw7h6ktf/1794121923520/example-open-close.png\n  Hooks, reveals, proof and CTA frames from several creators, docs/bd/kadrai/geri/\n  Tiles: 1: the result on top, the claim in two big lines, the tools' logos in a zigzag below | 2: text only – lines in different sizes, the brand set as one of the lines in its colours | 3: two names stacked, one icon overlapping the other, the time promise below | 4: a short line over one tool card, decorations only in the corners | 5: three lines in three weights, the last in a black box | 6: the browser cropped bottom right, the address big and readable | 7: before/after as two equal cards stacked, a one-word label on each | 8: a phone on the left, ONE benefit word on the right | 9: one sentence in the middle, the key words in the accent colour | 10: the comment keyword the biggest thing, the gift (an e-book) as an object\n  What makes them work: The hook's first frame says the promise in 2–3 big lines with one word boxed or coloured. Two equal things are right only for a before/after – then they get one word each. A CTA makes the one keyword the biggest thing on screen. Text-only frames are fine when the type itself has hierarchy: sizes, weights, one box.\n- /tmp/tikmaker-agent/review/run-mw7h6ktf/1794121923520/example-pictures.png\n  InsiderForce frames that carry a real picture, docs/bd/kadrai/geri/picture-01..04\n  Tiles: 1: a metaphor as a cut-out picture – a robot hand holding a glowing globe fills the top half; the claim below in big type, the last word boxed | 2: a cut-out object (a blue folder labelled API's) with two hands reaching to it (Michelangelo) – the thing and the promise around it | 3: a cut-out photo of the real person, black and white, over an accent shape; the headline beside him | 4: four photo cards, tilted with shadows, in the corners around one number in a ring – real examples around the key fact\n  What makes them work: One or two real pictures make a video feel alive: a metaphor, the real thing, the real person, real examples. Pictures are cut out (no background) with a soft shadow, or set as tilted cards with a white border – never a flat rectangle pasted in. The picture is big – it is the frame's main element, the words go above or beside it. Black-and-white photos plus one accent colour keep a mixed set of pictures in one style.\n\nPrinciples for the pictures:\n- [must] One picture holds one whole thought – usually a sentence – and keeps changing inside it. Why: In good short videos one picture stays about 5 seconds while its parts appear, a number counts or arrows draw. A new picture on every other word flickers past before it is read, and together such pictures look like random clip art for single words.\n- [must] The picture shows what HAPPENS, so the scene is understood with the sound off. Why: Many people watch muted, and even with sound the eye leads. An action, a change or a relation (this turns into that, these three join, the price drops) explains; a row of nouns only decorates.\n- [must] Show the thing itself: the tool, the screen, the command, the number, the result. Why: A concrete picture proves and teaches; a metaphor only hints. A prop that just stands for a word (a clock for 'fast') says less than the real thing doing something.\n- [must] Pick the block whose shape IS the idea, so it is understood at a glance by someone who does not know the video. Why: A conversation drawn as chat bubbles, a cycle drawn as a loop, 'this becomes that' drawn as a transform are read instantly. A card with a vague label and a loosely fitting icon says nothing.\n- [must] The viewer sees at once what matters most in the frame. Why: When everything is the same size and weight the eye has nowhere to land. One dominant element – the number, the result, the key word – with the rest clearly secondary reads in a second.\n- [recommended] Leave space empty so the important element stands out. Why: A frame filled in every corner has no focus. Empty space around one big element makes it feel important and easy to read on a phone.\n- [must] Text appears when it is said, and the stressed words stand out. Why: Words on screen ahead of the voice spoil it; words after it lag. Highlighting the one word that carries the sentence guides the eye better than animating the whole phrase the same way.\n- [must] Vary how the pictures look across the video. Why: A video where every picture is a list or a schema reads as one slide repeated, and the viewer stops noticing that it changes.\n- [recommended] The layout changes where the story changes, and stays where it goes on. Why: The same layout scene after scene – picture on top, words below – reads as one frame repeated. A change of layout marks a new part, a contrast, a statement or a demo.\n- [must] The hook's picture is there from its first words and shows its first frame. Why: The first two seconds decide whether people stay; words on an empty frame are the weakest opening there is.\n- [must] A recording request is one continuous take a person can reproduce from the instructions – and a video asks for only a few of them. Why: The creator records what the instructions say. Two slots for one action make them record the same moment twice; asking for buttons or results that do not exist makes the recording impossible; six recordings for one short video is an afternoon of work for a few seconds each.\n\nScene 1 (hook) – sceneIndex 0\n  Voiceover: I typed one sentence. My AI agent built this entire video.\n  Pictures: The real TikMaker idea box with one typed sentence flies aside, and the real editor holding the agent-built video lands in its place while all five agent steps tick in the dock.\n  Frames:\n  - /tmp/tikmaker-agent/review/run-mw7h6ktf/1794121923520/scene-1-f53.png (at 1.8 s)\n  - /tmp/tikmaker-agent/review/run-mw7h6ktf/1794121923520/scene-1-f103.png (at 3.4 s)\n\nScene 2 (demo) – sceneIndex 1\n  Voiceover: First, I type the idea into TikMaker and hit Start.\n  Pictures: The real agent panel: the idea is typed into 'Video idea', the view glides down to the orange Start button and a cursor clicks it; Idea ticks in the dock.\n  Frames:\n  - /tmp/tikmaker-agent/review/run-mw7h6ktf/1794121923520/scene-2-f167.png (at 5.6 s)\n  - /tmp/tikmaker-agent/review/run-mw7h6ktf/1794121923520/scene-2-f212.png (at 7.1 s)\n\nScene 3 (benefit) – sceneIndex 2\n  Voiceover: The agent picks a template that fits it.\n  Pictures: Light scene: the real agent panel on step Angle glides down to the template card the agent picked ('Problem then fix'), which lights up with a green check.\n  Frames:\n  - /tmp/tikmaker-agent/review/run-mw7h6ktf/1794121923520/scene-3-f268.png (at 8.9 s)\n  - /tmp/tikmaker-agent/review/run-mw7h6ktf/1794121923520/scene-3-f302.png (at 10.1 s)\n\nScene 4 (benefit) – sceneIndex 3\n  Voiceover: Then it writes three hooks, and I pick one.\n  Pictures: Three real hook options from the agent panel stand as a glass deck under a big '3 hooks'; a cursor clicks the middle one, it glows orange while the other two sink back.\n  Frames:\n  - /tmp/tikmaker-agent/review/run-mw7h6ktf/1794121923520/scene-4-f362.png (at 12.1 s)\n  - /tmp/tikmaker-agent/review/run-mw7h6ktf/1794121923520/scene-4-f401.png (at 13.4 s)\n\nScene 5 (benefit) – sceneIndex 4\n  Voiceover: Next, the whole script, scene by scene. I hit Approve.\n  Pictures: The real script card scrolls scene by scene in a glass window, then a cursor clicks the orange Approve button and the dock moves from Script to Building.\n  Frames:\n  - /tmp/tikmaker-agent/review/run-mw7h6ktf/1794121923520/scene-5-f465.png (at 15.5 s)\n  - /tmp/tikmaker-agent/review/run-mw7h6ktf/1794121923520/scene-5-f510.png (at 17.0 s)\n\nScene 6 (benefit) – sceneIndex 5\n  Voiceover: Plus, it builds every scene and checks its own frames.\n  Pictures: Three real agent cards pop in one after another (voiceover for 11 scenes, pictures written as code, self-review 'Good: 1–11'), and the self-review card gets a green check.\n  Frames:\n  - /tmp/tikmaker-agent/review/run-mw7h6ktf/1794121923520/scene-6-f574.png (at 19.1 s)\n  - /tmp/tikmaker-agent/review/run-mw7h6ktf/1794121923520/scene-6-f619.png (at 20.6 s)\n\nScene 7 (payoff) – sceneIndex 6\n  Voiceover: And the finished video lands right in the timeline.\n  Pictures: Light scene: the real TikMaker editor in a big card, with its timeline tracks and scene strip filling with clips from left to right as the Result step ticks.\n  Frames:\n  - /tmp/tikmaker-agent/review/run-mw7h6ktf/1794121923520/scene-7-f679.png (at 22.6 s)\n  - /tmp/tikmaker-agent/review/run-mw7h6ktf/1794121923520/scene-7-f718.png (at 23.9 s)\n\nScene 8 (payoff) – sceneIndex 7\n  Voiceover: One click on Render MP4, and it's ready to post.\n  Pictures: A cursor clicks the real 'Render MP4' button, a progress bar fills to 100% and turns into a finished video.mp4 file card with a green download button.\n  Frames:\n  - /tmp/tikmaker-agent/review/run-mw7h6ktf/1794121923520/scene-8-f782.png (at 26.1 s)\n  - /tmp/tikmaker-agent/review/run-mw7h6ktf/1794121923520/scene-8-f827.png (at 27.6 s)\n\nScene 9 (cta) – sceneIndex 8\n  Voiceover: I'm building TikMaker in public. Follow to watch it grow.\n  Pictures: A vertical phone card plays the real agent log scrolling by, with blurred real screens at the sides, as an orange Follow button pops over it and is clicked to 'Following'.\n  Frames:\n  - /tmp/tikmaker-agent/review/run-mw7h6ktf/1794121923520/scene-9-f891.png (at 29.7 s)\n  - /tmp/tikmaker-agent/review/run-mw7h6ktf/1794121923520/scene-9-f936.png (at 31.2 s)\n\nAnswer with one entry per scene, in order."
+      },
+      "inputTokens": 30839,
+      "cachedInputTokens": 80446,
+      "outputTokens": 4064,
+      "thinkingTokens": 687,
+      "turns": 26,
+      "output": {
+        "scenes": [
+          {
+            "sceneIndex": 0,
+            "sees": "One typed sentence in the TikMaker idea box turns into a whole video in the editor, and all five steps get ticked.",
+            "verdict": "good",
+            "problems": [
+              "The headline, card and dock all sit in the top half, and the bottom ~45% of the frame is empty, so the picture feels high on a phone.",
+              "The editor screenshot in the second frame is small UI that can't be read. It works as 'a real editor', but on its own it doesn't show that a finished video is there."
+            ]
+          },
+          {
+            "sceneIndex": 1,
+            "sees": "Typing an idea into the TikMaker panel, then a cursor clicks the big orange Start button.",
+            "verdict": "good",
+            "problems": [
+              "Same layout as the hook (headline, dark glass card, dock), with only the glow colour changed, so the cut reads as a small step."
+            ]
+          },
+          {
+            "sceneIndex": 2,
+            "sees": "A light card says the AI picked 'Problem then fix' and gets a green check, but under the title is a dense paragraph about git reset.",
+            "verdict": "fix",
+            "problems": [
+              "The 'Why:' block is 6+ lines of body text (it even mentions `git reset --soft HEAD~1`). It is text to read and pulls the eye away from the picked template.",
+              "It's not clear what the 'template' looks like. The card shows only words, nothing shaped like a template."
+            ],
+            "change": {
+              "kind": "pictures",
+              "instruction": "Keep the light scene and the real agent card, but crop it to just the picked-template header: '✓ Template · picked by the AI' and 'Problem then fix' set big (about twice the current size), with the short one-line description under it. Drop the 'Why:' paragraph completely, or blur it to grey bars. Behind it, fade in two dimmed, blurred template cards that weren't chosen, so 'picks one' reads as a choice. The green check lands on the picked card."
+            }
+          },
+          {
+            "sceneIndex": 3,
+            "sees": "Three hook cards under a big '3 hooks', and the middle one is clicked, glows orange and gets a check while the others blur.",
+            "verdict": "good",
+            "problems": [
+              "In the first frame the three cards are the same size and weight until the click. That's fine because the click resolves it quickly."
+            ]
+          },
+          {
+            "sceneIndex": 4,
+            "sees": "A script card for one scene is shown and a cursor clicks the orange Approve button, so the dock moves on to Building.",
+            "verdict": "good",
+            "problems": [
+              "The scene card's small grey 'Shows:' line and the token stats under Approve are small text nobody will read. They are noise around the Approve button.",
+              "'Scene by scene' only shows one scene card. A quick scroll through several cards would make 'whole script' easier to see."
+            ]
+          },
+          {
+            "sceneIndex": 5,
+            "sees": "Build steps tick off one by one and a self-review card ends with a big green check.",
+            "verdict": "good",
+            "problems": [
+              "The card details ('1015 characters · 55.3 s of voice', '10 wishes', 'Good: 1·2·3…11') are small lines to read. Only the green check and the card titles come across.",
+              "At the start, two thin cards float in a mostly empty frame."
+            ]
+          },
+          {
+            "sceneIndex": 6,
+            "sees": "A light scene with the TikMaker editor, its timeline filled with clips and every dock step ticked.",
+            "verdict": "good",
+            "problems": [
+              "The timeline is small inside a cropped editor screenshot, and the clips filling it are hard to see at phone size. A bigger crop on just the tracks would show 'lands' better.",
+              "The lower half of the frame is empty."
+            ]
+          },
+          {
+            "sceneIndex": 7,
+            "sees": "Clicking Render MP4 fills a progress bar and turns into a ready video.mp4 file with a green download button.",
+            "verdict": "good",
+            "problems": []
+          },
+          {
+            "sceneIndex": 8,
+            "sees": "A big orange Follow button over a phone showing the agent log is clicked and turns to 'Following', under 'Building in public'.",
+            "verdict": "good",
+            "problems": [
+              "The log text in the phone is tiny paragraphs. That's acceptable as background texture behind the button, but it adds noise.",
+              "In the first frame the cursor rests on the 'Result' chip instead of moving towards Follow."
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "writeCode",
+      "startedAt": 1794121980114,
+      "ms": 174215,
+      "model": "claude-opus-5-5",
+      "attempts": 1,
+      "prompt": {
+        "system": "You are the motion designer of TikMaker: you write the pictures of a short\nvertical video (1080x1920, 30 fps) as Remotion code – one file per scene. The voice,\nthe captions and the backdrop are already in the video; you write the pictures.\n\nThis video's visual style is \"depth\": Glass cards tilted in 3D, springy motion, a dock, a camera that never stops, a new background colour every scene.\n\nBefore writing, read with the Read tool:\n1. .claude/skills/tikmaker-scene/SKILL.md – how a scene file is written: the picture\n   zone, the brand kit, the editable fields, sound, the technical limits.\n2. .claude/skills/tikmaker-depth/SKILL.md – the LOOK of this style – and the example\n   frames and notes it points to (.claude/skills/tikmaker-depth/references/). Also the\n   COMPOSITION sheet knowledge/shared/reference-frames/insiderforce.png – how a vertical\n   frame is laid out: one dominant thing, big, calm space. Follow the style exactly; do\n   not mix in another style.\n3. .claude/skills/remotion-best-practices/remotion-markup/REFERENCE.md – how to write\n   Remotion markup right (open the pages it points to that you need: timing,\n   sequencing, transitions, text-highlights). Ignore anything about starting Studio,\n   creating projects or installing packages.\n4. src/video/brand/kit.tsx, src/video/brand/fields.ts and src/video/code/types.ts.\n\nRules:\n- Write ONLY in the folder you are given (src/generated/<folder>/). Never touch other\n  files. Shared helpers for several scenes go in <folder>/shared.tsx.\n- Time everything by the `words` prop (wordFrame) and `durationInFrames`, never by the\n  frame numbers in the brief – they are only there for you to plan.\n- Check your work: run `npx tsc --noEmit -p .` until nothing in your folder fails.\n  Then render a frame or two of every scene you wrote with the command in the brief\n  and look at the PNG with Read, next to the style's example frames: does it look like\n  this style, can it be taken in at a glance (one focal thing, no small text to read),\n  is the main object big, does nothing overlap, is nothing under the captions band?\n  Fix it and look again.\n- Do not ask questions – nobody is there to answer. Decide.\n- At the end answer with JSON: for every scene you wrote its sceneIndex (from 0), one\n  sentence of what the viewer sees, its stage (\"top\" unless the scene is a\n  full-screen recording) and its transition; the voiceover words the captions should draw bold\n  (keywords, 1–2 per scene); and wishes – what the kit or the logo library lacked.\n- Real pictures: this style is built on them – a drawn website or app looks cheap. Get the real thing\n  with `npx tsx scripts/asset.ts` (folder = your folder name; it prints the path to use\n  with `asset(path)` from the brand kit inside an <Img>, or as a field's default):\n  - `screenshot <folder> <name> <url> [--full] [--dark] [--width=1280 --height=800]` –\n    a website: the tool's official page, its GitHub repo, its docs, a pricing page;\n  - `scroll <folder> <name> <url> [--seconds=6]` – a video of a page scrolling down;\n  - `logo <folder> <name> <brand> [--white]` – a brand logo as SVG (Simple Icons);\n  - `photo <folder> <name> \"<what>\"` – a real photo (Pexels) when one is needed;\n  - `tikmaker <folder> <name> <steps.json>` – a recording of TikMaker itself, clicking\n    through its editor (write the steps file in your folder, e.g.\n    [{\"click\":\"Visuals\"},{\"type\":\"my idea\",\"into\":\"Video idea\"},{\"wait\":800}]).\n  If a command fails (no network, no key), draw that part instead and say so in wishes.\n  Never draw a fake screenshot of a real website.\n- Transition: for every scene after the first, how it comes in from the one before\n  (transition). The video draws BOTH scenes during the change (~12 frames): the old\n  one goes out the way the new one comes in – so do not fade your own scene in at its\n  start, and keep its first frame already composed. Kinds: cut, push / slideLeft /\n  slideRight / slideUp / slideDown (the next item of a list), zoomThrough (diving into\n  a detail), fromDepth, flip, dissolve (a soft change of mood), flash (a burst of light\n  – into a light scene, a reveal). Follow the style skill on which to use.\n- Sound: for every scene, 0–2 sound effects on its key moments (sounds: the spoken\n  word the moment lands on, and the kind). Never play sound in the code – the video\n  puts these on the timeline from its library. Only moments the picture makes: the\n  main move, the payoff. At most ~3 per 10 seconds in the whole video; a calm scene\n  gets none. Kinds:\n  - whoosh: a big move: the main object flies in, swaps or morphs\n  - slide: a card or window slides in or aside\n  - pop: something small appears (an icon, a badge, a sticker)\n  - enter: a solid thing lands (a card, a big number)\n  - ping: attention on one thing (the focus lights up)\n  - tick: a small step (one of several items marks)\n  - count: a counter runs up\n  - success: it works: the payoff, a green check\n  - fix: a fix clicks in\n  - break: something breaks, fails, gets locked\n  - type: a command is typed (one short burst)\n  - message: a chat bubble arrives\n  - reveal: a build-up to a reveal (use once a video at most)\n  - check: a check mark",
+        "user": "Channel: TikMaker and AI coding\nWhat it is about: Mostly TikMaker itself: what it can do, how a video gets made with it, new features and how it is being built with AI (build in public). Around that, short concrete videos about other AI tools, vibe coding and Claude Code: one problem or one feature per video, shown on screen rather than told.\nAudience: Creators who want to make short videos faster with AI, and developers or beginners who build apps with AI and want to work faster without breaking things.\nTone: Direct and practical; real screens, real results and numbers instead of hype. Honest about what does not work yet.\nProduct screen \"New video form\": The AI agent panel on the right of the TikMaker editor, on an empty project: a 'Video idea' text box, length in seconds, a template picker ('Let the AI pick'), an optional own hook, checkboxes 'With face', 'Motion graphics only', 'Generate the voiceover', and a 'Start' button.\nProduct screen \"Agent at work\": The same panel as a conversation: a progress bar with five steps (Idea, Angle, Script, Building, Result) ticking off, and a card appearing for each step – the chosen template, three hooks to pick from (each with what it shows), the script scene by scene with an 'Approve' button, 'Pictures picked', 'Motion planned' and 'Voiceover' (folded cards that open on click).\nProduct screen \"Editor with the built video\": Once built: the scene strip along the bottom fills with the video's scenes, the timeline shows each scene's blocks, voice and captions as clips, the vertical preview in the middle plays the video with its kinetic captions.\nProduct screen \"Preview playing\": The vertical 9:16 preview player in the middle of the editor playing the finished video with play / pause, time and fullscreen.\nProduct screen \"Render\": The 'Render MP4' button top right: a progress bar, then the finished MP4 file to download.\nProduct screen \"Storyboard\": The Storyboard tab: the script as a list of beats – each scene's voiceover and on-screen words – with the total length against the target.\n\nThe video: TikMaker, the AI video editor I am building: you type one video idea, the AI agent picks a template, writes 3 hooks, writes the script, then builds every scene and checks its own frames, and the finished video lands in the editor timeline ready to render. Show the real TikMaker screens for each step: the new video form, the agent panel at work, the editor with the built video.\nFolder: src/generated/code-argo/\n\nRewrite scene(s) 3 – the change asked for: Scene 3: Keep the light scene and the real agent card, but crop it to just the picked-template header: '✓ Template · picked by the AI' and 'Problem then fix' set big (about twice the current size), with the short one-line description under it. Drop the 'Why:' paragraph completely, or blur it to grey bars. Behind it, fade in two dimmed, blurred template cards that weren't chosen, so 'picks one' reads as a choice. The green check lands on the picked card.\nKeep what was not asked to change. Keep the file name, keep the schema's field names where they still fit.\n\nThe channel's saved visuals (\"my visuals\") – reuse one (copy and adapt its code) where it fits, or when asked:\n- Endless session terminal: A Claude Code terminal full of a day's chat history: a one-line question is typed and the whole history lights up as sent with it, while banknotes burn below (code: knowledge/workspaces/dev/visuals/endless-session-terminal-mw67mlh6/scene.tsx, frame: knowledge/workspaces/dev/visuals/endless-session-terminal-mw67mlh6/frame.png)\n\n## Scene 1 (hook) – already written, keep src/generated/code-argo/scene-1.tsx\n118 frames (3.9 s); global frames 0–117\nVoiceover: I typed one sentence. My AI agent built this entire video.\nWords (word@frame from the scene's start): I@0 typed@9 one@19 sentence.@28 My@38 AI@47 agent@56 built@66 this@75 entire@84 video.@94\nOn screen (the script's words): ONE sentence → ENTIRE video\nThe script's idea for the picture: Screen recording: TikMaker's new video form shows the one-line idea in the 'Video idea' box, next to the finished video sitting in the editor timeline\nThe creator's own screen recording belongs here (a RecordingSlot – say exactly what to record)\n\n\n## Scene 2 (demo) – already written, keep src/generated/code-argo/scene-2.tsx\n109 frames (3.6 s); global frames 118–226\nVoiceover: First, I type the idea into TikMaker and hit Start.\nWords (word@frame from the scene's start): First,@0 I@9 type@19 the@28 idea@38 into@47 TikMaker@56 and@66 hit@75 Start.@84\nOn screen (the script's words): Type the idea → Start\nThe script's idea for the picture: The cursor types the idea into the 'Video idea' box of the agent panel and clicks the 'Start' button\nThe creator's own screen recording belongs here (a RecordingSlot – say exactly what to record)\n\n\n## Scene 3 (benefit) – WRITE src/generated/code-argo/scene-3.tsx\n90 frames (3.0 s); global frames 227–316\nVoiceover: The agent picks a template that fits it.\nWords (word@frame from the scene's start): The@0 agent@9 picks@19 a@28 template@38 that@47 fits@56 it.@66\nOn screen (the script's words): Picks the template\nThe script's idea for the picture: The agent panel's progress bar ticks from Idea to Angle and the chosen-template card slides in\nRender a frame: npx remotion still TikTokVideo out/agent/code-argo/scene-3.png --props=out/agent/code-argo/props.json --frame=290 --scale=0.5\nIts code now:\n```tsx\nimport { z } from \"zod\";\nimport { AbsoluteFill, interpolate, useCurrentFrame } from \"remotion\";\nimport { field, useBrand, wordFrame } from \"../../video/brand/kit\";\nimport type { CodeSceneProps } from \"../../video/code/types\";\nimport { Background, Camera, cardMove, COL, Dock, GREEN, Headline, Motif, pop, prog, REC, Shot, WindowCard } from \"./shared\";\n\nexport const description =\n  \"Light scene: the real agent panel shows the step bar on Angle, then glides down to the template card the agent picked, which lights up with a green check\";\n\nexport const schema = z.object({\n  line1: field.text(\"Headline (*word* – key word)\", \"Picks the *template*\"),\n  panOn: field.word(\"View moves to the template on\", \"template\"),\n  checkOn: field.word(\"Green check on\", \"fits\"),\n});\ntype Params = z.infer<typeof schema>;\n\nconst SCALE = 2.44;\nconst BODY_H = 500;\nconst X0 = 1240;\n\nexport default function Scene3({ words, durationInFrames, params }: CodeSceneProps<Params>) {\n  const frame = useCurrentFrame();\n  const c = useBrand();\n  const panAt = wordFrame(words, params.panOn, 38) - 8;\n  const checkAt = wordFrame(words, params.checkOn, 56) - 2;\n\n  const card = cardMove(frame, -10, -10, 3);\n  const pan = prog(frame, panAt, 16);\n  const y = interpolate(pan, [0, 1], [104, 314]);\n  const ring = prog(frame, checkAt, 8);\n  const badge = Math.min(pop(frame, checkAt), 1.1);\n\n  return (\n    <AbsoluteFill>\n      <Background color={COL.blue} light y={660}>\n        <Motif light size={300} y={700} rotate={-12}>template</Motif>\n      </Background>\n      <Camera duration={durationInFrames} punchAt={checkAt}>\n        <Headline line1={params.line1} color={COL.blue} light start={-6} />\n\n        <div style={{ position: \"absolute\", left: 110, top: 380, width: 860, height: BODY_H + 80, ...card }}>\n          <WindowCard light bodyHeight={BODY_H} label=\"AI agent · step 2: Angle\">\n            <Shot src={REC.hooks} at={8.5} freeze x={X0} y={y} scale={SCALE} width={840} height={BODY_H} />\n            {/* the picked template card lights up */}\n            <div\n              style={{\n                position: \"absolute\",\n                left: (1246 - X0) * SCALE,\n                top: (318 - y) * SCALE,\n                width: 333 * SCALE,\n                height: 238 * SCALE,\n                borderRadius: 30,\n                border: `5px solid ${COL.blue}`,\n                boxShadow: `0 0 50px ${COL.blue}`,\n                opacity: ring * (0.75 + Math.sin(frame / 6) * 0.25),\n              }}\n            />\n          </WindowCard>\n          {/* green check badge on the card's corner */}\n          <div\n            style={{\n              position: \"absolute\",\n              right: -26,\n              top: -30,\n              width: 110,\n              height: 110,\n              borderRadius: 55,\n              background: GREEN,\n              display: \"flex\",\n              alignItems: \"center\",\n              justifyContent: \"center\",\n              color: \"#fff\",\n              fontFamily: c.fontUi,\n              fontWeight: 900,\n              fontSize: 62,\n              scale: `${badge}`,\n              boxShadow: `0 0 40px ${GREEN}aa, 0 14px 30px rgba(20,30,60,0.2)`,\n            }}\n          >\n            ✓\n          </div>\n        </div>\n\n        <Dock light done={[1, 0, 0, 0, 0]} active={1} color={COL.blue} />\n      </Camera>\n    </AbsoluteFill>\n  );\n}\n\n```\n\n## Scene 4 (benefit) – already written, keep src/generated/code-argo/scene-4.tsx\n99 frames (3.3 s); global frames 317–415\nVoiceover: Then it writes three hooks, and I pick one.\nWords (word@frame from the scene's start): Then@0 it@9 writes@19 three@28 hooks,@38 and@47 I@56 pick@66 one.@75\nOn screen (the script's words): 3 hooks\nThe script's idea for the picture: Screen recording: the card with three hooks appears, each with what it shows, and the cursor clicks one\nThe creator's own screen recording belongs here (a RecordingSlot – say exactly what to record)\n\n\n## Scene 5 (benefit) – already written, keep src/generated/code-argo/scene-5.tsx\n109 frames (3.6 s); global frames 416–524\nVoiceover: Next, the whole script, scene by scene. I hit Approve.\nWords (word@frame from the scene's start): Next,@0 the@9 whole@19 script,@28 scene@38 by@47 scene.@56 I@66 hit@75 Approve.@84\nOn screen (the script's words): Script, scene by scene\nThe script's idea for the picture: Screen recording: the script card lists the scenes one under another; the cursor clicks 'Approve' and the progress bar ticks to Building\nThe creator's own screen recording belongs here (a RecordingSlot – say exactly what to record)\n\n\n## Scene 6 (benefit) – already written, keep src/generated/code-argo/scene-6.tsx\n109 frames (3.6 s); global frames 525–633\nVoiceover: Plus, it builds every scene and checks its own frames.\nWords (word@frame from the scene's start): Plus,@0 it@9 builds@19 every@28 scene@38 and@47 checks@56 its@66 own@75 frames.@84\nOn screen (the script's words): Builds every scene + checks its frames\nThe script's idea for the picture: The progress bar sits on Building while the folded cards 'Pictures picked', 'Motion planned' and 'Voiceover' pop in one after another\n\n\n## Scene 7 (payoff) – already written, keep src/generated/code-argo/scene-7.tsx\n99 frames (3.3 s); global frames 634–732\nVoiceover: And the finished video lands right in the timeline.\nWords (word@frame from the scene's start): And@0 the@9 finished@19 video@28 lands@38 right@47 in@56 the@66 timeline.@75\nOn screen (the script's words): Lands in the timeline\nThe script's idea for the picture: Screen recording: the scene strip along the bottom fills with scenes, the timeline fills with blocks, voice and caption clips, and the vertical preview plays with kinetic captions\nThe creator's own screen recording belongs here (a RecordingSlot – say exactly what to record)\n\n\n## Scene 8 (payoff) – already written, keep src/generated/code-argo/scene-8.tsx\n109 frames (3.6 s); global frames 733–841\nVoiceover: One click on Render MP4, and it's ready to post.\nWords (word@frame from the scene's start): One@0 click@9 on@19 Render@28 MP4,@38 and@47 it's@56 ready@66 to@75 post.@84\nOn screen (the script's words): Render MP4\nThe script's idea for the picture: The 'Render MP4' button top right is clicked, a progress bar fills, and the finished MP4 file appears to download\n\n\n## Scene 9 (cta) – already written, keep src/generated/code-argo/scene-9.tsx\n109 frames (3.6 s); global frames 842–950\nVoiceover: I'm building TikMaker in public. Follow to watch it grow.\nWords (word@frame from the scene's start): I'm@0 building@9 TikMaker@19 in@28 public.@38 Follow@47 to@56 watch@66 it@75 grow.@84\nOn screen (the script's words): Building in public – follow\nThe script's idea for the picture: The finished vertical video loops in the preview player with a follow prompt over it\n"
+      },
+      "inputTokens": 39163,
+      "cachedInputTokens": 675606,
+      "outputTokens": 13547,
+      "thinkingTokens": 5229,
+      "turns": 28,
+      "output": {
+        "scenes": [
+          {
+            "sceneIndex": 2,
+            "description": "On a light blue scene the real agent card, cropped to its big 'Template · picked by the AI – Problem then fix' header, steps forward between two dimmed, blurred templates that weren't chosen and gets a green check.",
+            "stage": "top",
+            "sounds": [
+              {
+                "onWord": "picks",
+                "sound": "slide"
+              },
+              {
+                "onWord": "fits",
+                "sound": "check"
+              }
+            ],
+            "transition": "flash"
+          }
+        ],
+        "keywords": [
+          "picks",
+          "template"
+        ],
+        "wishes": [
+          "The tikmaker recorder captures at 1x (1600x1000 video); a 'still' mode with steps + deviceScaleFactor 2–3 and an element crop would keep enlarged agent cards sharp",
+          "Running ffmpeg / curl needed approval in this session, so I couldn't pull a sharp still of the agent card – the crop is the upscaled recording",
+          "A recording or still of the template picker that shows the other templates would let the unchosen cards be real instead of blurred placeholder cards"
+        ]
+      }
+    },
+    {
+      "name": "reviewFrames",
+      "startedAt": 1794122182366,
+      "ms": 34292,
+      "model": "claude-opus-5-5",
+      "attempts": 1,
+      "prompt": {
+        "system": "You are the motion designer who checks a short vertical video (TikTok, Reels,\nShorts) before it is posted. You get frames of every scene, rendered exactly as the\nviewer will see them on a phone, with what is said in that scene.\n\nFirst read the example sheet(s) with the Read tool – that is the level to reach. Each\nsheet says what it is for: a STYLE sheet shows how things should be drawn (simple,\nflat, no text to read, one focus), a COMPOSITION sheet how the frame should be laid\nout (one dominant thing, big, calm space). Judge each frame against both, each for\nits own thing. Then read every frame of the video.\n\nFor every scene, look as a viewer scrolling with the sound off, and go through the\nrubric:\n- sees: in one sentence, what you take from the frame in one second\n- verdict \"fix\" only when a \"fix\" check of the rubric fails – the viewer would be lost,\n  the eye has nowhere to land, text cannot be read, something is covered. Then give\n  at most 3 problems as you see them and ONE change:\n  - pictures: the scene's picture (its code) is written again – say concretely what it\n    should show instead (one main picture of what, how big, what to drop)\n  - words: the voiceover says too much for one picture – say how to say it shorter or\n    simpler (its voice and pictures are then made again)\n  - motion: the picture is right but sits or moves badly (too small, too low, over the\n    caption, something on top of something else) – say where it should be and how big\n- A dashed \"● REC\" or \"▣ PHOTO\" slot is a place the creator fills with their own\n  recording or picture later: judge where it sits and what it asks for, not that it is\n  empty.\n- verdict \"good\" otherwise. A \"note\" check that fails goes into problems of a \"good\"\n  scene and is NOT changed – it is said to the creator. Do not invent problems.",
+        "user": "Rubric:\n- [fix] With the sound off, is it clear in one second what the scene is about? Fails when: The picture does not show what the voiceover says, or shows something the viewer cannot name.\n- [fix] Is there ONE element the eye lands on first? Fails when: Two or more things of the same size and weight compete (two diagrams, two equal cards), so the eye has nowhere to land.\n- [fix] Can the whole frame be taken in at a glance – in the second it is on screen? Fails when: It has more than ~6 things to look at, or text the viewer would have to read (code lines, logs, file names, lists of labels, small UI text): a TikTok viewer will not read it, so it is noise that hides where to look.\n- [fix] Can every word be read on a phone? Fails when: A label or line looks smaller than about a third of the spoken caption's letters in these frames – on the phone it is too small to read.\n- [fix] Is everything inside the frame and clear of the spoken caption? Fails when: A picture runs under the caption, off the frame, or two elements overlap where they should not.\n- [fix] Do the scene's pictures belong to one idea? Fails when: Two pictures in one frame tell different things, or a picture has nothing to do with the words said with it.\n- [note] Is there room around the main element? Fails when: The frame is crowded edge to edge, or one small thing floats in a big empty frame.\n- [note] Does the scene look different enough from the one before? Fails when: It repeats the previous scene's look, so the cut reads as nothing happening.\n- [note] Does it reach the level of the example frames (few big flat shapes and icons, text drawn as grey bars, one orange accent where to look, a lot of calm space)? Fails when: It looks like a slide or a diagram dump next to the examples.\n\nExample frames:\n- /tmp/tikmaker-agent/review/run-mw7h6ktf/1794122167002/example-depth-glass.png\n  STYLE depth – how things are drawn in this style (the creator's chosen videos, 2026-11-08): real logos and real website screenshots in glass cards, a coloured glow per scene, some light scenes, a giant faint motif behind, a persistent dock.\n  Tiles: 1: a big glass app-icon square with a huge '5', behind it tilted cards with REAL tool logos and blurred real website screenshots; a dock of 5 real tool icons under it; navy with a blue glow | 2: a two-line headline (white, then grey), a glass Claude Code window with the prompt and 5 tool chips and a blue progress bar; under it a timeline strip of real thumbnails with a playhead and a waveform | 3: three phones/tablets fanned out showing REAL websites; the middle one lists three words, the active one a solid blue pill; a waveform with a playhead below | 4: LIGHT scene – off-white background with huge faint HTML code behind; a browser card 'github.com/…' with the real logo on a white header, the name and a '★ 55k' pill; the dock with the active tool glowing | 5: LIGHT scene – a giant faint GitHub octocat silhouette, a teal glow, a huge number with a short line under it, stars and a rising line chart | 6: dark blue – faint code and a giant faint '2' behind; a browser card with the real Remotion logo on white, its name and a star pill; the dock, the active icon ringed in blue | 7: a blue 'render 100%' pill, a glass card with an icon and two words, film strips of the real logo crossing diagonally with motion blur | 8: vivid – the frame filled with a grid of real purple template cards, a magnifier lens enlarging one of them; dark headline on top | 9: purple glow – a huge '24' with the command names as a faint word cloud; a glass list of 3 commands, the first one lit; a blurred big example card below | 10: LIGHT scene – a real ocean video in a player card, an audio pill with a waveform and a pause button, a '1 000+' pill, a strip of real photo thumbnails | 11: amber glow – the real logo and the name, a browser card with the real site, a 'free' pill, a row of colour swatches | 12: a real video frame in a card, a button with a click ripple and a cursor, a row of thumbnails with the chosen one ringed in amber | 13: a big two-line headline, a browser card with the real site (mixkit.co) and its logo row, a teal/purple glow below\n  What makes them work: Real things everywhere: real logos, real website screenshots in browser cards with the URL in a pill, real photos and video thumbnails – almost nothing is a drawn mock-up. One glass focal card per frame with a coloured glow behind it; the colour changes per scene (blue, teal, purple, amber), and about one scene in four is LIGHT (off-white). A giant faint motif behind the card that belongs to the topic: code, a huge number, a logo silhouette, a grid of the product's cards, blurred side cards. Headline at the top in one or two lines (white, second line grey), clean bold sans; numbers are huge. Small supporting pieces that move: a dock of the video's tools, a star pill, a waveform with a playhead, a timeline strip, a cursor clicking.\n- /tmp/tikmaker-agent/review/run-mw7h6ktf/1794122167002/example-insiderforce.png\n  COMPOSITION – how a vertical frame is laid out (InsiderForce, TikTok, 10 frames, docs/bd/kadrai/insiderforce/): one dominant thing, big words, calm space. Judge the layout of the frame against this.\n  Tiles: 1: three tool logos on a thin line at the top, ONE big pricing card in the middle – a single dominant thing | 2: two logos, a video frame, then the headline in three sizes with the key phrase in a black box | 3: price cards stacked in one repeated form; only the new price is in the accent colour | 4: a globe joined by one line to a big character – one object fills the frame, the caption below with the key word bigger and bold | 5: four logos in a diamond, dashed lines to one globe with a warning sign – a whole problem as one small, airy diagram | 6: a character top left, one dashed curve to a logo bottom right, the words between them | 7: a badge \"01\" on a line down to one screenshot card – the step and its result joined | 8: a big character with a gear and three short rows with icons – few rows, very big | 9: one character filling the frame, a two-line caption under it | 10: a small strip of photos at the top, three short rows with ✦, the closing phrase bold\n  What makes them work: One thing dominates every frame; everything else is clearly smaller or a thin line. Words are big: the caption is 2–3 lines with the key words bold or boxed – never small labels to read. A diagram has at most four nodes, lots of space between them, and one link drawn at a time. Lots of calm space; nothing touches the edges or the caption. The background colour is theirs (light) – judge the composition, not the colours.\n- /tmp/tikmaker-agent/review/run-mw7h6ktf/1794122167002/example-explain.png\n  Explainer frames from several creators, docs/bd/kadrai/geri/ (mechanism, setup, item, problem)\n  Tiles: 1: a level title on top, ONE vertical diagram in the middle: three boxes, input → model → output, thin dashed arrows | 2: the same title, the diagram replaced by two big rows with ✗ – what it cannot do | 3: a simple drawing (an island with gorillas) with two tiny labels where it changed – the idea as one picture | 4: one coloured ring of letters, the name big below – a whole concept as one shape | 5: spotlight: one node bright, everything else dark and blurred, the key words in bold yellow below | 6: a word on top, a drawing with ONE curved arrow showing what moves | 7: the step number, the feature as a big pill, the tool's window under it | 8: a counter in the corner, one animated map filling the frame, the caption at the bottom | 9: a huge STEP and number in opposite corners, framing the speaker | 10: a few words above one broken object (a cracked 'Tokens' plate) – the problem as one thing\n  What makes them work: A diagram has 3–4 boxes in ONE direction with lots of space – never two diagrams in one frame. When the explanation moves on, the picture is REPLACED (diagram → two ✗ rows) instead of squeezing a second one in. One shape carries the concept (a ring, an island, a broken plate); labels are few and big. Spotlight: to point at one part, everything else is dimmed.\n- /tmp/tikmaker-agent/review/run-mw7h6ktf/1794122167002/example-open-close.png\n  Hooks, reveals, proof and CTA frames from several creators, docs/bd/kadrai/geri/\n  Tiles: 1: the result on top, the claim in two big lines, the tools' logos in a zigzag below | 2: text only – lines in different sizes, the brand set as one of the lines in its colours | 3: two names stacked, one icon overlapping the other, the time promise below | 4: a short line over one tool card, decorations only in the corners | 5: three lines in three weights, the last in a black box | 6: the browser cropped bottom right, the address big and readable | 7: before/after as two equal cards stacked, a one-word label on each | 8: a phone on the left, ONE benefit word on the right | 9: one sentence in the middle, the key words in the accent colour | 10: the comment keyword the biggest thing, the gift (an e-book) as an object\n  What makes them work: The hook's first frame says the promise in 2–3 big lines with one word boxed or coloured. Two equal things are right only for a before/after – then they get one word each. A CTA makes the one keyword the biggest thing on screen. Text-only frames are fine when the type itself has hierarchy: sizes, weights, one box.\n- /tmp/tikmaker-agent/review/run-mw7h6ktf/1794122167002/example-pictures.png\n  InsiderForce frames that carry a real picture, docs/bd/kadrai/geri/picture-01..04\n  Tiles: 1: a metaphor as a cut-out picture – a robot hand holding a glowing globe fills the top half; the claim below in big type, the last word boxed | 2: a cut-out object (a blue folder labelled API's) with two hands reaching to it (Michelangelo) – the thing and the promise around it | 3: a cut-out photo of the real person, black and white, over an accent shape; the headline beside him | 4: four photo cards, tilted with shadows, in the corners around one number in a ring – real examples around the key fact\n  What makes them work: One or two real pictures make a video feel alive: a metaphor, the real thing, the real person, real examples. Pictures are cut out (no background) with a soft shadow, or set as tilted cards with a white border – never a flat rectangle pasted in. The picture is big – it is the frame's main element, the words go above or beside it. Black-and-white photos plus one accent colour keep a mixed set of pictures in one style.\n\nPrinciples for the pictures:\n- [must] One picture holds one whole thought – usually a sentence – and keeps changing inside it. Why: In good short videos one picture stays about 5 seconds while its parts appear, a number counts or arrows draw. A new picture on every other word flickers past before it is read, and together such pictures look like random clip art for single words.\n- [must] The picture shows what HAPPENS, so the scene is understood with the sound off. Why: Many people watch muted, and even with sound the eye leads. An action, a change or a relation (this turns into that, these three join, the price drops) explains; a row of nouns only decorates.\n- [must] Show the thing itself: the tool, the screen, the command, the number, the result. Why: A concrete picture proves and teaches; a metaphor only hints. A prop that just stands for a word (a clock for 'fast') says less than the real thing doing something.\n- [must] Pick the block whose shape IS the idea, so it is understood at a glance by someone who does not know the video. Why: A conversation drawn as chat bubbles, a cycle drawn as a loop, 'this becomes that' drawn as a transform are read instantly. A card with a vague label and a loosely fitting icon says nothing.\n- [must] The viewer sees at once what matters most in the frame. Why: When everything is the same size and weight the eye has nowhere to land. One dominant element – the number, the result, the key word – with the rest clearly secondary reads in a second.\n- [recommended] Leave space empty so the important element stands out. Why: A frame filled in every corner has no focus. Empty space around one big element makes it feel important and easy to read on a phone.\n- [must] Text appears when it is said, and the stressed words stand out. Why: Words on screen ahead of the voice spoil it; words after it lag. Highlighting the one word that carries the sentence guides the eye better than animating the whole phrase the same way.\n- [must] Vary how the pictures look across the video. Why: A video where every picture is a list or a schema reads as one slide repeated, and the viewer stops noticing that it changes.\n- [recommended] The layout changes where the story changes, and stays where it goes on. Why: The same layout scene after scene – picture on top, words below – reads as one frame repeated. A change of layout marks a new part, a contrast, a statement or a demo.\n- [must] The hook's picture is there from its first words and shows its first frame. Why: The first two seconds decide whether people stay; words on an empty frame are the weakest opening there is.\n- [must] A recording request is one continuous take a person can reproduce from the instructions – and a video asks for only a few of them. Why: The creator records what the instructions say. Two slots for one action make them record the same moment twice; asking for buttons or results that do not exist makes the recording impossible; six recordings for one short video is an afternoon of work for a few seconds each.\n\nScene 1 (hook) – sceneIndex 0\n  Voiceover: I typed one sentence. My AI agent built this entire video.\n  Pictures: The real TikMaker idea box with one typed sentence flies aside, and the real editor holding the agent-built video lands in its place while all five agent steps tick in the dock.\n  Frames:\n  - /tmp/tikmaker-agent/review/run-mw7h6ktf/1794122167002/scene-1-f53.png (at 1.8 s)\n  - /tmp/tikmaker-agent/review/run-mw7h6ktf/1794122167002/scene-1-f103.png (at 3.4 s)\n\nScene 2 (demo) – sceneIndex 1\n  Voiceover: First, I type the idea into TikMaker and hit Start.\n  Pictures: The real agent panel: the idea is typed into 'Video idea', the view glides down to the orange Start button and a cursor clicks it; Idea ticks in the dock.\n  Frames:\n  - /tmp/tikmaker-agent/review/run-mw7h6ktf/1794122167002/scene-2-f167.png (at 5.6 s)\n  - /tmp/tikmaker-agent/review/run-mw7h6ktf/1794122167002/scene-2-f212.png (at 7.1 s)\n\nScene 3 (benefit) – sceneIndex 2\n  Voiceover: The agent picks a template that fits it.\n  Pictures: On a light blue scene the real agent card, cropped to its big 'Template · picked by the AI – Problem then fix' header, steps forward between two dimmed, blurred templates that weren't chosen and gets a green check.\n  Frames:\n  - /tmp/tikmaker-agent/review/run-mw7h6ktf/1794122167002/scene-3-f268.png (at 8.9 s)\n  - /tmp/tikmaker-agent/review/run-mw7h6ktf/1794122167002/scene-3-f302.png (at 10.1 s)\n\nScene 4 (benefit) – sceneIndex 3\n  Voiceover: Then it writes three hooks, and I pick one.\n  Pictures: Three real hook options from the agent panel stand as a glass deck under a big '3 hooks'; a cursor clicks the middle one, it glows orange while the other two sink back.\n  Frames:\n  - /tmp/tikmaker-agent/review/run-mw7h6ktf/1794122167002/scene-4-f362.png (at 12.1 s)\n  - /tmp/tikmaker-agent/review/run-mw7h6ktf/1794122167002/scene-4-f401.png (at 13.4 s)\n\nScene 5 (benefit) – sceneIndex 4\n  Voiceover: Next, the whole script, scene by scene. I hit Approve.\n  Pictures: The real script card scrolls scene by scene in a glass window, then a cursor clicks the orange Approve button and the dock moves from Script to Building.\n  Frames:\n  - /tmp/tikmaker-agent/review/run-mw7h6ktf/1794122167002/scene-5-f465.png (at 15.5 s)\n  - /tmp/tikmaker-agent/review/run-mw7h6ktf/1794122167002/scene-5-f510.png (at 17.0 s)\n\nScene 6 (benefit) – sceneIndex 5\n  Voiceover: Plus, it builds every scene and checks its own frames.\n  Pictures: Three real agent cards pop in one after another (voiceover for 11 scenes, pictures written as code, self-review 'Good: 1–11'), and the self-review card gets a green check.\n  Frames:\n  - /tmp/tikmaker-agent/review/run-mw7h6ktf/1794122167002/scene-6-f574.png (at 19.1 s)\n  - /tmp/tikmaker-agent/review/run-mw7h6ktf/1794122167002/scene-6-f619.png (at 20.6 s)\n\nScene 7 (payoff) – sceneIndex 6\n  Voiceover: And the finished video lands right in the timeline.\n  Pictures: Light scene: the real TikMaker editor in a big card, with its timeline tracks and scene strip filling with clips from left to right as the Result step ticks.\n  Frames:\n  - /tmp/tikmaker-agent/review/run-mw7h6ktf/1794122167002/scene-7-f679.png (at 22.6 s)\n  - /tmp/tikmaker-agent/review/run-mw7h6ktf/1794122167002/scene-7-f718.png (at 23.9 s)\n\nScene 8 (payoff) – sceneIndex 7\n  Voiceover: One click on Render MP4, and it's ready to post.\n  Pictures: A cursor clicks the real 'Render MP4' button, a progress bar fills to 100% and turns into a finished video.mp4 file card with a green download button.\n  Frames:\n  - /tmp/tikmaker-agent/review/run-mw7h6ktf/1794122167002/scene-8-f782.png (at 26.1 s)\n  - /tmp/tikmaker-agent/review/run-mw7h6ktf/1794122167002/scene-8-f827.png (at 27.6 s)\n\nScene 9 (cta) – sceneIndex 8\n  Voiceover: I'm building TikMaker in public. Follow to watch it grow.\n  Pictures: A vertical phone card plays the real agent log scrolling by, with blurred real screens at the sides, as an orange Follow button pops over it and is clicked to 'Following'.\n  Frames:\n  - /tmp/tikmaker-agent/review/run-mw7h6ktf/1794122167002/scene-9-f891.png (at 29.7 s)\n  - /tmp/tikmaker-agent/review/run-mw7h6ktf/1794122167002/scene-9-f936.png (at 31.2 s)\n\nAnswer with one entry per scene, in order."
+      },
+      "inputTokens": 30498,
+      "cachedInputTokens": 80318,
+      "outputTokens": 3559,
+      "thinkingTokens": 501,
+      "turns": 26,
+      "output": {
+        "scenes": [
+          {
+            "sceneIndex": 0,
+            "sees": "One sentence typed into TikMaker turns into a whole editor with a built video, and all five steps get ticked.",
+            "verdict": "good",
+            "problems": [
+              "In the second frame the editor screenshot is small and dense, so it reads as 'an app' rather than 'a finished video'. A bigger crop of the video preview would make the payoff land harder."
+            ]
+          },
+          {
+            "sceneIndex": 1,
+            "sees": "You type an idea into the TikMaker box and click the big orange Start button.",
+            "verdict": "good",
+            "problems": [
+              "Same layout as the hook (headline, glass card, dock) on almost the same card, so the cut from scene 1 reads as a small change."
+            ]
+          },
+          {
+            "sceneIndex": 2,
+            "sees": "On a light background the AI's chosen template, 'Problem then fix', steps forward with a green check.",
+            "verdict": "good",
+            "problems": [
+              "The two rejected templates behind it are barely visible grey shapes, so 'picked from several' is weak."
+            ]
+          },
+          {
+            "sceneIndex": 3,
+            "sees": "Three hook cards under a big '3 hooks', and the middle one is clicked and glows orange.",
+            "verdict": "good",
+            "problems": [
+              "The hook cards are full sentences to read. They work because one is picked, but the text is on the small side for a phone."
+            ]
+          },
+          {
+            "sceneIndex": 4,
+            "sees": "A script scene card scrolls by, and the orange Approve button gets clicked.",
+            "verdict": "good",
+            "problems": [
+              "The token line ('2.7 s · 1535 in · 764 out tokens') under Approve is tiny noise. It could be cropped out.",
+              "Layout and card look repeat scenes 2 to 4 (headline, glass card, dock). Only the glow colour changes."
+            ]
+          },
+          {
+            "sceneIndex": 5,
+            "sees": "Build cards stack up, and the last one, the self-review, glows green with a big check.",
+            "verdict": "good",
+            "problems": [
+              "Three stacked cards of small log text ('1015 characters · 55.3 s of voice', '10 wishes', '5 note(s)'): the viewer won't read them. Only the green check and 'Good: 1–11' carry the idea.",
+              "Feels like a log dump next to the examples. One big card showing 'Good ✓ 11/11' would read faster."
+            ]
+          },
+          {
+            "sceneIndex": 6,
+            "sees": "On a light background the TikMaker editor shows a timeline filled with clips, and all steps are ticked.",
+            "verdict": "good",
+            "problems": [
+              "The editor screenshot's UI text is tiny. It reads as 'a timeline with clips', which is enough, but a tighter crop on the clip tracks would make 'filling up' clearer."
+            ]
+          },
+          {
+            "sceneIndex": 7,
+            "sees": "Clicking Render MP4 fills a progress bar that turns into a ready video.mp4 file with a download button.",
+            "verdict": "good",
+            "problems": []
+          },
+          {
+            "sceneIndex": 8,
+            "sees": "A big orange Follow button over a phone showing the agent log gets clicked to 'Following'.",
+            "verdict": "good",
+            "problems": [
+              "The log text in the phone is small and readable-looking, which pulls the eye a little. Blurring or dimming it more would keep the focus on the Follow button."
+            ]
+          }
+        ]
+      }
+    }
+  ],
+  "code": {
+    "scenes": [
+      {
+        "file": "code-argo/scene-1.tsx",
+        "description": "The real TikMaker idea box with one typed sentence flies aside, and the real editor holding the agent-built video lands in its place while all five agent steps tick in the dock.",
+        "stage": "top",
+        "sounds": [
+          {
+            "onWord": "built",
+            "sound": "whoosh"
+          }
+        ],
+        "transition": "cut",
+        "version": 1
+      },
+      {
+        "file": "code-argo/scene-2.tsx",
+        "description": "The real agent panel: the idea is typed into 'Video idea', the view glides down to the orange Start button and a cursor clicks it; Idea ticks in the dock.",
+        "stage": "top",
+        "sounds": [
+          {
+            "onWord": "type",
+            "sound": "type"
+          }
+        ],
+        "transition": "zoomThrough",
+        "version": 1
+      },
+      {
+        "file": "code-argo/scene-3.tsx",
+        "description": "On a light blue scene the real agent card, cropped to its big 'Template · picked by the AI – Problem then fix' header, steps forward between two dimmed, blurred templates that weren't chosen and gets a green check.",
+        "history": [
+          {
+            "version": 1,
+            "description": "Light scene: the real agent panel on step Angle glides down to the template card the agent picked ('Problem then fix'), which lights up with a green check.",
+            "changedBy": "Scene 3: Keep the light scene and the real agent card, but crop it to just the picked-template header: '✓ Template · picked by the AI' and 'Problem then fix' set big (about twice the current size), with the short one-line description under it. Drop the 'Why:' paragraph completely, or blur it to grey bars. Behind it, fade in two dimmed, blurred template cards that weren't chosen, so 'picks one' reads as a choice. The green check lands on the picked card."
+          }
+        ],
+        "stage": "top",
+        "sounds": [
+          {
+            "onWord": "picks",
+            "sound": "slide"
+          },
+          {
+            "onWord": "fits",
+            "sound": "check"
+          }
+        ],
+        "transition": "flash",
+        "version": 2
+      },
+      {
+        "file": "code-argo/scene-4.tsx",
+        "description": "Three real hook options from the agent panel stand as a glass deck under a big '3 hooks'; a cursor clicks the middle one, it glows orange while the other two sink back.",
+        "stage": "top",
+        "sounds": [
+          {
+            "onWord": "pick",
+            "sound": "check"
+          }
+        ],
+        "transition": "push",
+        "version": 1
+      },
+      {
+        "file": "code-argo/scene-5.tsx",
+        "description": "The real script card scrolls scene by scene in a glass window, then a cursor clicks the orange Approve button and the dock moves from Script to Building.",
+        "stage": "top",
+        "sounds": [
+          {
+            "onWord": "Approve.",
+            "sound": "check"
+          }
+        ],
+        "transition": "push",
+        "version": 1
+      },
+      {
+        "file": "code-argo/scene-6.tsx",
+        "description": "Three real agent cards pop in one after another (voiceover for 11 scenes, pictures written as code, self-review 'Good: 1–11'), and the self-review card gets a green check.",
+        "stage": "top",
+        "sounds": [
+          {
+            "onWord": "frames.",
+            "sound": "success"
+          }
+        ],
+        "transition": "slideUp",
+        "version": 1
+      },
+      {
+        "file": "code-argo/scene-7.tsx",
+        "description": "Light scene: the real TikMaker editor in a big card, with its timeline tracks and scene strip filling with clips from left to right as the Result step ticks.",
+        "stage": "top",
+        "sounds": [
+          {
+            "onWord": "lands",
+            "sound": "enter"
+          }
+        ],
+        "transition": "flash",
+        "version": 1
+      },
+      {
+        "file": "code-argo/scene-8.tsx",
+        "description": "A cursor clicks the real 'Render MP4' button, a progress bar fills to 100% and turns into a finished video.mp4 file card with a green download button.",
+        "stage": "top",
+        "sounds": [
+          {
+            "onWord": "Render",
+            "sound": "count"
+          },
+          {
+            "onWord": "ready",
+            "sound": "success"
+          }
+        ],
+        "transition": "zoomThrough",
+        "version": 1
+      },
+      {
+        "file": "code-argo/scene-9.tsx",
+        "description": "A vertical phone card plays the real agent log scrolling by, with blurred real screens at the sides, as an orange Follow button pops over it and is clicked to 'Following'.",
+        "stage": "top",
+        "sounds": [
+          {
+            "onWord": "Follow",
+            "sound": "pop"
+          }
+        ],
+        "transition": "dissolve",
+        "version": 1
+      }
+    ],
+    "keywords": [
+      "sentence",
+      "entire",
+      "idea",
+      "Start",
+      "template",
+      "three",
+      "hooks",
+      "script",
+      "Approve",
+      "checks",
+      "frames",
+      "timeline",
+      "Render",
+      "MP4",
+      "public",
+      "Follow",
+      "picks"
+    ],
+    "wishes": [
+      "A TikMaker logo in the logo library (there is none, so no scene shows the brand mark)",
+      "The tikmaker recorder needs a 'select' step for native dropdowns and a way to open a project by id or URL. I switched projects by typing into the 'Current project' dropdown, which is fragile.",
+      "The tikmaker recorder should be able to take a sharp 2x PNG at any step. Its videos are 1600x1000 at 1x, so close-ups of the agent panel look soft when scaled 2.4x.",
+      "In the headless recordings the editor's vertical preview stays empty (code scenes didn't render there), so no real footage of the finished video playing; scene 9 shows the agent log in the phone card instead",
+      "Render progress was not recorded, to avoid starting a real render: in scene 8 the progress bar and MP4 file card are drawn (the Render MP4 button is real)",
+      "Scene 7 uses a sharp screenshot of the default project's editor (not an agent-built one), because screenshots always open the default project",
+      "No saved run showed the 'Pictures picked / Motion planned' cards from the brief. Scene 6 uses the real cards of a finished run instead: Voiceover, Pictures written as code, Self-review.",
+      "Creator's own recordings can still replace the real crops in scenes 1, 2, 4, 5 and 7 (an optional 'Your recording' field on each scene)",
+      "The tikmaker recorder captures at 1x (1600x1000 video); a 'still' mode with steps + deviceScaleFactor 2–3 and an element crop would keep enlarged agent cards sharp",
+      "Running ffmpeg / curl needed approval in this session, so I couldn't pull a sharp still of the agent card – the crop is the upscaled recording",
+      "A recording or still of the template picker that shows the other templates would let the unchosen cards be real instead of blurred placeholder cards"
+    ],
+    "problems": []
+  }
+}

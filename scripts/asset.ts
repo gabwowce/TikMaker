@@ -10,8 +10,12 @@
 //   npx tsx scripts/asset.ts photo      <folder> <name> "<what>"                 (Pexels, needs PEXELS_API_KEY)
 //   npx tsx scripts/asset.ts tikmaker   <folder> <name> <steps.json>              (records TikMaker itself)
 //
-// tikmaker steps: [{ "goto": "/" }, { "click": "Visuals" }, { "type": "text", "into": "Video idea" },
-//                  { "wait": 1000 }, { "scroll": 400 }] – the editor must be running (npm run dev).
+// tikmaker steps: [{ "project": "<project id>" }, { "click": "Visuals" },
+//                  { "type": "text", "into": "Video idea" }, { "select": "Visual style", "option": "Depth" },
+//                  { "wait": 1000 }, { "scroll": 400 },
+//                  { "still": "panel", "of": "AI agent" }]   – a sharp 2x PNG (<name>-panel.png) of the
+//                  whole screen, or cropped to the box around the text in "of"
+//                  – the editor must be running (npm run dev).
 import { ensureBrowser } from "@remotion/renderer";
 import { config as loadEnv } from "dotenv";
 import fs from "node:fs";
@@ -69,6 +73,10 @@ async function withPage<T>(
   work: (page: Page) => Promise<T>,
 ): Promise<T> {
   const browser = await chromium.launch({ executablePath: await browserPath() });
+  // a recording that fails half-way leaves no folder behind
+  const cleanUp = () => {
+    if (options.video) fs.rmSync(options.video, { recursive: true, force: true });
+  };
   try {
     const context = await browser.newContext({
       viewport: { width: options.width, height: options.height },
@@ -79,7 +87,10 @@ async function withPage<T>(
         : {}),
     });
     const page = await context.newPage();
-    const result = await work(page);
+    const result = await work(page).catch((error: unknown) => {
+      cleanUp();
+      throw error;
+    });
     await context.close();
     return result;
   } finally {
@@ -136,11 +147,43 @@ async function tikmaker() {
   const steps = JSON.parse(fs.readFileSync(target, "utf-8")) as Record<string, unknown>[];
   const base = process.env.TIKMAKER_URL ?? "http://localhost:5173";
   const dir = fs.mkdtempSync(path.join(outDir, ".rec-"));
+  const stills: string[] = [];
   await withPage({ width: 1600, height: 1000, video: dir }, async (page) => {
     await page.goto(base, { waitUntil: "load" });
     await page.waitForTimeout(2500);
     for (const step of steps) {
       if (typeof step.goto === "string") await page.goto(new URL(step.goto, base).href);
+      else if (typeof step.project === "string") {
+        // open a project by its id, as if it was the last one opened
+        await page.evaluate((id) => {
+          localStorage.setItem(
+            "tikmaker.editor-prefs",
+            JSON.stringify({ state: { lastOpenedProjectId: id }, version: 0 }),
+          );
+        }, step.project);
+        await page.reload({ waitUntil: "load" });
+        await page.waitForTimeout(2500);
+      } else if (typeof step.select === "string")
+        await page.getByLabel(step.select).first().selectOption({ label: String(step.option ?? "") });
+      else if (typeof step.still === "string") {
+        const file = `${name}-${step.still.replace(/[^\w-]/g, "-")}.png`;
+        const out = path.join(outDir, file);
+        if (typeof step.of === "string") {
+          // the smallest box around the text at least 320x240 px (a card, a panel)
+          const box = await page
+            .getByText(step.of, { exact: false })
+            .first()
+            .evaluate((el) => {
+              let node: HTMLElement | null = el as HTMLElement;
+              while (node && (node.getBoundingClientRect().width < 320 || node.getBoundingClientRect().height < 240))
+                node = node.parentElement;
+              const r = (node ?? (el as HTMLElement)).getBoundingClientRect();
+              return { x: r.x, y: r.y, width: r.width, height: r.height };
+            });
+          await page.screenshot({ path: out, clip: box });
+        } else await page.screenshot({ path: out });
+        stills.push(publicPath(file));
+      }
       else if (typeof step.click === "string")
         await page.getByText(step.click, { exact: false }).first().click({ timeout: 5000 });
       else if (typeof step.type === "string") {
@@ -152,6 +195,7 @@ async function tikmaker() {
     }
   });
   console.log(moveRecording(dir));
+  for (const still of stills) console.log(still);
 }
 
 // Playwright writes the video under a random name: give it ours.
