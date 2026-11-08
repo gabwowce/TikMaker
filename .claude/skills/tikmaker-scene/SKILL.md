@@ -15,8 +15,12 @@ style shares.
 ## The picture zone
 
 - Stage "top" (default): the captions are drawn by the video at y 1130–1340.
-  The picture zone is **y 200–1080**, side margins ≥ 90 px. Nothing of yours
-  below y 1090.
+  The picture zone is **x 130–900, y 250–1080** – the editor's "Safe zones →
+  All platforms" box. TikTok, Reels and Shorts draw their own UI over the rest:
+  a top bar over the first 250 px and a column of like/comment/share buttons
+  down the right 180 px, so anything there – even a small step badge or the
+  edge of a card – is covered on the phone. Centre the main object in that
+  box (x ≈ 515). Nothing of yours below y 1090.
 - Stage "full" (only for a full-screen recording): the picture may fill the
   frame; the captions sit at y 1400–1600 over it – keep that band calm.
 
@@ -93,7 +97,7 @@ export default function Scene3({ words, durationInFrames, params }: CodeScenePro
   const c = useBrand();
   const drain = wordFrame(words, params.drainsOn, 30) - 3;
   // … one window (grey bars for the messages), one orange fuel bar
-  return <AbsoluteFill>{/* the main object centred in y 200–1080 */}</AbsoluteFill>;
+  return <AbsoluteFill>{/* the main object centred in x 130–900, y 250–1080 */}</AbsoluteFill>;
 }
 ```
 
