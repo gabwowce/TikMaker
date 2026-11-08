@@ -124,6 +124,7 @@ async function codeJob(
     instruction,
     propsFile,
     visuals: savedVisualsBrief(run.input.workspaceId),
+    style: run.input.visualStyle ?? "clear",
   };
 }
 

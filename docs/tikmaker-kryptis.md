@@ -235,3 +235,23 @@ Palyginimas `docs/eksperimentai/aiskus-stilius-pries-po.jpg`.
   peržiūra kiekvieną kadrą lygina su abiem, kiekvieną savo dalykui.
 - Bandymas `code-clear` iš naujo: 7 min, 11 garsų per 36 s, savipatikra –
   „visos scenos skaitosi gerai“.
+
+### Du vizualiniai stiliai (pasirenkama formoje)
+
+Formoje „Visual style“: **Clear** (kaip iki šiol) arba **Depth** (naujas).
+Skilai `.claude/skills/`:
+- `tikmaker-scene` – bendra kodo scenos sutartis (zona, brand kit, laukai,
+  garsai, technika), skaitoma visada;
+- `tikmaker-explainer` – stilius Clear (pavyzdžiai `references/`);
+- `tikmaker-depth` – stilius Depth: 2.5D stiklinės kortelės perspektyvoje,
+  spyruokliniai judesiai, nuolatinis „dock“, žodis po žodžio antraštės,
+  kamera nuolat juda, **kiekviena scena su savo fono spalva** (stilius pats
+  piešia foną). Pavyzdžiai: `references/*.jpg|png` + du kadrų analizės JSON.
+
+Registras `src/agent/visualStyles.ts`; stilius išsaugomas paleidime
+(`run.input.visualStyle`), juo naudojasi ir taisymai žinute. Peržiūra mato
+kompozicijos lapą ir tik **savo** stiliaus pavyzdžius.
+
+Bandymas `code-depth` (tas pats scenarijus, be kūrėjo kadrų – tik tekstas ir
+analizės): 9 min, savipatikra – „visos scenos skaitosi gerai“. Palyginimas
+`docs/eksperimentai/clear-vs-depth.jpg`.

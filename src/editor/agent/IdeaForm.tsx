@@ -8,6 +8,10 @@ import {
 import { useState } from "react";
 import { ideaFromUser } from "../../agent/run/1-idea";
 import { useStartRun, useTemplates } from "../../api/agent";
+import {
+  VISUAL_STYLES,
+  type VisualStyleId,
+} from "../../agent/visualStyles";
 // The first thing the agent needs: what the video is about. Everything else
 // has a default (ideaFromUser), so the form stays one box and a button.
 export function IdeaForm({ projectId }: { projectId: string }) {
@@ -16,6 +20,7 @@ export function IdeaForm({ projectId }: { projectId: string }) {
   const [withFace, setWithFace] = useState(false);
   const [motionOnly, setMotionOnly] = useState(false);
   const [generateVoice, setGenerateVoice] = useState(false);
+  const [visualStyle, setVisualStyle] = useState<VisualStyleId>("clear");
   // "" = let the AI pick (FR-04); a template id = use that one, no AI call.
   const [videoTemplateId, setVideoTemplateId] = useState("");
   const { data: templates = [] } = useTemplates();
@@ -31,6 +36,7 @@ export function IdeaForm({ projectId }: { projectId: string }) {
     withFace,
     motionOnly,
     generateVoice,
+    visualStyle,
     videoTemplateId: videoTemplateId || undefined,
     hook: hook.trim() || undefined,
   });
@@ -65,6 +71,18 @@ export function IdeaForm({ projectId }: { projectId: string }) {
           ...templates.map((t) => ({ value: t.id, label: t.name })),
         ]}
       />{" "}
+      <NativeSelect
+        label="Visual style"
+        description={VISUAL_STYLES[visualStyle].description}
+        value={visualStyle}
+        onChange={(event) =>
+          setVisualStyle(event.currentTarget.value as VisualStyleId)
+        }
+        data={Object.values(VISUAL_STYLES).map((style) => ({
+          value: style.id,
+          label: style.label,
+        }))}
+      />
       <Textarea
         label="Hook (optional)"
         description="Your own first line. Empty = the AI writes three to pick from"

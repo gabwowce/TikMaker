@@ -1,5 +1,6 @@
 import { Button, Loader } from "@mantine/core";
 import { Fragment } from "react";
+import { VISUAL_STYLES } from "../../agent/visualStyles";
 import type { AgentRun } from "../../agent/run/run";
 import type { RunStatus } from "../../agent/run/status";
 import { useAgentRun, useResume } from "../../api/agent";
@@ -98,6 +99,7 @@ function IdeaBubble({ run }: { run: AgentRun }) {
     videoTemplateId ? "template chosen" : "AI picks the template",
     ...(motionOnly ? ["motion only"] : []),
     ...(generateVoice ? ["voiceover"] : []),
+    `style: ${VISUAL_STYLES[run.input.visualStyle ?? "clear"].label}`,
   ];
   return (
     <div className="ml-6 flex flex-col gap-1 rounded-2xl rounded-br-none bg-editor-panel-raised px-3 py-2">

@@ -1,0 +1,218 @@
+{
+  "id": "code-depth",
+  "title": "3 Claude Code commands most people never use: /compact to sh",
+  "fps": 30,
+  "width": 1080,
+  "height": 1920,
+  "scenes": [
+    {
+      "id": "scene-run-depthlook-1",
+      "type": "code",
+      "plan": {
+        "role": "hook",
+        "visualBrief": "A tilted glass code editor: three files snap red and broken, /rewind is typed below, and a green U-turn arrow sweeps up as the files flip back to clean."
+      },
+      "vo": "Claude Code just broke three files? One command undoes it.",
+      "background": "stage",
+      "content": {},
+      "stage": "top",
+      "motion": {
+        "transition": "cut",
+        "entrance": "none"
+      },
+      "code": {
+        "file": "code-depth/scene-1.tsx"
+      }
+    },
+    {
+      "id": "scene-run-depthlook-2",
+      "type": "code",
+      "plan": {
+        "role": "bridge",
+        "visualBrief": "A dock with three empty numbered slots drops in while a big tilted Claude Code card counts up to 3 commands, a blurred terminal behind it."
+      },
+      "vo": "It's one of three Claude Code commands most people never use.",
+      "background": "stage",
+      "content": {},
+      "stage": "top",
+      "motion": {
+        "transition": "cut",
+        "entrance": "none"
+      },
+      "code": {
+        "file": "code-depth/scene-2.tsx"
+      }
+    },
+    {
+      "id": "scene-run-depthlook-3",
+      "type": "code",
+      "plan": {
+        "role": "item",
+        "visualBrief": "Slot 1 fills with /rewind; in a tilted terminal the command runs, three red files roll back their edits one by one and flip green."
+      },
+      "vo": "First, slash rewind. Type it, and Claude Code undoes its last changes. Those three broken files? Clean again.",
+      "background": "stage",
+      "content": {},
+      "stage": "top",
+      "motion": {
+        "transition": "cut",
+        "entrance": "none"
+      },
+      "code": {
+        "file": "code-depth/scene-3.tsx"
+      }
+    },
+    {
+      "id": "scene-run-depthlook-4",
+      "type": "code",
+      "plan": {
+        "role": "item",
+        "visualBrief": "Slot 2 fills with /compact; a tall, heavy chat history at 184k tokens squeezes into a short summary block at 12k while a glowing thread line from start to now stays unbroken."
+      },
+      "vo": "Second, slash compact. When a session gets long and heavy, it shrinks it down, without losing the thread of what you're building.",
+      "background": "stage",
+      "content": {},
+      "stage": "top",
+      "motion": {
+        "transition": "cut",
+        "entrance": "none"
+      },
+      "code": {
+        "file": "code-depth/scene-4.tsx"
+      }
+    },
+    {
+      "id": "scene-run-depthlook-5",
+      "type": "code",
+      "plan": {
+        "role": "item",
+        "visualBrief": "Slot 3 fills with Plan mode; big Shift and Tab keys press down, then a numbered plan card unfolds while three file tiles beside it lock with padlocks."
+      },
+      "vo": "Third, plan mode. Press Shift Tab, and Claude shows you its plan first. Not a single file is touched until you're happy with it.",
+      "background": "stage",
+      "content": {},
+      "stage": "top",
+      "motion": {
+        "transition": "cut",
+        "entrance": "none"
+      },
+      "code": {
+        "file": "code-depth/scene-5.tsx"
+      }
+    },
+    {
+      "id": "scene-run-depthlook-6",
+      "type": "code",
+      "plan": {
+        "role": "cta",
+        "visualBrief": "The finished three-command dock shrinks up, a glass comment bubble pops in, then a big orange Follow button lands below it and pulses."
+      },
+      "vo": "Drop a comment if you want more Claude Code tips like these, and follow so you don't miss the next one.",
+      "background": "stage",
+      "content": {},
+      "stage": "top",
+      "motion": {
+        "transition": "cut",
+        "entrance": "none"
+      },
+      "code": {
+        "file": "code-depth/scene-6.tsx"
+      }
+    }
+  ],
+  "audioClips": [
+    {
+      "id": "sfx-run-depthlook-1-1",
+      "sfxId": "d-break",
+      "from": 26,
+      "volume": 0.55,
+      "lane": 1
+    },
+    {
+      "id": "sfx-run-depthlook-1-2",
+      "sfxId": "d-fix",
+      "from": 73,
+      "volume": 0.55,
+      "lane": 1
+    },
+    {
+      "id": "sfx-run-depthlook-2-1",
+      "sfxId": "d-count-short",
+      "from": 135,
+      "volume": 0.55,
+      "lane": 1
+    },
+    {
+      "id": "sfx-run-depthlook-3-1",
+      "sfxId": "type-word",
+      "from": 253,
+      "volume": 0.55,
+      "lane": 1
+    },
+    {
+      "id": "sfx-run-depthlook-3-2",
+      "sfxId": "d-done",
+      "from": 375,
+      "volume": 0.55,
+      "lane": 1
+    },
+    {
+      "id": "sfx-run-depthlook-4-1",
+      "sfxId": "soft-whoosh",
+      "from": 512,
+      "volume": 0.55,
+      "lane": 1
+    },
+    {
+      "id": "sfx-run-depthlook-5-1",
+      "sfxId": "paper-slide",
+      "from": 705,
+      "volume": 0.55,
+      "lane": 1
+    },
+    {
+      "id": "sfx-run-depthlook-5-2",
+      "sfxId": "d-pop",
+      "from": 771,
+      "volume": 0.55,
+      "lane": 1
+    },
+    {
+      "id": "sfx-run-depthlook-6-1",
+      "sfxId": "d-msg-in",
+      "from": 889,
+      "volume": 0.55,
+      "lane": 1
+    },
+    {
+      "id": "sfx-run-depthlook-6-2",
+      "sfxId": "d-pop",
+      "from": 992,
+      "volume": 0.55,
+      "lane": 1
+    }
+  ],
+  "savedAt": 1794117617633,
+  "workspaceId": "dev",
+  "videoTemplateId": "tool-tips-keyword",
+  "storyPlan": {
+    "premise": "3 Claude Code commands most people never use: /compact to shrink a long session without losing the thread, /rewind to undo the last changes, and plan mode (Shift+Tab) to see the plan before any file is touched. Show each one working."
+  },
+  "captions": {
+    "style": "kinetic",
+    "keywords": [
+      "broke",
+      "undoes",
+      "three",
+      "never",
+      "rewind",
+      "Clean",
+      "compact",
+      "thread",
+      "Shift",
+      "touched",
+      "comment",
+      "follow"
+    ]
+  }
+}
