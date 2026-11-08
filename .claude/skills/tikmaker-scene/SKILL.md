@@ -39,6 +39,9 @@ Import from `src/video/brand/kit.tsx` (relative path from the scene file:
   clicks, what appears, start/stop).
 - `<Logo id size />` – a tool's logo from the library (ids:
   `src/registries/assets.generated.ts`).
+- `asset(path)` – the URL of a file the agent fetched with
+  `scripts/asset.ts` (it prints `/assets/agent/<folder>/<name>.png|svg|jpg|webm`)
+  for `<Img src={asset(...)}>` or `<OffthreadVideo src={asset(...)}>`.
 - `field` – the editable fields (below); `wordFrame(words, word, fallback)` –
   the frame a word is said on.
 

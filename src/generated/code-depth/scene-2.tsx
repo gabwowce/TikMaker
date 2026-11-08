@@ -1,130 +1,130 @@
 import { z } from "zod";
-import { AbsoluteFill, Easing, interpolate, useCurrentFrame } from "remotion";
-import { field, Logo, MONO, useBrand, wordFrame } from "../../video/brand/kit";
+import { AbsoluteFill, Img, interpolate, useCurrentFrame } from "remotion";
+import { field, useBrand, wordFrame } from "../../video/brand/kit";
 import type { CodeSceneProps } from "../../video/code/types";
-import { Backdrop, Camera, CL, Dock, glass, Headline, HUE, Prompt, TiltCard, ramp, usePop } from "./shared";
+import {
+  Background,
+  Camera,
+  clamp,
+  CLAUDE_LOGO,
+  COL,
+  Dock,
+  EASE,
+  glass,
+  Headline,
+  pop,
+  prog,
+  SHOT,
+  SideShot,
+} from "./shared";
 
 export const description =
-  "The dock with three empty numbered slots drops in; a big tilted Claude Code card counts up to 3 commands, a blurred terminal behind it";
+  "A big glass tile counts up to 3 over blurred Claude Code docs; three empty numbered slots drop into the dock below";
 
 export const schema = z.object({
   count: field.number("The number", 3, { min: 1, max: 9 }),
-  unit: field.text("Under the number", "commands"),
-  title: field.text("Headline", "Nobody uses *them*"),
-  countOn: field.word("Counter runs on", "three"),
-  titleOn: field.word("Headline on", "most"),
+  line1: field.text("Line 1 (*word* – key word)", "Claude Code *commands*"),
+  line2: field.text("Line 2 (grey)", "most people never use"),
+  countOn: field.word("Counter lands on", "three"),
+  slotsOn: field.word("Slots drop in on", "commands"),
+  line2On: field.word("Line 2 on", "most"),
 });
 type Params = z.infer<typeof schema>;
 
-export default function Scene2({ words, params }: CodeSceneProps<Params>) {
+export default function Scene2({ words, durationInFrames, params }: CodeSceneProps<Params>) {
   const frame = useCurrentFrame();
   const c = useBrand();
-  const pop = usePop();
   const countAt = wordFrame(words, params.countOn, 28);
-  const titleAt = wordFrame(words, params.titleOn, 66);
-  const claudeAt = wordFrame(words, "Claude", 38);
-  const unitAt = wordFrame(words, "commands", 56);
+  const slotsAt = wordFrame(words, params.slotsOn, 56) - 4;
+  const line1At = wordFrame(words, "Claude", 38) - 3;
+  const line2At = wordFrame(words, params.line2On, 66) - 3;
 
-  const n = Math.round(
-    interpolate(frame, [countAt, countAt + 22], [0, params.count], { ...CL, easing: Easing.out(Easing.cubic) }),
-  );
-  const land = countAt + 22;
-  const numPunch = interpolate(frame, [land - 2, land + 2, land + 10], [0, 0.12, 0], CL);
-  const unitP = pop(frame, unitAt - 2);
-  const logoP = pop(frame, claudeAt - 3);
+  // 1 → count, fast then slowing, landing on the word
+  const run = interpolate(frame, [countAt - 14, countAt], [0, 1], { ...clamp, easing: EASE });
+  const n = Math.max(1, Math.round(interpolate(run, [0, 1], [1, params.count])));
+  const landed = pop(frame, countAt, 10, 200);
+  const tickPunch = interpolate(frame, [countAt, countAt + 3, countAt + 12], [1, 1.12, 1], clamp);
+
+  const settle = prog(frame, 0, 20);
+  const float = Math.sin(frame / 14) * 8;
 
   return (
     <AbsoluteFill>
-      <Backdrop hue={HUE.blue} from={HUE.orange} />
-      <Camera enter="zoom" punches={[land]}>
-        {/* mid-ground: the Claude Code terminal, blurred */}
+      <Background color={COL.purple} y={500}>
+        <SideShot src={SHOT.commands} side="left" y={300} />
+        <SideShot src={SHOT.skills} side="right" y={560} />
+      </Background>
+      <Camera duration={durationInFrames} punchAt={countAt}>
+        {/* the number tile */}
         <div
           style={{
             position: "absolute",
-            left: 60,
-            top: 560,
-            width: 700,
-            height: 480,
-            filter: "blur(20px)",
-            opacity: 0.55,
-            transform: `translateY(${Math.sin(frame / 20) * 6}px) rotate(-4deg)`,
-            ...glass(700, { padding: 40 }),
+            left: 540 - 220,
+            top: 230,
+            width: 440,
+            height: 420,
+            ...glass(false, 90),
+            background: "linear-gradient(160deg, rgba(139,92,246,0.35), rgba(255,255,255,0.05) 60%)",
+            boxShadow: `0 8px 16px rgba(0,0,0,0.25), 0 32px 80px rgba(0,0,0,0.5), 0 0 ${60 * landed}px ${COL.purple}66`,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            transform: `perspective(1200px) rotateY(${interpolate(settle, [0, 1], [14, 0]) + Math.sin(frame / 30) * 3}deg) rotateX(${interpolate(settle, [0, 1], [8, 2])}deg)`,
+            translate: `0px ${float}px`,
           }}
         >
-          <Prompt text="claude" at={-20} size={48} />
-          {[0.8, 0.6, 0.9, 0.5].map((w, i) => (
-            <div key={i} style={{ marginTop: 34, height: 22, width: 560 * w, borderRadius: 11, background: "rgba(255,255,255,0.35)" }} />
-          ))}
-        </div>
-        <TiltCard
-          at={4}
-          left={200}
-          top={490}
-          width={720}
-          height={570}
-          ry={16}
-          rx={8}
-          flat={ramp(frame, unitAt, 18) * 0.7}
-        >
           <div
             style={{
-              position: "absolute",
-              left: 40,
-              top: 36,
-              display: "flex",
-              alignItems: "center",
-              gap: 16,
-              padding: "12px 26px 12px 14px",
-              borderRadius: 40,
-              background: "rgba(255,255,255,0.1)",
-              transform: `scale(${0.5 + 0.5 * logoP})`,
-              transformOrigin: "0% 50%",
-              opacity: Math.min(1, logoP * 1.5),
-            }}
-          >
-            <Logo id="claude" size={52} />
-            <div style={{ fontFamily: c.fontSemi, fontWeight: 700, fontSize: 38, color: "#fff" }}>Claude Code</div>
-          </div>
-          <div
-            style={{
-              position: "absolute",
-              left: 0,
-              right: 0,
-              top: 100,
-              textAlign: "center",
-              fontFamily: c.fontStrong,
+              fontFamily: c.fontUi,
+              fontWeight: 800,
               fontSize: 330,
               lineHeight: 1,
-              color: "#fff",
+              letterSpacing: "-0.04em",
               fontVariantNumeric: "tabular-nums",
-              transform: `scale(${1 + numPunch})`,
-              textShadow: `0 20px 80px ${HUE.blue}cc`,
-              opacity: frame >= countAt - 2 ? 1 : 0.25,
+              background: "linear-gradient(180deg, #ffffff 30%, #c9c2e8)",
+              WebkitBackgroundClip: "text",
+              backgroundClip: "text",
+              color: "transparent",
+              scale: `${tickPunch}`,
+              marginTop: -10,
             }}
           >
             {n}
           </div>
-          <div
+          <Img
+            src={CLAUDE_LOGO}
             style={{
               position: "absolute",
-              left: 0,
-              right: 0,
-              top: 440,
-              textAlign: "center",
-              fontFamily: MONO,
-              fontWeight: 700,
-              fontSize: 60,
-              color: c.accent,
-              transform: `scale(${0.5 + 0.5 * unitP})`,
-              opacity: Math.min(1, unitP * 1.5),
+              right: -30,
+              top: -30,
+              width: 110,
+              height: 110,
+              padding: 20,
+              borderRadius: 34,
+              background: "#1a1420",
+              border: "1.5px solid rgba(255,255,255,0.18)",
+              boxShadow: "0 16px 40px rgba(0,0,0,0.5)",
+              scale: `${Math.min(pop(frame, line1At - 4), 1.1)}`,
+              rotate: "8deg",
             }}
-          >
-            {params.unit}
-          </div>
-        </TiltCard>
+          />
+        </div>
+
+        <Headline
+          line1={params.line1}
+          line2={params.line2}
+          color="#b9a3ff"
+          start={line1At}
+          start2={line2At}
+          top={712}
+          size={72}
+        />
+
+        <Dock
+          fill={[0, 0, 0]}
+          show={[0, 1, 2].map((i) => Math.min(pop(frame, slotsAt + i * 3, 13, 170), 1.06))}
+        />
       </Camera>
-      <Dock hue={HUE.blue} appearAt={2} filled={0} />
-      <Headline lines={[{ text: params.title, at: titleAt }]} />
     </AbsoluteFill>
   );
 }

@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { transitionPresetSchema } from "../../schema/capabilities";
 
 // 4 Building – the pictures as code (docs/tikmaker-kryptis.md, "Kaip veiks").
 // Claude Code writes every scene's picture as a Remotion component
@@ -43,6 +44,9 @@ export const codeSceneFromAi = z.object({
   stage: codeStage.optional(),
   // 0–2 sound effects on the scene's key moments
   sounds: z.array(soundCue).max(3).optional(),
+  // how this scene comes in from the one before (the video draws both during
+  // the change); unset – a cut
+  transition: transitionPresetSchema.optional(),
 });
 
 export const codeFromAi = z.object({
@@ -60,6 +64,7 @@ export const codeSceneInRun = z.object({
   description: z.string(),
   stage: codeStage.optional(),
   sounds: z.array(soundCue).optional(),
+  transition: transitionPresetSchema.optional(),
   // how many times the scene's code was written (1 – the first); the older
   // versions are kept (server/agent/codeVersions.ts)
   version: z.number().int().min(1).default(1),

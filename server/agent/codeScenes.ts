@@ -205,6 +205,9 @@ async function checkAndFix(
         ...(history ? { history } : {}),
         ...(said?.stage ?? was?.stage ? { stage: said?.stage ?? was?.stage } : {}),
         ...((said?.sounds ?? was?.sounds) ? { sounds: said?.sounds ?? was?.sounds } : {}),
+        ...((said?.transition ?? was?.transition)
+          ? { transition: said?.transition ?? was?.transition }
+          : {}),
         version: (was?.version ?? 0) + 1,
         ...(errors.has(n) ? { error: errors.get(n)!.join("\n") } : {}),
       };

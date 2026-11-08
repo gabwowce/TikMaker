@@ -96,6 +96,9 @@ export const transitionPresetSchema = z.enum([
   "zoomThrough",
   "fromDepth",
   "flip",
+  // soft: the scenes dissolve through a blur; a burst of light between them
+  "dissolve",
+  "flash",
 ]);
 export const richTextSizeSchema = z.enum([
   "hero",

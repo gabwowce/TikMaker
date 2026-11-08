@@ -26,6 +26,22 @@ export const CAPTION_BOTTOM = 1340;
 export function useBrand() {
   return usePack();
 }
+// Scene colours for styles that light each scene in its own colour (depth):
+// a glow on a dark scene, or the tint of a light one. One family, so a video
+// stays one video.
+export const SCENE_COLORS = {
+  blue: "#3b82f6", // a tool, a system
+  teal: "#14b8a6", // it works, saved, growth
+  purple: "#8b5cf6", // ideas, commands, AI
+  amber: "#f59e0b", // warmth, creative, colour
+  orange: "#ff7024", // the brand: the hook, the payoff
+  magenta: "#e11d74", // a problem, a cost
+} as const;
+export const DARK_BG = "#070a12";
+export const LIGHT_BG = "#f1f3f6";
+export const LIGHT_TEXT = "#1b1d22";
+export const LIGHT_TEXT_SOFT = "#6b7280";
+
 export const MONO = '"JetBrains Mono", "Cascadia Code", Consolas, monospace';
 
 type Box = { width: number; height: number; style?: CSSProperties };
@@ -124,6 +140,10 @@ export function RecordingSlot({
     </div>
   );
 }
+
+// A file the agent fetched (scripts/asset.ts prints "/assets/agent/…") or
+// any file under public/, as a URL for <Img> / <OffthreadVideo>.
+export const asset = (publicPath: string) => assetUrl(publicPath);
 
 // A tool's logo from the library (ids in src/registries/assets.generated.ts).
 export function Logo({ id, size }: { id: string; size: number }) {

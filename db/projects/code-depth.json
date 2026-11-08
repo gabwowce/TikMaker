@@ -10,7 +10,7 @@
       "type": "code",
       "plan": {
         "role": "hook",
-        "visualBrief": "A tilted glass code editor: three files snap red and broken, /rewind is typed below, and a green U-turn arrow sweeps up as the files flip back to clean."
+        "visualBrief": "A glass Claude Code window with three files turning red; /rewind is typed and a teal U-turn arrow sweeps up over them as they turn green."
       },
       "vo": "Claude Code just broke three files? One command undoes it.",
       "background": "stage",
@@ -29,14 +29,14 @@
       "type": "code",
       "plan": {
         "role": "bridge",
-        "visualBrief": "A dock with three empty numbered slots drops in while a big tilted Claude Code card counts up to 3 commands, a blurred terminal behind it."
+        "visualBrief": "A big purple glass tile counts up to 3 over blurred Claude Code docs, and three empty numbered slots drop into the dock below."
       },
       "vo": "It's one of three Claude Code commands most people never use.",
       "background": "stage",
       "content": {},
       "stage": "top",
       "motion": {
-        "transition": "cut",
+        "transition": "fromDepth",
         "entrance": "none"
       },
       "code": {
@@ -48,14 +48,14 @@
       "type": "code",
       "plan": {
         "role": "item",
-        "visualBrief": "Slot 1 fills with /rewind; in a tilted terminal the command runs, three red files roll back their edits one by one and flip green."
+        "visualBrief": "Light scene: /rewind fills dock slot 1 and is typed into the Claude Code window, the three red files roll back one by one, then all turn green."
       },
       "vo": "First, slash rewind. Type it, and Claude Code undoes its last changes. Those three broken files? Clean again.",
       "background": "stage",
       "content": {},
       "stage": "top",
       "motion": {
-        "transition": "cut",
+        "transition": "flash",
         "entrance": "none"
       },
       "code": {
@@ -67,14 +67,14 @@
       "type": "code",
       "plan": {
         "role": "item",
-        "visualBrief": "Slot 2 fills with /compact; a tall, heavy chat history at 184k tokens squeezes into a short summary block at 12k while a glowing thread line from start to now stays unbroken."
+        "visualBrief": "/compact fills slot 2; a scrolling chat with a red 186k context meter squeezes into one short Summary block while the blue thread line from start to now stays unbroken."
       },
       "vo": "Second, slash compact. When a session gets long and heavy, it shrinks it down, without losing the thread of what you're building.",
       "background": "stage",
       "content": {},
       "stage": "top",
       "motion": {
-        "transition": "cut",
+        "transition": "slideLeft",
         "entrance": "none"
       },
       "code": {
@@ -86,14 +86,14 @@
       "type": "code",
       "plan": {
         "role": "item",
-        "visualBrief": "Slot 3 fills with Plan mode; big Shift and Tab keys press down, then a numbered plan card unfolds while three file tiles beside it lock with padlocks."
+        "visualBrief": "Big Shift and Tab keys press down and plan mode turns on; a Claude Code window rises with a numbered plan, and the files below snap padlocked."
       },
       "vo": "Third, plan mode. Press Shift Tab, and Claude shows you its plan first. Not a single file is touched until you're happy with it.",
       "background": "stage",
       "content": {},
       "stage": "top",
       "motion": {
-        "transition": "cut",
+        "transition": "slideLeft",
         "entrance": "none"
       },
       "code": {
@@ -105,14 +105,14 @@
       "type": "code",
       "plan": {
         "role": "cta",
-        "visualBrief": "The finished three-command dock shrinks up, a glass comment bubble pops in, then a big orange Follow button lands below it and pulses."
+        "visualBrief": "Light scene: the finished three-command list collapses into the dock as a comment bubble pops up asking for more tips, and a big orange Follow button pulses."
       },
       "vo": "Drop a comment if you want more Claude Code tips like these, and follow so you don't miss the next one.",
       "background": "stage",
       "content": {},
       "stage": "top",
       "motion": {
-        "transition": "cut",
+        "transition": "flash",
         "entrance": "none"
       },
       "code": {
@@ -143,6 +143,13 @@
       "lane": 1
     },
     {
+      "id": "sfx-run-depthlook-2-2",
+      "sfxId": "d-pop",
+      "from": 163,
+      "volume": 0.55,
+      "lane": 1
+    },
+    {
       "id": "sfx-run-depthlook-3-1",
       "sfxId": "type-word",
       "from": 253,
@@ -164,16 +171,23 @@
       "lane": 1
     },
     {
+      "id": "sfx-run-depthlook-4-2",
+      "sfxId": "d-ping",
+      "from": 568,
+      "volume": 0.55,
+      "lane": 1
+    },
+    {
       "id": "sfx-run-depthlook-5-1",
-      "sfxId": "paper-slide",
-      "from": 705,
+      "sfxId": "d-pop",
+      "from": 677,
       "volume": 0.55,
       "lane": 1
     },
     {
       "id": "sfx-run-depthlook-5-2",
-      "sfxId": "d-pop",
-      "from": 771,
+      "sfxId": "d-break",
+      "from": 799,
       "volume": 0.55,
       "lane": 1
     },
@@ -186,13 +200,13 @@
     },
     {
       "id": "sfx-run-depthlook-6-2",
-      "sfxId": "d-pop",
+      "sfxId": "d-ping",
       "from": 992,
       "volume": 0.55,
       "lane": 1
     }
   ],
-  "savedAt": 1794117617633,
+  "savedAt": 1794119906204,
   "workspaceId": "dev",
   "videoTemplateId": "tool-tips-keyword",
   "storyPlan": {
@@ -201,15 +215,13 @@
   "captions": {
     "style": "kinetic",
     "keywords": [
-      "broke",
       "undoes",
       "three",
-      "never",
       "rewind",
       "Clean",
       "compact",
       "thread",
-      "Shift",
+      "plan",
       "touched",
       "comment",
       "follow"

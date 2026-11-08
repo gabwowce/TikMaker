@@ -19,6 +19,33 @@
     ]
   },
   {
+    "id": "depth-glass",
+    "file": "reference-frames/depth-glass.png",
+    "source": "STYLE depth – how things are drawn in this style (the creator's chosen videos, 2026-11-08): real logos and real website screenshots in glass cards, a coloured glow per scene, some light scenes, a giant faint motif behind, a persistent dock.",
+    "tiles": [
+      "1: a big glass app-icon square with a huge '5', behind it tilted cards with REAL tool logos and blurred real website screenshots; a dock of 5 real tool icons under it; navy with a blue glow",
+      "2: a two-line headline (white, then grey), a glass Claude Code window with the prompt and 5 tool chips and a blue progress bar; under it a timeline strip of real thumbnails with a playhead and a waveform",
+      "3: three phones/tablets fanned out showing REAL websites; the middle one lists three words, the active one a solid blue pill; a waveform with a playhead below",
+      "4: LIGHT scene – off-white background with huge faint HTML code behind; a browser card 'github.com/…' with the real logo on a white header, the name and a '★ 55k' pill; the dock with the active tool glowing",
+      "5: LIGHT scene – a giant faint GitHub octocat silhouette, a teal glow, a huge number with a short line under it, stars and a rising line chart",
+      "6: dark blue – faint code and a giant faint '2' behind; a browser card with the real Remotion logo on white, its name and a star pill; the dock, the active icon ringed in blue",
+      "7: a blue 'render 100%' pill, a glass card with an icon and two words, film strips of the real logo crossing diagonally with motion blur",
+      "8: vivid – the frame filled with a grid of real purple template cards, a magnifier lens enlarging one of them; dark headline on top",
+      "9: purple glow – a huge '24' with the command names as a faint word cloud; a glass list of 3 commands, the first one lit; a blurred big example card below",
+      "10: LIGHT scene – a real ocean video in a player card, an audio pill with a waveform and a pause button, a '1 000+' pill, a strip of real photo thumbnails",
+      "11: amber glow – the real logo and the name, a browser card with the real site, a 'free' pill, a row of colour swatches",
+      "12: a real video frame in a card, a button with a click ripple and a cursor, a row of thumbnails with the chosen one ringed in amber",
+      "13: a big two-line headline, a browser card with the real site (mixkit.co) and its logo row, a teal/purple glow below"
+    ],
+    "takeaways": [
+      "Real things everywhere: real logos, real website screenshots in browser cards with the URL in a pill, real photos and video thumbnails – almost nothing is a drawn mock-up.",
+      "One glass focal card per frame with a coloured glow behind it; the colour changes per scene (blue, teal, purple, amber), and about one scene in four is LIGHT (off-white).",
+      "A giant faint motif behind the card that belongs to the topic: code, a huge number, a logo silhouette, a grid of the product's cards, blurred side cards.",
+      "Headline at the top in one or two lines (white, second line grey), clean bold sans; numbers are huge.",
+      "Small supporting pieces that move: a dock of the video's tools, a star pill, a waveform with a playhead, a timeline strip, a cursor clicking."
+    ]
+  },
+  {
     "id": "insiderforce",
     "file": "reference-frames/insiderforce.png",
     "source": "COMPOSITION – how a vertical frame is laid out (InsiderForce, TikTok, 10 frames, docs/bd/kadrai/insiderforce/): one dominant thing, big words, calm space. Judge the layout of the frame against this.",

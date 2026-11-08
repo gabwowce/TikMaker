@@ -1,6 +1,6 @@
 ---
 name: tikmaker-depth
-description: TikMaker visual style "depth" – 2.5D glass cards tilted in perspective, spring physics, a persistent dock, word-pop headlines, a camera that never stops, and a background that changes colour from scene to scene. Use with tikmaker-scene (the scene file contract) and the official Remotion skill.
+description: TikMaker visual style "depth" – real logos, real website screenshots and real footage in glass cards with a coloured glow, a background that changes per scene (some scenes light), a giant faint motif behind, a persistent dock, springy motion and smooth scene transitions. Use with tikmaker-scene (the scene file contract) and the official Remotion skill.
 ---
 
 # TikMaker style: depth
@@ -8,102 +8,125 @@ description: TikMaker visual style "depth" – 2.5D glass cards tilted in perspe
 This skill is the LOOK. How a scene file is written (zone, brand kit,
 fields, sound, technical) is in `.claude/skills/tikmaker-scene/SKILL.md`.
 
-The feel: high production value from **continuous micro-motion, tactile
-spring physics and deep 2.5D layering**. Nothing ever rests completely –
-cards float, tilt in perspective, the camera slowly pushes in, and scenes
-hand over with a push or a zoom-through instead of a hard cut. Each scene
-has **its own background colour**, so the video moves through moods.
+**Read the example frames first** – they ARE the style:
+`.claude/skills/tikmaker-depth/references/01-…13-*.jpg` (the creator's
+chosen videos), and the two frame-by-frame analyses with exact numbers
+(`references/analysis-*.json`). Your frames are judged against them.
 
-Examples (Read them before writing):
-- frames: `.claude/skills/tikmaker-depth/references/*.jpg` / `*.png`
-- two frame-by-frame analyses of the videos this style comes from, with
-  numbers for every animation: `references/analysis-*.json` – when a value
-  below is not enough, take it from there.
+## What makes it look expensive (in this order)
 
-## Still clear at a glance
+### 1. Real things, not drawings
+Almost nothing in the examples is a drawn mock-up. Fetch the real thing with
+`npx tsx scripts/asset.ts` (commands in the brief) and put it in cards:
+- **Real logos** of every tool the video names (`logo …`), big – on a white
+  header strip of a card (06), on dock icons (01, 04), on film strips (07).
+- **Real websites** (`screenshot …`) in a **browser card**: a glass card
+  with three dots and the URL in a small pill on top (`github.com/…`), the
+  screenshot filling the card (04, 06, 11, 13). The tool's GitHub page, its
+  official site, its docs. On phones: real sites in phone frames (03).
+- **Real footage / photos** (`scroll …`, `photo …`, `tikmaker …`): a video
+  playing in a player card (10, 12), a strip of real thumbnails (02, 10, 12).
+- Draw only what has no real picture: an icon, a pill, a waveform, a chart.
+  Never draw a fake website, a fake app screen with made-up text, or code
+  listings to read. If a fetch fails, keep the card simple (logo + name).
 
-Depth is not detail. A TikTok viewer gives a scene 1–2 seconds:
-- **One focal card per moment**, big: ~78 % of the frame width (840 px).
-  Other things are smaller, blurred behind it, or floating satellites.
-- **Max 5 words of headline** on screen; inside cards, UI is big and simple
-  – a few large controls, bars for secondary text, never logs or code
-  listings to read. One real word or number is the point of the card.
-- A change every ~1.5 s (a headline swap, a tilt, a counter, a dock step,
-  a camera punch) – but always ONE thing changing at a time.
+### 2. A background per scene – and some light scenes
+Paint the background yourself, as the scene's first layer (it covers the
+video's backdrop):
+Colours come from the brand kit: `SCENE_COLORS` (blue, teal, purple,
+amber, orange, magenta), `DARK_BG`, `LIGHT_BG`, `LIGHT_TEXT`,
+`LIGHT_TEXT_SOFT` – use them, so every video of the channel is one family.
+- **Dark scenes**: near-black navy (`DARK_BG`) with ONE big soft
+  radial glow behind the focal card in the scene's colour – blue (a tool, a
+  system), teal (it works, saved, growth), purple (ideas, commands, AI),
+  amber (warmth, creative, colour), the brand orange (hook, payoff). The
+  glow breathes (opacity 0.35↔0.55) and drifts ±60 px.
+- **Light scenes – about one in four**: off-white `#f1f3f6` with a soft
+  colour glow, dark text (`#1b1d22`, second line `#6b7280`), cards white with
+  soft grey shadows (04, 05, 10). Use them for a stat, a payoff, "it's
+  free", a result – the switch to light is itself a punch (come in with
+  `flash`).
+- Neighbouring scenes differ in colour or light; never two identical
+  backgrounds in a row. Over the first ~12 frames the glow moves in from
+  the previous scene's position, so it feels like one light moving.
 
-## The four planes (back to front)
+### 3. A giant faint motif behind
+Behind the focal card, something big and faint that belongs to the topic
+(opacity 0.04–0.12, or blurred 12–20 px): huge HTML/code text (04, 06), a
+giant number (06), a logo silhouette filling the frame (05), the product's
+cards as a tilted grid (08), blurred real screenshots at the sides (01, 02,
+09). It gives depth without competing. Never readable, never sharp.
 
-1. **Background – yours, per scene.** Paint it as the first layer of the
-   scene (an `AbsoluteFill` behind everything), covering the video's
-   backdrop: a deep near-black base with ONE soft radial gradient orb in the
-   scene's colour, drifting sideways ±80 px over ~150 frames and breathing
-   (opacity 0.35 ↔ 0.55); optional micro-particles drifting up ~12 px/s.
-   **Every scene gets its own hue**, chosen for its mood and kept in the
-   same family of saturation/darkness: e.g. warm orange (the brand accent –
-   the hook, the payoff), violet (an idea, a plan), teal (it works, saved),
-   deep blue (a tool, a system), red-magenta (a problem, a cost). Neighbouring
-   scenes differ; the first and the last may share a colour (bookends).
-   Over a scene's first ~12 frames the orb cross-fades from the previous
-   scene's colour, so the change feels like light, not a cut.
-2. **Mid-ground context** (optional): a bigger window or grid behind the
-   focal card, blurred (`filter: blur(18–24px)`) and dimmed – it says "where
-   we are" without competing.
-3. **Foreground focal card**: tilted in 3D – a parent with
-   `perspective: 1200px`, the card `rotateY(-16…18deg) rotateX(6…10deg)
-   translateZ(60…120px)`; it flattens to ~0° when it becomes the centre of
-   attention. Glass: `rgba(255,255,255,0.06–0.12)` fill,
-   `backdropFilter: blur(18px)`, 1.5 px border `rgba(255,255,255,0.15)` with
-   a lighter top edge, radius ≈ 7 % of the card width, shadows
-   `0 8px 16px rgba(0,0,0,0.2), 0 32px 80px rgba(0,0,0,0.5)`.
-4. **Screen overlay**: the headline at the top of the zone and, when the
-   video counts steps or tools, a **persistent floating dock** (a glass pill
-   bar with the 3–5 items' icons; the active one lit in the scene's colour
-   with a soft glow, moving on with a spring at each new chapter). Put the
-   dock in `shared.tsx` and draw it in every scene at the same place so it
-   reads as one object across cuts.
+### 4. One glass focal card, big
+- One focal card per moment, **~80 % of the frame width** (840–900 px), a
+  little tilted in perspective while it moves (`perspective: 1200px`,
+  `rotateY ±6–14deg`, `rotateX 4–8deg`), flat when it settles.
+- Glass: `rgba(255,255,255,0.06–0.10)` fill, `backdropFilter: blur(18px)`,
+  1.5 px border `rgba(255,255,255,0.14)` with a lighter top edge, radius
+  ≈ 5–7 % of its width, shadows `0 8px 16px rgba(0,0,0,0.25), 0 32px 80px
+  rgba(0,0,0,0.5)` (on light scenes: `0 20px 50px rgba(20,30,60,0.12)`).
+- Everything else is smaller: satellites (a pill, a chip), blurred side
+  cards, the dock.
+
+### 5. Headline: one or two lines, clean
+At the top of the zone (y ≈ 220–380): the first line white and bold, an
+optional second line in grey (01, 02, 13), ≤ 5 words in all. Use the brand
+kit's `fontUi` family at weight 700–800 (clean, geometric – not the display
+font) at 76–92 px; numbers HUGE (200–300 px, 01, 05, 09). On light scenes
+the text is dark. Word by word pop-in (see motion).
+
+### 6. Small supporting pieces that keep it alive
+Pick 1–2 per scene, never all: a **dock** of the video's tools at the bottom
+of the zone (real logos in rounded squares, the active one ringed and
+glowing in the scene's colour – the same dock in every scene, from
+`shared.tsx`); a **pill** (`★ 55k`, `render 100%`, a solid blue word pill);
+a **waveform with a playhead**; a **timeline strip** of thumbnails; a
+**cursor** that clicks with a ripple (12); a **magnifier lens** over a grid
+(08); **film strips** crossing diagonally with motion blur (07).
 
 ## Motion vocabulary (30 fps)
 
-- **Cards enter** from below (~28 % of the height) with the tilt revealing:
-  scale 0.78 → 1.03 → 1.0 over 16 frames, `Easing.bezier(0.16, 1, 0.3, 1)`.
-  Several cards: a fanned deck, 3-frame stagger, ±4–6° rotation each.
-- **Pills / icons** pop: scale 0.5 → 1.08 → 1.0 in ~13 frames with
-  `spring({ damping: 12, stiffness: 180 })`, opacity in 8 frames; icons in a
-  row stagger 2 frames.
-- **Headline**: word by word, each from scale 0.9, y +22 px, opacity 0 →
-  overshoot 1.04 → 1.0 in 12 frames, 3-frame stagger, landing 1–2 frames
-  before the word is said; the key word in the accent colour with a +4 %
-  scale punch. Exit: up 18 px and fade in 8 frames.
-- **Counters**: roll from start to target over 22–26 frames, fast then
-  slowing (`Easing.out(Easing.cubic)`), digits in a fixed-width mask
-  (`fontVariantNumeric: "tabular-nums"`), the icon next to it pulses +12 %
-  as the number lands.
-- **Lists**: rows cascade with a 4-frame offset, each sliding from x −40 px,
-  its status icon popping 1.25 → 1.0 on the row's 8th frame.
-- **Diagrams**: lines draw on with `strokeDashoffset` over 14–18 frames;
-  each node blooms 0 → 1.06 → 1 as the line reaches it.
-- **Idle, always**: every settled card floats `translateY(sin(frame/14)*8px)`
-  and `rotateZ(±0.8deg)` on a slow period; nothing frozen longer than ~1 s.
-- **Camera**: wrap the scene's content (not the background) in a container
-  that pushes in 1.00 → 1.04 over the scene; on the key word a 2-frame punch
-  +3 % that eases back over 8 frames.
-- **Scene hand-over**: the scene's first ~12 frames continue the motion of
-  the previous one – a push (content arrives from the right, as if the old
-  one went left) between items of a list, a zoom-through (scale from ~1.4
-  and blur 8 → 0) when diving into a detail, or a shared element (the same
-  card/dock in the same place) when the topic continues.
+- **Cards enter** from below (~25 % of the height) with the tilt revealing:
+  scale 0.8 → 1.03 → 1.0 over 16 frames, `Easing.bezier(0.16, 1, 0.3, 1)`;
+  a fanned deck staggers 3 frames, ±4–6° each.
+- **Pills / icons** pop: `spring({ damping: 12, stiffness: 180 })` from 0.5,
+  overshoot ~1.08; a row of icons staggers 2 frames.
+- **Headline**: word by word, from scale 0.9, y +22 px, opacity 0, a little
+  blur → 1.0 in ~10 frames, 3-frame stagger, landing 1–2 frames before the
+  word; the key word in the scene colour with a +4 % punch.
+- **Counters**: 22–26 frames, fast then slowing, `tabular-nums`, the icon
+  next to it pulses +12 % when the number lands.
+- **Idle, always**: settled cards float (`sin(frame/14)*8px`, `rotateZ ±0.6°`),
+  the glow breathes, the playhead runs. Nothing frozen longer than ~1 s.
+- **Camera**: the scene's content (not the background) pushes in 1.00 → 1.04
+  over the scene; a 2-frame +3 % punch on the key word, back over 8 frames.
+- **A change every ~1.5 s** – a card swap, a lens move, a counter, a dock
+  step – but ONE thing at a time.
+
+## Transitions between scenes
+
+The video draws both scenes during a change (~12 frames) – you only choose
+the kind (`transition` in your answer) and keep your scene's first frame
+already composed (do not fade your own scene in):
+- `push` / `slideLeft` – the next item of a list (tool 2 after tool 1);
+- `zoomThrough` – diving into a detail (from the overview into one card);
+- `flash` – into a LIGHT scene, or a big reveal;
+- `dissolve` – a soft change of mood or colour;
+- `slideUp` – a new section; `cut` only for a hard punch (1–2 per video).
+Also continue motion across the cut: the dock stays in place, the glow
+moves, a card that was leaving the last scene can arrive in this one.
 
 ## Sound
 
-Sound marks the physical moments: a whoosh on a card's big move, a pop on
-an icon/pill pop, a tick on a dock step, a count on a counter, success when
-a number lands. 0–2 per scene (see tikmaker-scene, Sound).
+Whoosh on a card's big move or a push, pop on a pill/icon pop, tick on a
+dock step, count on a counter, success when a number lands, a click on a
+cursor click. 0–2 per scene (tikmaker-scene, Sound).
 
 ## Do not
 
-- No flat, motionless cards; no hard cuts as the default.
-- No tiny UI text, no code listings, no logs – bars and one big word.
-- No more than one focal card fully sharp at a time.
-- No new packages: CSS 3D (`perspective`, `rotateX/Y`, `translateZ`),
-  `filter: blur`, `backdropFilter` and Remotion's `spring` / `interpolate`
-  are enough.
+- No drawn fake websites, no made-up app screens with tiny text, no code
+  listings or logs to read – real screenshots or nothing.
+- No two scenes with the same background in a row; not all scenes dark.
+- No more than one focal card sharp at a time.
+- No new packages: CSS 3D, `filter: blur`, `backdropFilter`, Remotion's
+  `spring` / `interpolate`, `<Img>` / `<OffthreadVideo>` are enough.

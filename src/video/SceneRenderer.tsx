@@ -1,8 +1,8 @@
-import { type ReactNode } from "react";
+import { Fragment, type ReactNode } from "react";
 import { AbsoluteFill, Sequence, useCurrentFrame } from "remotion";
 import { getSceneDefinition } from "../registries/sceneRegistry";
 import type { VideoProject } from "../schema/project";
-import type { Scene } from "../schema/scene";
+import type { Scene, TransitionPreset } from "../schema/scene";
 import {
   computeSceneTimings,
   projectDurationInFrames,
@@ -16,7 +16,12 @@ import {
 } from "../utils/visualLinks";
 import { Background } from "./backgrounds";
 import { resolveTextZone, textZoneJustify } from "./layout/layoutPresets";
-import { transitionStyle } from "./motion/transitions";
+import {
+  exitTransitionStyle,
+  isOverlappingTransition,
+  PUSH_FRAMES,
+  transitionStyle,
+} from "./motion/transitions";
 import { sceneStartDelay, staggerDelay } from "./scenes/EnterOnCue";
 import { BlockLayer } from "./typography/BlockLayer";
 import { LinkedVisual } from "./typography/LinkedVisual";
@@ -258,13 +263,8 @@ export function SceneRenderer({ project }: SceneRendererProps) {
   }
   return (
     <>
-      {timings.map(({ scene, from, durationInFrames, durationSeconds }, index) => (
-        <Sequence
-          key={scene.id}
-          from={from}
-          durationInFrames={durationInFrames}
-          name={scene.id}
-        >
+      {timings.map(({ scene, from, durationInFrames, durationSeconds }, index) => {
+        const draw = () => (
           <TransitionedScene
             scene={scene}
             durationInFrames={durationInFrames}
@@ -285,8 +285,35 @@ export function SceneRenderer({ project }: SceneRendererProps) {
                 : undefined
             }
           />
-        </Sequence>
-      ))}
+        );
+        // The next scene comes in with a move: this one stays under it for
+        // the move's frames and goes out the other way, so both are on
+        // screen during the change instead of a cut.
+        const next = timings[index + 1];
+        const leaving = next?.scene.motion?.transition;
+        return (
+          <Fragment key={scene.id}>
+            <Sequence
+              from={from}
+              durationInFrames={durationInFrames}
+              name={scene.id}
+            >
+              {draw()}
+            </Sequence>
+            {next && isOverlappingTransition(leaving) ? (
+              <Sequence
+                from={next.from}
+                durationInFrames={PUSH_FRAMES}
+                name={`${scene.id}:leaving`}
+              >
+                <Leaving preset={leaving}>
+                  <Sequence from={-durationInFrames}>{draw()}</Sequence>
+                </Leaving>
+              </Sequence>
+            ) : null}
+          </Fragment>
+        );
+      })}
 
       {overflow}
 
@@ -301,5 +328,21 @@ export function SceneRenderer({ project }: SceneRendererProps) {
         </Sequence>
       ))}
     </>
+  );
+}
+
+// The leaving scene's half of a transition.
+function Leaving({
+  preset,
+  children,
+}: {
+  preset: TransitionPreset | undefined;
+  children: ReactNode;
+}) {
+  const frame = useCurrentFrame();
+  return (
+    <AbsoluteFill style={exitTransitionStyle(preset, frame)}>
+      {children}
+    </AbsoluteFill>
   );
 }

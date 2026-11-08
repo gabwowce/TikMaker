@@ -34,7 +34,8 @@ export function projectFromCode(
       layout: undefined,
       // a rebuilt scene keeps the layers the creator put on top of it
       content: scene.type === "code" ? scene.content : {},
-      motion: { transition: "cut", entrance: "none" },
+      // the first scene has nothing to come in from
+      motion: { transition: n > 0 ? (code.transition ?? "cut") : "cut", entrance: "none" },
       code: { file: code.file, ...(params ? { params } : {}) },
       plan: scene.plan
         ? { ...scene.plan, visualBrief: code.description }

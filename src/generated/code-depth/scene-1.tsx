@@ -1,109 +1,141 @@
 import { z } from "zod";
 import { AbsoluteFill, interpolate, useCurrentFrame } from "remotion";
-import { field, wordFrame } from "../../video/brand/kit";
+import { field, useBrand, wordFrame } from "../../video/brand/kit";
 import type { CodeSceneProps } from "../../video/code/types";
-import { Backdrop, Camera, CL, EASE, FileRow, GOOD, Headline, HUE, Prompt, TiltCard, WindowBar, ramp } from "./shared";
+import {
+  Background,
+  Camera,
+  clamp,
+  COL,
+  FileRow,
+  Headline,
+  Motif,
+  pop,
+  prog,
+  PromptLine,
+  TerminalCard,
+  typed,
+} from "./shared";
 
 export const description =
-  "A tilted glass code editor: three files snap red and broken, /rewind is typed below, and a U-turn arrow sweeps up as the files flip back to green";
+  "A Claude Code window with three files turning red as broken; /rewind is typed and a green U-turn arrow sweeps over them as they turn back to green";
 
 export const schema = z.object({
-  title1: field.text("First headline", "Broke *3* files?"),
-  title2: field.text("Second headline", "*One* command"),
-  command: field.text("The command", "/rewind"),
+  headline: field.text("Headline (*word* – key word)", "Broke *3 files?*"),
   file1: field.text("File 1", "auth.ts"),
   file2: field.text("File 2", "api.ts"),
   file3: field.text("File 3", "cart.ts"),
-  breakOn: field.word("Files break on", "broke"),
-  typeOn: field.word("Command is typed on", "One"),
-  undoOn: field.word("Files come back on", "undoes"),
+  command: field.text("Command typed", "/rewind"),
+  breakOn: field.word("Files turn red on", "broke"),
+  typeOn: field.word("Command typed on", "One"),
+  undoOn: field.word("Arrow sweeps on", "undoes"),
 });
 type Params = z.infer<typeof schema>;
 
-export default function Scene1({ words, params }: CodeSceneProps<Params>) {
-  const frame = useCurrentFrame();
-  const brk = wordFrame(words, params.breakOn, 28);
-  const type = wordFrame(words, params.typeOn, 56);
-  const undo = wordFrame(words, params.undoOn, 75);
-  const files = [params.file1, params.file2, params.file3];
+const CARD_W = 880;
+const CARD_TOP = 390;
+const CARD_H = 640;
 
-  // the arrow sweeps up from the terminal over the files
-  const sweep = ramp(frame, undo - 2, 14);
-  const arrowOut = ramp(frame, undo + 22, 10);
+export default function Scene1({ words, durationInFrames, params }: CodeSceneProps<Params>) {
+  const frame = useCurrentFrame();
+  useBrand();
+  const breakAt = wordFrame(words, params.breakOn, 28) - 2;
+  const typeAt = wordFrame(words, params.typeOn, 56) - 4;
+  const undoAt = wordFrame(words, params.undoOn, 75) - 3;
+
+  const files = [params.file1, params.file2, params.file3];
+  // the card settles from a tilt
+  const settle = prog(frame, 0, 22);
+  const float = Math.sin(frame / 14) * 6;
+  const shake = interpolate(frame, [breakAt, breakAt + 3, breakAt + 6, breakAt + 9, breakAt + 12], [0, -10, 8, -5, 0], clamp);
+
+  // the U-turn arrow draws over 16 frames, then fades
+  const draw = prog(frame, undoAt, 16);
+  const arrowOut = interpolate(frame, [undoAt + 26, undoAt + 36], [1, 0], clamp);
 
   return (
     <AbsoluteFill>
-      <Backdrop hue={HUE.orange} />
-      <Camera punches={[brk, undo]}>
-        <Headline
-          top={250}
-          lines={[
-            { text: params.title1, at: brk },
-            { text: params.title2, at: type },
-          ]}
-        />
-        <TiltCard at={0} left={120} top={420} width={840} height={620} ry={-16} rx={8} flat={ramp(frame, undo, 16)}>
-          <WindowBar width={840} />
-          <div style={{ padding: "26px 28px 0", display: "flex", flexDirection: "column", gap: 16 }}>
-            {files.map((name, i) => {
-              const b = ramp(frame, brk + i * 4, 6);
-              const g = ramp(frame, undo + 2 + (2 - i) * 4, 10);
-              const shake = interpolate(frame, [brk + i * 4, brk + i * 4 + 3, brk + i * 4 + 12], [0, 1, 0], CL);
-              return <FileRow key={i} name={name} bad={b} good={g} diff={b * (1 - g)} shake={shake} />;
-            })}
-          </div>
-          <div
-            style={{
-              position: "absolute",
-              left: 0,
-              right: 0,
-              bottom: 0,
-              height: 116,
-              display: "flex",
-              alignItems: "center",
-              padding: "0 36px",
-              background: "rgba(0,0,0,0.35)",
-              borderTop: "1.5px solid rgba(255,255,255,0.1)",
-            }}
-          >
-            {frame >= type - 4 ? <Prompt text={params.command} at={type} len={10} size={50} /> : null}
-          </div>
-        </TiltCard>
+      <Background color={COL.red} y={700}>
+        <Motif x={560} y={720} size={1300} rotate={-6} font="Inter, sans-serif" opacity={0.05}>
+          3
+        </Motif>
+      </Background>
+      <Camera duration={durationInFrames} punchAt={undoAt}>
+        <Headline line1={params.headline} color={COL.red} start={-6} />
+        <div
+          style={{
+            position: "absolute",
+            left: (1080 - CARD_W) / 2,
+            top: CARD_TOP,
+            width: CARD_W,
+            height: CARD_H,
+            transform: `perspective(1200px) rotateY(${interpolate(settle, [0, 1], [-12, 0])}deg) rotateX(${interpolate(settle, [0, 1], [8, 0])}deg) rotateZ(${Math.sin(frame / 20) * 0.5}deg)`,
+            translate: `${shake}px ${float}px`,
+            scale: `${interpolate(settle, [0, 1], [0.94, 1])}`,
+          }}
+        >
+          <TerminalCard height={CARD_H} title="Claude Code">
+            <div style={{ position: "absolute", left: 40, top: 26, display: "flex", flexDirection: "column", gap: 16 }}>
+              {files.map((name, i) => {
+                const broken = pop(frame, breakAt + i * 4, 14, 200);
+                // the bottom file comes back first – the arrow sweeps upward
+                const fixed = pop(frame, undoAt + 8 + (2 - i) * 5, 12, 200);
+                return <FileRow key={i} name={name} broken={Math.min(broken, 1)} fixed={Math.min(fixed, 1.08)} />;
+              })}
+            </div>
+            <div
+              style={{
+                position: "absolute",
+                left: 0,
+                right: 0,
+                top: 430,
+                bottom: 0,
+                borderTop: "1.5px solid rgba(255,255,255,0.08)",
+                display: "flex",
+                alignItems: "center",
+                padding: "0 46px",
+                background: `rgba(20,184,166,${prog(frame, typeAt, 10) * 0.08})`,
+              }}
+            >
+              <PromptLine text={typed(params.command, frame, typeAt, 1.4)} color={COL.orange} size={52} />
+            </div>
+          </TerminalCard>
+        </div>
+
+        {/* the U-turn arrow sweeping up over the files */}
         <svg
           width={1080}
           height={1920}
-          style={{ position: "absolute", left: 0, top: 0, opacity: 1 - arrowOut, overflow: "visible" }}
+          style={{ position: "absolute", left: 0, top: 0, opacity: arrowOut, overflow: "visible" }}
         >
           <defs>
-            <filter id="glow1">
-              <feGaussianBlur stdDeviation={8} />
+            <filter id="s1glow" x="-50%" y="-50%" width="200%" height="200%">
+              <feGaussianBlur stdDeviation="10" />
             </filter>
           </defs>
-          {[true, false].map((blur) => (
-            <path
-              key={String(blur)}
-              d="M 760 990 C 1010 960, 1020 560, 760 520 L 600 520"
-              fill="none"
-              stroke={GOOD}
-              strokeWidth={blur ? 26 : 16}
-              strokeLinecap="round"
-              pathLength={1}
-              strokeDasharray={1}
-              strokeDashoffset={1 - sweep}
-              filter={blur ? "url(#glow1)" : undefined}
-              opacity={blur ? 0.6 : 1}
-            />
+          {[true, false].map((glow) => (
+            <g key={String(glow)} filter={glow ? "url(#s1glow)" : undefined} opacity={glow ? 0.8 : 1}>
+              <path
+                d="M 720 940 C 1030 940, 1030 500, 760 500 L 600 500"
+                pathLength={1}
+                stroke={COL.teal}
+                strokeWidth={glow ? 30 : 20}
+                strokeLinecap="round"
+                fill="none"
+                strokeDasharray="1 1"
+                strokeDashoffset={1 - draw}
+              />
+              <path
+                d="M 640 456 L 590 500 L 640 544"
+                stroke={COL.teal}
+                strokeWidth={glow ? 30 : 20}
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                fill="none"
+                opacity={interpolate(draw, [0.85, 1], [0, 1], clamp)}
+              />
+            </g>
           ))}
-          <path
-            d="M 640 480 L 590 520 L 640 560"
-            fill="none"
-            stroke={GOOD}
-            strokeWidth={16}
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            opacity={interpolate(sweep, [0.9, 1], [0, 1], CL)}
-            transform={`translate(${interpolate(sweep, [0.9, 1], [20, 0], { ...CL, easing: EASE })} 0)`}
-          />
         </svg>
       </Camera>
     </AbsoluteFill>

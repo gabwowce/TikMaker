@@ -1,174 +1,278 @@
 import { z } from "zod";
-import { AbsoluteFill, Easing, interpolate, useCurrentFrame } from "remotion";
+import { AbsoluteFill, interpolate, useCurrentFrame } from "remotion";
 import { field, MONO, useBrand, wordFrame } from "../../video/brand/kit";
 import type { CodeSceneProps } from "../../video/code/types";
-import { Backdrop, Camera, CL, Dock, DOCK_LABELS, glass, Headline, HUE, ramp, usePop } from "./shared";
+import {
+  Background,
+  Camera,
+  clamp,
+  COL,
+  CompactIcon,
+  Dock,
+  EASE,
+  Headline,
+  Motif,
+  pop,
+  prog,
+  PromptLine,
+  TerminalCard,
+  typed,
+} from "./shared";
 
 export const description =
-  "Slot 2 fills with /compact; a tall, heavy chat history squeezes down into a short summary block while a glowing thread line from start to now stays unbroken";
+  "/compact fills slot 2; a tall scrolling Claude Code chat with a heavy context meter squeezes down into one short summary block while the blue thread line from start to now stays unbroken";
 
 export const schema = z.object({
-  command: field.text("Slot 2 command", "/compact"),
-  title1: field.text("Headline 2", "Long. *Heavy.*"),
-  title2: field.text("Headline 3", "*Shrink* it down"),
-  title3: field.text("Headline 4", "Thread *kept*"),
-  tokensBefore: field.number("Tokens before (k)", 184, { min: 1 }),
-  tokensAfter: field.number("Tokens after (k)", 12, { min: 1 }),
-  summary: field.text("Summary block label", "Summary"),
-  longOn: field.word("History grows on", "long"),
-  shrinkOn: field.word("Squeezes on", "shrinks"),
-  threadOn: field.word("Thread lights on", "thread"),
+  headline: field.text("Headline (*word* – key word)", "*/compact*"),
+  command: field.text("Command typed", "/compact"),
+  tokensHeavy: field.number("Context when heavy (k tokens)", 186, { min: 1 }),
+  tokensAfter: field.number("Context after (k tokens)", 21, { min: 1 }),
+  slotOn: field.word("Slot 2 fills on", "compact"),
+  heavyOn: field.word("Chat gets heavy on", "long"),
+  shrinkOn: field.word("Chat squeezes on", "shrinks"),
+  threadOn: field.word("Thread lights up on", "thread"),
 });
 type Params = z.infer<typeof schema>;
 
-const CX = 560; // card centre x
-const CY = 770; // card centre y
-const W = 760;
+const CARD_W = 880;
+const TALL = 578;
+const SHORT = 340;
+const MID = 372 + TALL / 2;
 
-export default function Scene4({ words, params }: CodeSceneProps<Params>) {
+// the chat history: user prompts (right, blue) and Claude's answers (grey bars)
+const HISTORY = [
+  { user: true, w: 380 },
+  { user: false, w: 560 },
+  { user: false, w: 420 },
+  { user: true, w: 300 },
+  { user: false, w: 600 },
+  { user: true, w: 440 },
+  { user: false, w: 500 },
+  { user: false, w: 360 },
+  { user: true, w: 340 },
+  { user: false, w: 580 },
+];
+const ROW = 66;
+
+export default function Scene4({ words, durationInFrames, params }: CodeSceneProps<Params>) {
   const frame = useCurrentFrame();
   const c = useBrand();
-  const pop = usePop();
-  const slashAt = wordFrame(words, "slash", 9);
-  const compactAt = wordFrame(words, "compact", 19);
-  const longAt = wordFrame(words, params.longOn, 66);
-  const heavyAt = wordFrame(words, "heavy", 84);
-  const shrinkAt = wordFrame(words, params.shrinkOn, 103);
-  const threadAt = wordFrame(words, params.threadOn, 159);
+  const slotAt = wordFrame(words, params.slotOn, 19) - 3;
+  const heavyAt = wordFrame(words, params.heavyOn, 66) - 3;
+  const shrinkAt = wordFrame(words, params.shrinkOn, 103) - 4;
+  const threadAt = wordFrame(words, params.threadOn, 159) - 3;
 
-  // height: enters 440, grows to 600 (long), squeezes to 250 (shrinks)
-  const grow = ramp(frame, longAt - 4, 20);
-  const squeeze = interpolate(frame, [shrinkAt, shrinkAt + 14, shrinkAt + 22], [0, 1.06, 1], {
-    ...CL,
-    easing: Easing.bezier(0.5, 0, 0.3, 1),
-  });
-  const h = 440 + 160 * grow - 270 * squeeze;
-  const top = CY - h / 2;
-  const enter = ramp(frame, 0, 16);
-  const tilt = 1 - ramp(frame, shrinkAt, 16);
+  const squeeze = interpolate(frame, [shrinkAt, shrinkAt + 18], [0, 1], { ...clamp, easing: EASE });
+  const h = interpolate(squeeze, [0, 1], [TALL, SHORT]);
+  const top = MID - h / 2;
+  const body = h - 92;
+  const promptH = 92;
+  const histH = body - promptH;
 
-  // tokens: 40k → before (long…heavy), then → after (shrinks)
-  const upK = interpolate(frame, [longAt, heavyAt + 8], [40, params.tokensBefore], { ...CL, easing: Easing.out(Easing.cubic) });
-  const tokens = frame < shrinkAt
-    ? upK
-    : interpolate(frame, [shrinkAt, shrinkAt + 24], [params.tokensBefore, params.tokensAfter], { ...CL, easing: Easing.out(Easing.cubic) });
-  const load = Math.min(1, tokens / 200);
-  const meterColor = load > 0.6 ? HUE.magenta : "#22D3A6";
+  // the history scrolls, faster once it gets heavy
+  const speed = interpolate(frame, [heavyAt, heavyAt + 20], [1.2, 4], clamp);
+  const scroll = frame * 1.2 + Math.max(0, frame - heavyAt) * (speed - 1.2) * 0.5;
+  const listH = HISTORY.length * ROW;
+  const offset = scroll % listH;
 
-  const history = 1 - ramp(frame, shrinkAt + 4, 10);
-  const sumP = pop(frame, shrinkAt + 14);
-  const scroll = frame * 2.4;
+  // the context meter: heavy → light
+  const heavy = prog(frame, heavyAt, 26);
+  const k = Math.round(
+    interpolate(frame, [0, heavyAt, heavyAt + 26, shrinkAt, shrinkAt + 24], [128, 140, params.tokensHeavy, params.tokensHeavy, params.tokensAfter], { ...clamp, easing: EASE }),
+  );
+  const fullness = k / Math.max(params.tokensHeavy, 1);
+  const meterCol = squeeze > 0.5 ? COL.teal : heavy > 0.5 ? COL.red : COL.blue;
 
-  // the thread: a pulse runs from start to now
-  const run = ramp(frame, threadAt - 4, 18);
-  const lit = interpolate(frame, [threadAt - 4, threadAt + 6], [0.55, 1], CL);
-  const dotBloom = (at: number) => interpolate(frame, [at, at + 6, at + 12], [1, 1.35, 1], CL);
-  const lineX = CX - W / 2 - 60;
-  const f = Math.sin(frame / 14) * 6;
+  const thread = prog(frame, threadAt, 8);
+  const threadPulse = thread * (0.6 + Math.sin((frame - threadAt) / 5) * 0.4);
+  const settle = prog(frame, 0, 20);
+  const float = Math.sin(frame / 14) * 7;
+  const summary = prog(frame, shrinkAt + 10, 12);
+  const savedIn = Math.min(pop(frame, shrinkAt + 22, 12, 180), 1.08);
 
-  const labels = [DOCK_LABELS[0], params.command, DOCK_LABELS[2]];
   return (
     <AbsoluteFill>
-      <Backdrop hue={HUE.magenta} from={HUE.teal} />
-      <Camera enter="push" punches={[shrinkAt + 14, threadAt]}>
-        <div style={{ position: "absolute", left: 0, top: f, width: 1080, height: 1920, perspective: 1200 }}>
-          {/* thread line */}
-          <svg width={1080} height={1920} style={{ position: "absolute", left: 0, top: 0, opacity: enter }}>
-            <defs>
-              <filter id="thglow">
-                <feGaussianBlur stdDeviation={7} />
-              </filter>
-            </defs>
-            <line x1={lineX} y1={top + 40} x2={lineX} y2={top + h - 40} stroke={HUE.magenta} strokeWidth={22} filter="url(#thglow)" opacity={0.7 * lit} />
-            <line x1={lineX} y1={top + 40} x2={lineX} y2={top + h - 40} stroke="#fff" strokeWidth={8} strokeLinecap="round" opacity={0.5 + 0.5 * lit} />
-            {run > 0 && run < 1 ? (
-              <circle cx={lineX} cy={top + 40 + (h - 80) * run} r={18} fill="#fff" filter="url(#thglow)" />
-            ) : null}
-            <circle cx={lineX} cy={top + 40} r={20 * dotBloom(threadAt - 4)} fill="#fff" />
-            <circle cx={lineX} cy={top + h - 40} r={20 * dotBloom(threadAt + 14)} fill={HUE.magenta} stroke="#fff" strokeWidth={6} />
-          </svg>
-          {/* the chat card */}
-          <div
-            style={{
-              position: "absolute",
-              left: CX - W / 2,
-              top,
-              width: W,
-              height: h,
-              opacity: enter,
-              transform: `translateY(${(1 - enter) * 300}px) rotateY(${-12 * tilt}deg) rotateX(${7 * tilt}deg) rotateZ(${Math.sin(frame / 45) * 0.8}deg)`,
-              ...glass(W, { overflow: "hidden" }),
-            }}
+      <Background color={COL.blue} y={660}>
+        <Motif x={540} y={680} size={330} rotate={-12} opacity={0.05}>
+          /compact
+        </Motif>
+      </Background>
+      <Camera duration={durationInFrames} punchAt={shrinkAt + 16}>
+        <Headline line1={params.headline} color="#7fb0ff" mono start={slotAt - 6} size={104} top={214} />
+
+        <div
+          style={{
+            position: "absolute",
+            left: (1080 - CARD_W) / 2,
+            top,
+            width: CARD_W,
+            height: h,
+            transform: `perspective(1200px) rotateY(${interpolate(settle, [0, 1], [-10, 0]) + Math.sin(frame / 34) * 1.5}deg) rotateX(${interpolate(squeeze, [0, 0.5, 1], [0, 8, 0])}deg)`,
+            translate: `0px ${float}px`,
+          }}
+        >
+          <TerminalCard
+            height={h}
+            right={
+              <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
+                <div style={{ width: 150, height: 14, borderRadius: 7, background: "rgba(255,255,255,0.12)", overflow: "hidden" }}>
+                  <div style={{ width: `${Math.min(1, fullness) * 100}%`, height: "100%", background: meterCol, borderRadius: 7 }} />
+                </div>
+                <div style={{ fontFamily: MONO, fontWeight: 700, fontSize: 34, color: meterCol, width: 96, textAlign: "right", fontVariantNumeric: "tabular-nums" }}>
+                  {k}k
+                </div>
+              </div>
+            }
           >
-            {/* top bar with the token meter */}
-            <div style={{ height: 90, display: "flex", alignItems: "center", gap: 22, padding: "0 34px", borderBottom: "1.5px solid rgba(255,255,255,0.1)" }}>
-              <div style={{ flex: 1, height: 18, borderRadius: 9, background: "rgba(255,255,255,0.12)", overflow: "hidden" }}>
-                <div style={{ width: `${load * 100}%`, height: "100%", borderRadius: 9, background: meterColor, boxShadow: `0 0 20px ${meterColor}` }} />
-              </div>
-              <div style={{ fontFamily: MONO, fontWeight: 700, fontSize: 46, color: "#fff", fontVariantNumeric: "tabular-nums", width: 140, textAlign: "right" }}>
-                {Math.round(tokens)}k
-              </div>
-            </div>
-            {/* the history: chat bubbles scrolling */}
-            <div style={{ position: "absolute", left: 0, right: 0, top: 90, bottom: 0, overflow: "hidden", opacity: history }}>
-              <div style={{ transform: `translateY(${-(scroll % 300)}px)`, padding: "24px 34px" }}>
-                {new Array(16).fill(0).map((_, i) => {
-                  const user = i % 3 === 0;
-                  const w = [0.55, 0.85, 0.7, 0.45, 0.9, 0.6][i % 6];
-                  return (
-                    <div key={i} style={{ display: "flex", justifyContent: user ? "flex-end" : "flex-start", marginBottom: 18 }}>
-                      <div
-                        style={{
-                          width: (W - 68) * w,
-                          height: user ? 56 : 84,
-                          borderRadius: 24,
-                          background: user ? `${c.accent}55` : "rgba(255,255,255,0.12)",
-                          padding: "16px 22px",
-                          boxSizing: "border-box",
-                        }}
-                      >
-                        <div style={{ height: 14, width: "80%", borderRadius: 7, background: "rgba(255,255,255,0.35)" }} />
-                        {!user ? <div style={{ marginTop: 14, height: 14, width: "55%", borderRadius: 7, background: "rgba(255,255,255,0.22)" }} /> : null}
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-            {/* the summary block */}
+            {/* the history (tall) */}
             <div
               style={{
                 position: "absolute",
-                left: 34,
-                right: 34,
-                top: 124,
-                display: "flex",
-                flexDirection: "column",
-                gap: 22,
-                opacity: Math.min(1, sumP * 1.5),
-                transform: `scale(${0.6 + 0.4 * sumP})`,
-                transformOrigin: "50% 0%",
+                left: 110,
+                right: 36,
+                top: 0,
+                height: histH,
+                overflow: "hidden",
+                opacity: 1 - prog(frame, shrinkAt, 10),
+                maskImage: "linear-gradient(to bottom, transparent, black 18%, black 85%, transparent)",
               }}
             >
-              <div style={{ fontFamily: c.fontStrong, fontSize: 72, color: "#fff" }}>{params.summary}</div>
-              <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
-                {[0.95, 0.75, 0.55].map((w, i) => (
-                  <div key={i} style={{ height: 18, width: `${w * 100}%`, borderRadius: 9, background: "rgba(255,255,255,0.35)" }} />
+              <div style={{ position: "absolute", left: 0, right: 0, top: -offset }}>
+                {[...HISTORY, ...HISTORY, ...HISTORY].map((m, i) => (
+                  <div key={i} style={{ height: ROW, display: "flex", alignItems: "center", justifyContent: m.user ? "flex-end" : "flex-start" }}>
+                    <div
+                      style={{
+                        width: m.user ? m.w * 0.9 : m.w,
+                        height: m.user ? 44 : 18,
+                        borderRadius: 22,
+                        background: m.user ? "rgba(59,130,246,0.45)" : `rgba(255,255,255,${0.16 + heavy * 0.04})`,
+                        border: m.user ? "1.5px solid rgba(127,176,255,0.5)" : "none",
+                      }}
+                    />
+                  </div>
                 ))}
               </div>
             </div>
+
+            {/* the summary block (short) */}
+            <div
+              style={{
+                position: "absolute",
+                left: 110,
+                right: 36,
+                top: (histH - 118) / 2,
+                height: 118,
+                borderRadius: 26,
+                background: "rgba(59,130,246,0.18)",
+                border: "2px solid rgba(127,176,255,0.55)",
+                display: "flex",
+                alignItems: "center",
+                gap: 22,
+                padding: "0 26px",
+                opacity: summary,
+                scale: `${interpolate(summary, [0, 1], [0.85, 1])}`,
+              }}
+            >
+              <div style={{ width: 70, height: 70, borderRadius: 20, background: COL.blue, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                <CompactIcon size={44} color="#fff" />
+              </div>
+              <div style={{ display: "flex", flexDirection: "column", gap: 12, flex: 1 }}>
+                <div style={{ fontFamily: c.fontUi, fontWeight: 800, fontSize: 40, color: "#fff" }}>Summary</div>
+                <div style={{ display: "flex", gap: 10 }}>
+                  <div style={{ width: 220, height: 14, borderRadius: 7, background: "rgba(255,255,255,0.3)" }} />
+                  <div style={{ width: 160, height: 14, borderRadius: 7, background: "rgba(255,255,255,0.2)" }} />
+                </div>
+              </div>
+            </div>
+
+            {/* the thread: start → now, never broken */}
+            <div
+              style={{
+                position: "absolute",
+                left: 56,
+                top: 26,
+                width: 8,
+                height: body - 52,
+                borderRadius: 4,
+                background: `linear-gradient(180deg, #7fb0ff, ${COL.blue})`,
+                boxShadow: `0 0 ${14 + threadPulse * 40}px ${COL.blue}`,
+              }}
+            />
+            {[26, body - 26].map((y, i) => (
+              <div
+                key={i}
+                style={{
+                  position: "absolute",
+                  left: 60 - 18,
+                  top: y - 18,
+                  width: 36,
+                  height: 36,
+                  borderRadius: 18,
+                  background: i === 0 ? "#fff" : COL.blue,
+                  border: "5px solid #0b1328",
+                  boxShadow: `0 0 ${20 + threadPulse * 40}px ${COL.blue}`,
+                  scale: `${1 + threadPulse * 0.25}`,
+                }}
+              />
+            ))}
+
+            {/* prompt */}
+            <div
+              style={{
+                position: "absolute",
+                left: 100,
+                right: 0,
+                top: histH,
+                height: promptH,
+                borderTop: "1.5px solid rgba(255,255,255,0.08)",
+                display: "flex",
+                alignItems: "center",
+                padding: "0 24px",
+              }}
+            >
+              <PromptLine text={typed(params.command, frame, slotAt + 4, 1.4)} color="#7fb0ff" size={44} />
+            </div>
+          </TerminalCard>
+        </div>
+
+        {/* the payoff: heavy → light */}
+        <div
+          style={{
+            position: "absolute",
+            left: 0,
+            right: 0,
+            top: MID + SHORT / 2 + 34,
+            display: "flex",
+            justifyContent: "center",
+            opacity: Math.min(1, savedIn * 1.5),
+            scale: `${interpolate(savedIn, [0, 1], [0.5, 1])}`,
+            translate: `0px ${float}px`,
+          }}
+        >
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: 18,
+              padding: "14px 34px",
+              borderRadius: 50,
+              background: "rgba(255,255,255,0.08)",
+              border: "1.5px solid rgba(255,255,255,0.16)",
+              backdropFilter: "blur(18px)",
+              fontFamily: MONO,
+              fontWeight: 700,
+              fontSize: 44,
+              color: "#fff",
+            }}
+          >
+            <span style={{ color: COL.red, textDecoration: "line-through" }}>{params.tokensHeavy}k</span>
+            <span style={{ color: "rgba(255,255,255,0.5)" }}>→</span>
+            <span style={{ color: COL.teal }}>{params.tokensAfter}k</span>
           </div>
         </div>
+
+        <Dock fill={[1, Math.min(pop(frame, slotAt, 12, 180), 1.08), 0]} active={frame >= slotAt ? 1 : 0} />
       </Camera>
-      <Dock hue={HUE.magenta} filled={1} active={1} moveFrom={0} fillAt={compactAt} labels={labels} />
-      <Headline
-        lines={[
-          { text: `*${params.command}*`, at: slashAt },
-          { text: params.title1, at: longAt },
-          { text: params.title2, at: shrinkAt },
-          { text: params.title3, at: threadAt },
-        ]}
-      />
     </AbsoluteFill>
   );
 }

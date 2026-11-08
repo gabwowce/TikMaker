@@ -1,408 +1,703 @@
 import type { CSSProperties, ReactNode } from "react";
-import {
-  AbsoluteFill,
-  Easing,
-  interpolate,
-  random,
-  spring,
-  useCurrentFrame,
-  useVideoConfig,
-} from "remotion";
-import { MONO, useBrand } from "../../video/brand/kit";
+import { AbsoluteFill, Easing, Img, interpolate, spring, useCurrentFrame } from "remotion";
+import { asset, MONO, useBrand } from "../../video/brand/kit";
 
-// Shared pieces of "3 Claude Code commands" in the depth style: the per-scene
-// background orb, the camera, glass cards, the dock with the three command
-// slots (same place in scenes 2–6), the word-pop headline and the file rows.
+// Shared look of the "3 Claude Code commands" video (style: depth).
 
+export const clamp = { extrapolateLeft: "clamp", extrapolateRight: "clamp" } as const;
 export const EASE = Easing.bezier(0.16, 1, 0.3, 1);
-export const CL = { extrapolateLeft: "clamp", extrapolateRight: "clamp" } as const;
+export const FPS = 30;
 
-// Scene colours (background orb + the active dock slot). Same darkness family.
-export const HUE = {
-  orange: "#FF7024",
-  blue: "#2F6BFF",
-  teal: "#14C8A8",
-  magenta: "#E8336D",
-  violet: "#8B5CF6",
+export const CLAUDE_LOGO = asset("/assets/agent/code-depth/claude.svg");
+export const SHOT = {
+  checkpointing: asset("/assets/agent/code-depth/docs-checkpointing.png"),
+  commands: asset("/assets/agent/code-depth/docs-commands.png"),
+  workflows: asset("/assets/agent/code-depth/docs-workflows.png"),
+  skills: asset("/assets/agent/code-depth/docs-slash.png"),
 };
-// Status colours: broken / clean.
-export const BAD = "#FF4D6A";
-export const GOOD = "#22D3A6";
 
-// 0 → 1 over `len` frames from `at`.
-export function ramp(frame: number, at: number, len = 12, easing = EASE) {
-  return interpolate(frame, [at, at + len], [0, 1], { ...CL, easing });
-}
+// Scene colours (glows): one per scene.
+export const COL = {
+  red: "#ff4d5e",
+  orange: "#FF7024",
+  purple: "#8b5cf6",
+  teal: "#14b8a6",
+  blue: "#3b82f6",
+  amber: "#f5a524",
+  green: "#22c55e",
+};
 
-// A springy pop 0 → (overshoot) → 1 from `at`.
-export function usePop() {
-  const { fps } = useVideoConfig();
-  return (frame: number, at: number) =>
-    frame < at ? 0 : spring({ frame: frame - at, fps, config: { damping: 12, stiffness: 180 } });
-}
+export const LIGHT_TEXT = "#1b1d22";
+export const LIGHT_SOFT = "#6b7280";
 
-// Idle float for settled cards.
-export function float(frame: number, phase = 0) {
-  return {
-    y: Math.sin((frame + phase) / 14) * 8,
-    r: Math.sin((frame + phase) / 45) * 0.8,
-  };
-}
+/** 0→1 over `len` frames from `start`, eased. */
+export const prog = (frame: number, start: number, len = 14, ease = EASE) =>
+  interpolate(frame, [start, start + len], [0, 1], { ...clamp, easing: ease });
 
-// Plane 1: near-black base, one breathing orb in the scene's colour that
-// cross-fades from the previous scene's colour, micro-particles drifting up.
-export function Backdrop({ hue, from }: { hue: string; from?: string }) {
+/** A springy pop: 0 before `start`, overshoots to ~1.08, settles at 1. */
+export const pop = (frame: number, start: number, damping = 12, stiffness = 180) =>
+  spring({ frame: frame - start, fps: FPS, config: { damping, stiffness } });
+
+/** Text typed from `start`, `fpc` frames per character. */
+export const typed = (text: string, frame: number, start: number, fpc = 1.6) =>
+  text.slice(0, Math.max(0, Math.min(text.length, Math.floor((frame - start) / fpc))));
+
+// ───────────────────────── background ─────────────────────────
+
+export function Background({
+  color,
+  light = false,
+  x = 540,
+  y = 640,
+  size = 1300,
+  children,
+}: {
+  color: string;
+  light?: boolean;
+  x?: number;
+  y?: number;
+  size?: number;
+  children?: ReactNode;
+}) {
   const frame = useCurrentFrame();
-  const drift = Math.sin(frame / 48) * 80;
-  const breathe = 0.45 + Math.sin(frame / 22) * 0.1;
-  const mix = from ? ramp(frame, 0, 12, Easing.inOut(Easing.quad)) : 1;
-  const orb = (color: string, o: number) => (
-    <AbsoluteFill
-      style={{
-        opacity: o * breathe,
-        background: `radial-gradient(circle 900px at ${540 + drift}px 720px, ${color} 0%, ${color}aa 22%, ${color}44 50%, transparent 78%)`,
-      }}
-    />
-  );
+  const breathe = 0.42 + Math.sin(frame / 24) * 0.1;
+  const dx = Math.sin(frame / 40) * 50;
+  const dy = Math.cos(frame / 52) * 30;
+  // Over the first frames the glow moves in from the centre of the last scene.
+  const arrive = prog(frame, 0, 14);
+  const gx = interpolate(arrive, [0, 1], [540, x]) + dx;
+  const gy = interpolate(arrive, [0, 1], [640, y]) + dy;
   return (
-    <AbsoluteFill style={{ background: "#07070C" }}>
-      {from ? orb(from, 1 - mix) : null}
-      {orb(hue, mix)}
-      <AbsoluteFill
+    <AbsoluteFill style={{ background: light ? "#f1f3f6" : "#070a14", overflow: "hidden" }}>
+      <div
         style={{
-          background:
-            "radial-gradient(ellipse 900px 700px at 540px 1500px, rgba(0,0,0,0.7), transparent 70%)",
+          position: "absolute",
+          left: gx - size / 2,
+          top: gy - size / 2,
+          width: size,
+          height: size,
+          borderRadius: "50%",
+          background: `radial-gradient(circle, ${color} 0%, ${color}00 65%)`,
+          opacity: light ? breathe * 0.75 : breathe,
+          filter: "blur(30px)",
         }}
       />
-      {new Array(22).fill(0).map((_, i) => {
-        const x = random(`px${i}`) * 1080;
-        const y0 = random(`py${i}`) * 1920;
-        const y = (((y0 - frame * 0.4) % 1920) + 1920) % 1920;
-        const s = 2 + random(`ps${i}`) * 3;
-        return (
-          <div
-            key={i}
-            style={{
-              position: "absolute",
-              left: x,
-              top: y,
-              width: s,
-              height: s,
-              borderRadius: s,
-              background: "#fff",
-              opacity: 0.1 + random(`po${i}`) * 0.15,
-            }}
-          />
-        );
-      })}
+      {children}
+      {/* soft vignette */}
+      <AbsoluteFill
+        style={{
+          background: light
+            ? "radial-gradient(ellipse at 50% 40%, transparent 55%, rgba(20,30,60,0.08) 100%)"
+            : "radial-gradient(ellipse at 50% 40%, transparent 45%, rgba(0,0,0,0.6) 100%)",
+        }}
+      />
     </AbsoluteFill>
   );
 }
 
-// The camera: a slow push-in over the scene, a +3 % punch on key frames, and
-// the hand-over from the previous scene ("push" from the right, "zoom" through).
-export function Camera({
+/** A giant faint motif (text or symbol) behind everything. */
+export function Motif({
   children,
-  punches = [],
-  enter = "none",
+  light,
+  x = 540,
+  y = 640,
+  size = 520,
+  rotate = -8,
+  opacity,
+  font,
 }: {
   children: ReactNode;
-  punches?: number[];
-  enter?: "push" | "zoom" | "none";
+  light?: boolean;
+  x?: number;
+  y?: number;
+  size?: number;
+  rotate?: number;
+  opacity?: number;
+  font?: string;
 }) {
   const frame = useCurrentFrame();
-  const { durationInFrames } = useVideoConfig();
-  let s = interpolate(frame, [0, durationInFrames], [1, 1.04], CL);
-  for (const p of punches)
-    s += interpolate(frame, [p, p + 2, p + 10], [0, 0.03, 0], CL);
-  const e = ramp(frame, 0, 12);
-  const x = enter === "push" ? (1 - e) * 260 : 0;
-  const zs = enter === "zoom" ? 1.4 - 0.4 * e : 1;
-  const blur = enter === "zoom" ? (1 - e) * 8 : 0;
-  const op = enter === "none" ? 1 : interpolate(frame, [0, 7], [0, 1], CL);
   return (
-    <AbsoluteFill
+    <div
       style={{
-        transform: `translateX(${x}px) scale(${s * zs})`,
-        transformOrigin: "540px 640px",
-        filter: blur > 0.05 ? `blur(${blur}px)` : undefined,
-        opacity: op,
+        position: "absolute",
+        left: x,
+        top: y,
+        translate: `-50% -50%`,
+        rotate: `${rotate + Math.sin(frame / 60) * 1.2}deg`,
+        fontFamily: font ?? MONO,
+        fontWeight: 800,
+        fontSize: size,
+        lineHeight: 1,
+        whiteSpace: "nowrap",
+        color: light ? "#1b1d22" : "#ffffff",
+        opacity: opacity ?? (light ? 0.05 : 0.06),
+        filter: "blur(6px)",
       }}
     >
+      {children}
+    </div>
+  );
+}
+
+/** A real screenshot, blurred and tilted at the side, for depth. */
+export function SideShot({
+  src,
+  side,
+  y,
+  light,
+}: {
+  src: string;
+  side: "left" | "right";
+  y: number;
+  light?: boolean;
+}) {
+  const frame = useCurrentFrame();
+  const drift = Math.sin(frame / 30) * 10;
+  return (
+    <div
+      style={{
+        position: "absolute",
+        top: y + drift,
+        [side]: -260,
+        width: 620,
+        height: 390,
+        borderRadius: 34,
+        overflow: "hidden",
+        transform: `perspective(1200px) rotateY(${side === "left" ? 28 : -28}deg) rotateZ(${side === "left" ? -4 : 4}deg)`,
+        filter: "blur(9px)",
+        opacity: light ? 0.35 : 0.5,
+        boxShadow: "0 30px 80px rgba(0,0,0,0.5)",
+      }}
+    >
+      <Img src={src} style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "30% 20%" }} />
+    </div>
+  );
+}
+
+// ───────────────────────── camera ─────────────────────────
+
+/** Slow push-in over the scene, a +3 % punch on `punchAt`, and a float. */
+export function Camera({
+  duration,
+  punchAt = -100,
+  children,
+}: {
+  duration: number;
+  punchAt?: number;
+  children: ReactNode;
+}) {
+  const frame = useCurrentFrame();
+  const push = interpolate(frame, [0, duration], [1, 1.04], clamp);
+  const punch =
+    interpolate(frame, [punchAt, punchAt + 2, punchAt + 10], [0, 0.03, 0], clamp);
+  return (
+    <AbsoluteFill style={{ scale: `${push + punch}`, transformOrigin: "50% 36%" }}>
       {children}
     </AbsoluteFill>
   );
 }
 
-// Glass surface.
-export function glass(width: number, extra: CSSProperties = {}): CSSProperties {
-  return {
-    background: "linear-gradient(180deg, rgba(255,255,255,0.13), rgba(255,255,255,0.06))",
-    backdropFilter: "blur(18px)",
-    border: "1.5px solid rgba(255,255,255,0.15)",
-    borderTop: "1.5px solid rgba(255,255,255,0.32)",
-    borderRadius: Math.round(width * 0.07),
-    boxShadow: "0 8px 16px rgba(0,0,0,0.2), 0 32px 80px rgba(0,0,0,0.5)",
-    boxSizing: "border-box",
-    ...extra,
-  };
-}
+// ───────────────────────── headline ─────────────────────────
 
-// A card that enters from below with the tilt revealing, floats, and
-// flattens toward 0° by `flat` (0..1).
-export function TiltCard({
-  at,
-  left,
-  top,
-  width,
-  height,
-  ry = -16,
-  rx = 8,
-  flat = 0,
-  phase = 0,
-  style,
-  children,
+/**
+ * One or two lines at the top of the zone; `*word*` marks the key word,
+ * drawn in `color`. Words pop in one by one from `start`.
+ */
+export function Headline({
+  line1,
+  line2,
+  color,
+  light,
+  start = 0,
+  start2,
+  top = 220,
+  size = 86,
+  mono = false,
 }: {
-  at: number;
-  left: number;
-  top: number;
-  width: number;
-  height: number;
-  ry?: number;
-  rx?: number;
-  flat?: number;
-  phase?: number;
-  style?: CSSProperties;
-  children?: ReactNode;
+  line1: string;
+  line2?: string;
+  color: string;
+  light?: boolean;
+  start?: number;
+  start2?: number; // when line 2 starts (default: right after line 1)
+  top?: number;
+  size?: number;
+  mono?: boolean;
 }) {
   const frame = useCurrentFrame();
-  const sc = interpolate(frame, [at, at + 10, at + 16], [0.78, 1.03, 1], { ...CL, easing: EASE });
-  const ty = interpolate(frame, [at, at + 16], [420, 0], { ...CL, easing: EASE });
-  const op = interpolate(frame, [at, at + 6], [0, 1], CL);
-  const reveal = 1 - ramp(frame, at, 16);
-  const f = float(frame, phase);
-  const k = 1 - flat;
+  const c = useBrand();
+  const main = light ? LIGHT_TEXT : "#ffffff";
+  const soft = light ? LIGHT_SOFT : "rgba(255,255,255,0.55)";
+  let n = 0;
+  let inKey = false;
+  const line =(text: string, second: boolean) => (
+    <div
+      style={{
+        display: "flex",
+        justifyContent: "center",
+        flexWrap: "wrap",
+        gap: `0 ${size * 0.26}px`,
+        fontSize: second ? size * 0.7 : size,
+        lineHeight: 1.12,
+      }}
+    >
+      {text.split(" ").map((raw, i) => {
+        // *key words* may span several words
+        const opens = raw.startsWith("*");
+        const closes = raw.endsWith("*") && raw.length > 1;
+        if (opens) inKey = true;
+        const key = inKey;
+        if (closes) inKey = false;
+        const word = raw.replace(/^\*/, "").replace(/\*$/, "");
+        const at = second && start2 !== undefined ? start2 + i * 3 : start + n++ * 3;
+        const p = prog(frame, at, 10);
+        const punch = key ? interpolate(frame, [at + 8, at + 11, at + 18], [1, 1.04, 1], clamp) : 1;
+        return (
+          <span
+            key={i}
+            style={{
+              display: "inline-block",
+              fontFamily: mono && key ? MONO : c.fontUi,
+              fontWeight: second ? 700 : 800,
+              letterSpacing: "-0.02em",
+              color: key ? color : second ? soft : main,
+              opacity: p,
+              translate: `0px ${(1 - p) * 22}px`,
+              scale: `${interpolate(p, [0, 1], [0.9, 1]) * punch}`,
+              filter: `blur(${(1 - p) * 6}px)`,
+            }}
+          >
+            {word}
+          </span>
+        );
+      })}
+    </div>
+  );
+  return (
+    <div style={{ position: "absolute", left: 90, right: 90, top, textAlign: "center" }}>
+      {line(line1, false)}
+      {line2 ? <div style={{ marginTop: 10 }}>{line(line2, true)}</div> : null}
+    </div>
+  );
+}
+
+// ───────────────────────── glass ─────────────────────────
+
+export const glass = (light: boolean | undefined, radius = 52): CSSProperties =>
+  light
+    ? {
+        background: "rgba(255,255,255,0.92)",
+        border: "1.5px solid rgba(255,255,255,1)",
+        borderRadius: radius,
+        boxShadow: "0 6px 14px rgba(20,30,60,0.06), 0 24px 60px rgba(20,30,60,0.14)",
+      }
+    : {
+        background: "linear-gradient(180deg, rgba(255,255,255,0.11), rgba(255,255,255,0.05))",
+        border: "1.5px solid rgba(255,255,255,0.14)",
+        borderTopColor: "rgba(255,255,255,0.26)",
+        borderRadius: radius,
+        backdropFilter: "blur(18px)",
+        boxShadow: "0 8px 16px rgba(0,0,0,0.25), 0 32px 80px rgba(0,0,0,0.5)",
+      };
+
+/** The Claude Code window: three dots, the real logo and a title pill. */
+export function TerminalCard({
+  width = 880,
+  height,
+  light,
+  title = "Claude Code",
+  right,
+  children,
+  style,
+}: {
+  width?: number;
+  height: number;
+  light?: boolean;
+  title?: string;
+  right?: ReactNode;
+  children: ReactNode;
+  style?: CSSProperties;
+}) {
+  const c = useBrand();
   return (
     <div
       style={{
         position: "absolute",
-        left,
-        top,
         width,
         height,
-        perspective: 1200,
-        opacity: op,
+        overflow: "hidden",
+        ...glass(light),
+        ...style,
       }}
     >
       <div
         style={{
-          width: "100%",
-          height: "100%",
-          transform: `translateY(${ty + f.y}px) scale(${sc}) rotateY(${ry * k + reveal * 10}deg) rotateX(${rx * k + reveal * 14}deg) rotateZ(${f.r}deg) translateZ(${80 * k}px)`,
-          ...glass(width, { overflow: "hidden" }),
-          ...style,
+          height: 92,
+          display: "flex",
+          alignItems: "center",
+          padding: "0 36px",
+          gap: 14,
+          borderBottom: light ? "1.5px solid rgba(20,30,60,0.07)" : "1.5px solid rgba(255,255,255,0.08)",
         }}
       >
-        {children}
+        {[0, 1, 2].map((i) => (
+          <div
+            key={i}
+            style={{
+              width: 18,
+              height: 18,
+              borderRadius: 9,
+              background: light ? "rgba(20,30,60,0.14)" : "rgba(255,255,255,0.2)",
+            }}
+          />
+        ))}
+        <div
+          style={{
+            marginLeft: 26,
+            display: "flex",
+            alignItems: "center",
+            gap: 14,
+            fontFamily: c.fontUi,
+            fontWeight: 700,
+            fontSize: 36,
+            color: light ? LIGHT_TEXT : "#fff",
+          }}
+        >
+          <Img src={CLAUDE_LOGO} style={{ width: 40, height: 40 }} />
+          {title}
+        </div>
+        <div style={{ flex: 1 }} />
+        {right}
+      </div>
+      <div style={{ position: "relative", height: height - 92 }}>{children}</div>
+    </div>
+  );
+}
+
+/** A prompt line: ❯ + typed text + a blinking caret. */
+export function PromptLine({
+  text,
+  light,
+  color,
+  size = 46,
+  caret = true,
+}: {
+  text: string;
+  light?: boolean;
+  color: string;
+  size?: number;
+  caret?: boolean;
+}) {
+  const frame = useCurrentFrame();
+  return (
+    <div
+      style={{
+        display: "flex",
+        alignItems: "center",
+        gap: 20,
+        fontFamily: MONO,
+        fontWeight: 700,
+        fontSize: size,
+        color: light ? LIGHT_TEXT : "#fff",
+      }}
+    >
+      <span style={{ color }}>❯</span>
+      <span>{text}</span>
+      {caret ? (
+        <span
+          style={{
+            width: 4,
+            height: size * 1.05,
+            marginLeft: -12,
+            background: color,
+            opacity: Math.floor(frame / 8) % 2 ? 0.2 : 1,
+          }}
+        />
+      ) : null}
+    </div>
+  );
+}
+
+// ───────────────────────── file rows ─────────────────────────
+
+/** A file: icon, name, diff bars; red when broken, green when fixed. */
+export function FileRow({
+  name,
+  broken,
+  fixed,
+  light,
+  width = 800,
+}: {
+  name: string;
+  broken: number; // 0..1 how red
+  fixed: number; // 0..1 how green
+  light?: boolean;
+  width?: number;
+}) {
+  const c = useBrand();
+  const red = COL.red;
+  const green = COL.green;
+  const tone = fixed > 0.5 ? green : red;
+  const amount = fixed > 0.5 ? fixed : broken;
+  const badge = fixed > 0.5 ? fixed : broken;
+  const base = light ? "rgba(20,30,60,0.05)" : "rgba(255,255,255,0.05)";
+  return (
+    <div
+      style={{
+        width,
+        height: 116,
+        borderRadius: 28,
+        display: "flex",
+        alignItems: "center",
+        padding: "0 30px",
+        gap: 24,
+        boxSizing: "border-box",
+        background: base,
+        border: `2px solid ${light ? "rgba(20,30,60,0.06)" : "rgba(255,255,255,0.08)"}`,
+        boxShadow: `inset 0 0 0 2px ${tone}${Math.round(amount * 200)
+          .toString(16)
+          .padStart(2, "0")}, 0 0 ${40 * amount}px ${tone}${Math.round(amount * 90)
+          .toString(16)
+          .padStart(2, "0")}`,
+        position: "relative",
+        overflow: "hidden",
+      }}
+    >
+      <div
+        style={{
+          position: "absolute",
+          inset: 0,
+          background: tone,
+          opacity: amount * (light ? 0.1 : 0.16),
+        }}
+      />
+      <FileIcon size={58} color={amount > 0.2 ? tone : light ? "#9aa3b2" : "rgba(255,255,255,0.6)"} />
+      <div
+        style={{
+          fontFamily: MONO,
+          fontWeight: 700,
+          fontSize: 46,
+          color: light ? LIGHT_TEXT : "#fff",
+          width: 250,
+          position: "relative",
+        }}
+      >
+        {name}
+      </div>
+      <div style={{ flex: 1, display: "flex", gap: 12, position: "relative" }}>
+        {[90, 56, 120].map((w, i) => (
+          <div
+            key={i}
+            style={{
+              width: w * (fixed > 0.5 ? 1 : 0.6 + broken * 0.4),
+              height: 16,
+              borderRadius: 8,
+              background: amount > 0.2 ? tone : light ? "rgba(20,30,60,0.15)" : "rgba(255,255,255,0.18)",
+              opacity: 0.85,
+            }}
+          />
+        ))}
+      </div>
+      <div
+        style={{
+          width: 68,
+          height: 68,
+          borderRadius: 34,
+          background: tone,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          color: "#fff",
+          fontFamily: c.fontUi,
+          fontWeight: 900,
+          fontSize: 40,
+          scale: `${badge}`,
+          boxShadow: `0 0 30px ${tone}`,
+          position: "relative",
+        }}
+      >
+        {fixed > 0.5 ? "✓" : "✕"}
       </div>
     </div>
   );
 }
 
-// Text with *key* words: one word per span, popping word by word.
-type Line = { text: string; at: number };
+// ───────────────────────── icons ─────────────────────────
 
-// The headline at the top of the zone. `lines` swap one after another: each
-// pops word by word landing on its `at`, the previous slides up and fades.
-export function Headline({ lines, top = 340, size = 88 }: { lines: Line[]; top?: number; size?: number }) {
-  const frame = useCurrentFrame();
-  const c = useBrand();
+export function FileIcon({ size, color }: { size: number; color: string }) {
   return (
-    <>
-      {lines.map((l, li) => {
-        // the old line leaves over 7 frames, then the new one starts popping
-        const start = l.at - 6;
-        const next = lines[li + 1];
-        const end = next ? next.at - 13 : Infinity;
-        if (frame < start || frame > end + 7) return null;
-        const out = frame > end ? ramp(frame, end, 7, Easing.in(Easing.quad)) : 0;
-        const words = l.text.split(" ");
-        return (
-          <div
-            key={li}
-            style={{
-              position: "absolute",
-              left: 90,
-              right: 90,
-              top,
-              display: "flex",
-              justifyContent: "center",
-              flexWrap: "wrap",
-              gap: `0 ${size * 0.26}px`,
-              fontFamily: c.fontStrong,
-              fontSize: size,
-              lineHeight: 1.08,
-              letterSpacing: "-0.02em",
-              color: c.text,
-              transform: `translateY(${-18 * out}px)`,
-              opacity: 1 - out,
-              textShadow: "0 10px 40px rgba(0,0,0,0.5)",
-            }}
-          >
-            {words.map((w, wi) => {
-              const key = w.startsWith("*");
-              const word = w.replace(/\*/g, "");
-              const a = start + wi * 3;
-              const sc = interpolate(frame, [a, a + 8, a + 12], [0.9, 1.04, 1], CL);
-              const punch = key ? interpolate(frame, [a + 10, a + 13, a + 20], [0, 0.04, 0], CL) : 0;
-              return (
-                <span
-                  key={wi}
-                  style={{
-                    display: "inline-block",
-                    color: key ? c.accent : c.text,
-                    transform: `translateY(${interpolate(frame, [a, a + 9], [22, 0], { ...CL, easing: EASE })}px) scale(${sc + punch})`,
-                    opacity: interpolate(frame, [a, a + 6], [0, 1], CL),
-                    fontFamily: word.startsWith("/") ? MONO : c.fontStrong,
-                  }}
-                >
-                  {word}
-                </span>
-              );
-            })}
-          </div>
-        );
-      })}
-    </>
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" style={{ position: "relative", flexShrink: 0 }}>
+      <path d="M6 2h8l5 5v13a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2z" stroke={color} strokeWidth={1.8} />
+      <path d="M14 2v5h5M8 13h8M8 17h6" stroke={color} strokeWidth={1.8} strokeLinecap="round" />
+    </svg>
   );
 }
 
-// ---------- The dock: three command slots, same place in scenes 2–6 ----------
+export function RewindIcon({ size, color }: { size: number; color: string }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+      <path d="M9 14 4 9l5-5" stroke={color} strokeWidth={2.4} strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M4 9h10.5a5.5 5.5 0 0 1 0 11H11" stroke={color} strokeWidth={2.4} strokeLinecap="round" />
+    </svg>
+  );
+}
 
-export const DOCK = { left: 90, top: 200, width: 900, height: 112 };
-export const DOCK_LABELS = ["/rewind", "/compact", "Plan mode"];
+export function CompactIcon({ size, color }: { size: number; color: string }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+      <path d="M12 2v7m0 0-3-3m3 3 3-3M12 22v-7m0 0-3 3m3-3 3 3M4 12h16" stroke={color} strokeWidth={2.4} strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
 
+export function PlanIcon({ size, color }: { size: number; color: string }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+      <path d="M9 6h11M9 12h11M9 18h11" stroke={color} strokeWidth={2.4} strokeLinecap="round" />
+      <circle cx="4.5" cy="6" r="1.6" fill={color} />
+      <circle cx="4.5" cy="12" r="1.6" fill={color} />
+      <circle cx="4.5" cy="18" r="1.6" fill={color} />
+    </svg>
+  );
+}
+
+export function LockIcon({ size, color, open = 0 }: { size: number; color: string; open?: number }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+      <rect x="4" y="10.5" width="16" height="11" rx="2.5" fill={color} />
+      <path
+        d="M8 10.5V7a4 4 0 0 1 8 0v3.5"
+        stroke={color}
+        strokeWidth={2.4}
+        strokeLinecap="round"
+        transform={`translate(0 ${-open * 3})`}
+      />
+    </svg>
+  );
+}
+
+// ───────────────────────── the command dock ─────────────────────────
+
+export const COMMANDS = [
+  { label: "/rewind", color: COL.teal, Icon: RewindIcon },
+  { label: "/compact", color: COL.blue, Icon: CompactIcon },
+  { label: "Plan mode", color: COL.amber, Icon: PlanIcon },
+] as const;
+
+/**
+ * The video's dock: three numbered slots for the three commands, the same
+ * place in every scene. `fill[i]` 0..1 – how far slot i is filled;
+ * `active` – the ringed one; `show[i]` – the slot's entrance (0..1).
+ */
 export function Dock({
-  hue,
-  appearAt,
-  filled,
+  fill,
   active = -1,
-  fillAt = 0,
-  moveFrom,
-  labels = DOCK_LABELS,
+  show = [1, 1, 1],
+  light,
+  top = 972,
   scale = 1,
-  dy = 0,
-  allDone = false,
+  x = 0,
 }: {
-  hue: string;
-  appearAt?: number; // drops in from above (scene 2); omitted = already there
-  filled: number; // slots filled before this scene
-  active?: number; // the slot of this scene
-  fillAt?: number; // the frame the active slot fills
-  moveFrom?: number; // the slot the highlight springs from
-  labels?: string[];
+  fill: number[];
+  active?: number;
+  show?: number[];
+  light?: boolean;
+  top?: number;
   scale?: number;
-  dy?: number;
-  allDone?: boolean;
+  x?: number;
 }) {
   const frame = useCurrentFrame();
   const c = useBrand();
-  const pop = usePop();
-  const { fps } = useVideoConfig();
-  const drop = appearAt === undefined ? 1 : spring({ frame: frame - appearAt, fps, config: { damping: 13, stiffness: 140 } });
-  const slotW = DOCK.width / 3;
-  const hl = active >= 0 ? pop(frame, fillAt - 4) : 0;
-  const from = moveFrom ?? active;
-  const hlX = (from + (active - from) * Math.min(1.1, hl)) * slotW;
-  const f = Math.sin(frame / 16) * 3;
   return (
     <div
       style={{
         position: "absolute",
-        left: DOCK.left,
-        top: DOCK.top + dy + f,
-        width: DOCK.width,
-        height: DOCK.height,
-        transform: `translateY(${(1 - drop) * -260}px) scale(${scale})`,
-        transformOrigin: "50% 0%",
-        opacity: Math.min(1, drop * 1.5),
-        ...glass(DOCK.width, { borderRadius: DOCK.height / 2 }),
+        left: 0,
+        right: 0,
+        top,
+        display: "flex",
+        justifyContent: "center",
+        gap: 22,
+        scale: `${scale}`,
+        translate: `${x}px 0px`,
       }}
     >
-      {active >= 0 ? (
-        <div
-          style={{
-            position: "absolute",
-            top: 8,
-            left: 8 + hlX,
-            width: slotW - 16,
-            height: DOCK.height - 19,
-            borderRadius: 50,
-            background: `${hue}55`,
-            border: `1.5px solid ${hue}`,
-            boxShadow: `0 0 40px ${hue}88, inset 0 1px 0 rgba(255,255,255,0.3)`,
-            opacity: moveFrom !== undefined && moveFrom !== active ? 1 : Math.min(1, hl * 1.4),
-          }}
-        />
-      ) : null}
-      {[0, 1, 2].map((i) => {
-        const isFilled = i < filled || (i === active && frame >= fillAt - 2) || allDone;
-        const lp = i === active ? pop(frame, fillAt - 2) : 1;
-        const lit = i === active;
+      {COMMANDS.map((cmd, i) => {
+        const f = fill[i] ?? 0;
+        const s = show[i] ?? 1;
+        const on = i === active;
+        const pulse = on ? 0.6 + Math.sin(frame / 8) * 0.25 : 0;
+        const textCol = light ? LIGHT_TEXT : "#fff";
         return (
           <div
             key={i}
             style={{
-              position: "absolute",
-              left: i * slotW,
-              top: 0,
-              width: slotW,
-              height: DOCK.height,
+              width: 270,
+              height: 104,
+              borderRadius: 30,
+              boxSizing: "border-box",
               display: "flex",
               alignItems: "center",
-              justifyContent: "center",
               gap: 14,
+              padding: "0 22px",
+              position: "relative",
+              opacity: Math.min(1, s * 1.5),
+              scale: `${interpolate(s, [0, 1], [0.5, 1])}`,
+              translate: `0px ${(1 - s) * 60}px`,
+              ...(f > 0.05
+                ? glass(light, 30)
+                : {
+                    border: `3px dashed ${light ? "rgba(20,30,60,0.2)" : "rgba(255,255,255,0.22)"}`,
+                    background: light ? "rgba(255,255,255,0.4)" : "rgba(255,255,255,0.03)",
+                  }),
+              ...(on
+                ? {
+                    border: `3px solid ${cmd.color}`,
+                    boxShadow: `0 0 ${30 + pulse * 30}px ${cmd.color}aa, 0 20px 50px rgba(0,0,0,${light ? 0.12 : 0.4})`,
+                  }
+                : {}),
             }}
           >
             <div
               style={{
-                width: 56,
-                height: 56,
-                borderRadius: 28,
+                width: 54,
+                height: 54,
+                borderRadius: 16,
                 flexShrink: 0,
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
-                fontFamily: c.fontStrong,
-                fontSize: 30,
-                color: lit ? "#fff" : isFilled ? "#0B0B10" : "rgba(255,255,255,0.55)",
-                background: lit ? hue : isFilled ? "rgba(255,255,255,0.85)" : "rgba(255,255,255,0.08)",
-                border: isFilled || lit ? "none" : "2px dashed rgba(255,255,255,0.3)",
+                background: f > 0.05 ? cmd.color : "transparent",
+                fontFamily: c.fontUi,
+                fontWeight: 800,
+                fontSize: 34,
+                color: f > 0.05 ? "#fff" : light ? "rgba(20,30,60,0.35)" : "rgba(255,255,255,0.4)",
+                scale: `${f > 0.05 ? interpolate(f, [0, 0.7, 1], [0.5, 1.12, 1]) : 1}`,
               }}
             >
-              {i + 1}
+              {f > 0.05 ? <cmd.Icon size={34} color="#fff" /> : i + 1}
             </div>
-            {isFilled ? (
-              <div
-                style={{
-                  fontFamily: labels[i].startsWith("/") ? MONO : c.fontSemi,
-                  fontWeight: 700,
-                  fontSize: labels[i].startsWith("/") ? 32 : 34,
-                  color: lit ? "#fff" : "rgba(255,255,255,0.75)",
-                  whiteSpace: "nowrap",
-                  transform: `scale(${0.5 + 0.5 * lp})`,
-                  opacity: Math.min(1, lp * 1.6),
-                }}
-              >
-                {labels[i]}
-              </div>
+            {f > 0.05 ? (
+            <div
+              style={{
+                fontFamily: MONO,
+                fontWeight: 700,
+                fontSize: cmd.label.length > 8 ? 30 : 34,
+                whiteSpace: "nowrap",
+                color: textCol,
+                opacity: f,
+                translate: `${(1 - f) * 16}px 0px`,
+              }}
+            >
+              {cmd.label}
+            </div>
             ) : (
               <div
                 style={{
-                  width: 150,
-                  height: 18,
-                  borderRadius: 9,
-                  background: "rgba(255,255,255,0.12)",
+                  flex: 1,
+                  height: 14,
+                  borderRadius: 7,
+                  background: light ? "rgba(20,30,60,0.1)" : "rgba(255,255,255,0.1)",
                 }}
               />
             )}
@@ -413,178 +708,64 @@ export function Dock({
   );
 }
 
-// ---------- Pieces of the code cards ----------
-
-export function WindowBar({ title, width }: { title?: string; width: number }) {
-  return (
-    <div
-      style={{
-        height: 76,
-        display: "flex",
-        alignItems: "center",
-        gap: 14,
-        padding: "0 34px",
-        borderBottom: "1.5px solid rgba(255,255,255,0.1)",
-        width,
-        boxSizing: "border-box",
-      }}
-    >
-      {[0, 1, 2].map((i) => (
-        <div key={i} style={{ width: 18, height: 18, borderRadius: 9, background: "rgba(255,255,255,0.28)" }} />
-      ))}
-      {title ? (
-        <div style={{ marginLeft: 18, fontFamily: MONO, fontSize: 30, color: "rgba(255,255,255,0.6)" }}>{title}</div>
-      ) : (
-        <div style={{ marginLeft: 18, width: 220, height: 14, borderRadius: 7, background: "rgba(255,255,255,0.18)" }} />
-      )}
-    </div>
-  );
-}
-
-export function FileIcon({ size = 64, color = "rgba(255,255,255,0.8)" }: { size?: number; color?: string }) {
-  return (
-    <svg width={size * 0.8} height={size} viewBox="0 0 40 50">
-      <path d="M4 2 H27 L38 13 V48 H4 Z" fill="rgba(255,255,255,0.1)" stroke={color} strokeWidth={3} strokeLinejoin="round" />
-      <path d="M27 2 V13 H38" fill="none" stroke={color} strokeWidth={3} strokeLinejoin="round" />
-      <path d="M11 24 H31 M11 31 H27 M11 38 H30" stroke={color} strokeWidth={2.6} strokeLinecap="round" opacity={0.7} />
-    </svg>
-  );
-}
-
-export function Cross({ size, color = "#fff" }: { size: number; color?: string }) {
-  return (
-    <svg width={size} height={size} viewBox="0 0 20 20">
-      <path d="M5 5 L15 15 M15 5 L5 15" stroke={color} strokeWidth={3.2} strokeLinecap="round" />
-    </svg>
-  );
-}
-export function Check({ size, color = "#fff", draw = 1 }: { size: number; color?: string; draw?: number }) {
-  return (
-    <svg width={size} height={size} viewBox="0 0 20 20">
-      <path
-        d="M4 10.5 L8.5 15 L16 6"
-        fill="none"
-        stroke={color}
-        strokeWidth={3.2}
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeDasharray={24}
-        strokeDashoffset={24 * (1 - draw)}
-      />
-    </svg>
-  );
-}
-
-// One file row: red when broken (`bad`), a diff bar of the edit (`diff`),
-// green with a check once clean (`good`); `spin` turns a rewind icon.
-export function FileRow({
-  name,
-  bad,
-  good,
-  diff,
-  shake = 0,
-  spin,
-  height = 108,
+/** A browser card: dots + URL pill on top, a real screenshot cropped inside. */
+export function BrowserCard({
+  src,
+  url,
+  width,
+  height,
+  light,
+  crop = { x: 0.27, y: 0.13, w: 0.45 },
+  style,
 }: {
-  name: string;
-  bad: number;
-  good: number;
-  diff: number;
-  shake?: number;
-  spin?: number;
-  height?: number;
+  src: string;
+  url: string;
+  width: number;
+  height: number;
+  light?: boolean;
+  crop?: { x: number; y: number; w: number }; // fractions of the 2560x1600 shot
+  style?: CSSProperties;
 }) {
-  const frame = useCurrentFrame();
-  const b = bad * (1 - good);
-  const sx = shake * Math.sin(frame * 2.3) * 8;
-  const iconColor = good > 0.5 ? GOOD : b > 0.5 ? BAD : "rgba(255,255,255,0.8)";
-  const gp = Math.min(1, good * 1.3);
-  return (
-    <div
-      style={{
-        height,
-        display: "flex",
-        alignItems: "center",
-        gap: 24,
-        padding: "0 30px",
-        borderRadius: 26,
-        transform: `translateX(${sx}px)`,
-        background: `rgba(${b > 0 ? "255,77,106" : "34,211,166"},${0.16 * Math.max(b, good)})`,
-        border: `2px solid rgba(${good > 0.5 ? "34,211,166" : "255,77,106"},${0.7 * Math.max(b, good)})`,
-        boxSizing: "border-box",
-      }}
-    >
-      <FileIcon size={64} color={iconColor} />
-      <div style={{ fontFamily: MONO, fontSize: 46, fontWeight: 700, color: "#fff", width: 230 }}>{name}</div>
-      <div style={{ flex: 1, display: "flex", gap: 8, alignItems: "center" }}>
-        {[0.9, 0.55, 0.75].map((w, i) => (
-          <div
-            key={i}
-            style={{
-              height: 16,
-              width: 70 * w * diff,
-              borderRadius: 8,
-              background: BAD,
-              opacity: 0.85 * diff,
-            }}
-          />
-        ))}
-      </div>
-      {spin !== undefined ? (
-        <div style={{ transform: `rotate(${-spin}deg)`, opacity: Math.min(1, spin / 40) * (1 - good) }}>
-          <RewindIcon size={54} color="#fff" />
-        </div>
-      ) : null}
-      <div
-        style={{
-          width: 70,
-          height: 70,
-          borderRadius: 35,
-          flexShrink: 0,
-          position: "relative",
-          background: good > 0.5 ? GOOD : b > 0.02 ? BAD : "rgba(255,255,255,0.1)",
-          transform: `scale(${good > 0 ? interpolate(gp, [0, 0.7, 1], [0.6, 1.25, 1]) : 0.6 + 0.4 * Math.min(1, b * 1.2)})`,
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          boxShadow: good > 0.5 ? `0 0 30px ${GOOD}88` : b > 0.5 ? `0 0 30px ${BAD}66` : "none",
-        }}
-      >
-        {good > 0.5 ? <Check size={44} draw={gp} /> : b > 0.02 ? <Cross size={40} /> : null}
-      </div>
-    </div>
-  );
-}
-
-export function RewindIcon({ size, color }: { size: number; color: string }) {
-  return (
-    <svg width={size} height={size} viewBox="0 0 24 24">
-      <path d="M4 12 A8 8 0 1 0 7 5.8" fill="none" stroke={color} strokeWidth={2.6} strokeLinecap="round" />
-      <path d="M3 3.5 L7.4 6 L4.6 10" fill="none" stroke={color} strokeWidth={2.6} strokeLinecap="round" strokeLinejoin="round" />
-    </svg>
-  );
-}
-
-export function LockIcon({ size, color = "#fff" }: { size: number; color?: string }) {
-  return (
-    <svg width={size} height={size} viewBox="0 0 24 24">
-      <path d="M7 11 V8 A5 5 0 0 1 17 8 V11" fill="none" stroke={color} strokeWidth={2.6} strokeLinecap="round" />
-      <rect x={4.5} y={11} width={15} height={11} rx={2.5} fill={color} />
-    </svg>
-  );
-}
-
-// A typed terminal line: "❯ " + `text` typed from `at` over `len` frames.
-export function Prompt({ text, at, len = 12, size = 54 }: { text: string; at: number; len?: number; size?: number }) {
-  const frame = useCurrentFrame();
   const c = useBrand();
-  const n = Math.round(interpolate(frame, [at, at + len], [0, text.length], CL));
-  const blink = Math.floor(frame / 8) % 2 === 0;
+  const imgW = width / crop.w;
   return (
-    <div style={{ fontFamily: MONO, fontSize: size, fontWeight: 700, color: "#fff", whiteSpace: "pre" }}>
-      <span style={{ color: c.accent }}>❯ </span>
-      {text.slice(0, n)}
-      <span style={{ color: c.accent, opacity: blink ? 1 : 0 }}>▌</span>
+    <div style={{ position: "absolute", width, height, overflow: "hidden", ...glass(light, 44), ...style }}>
+      <div style={{ height: 76, display: "flex", alignItems: "center", gap: 12, padding: "0 28px" }}>
+        {[0, 1, 2].map((i) => (
+          <div key={i} style={{ width: 15, height: 15, borderRadius: 8, background: "rgba(255,255,255,0.22)" }} />
+        ))}
+        <div
+          style={{
+            marginLeft: 20,
+            flex: 1,
+            height: 46,
+            borderRadius: 23,
+            background: "rgba(255,255,255,0.08)",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: 12,
+            fontFamily: c.fontUi,
+            fontWeight: 600,
+            fontSize: 26,
+            color: "rgba(255,255,255,0.75)",
+          }}
+        >
+          <Img src={CLAUDE_LOGO} style={{ width: 26, height: 26 }} />
+          {url}
+        </div>
+      </div>
+      <div style={{ position: "relative", height: height - 76, overflow: "hidden" }}>
+        <Img
+          src={src}
+          style={{
+            position: "absolute",
+            width: imgW,
+            left: -crop.x * imgW,
+            top: -crop.y * imgW * (1600 / 2560),
+          }}
+        />
+      </div>
     </div>
   );
 }

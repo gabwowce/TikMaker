@@ -1,52 +1,84 @@
 import { z } from "zod";
 import { AbsoluteFill, interpolate, useCurrentFrame } from "remotion";
-import { field, useBrand, wordFrame } from "../../video/brand/kit";
+import { field, MONO, useBrand, wordFrame } from "../../video/brand/kit";
 import type { CodeSceneProps } from "../../video/code/types";
-import { Backdrop, Camera, CL, Check, Dock, DOCK_LABELS, FileIcon, glass, Headline, HUE, LockIcon, TiltCard, ramp, usePop } from "./shared";
+import {
+  Background,
+  Camera,
+  clamp,
+  COL,
+  Dock,
+  EASE,
+  FileIcon,
+  glass,
+  Headline,
+  LockIcon,
+  pop,
+  prog,
+  SHOT,
+  SideShot,
+  TerminalCard,
+} from "./shared";
 
 export const description =
-  "Slot 3 fills with Plan mode; big Shift and Tab keys press down, then a numbered plan card unfolds while three file tiles beside it lock with padlocks";
+  "Plan mode fills slot 3; big Shift and Tab keys press down, then a Claude Code window unfolds a numbered plan while the files below stay padlocked";
 
 export const schema = z.object({
-  label: field.text("Slot 3 label", "Plan mode"),
-  title1: field.text("Headline 2", "Plan *first*"),
-  title2: field.text("Headline 3", "*0* files touched"),
-  title3: field.text("Headline 4", "You *approve*"),
-  planTitle: field.text("Plan card title", "Plan"),
-  steps: field.number("Plan steps", 4, { min: 2, max: 5 }),
-  button: field.text("Button", "Approve"),
-  planOn: field.word("Plan card arrives on", "shows"),
-  lockOn: field.word("Files lock on", "single"),
-  approveOn: field.word("Button lights on", "happy"),
+  headline: field.text("Headline (*word* – key word)", "*Plan* mode"),
+  step1: field.text("Plan step 1", "Read auth.ts"),
+  step2: field.text("Plan step 2", "Add a token check"),
+  step3: field.text("Plan step 3", "Update the tests"),
+  step4: field.text("Plan step 4", "Run the build"),
+  file1: field.text("File 1", "auth.ts"),
+  file2: field.text("File 2", "api.ts"),
+  file3: field.text("File 3", "tests.ts"),
+  slotOn: field.word("Slot 3 fills on", "plan"),
+  shiftOn: field.word("Shift pressed on", "Shift"),
+  tabOn: field.word("Tab pressed on", "Tab"),
+  planOn: field.word("Plan appears on", "shows"),
+  lockOn: field.word("Locks snap on", "touched"),
+  happyOn: field.word("Approve lights up on", "happy"),
 });
 type Params = z.infer<typeof schema>;
 
-function Key({ label, width, press, at }: { label: string; width: number; press: number; at: number }) {
-  const frame = useCurrentFrame();
-  const c = useBrand();
-  const e = ramp(frame, at, 14);
-  const d = press * 18;
+const CARD_W = 880;
+const CARD_TOP = 372;
+const CARD_H = 578;
+const AMBER_TEXT = "#ffc35c";
+
+function Pause({ size, color }: { size: number; color: string }) {
   return (
-    <div style={{ position: "relative", width, height: 190, opacity: e, transform: `translateY(${(1 - e) * 200}px)` }}>
-      <div style={{ position: "absolute", left: 0, right: 0, top: 22, height: 168, borderRadius: 36, background: "rgba(0,0,0,0.55)" }} />
+    <div style={{ display: "flex", gap: size * 0.2, height: size * 0.8 }}>
+      <div style={{ width: size * 0.22, height: "100%", borderRadius: 3, background: color }} />
+      <div style={{ width: size * 0.22, height: "100%", borderRadius: 3, background: color }} />
+    </div>
+  );
+}
+
+function Key({ label, width, down, glow }: { label: string; width: number; down: number; glow: number }) {
+  const c = useBrand();
+  return (
+    <div style={{ position: "relative", width, height: 190 }}>
+      {/* the key's side */}
+      <div style={{ position: "absolute", left: 0, right: 0, top: 22, bottom: 0, borderRadius: 40, background: "rgba(255,255,255,0.07)", border: "1.5px solid rgba(255,255,255,0.1)" }} />
       <div
         style={{
           position: "absolute",
           left: 0,
           right: 0,
-          top: d,
+          top: down * 18,
           height: 168,
+          ...glass(false, 40),
+          background: `linear-gradient(180deg, rgba(255,255,255,${0.16 + glow * 0.08}), rgba(255,255,255,0.06))`,
+          border: `2px solid ${glow > 0.1 ? COL.amber : "rgba(255,255,255,0.2)"}`,
+          boxShadow: `0 ${18 - down * 14}px ${40 - down * 24}px rgba(0,0,0,0.5), 0 0 ${glow * 70}px ${COL.amber}88`,
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          fontFamily: c.fontStrong,
-          fontSize: 64,
-          color: "#fff",
-          ...glass(width, {
-            borderRadius: 36,
-            background: press > 0.3 ? `${HUE.violet}aa` : "linear-gradient(180deg, rgba(255,255,255,0.2), rgba(255,255,255,0.08))",
-            boxShadow: press > 0.3 ? `0 0 60px ${HUE.violet}` : `0 ${22 - d}px 0 rgba(255,255,255,0.08), 0 32px 80px rgba(0,0,0,0.5)`,
-          }),
+          fontFamily: c.fontUi,
+          fontWeight: 800,
+          fontSize: 74,
+          color: glow > 0.1 ? AMBER_TEXT : "#fff",
         }}
       >
         {label}
@@ -55,171 +87,214 @@ function Key({ label, width, press, at }: { label: string; width: number; press:
   );
 }
 
-export default function Scene5({ words, params }: CodeSceneProps<Params>) {
+export default function Scene5({ words, durationInFrames, params }: CodeSceneProps<Params>) {
   const frame = useCurrentFrame();
   const c = useBrand();
-  const pop = usePop();
-  const thirdAt = wordFrame(words, "Third", 0);
-  const modeAt = wordFrame(words, "mode", 19);
-  const shiftAt = wordFrame(words, "Shift", 38);
-  const tabAt = wordFrame(words, "Tab", 47);
-  const planAt = wordFrame(words, params.planOn, 75);
-  const stepsAt = wordFrame(words, "plan", 103, 6);
-  const notAt = wordFrame(words, "Not", 122);
-  const lockAt = wordFrame(words, params.lockOn, 141);
-  const okAt = wordFrame(words, params.approveOn, 197);
+  const slotAt = wordFrame(words, params.slotOn, 9) - 3;
+  const shiftAt = wordFrame(words, params.shiftOn, 38) - 2;
+  const tabAt = wordFrame(words, params.tabOn, 47) - 2;
+  const planAt = wordFrame(words, params.planOn, 75) - 6;
+  const stepsAt = wordFrame(words, "plan", 103, 5) - 8;
+  const filesAt = wordFrame(words, "Not", 122) - 2;
+  const lockAt = wordFrame(words, params.lockOn, 169) - 3;
+  const happyAt = wordFrame(words, params.happyOn, 197) - 3;
 
-  // keys press while both are held, then fly away when the plan arrives
-  const shiftPress = interpolate(frame, [shiftAt - 2, shiftAt + 2, planAt - 10, planAt - 4], [0, 1, 1, 0], CL);
-  const tabPress = interpolate(frame, [tabAt - 2, tabAt + 2, tabAt + 10, tabAt + 14], [0, 1, 1, 0], CL);
-  const keysOut = ramp(frame, planAt - 6, 14);
-  const fileIn = (i: number) => pop(frame, notAt + i * 3);
-  const okP = pop(frame, okAt - 2);
+  // keys: Shift held from its word, Tab tapped
+  const shiftDown = interpolate(frame, [shiftAt, shiftAt + 3, planAt], [0, 1, 1], clamp) * (1 - prog(frame, tabAt + 8, 6));
+  const tabDown = interpolate(frame, [tabAt, tabAt + 3, tabAt + 8, tabAt + 12], [0, 1, 1, 0], clamp);
+  const modeOn = Math.min(pop(frame, tabAt + 2, 12, 180), 1.08);
 
-  const labels = [DOCK_LABELS[0], DOCK_LABELS[1], params.label];
+  // the keys leave upward as the plan card rises from below
+  const swap = interpolate(frame, [planAt, planAt + 16], [0, 1], { ...clamp, easing: EASE });
+  const cardIn = interpolate(frame, [planAt + 2, planAt + 18], [0, 1], { ...clamp, easing: EASE });
+  const cardScale = interpolate(frame, [planAt + 2, planAt + 12, planAt + 18], [0.8, 1.03, 1], clamp);
+
+  const steps = [params.step1, params.step2, params.step3, params.step4];
+  const files = [params.file1, params.file2, params.file3];
+  const lockSnap = interpolate(frame, [lockAt, lockAt + 4], [1, 0], clamp);
+  const lockPunch = interpolate(frame, [lockAt, lockAt + 3, lockAt + 10], [1, 1.2, 1], clamp);
+  const approve = prog(frame, happyAt, 8);
+  const float = Math.sin(frame / 14) * 7;
+
   return (
     <AbsoluteFill>
-      <Backdrop hue={HUE.violet} from={HUE.magenta} />
-      <Camera enter="push" punches={[tabAt, lockAt]}>
-        {/* the keys */}
-        {keysOut < 1 ? (
+      <Background color={COL.amber} y={640}>
+        <SideShot src={SHOT.workflows} side="left" y={420} />
+        <SideShot src={SHOT.checkpointing} side="right" y={640} />
+      </Background>
+      <Camera duration={durationInFrames} punchAt={lockAt}>
+        <Headline line1={params.headline} color={AMBER_TEXT} start={slotAt - 6} size={100} top={214} />
+
+        {/* phase 1: Shift + Tab */}
+        <div
+          style={{
+            position: "absolute",
+            left: 0,
+            right: 0,
+            top: 440,
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            gap: 46,
+            opacity: 1 - swap,
+            translate: `0px ${-swap * 160 + float}px`,
+            scale: `${1 - swap * 0.3}`,
+            transform: `perspective(1200px) rotateX(${12 - swap * 6}deg)`,
+          }}
+        >
+          <div style={{ display: "flex", gap: 34, alignItems: "flex-end" }}>
+            <Key label="⇧ Shift" width={430} down={shiftDown} glow={shiftDown} />
+            <Key label="Tab ⇥" width={320} down={tabDown} glow={Math.max(tabDown, modeOn * 0.4)} />
+          </div>
           <div
             style={{
-              position: "absolute",
-              left: 90,
-              right: 90,
-              top: 640,
               display: "flex",
-              justifyContent: "center",
               alignItems: "center",
-              gap: 40,
-              perspective: 1200,
-              opacity: 1 - keysOut,
-              transform: `translateY(${-260 * keysOut}px) scale(${1 - 0.4 * keysOut})`,
+              gap: 16,
+              padding: "18px 36px",
+              borderRadius: 50,
+              background: "rgba(245,165,36,0.18)",
+              border: `2px solid ${COL.amber}`,
+              fontFamily: MONO,
+              fontWeight: 700,
+              fontSize: 42,
+              color: AMBER_TEXT,
+              opacity: Math.min(modeOn, 1),
+              scale: `${interpolate(modeOn, [0, 1], [0.5, 1])}`,
             }}
           >
-            <div style={{ display: "flex", alignItems: "center", gap: 40, transform: `rotateX(22deg) rotateY(${Math.sin(frame / 30) * 6}deg)` }}>
-              <Key label="⇧ Shift" width={400} press={shiftPress} at={thirdAt + 2} />
-              <div style={{ fontFamily: c.fontStrong, fontSize: 80, color: "rgba(255,255,255,0.7)" }}>+</div>
-              <Key label="Tab ⇥" width={290} press={tabPress} at={thirdAt + 6} />
-            </div>
+            <Pause size={34} color={AMBER_TEXT} />
+            plan mode on
           </div>
-        ) : null}
-        {/* the plan card */}
-        {frame >= planAt - 2 ? (
-          <TiltCard at={planAt - 2} left={90} top={492} width={620} height={578} ry={14} rx={8} flat={ramp(frame, okAt, 16) * 0.8}>
-            <div style={{ display: "flex", alignItems: "center", gap: 20, padding: "38px 44px 18px" }}>
-              <div style={{ width: 20, height: 56, borderRadius: 10, background: HUE.violet, boxShadow: `0 0 24px ${HUE.violet}` }} />
-              <div style={{ fontFamily: c.fontStrong, fontSize: 64, color: "#fff" }}>{params.planTitle}</div>
-            </div>
-            <div style={{ padding: "0 44px", display: "flex", flexDirection: "column", gap: 14 }}>
-              {new Array(params.steps).fill(0).map((_, i) => {
-                const a = stepsAt - 4 + i * 4;
-                const p = ramp(frame, a, 10);
-                const np = pop(frame, a + 6);
-                const w = [0.85, 0.62, 0.74, 0.5, 0.68][i % 5];
+        </div>
+
+        {/* phase 2: the plan */}
+        <div
+          style={{
+            position: "absolute",
+            left: (1080 - CARD_W) / 2,
+            top: CARD_TOP,
+            width: CARD_W,
+            height: CARD_H,
+            opacity: cardIn > 0 ? 1 : 0,
+            translate: `0px ${(1 - cardIn) * 480 + float * cardIn}px`,
+            scale: `${cardScale}`,
+            transform: `perspective(1200px) rotateX(${(1 - cardIn) * 14}deg) rotateY(${(1 - cardIn) * -10 + Math.sin(frame / 34) * 1.2}deg)`,
+          }}
+        >
+          <TerminalCard
+            height={CARD_H}
+            right={
+              <div
+                style={{
+                  padding: "8px 20px",
+                  borderRadius: 30,
+                  background: approve > 0.5 ? COL.green : "rgba(245,165,36,0.2)",
+                  border: `2px solid ${approve > 0.5 ? COL.green : COL.amber}`,
+                  color: approve > 0.5 ? "#fff" : AMBER_TEXT,
+                  fontFamily: MONO,
+                  fontWeight: 700,
+                  fontSize: 28,
+                  boxShadow: approve > 0.5 ? `0 0 ${30 + Math.sin(frame / 5) * 12}px ${COL.green}` : "none",
+                  scale: `${interpolate(frame, [happyAt, happyAt + 3, happyAt + 10], [1, 1.15, 1], clamp)}`,
+                }}
+              >
+                <span style={{ display: "flex", alignItems: "center", gap: 10 }}>
+                  {approve > 0.5 ? "✓ approve" : <><Pause size={24} color={AMBER_TEXT} />plan mode</>}
+                </span>
+              </div>
+            }
+          >
+            <div style={{ position: "absolute", left: 44, top: 22, display: "flex", flexDirection: "column", gap: 4 }}>
+              {steps.map((s, i) => {
+                const p = prog(frame, stepsAt + i * 5, 12);
                 return (
-                  <div key={i} style={{ display: "flex", alignItems: "center", gap: 22, opacity: p, transform: `translateX(${-40 * (1 - p)}px)` }}>
+                  <div
+                    key={i}
+                    style={{
+                      height: 68,
+                      display: "flex",
+                      alignItems: "center",
+                      gap: 24,
+                      opacity: p,
+                      translate: `${(1 - p) * 40}px 0px`,
+                    }}
+                  >
                     <div
                       style={{
-                        width: 62,
-                        height: 62,
-                        borderRadius: 31,
-                        flexShrink: 0,
+                        width: 52,
+                        height: 52,
+                        borderRadius: 26,
+                        background: COL.amber,
+                        color: "#1b1206",
                         display: "flex",
                         alignItems: "center",
                         justifyContent: "center",
-                        background: "rgba(255,255,255,0.9)",
-                        color: "#0B0B10",
-                        fontFamily: c.fontStrong,
-                        fontSize: 34,
-                        transform: `scale(${0.6 + 0.4 * np})`,
+                        fontFamily: c.fontUi,
+                        fontWeight: 800,
+                        fontSize: 30,
                       }}
                     >
                       {i + 1}
                     </div>
-                    <div style={{ height: 22, width: 400 * w, borderRadius: 11, background: "rgba(255,255,255,0.35)" }} />
+                    <div style={{ fontFamily: c.fontUi, fontWeight: 700, fontSize: 44, color: "#fff" }}>{s}</div>
                   </div>
                 );
               })}
             </div>
-            <div
-              style={{
-                position: "absolute",
-                left: 44,
-                right: 44,
-                bottom: 40,
-                height: 96,
-                borderRadius: 48,
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                gap: 16,
-                fontFamily: c.fontStrong,
-                fontSize: 44,
-                color: "#fff",
-                background: okP > 0.05 ? c.accent : "rgba(255,255,255,0.1)",
-                border: "1.5px solid rgba(255,255,255,0.2)",
-                boxShadow: okP > 0.05 ? `0 0 50px ${c.accent}99` : "none",
-                transform: `scale(${1 + 0.06 * Math.sin(Math.min(1, okP) * Math.PI)})`,
-              }}
-            >
-              {okP > 0.05 ? <Check size={44} draw={Math.min(1, okP)} /> : null}
-              {params.button}
+            <div style={{ position: "absolute", left: 30, right: 30, top: 322, height: 1.5, background: "rgba(255,255,255,0.1)" }} />
+            <div style={{ position: "absolute", left: 30, top: 348, display: "flex", gap: 16 }}>
+              {files.map((f, i) => {
+                const show = Math.min(pop(frame, filesAt + i * 3, 13, 180), 1.06);
+                const lock = Math.min(pop(frame, lockAt - 6 + i * 2, 11, 200), 1.1);
+                return (
+                  <div
+                    key={i}
+                    style={{
+                      width: 262,
+                      height: 104,
+                      borderRadius: 26,
+                      boxSizing: "border-box",
+                      background: "rgba(255,255,255,0.06)",
+                      border: `2px solid ${lock > 0.5 ? "rgba(245,165,36,0.6)" : "rgba(255,255,255,0.1)"}`,
+                      display: "flex",
+                      alignItems: "center",
+                      gap: 12,
+                      padding: "0 18px",
+                      position: "relative",
+                      opacity: Math.min(1, show),
+                      scale: `${interpolate(show, [0, 1], [0.6, 1])}`,
+                    }}
+                  >
+                    <FileIcon size={44} color="rgba(255,255,255,0.7)" />
+                    <div style={{ fontFamily: MONO, fontWeight: 700, fontSize: 32, color: "#fff" }}>{f}</div>
+                    <div
+                      style={{
+                        position: "absolute",
+                        right: -14,
+                        top: -24,
+                        width: 62,
+                        height: 62,
+                        borderRadius: 20,
+                        background: COL.amber,
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        boxShadow: `0 8px 20px rgba(0,0,0,0.4), 0 0 24px ${COL.amber}88`,
+                        scale: `${lock * lockPunch}`,
+                      }}
+                    >
+                      <LockIcon size={36} color="#1b1206" open={lockSnap} />
+                    </div>
+                  </div>
+                );
+              })}
             </div>
-          </TiltCard>
-        ) : null}
-        {/* the files beside it, locked */}
-        {[0, 1, 2].map((i) => {
-          const p = fileIn(i);
-          const lp = pop(frame, lockAt + i * 3);
-          const fy = Math.sin((frame + i * 20) / 16) * 7;
-          return (
-            <div
-              key={i}
-              style={{
-                position: "absolute",
-                left: 760,
-                top: 520 + i * 182,
-                width: 210,
-                height: 160,
-                opacity: Math.min(1, p * 1.5),
-                transform: `translateY(${fy}px) scale(${0.5 + 0.5 * p}) rotate(${(i - 1) * 4}deg)`,
-                ...glass(210, { display: "flex", alignItems: "center", justifyContent: "center", borderRadius: 30 }),
-              }}
-            >
-              <FileIcon size={92} color="rgba(255,255,255,0.75)" />
-              <div
-                style={{
-                  position: "absolute",
-                  right: -16,
-                  bottom: -16,
-                  width: 84,
-                  height: 84,
-                  borderRadius: 42,
-                  background: HUE.violet,
-                  boxShadow: `0 0 30px ${HUE.violet}`,
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  transform: `scale(${lp})`,
-                }}
-              >
-                <LockIcon size={48} />
-              </div>
-            </div>
-          );
-        })}
+          </TerminalCard>
+        </div>
+
+        <Dock fill={[1, 1, Math.min(pop(frame, slotAt, 12, 180), 1.08)]} active={frame >= slotAt ? 2 : 1} />
       </Camera>
-      <Dock hue={HUE.violet} filled={2} active={2} moveFrom={1} fillAt={modeAt} labels={labels} />
-      <Headline
-        lines={[
-          { text: `*${params.label}*`, at: wordFrame(words, "plan", 9) },
-          { text: params.title1, at: planAt },
-          { text: params.title2, at: notAt },
-          { text: params.title3, at: okAt },
-        ]}
-      />
     </AbsoluteFill>
   );
 }

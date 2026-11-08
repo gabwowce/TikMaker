@@ -37,7 +37,7 @@ export const VISUAL_STYLES: Record<VisualStyleId, VisualStyle> = {
     label: "Depth",
     description: "Glass cards tilted in 3D, springy motion, a dock, a camera that never stops, a new background colour every scene",
     skill: "tikmaker-depth",
-    reviewImagesDir: ".claude/skills/tikmaker-depth/references",
+    reviewSheet: "depth-glass",
     reviewNote:
       "STYLE depth: 2.5D glass cards tilted in perspective, one focal card ~78 % wide, layered depth, a scene-coloured background orb, max 5 headline words",
   },

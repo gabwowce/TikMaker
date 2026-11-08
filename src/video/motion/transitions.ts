@@ -70,9 +70,71 @@ export function transitionStyle(
         transform: `perspective(${PERSPECTIVE}px) rotateY(${FLIP_FROM * inProgress}deg)`,
         backfaceVisibility: "hidden",
       };
+    case "dissolve":
+      return {
+        opacity: 1 - inProgress,
+        filter: inProgress > 0.01 ? `blur(${inProgress * 16}px)` : undefined,
+        transform: `scale(${1 + inProgress * 0.04})`,
+      };
+    case "flash":
+      // arrives overexposed and settles into its colours
+      return {
+        filter: inProgress > 0.01 ? `brightness(${1 + inProgress * 3})` : undefined,
+        opacity: Math.min(1, (1 - inProgress) * 3),
+      };
     default: {
       const { axis, sign } = DIRECTIONS[preset];
       const translate = inProgress * 100 * sign;
+      return {
+        transform:
+          axis === "x"
+            ? `translateX(${translate}%)`
+            : `translateY(${translate}%)`,
+      };
+    }
+  }
+}
+
+// The scene that is leaving, during the next scene's first PUSH_FRAMES
+// (SceneRenderer draws both while they overlap): the other half of the move,
+// so the old picture goes out the way the new one comes in.
+export function exitTransitionStyle(
+  preset: TransitionPreset | undefined,
+  frameInTransition: number,
+): CSSProperties {
+  if (!preset || preset === "cut") return {};
+  const out = interpolate(frameInTransition, [0, PUSH_FRAMES], [0, 1], {
+    extrapolateLeft: "clamp",
+    extrapolateRight: "clamp",
+    easing: standardEasing,
+  });
+  switch (preset) {
+    case "zoomThrough":
+      return {
+        transform: `scale(${1 + out * 0.6})`,
+        opacity: 1 - out,
+        filter: out > 0.01 ? `blur(${out * 12}px)` : undefined,
+      };
+    case "fromDepth":
+      return { transform: `scale(${1 + out * 0.15})`, opacity: 1 - out };
+    case "flip":
+      return {
+        transform: `perspective(${PERSPECTIVE}px) rotateY(${90 * out}deg)`,
+        backfaceVisibility: "hidden",
+      };
+    case "dissolve":
+      return {
+        opacity: 1 - out,
+        filter: out > 0.01 ? `blur(${out * 16}px)` : undefined,
+      };
+    case "flash":
+      return {
+        filter: `brightness(${1 + out * 4})`,
+        opacity: 1 - Math.max(0, out - 0.5) * 2,
+      };
+    default: {
+      const { axis, sign } = DIRECTIONS[preset];
+      const translate = -out * 100 * sign;
       return {
         transform:
           axis === "x"

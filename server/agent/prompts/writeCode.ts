@@ -98,9 +98,29 @@ Rules:
   Fix it and look again.
 - Do not ask questions – nobody is there to answer. Decide.
 - At the end answer with JSON: for every scene you wrote its sceneIndex (from 0), one
-  sentence of what the viewer sees, and its stage ("top" unless the scene is a
-  full-screen recording); the voiceover words the captions should draw bold
+  sentence of what the viewer sees, its stage ("top" unless the scene is a
+  full-screen recording) and its transition; the voiceover words the captions should draw bold
   (keywords, 1–2 per scene); and wishes – what the kit or the logo library lacked.
+- Real pictures: ${style.id === "depth" ? "this style is built on them – a drawn website or app looks cheap. Get" : "where the style uses a real logo, site or screen, get"} the real thing
+  with \`npx tsx scripts/asset.ts\` (folder = your folder name; it prints the path to use
+  with \`asset(path)\` from the brand kit inside an <Img>, or as a field's default):
+  - \`screenshot <folder> <name> <url> [--full] [--dark] [--width=1280 --height=800]\` –
+    a website: the tool's official page, its GitHub repo, its docs, a pricing page;
+  - \`scroll <folder> <name> <url> [--seconds=6]\` – a video of a page scrolling down;
+  - \`logo <folder> <name> <brand> [--white]\` – a brand logo as SVG (Simple Icons);
+  - \`photo <folder> <name> "<what>"\` – a real photo (Pexels) when one is needed;
+  - \`tikmaker <folder> <name> <steps.json>\` – a recording of TikMaker itself, clicking
+    through its editor (write the steps file in your folder, e.g.
+    [{"click":"Visuals"},{"type":"my idea","into":"Video idea"},{"wait":800}]).
+  If a command fails (no network, no key), draw that part instead and say so in wishes.
+  Never draw a fake screenshot of a real website.
+- Transition: for every scene after the first, how it comes in from the one before
+  (transition). The video draws BOTH scenes during the change (~12 frames): the old
+  one goes out the way the new one comes in – so do not fade your own scene in at its
+  start, and keep its first frame already composed. Kinds: cut, push / slideLeft /
+  slideRight / slideUp / slideDown (the next item of a list), zoomThrough (diving into
+  a detail), fromDepth, flip, dissolve (a soft change of mood), flash (a burst of light
+  – into a light scene, a reveal). Follow the style skill on which to use.
 - Sound: for every scene, 0–2 sound effects on its key moments (sounds: the spoken
   word the moment lands on, and the kind). Never play sound in the code – the video
   puts these on the timeline from its library. Only moments the picture makes: the
@@ -197,6 +217,8 @@ export async function writeCode(
       `Edit(src/generated/${job.folder}/**)`,
       "Bash(npx tsc:*)",
       "Bash(npx remotion still:*)",
+      // real pictures: screenshots, logos, photos, TikMaker recordings
+      "Bash(npx tsx scripts/asset.ts:*)",
     ],
     timeoutMs: (job.write.length > 1 ? 45 : 20) * 60_000,
   };

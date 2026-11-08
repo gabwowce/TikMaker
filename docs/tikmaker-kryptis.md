@@ -255,3 +255,23 @@ kompozicijos lapą ir tik **savo** stiliaus pavyzdžius.
 Bandymas `code-depth` (tas pats scenarijus, be kūrėjo kadrų – tik tekstas ir
 analizės): 9 min, savipatikra – „visos scenos skaitosi gerai“. Palyginimas
 `docs/eksperimentai/clear-vs-depth.jpg`.
+
+### Depth v2 (pagal kūrėjos 13 kadrų) + tikri vaizdai + perėjimai
+
+- **Perėjimai variklyje:** kai scena ateina su judesiu, ankstesnė scena
+  piešiama po ja dar 12 kadrų ir išeina priešinga kryptimi (push/slide,
+  zoomThrough, fromDepth, flip, nauji `dissolve` ir `flash`). Agentas
+  kiekvienai scenai pasirenka `transition`; ranka keičiama Motion skiltyje.
+- **Tikri vaizdai (`scripts/asset.ts`):** `screenshot` (svetainė naršyklės
+  kortelei), `scroll` (puslapio slinkimo įrašas), `logo` (Simple Icons, CC0),
+  `photo` (Pexels, reikia `PEXELS_API_KEY`), `tikmaker` (Playwright pats
+  spaudo TikMaker redaktorių ir įrašo – argo idėja). Naudoja Remotion jau
+  turimą Chrome; failai – `public/assets/agent/<projektas>/`. Agentui leista
+  `Bash(npx tsx scripts/asset.ts:*)`.
+- **Depth skilas perrašytas pagal kadrus** (`references/01…13-*.jpg`, lapas
+  `reference-frames/depth-glass.png`): tikri logotipai ir svetainės stiklinėse
+  kortelėse, kiekvienos scenos spalva, ~1 iš 4 scenų šviesi, didžiulis blankus
+  motyvas fone, antraštė 1–2 eilutės `fontUi`, „dock“, perėjimų taisyklės.
+  Brand kit: `SCENE_COLORS`, `DARK_BG`, `LIGHT_BG`, `asset()`.
+- Bandymas `code-depth` (be interneto GitHub'ui): 11 min, agentas pats
+  atsisiuntė Claude Code dokumentacijos ekranus ir logotipus.

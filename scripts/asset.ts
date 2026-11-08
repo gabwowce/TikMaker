@@ -1,0 +1,204 @@
+// Real pictures for the agent's code scenes (docs/tikmaker-kryptis.md):
+// instead of drawing a website, a logo or a screen, the agent fetches the real
+// thing. Every file lands in public/assets/agent/<folder>/ and the command
+// prints the path a scene uses (`<Img src={staticFile(...)}>` – or through
+// a field.photo / field.recording default, so the creator can swap it).
+//
+//   npx tsx scripts/asset.ts screenshot <folder> <name> <url> [--full] [--width=1280] [--height=800] [--dark]
+//   npx tsx scripts/asset.ts scroll     <folder> <name> <url> [--seconds=6]      (a video scrolling down the page)
+//   npx tsx scripts/asset.ts logo       <folder> <name> <brand>                  (Simple Icons, CC0)
+//   npx tsx scripts/asset.ts photo      <folder> <name> "<what>"                 (Pexels, needs PEXELS_API_KEY)
+//   npx tsx scripts/asset.ts tikmaker   <folder> <name> <steps.json>              (records TikMaker itself)
+//
+// tikmaker steps: [{ "goto": "/" }, { "click": "Visuals" }, { "type": "text", "into": "Video idea" },
+//                  { "wait": 1000 }, { "scroll": 400 }] – the editor must be running (npm run dev).
+import { ensureBrowser } from "@remotion/renderer";
+import { config as loadEnv } from "dotenv";
+import fs from "node:fs";
+import path from "node:path";
+import { chromium, type Page } from "playwright-core";
+import * as icons from "simple-icons";
+
+loadEnv({ path: path.resolve(".env.local") });
+
+const [command, folder, name, ...rest] = process.argv.slice(2);
+const flags = Object.fromEntries(
+  rest
+    .filter((arg) => arg.startsWith("--"))
+    .map((arg) => {
+      const [key, value] = arg.slice(2).split("=");
+      return [key, value ?? "true"];
+    }),
+);
+const target = rest.find((arg) => !arg.startsWith("--")) ?? "";
+
+if (!command || !folder || !name || !/^[\w-]+$/.test(folder) || !/^[\w-]+$/.test(name)) {
+  fail("usage: asset.ts <screenshot|scroll|logo|photo|tikmaker> <folder> <name> <url|brand|query|steps.json>");
+}
+const outDir = path.resolve("public", "assets", "agent", folder);
+fs.mkdirSync(outDir, { recursive: true });
+const publicPath = (file: string) => `/assets/agent/${folder}/${file}`;
+
+function fail(message: string): never {
+  console.error(message);
+  process.exit(1);
+}
+
+// The Chrome Remotion already uses for renders – no second browser to install.
+async function browserPath(): Promise<string> {
+  if (process.env.REMOTION_BROWSER_EXECUTABLE) return process.env.REMOTION_BROWSER_EXECUTABLE;
+  await ensureBrowser();
+  const root = path.resolve("node_modules", ".remotion", "chrome-headless-shell");
+  const find = (dir: string): string | undefined => {
+    for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+      const full = path.join(dir, entry.name);
+      if (entry.isDirectory()) {
+        const found = find(full);
+        if (found) return found;
+      } else if (/^chrome-headless-shell(\.exe)?$/.test(entry.name)) return full;
+    }
+    return undefined;
+  };
+  const found = fs.existsSync(root) ? find(root) : undefined;
+  if (!found) fail("No Chrome found – run a Remotion render once, or set REMOTION_BROWSER_EXECUTABLE");
+  return found;
+}
+
+async function withPage<T>(
+  options: { width: number; height: number; dark?: boolean; video?: string },
+  work: (page: Page) => Promise<T>,
+): Promise<T> {
+  const browser = await chromium.launch({ executablePath: await browserPath() });
+  try {
+    const context = await browser.newContext({
+      viewport: { width: options.width, height: options.height },
+      deviceScaleFactor: 2,
+      colorScheme: options.dark ? "dark" : "light",
+      ...(options.video
+        ? { recordVideo: { dir: options.video, size: { width: options.width, height: options.height } } }
+        : {}),
+    });
+    const page = await context.newPage();
+    const result = await work(page);
+    await context.close();
+    return result;
+  } finally {
+    await browser.close();
+  }
+}
+
+// Cookie banners and pop-ups hide what the picture is for: the usual
+// "accept / close" buttons are pressed if they are there.
+async function clearPopups(page: Page) {
+  for (const label of [/accept all/i, /^accept$/i, /agree/i, /got it/i, /^close$/i, /no thanks/i]) {
+    const button = page.getByRole("button", { name: label }).first();
+    if (await button.isVisible({ timeout: 300 }).catch(() => false))
+      await button.click({ timeout: 1000 }).catch(() => {});
+  }
+}
+
+async function screenshot() {
+  if (!/^https?:\/\//.test(target)) fail("screenshot needs a full http(s) URL");
+  const file = `${name}.png`;
+  await withPage(
+    { width: Number(flags.width ?? 1280), height: Number(flags.height ?? 800), dark: flags.dark === "true" },
+    async (page) => {
+      await page.goto(target, { waitUntil: "networkidle", timeout: 45_000 }).catch(() =>
+        page.goto(target, { waitUntil: "load", timeout: 45_000 }),
+      );
+      await clearPopups(page);
+      await page.waitForTimeout(800);
+      await page.screenshot({ path: path.join(outDir, file), fullPage: flags.full === "true" });
+    },
+  );
+  console.log(publicPath(file));
+}
+
+// A page scrolling down slowly – "real screen" footage of a website.
+async function scroll() {
+  if (!/^https?:\/\//.test(target)) fail("scroll needs a full http(s) URL");
+  const seconds = Number(flags.seconds ?? 6);
+  const dir = fs.mkdtempSync(path.join(outDir, ".rec-"));
+  await withPage({ width: 1080, height: 1350, video: dir }, async (page) => {
+    await page.goto(target, { waitUntil: "load", timeout: 45_000 });
+    await clearPopups(page);
+    await page.waitForTimeout(600);
+    const steps = seconds * 30;
+    for (let i = 0; i < steps; i++) {
+      await page.mouse.wheel(0, 6);
+      await page.waitForTimeout(1000 / 30);
+    }
+  });
+  console.log(moveRecording(dir));
+}
+
+async function tikmaker() {
+  const steps = JSON.parse(fs.readFileSync(target, "utf-8")) as Record<string, unknown>[];
+  const base = process.env.TIKMAKER_URL ?? "http://localhost:5173";
+  const dir = fs.mkdtempSync(path.join(outDir, ".rec-"));
+  await withPage({ width: 1600, height: 1000, video: dir }, async (page) => {
+    await page.goto(base, { waitUntil: "load" });
+    await page.waitForTimeout(2500);
+    for (const step of steps) {
+      if (typeof step.goto === "string") await page.goto(new URL(step.goto, base).href);
+      else if (typeof step.click === "string")
+        await page.getByText(step.click, { exact: false }).first().click({ timeout: 5000 });
+      else if (typeof step.type === "string") {
+        const field =
+          typeof step.into === "string" ? page.getByLabel(step.into).first() : page.locator(":focus");
+        await field.pressSequentially(step.type, { delay: 45 });
+      } else if (typeof step.scroll === "number") await page.mouse.wheel(0, step.scroll);
+      await page.waitForTimeout(typeof step.wait === "number" ? step.wait : 700);
+    }
+  });
+  console.log(moveRecording(dir));
+}
+
+// Playwright writes the video under a random name: give it ours.
+function moveRecording(dir: string): string {
+  const video = fs.readdirSync(dir).find((f) => f.endsWith(".webm"));
+  if (!video) fail("The recording was not written");
+  const file = `${name}.webm`;
+  fs.renameSync(path.join(dir, video), path.join(outDir, file));
+  fs.rmSync(dir, { recursive: true, force: true });
+  return publicPath(file);
+}
+
+// A brand's logo from Simple Icons (CC0): an SVG in the brand's colour, or
+// white with --white (for a dark card).
+function logo() {
+  const wanted = target.toLowerCase().replace(/[^a-z0-9]/g, "");
+  const all = Object.values(icons) as { title: string; slug: string; svg: string; hex: string }[];
+  const icon =
+    all.find((i) => i.slug === wanted) ??
+    all.find((i) => i.title.toLowerCase().replace(/[^a-z0-9]/g, "") === wanted);
+  if (!icon) fail(`No logo "${target}" in Simple Icons – take a screenshot of the brand's site instead`);
+  const colour = flags.white === "true" ? "#ffffff" : `#${icon.hex}`;
+  const file = `${name}.svg`;
+  fs.writeFileSync(path.join(outDir, file), icon.svg.replace("<svg ", `<svg fill="${colour}" `));
+  console.log(publicPath(file));
+}
+
+// A photo from Pexels (free to use, no attribution needed).
+async function photo() {
+  const key = process.env.PEXELS_API_KEY;
+  if (!key) fail("No PEXELS_API_KEY in .env.local – use a screenshot or ask the creator for a photo");
+  const orientation = flags.orientation ?? "portrait";
+  const response = await fetch(
+    `https://api.pexels.com/v1/search?per_page=1&orientation=${orientation}&query=${encodeURIComponent(target)}`,
+    { headers: { Authorization: key } },
+  );
+  if (!response.ok) fail(`Pexels ${response.status}`);
+  const found = (await response.json()) as { photos: { src: { large2x: string }; photographer: string }[] };
+  const first = found.photos[0];
+  if (!first) fail(`No photo for "${target}"`);
+  const image = await fetch(first.src.large2x);
+  const file = `${name}.jpg`;
+  fs.writeFileSync(path.join(outDir, file), Buffer.from(await image.arrayBuffer()));
+  console.log(publicPath(file));
+}
+
+const commands: Record<string, () => unknown> = { screenshot, scroll, logo, photo, tikmaker };
+const run = commands[command];
+if (!run) fail(`Unknown command "${command}"`);
+await run();
