@@ -1,19 +1,17 @@
 ---
 name: tikmaker-explainer
-description: The TikMaker genre and brand kit – short educational / story TikToks explained with few big flat shapes and icons, text drawn as grey bars, one orange focus, in the channel's own look. How to write a TikMaker code scene (src/generated/<project>/scene-N.tsx). Use together with the official Remotion skill (remotion-best-practices).
+description: TikMaker visual style "clear" – few big flat shapes and icons, text drawn as grey bars, one orange focus, a lot of calm dark space, on the video's own backdrop. Use with tikmaker-scene (the scene file contract) and the official Remotion skill.
 ---
 
-# TikMaker explainer
+# TikMaker style: clear
 
 TikMaker videos teach one thing or tell one story in under a minute: facts,
 "3 Claude Code mistakes", how-tos, a tool explained with its real screen. They
 must **hook and hold** – and look good enough that people want the tool that
 made them. Simple to understand, with a "wow" in how it moves.
 
-Every scene of a video is a **code scene**: one file
-`src/generated/<project>/scene-N.tsx` whose component draws that scene's
-picture. The video around it is already there – the backdrop, the voice and
-the captions; the scene draws only the picture.
+This skill is the LOOK. How a scene file is written (zone, brand kit,
+fields, sound, technical) is in `.claude/skills/tikmaker-scene/SKILL.md`.
 
 ## The look: clear at a glance, not detailed
 
@@ -78,38 +76,10 @@ thing, big, a lot of calm space, the words big – is
 The squint test: blur the frame in your head – is it still obvious where to
 look and what is happening? If not, cut elements until it is.
 
-## The picture zone
+## Background, cards, motion
 
-- Stage "top" (default): the captions are drawn by the video at y 1130–1340.
-  The picture zone is **y 200–1080**, side margins ≥ 90 px. Nothing of yours
-  below y 1090.
-- Stage "full" (only for a full-screen recording): the picture may fill the
-  frame; the captions sit at y 1400–1600 over it – keep that band calm.
-
-## The brand kit (fixed – do not invent your own)
-
-Import from `src/video/brand/kit.tsx` (relative path from the scene file:
-`../../video/brand/kit`):
-
-- `useBrand()` → colours and fonts: `bg`, `text`, `textSoft`, `accent` (the
-  ONLY accent colour), `border`; fonts `fontStrong` / `fontSemi` /
-  `fontRegular` – **one family, use only these** (plus `fontUi` for text inside
-  an app, `MONO` for code/terminals). No other fonts, no other colours except
-  neutral white/grey at low opacity and black shadows.
-- `CAPTION_TOP` (1130).
-- `<PhotoSlot src find look width height />` – a real photo the creator adds
-  ("cutout" or "card"); `src` comes from a `field.photo`, `find` is an exact
-  description of the picture to find.
-- `<RecordingSlot src record at width height />` – a real screen recording;
-  `src` from a `field.recording`, `record` says exactly what to record (app,
-  clicks, what appears, start/stop).
-- `<Logo id size />` – a tool's logo from the library (ids:
-  `src/registries/assets.generated.ts`).
-- `field` – the editable fields (below); `wordFrame(words, word, fallback)` –
-  the frame a word is said on.
-
-Do not draw a background (the backdrop is there) and do not draw the spoken
-words as captions (the captions are there).
+Do not draw a background – the video's dark backdrop is the background in
+this style, the same in every scene.
 
 Cards: radius ≈ 3.8 % of their width, 1px border `rgba(255,255,255,0.12)`,
 two shadows `0 4px 12px rgba(0,0,0,0.3), 0 24px 64px rgba(0,0,0,0.5)`.
@@ -117,54 +87,3 @@ Entrances `Easing.bezier(0.16, 1, 0.3, 1)`, 9–14 frames, a 1.02 overshoot on
 cards; bouncy (`bezier(0.34, 1.56, 0.64, 1)`) only for stickers and small
 icons. Exits fast (6–8 frames).
 
-## A scene file
-
-```tsx
-import { z } from "zod";
-import { AbsoluteFill, interpolate, useCurrentFrame, Easing } from "remotion";
-import { field, PhotoSlot, useBrand, wordFrame } from "../../video/brand/kit";
-import type { CodeSceneProps } from "../../video/code/types";
-
-// One line: what the viewer sees (shown in the editor and to the reviewer).
-export const description = "One chat window grows taller and taller; its fuel bar drains to red";
-
-// What the creator may change without code – every field with a default.
-export const schema = z.object({
-  label: field.text("The one label", "/clear"),
-  messages: field.number("Chat bubbles", 8, { min: 2, max: 12 }),
-  drainsOn: field.word("Fuel drains on", "everything"),
-});
-type Params = z.infer<typeof schema>;
-
-export default function Scene3({ words, durationInFrames, params }: CodeSceneProps<Params>) {
-  const frame = useCurrentFrame();
-  const c = useBrand();
-  const drain = wordFrame(words, params.drainsOn, 30) - 3;
-  // … one window (grey bars for the messages), one orange fuel bar
-  return <AbsoluteFill>{/* the main object centred in y 200–1080 */}</AbsoluteFill>;
-}
-```
-
-The contract:
-- `export default` the component; it gets `index`, `durationInFrames`,
-  `voiceover`, `words` (every spoken word: `text`, `frame`, `endFrame`, frames
-  from the scene's start) and `params` (the schema's values).
-- `export const schema` – the few words on screen (the one label), the
-  numbers that matter, the photo / recording slots and the words things
-  happen on, made with `field.*`
-  (`text`, `number`, `toggle`, `choice`, `photo`, `recording`, `word`). The
-  creator edits them in a form; everything else (layout, motion) stays in code.
-- `export const description` – one sentence, what the picture shows.
-- Self-contained: imports only `remotion`, `react`, `zod`, the brand kit,
-  `../../video/code/types` and files in its own folder (`./shared`).
-
-## Technical
-
-- Remotion 4.0.290: `useCurrentFrame`, `useVideoConfig`, `interpolate` (clamp
-  both sides), `spring`, `Easing`, `Sequence`, `AbsoluteFill`, `Img`,
-  `random(seed)`. No newer APIs (`Interactive`, `Easing.spring`,
-  `perceptual-scale`, `@remotion/effects`), no new packages, no CSS
-  animations – the frame is the only clock.
-- The frame inside a scene starts at 0 at the scene's start and ends at
-  `durationInFrames - 1`.
-- TypeScript strict: the project must still pass `npx tsc --noEmit -p .`.

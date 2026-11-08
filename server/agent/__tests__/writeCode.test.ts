@@ -82,6 +82,15 @@ describe("writeCodePrompt", () => {
     );
   });
 
+  it("reads the shared scene skill and the chosen style's skill only", () => {
+    expect(system).toContain(".claude/skills/tikmaker-scene/SKILL.md");
+    expect(system).toContain('visual style is "clear"');
+    const depth = writeCodePrompt({ ...job, style: "depth" }).system;
+    expect(depth).toContain(".claude/skills/tikmaker-depth/SKILL.md");
+    expect(depth).toContain(".claude/skills/tikmaker-scene/SKILL.md");
+    expect(depth).not.toContain("tikmaker-explainer");
+  });
+
   it("lists the channel's saved visuals", () => {
     expect(user).toContain("Fuel gauge: A gauge that drains (code: knowledge/workspaces/dev/visuals/fuel/code.tsx)");
   });

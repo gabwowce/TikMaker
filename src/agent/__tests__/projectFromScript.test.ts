@@ -23,6 +23,7 @@ const run = {
     motionOnly: false,
     withFace: false,
     generateVoice: false,
+    visualStyle: "clear",
   },
   template: { videoTemplateId: "how-to-steps", pickedBy: "agent" },
   script: {

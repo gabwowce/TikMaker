@@ -3,6 +3,11 @@ import type { IdeaFromUser } from "../../../src/agent/run/1-idea.js";
 import type { SceneFromAi } from "../../../src/agent/run/3-script.js";
 import { codeFromAi, type CodeFromAi } from "../../../src/agent/run/4-code.js";
 import { SOUND_USES } from "../../../src/agent/soundCues.js";
+import {
+  VISUAL_STYLES,
+  type VisualStyle,
+  type VisualStyleId,
+} from "../../../src/agent/visualStyles.js";
 import type { SceneWord } from "../../../src/video/code/types.js";
 import { callClaudeCodeAgent, WrongShapeError } from "../claudeCode.js";
 import { claudeModel } from "../models.js";
@@ -56,24 +61,29 @@ export type CodeJob = {
   // the props file `remotion still` renders the video from
   propsFile: string;
   visuals: SavedVisualBrief[];
+  // the look of the pictures (src/agent/visualStyles.ts); unset – "clear"
+  style?: VisualStyleId;
 };
 
-const SYSTEM = `You are the motion designer of TikMaker: you write the pictures of a short
+const system = (style: VisualStyle) => `You are the motion designer of TikMaker: you write the pictures of a short
 vertical video (1080x1920, 30 fps) as Remotion code – one file per scene. The voice,
-the captions and the backdrop are already in the video; you write only the pictures.
+the captions and the backdrop are already in the video; you write the pictures.
+
+This video's visual style is "${style.id}": ${style.description}.
 
 Before writing, read with the Read tool:
-1. .claude/skills/tikmaker-explainer/SKILL.md – the genre, the brand kit and the
-   scene file contract – and the example frames it points to: the STYLE examples
-   (.claude/skills/tikmaker-explainer/references/ – how things are drawn: flat shapes,
-   grey bars for text, one orange focus) and the COMPOSITION sheet
-   (knowledge/shared/reference-frames/insiderforce.png – how a frame is laid out: one
-   dominant thing, big, a lot of calm space). Follow it exactly.
-2. .claude/skills/remotion-best-practices/remotion-markup/REFERENCE.md – how to write
+1. .claude/skills/tikmaker-scene/SKILL.md – how a scene file is written: the picture
+   zone, the brand kit, the editable fields, sound, the technical limits.
+2. .claude/skills/${style.skill}/SKILL.md – the LOOK of this style – and the example
+   frames and notes it points to (.claude/skills/${style.skill}/references/). Also the
+   COMPOSITION sheet knowledge/shared/reference-frames/insiderforce.png – how a vertical
+   frame is laid out: one dominant thing, big, calm space. Follow the style exactly; do
+   not mix in another style.
+3. .claude/skills/remotion-best-practices/remotion-markup/REFERENCE.md – how to write
    Remotion markup right (open the pages it points to that you need: timing,
    sequencing, transitions, text-highlights). Ignore anything about starting Studio,
    creating projects or installing packages.
-3. src/video/brand/kit.tsx, src/video/brand/fields.ts and src/video/code/types.ts.
+4. src/video/brand/kit.tsx, src/video/brand/fields.ts and src/video/code/types.ts.
 
 Rules:
 - Write ONLY in the folder you are given (src/generated/<folder>/). Never touch other
@@ -82,11 +92,10 @@ Rules:
   frame numbers in the brief – they are only there for you to plan.
 - Check your work: run \`npx tsc --noEmit -p .\` until nothing in your folder fails.
   Then render a frame or two of every scene you wrote with the command in the brief
-  and look at the PNG with Read, next to the skill's example frames: can it be taken
-  in at a glance (2–6 big flat things, no text to read – text as grey bars, one real
-  word or number at most), is there exactly ONE orange focus with the rest grey or
-  dimmed, is the main object big, does nothing overlap, is nothing under the captions
-  band? Cut elements until it is that clear, and look again.
+  and look at the PNG with Read, next to the style's example frames: does it look like
+  this style, can it be taken in at a glance (one focal thing, no small text to read),
+  is the main object big, does nothing overlap, is nothing under the captions band?
+  Fix it and look again.
 - Do not ask questions – nobody is there to answer. Decide.
 - At the end answer with JSON: for every scene you wrote its sceneIndex (from 0), one
   sentence of what the viewer sees, and its stage ("top" unless the scene is a
@@ -143,7 +152,7 @@ Keep what was not asked to change. Keep the file name, keep the schema's field n
     ? `\n\nThe last try did not compile – fix these first:\n${job.errors.join("\n")}`
     : "";
   return {
-    system: SYSTEM,
+    system: system(VISUAL_STYLES[job.style ?? "clear"]),
     user: `${channel}
 
 The video: ${job.input.idea}

@@ -6,7 +6,12 @@ import type {
   ReviewInMessage,
 } from "../../../src/agent/run/7-chat.js";
 import type { VideoProject } from "../../../src/schema/project.js";
-import { KNOWLEDGE_DIR } from "../../config.js";
+import {
+  STYLE_SHEETS,
+  VISUAL_STYLES,
+  type VisualStyle,
+} from "../../../src/agent/visualStyles.js";
+import { KNOWLEDGE_DIR, ROOT } from "../../config.js";
 import { agentFolder } from "../claudeCode.js";
 import { builtProject, rewriteCodeScenes, savedProject } from "../codeScenes.js";
 import type { Job } from "../job.js";
@@ -66,14 +71,23 @@ async function reviewProject(
     `${Date.now()}`,
   );
   const stills = await render(project, folder);
-  // the example sheets go in the same folder, so the Read tool may open them
-  const references = job.knowledge.referenceSheets.flatMap((sheet) => {
-    const from = path.join(KNOWLEDGE_DIR, "shared", sheet.file);
-    if (!fs.existsSync(from)) return [];
-    const file = path.join(folder, `example-${path.basename(sheet.file)}`);
-    fs.copyFileSync(from, file);
-    return [{ sheet, file }];
-  });
+  // the example sheets go in the same folder, so the Read tool may open them:
+  // the composition sheets, this video's style sheet (never another
+  // style's), and the style's own example frames
+  const style = VISUAL_STYLES[job.run.input.visualStyle ?? "clear"];
+  const sheets = job.knowledge.referenceSheets.filter(
+    (sheet) => !STYLE_SHEETS.includes(sheet.id) || sheet.id === style.reviewSheet,
+  );
+  const references = [
+    ...sheets.flatMap((sheet) => {
+      const from = path.join(KNOWLEDGE_DIR, "shared", sheet.file);
+      if (!fs.existsSync(from)) return [];
+      const file = path.join(folder, `example-${path.basename(sheet.file)}`);
+      fs.copyFileSync(from, file);
+      return [{ sheet, file }];
+    }),
+    ...styleImages(style, folder),
+  ];
   const review = await job.ai("reviewFrames", () =>
     reviewFrames(script.scenes, code, stills, {
       rubric: job.knowledge.reviewRubric,
@@ -82,6 +96,32 @@ async function reviewProject(
     }),
   );
   return reviewResult(review, script.scenes.length);
+}
+
+// The style's own example frames (its skill's references folder), at most 8,
+// as one more set of examples.
+function styleImages(style: VisualStyle, folder: string) {
+  if (!style.reviewImagesDir) return [];
+  const dir = path.join(ROOT, style.reviewImagesDir);
+  if (!fs.existsSync(dir)) return [];
+  return fs
+    .readdirSync(dir)
+    .filter((name) => /\.(png|jpe?g|webp)$/i.test(name))
+    .slice(0, 8)
+    .map((name) => {
+      const file = path.join(folder, `style-${name}`);
+      fs.copyFileSync(path.join(dir, name), file);
+      return {
+        sheet: {
+          id: `${style.id}-${name}`,
+          file: name,
+          source: `${style.reviewNote} – the creator's example frame`,
+          tiles: [name],
+          takeaways: [style.description],
+        },
+        file,
+      };
+    });
 }
 
 export async function step7Review(
