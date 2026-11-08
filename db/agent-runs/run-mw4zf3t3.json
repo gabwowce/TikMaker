@@ -3,13 +3,16 @@
   "projectId": "project-1793969945652",
   "createdAt": 1793970000903,
   "status": "paused",
+  "error": "The server restarted while the agent was working.",
+  "pausedFrom": "answering",
   "input": {
     "idea": "3 Claude Code mistakes that burn your tokens: 1) one endless session – the context grows, every message resends everything; fix: /clear or a new session per task. 2) letting it read the whole repo – fix: point it at the files. 3) no CLAUDE.md – it rediscovers the project every time; fix: write the basics once. Show the money burning, then the fix for each.",
     "workspaceId": "dev",
     "targetSeconds": 45,
     "motionOnly": false,
     "withFace": false,
-    "generateVoice": true
+    "generateVoice": true,
+    "visualStyle": "clear"
   },
   "template": {
     "videoTemplateId": "tool-tips-keyword",
@@ -873,7 +876,7 @@
           "instruction": "Look at frames of the built video and propose what to fix"
         }
       ],
-      "status": "working"
+      "status": "waiting"
     }
   ],
   "steps": [
@@ -2160,7 +2163,5 @@
         "confirm": false
       }
     }
-  ],
-  "pausedFrom": "answering",
-  "error": "The server restarted while the agent was working."
+  ]
 }

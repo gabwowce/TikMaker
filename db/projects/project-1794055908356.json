@@ -74,10 +74,10 @@
       "id": "scene-run-mw6eoazf-4",
       "plan": {
         "role": "demo",
-        "visualBrief": "The flipping planner is gone. A calendar card now scrolls upward in one smooth, eased glide, and every week holds the same grey 'plan content' task. It slows to a stop, the week in the middle turns orange, the other weeks dim, and an orange ring draws around that task."
+        "visualBrief": "A weekly content calendar scrolls past weeks that all hold the same idea and script task. It stops on this week, which lights orange and gets circled, a repeat badge spins on, and a pencil slowly fills in the idea bar and then the script bar by hand."
       },
-      "durationSeconds": 4.808,
-      "vo": "First, pick one repetitive task. Here it's planning content every single week.",
+      "durationSeconds": 10.288,
+      "vo": "First, pick one task you repeat. Like this one: every single week, filling this content calendar with new ideas and scripts by hand.",
       "background": "stage",
       "content": {},
       "code": {
@@ -94,10 +94,10 @@
       "id": "scene-run-mw6eoazf-5",
       "plan": {
         "role": "demo",
-        "visualBrief": "A Claude Code terminal opens, an orange prompt line types and flies down into the empty ID badge, which now reads 'Content Strategist'."
+        "visualBrief": "A Claude Code terminal opens and 'You are my content strategist' types out as big orange text, the line drops into a CLAUDE.md file that gets a check, and on every restart the line flies back up into the terminal."
       },
-      "durationSeconds": 5.087,
-      "vo": "Second, open Claude Code and give the agent its role: you are my content strategist.",
+      "durationSeconds": 17.3,
+      "vo": "Second, open Claude Code and give your agent its role: you are my content strategist. Save that line in a file called CLAUDE.md. It's a permanent instruction file. Claude Code reads it every time it starts, so your agent remembers its role and you can reuse it, instead of typing it again from scratch.",
       "background": "stage",
       "content": {},
       "code": {
@@ -154,10 +154,10 @@
       "id": "scene-run-mw6eoazf-8",
       "plan": {
         "role": "demo",
-        "visualBrief": "The Claude agent spins above three stations (trends, ideas, scripts), and an orange spark hops along them, lighting and filling each one in turn."
+        "visualBrief": "The Claude agent lights three stations in turn (trends → ideas → scripts), then the pipeline shrinks to the top and an 'Every week' scheduled-task card appears: a start button gets struck out and each week fills with a new script by itself."
       },
-      "durationSeconds": 5.7829999999999995,
-      "vo": "Now let it work. It finds what's trending, turns each topic into an idea, and writes a script for it.",
+      "durationSeconds": 18.694000000000003,
+      "vo": "Now let it work. On its own, it searches the web for what's trending, turns each topic into a content idea, and writes a full script for every one. Then make it a scheduled task that runs every week. No prompting, no hitting start. Every week, fresh ideas and scripts keep landing in your calendar without you lifting a finger.",
       "background": "stage",
       "content": {},
       "code": {
@@ -194,10 +194,10 @@
       "id": "scene-run-mw6eoazf-10",
       "plan": {
         "role": "payoff",
-        "visualBrief": "In front of the blurred, finished calendar the chat bubble is struck through in orange and falls away as the 'Content Strategist' badge slides in."
+        "visualBrief": "The chat bubble is struck out in orange and falls away. The 'Content Strategist' badge slides in and gets an orange schedule clock, then moves up while a calendar fills row by row. On 'every week' the clock spins and a new week's calendar fills in front of the stack."
       },
-      "durationSeconds": 4.39,
-      "vo": "That's not a chatbot anymore. That's an AI employee doing a real job for you.",
+      "durationSeconds": 10.381,
+      "vo": "That's not a one-off chatbot anymore. It's an AI employee. It remembers its role, runs on its schedule, and fills your content calendar on its own, every single week.",
       "background": "stage",
       "content": {},
       "code": {
@@ -232,7 +232,9 @@
     }
   ],
   "captions": {
-    "style": "kinetic",
+    "y": 64.5,
+    "size": 70,
+    "style": "pill",
     "keywords": [
       "AI employee",
       "60",
@@ -249,10 +251,17 @@
       "employee",
       "comment",
       "Claude Code",
-      "every single week"
+      "every single week",
+      "CLAUDE.md",
+      "once",
+      "remembers",
+      "scheduled task",
+      "every week",
+      "repeat",
+      "by hand"
     ]
   },
-  "savedAt": 1794117153538,
+  "savedAt": 1794126377345,
   "audioClips": [
     {
       "id": "sfx-run-mw6eoazf-2-1",
@@ -275,22 +284,6 @@
       "sfxId": "soft-whoosh",
       "from": 297,
       "durationInFrames": 17,
-      "lane": 1,
-      "volume": 0.55
-    },
-    {
-      "id": "sfx-run-mw6eoazf-5-1",
-      "sfxId": "type-word",
-      "from": 689,
-      "durationInFrames": 7,
-      "lane": 1,
-      "volume": 0.55
-    },
-    {
-      "id": "sfx-run-mw6eoazf-5-2",
-      "sfxId": "d-fix",
-      "from": 713,
-      "durationInFrames": 6,
       "lane": 1,
       "volume": 0.55
     },
@@ -327,38 +320,6 @@
       "volume": 0.55
     },
     {
-      "id": "sfx-run-mw6eoazf-8-1",
-      "sfxId": "d-ping",
-      "from": 1240,
-      "durationInFrames": 5,
-      "lane": 1,
-      "volume": 0.55
-    },
-    {
-      "id": "sfx-run-mw6eoazf-9-1",
-      "sfxId": "d-done",
-      "from": 1502,
-      "durationInFrames": 7,
-      "lane": 1,
-      "volume": 0.55
-    },
-    {
-      "id": "sfx-run-mw6eoazf-10-1",
-      "sfxId": "d-break",
-      "from": 1542,
-      "durationInFrames": 9,
-      "lane": 1,
-      "volume": 0.55
-    },
-    {
-      "id": "sfx-run-mw6eoazf-10-2",
-      "sfxId": "paper-slide",
-      "from": 1598,
-      "durationInFrames": 21,
-      "lane": 1,
-      "volume": 0.55
-    },
-    {
       "id": "sfx-run-mw6eoazf-11-1",
       "sfxId": "type-word",
       "from": 1675,
@@ -367,18 +328,50 @@
       "volume": 0.55
     },
     {
-      "id": "sfx-run-mw6eoazf-1-1",
-      "sfxId": "soft-whoosh",
-      "from": 16,
-      "durationInFrames": 17,
-      "lane": 1,
-      "volume": 0.55
-    },
-    {
       "id": "sfx-run-mw6eoazf-1-2",
       "sfxId": "d-done",
       "from": 49,
       "durationInFrames": 7,
+      "lane": 1,
+      "volume": 0.55
+    },
+    {
+      "id": "sfx-run-mw6eoazf-8-2",
+      "sfxId": "d-break",
+      "from": 1940,
+      "durationInFrames": 9,
+      "lane": 1,
+      "volume": 0.55
+    },
+    {
+      "id": "sfx-run-mw6eoazf-10-2",
+      "sfxId": "d-pop",
+      "from": 2450,
+      "durationInFrames": 5,
+      "lane": 1,
+      "volume": 0.55
+    },
+    {
+      "id": "sfx-run-mw6eoazf-10-3",
+      "sfxId": "paper-slide",
+      "from": 2545,
+      "durationInFrames": 21,
+      "lane": 1,
+      "volume": 0.55
+    },
+    {
+      "id": "sfx-run-mw6eoazf-5-1",
+      "sfxId": "type-word",
+      "from": 868,
+      "durationInFrames": 7,
+      "lane": 1,
+      "volume": 0.55
+    },
+    {
+      "id": "sfx-run-mw6eoazf-5-2",
+      "sfxId": "paper-slide",
+      "from": 919,
+      "durationInFrames": 21,
       "lane": 1,
       "volume": 0.55
     },
@@ -669,163 +662,413 @@
     },
     {
       "id": "audio-run-mw6eoazf-scene-run-mw6eoazf-4",
-      "sfxId": "vo-run-mw6eoazf-scene-4-mw6eu7dh",
+      "sfxId": "vo-run-mw6eoazf-scene-4-mw7jqaeg",
       "from": 453,
-      "durationInFrames": 144,
+      "durationInFrames": 309,
       "volume": 1,
-      "voiceText": "First, pick one repetitive task. Here it's planning content every single week.",
+      "voiceText": "First, pick one task you repeat. Like this one: every single week, filling this content calendar with new ideas and scripts by hand.",
       "words": [
         {
           "text": "First,",
           "start": 0,
-          "end": 0.441
+          "end": 0.522
         },
         {
           "text": "pick",
-          "start": 0.592,
-          "end": 0.778
+          "start": 0.65,
+          "end": 0.836
         },
         {
           "text": "one",
-          "start": 0.882,
-          "end": 1.08
+          "start": 0.964,
+          "end": 1.173
         },
         {
-          "text": "repetitive",
-          "start": 1.115,
-          "end": 1.533
+          "text": "task",
+          "start": 1.207,
+          "end": 1.521
         },
         {
-          "text": "task.",
-          "start": 1.556,
-          "end": 1.962
+          "text": "you",
+          "start": 1.625,
+          "end": 1.73
         },
         {
-          "text": "Here",
-          "start": 2.171,
-          "end": 2.357
+          "text": "repeat.",
+          "start": 1.8,
+          "end": 2.229
         },
         {
-          "text": "it's",
-          "start": 2.392,
-          "end": 2.519
+          "text": "Like",
+          "start": 2.566,
+          "end": 2.763
         },
         {
-          "text": "planning",
-          "start": 2.554,
-          "end": 2.81
+          "text": "this",
+          "start": 2.798,
+          "end": 2.937
         },
         {
-          "text": "content",
-          "start": 2.856,
-          "end": 3.251
+          "text": "one:",
+          "start": 3.007,
+          "end": 3.355
         },
         {
           "text": "every",
-          "start": 3.402,
-          "end": 3.646
+          "start": 3.796,
+          "end": 4.04
         },
         {
           "text": "single",
-          "start": 3.68,
-          "end": 3.913
+          "start": 4.087,
+          "end": 4.354
         },
         {
-          "text": "week.",
-          "start": 3.947,
-          "end": 4.458
+          "text": "week,",
+          "start": 4.389,
+          "end": 4.76
+        },
+        {
+          "text": "filling",
+          "start": 4.865,
+          "end": 5.143
+        },
+        {
+          "text": "this",
+          "start": 5.224,
+          "end": 5.387
+        },
+        {
+          "text": "content",
+          "start": 5.457,
+          "end": 5.805
+        },
+        {
+          "text": "calendar",
+          "start": 5.84,
+          "end": 6.223
+        },
+        {
+          "text": "with",
+          "start": 6.351,
+          "end": 6.525
+        },
+        {
+          "text": "new",
+          "start": 6.629,
+          "end": 6.757
+        },
+        {
+          "text": "ideas",
+          "start": 6.803,
+          "end": 7.221
+        },
+        {
+          "text": "and",
+          "start": 7.303,
+          "end": 7.43
+        },
+        {
+          "text": "scripts",
+          "start": 7.5,
+          "end": 7.848
+        },
+        {
+          "text": "by",
+          "start": 7.953,
+          "end": 8.092
+        },
+        {
+          "text": "hand.",
+          "start": 8.162,
+          "end": 9.938
         }
       ]
     },
     {
       "id": "audio-run-mw6eoazf-scene-run-mw6eoazf-5",
-      "sfxId": "vo-run-mw6eoazf-scene-5-mw6eu7qz",
-      "from": 597,
-      "durationInFrames": 153,
+      "sfxId": "vo-run-mw6eoazf-scene-5-mw7hb7yl",
+      "from": 762,
+      "durationInFrames": 519,
       "volume": 1,
-      "voiceText": "Second, open Claude Code and give the agent its role: you are my content strategist.",
+      "voiceText": "Second, open Claude Code and give your agent its role: you are my content strategist. Save that line in a file called CLAUDE.md. It's a permanent instruction file. Claude Code reads it every time it starts, so your agent remembers its role and you can reuse it, instead of typing it again from scratch.",
       "words": [
         {
           "text": "Second,",
           "start": 0,
-          "end": 0.499
+          "end": 0.58
         },
         {
           "text": "open",
-          "start": 0.65,
-          "end": 0.894
+          "start": 0.859,
+          "end": 1.115
         },
         {
           "text": "Claude",
-          "start": 0.94,
-          "end": 1.149
+          "start": 1.161,
+          "end": 1.382
         },
         {
           "text": "Code",
-          "start": 1.184,
-          "end": 1.44
+          "start": 1.416,
+          "end": 1.695
         },
         {
           "text": "and",
-          "start": 1.474,
-          "end": 1.591
+          "start": 1.73,
+          "end": 1.881
         },
         {
           "text": "give",
-          "start": 1.66,
-          "end": 1.8
+          "start": 1.962,
+          "end": 2.113
         },
         {
-          "text": "the",
-          "start": 1.834,
-          "end": 1.904
+          "text": "your",
+          "start": 2.148,
+          "end": 2.264
         },
         {
           "text": "agent",
-          "start": 1.962,
-          "end": 2.229
+          "start": 2.31,
+          "end": 2.612
         },
         {
           "text": "its",
-          "start": 2.264,
-          "end": 2.368
+          "start": 2.659,
+          "end": 2.775
         },
         {
           "text": "role:",
-          "start": 2.415,
-          "end": 2.752
+          "start": 2.833,
+          "end": 3.228
         },
         {
           "text": "you",
-          "start": 3.135,
-          "end": 3.239
+          "start": 3.611,
+          "end": 3.715
         },
         {
           "text": "are",
-          "start": 3.286,
-          "end": 3.39
+          "start": 3.762,
+          "end": 3.866
         },
         {
           "text": "my",
-          "start": 3.425,
-          "end": 3.495
+          "start": 3.901,
+          "end": 3.971
         },
         {
           "text": "content",
-          "start": 3.564,
-          "end": 3.913
+          "start": 4.04,
+          "end": 4.4
         },
         {
           "text": "strategist.",
-          "start": 3.947,
-          "end": 4.737
+          "start": 4.435,
+          "end": 5.085
+        },
+        {
+          "text": "Save",
+          "start": 5.294,
+          "end": 5.515
+        },
+        {
+          "text": "that",
+          "start": 5.55,
+          "end": 5.677
+        },
+        {
+          "text": "line",
+          "start": 5.724,
+          "end": 5.944
+        },
+        {
+          "text": "in",
+          "start": 5.979,
+          "end": 6.049
+        },
+        {
+          "text": "a",
+          "start": 6.084,
+          "end": 6.107
+        },
+        {
+          "text": "file",
+          "start": 6.165,
+          "end": 6.467
+        },
+        {
+          "text": "called",
+          "start": 6.513,
+          "end": 6.803
+        },
+        {
+          "text": "CLAUDE.md.",
+          "start": 6.908,
+          "end": 8.092
+        },
+        {
+          "text": "It's",
+          "start": 8.371,
+          "end": 8.557
+        },
+        {
+          "text": "a",
+          "start": 8.591,
+          "end": 8.615
+        },
+        {
+          "text": "permanent",
+          "start": 8.719,
+          "end": 9.114
+        },
+        {
+          "text": "instruction",
+          "start": 9.172,
+          "end": 9.613
+        },
+        {
+          "text": "file.",
+          "start": 9.66,
+          "end": 10.054
+        },
+        {
+          "text": "Claude",
+          "start": 10.333,
+          "end": 10.588
+        },
+        {
+          "text": "Code",
+          "start": 10.623,
+          "end": 10.867
+        },
+        {
+          "text": "reads",
+          "start": 10.902,
+          "end": 11.088
+        },
+        {
+          "text": "it",
+          "start": 11.122,
+          "end": 11.203
+        },
+        {
+          "text": "every",
+          "start": 11.273,
+          "end": 11.517
+        },
+        {
+          "text": "time",
+          "start": 11.552,
+          "end": 11.714
+        },
+        {
+          "text": "it",
+          "start": 11.749,
+          "end": 11.807
+        },
+        {
+          "text": "starts,",
+          "start": 11.842,
+          "end": 12.295
+        },
+        {
+          "text": "so",
+          "start": 12.446,
+          "end": 12.55
+        },
+        {
+          "text": "your",
+          "start": 12.608,
+          "end": 12.724
+        },
+        {
+          "text": "agent",
+          "start": 12.771,
+          "end": 13.049
+        },
+        {
+          "text": "remembers",
+          "start": 13.084,
+          "end": 13.409
+        },
+        {
+          "text": "its",
+          "start": 13.444,
+          "end": 13.549
+        },
+        {
+          "text": "role",
+          "start": 13.595,
+          "end": 13.816
+        },
+        {
+          "text": "and",
+          "start": 13.851,
+          "end": 14.001
+        },
+        {
+          "text": "you",
+          "start": 14.048,
+          "end": 14.118
+        },
+        {
+          "text": "can",
+          "start": 14.152,
+          "end": 14.257
+        },
+        {
+          "text": "reuse",
+          "start": 14.303,
+          "end": 14.594
+        },
+        {
+          "text": "it,",
+          "start": 14.628,
+          "end": 14.768
+        },
+        {
+          "text": "instead",
+          "start": 14.826,
+          "end": 15.104
+        },
+        {
+          "text": "of",
+          "start": 15.128,
+          "end": 15.186
+        },
+        {
+          "text": "typing",
+          "start": 15.22,
+          "end": 15.511
+        },
+        {
+          "text": "it",
+          "start": 15.546,
+          "end": 15.604
+        },
+        {
+          "text": "again",
+          "start": 15.638,
+          "end": 15.836
+        },
+        {
+          "text": "from",
+          "start": 15.894,
+          "end": 16.033
+        },
+        {
+          "text": "scratch.",
+          "start": 16.08,
+          "end": 16.95
         }
       ]
     },
     {
       "id": "audio-run-mw6eoazf-scene-run-mw6eoazf-6",
       "sfxId": "vo-run-mw6eoazf-scene-6-mw6eu8ae",
-      "from": 750,
+      "from": 1281,
       "durationInFrames": 272,
       "volume": 1,
       "voiceText": "Third, write its responsibilities. Research trending topics. Generate content ideas. Write the scripts. And organize everything into a content calendar.",
@@ -935,7 +1178,7 @@
     {
       "id": "audio-run-mw6eoazf-scene-run-mw6eoazf-7",
       "sfxId": "vo-run-mw6eoazf-scene-7-mw6eu8ol",
-      "from": 1022,
+      "from": 1553,
       "durationInFrames": 168,
       "volume": 1,
       "voiceText": "Fourth, give it access to what it needs: the web to research, and your Google Sheet for the calendar.",
@@ -1039,118 +1282,318 @@
     },
     {
       "id": "audio-run-mw6eoazf-scene-run-mw6eoazf-8",
-      "sfxId": "vo-run-mw6eoazf-scene-8-mw6eu93t",
-      "from": 1190,
-      "durationInFrames": 173,
+      "sfxId": "vo-run-mw6eoazf-scene-8-mw7heuyd",
+      "from": 1721,
+      "durationInFrames": 561,
       "volume": 1,
-      "voiceText": "Now let it work. It finds what's trending, turns each topic into an idea, and writes a script for it.",
+      "voiceText": "Now let it work. On its own, it searches the web for what's trending, turns each topic into a content idea, and writes a full script for every one. Then make it a scheduled task that runs every week. No prompting, no hitting start. Every week, fresh ideas and scripts keep landing in your calendar without you lifting a finger.",
       "words": [
         {
           "text": "Now",
           "start": 0,
-          "end": 0.174
+          "end": 0.279
         },
         {
           "text": "let",
-          "start": 0.232,
-          "end": 0.337
+          "start": 0.464,
+          "end": 0.592
         },
         {
           "text": "it",
-          "start": 0.372,
-          "end": 0.43
+          "start": 0.627,
+          "end": 0.685
         },
         {
           "text": "work.",
-          "start": 0.464,
-          "end": 0.789
+          "start": 0.72,
+          "end": 1.091
         },
         {
-          "text": "It",
-          "start": 1.068,
-          "end": 1.184
+          "text": "On",
+          "start": 1.37,
+          "end": 1.521
         },
         {
-          "text": "finds",
-          "start": 1.231,
-          "end": 1.463
+          "text": "its",
+          "start": 1.556,
+          "end": 1.66
         },
         {
-          "text": "what's",
-          "start": 1.486,
-          "end": 1.683
+          "text": "own,",
+          "start": 1.707,
+          "end": 2.032
         },
         {
-          "text": "trending,",
-          "start": 1.718,
-          "end": 2.159
+          "text": "it",
+          "start": 2.241,
+          "end": 2.357
         },
         {
-          "text": "turns",
-          "start": 2.206,
-          "end": 2.45
+          "text": "searches",
+          "start": 2.392,
+          "end": 2.694
         },
         {
-          "text": "each",
-          "start": 2.554,
-          "end": 2.728
+          "text": "the",
+          "start": 2.728,
+          "end": 2.798
         },
         {
-          "text": "topic",
-          "start": 2.775,
-          "end": 3.1
-        },
-        {
-          "text": "into",
-          "start": 3.158,
-          "end": 3.332
-        },
-        {
-          "text": "an",
-          "start": 3.402,
-          "end": 3.46
-        },
-        {
-          "text": "idea,",
-          "start": 3.506,
-          "end": 4.005
-        },
-        {
-          "text": "and",
-          "start": 4.11,
-          "end": 4.249
-        },
-        {
-          "text": "writes",
-          "start": 4.284,
-          "end": 4.493
-        },
-        {
-          "text": "a",
-          "start": 4.528,
-          "end": 4.563
-        },
-        {
-          "text": "script",
-          "start": 4.598,
-          "end": 4.841
+          "text": "web",
+          "start": 2.833,
+          "end": 3.03
         },
         {
           "text": "for",
-          "start": 4.876,
-          "end": 4.992
+          "start": 3.088,
+          "end": 3.193
         },
         {
-          "text": "it.",
-          "start": 5.05,
-          "end": 5.433
+          "text": "what's",
+          "start": 3.239,
+          "end": 3.437
+        },
+        {
+          "text": "trending,",
+          "start": 3.471,
+          "end": 3.947
+        },
+        {
+          "text": "turns",
+          "start": 4.156,
+          "end": 4.4
+        },
+        {
+          "text": "each",
+          "start": 4.505,
+          "end": 4.679
+        },
+        {
+          "text": "topic",
+          "start": 4.725,
+          "end": 5.039
+        },
+        {
+          "text": "into",
+          "start": 5.108,
+          "end": 5.283
+        },
+        {
+          "text": "a",
+          "start": 5.352,
+          "end": 5.387
+        },
+        {
+          "text": "content",
+          "start": 5.433,
+          "end": 5.782
+        },
+        {
+          "text": "idea,",
+          "start": 5.817,
+          "end": 6.304
+        },
+        {
+          "text": "and",
+          "start": 6.455,
+          "end": 6.583
+        },
+        {
+          "text": "writes",
+          "start": 6.618,
+          "end": 6.827
+        },
+        {
+          "text": "a",
+          "start": 6.861,
+          "end": 6.896
+        },
+        {
+          "text": "full",
+          "start": 6.978,
+          "end": 7.175
+        },
+        {
+          "text": "script",
+          "start": 7.221,
+          "end": 7.488
+        },
+        {
+          "text": "for",
+          "start": 7.535,
+          "end": 7.639
+        },
+        {
+          "text": "every",
+          "start": 7.744,
+          "end": 7.988
+        },
+        {
+          "text": "one.",
+          "start": 8.034,
+          "end": 8.359
+        },
+        {
+          "text": "Then",
+          "start": 8.696,
+          "end": 8.858
+        },
+        {
+          "text": "make",
+          "start": 8.905,
+          "end": 9.056
+        },
+        {
+          "text": "it",
+          "start": 9.091,
+          "end": 9.16
+        },
+        {
+          "text": "a",
+          "start": 9.195,
+          "end": 9.218
+        },
+        {
+          "text": "scheduled",
+          "start": 9.265,
+          "end": 9.59
+        },
+        {
+          "text": "task",
+          "start": 9.613,
+          "end": 9.915
+        },
+        {
+          "text": "that",
+          "start": 9.961,
+          "end": 10.089
+        },
+        {
+          "text": "runs",
+          "start": 10.124,
+          "end": 10.333
+        },
+        {
+          "text": "every",
+          "start": 10.438,
+          "end": 10.681
+        },
+        {
+          "text": "week.",
+          "start": 10.716,
+          "end": 11.088
+        },
+        {
+          "text": "No",
+          "start": 11.424,
+          "end": 11.564
+        },
+        {
+          "text": "prompting,",
+          "start": 11.622,
+          "end": 12.249
+        },
+        {
+          "text": "no",
+          "start": 12.434,
+          "end": 12.551
+        },
+        {
+          "text": "hitting",
+          "start": 12.62,
+          "end": 12.841
+        },
+        {
+          "text": "start.",
+          "start": 12.876,
+          "end": 13.247
+        },
+        {
+          "text": "Every",
+          "start": 13.526,
+          "end": 13.77
+        },
+        {
+          "text": "week,",
+          "start": 13.804,
+          "end": 14.13
+        },
+        {
+          "text": "fresh",
+          "start": 14.28,
+          "end": 14.501
+        },
+        {
+          "text": "ideas",
+          "start": 14.547,
+          "end": 14.907
+        },
+        {
+          "text": "and",
+          "start": 14.977,
+          "end": 15.082
+        },
+        {
+          "text": "scripts",
+          "start": 15.14,
+          "end": 15.465
+        },
+        {
+          "text": "keep",
+          "start": 15.65,
+          "end": 15.825
+        },
+        {
+          "text": "landing",
+          "start": 15.883,
+          "end": 16.138
+        },
+        {
+          "text": "in",
+          "start": 16.173,
+          "end": 16.219
+        },
+        {
+          "text": "your",
+          "start": 16.254,
+          "end": 16.37
+        },
+        {
+          "text": "calendar",
+          "start": 16.417,
+          "end": 16.777
+        },
+        {
+          "text": "without",
+          "start": 16.846,
+          "end": 17.102
+        },
+        {
+          "text": "you",
+          "start": 17.136,
+          "end": 17.218
+        },
+        {
+          "text": "lifting",
+          "start": 17.264,
+          "end": 17.496
+        },
+        {
+          "text": "a",
+          "start": 17.531,
+          "end": 17.554
+        },
+        {
+          "text": "finger.",
+          "start": 17.601,
+          "end": 18.344
         }
       ]
     },
     {
       "id": "audio-run-mw6eoazf-scene-run-mw6eoazf-9",
       "sfxId": "vo-run-mw6eoazf-scene-9-mw6eu9jl",
-      "from": 1363,
+      "from": 2282,
       "durationInFrames": 172,
       "volume": 1,
       "voiceText": "And here's the result: your content calendar in Google Sheets, filled in with ideas and scripts.",
@@ -1239,20 +1682,20 @@
     },
     {
       "id": "audio-run-mw6eoazf-scene-run-mw6eoazf-10",
-      "sfxId": "vo-run-mw6eoazf-scene-10-mw6eu9yw",
-      "from": 1535,
-      "durationInFrames": 132,
+      "sfxId": "vo-run-mw6eoazf-scene-10-mw7hieoa",
+      "from": 2454,
+      "durationInFrames": 311,
       "volume": 1,
-      "voiceText": "That's not a chatbot anymore. That's an AI employee doing a real job for you.",
+      "voiceText": "That's not a one-off chatbot anymore. It's an AI employee. It remembers its role, runs on its schedule, and fills your content calendar on its own, every single week.",
       "words": [
         {
           "text": "That's",
           "start": 0,
-          "end": 0.267
+          "end": 0.255
         },
         {
           "text": "not",
-          "start": 0.302,
+          "start": 0.29,
           "end": 0.406
         },
         {
@@ -1261,71 +1704,141 @@
           "end": 0.464
         },
         {
+          "text": "one-off",
+          "start": 0.569,
+          "end": 0.859
+        },
+        {
           "text": "chatbot",
-          "start": 0.499,
-          "end": 0.824
+          "start": 0.906,
+          "end": 1.265
         },
         {
           "text": "anymore.",
-          "start": 0.859,
-          "end": 1.277
-        },
-        {
-          "text": "That's",
-          "start": 1.428,
-          "end": 1.66
-        },
-        {
-          "text": "an",
-          "start": 1.695,
+          "start": 1.3,
           "end": 1.765
         },
         {
+          "text": "It's",
+          "start": 2.043,
+          "end": 2.229
+        },
+        {
+          "text": "an",
+          "start": 2.264,
+          "end": 2.334
+        },
+        {
           "text": "AI",
-          "start": 1.846,
-          "end": 2.136
+          "start": 2.438,
+          "end": 2.844
         },
         {
-          "text": "employee",
-          "start": 2.183,
-          "end": 2.519
+          "text": "employee.",
+          "start": 2.891,
+          "end": 3.379
         },
         {
-          "text": "doing",
-          "start": 2.554,
-          "end": 2.74
+          "text": "It",
+          "start": 3.657,
+          "end": 3.762
         },
         {
-          "text": "a",
-          "start": 2.775,
-          "end": 2.798
+          "text": "remembers",
+          "start": 3.796,
+          "end": 4.145
         },
         {
-          "text": "real",
-          "start": 2.902,
-          "end": 3.088
+          "text": "its",
+          "start": 4.18,
+          "end": 4.284
         },
         {
-          "text": "job",
-          "start": 3.146,
-          "end": 3.344
+          "text": "role,",
+          "start": 4.331,
+          "end": 4.737
         },
         {
-          "text": "for",
-          "start": 3.39,
-          "end": 3.495
+          "text": "runs",
+          "start": 4.946,
+          "end": 5.143
         },
         {
-          "text": "you.",
-          "start": 3.541,
-          "end": 4.04
+          "text": "on",
+          "start": 5.19,
+          "end": 5.259
+        },
+        {
+          "text": "its",
+          "start": 5.294,
+          "end": 5.399
+        },
+        {
+          "text": "schedule,",
+          "start": 5.422,
+          "end": 5.979
+        },
+        {
+          "text": "and",
+          "start": 6.13,
+          "end": 6.258
+        },
+        {
+          "text": "fills",
+          "start": 6.304,
+          "end": 6.502
+        },
+        {
+          "text": "your",
+          "start": 6.536,
+          "end": 6.653
+        },
+        {
+          "text": "content",
+          "start": 6.687,
+          "end": 7.036
+        },
+        {
+          "text": "calendar",
+          "start": 7.07,
+          "end": 7.465
+        },
+        {
+          "text": "on",
+          "start": 7.57,
+          "end": 7.721
+        },
+        {
+          "text": "its",
+          "start": 7.755,
+          "end": 7.86
+        },
+        {
+          "text": "own,",
+          "start": 7.906,
+          "end": 8.255
+        },
+        {
+          "text": "every",
+          "start": 8.591,
+          "end": 8.858
+        },
+        {
+          "text": "single",
+          "start": 8.905,
+          "end": 9.183
+        },
+        {
+          "text": "week.",
+          "start": 9.218,
+          "end": 10.031
         }
       ]
     },
     {
       "id": "audio-run-mw6eoazf-scene-run-mw6eoazf-11",
       "sfxId": "vo-run-mw6eoazf-scene-11-mw6euaao",
-      "from": 1667,
+      "from": 2765,
       "durationInFrames": 107,
       "volume": 1,
       "voiceText": "Drop a comment if you want more AI employees built with Claude Code.",
@@ -1399,16 +1912,16 @@
     },
     {
       "id": "sfx-run-mw6eoazf-4-1",
-      "sfxId": "soft-whoosh",
-      "from": 484,
-      "durationInFrames": 17,
+      "sfxId": "d-ping",
+      "from": 535,
+      "durationInFrames": 5,
       "lane": 1,
       "volume": 0.55
     },
     {
       "id": "sfx-run-mw6eoazf-4-2",
-      "sfxId": "d-ping",
-      "from": 528,
+      "sfxId": "d-pop",
+      "from": 565,
       "durationInFrames": 5,
       "lane": 1,
       "volume": 0.55

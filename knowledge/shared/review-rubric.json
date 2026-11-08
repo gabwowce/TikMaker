@@ -26,8 +26,8 @@
   {
     "id": "nothing-covered",
     "level": "fix",
-    "check": "Is everything inside the frame and clear of the spoken caption?",
-    "fails": "A picture runs under the caption, off the frame, or two elements overlap where they should not."
+    "check": "Is everything inside the safe zone (x 130–900, y 250–1080 of 1080x1920) and clear of the spoken caption?",
+    "fails": "A picture runs under the caption or off the frame, two elements overlap where they should not, or something sits where the app draws its own buttons: the top ~13% of the frame (TikTok's top bar) or the right ~17% (the like/comment/share column) – there it is covered on the phone."
   },
   {
     "id": "fits-together",

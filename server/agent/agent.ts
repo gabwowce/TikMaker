@@ -167,14 +167,33 @@ export async function resumeRun(run: AgentRun): Promise<void> {
 // server that stopped (a restart, a crash), so nobody goes on with it. It is
 // paused the same way as at the usage limit – "Continue" picks it up from
 // where it was, and what it made before is kept.
+// A message the agent was on ("working") is put back in the queue
+// ("waiting"), so Continue takes it up again – nextWork only looks at waiting
+// ones, and a message left "working" stayed "The agent is on it…" for good.
+// That counts as interrupted work even when the run's status rests (a change
+// asked for after the video was built).
 export async function pauseInterruptedRuns(): Promise<void> {
   for (const run of await allRuns()) {
-    if (RESTING_STATUSES.includes(run.status)) continue;
+    const messages = run.messages ?? [];
+    const cutOff = messages.some((message) => message.status === "working");
+    const working = !RESTING_STATUSES.includes(run.status);
+    if (!working && !cutOff) continue;
     await saveRun({
       ...run,
-      status: "paused",
-      pausedFrom: run.status,
-      error: "The server restarted while the agent was working.",
+      messages: messages.map((message) =>
+        message.status === "working"
+          ? { ...message, status: "waiting" }
+          : message,
+      ),
+      ...(run.status === "paused"
+        ? {}
+        : {
+            status: "paused",
+            // a message cut off on a built video: Continue goes back to done
+            // and takes it up from there (resumeStatus)
+            pausedFrom: working ? run.status : "answering",
+            error: "The server restarted while the agent was working.",
+          }),
     });
   }
 }

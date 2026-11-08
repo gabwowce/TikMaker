@@ -94,7 +94,9 @@ Rules:
   Then render a frame or two of every scene you wrote with the command in the brief
   and look at the PNG with Read, next to the style's example frames: does it look like
   this style, can it be taken in at a glance (one focal thing, no small text to read),
-  is the main object big, does nothing overlap, is nothing under the captions band?
+  is the main object big, does nothing overlap, is nothing under the captions band,
+  is everything inside the safe zone (x 130–900, y 250–1080 – nothing under the app's
+  top bar or its right-side buttons, not even a small badge)?
   Fix it and look again.
 - Do not ask questions – nobody is there to answer. Decide.
 - At the end answer with JSON: for every scene you wrote its sceneIndex (from 0), one

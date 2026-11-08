@@ -71,7 +71,7 @@ export function StepPill({ n, frame }: { n: number; frame: number }) {
       style={{
         position: "absolute",
         left: 540 - 70,
-        top: 210,
+        top: 262, // below the app's top bar (safe zone starts at y 250)
         width: 140,
         height: 72,
         borderRadius: 36,
