@@ -13,7 +13,21 @@ import { ReviewView } from "./ReviewView";
 // its proposals with the "Do it" / "No" buttons – the only way a proposal is
 // accepted. Work the agent finishes is applied to the project here, scene by
 // scene, so changes made by hand to other scenes stay.
-export function ChatMessages({ run }: { run: AgentRun }) {
+//
+// `from` / `to`: only the messages sent in that time (the panel puts each
+// step's card where it happened, the messages around it); `watch`: the one
+// instance that applies finished work (the panel shows several).
+export function ChatMessages({
+  run,
+  from = -Infinity,
+  to = Infinity,
+  watch = true,
+}: {
+  run: AgentRun;
+  from?: number;
+  to?: number;
+  watch?: boolean;
+}) {
   const applyScene = useProjectStore((s) => s.applyAgentSceneEdit);
   const applyAll = useProjectStore((s) => s.applyAgentCode);
   const apply = (targets: ChatTarget[]) => applyTargets(run, targets);
@@ -38,6 +52,7 @@ export function ChatMessages({ run }: { run: AgentRun }) {
   // applying it unasked could overwrite a scene changed by hand since.
   const watching = useRef(new Set<string>());
   useEffect(() => {
+    if (!watch) return;
     for (const message of run.messages ?? []) {
       if (message.status === "waiting" || message.status === "working")
         watching.current.add(message.id);
@@ -50,7 +65,9 @@ export function ChatMessages({ run }: { run: AgentRun }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [run]);
 
-  const messages = run.messages ?? [];
+  const messages = (run.messages ?? []).filter(
+    (message) => message.at >= from && message.at < to,
+  );
   if (!messages.length) return null;
   return (
     <div className="flex flex-col gap-3">

@@ -824,6 +824,29 @@ describe("agent runs", () => {
     ).toBeGreaterThanOrEqual(2);
   });
 
+  it("queues several messages sent while the agent works, oldest first", async () => {
+    const { id } = await api.agent.start({
+      projectId: "p-queue",
+      input: { idea, workspaceId: "dev", hook: "My own opening line" },
+    });
+    // both sent at once – the second one is not refused, it waits in line
+    await api.agent.message({ runId: id, text: "Make it shorter" });
+    await api.agent.message({ runId: id, text: "Make it funnier" });
+    const run = await until(
+      id,
+      (run) =>
+        run.status === "awaiting_approval" &&
+        (run.messages ?? []).filter(
+          (message) => message.from === "user" && message.status === "done",
+        ).length === 2,
+    );
+    const asked = run.messages!.filter((message) => message.from === "user");
+    expect(asked.map((message) => message.text)).toEqual([
+      "Make it shorter",
+      "Make it funnier",
+    ]);
+  });
+
   it("skips the web search when the video needs no outside facts", async () => {
     const { id } = await api.agent.start({
       projectId: "p-facts",

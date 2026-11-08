@@ -2,8 +2,8 @@
   "id": "run-mw69ekpq",
   "projectId": "project-1794047225429",
   "createdAt": 1794047238494,
-  "status": "answering",
-  "statusAt": 1794055123452,
+  "status": "done",
+  "statusAt": 1794055466550,
   "input": {
     "idea": "How I make a TikTok with one sentence: I type an idea, the AI agent writes 3 hooks, I pick one, it writes the script, then it draws every scene as code and checks its own frames – and I get an MP4. Show the idea flowing through each step like a pipeline, ending in a finished phone video.",
     "workspaceId": "dev",
@@ -146,15 +146,26 @@
       },
       {
         "file": "project-1794047225429/scene-2.tsx",
-        "description": "In the agent panel a sentence types itself into the idea box, the orange Start button is pressed and the sentence flies up as a token to tick step 1.",
+        "description": "Starting from scene 1's exact last frame, the six dots slide off the curved pipe into a step rail at the top as the bubble and phone clear; then a sentence types into the idea box, orange Start is pressed and the token flies up to tick step 1.",
+        "history": [
+          {
+            "version": 1,
+            "description": "In the agent panel a sentence types itself into the idea box, the orange Start button is pressed and the sentence flies up as a token to tick step 1.",
+            "changedBy": "Show the steps at the top of the frame, starting in the same position and look as the step dots at the end of scene 1, so the transition between scene 1 and scene 2 is continuous; the rest of the scene stays as is."
+          }
+        ],
         "stage": "top",
         "sounds": [
           {
             "onWord": "type",
             "sound": "type"
+          },
+          {
+            "onWord": "Start.",
+            "sound": "tick"
           }
         ],
-        "version": 1
+        "version": 2
       },
       {
         "file": "project-1794047225429/scene-3.tsx",
@@ -257,7 +268,8 @@
       "Render",
       "download",
       "phone",
-      "comment"
+      "comment",
+      "one sentence"
     ],
     "wishes": [
       "A TikMaker logo in the logo library for the CTA wordmark",
@@ -267,7 +279,9 @@
       "A sanctioned 'success' colour (or rule) for check marks, since the kit allows only one accent",
       "A kit Button component (one real word, grey → accent, press animation)",
       "Scene 2 fades its step rail in from 0 over 8 frames (Rail opacity={prog(frame,0,8)}); with scene 1 now ending on the identical rail, that fade makes the rail blink at the cut. Drop the fade in scene 2 for a seamless carry.",
-      "A shared 'stage transform' helper in the kit (where a point inside a push-in/drift Stage sits on the canvas), so elements can be handed off between Stage and screen space exactly."
+      "A shared 'stage transform' helper in the kit (where a point inside a push-in/drift Stage sits on the canvas), so elements can be handed off between Stage and screen space exactly.",
+      "A shared 'continue from the previous scene' stage in the kit: each scene's Stage restarts its zoom and drift at frame 0, so every cut between scenes that should flow jumps a few pixels unless the scene works around it by hand",
+      "The shared Rail needs a smooth blend between 'no step active' and 'step N active' – today the active dot switches look in one frame, so scene 2 had to draw its own copy of the rail"
     ],
     "problems": []
   },
@@ -976,7 +990,25 @@
         ],
         "decision": "yes"
       },
-      "status": "working"
+      "status": "done",
+      "targets": [
+        {
+          "kind": "pictures",
+          "sceneIndex": 0,
+          "instruction": "Place the six step dots so that at the end of the scene they sit at the top of the frame, in the exact position and size where scene 2 will show the steps, so the animation can carry over into the next scene."
+        },
+        {
+          "kind": "pictures",
+          "sceneIndex": 1,
+          "instruction": "Show the steps at the top of the frame, starting in the same position and look as the step dots at the end of scene 1, so the transition between scene 1 and scene 2 is continuous; the rest of the scene stays as is."
+        }
+      ]
+    },
+    {
+      "id": "msg-mw6eaxiygubq",
+      "at": 1794055466554,
+      "from": "agent",
+      "text": "✓ Pakeisiu 1 ir 2 scenų paveikslėlius: pirmos scenos žingsnių taškai baigsis viršuje, o antroje scenoje tie patys žingsniai bus viršuje, kad animacija sklandžiai susijungtų. Patvirtinsi? (Undo in the Inspector brings the earlier version back.) (Undo in the Inspector brings the earlier version back.)"
     }
   ],
   "steps": [
@@ -1441,6 +1473,49 @@
         "wishes": [
           "Scene 2 fades its step rail in from 0 over 8 frames (Rail opacity={prog(frame,0,8)}); with scene 1 now ending on the identical rail, that fade makes the rail blink at the cut. Drop the fade in scene 2 for a seamless carry.",
           "A shared 'stage transform' helper in the kit (where a point inside a push-in/drift Stage sits on the canvas), so elements can be handed off between Stage and screen space exactly."
+        ]
+      }
+    },
+    {
+      "name": "writeCode",
+      "startedAt": 1794055241885,
+      "ms": 205260,
+      "model": "claude-opus-5-5",
+      "attempts": 1,
+      "prompt": {
+        "system": "You are the motion designer of TikMaker: you write the pictures of a short\nvertical video (1080x1920, 30 fps) as Remotion code – one file per scene. The voice,\nthe captions and the backdrop are already in the video; you write only the pictures.\n\nBefore writing, read with the Read tool:\n1. .claude/skills/tikmaker-explainer/SKILL.md – the genre, the brand kit and the\n   scene file contract – and the example frames it points to: the STYLE examples\n   (.claude/skills/tikmaker-explainer/references/ – how things are drawn: flat shapes,\n   grey bars for text, one orange focus) and the COMPOSITION sheet\n   (knowledge/shared/reference-frames/insiderforce.png – how a frame is laid out: one\n   dominant thing, big, a lot of calm space). Follow it exactly.\n2. .claude/skills/remotion-best-practices/remotion-markup/REFERENCE.md – how to write\n   Remotion markup right (open the pages it points to that you need: timing,\n   sequencing, transitions, text-highlights). Ignore anything about starting Studio,\n   creating projects or installing packages.\n3. src/video/brand/kit.tsx, src/video/brand/fields.ts and src/video/code/types.ts.\n\nRules:\n- Write ONLY in the folder you are given (src/generated/<folder>/). Never touch other\n  files. Shared helpers for several scenes go in <folder>/shared.tsx.\n- Time everything by the `words` prop (wordFrame) and `durationInFrames`, never by the\n  frame numbers in the brief – they are only there for you to plan.\n- Check your work: run `npx tsc --noEmit -p .` until nothing in your folder fails.\n  Then render a frame or two of every scene you wrote with the command in the brief\n  and look at the PNG with Read, next to the skill's example frames: can it be taken\n  in at a glance (2–6 big flat things, no text to read – text as grey bars, one real\n  word or number at most), is there exactly ONE orange focus with the rest grey or\n  dimmed, is the main object big, does nothing overlap, is nothing under the captions\n  band? Cut elements until it is that clear, and look again.\n- Do not ask questions – nobody is there to answer. Decide.\n- At the end answer with JSON: for every scene you wrote its sceneIndex (from 0), one\n  sentence of what the viewer sees, and its stage (\"top\" unless the scene is a\n  full-screen recording); the voiceover words the captions should draw bold\n  (keywords, 1–2 per scene); and wishes – what the kit or the logo library lacked.\n- Sound: for every scene, 0–2 sound effects on its key moments (sounds: the spoken\n  word the moment lands on, and the kind). Never play sound in the code – the video\n  puts these on the timeline from its library. Only moments the picture makes: the\n  main move, the payoff. At most ~3 per 10 seconds in the whole video; a calm scene\n  gets none. Kinds:\n  - whoosh: a big move: the main object flies in, swaps or morphs\n  - slide: a card or window slides in or aside\n  - pop: something small appears (an icon, a badge, a sticker)\n  - enter: a solid thing lands (a card, a big number)\n  - ping: attention on one thing (the focus lights up)\n  - tick: a small step (one of several items marks)\n  - count: a counter runs up\n  - success: it works: the payoff, a green check\n  - fix: a fix clicks in\n  - break: something breaks, fails, gets locked\n  - type: a command is typed (one short burst)\n  - message: a chat bubble arrives\n  - reveal: a build-up to a reveal (use once a video at most)\n  - check: a check mark",
+        "user": "Channel: TikMaker and AI coding\nWhat it is about: Mostly TikMaker itself: what it can do, how a video gets made with it, new features and how it is being built with AI (build in public). Around that, short concrete videos about other AI tools, vibe coding and Claude Code: one problem or one feature per video, shown on screen rather than told.\nAudience: Creators who want to make short videos faster with AI, and developers or beginners who build apps with AI and want to work faster without breaking things.\nTone: Direct and practical; real screens, real results and numbers instead of hype. Honest about what does not work yet.\nProduct screen \"New video form\": The AI agent panel on the right of the TikMaker editor, on an empty project: a 'Video idea' text box, length in seconds, a template picker ('Let the AI pick'), an optional own hook, checkboxes 'With face', 'Motion graphics only', 'Generate the voiceover', and a 'Start' button.\nProduct screen \"Agent at work\": The same panel as a conversation: a progress bar with five steps (Idea, Angle, Script, Building, Result) ticking off, and a card appearing for each step – the chosen template, three hooks to pick from (each with what it shows), the script scene by scene with an 'Approve' button, 'Pictures picked', 'Motion planned' and 'Voiceover' (folded cards that open on click).\nProduct screen \"Editor with the built video\": Once built: the scene strip along the bottom fills with the video's scenes, the timeline shows each scene's blocks, voice and captions as clips, the vertical preview in the middle plays the video with its kinetic captions.\nProduct screen \"Preview playing\": The vertical 9:16 preview player in the middle of the editor playing the finished video with play / pause, time and fullscreen.\nProduct screen \"Render\": The 'Render MP4' button top right: a progress bar, then the finished MP4 file to download.\nProduct screen \"Storyboard\": The Storyboard tab: the script as a list of beats – each scene's voiceover and on-screen words – with the total length against the target.\n\nThe video: How I make a TikTok with one sentence: I type an idea, the AI agent writes 3 hooks, I pick one, it writes the script, then it draws every scene as code and checks its own frames – and I get an MP4. Show the idea flowing through each step like a pipeline, ending in a finished phone video.\nFolder: src/generated/project-1794047225429/\n\nRewrite scene(s) 2 – the change asked for: Show the steps at the top of the frame, starting in the same position and look as the step dots at the end of scene 1, so the transition between scene 1 and scene 2 is continuous; the rest of the scene stays as is.\nKeep what was not asked to change. Keep the file name, keep the schema's field names where they still fit.\n\nThe channel's saved visuals (\"my visuals\") – reuse one (copy and adapt its code) where it fits, or when asked:\n- Endless session terminal: A Claude Code terminal full of a day's chat history: a one-line question is typed and the whole history lights up as sent with it, while banknotes burn below (code: knowledge/workspaces/dev/visuals/endless-session-terminal-mw67mlh6/scene.tsx, frame: knowledge/workspaces/dev/visuals/endless-session-terminal-mw67mlh6/frame.png)\n\n## Scene 1 (hook) – already written, keep src/generated/project-1794047225429/scene-1.tsx\n108 frames (3.6 s); global frames 0–107\nVoiceover: One sentence in, finished TikTok out. Here's every step between.\nWords (word@frame from the scene's start): One@0 sentence@6 in,@17 finished@29 TikTok@38 out.@49 Here's@59 every@69 step@78 between.@85\nOn screen (the script's words): One sentence in → finished TikTok out\nThe script's idea for the picture: A finished vertical video plays on a phone mockup. Beside it, a chat bubble holds the one-line idea that made it. A glowing pipe runs from the bubble to the phone.\n\n\n## Scene 2 (demo) – WRITE src/generated/project-1794047225429/scene-2.tsx\n126 frames (4.2 s); global frames 108–233\nVoiceover: First, I type one sentence into the video idea box and hit Start.\nWords (word@frame from the scene's start): First,@0 I@13 type@18 one@25 sentence@31 into@43 the@48 video@52 idea@61 box@68 and@78 hit@83 Start.@96\nOn screen (the script's words): 1. Type the idea → Start\nThe script's idea for the picture: The sentence types itself into the 'Video idea' box of the agent panel. The Start button is pressed, and the sentence drops into the pipe as a glowing token. The progress bar ticks 'Idea'.\nRender a frame: npx remotion still TikTokVideo out/agent/project-1794047225429/scene-2.png --props=out/agent/project-1794047225429/props.json --frame=196 --scale=0.5\nIts code now:\n```tsx\nimport { z } from \"zod\";\r\nimport { AbsoluteFill, interpolate, useCurrentFrame } from \"remotion\";\r\nimport { field, useBrand, wordFrame } from \"../../video/brand/kit\";\r\nimport type { CodeSceneProps } from \"../../video/code/types\";\r\nimport {\r\n  Bar,\r\n  BUBBLE,\r\n  cardStyle,\r\n  clamp,\r\n  EASE_IN,\r\n  GREY,\r\n  GREY_HI,\r\n  IdeaBubble,\r\n  lerpPt,\r\n  PHONE,\r\n  Phone,\r\n  popScale,\r\n  prog,\r\n  Rail,\r\n  railPoint,\r\n  Stage,\r\n  Token,\r\n} from \"./shared\";\r\n\r\nexport const description =\r\n  \"The pipe straightens into a six-step rail; in the agent panel one sentence types itself into the idea box, the big Start button is pressed and the sentence flies up as a token to tick step 1\";\r\n\r\nexport const schema = z.object({\r\n  button: field.text(\"Button\", \"Start\"),\r\n  typeOn: field.word(\"Typing starts on\", \"type\"),\r\n  typedBy: field.word(\"Typing ends on\", \"box\"),\r\n  pressOn: field.word(\"Button pressed on\", \"Start\"),\r\n});\r\ntype Params = z.infer<typeof schema>;\r\n\r\nconst PANEL = { x: 110, y: 380, w: 860, h: 650 };\r\nconst BOX = { x: 50, y: 60, w: 760, h: 170 }; // inside the panel\r\nconst WORDS = [100, 60, 130, 80, 110, 70];\r\n\r\nexport default function Scene2({ words, durationInFrames, params }: CodeSceneProps<Params>) {\r\n  const frame = useCurrentFrame();\r\n  const c = useBrand();\r\n  const typeAt = wordFrame(words, params.typeOn, 18) - 2;\r\n  const typedAt = Math.max(typeAt + 20, wordFrame(words, params.typedBy, 68) + 4);\r\n  const pressAt = wordFrame(words, params.pressOn, 96, 10) - 2;\r\n\r\n  // the hook leaves; the pipe becomes the rail\r\n  const morph = prog(frame, 0, 18);\r\n  const out = prog(frame, 0, 8, EASE_IN);\r\n  const panelIn = prog(frame, 6, 14);\r\n\r\n  // typing: word bars appear one by one\r\n  const typed = interpolate(frame, [typeAt, typedAt], [0, WORDS.length], clamp);\r\n  const typing = frame >= typeAt && frame < pressAt;\r\n  const boxHot = interpolate(frame, [typeAt - 4, typeAt, pressAt - 18, pressAt - 12], [0, 1, 1, 0], clamp);\r\n  const btnHot = interpolate(frame, [pressAt - 16, pressAt - 10], [0, 1], clamp);\r\n  const press = interpolate(frame, [pressAt, pressAt + 3, pressAt + 9], [1, 0.9, 1], clamp);\r\n\r\n  // the sentence leaves the box as a token and ticks step 1\r\n  const fly = prog(frame, pressAt + 2, 14, EASE_IN);\r\n  const from = { x: PANEL.x + BOX.x + 60 + 320, y: PANEL.y + BOX.y + BOX.h / 2 };\r\n  const tickAt = pressAt + 16;\r\n  const tick = prog(frame, tickAt, 8);\r\n  const textGone = frame >= pressAt + 2;\r\n\r\n  let wx = 0;\r\n  return (\r\n    <AbsoluteFill>\r\n      <Stage frame={frame} duration={durationInFrames}>\r\n        {out < 1 ? (\r\n          <>\r\n            <IdeaBubble hot={0} style={{ opacity: 1 - out, translate: `${-out * 120}px 0px`, transformOrigin: `0px ${BUBBLE.h}px` }} />\r\n            <Phone frame={frame + 80} {...PHONE} style={{ opacity: 1 - out, translate: `${out * 200}px 0px` }} />\r\n          </>\r\n        ) : null}\r\n        <Rail morph={morph} done={0} active={0} tick={tick} />\r\n\r\n        <div\r\n          style={{\r\n            position: \"absolute\",\r\n            left: PANEL.x,\r\n            top: PANEL.y,\r\n            width: PANEL.w,\r\n            height: PANEL.h,\r\n            ...cardStyle(PANEL.w),\r\n            opacity: panelIn,\r\n            translate: `0px ${(1 - panelIn) * 120}px`,\r\n            scale: `${popScale(frame, 6, 0.96)}`,\r\n          }}\r\n        >\r\n          {/* the idea box */}\r\n          <div\r\n            style={{\r\n              position: \"absolute\",\r\n              left: BOX.x,\r\n              top: BOX.y,\r\n              width: BOX.w,\r\n              height: BOX.h,\r\n              borderRadius: 28,\r\n              background: \"#121216\",\r\n              border: `4px solid ${boxHot > 0.5 ? c.accent : GREY}`,\r\n              boxShadow: boxHot > 0.5 ? `0 0 40px ${c.accent}44` : undefined,\r\n              boxSizing: \"border-box\",\r\n            }}\r\n          >\r\n            {!textGone\r\n              ? WORDS.map((w, i) => {\r\n                  const left = 52 + wx;\r\n                  wx += w + 16;\r\n                  const show = typed > i;\r\n                  if (!show) return null;\r\n                  return <Bar key={i} w={w} h={36} color={c.text} style={{ position: \"absolute\", left, top: (BOX.h - 36) / 2 }} />;\r\n                })\r\n              : null}\r\n            {typing && Math.floor(frame / 8) % 2 === 0 ? (\r\n              <div\r\n                style={{\r\n                  position: \"absolute\",\r\n                  left: 52 + WORDS.slice(0, Math.ceil(typed)).reduce((a, b) => a + b + 16, 0),\r\n                  top: (BOX.h - 64) / 2,\r\n                  width: 6,\r\n                  height: 64,\r\n                  background: c.accent,\r\n                  borderRadius: 3,\r\n                }}\r\n              />\r\n            ) : null}\r\n          </div>\r\n          {/* the other fields, as grey rows */}\r\n          {[0, 1].map((r) => (\r\n            <div key={r} style={{ position: \"absolute\", left: BOX.x, top: 280 + r * 100, display: \"flex\", gap: 24, alignItems: \"center\" }}>\r\n              <div style={{ width: 52, height: 52, borderRadius: 14, background: GREY }} />\r\n              <Bar w={r === 0 ? 300 : 420} h={26} color={GREY} />\r\n            </div>\r\n          ))}\r\n          {/* Start */}\r\n          <div\r\n            style={{\r\n              position: \"absolute\",\r\n              left: (PANEL.w - 420) / 2,\r\n              top: 480,\r\n              width: 420,\r\n              height: 120,\r\n              borderRadius: 30,\r\n              background: btnHot > 0.5 ? c.accent : GREY_HI,\r\n              boxShadow: btnHot > 0.5 ? `0 0 ${40 + 30 * (1 - press)}px ${c.accent}88` : undefined,\r\n              display: \"flex\",\r\n              alignItems: \"center\",\r\n              justifyContent: \"center\",\r\n              scale: `${press}`,\r\n              opacity: interpolate(btnHot, [0, 1], [0.55, 1]),\r\n            }}\r\n          >\r\n            <span style={{ fontFamily: c.fontStrong, fontSize: 68 * c.widthFactor, color: btnHot > 0.5 ? c.bg : c.text, paddingTop: 6 }}>\r\n              {params.button}\r\n            </span>\r\n          </div>\r\n        </div>\r\n\r\n        {frame >= pressAt + 2 && frame < tickAt + 1 ? <Token p={lerpPt(from, railPoint(0), fly)} /> : null}\r\n      </Stage>\r\n    </AbsoluteFill>\r\n  );\r\n}\r\n\n```\n\n## Scene 3 (demo) – already written, keep src/generated/project-1794047225429/scene-3.tsx\n136 frames (4.5 s); global frames 234–369\nVoiceover: Second, the agent writes three hooks, each with what it shows, and I pick one.\nWords (word@frame from the scene's start): Second,@0 the@20 agent@24 writes@33 three@41 hooks,@48 each@62 with@69 what@75 it@79 shows,@83 and@95 I@101 pick@104 one.@111\nOn screen (the script's words): 2. Three hooks → pick one\nThe script's idea for the picture: The token reaches the first station and splits into three hook cards side by side. One card is tapped and lights up, the other two fade, and the chosen one moves on down the pipe.\n\n\n## Scene 4 (demo) – already written, keep src/generated/project-1794047225429/scene-4.tsx\n118 frames (3.9 s); global frames 370–487\nVoiceover: Third, it writes the script scene by scene, and I hit Approve.\nWords (word@frame from the scene's start): Third,@0 it@18 writes@22 the@30 script@33 scene@42 by@49 scene,@54 and@68 I@76 hit@79 Approve.@86\nOn screen (the script's words): 3. Script → Approve\nThe script's idea for the picture: The hook unrolls into a script card, scene after scene stacking up line by line. An 'Approve' button is pressed and the card clicks into the pipe. The progress bar ticks 'Script'.\n\n\n## Scene 5 (demo) – already written, keep src/generated/project-1794047225429/scene-5.tsx\n108 frames (3.6 s); global frames 488–595\nVoiceover: Then it draws every scene as code, and the scene strip fills up.\nWords (word@frame from the scene's start): Then@0 it@6 draws@9 every@19 scene@28 as@34 code,@38 and@53 the@58 scene@61 strip@69 fills@77 up.@85\nOn screen (the script's words): 4. Every scene drawn as code\nThe script's idea for the picture: Lines of code scroll past and turn into vertical scene frames, one after another, dropping into a scene strip along the bottom until it is full. The progress bar ticks 'Building'.\n\n\n## Scene 6 (demo) – already written, keep src/generated/project-1794047225429/scene-6.tsx\n95 frames (3.2 s); global frames 596–690\nVoiceover: And it checks its own frames before it calls the video done.\nWords (word@frame from the scene's start): And@0 it@6 checks@8 its@16 own@20 frames@25 before@35 it@46 calls@49 the@57 video@60 done.@70\nOn screen (the script's words): 5. Checks its own frames\nThe script's idea for the picture: A magnifying glass sweeps across the row of frames; a green check mark pops onto each frame as it passes.\n\n\n## Scene 7 (demo) – already written, keep src/generated/project-1794047225429/scene-7.tsx\n108 frames (3.6 s); global frames 691–798\nVoiceover: Last, I hit Render MP4, and the file is ready to download.\nWords (word@frame from the scene's start): Last,@0 I@13 hit@17 Render@22 MP4,@30 and@51 the@55 file@59 is@67 ready@70 to@76 download.@78\nOn screen (the script's words): 6. Render MP4\nThe script's idea for the picture: The 'Render MP4' button is pressed, a progress bar fills to 100%, and an MP4 file icon slides out of the end of the pipe. The progress bar ticks 'Result'.\n\n\n## Scene 8 (proof) – already written, keep src/generated/project-1794047225429/scene-8.tsx\n97 frames (3.2 s); global frames 799–895\nVoiceover: One sentence, one finished TikTok, playing on my phone.\nWords (word@frame from the scene's start): One@0 sentence,@6 one@25 finished@31 TikTok,@40 playing@55 on@64 my@67 phone.@70\nOn screen (the script's words): 1 sentence = 1 TikTok\nThe script's idea for the picture: The MP4 file flies into the phone mockup and the finished vertical video plays with its kinetic captions. The chat bubble with the original sentence sits beside it, and the whole pipeline glows behind them.\n\n\n## Scene 9 (cta) – already written, keep src/generated/project-1794047225429/scene-9.tsx\n89 frames (3.0 s); global frames 896–984\nVoiceover: Drop a comment if you want more videos made with TikMaker.\nWords (word@frame from the scene's start): Drop@0 a@8 comment@9 if@19 you@22 want@25 more@30 videos@35 made@46 with@52 TikMaker.@57\nOn screen (the script's words): Comment for more TikMaker\nThe script's idea for the picture: The phone keeps playing while a comment bubble pops up below it and the TikMaker name appears.\n"
+      },
+      "inputTokens": 111519,
+      "cachedInputTokens": 946343,
+      "outputTokens": 13881,
+      "thinkingTokens": 2782,
+      "turns": 25,
+      "output": {
+        "scenes": [
+          {
+            "sceneIndex": 1,
+            "description": "Starting from scene 1's exact last frame, the six dots slide off the curved pipe into a step rail at the top as the bubble and phone clear; then a sentence types into the idea box, orange Start is pressed and the token flies up to tick step 1.",
+            "stage": "top",
+            "sounds": [
+              {
+                "onWord": "type",
+                "sound": "type"
+              },
+              {
+                "onWord": "Start.",
+                "sound": "tick"
+              }
+            ]
+          }
+        ],
+        "keywords": [
+          "one sentence",
+          "Start"
+        ],
+        "wishes": [
+          "A shared 'continue from the previous scene' stage in the kit: each scene's Stage restarts its zoom and drift at frame 0, so every cut between scenes that should flow jumps a few pixels unless the scene works around it by hand",
+          "The shared Rail needs a smooth blend between 'no step active' and 'step N active' – today the active dot switches look in one frame, so scene 2 had to draw its own copy of the rail"
         ]
       }
     }

@@ -14,166 +14,923 @@
       "id": "scene-run-mw69ekpq-1",
       "plan": {
         "role": "hook",
-        "visualBrief": "A finished vertical video plays on a phone mockup. Beside it, a chat bubble holds the one-line idea that made it. A glowing pipe runs from the bubble to the phone."
+        "visualBrief": "A one-line idea bubble shoots an orange token down a glowing pipe into a big phone that lights up playing a finished video; six step dots pop onto the pipe, then fly up into the step rail at the top with step 1 lit, exactly where the next scene shows it."
       },
+      "durationSeconds": 3.601,
       "vo": "One sentence in, finished TikTok out. Here's every step between.",
-      "background": "solid-dark",
-      "content": {
-        "richHeadline": [
-          {
-            "text": "One sentence in → finished TikTok out",
-            "size": "hero",
-            "lane": 0
-          }
-        ]
+      "background": "stage",
+      "content": {},
+      "code": {
+        "file": "project-1794047225429/scene-1.tsx"
       },
-      "type": "hook-centered"
+      "stage": "top",
+      "motion": {
+        "entrance": "none",
+        "transition": "cut"
+      },
+      "type": "code"
     },
     {
       "id": "scene-run-mw69ekpq-2",
       "plan": {
         "role": "demo",
-        "visualBrief": "The sentence types itself into the 'Video idea' box of the agent panel. The Start button is pressed, and the sentence drops into the pipe as a glowing token. The progress bar ticks 'Idea'."
+        "visualBrief": "Starting from scene 1's exact last frame, the six dots slide off the curved pipe into a step rail at the top as the bubble and phone clear; then a sentence types into the idea box, orange Start is pressed and the token flies up to tick step 1."
       },
+      "durationSeconds": 4.205,
       "vo": "First, I type one sentence into the video idea box and hit Start.",
-      "background": "solid-dark",
-      "content": {
-        "richHeadline": [
-          {
-            "text": "1. Type the idea → Start",
-            "size": "title"
-          }
-        ]
+      "background": "stage",
+      "content": {},
+      "code": {
+        "file": "project-1794047225429/scene-2.tsx"
       },
-      "type": "visual-explainer"
+      "stage": "top",
+      "motion": {
+        "entrance": "none",
+        "transition": "cut"
+      },
+      "type": "code"
     },
     {
       "id": "scene-run-mw69ekpq-3",
       "plan": {
         "role": "demo",
-        "visualBrief": "The token reaches the first station and splits into three hook cards side by side. One card is tapped and lights up, the other two fade, and the chosen one moves on down the pipe."
+        "visualBrief": "The token drops and splits into three hook cards whose previews light up one by one; the middle card is tapped and glows orange while the others dim."
       },
+      "durationSeconds": 4.529999999999999,
       "vo": "Second, the agent writes three hooks, each with what it shows, and I pick one.",
-      "background": "solid-dark",
-      "content": {
-        "richHeadline": [
-          {
-            "text": "2. Three hooks → pick one",
-            "size": "title"
-          }
-        ]
+      "background": "stage",
+      "content": {},
+      "code": {
+        "file": "project-1794047225429/scene-3.tsx"
       },
-      "type": "visual-explainer"
+      "stage": "top",
+      "motion": {
+        "entrance": "none",
+        "transition": "cut"
+      },
+      "type": "code"
     },
     {
       "id": "scene-run-mw69ekpq-4",
       "plan": {
         "role": "demo",
-        "visualBrief": "The hook unrolls into a script card, scene after scene stacking up line by line. An 'Approve' button is pressed and the card clicks into the pipe. The progress bar ticks 'Script'."
+        "visualBrief": "The picked hook card unrolls into a big script card, scene rows stack in one by one, and the orange Approve button is pressed to tick step 3."
       },
+      "durationSeconds": 3.926,
       "vo": "Third, it writes the script scene by scene, and I hit Approve.",
-      "background": "solid-dark",
-      "content": {
-        "richHeadline": [
-          {
-            "text": "3. Script → Approve",
-            "size": "title"
-          }
-        ]
+      "background": "stage",
+      "content": {},
+      "code": {
+        "file": "project-1794047225429/scene-4.tsx"
       },
-      "type": "visual-explainer"
+      "stage": "top",
+      "motion": {
+        "entrance": "none",
+        "transition": "cut"
+      },
+      "type": "code"
     },
     {
       "id": "scene-run-mw69ekpq-5",
       "plan": {
         "role": "demo",
-        "visualBrief": "Lines of code scroll past and turn into vertical scene frames, one after another, dropping into a scene strip along the bottom until it is full. The progress bar ticks 'Building'."
+        "visualBrief": "The script card turns into a scrolling code window, and vertical scene frames pop out of it one by one into a strip until it is full."
       },
+      "durationSeconds": 3.601,
       "vo": "Then it draws every scene as code, and the scene strip fills up.",
-      "background": "solid-dark",
-      "content": {
-        "richHeadline": [
-          {
-            "text": "4. Every scene drawn as code",
-            "size": "title"
-          }
-        ]
+      "background": "stage",
+      "content": {},
+      "code": {
+        "file": "project-1794047225429/scene-5.tsx"
       },
-      "type": "visual-explainer"
+      "stage": "top",
+      "motion": {
+        "entrance": "none",
+        "transition": "cut"
+      },
+      "type": "code"
     },
     {
       "id": "scene-run-mw69ekpq-6",
       "plan": {
         "role": "demo",
-        "visualBrief": "A magnifying glass sweeps across the row of frames; a green check mark pops onto each frame as it passes."
+        "visualBrief": "The row of scene frames rises to the middle, an orange magnifying glass sweeps across it, and a check pops under each frame it passes."
       },
+      "durationSeconds": 3.1830000000000003,
       "vo": "And it checks its own frames before it calls the video done.",
-      "background": "solid-dark",
-      "content": {
-        "richHeadline": [
-          {
-            "text": "5. Checks its own frames",
-            "size": "title"
-          }
-        ]
+      "background": "stage",
+      "content": {},
+      "code": {
+        "file": "project-1794047225429/scene-6.tsx"
       },
-      "type": "visual-explainer"
+      "stage": "top",
+      "motion": {
+        "entrance": "none",
+        "transition": "cut"
+      },
+      "type": "code"
     },
     {
       "id": "scene-run-mw69ekpq-7",
       "plan": {
         "role": "demo",
-        "visualBrief": "The 'Render MP4' button is pressed, a progress bar fills to 100%, and an MP4 file icon slides out of the end of the pipe. The progress bar ticks 'Result'."
+        "visualBrief": "The checked frames fly into a big Render MP4 button; it is pressed, an orange bar fills, and a video file with an orange play button slides out below."
       },
+      "durationSeconds": 3.601,
       "vo": "Last, I hit Render MP4, and the file is ready to download.",
-      "background": "solid-dark",
-      "content": {
-        "richHeadline": [
-          {
-            "text": "6. Render MP4",
-            "size": "title"
-          }
-        ]
+      "background": "stage",
+      "content": {},
+      "code": {
+        "file": "project-1794047225429/scene-7.tsx"
       },
-      "type": "visual-explainer"
+      "stage": "top",
+      "motion": {
+        "entrance": "none",
+        "transition": "cut"
+      },
+      "type": "code"
     },
     {
       "id": "scene-run-mw69ekpq-8",
       "plan": {
         "role": "proof",
-        "visualBrief": "The MP4 file flies into the phone mockup and the finished vertical video plays with its kinetic captions. The chat bubble with the original sentence sits beside it, and the whole pipeline glows behind them."
+        "visualBrief": "The video file flies into the phone, which plays the finished video while the idea bubble sends one more token down the fully checked pipeline and the phone glows."
       },
+      "durationSeconds": 3.229,
       "vo": "One sentence, one finished TikTok, playing on my phone.",
-      "background": "solid-dark",
-      "content": {
-        "richHeadline": [
-          {
-            "text": "1 sentence = 1 TikTok",
-            "size": "title"
-          }
-        ]
+      "background": "stage",
+      "content": {},
+      "code": {
+        "file": "project-1794047225429/scene-8.tsx"
       },
-      "type": "visual-explainer"
+      "stage": "top",
+      "motion": {
+        "entrance": "none",
+        "transition": "cut"
+      },
+      "type": "code"
     },
     {
       "id": "scene-run-mw69ekpq-9",
       "plan": {
         "role": "cta",
-        "visualBrief": "The phone keeps playing while a comment bubble pops up below it and the TikMaker name appears."
+        "visualBrief": "The phone glides to the centre and keeps playing, an orange comment bubble pops up under it, and the TikMaker name rises above it."
       },
+      "durationSeconds": 2.951,
       "vo": "Drop a comment if you want more videos made with TikMaker.",
-      "background": "solid-dark",
-      "content": {
-        "richHeadline": [
-          {
-            "text": "Comment for more TikMaker",
-            "size": "headline"
-          }
-        ]
+      "background": "stage",
+      "content": {},
+      "code": {
+        "file": "project-1794047225429/scene-9.tsx"
       },
-      "type": "takeaway"
+      "stage": "top",
+      "motion": {
+        "entrance": "none",
+        "transition": "cut"
+      },
+      "type": "code"
     }
   ],
-  "savedAt": 1794050345372,
-  "audioClips": []
+  "captions": {
+    "style": "kinetic",
+    "keywords": [
+      "sentence",
+      "TikTok",
+      "Start",
+      "hooks",
+      "pick",
+      "Approve",
+      "code",
+      "checks",
+      "Render",
+      "download",
+      "phone",
+      "comment",
+      "one sentence"
+    ]
+  },
+  "savedAt": 1794055787632,
+  "audioClips": [
+    {
+      "id": "sfx-run-mw69ekpq-3-1",
+      "sfxId": "d-ping",
+      "from": 336,
+      "durationInFrames": 5,
+      "lane": 1,
+      "volume": 0.55
+    },
+    {
+      "id": "sfx-run-mw69ekpq-4-1",
+      "sfxId": "check",
+      "from": 454,
+      "durationInFrames": 7,
+      "lane": 1,
+      "volume": 0.55
+    },
+    {
+      "id": "sfx-run-mw69ekpq-5-1",
+      "sfxId": "d-enter",
+      "from": 505,
+      "durationInFrames": 5,
+      "lane": 1,
+      "volume": 0.55
+    },
+    {
+      "id": "sfx-run-mw69ekpq-6-1",
+      "sfxId": "d-done",
+      "from": 664,
+      "durationInFrames": 7,
+      "lane": 1,
+      "volume": 0.55
+    },
+    {
+      "id": "sfx-run-mw69ekpq-7-1",
+      "sfxId": "d-count-short",
+      "from": 711,
+      "durationInFrames": 39,
+      "lane": 1,
+      "volume": 0.55
+    },
+    {
+      "id": "sfx-run-mw69ekpq-7-2",
+      "sfxId": "paper-slide",
+      "from": 748,
+      "durationInFrames": 21,
+      "lane": 1,
+      "volume": 0.55
+    },
+    {
+      "id": "sfx-run-mw69ekpq-8-1",
+      "sfxId": "d-ping",
+      "from": 837,
+      "durationInFrames": 5,
+      "lane": 1,
+      "volume": 0.55
+    },
+    {
+      "id": "sfx-run-mw69ekpq-9-1",
+      "sfxId": "d-msg-in",
+      "from": 903,
+      "durationInFrames": 6,
+      "lane": 1,
+      "volume": 0.55
+    },
+    {
+      "id": "sfx-run-mw69ekpq-1-1",
+      "sfxId": "soft-whoosh",
+      "from": 36,
+      "durationInFrames": 17,
+      "lane": 1,
+      "volume": 0.55
+    },
+    {
+      "id": "sfx-run-mw69ekpq-1-2",
+      "sfxId": "paper-slide",
+      "from": 83,
+      "durationInFrames": 21,
+      "lane": 1,
+      "volume": 0.55
+    },
+    {
+      "id": "audio-run-mw69ekpq-scene-run-mw69ekpq-1",
+      "sfxId": "vo-run-mw69ekpq-scene-1-mw6b9pp8",
+      "from": 0,
+      "durationInFrames": 108,
+      "volume": 1,
+      "voiceText": "One sentence in, finished TikTok out. Here's every step between.",
+      "words": [
+        {
+          "text": "One",
+          "start": 0,
+          "end": 0.163
+        },
+        {
+          "text": "sentence",
+          "start": 0.197,
+          "end": 0.522
+        },
+        {
+          "text": "in,",
+          "start": 0.557,
+          "end": 0.801
+        },
+        {
+          "text": "finished",
+          "start": 0.952,
+          "end": 1.242
+        },
+        {
+          "text": "TikTok",
+          "start": 1.265,
+          "end": 1.579
+        },
+        {
+          "text": "out.",
+          "start": 1.637,
+          "end": 1.823
+        },
+        {
+          "text": "Here's",
+          "start": 1.974,
+          "end": 2.194
+        },
+        {
+          "text": "every",
+          "start": 2.299,
+          "end": 2.554
+        },
+        {
+          "text": "step",
+          "start": 2.589,
+          "end": 2.775
+        },
+        {
+          "text": "between.",
+          "start": 2.821,
+          "end": 3.251
+        }
+      ]
+    },
+    {
+      "id": "audio-run-mw69ekpq-scene-run-mw69ekpq-2",
+      "sfxId": "vo-run-mw69ekpq-scene-2-mw6b9q0x",
+      "from": 108,
+      "durationInFrames": 126,
+      "volume": 1,
+      "voiceText": "First, I type one sentence into the video idea box and hit Start.",
+      "words": [
+        {
+          "text": "First,",
+          "start": 0,
+          "end": 0.383
+        },
+        {
+          "text": "I",
+          "start": 0.441,
+          "end": 0.488
+        },
+        {
+          "text": "type",
+          "start": 0.592,
+          "end": 0.789
+        },
+        {
+          "text": "one",
+          "start": 0.836,
+          "end": 0.987
+        },
+        {
+          "text": "sentence",
+          "start": 1.022,
+          "end": 1.393
+        },
+        {
+          "text": "into",
+          "start": 1.428,
+          "end": 1.567
+        },
+        {
+          "text": "the",
+          "start": 1.614,
+          "end": 1.683
+        },
+        {
+          "text": "video",
+          "start": 1.718,
+          "end": 1.962
+        },
+        {
+          "text": "idea",
+          "start": 2.02,
+          "end": 2.229
+        },
+        {
+          "text": "box",
+          "start": 2.276,
+          "end": 2.519
+        },
+        {
+          "text": "and",
+          "start": 2.589,
+          "end": 2.717
+        },
+        {
+          "text": "hit",
+          "start": 2.775,
+          "end": 2.972
+        },
+        {
+          "text": "Start.",
+          "start": 3.216,
+          "end": 3.855
+        }
+      ]
+    },
+    {
+      "id": "audio-run-mw69ekpq-scene-run-mw69ekpq-3",
+      "sfxId": "vo-run-mw69ekpq-scene-3-mw6b9qd1",
+      "from": 234,
+      "durationInFrames": 136,
+      "volume": 1,
+      "voiceText": "Second, the agent writes three hooks, each with what it shows, and I pick one.",
+      "words": [
+        {
+          "text": "Second,",
+          "start": 0,
+          "end": 0.464
+        },
+        {
+          "text": "the",
+          "start": 0.65,
+          "end": 0.755
+        },
+        {
+          "text": "agent",
+          "start": 0.813,
+          "end": 1.091
+        },
+        {
+          "text": "writes",
+          "start": 1.115,
+          "end": 1.324
+        },
+        {
+          "text": "three",
+          "start": 1.382,
+          "end": 1.579
+        },
+        {
+          "text": "hooks,",
+          "start": 1.614,
+          "end": 1.927
+        },
+        {
+          "text": "each",
+          "start": 2.078,
+          "end": 2.264
+        },
+        {
+          "text": "with",
+          "start": 2.31,
+          "end": 2.45
+        },
+        {
+          "text": "what",
+          "start": 2.485,
+          "end": 2.612
+        },
+        {
+          "text": "it",
+          "start": 2.647,
+          "end": 2.717
+        },
+        {
+          "text": "shows,",
+          "start": 2.752,
+          "end": 3.123
+        },
+        {
+          "text": "and",
+          "start": 3.158,
+          "end": 3.309
+        },
+        {
+          "text": "I",
+          "start": 3.379,
+          "end": 3.413
+        },
+        {
+          "text": "pick",
+          "start": 3.483,
+          "end": 3.634
+        },
+        {
+          "text": "one.",
+          "start": 3.704,
+          "end": 4.18
+        }
+      ]
+    },
+    {
+      "id": "audio-run-mw69ekpq-scene-run-mw69ekpq-4",
+      "sfxId": "vo-run-mw69ekpq-scene-4-mw6b9qo0",
+      "from": 370,
+      "durationInFrames": 118,
+      "volume": 1,
+      "voiceText": "Third, it writes the script scene by scene, and I hit Approve.",
+      "words": [
+        {
+          "text": "Third,",
+          "start": 0,
+          "end": 0.395
+        },
+        {
+          "text": "it",
+          "start": 0.604,
+          "end": 0.708
+        },
+        {
+          "text": "writes",
+          "start": 0.743,
+          "end": 0.952
+        },
+        {
+          "text": "the",
+          "start": 0.987,
+          "end": 1.08
+        },
+        {
+          "text": "script",
+          "start": 1.115,
+          "end": 1.37
+        },
+        {
+          "text": "scene",
+          "start": 1.393,
+          "end": 1.591
+        },
+        {
+          "text": "by",
+          "start": 1.625,
+          "end": 1.73
+        },
+        {
+          "text": "scene,",
+          "start": 1.788,
+          "end": 2.125
+        },
+        {
+          "text": "and",
+          "start": 2.276,
+          "end": 2.461
+        },
+        {
+          "text": "I",
+          "start": 2.531,
+          "end": 2.566
+        },
+        {
+          "text": "hit",
+          "start": 2.647,
+          "end": 2.81
+        },
+        {
+          "text": "Approve.",
+          "start": 2.856,
+          "end": 3.576
+        }
+      ]
+    },
+    {
+      "id": "audio-run-mw69ekpq-scene-run-mw69ekpq-5",
+      "sfxId": "vo-run-mw69ekpq-scene-5-mw6b9qyr",
+      "from": 488,
+      "durationInFrames": 108,
+      "volume": 1,
+      "voiceText": "Then it draws every scene as code, and the scene strip fills up.",
+      "words": [
+        {
+          "text": "Then",
+          "start": 0,
+          "end": 0.174
+        },
+        {
+          "text": "it",
+          "start": 0.209,
+          "end": 0.267
+        },
+        {
+          "text": "draws",
+          "start": 0.302,
+          "end": 0.546
+        },
+        {
+          "text": "every",
+          "start": 0.627,
+          "end": 0.871
+        },
+        {
+          "text": "scene",
+          "start": 0.917,
+          "end": 1.115
+        },
+        {
+          "text": "as",
+          "start": 1.149,
+          "end": 1.219
+        },
+        {
+          "text": "code,",
+          "start": 1.277,
+          "end": 1.614
+        },
+        {
+          "text": "and",
+          "start": 1.765,
+          "end": 1.892
+        },
+        {
+          "text": "the",
+          "start": 1.927,
+          "end": 1.997
+        },
+        {
+          "text": "scene",
+          "start": 2.032,
+          "end": 2.252
+        },
+        {
+          "text": "strip",
+          "start": 2.287,
+          "end": 2.508
+        },
+        {
+          "text": "fills",
+          "start": 2.566,
+          "end": 2.775
+        },
+        {
+          "text": "up.",
+          "start": 2.821,
+          "end": 3.251
+        }
+      ]
+    },
+    {
+      "id": "audio-run-mw69ekpq-scene-run-mw69ekpq-6",
+      "sfxId": "vo-run-mw69ekpq-scene-6-mw6b9r97",
+      "from": 596,
+      "durationInFrames": 95,
+      "volume": 1,
+      "voiceText": "And it checks its own frames before it calls the video done.",
+      "words": [
+        {
+          "text": "And",
+          "start": 0,
+          "end": 0.151
+        },
+        {
+          "text": "it",
+          "start": 0.197,
+          "end": 0.244
+        },
+        {
+          "text": "checks",
+          "start": 0.279,
+          "end": 0.499
+        },
+        {
+          "text": "its",
+          "start": 0.534,
+          "end": 0.639
+        },
+        {
+          "text": "own",
+          "start": 0.673,
+          "end": 0.778
+        },
+        {
+          "text": "frames",
+          "start": 0.824,
+          "end": 1.115
+        },
+        {
+          "text": "before",
+          "start": 1.173,
+          "end": 1.509
+        },
+        {
+          "text": "it",
+          "start": 1.544,
+          "end": 1.602
+        },
+        {
+          "text": "calls",
+          "start": 1.637,
+          "end": 1.858
+        },
+        {
+          "text": "the",
+          "start": 1.892,
+          "end": 1.962
+        },
+        {
+          "text": "video",
+          "start": 1.997,
+          "end": 2.276
+        },
+        {
+          "text": "done.",
+          "start": 2.322,
+          "end": 2.833
+        }
+      ]
+    },
+    {
+      "id": "audio-run-mw69ekpq-scene-run-mw69ekpq-7",
+      "sfxId": "vo-run-mw69ekpq-scene-7-mw6b9rjg",
+      "from": 691,
+      "durationInFrames": 108,
+      "volume": 1,
+      "voiceText": "Last, I hit Render MP4, and the file is ready to download.",
+      "words": [
+        {
+          "text": "Last,",
+          "start": 0,
+          "end": 0.383
+        },
+        {
+          "text": "I",
+          "start": 0.43,
+          "end": 0.476
+        },
+        {
+          "text": "hit",
+          "start": 0.557,
+          "end": 0.673
+        },
+        {
+          "text": "Render",
+          "start": 0.72,
+          "end": 0.929
+        },
+        {
+          "text": "MP4,",
+          "start": 0.998,
+          "end": 1.591
+        },
+        {
+          "text": "and",
+          "start": 1.695,
+          "end": 1.811
+        },
+        {
+          "text": "the",
+          "start": 1.846,
+          "end": 1.916
+        },
+        {
+          "text": "file",
+          "start": 1.95,
+          "end": 2.183
+        },
+        {
+          "text": "is",
+          "start": 2.218,
+          "end": 2.276
+        },
+        {
+          "text": "ready",
+          "start": 2.322,
+          "end": 2.485
+        },
+        {
+          "text": "to",
+          "start": 2.519,
+          "end": 2.566
+        },
+        {
+          "text": "download.",
+          "start": 2.612,
+          "end": 3.251
+        }
+      ]
+    },
+    {
+      "id": "audio-run-mw69ekpq-scene-run-mw69ekpq-8",
+      "sfxId": "vo-run-mw69ekpq-scene-8-mw6b9rtt",
+      "from": 799,
+      "durationInFrames": 97,
+      "volume": 1,
+      "voiceText": "One sentence, one finished TikTok, playing on my phone.",
+      "words": [
+        {
+          "text": "One",
+          "start": 0,
+          "end": 0.163
+        },
+        {
+          "text": "sentence,",
+          "start": 0.197,
+          "end": 0.673
+        },
+        {
+          "text": "one",
+          "start": 0.824,
+          "end": 1.01
+        },
+        {
+          "text": "finished",
+          "start": 1.045,
+          "end": 1.312
+        },
+        {
+          "text": "TikTok,",
+          "start": 1.335,
+          "end": 1.776
+        },
+        {
+          "text": "playing",
+          "start": 1.846,
+          "end": 2.09
+        },
+        {
+          "text": "on",
+          "start": 2.125,
+          "end": 2.194
+        },
+        {
+          "text": "my",
+          "start": 2.229,
+          "end": 2.299
+        },
+        {
+          "text": "phone.",
+          "start": 2.345,
+          "end": 2.879
+        }
+      ]
+    },
+    {
+      "id": "audio-run-mw69ekpq-scene-run-mw69ekpq-9",
+      "sfxId": "vo-run-mw69ekpq-scene-9-mw6b9s3d",
+      "from": 896,
+      "durationInFrames": 89,
+      "volume": 1,
+      "voiceText": "Drop a comment if you want more videos made with TikMaker.",
+      "words": [
+        {
+          "text": "Drop",
+          "start": 0,
+          "end": 0.209
+        },
+        {
+          "text": "a",
+          "start": 0.255,
+          "end": 0.279
+        },
+        {
+          "text": "comment",
+          "start": 0.313,
+          "end": 0.604
+        },
+        {
+          "text": "if",
+          "start": 0.639,
+          "end": 0.697
+        },
+        {
+          "text": "you",
+          "start": 0.731,
+          "end": 0.801
+        },
+        {
+          "text": "want",
+          "start": 0.836,
+          "end": 0.964
+        },
+        {
+          "text": "more",
+          "start": 0.998,
+          "end": 1.126
+        },
+        {
+          "text": "videos",
+          "start": 1.161,
+          "end": 1.474
+        },
+        {
+          "text": "made",
+          "start": 1.521,
+          "end": 1.695
+        },
+        {
+          "text": "with",
+          "start": 1.718,
+          "end": 1.858
+        },
+        {
+          "text": "TikMaker.",
+          "start": 1.892,
+          "end": 2.601
+        }
+      ]
+    },
+    {
+      "id": "sfx-run-mw69ekpq-2-1",
+      "sfxId": "type-word",
+      "from": 124,
+      "durationInFrames": 7,
+      "lane": 1,
+      "volume": 0.55
+    },
+    {
+      "id": "sfx-run-mw69ekpq-2-2",
+      "sfxId": "d-tick",
+      "from": 202,
+      "durationInFrames": 2,
+      "lane": 1,
+      "volume": 0.55
+    }
+  ]
 }

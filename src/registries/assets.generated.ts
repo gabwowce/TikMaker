@@ -338,6 +338,11 @@ export const generatedSfx: AssetManifestEntry[] = [
     "label": "check"
   },
   {
+    "id": "check-2",
+    "file": "check-2.mp3",
+    "label": "check 2"
+  },
+  {
     "id": "counter",
     "file": "counter.wav",
     "label": "counter"

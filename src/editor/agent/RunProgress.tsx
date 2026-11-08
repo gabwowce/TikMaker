@@ -1,4 +1,5 @@
 import { Button, Loader } from "@mantine/core";
+import { Fragment } from "react";
 import type { AgentRun } from "../../agent/run/run";
 import type { RunStatus } from "../../agent/run/status";
 import { useAgentRun, useResume } from "../../api/agent";
@@ -113,16 +114,28 @@ export function RunProgress({ runId }: { runId: string }) {
   const { data: run } = useAgentRun(runId);
   if (!run) return <Loader size="sm" />;
 
+  // The conversation in time order: each step's card where its step ended,
+  // the agent's and the user's messages between them – what is happening
+  // now (a step at work) at the bottom.
+  const cards = cardTimes(run);
+  let since = -Infinity;
   return (
     <div className="flex flex-col gap-5">
       <RoadBar run={run} />
       <IdeaBubble run={run} />
-      <TemplateCard run={run} />
-      <HookCard run={run} />
-      <ScriptCard run={run} />
-      <VoiceCard run={run} />
-      <BuildCard run={run} />
-      <ChatMessages run={run} />
+      {cards.map(({ key, at, card }, i) => {
+        const before = (
+          <ChatMessages run={run} from={since} to={at} watch={i === 0} />
+        );
+        since = at;
+        return (
+          <Fragment key={key}>
+            {before}
+            {card}
+          </Fragment>
+        );
+      })}
+      <ChatMessages run={run} from={since} watch={false} />
       <ReviewingLine run={run} />
       <PausedCard run={run} />
       {run.status === "error" ? (
@@ -130,6 +143,46 @@ export function RunProgress({ runId }: { runId: string }) {
       ) : null}
     </div>
   );
+}
+
+// When each step's card belongs in the conversation: when the step last
+// ended (its log entry); a step at work right now – at the end.
+function cardTimes(run: AgentRun) {
+  const ended = (name: string) => {
+    const steps = run.steps.filter((step) => step.name === name);
+    const last = steps[steps.length - 1];
+    return last ? last.startedAt + (last.ms ?? 0) : undefined;
+  };
+  const firstEnd = (name: string) => {
+    const step = run.steps.find((s) => s.name === name);
+    return step ? step.startedAt + (step.ms ?? 0) : undefined;
+  };
+  const now = (statuses: RunStatus[]) => statuses.includes(run.status);
+  const template = ended("pickTemplate") ?? -1;
+  const hooks = ended("writeHooks") ?? template;
+  const script = now(["writing_script"])
+    ? Infinity
+    : (ended("writeScript") ?? hooks);
+  const build = now(["laying_out"])
+    ? Infinity
+    : (firstEnd("writeCode") ?? Infinity);
+  const codeStart = run.steps.find((s) => s.name === "writeCode")?.startedAt;
+  const voice = now(["generating_voice"])
+    ? Infinity
+    : codeStart !== undefined
+      ? codeStart - 1
+      : build;
+  const cards = [
+    { key: "template", at: template, card: <TemplateCard run={run} /> },
+    { key: "hook", at: hooks, card: <HookCard run={run} /> },
+    { key: "script", at: script, card: <ScriptCard run={run} /> },
+    { key: "voice", at: voice, card: <VoiceCard run={run} /> },
+    { key: "build", at: build, card: <BuildCard run={run} /> },
+  ];
+  // stable: equal times keep the steps' order
+  return cards
+    .map((card, i) => ({ ...card, i }))
+    .sort((a, b) => a.at - b.at || a.i - b.i);
 }
 
 // While the agent looks at its own frames and fixes them (status "reviewing"):

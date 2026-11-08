@@ -14,12 +14,14 @@ import { routeMessage } from "../prompts/routeMessage.js";
 import { writeHooks } from "../prompts/writeHooks.js";
 import { findTemplate } from "./2-angle.js";
 import { rewriteCodeScenes } from "../codeScenes.js";
+import { voiceAround } from "./5-voice.js";
 
 // 7 The conversation (docs/pokalbis-planas.md, docs/pokalbis-kodas.md).
 //
 // 1. The user's message is saved at once, whatever the agent is doing
 //    (step7Message) – it waits in the run until the agent stops at a point
-//    where it can be taken up (TALK_STATUSES).
+//    where it can be taken up (TALK_STATUSES). Several can wait: they form
+//    a queue and are taken up one by one, oldest first (nextWork).
 // 2. agent.ts takes it up: routeMessage (Sonnet) decides what it changes
 //    (step7Route). Not clear → the agent asks back. Several parts → the agent
 //    proposes and waits for the "Do it" button (step7Decide).
@@ -46,8 +48,6 @@ export async function step7Message(
 ): Promise<void> {
   if (run.status === "error" || run.status === "cancelled")
     throw new Error(`The run has stopped (${run.status}) – start a new one`);
-  if (nextWork(run))
-    throw new Error("The agent is still working on your last message");
   const job = await openJob(run);
   const message: ChatMessage = {
     id: newId("msg"),
@@ -274,6 +274,8 @@ async function step7Words(
     const clip = await generateVoice(
       words.voiceover,
       `${job.run.id} scene ${n + 1}`,
+      {},
+      voiceAround(job.run.script?.scenes ?? [], n),
     );
     await job.save({
       voice: {

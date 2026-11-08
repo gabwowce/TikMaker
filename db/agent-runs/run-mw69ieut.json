@@ -2,7 +2,7 @@
   "id": "run-mw69ieut",
   "projectId": "project-1794047271868",
   "createdAt": 1794047417525,
-  "status": "laying_out",
+  "status": "done",
   "input": {
     "idea": "How I make a TikTok with one sentence: I type an idea, the AI agent writes 3 hooks, I pick one, it writes the script, then it draws every scene as code and checks its own frames – and I get an MP4. Show the idea flowing through each step like a pipeline, ending in a finished phone video.",
     "workspaceId": "dev",
@@ -707,6 +707,82 @@
       "at": 1794047487535,
       "from": "agent",
       "text": "What I assumed (script): The template's 'wrong way' opening is replaced by the given hook, because the idea has no pain point to show. · The frame-checking step is drawn as an animation, because none of the real screens show it. · The total runs about 38 s (around 110 words), which is enough for the five steps without filler."
+    },
+    {
+      "id": "msg-mw6e7o77esvp",
+      "at": 1794055314499,
+      "from": "agent",
+      "text": "Self-review, round 1: I looked at the frames – every scene reads well.\nNote, scene 1 (left as it is): The hook depends entirely on the recording: it must show the typed sentence and the playing vertical video from the very first frame, or the opening is an empty box.\nNote, scene 4 (left as it is): The Start button stays grey when it is pressed. A short orange flash on the press would mark the moment better.\nNote, scene 5 (left as it is): Scenes 5, 6 and 8 share one layout (lit station on top, recording box, caption), so these cuts may read as one frame repeated. The recordings themselves will have to carry the change.\nNote, scene 6 (left as it is): It looks almost the same as scene 5. Only the lit station and the recording change.\nNote, scene 8 (left as it is): It is the third scene with the same recording layout (after 5 and 6).",
+      "review": {
+        "round": 1,
+        "scenes": [
+          {
+            "sceneIndex": 0,
+            "sees": "A big framed screen recording of the editor lights up orange, and 'TikTok.' lands under it: one sentence became a video.",
+            "verdict": "good",
+            "problems": [
+              "The hook depends entirely on the recording: it must show the typed sentence and the playing vertical video from the very first frame, or the opening is an empty box."
+            ]
+          },
+          {
+            "sceneIndex": 1,
+            "sees": "Five icon stations on one pipe, with an orange dot running along it into an empty phone that lights up.",
+            "verdict": "good",
+            "problems": []
+          },
+          {
+            "sceneIndex": 2,
+            "sees": "The same pipeline is now wrapped in one orange-bordered 'AI agent' card, so the agent runs every step.",
+            "verdict": "good",
+            "problems": []
+          },
+          {
+            "sceneIndex": 3,
+            "sees": "An orange line types into an input box, Start is pressed, and the first station lights up.",
+            "verdict": "good",
+            "problems": [
+              "The Start button stays grey when it is pressed. A short orange flash on the press would mark the moment better."
+            ]
+          },
+          {
+            "sceneIndex": 4,
+            "sees": "The hooks station glows orange above the recording of the agent writing three hooks and one being picked.",
+            "verdict": "good",
+            "problems": [
+              "Scenes 5, 6 and 8 share one layout (lit station on top, recording box, caption), so these cuts may read as one frame repeated. The recordings themselves will have to carry the change."
+            ]
+          },
+          {
+            "sceneIndex": 5,
+            "sees": "The script station glows orange above the recording of the script scrolling and Approve being clicked.",
+            "verdict": "good",
+            "problems": [
+              "It looks almost the same as scene 5. Only the lit station and the recording change."
+            ]
+          },
+          {
+            "sceneIndex": 6,
+            "sees": "Under the lit scenes station, a code card turns out four vertical frames, and a check stamps onto each one.",
+            "verdict": "good",
+            "problems": []
+          },
+          {
+            "sceneIndex": 7,
+            "sees": "The play station glows orange above the recording of the timeline filling, Render MP4 being clicked and the file appearing to download.",
+            "verdict": "good",
+            "problems": [
+              "It is the third scene with the same recording layout (after 5 and 6)."
+            ]
+          },
+          {
+            "sceneIndex": 8,
+            "sees": "All five stations are checked, and a big phone lit in orange plays the finished video: sentence in, TikTok out.",
+            "verdict": "good",
+            "problems": []
+          }
+        ],
+        "next": "done"
+      }
     }
   ],
   "steps": [
@@ -1017,7 +1093,225 @@
           "Station glyph icons as library assets (chat bubble, list, page, frames, play) instead of hand-drawn SVG"
         ]
       }
+    },
+    {
+      "name": "reviewFrames",
+      "startedAt": 1794055276602,
+      "ms": 37891,
+      "model": "claude-opus-5-5",
+      "attempts": 1,
+      "prompt": {
+        "system": "You are the motion designer who checks a short vertical video (TikTok, Reels,\nShorts) before it is posted. You get frames of every scene, rendered exactly as the\nviewer will see them on a phone, with what is said in that scene.\n\nFirst read the example sheet(s) with the Read tool – that is the level to reach. Each\nsheet says what it is for: a STYLE sheet shows how things should be drawn (simple,\nflat, no text to read, one focus), a COMPOSITION sheet how the frame should be laid\nout (one dominant thing, big, calm space). Judge each frame against both, each for\nits own thing. Then read every frame of the video.\n\nFor every scene, look as a viewer scrolling with the sound off, and go through the\nrubric:\n- sees: in one sentence, what you take from the frame in one second\n- verdict \"fix\" only when a \"fix\" check of the rubric fails – the viewer would be lost,\n  the eye has nowhere to land, text cannot be read, something is covered. Then give\n  at most 3 problems as you see them and ONE change:\n  - pictures: the scene's picture (its code) is written again – say concretely what it\n    should show instead (one main picture of what, how big, what to drop)\n  - words: the voiceover says too much for one picture – say how to say it shorter or\n    simpler (its voice and pictures are then made again)\n  - motion: the picture is right but sits or moves badly (too small, too low, over the\n    caption, something on top of something else) – say where it should be and how big\n- A dashed \"● REC\" or \"▣ PHOTO\" slot is a place the creator fills with their own\n  recording or picture later: judge where it sits and what it asks for, not that it is\n  empty.\n- verdict \"good\" otherwise. A \"note\" check that fails goes into problems of a \"good\"\n  scene and is NOT changed – it is said to the creator. Do not invent problems.",
+        "user": "Rubric:\n- [fix] With the sound off, is it clear in one second what the scene is about? Fails when: The picture does not show what the voiceover says, or shows something the viewer cannot name.\n- [fix] Is there ONE element the eye lands on first? Fails when: Two or more things of the same size and weight compete (two diagrams, two equal cards), so the eye has nowhere to land.\n- [fix] Can the whole frame be taken in at a glance – in the second it is on screen? Fails when: It has more than ~6 things to look at, or text the viewer would have to read (code lines, logs, file names, lists of labels, small UI text): a TikTok viewer will not read it, so it is noise that hides where to look.\n- [fix] Can every word be read on a phone? Fails when: A label or line looks smaller than about a third of the spoken caption's letters in these frames – on the phone it is too small to read.\n- [fix] Is everything inside the frame and clear of the spoken caption? Fails when: A picture runs under the caption, off the frame, or two elements overlap where they should not.\n- [fix] Do the scene's pictures belong to one idea? Fails when: Two pictures in one frame tell different things, or a picture has nothing to do with the words said with it.\n- [note] Is there room around the main element? Fails when: The frame is crowded edge to edge, or one small thing floats in a big empty frame.\n- [note] Does the scene look different enough from the one before? Fails when: It repeats the previous scene's look, so the cut reads as nothing happening.\n- [note] Does it reach the level of the example frames (few big flat shapes and icons, text drawn as grey bars, one orange accent where to look, a lot of calm space)? Fails when: It looks like a slide or a diagram dump next to the examples.\n\nExample frames:\n- C:\\Users\\gt123\\AppData\\Local\\Temp\\tikmaker-agent\\review\\run-mw69ieut\\1794055251477\\example-icon-minimal.png\n  STYLE – how things are drawn (the creator's chosen YouTube explainer, 2026-11-07): flat shapes and icons, text as grey bars, one orange focus. Judge how simple and clear the drawing is against this.\n  Tiles: 1: two avatar circles in the middle, four flat icons around them (timer, palette, note, camera); two icons bright, two dimmed – nothing to read | 2: the same two avatars; the icons have flown into ONE card under them with an orange folder – the idea 'everything in one place' shown by grouping | 3: a pipeline: an orange mascot, the card with the icons, three empty cards joined by one thin line – text is grey bars, not words | 4: two app windows side by side: the left one alive (preview, timeline, one orange pause button), the right one blurred under a lock with ONE number '48,193 waiting' and one button | 5: one label 'huashu-motion' with a GitHub icon over four video cards drawn as simple grey shapes\n  What makes them work: Almost no words: text is drawn as grey rounded bars; the only real words are the one thing that matters (a name, a number, a button). Few big flat shapes and icons (2–6 per frame), a lot of empty dark space around them. ONE accent colour (orange) marks where to look; everything else is grey, dimmed or blurred. The story is told by what the shapes do – gathering into a card, lining up into a chain, one window locked – not by labels. No code, no logs, no file names, no small UI details anyone would try to read.\n- C:\\Users\\gt123\\AppData\\Local\\Temp\\tikmaker-agent\\review\\run-mw69ieut\\1794055251477\\example-insiderforce.png\n  COMPOSITION – how a vertical frame is laid out (InsiderForce, TikTok, 10 frames, docs/bd/kadrai/insiderforce/): one dominant thing, big words, calm space. Judge the layout of the frame against this.\n  Tiles: 1: three tool logos on a thin line at the top, ONE big pricing card in the middle – a single dominant thing | 2: two logos, a video frame, then the headline in three sizes with the key phrase in a black box | 3: price cards stacked in one repeated form; only the new price is in the accent colour | 4: a globe joined by one line to a big character – one object fills the frame, the caption below with the key word bigger and bold | 5: four logos in a diamond, dashed lines to one globe with a warning sign – a whole problem as one small, airy diagram | 6: a character top left, one dashed curve to a logo bottom right, the words between them | 7: a badge \"01\" on a line down to one screenshot card – the step and its result joined | 8: a big character with a gear and three short rows with icons – few rows, very big | 9: one character filling the frame, a two-line caption under it | 10: a small strip of photos at the top, three short rows with ✦, the closing phrase bold\n  What makes them work: One thing dominates every frame; everything else is clearly smaller or a thin line. Words are big: the caption is 2–3 lines with the key words bold or boxed – never small labels to read. A diagram has at most four nodes, lots of space between them, and one link drawn at a time. Lots of calm space; nothing touches the edges or the caption. The background colour is theirs (light) – judge the composition, not the colours.\n- C:\\Users\\gt123\\AppData\\Local\\Temp\\tikmaker-agent\\review\\run-mw69ieut\\1794055251477\\example-explain.png\n  Explainer frames from several creators, docs/bd/kadrai/geri/ (mechanism, setup, item, problem)\n  Tiles: 1: a level title on top, ONE vertical diagram in the middle: three boxes, input → model → output, thin dashed arrows | 2: the same title, the diagram replaced by two big rows with ✗ – what it cannot do | 3: a simple drawing (an island with gorillas) with two tiny labels where it changed – the idea as one picture | 4: one coloured ring of letters, the name big below – a whole concept as one shape | 5: spotlight: one node bright, everything else dark and blurred, the key words in bold yellow below | 6: a word on top, a drawing with ONE curved arrow showing what moves | 7: the step number, the feature as a big pill, the tool's window under it | 8: a counter in the corner, one animated map filling the frame, the caption at the bottom | 9: a huge STEP and number in opposite corners, framing the speaker | 10: a few words above one broken object (a cracked 'Tokens' plate) – the problem as one thing\n  What makes them work: A diagram has 3–4 boxes in ONE direction with lots of space – never two diagrams in one frame. When the explanation moves on, the picture is REPLACED (diagram → two ✗ rows) instead of squeezing a second one in. One shape carries the concept (a ring, an island, a broken plate); labels are few and big. Spotlight: to point at one part, everything else is dimmed.\n- C:\\Users\\gt123\\AppData\\Local\\Temp\\tikmaker-agent\\review\\run-mw69ieut\\1794055251477\\example-open-close.png\n  Hooks, reveals, proof and CTA frames from several creators, docs/bd/kadrai/geri/\n  Tiles: 1: the result on top, the claim in two big lines, the tools' logos in a zigzag below | 2: text only – lines in different sizes, the brand set as one of the lines in its colours | 3: two names stacked, one icon overlapping the other, the time promise below | 4: a short line over one tool card, decorations only in the corners | 5: three lines in three weights, the last in a black box | 6: the browser cropped bottom right, the address big and readable | 7: before/after as two equal cards stacked, a one-word label on each | 8: a phone on the left, ONE benefit word on the right | 9: one sentence in the middle, the key words in the accent colour | 10: the comment keyword the biggest thing, the gift (an e-book) as an object\n  What makes them work: The hook's first frame says the promise in 2–3 big lines with one word boxed or coloured. Two equal things are right only for a before/after – then they get one word each. A CTA makes the one keyword the biggest thing on screen. Text-only frames are fine when the type itself has hierarchy: sizes, weights, one box.\n- C:\\Users\\gt123\\AppData\\Local\\Temp\\tikmaker-agent\\review\\run-mw69ieut\\1794055251477\\example-pictures.png\n  InsiderForce frames that carry a real picture, docs/bd/kadrai/geri/picture-01..04\n  Tiles: 1: a metaphor as a cut-out picture – a robot hand holding a glowing globe fills the top half; the claim below in big type, the last word boxed | 2: a cut-out object (a blue folder labelled API's) with two hands reaching to it (Michelangelo) – the thing and the promise around it | 3: a cut-out photo of the real person, black and white, over an accent shape; the headline beside him | 4: four photo cards, tilted with shadows, in the corners around one number in a ring – real examples around the key fact\n  What makes them work: One or two real pictures make a video feel alive: a metaphor, the real thing, the real person, real examples. Pictures are cut out (no background) with a soft shadow, or set as tilted cards with a white border – never a flat rectangle pasted in. The picture is big – it is the frame's main element, the words go above or beside it. Black-and-white photos plus one accent colour keep a mixed set of pictures in one style.\n\nPrinciples for the pictures:\n- [must] One picture holds one whole thought – usually a sentence – and keeps changing inside it. Why: In good short videos one picture stays about 5 seconds while its parts appear, a number counts or arrows draw. A new picture on every other word flickers past before it is read, and together such pictures look like random clip art for single words.\n- [must] The picture shows what HAPPENS, so the scene is understood with the sound off. Why: Many people watch muted, and even with sound the eye leads. An action, a change or a relation (this turns into that, these three join, the price drops) explains; a row of nouns only decorates.\n- [must] Show the thing itself: the tool, the screen, the command, the number, the result. Why: A concrete picture proves and teaches; a metaphor only hints. A prop that just stands for a word (a clock for 'fast') says less than the real thing doing something.\n- [must] Pick the block whose shape IS the idea, so it is understood at a glance by someone who does not know the video. Why: A conversation drawn as chat bubbles, a cycle drawn as a loop, 'this becomes that' drawn as a transform are read instantly. A card with a vague label and a loosely fitting icon says nothing.\n- [must] The viewer sees at once what matters most in the frame. Why: When everything is the same size and weight the eye has nowhere to land. One dominant element – the number, the result, the key word – with the rest clearly secondary reads in a second.\n- [recommended] Leave space empty so the important element stands out. Why: A frame filled in every corner has no focus. Empty space around one big element makes it feel important and easy to read on a phone.\n- [must] Text appears when it is said, and the stressed words stand out. Why: Words on screen ahead of the voice spoil it; words after it lag. Highlighting the one word that carries the sentence guides the eye better than animating the whole phrase the same way.\n- [must] Vary how the pictures look across the video. Why: A video where every picture is a list or a schema reads as one slide repeated, and the viewer stops noticing that it changes.\n- [recommended] The layout changes where the story changes, and stays where it goes on. Why: The same layout scene after scene – picture on top, words below – reads as one frame repeated. A change of layout marks a new part, a contrast, a statement or a demo.\n- [must] The hook's picture is there from its first words and shows its first frame. Why: The first two seconds decide whether people stay; words on an empty frame are the weakest opening there is.\n- [must] A recording request is one continuous take a person can reproduce from the instructions – and a video asks for only a few of them. Why: The creator records what the instructions say. Two slots for one action make them record the same moment twice; asking for buttons or results that do not exist makes the recording impossible; six recordings for one short video is an afternoon of work for a few seconds each.\n\nScene 1 (hook) – sceneIndex 0\n  Voiceover: I typed this one sentence. It came back as a finished TikTok.\n  Pictures: A big framed screen recording of the TikMaker editor: one sentence is typed into the 'Video idea' box, then the finished vertical video plays, and the frame lights up orange on 'finished'.\n  Frames:\n  - C:\\Users\\gt123\\AppData\\Local\\Temp\\tikmaker-agent\\review\\run-mw69ieut\\1794055251477\\scene-1-f49.png (at 1.6 s)\n  - C:\\Users\\gt123\\AppData\\Local\\Temp\\tikmaker-agent\\review\\run-mw69ieut\\1794055251477\\scene-1-f94.png (at 3.1 s)\n\nScene 2 (setup) – sceneIndex 1\n  Voiceover: Here's the whole pipeline, from one sentence to a video you can post.\n  Pictures: Five icon stations (idea, hooks, script, scenes, play) draw themselves along one pipe that bends down into an empty phone, and an orange dot runs the whole way into it.\n  Frames:\n  - C:\\Users\\gt123\\AppData\\Local\\Temp\\tikmaker-agent\\review\\run-mw69ieut\\1794055251477\\scene-2-f159.png (at 5.3 s)\n  - C:\\Users\\gt123\\AppData\\Local\\Temp\\tikmaker-agent\\review\\run-mw69ieut\\1794055251477\\scene-2-f206.png (at 6.9 s)\n\nScene 3 (reveal) – sceneIndex 2\n  Voiceover: It all runs inside TikMaker's AI agent.\n  Pictures: The pipeline glides into one big card headed 'AI agent', whose spark icon and border light up orange as the engine around every station.\n  Frames:\n  - C:\\Users\\gt123\\AppData\\Local\\Temp\\tikmaker-agent\\review\\run-mw69ieut\\1794055251477\\scene-3-f258.png (at 8.6 s)\n  - C:\\Users\\gt123\\AppData\\Local\\Temp\\tikmaker-agent\\review\\run-mw69ieut\\1794055251477\\scene-3-f288.png (at 9.6 s)\n\nScene 4 (demo) – sceneIndex 3\n  Voiceover: First, I type the idea and hit Start.\n  Pictures: The pipeline rises to the top; an orange line types itself into an input box, the big 'Start' button is pressed and the line flies up into the first station.\n  Frames:\n  - C:\\Users\\gt123\\AppData\\Local\\Temp\\tikmaker-agent\\review\\run-mw69ieut\\1794055251477\\scene-4-f339.png (at 11.3 s)\n  - C:\\Users\\gt123\\AppData\\Local\\Temp\\tikmaker-agent\\review\\run-mw69ieut\\1794055251477\\scene-4-f367.png (at 12.2 s)\n\nScene 5 (demo) – sceneIndex 4\n  Voiceover: Second, the agent writes three hooks, each with what it shows. I pick one.\n  Pictures: The hooks station lights orange on the pipeline above the real agent panel recording, where three hooks appear and the cursor picks one.\n  Frames:\n  - C:\\Users\\gt123\\AppData\\Local\\Temp\\tikmaker-agent\\review\\run-mw69ieut\\1794055251477\\scene-5-f443.png (at 14.8 s)\n  - C:\\Users\\gt123\\AppData\\Local\\Temp\\tikmaker-agent\\review\\run-mw69ieut\\1794055251477\\scene-5-f503.png (at 16.8 s)\n\nScene 6 (demo) – sceneIndex 5\n  Voiceover: Third, it writes the script scene by scene. I read it and hit Approve.\n  Pictures: The script station lights orange above the real agent panel recording, where the script card scrolls scene by scene and 'Approve' is clicked.\n  Frames:\n  - C:\\Users\\gt123\\AppData\\Local\\Temp\\tikmaker-agent\\review\\run-mw69ieut\\1794055251477\\scene-6-f577.png (at 19.2 s)\n  - C:\\Users\\gt123\\AppData\\Local\\Temp\\tikmaker-agent\\review\\run-mw69ieut\\1794055251477\\scene-6-f633.png (at 21.1 s)\n\nScene 7 (demo) – sceneIndex 6\n  Voiceover: Then it draws every scene as code and checks its own frames.\n  Pictures: Under the lit scenes station a code window turns out four vertical frames one by one, then a check stamps onto each frame in turn.\n  Frames:\n  - C:\\Users\\gt123\\AppData\\Local\\Temp\\tikmaker-agent\\review\\run-mw69ieut\\1794055251477\\scene-7-f692.png (at 23.1 s)\n  - C:\\Users\\gt123\\AppData\\Local\\Temp\\tikmaker-agent\\review\\run-mw69ieut\\1794055251477\\scene-7-f731.png (at 24.4 s)\n\nScene 8 (demo) – sceneIndex 7\n  Voiceover: The scenes fill the timeline, I hit Render MP4, and the file is ready to download.\n  Pictures: The play station lights orange above the real editor recording: the timeline fills, 'Render MP4' is clicked and the finished file appears to download.\n  Frames:\n  - C:\\Users\\gt123\\AppData\\Local\\Temp\\tikmaker-agent\\review\\run-mw69ieut\\1794055251477\\scene-8-f808.png (at 26.9 s)\n  - C:\\Users\\gt123\\AppData\\Local\\Temp\\tikmaker-agent\\review\\run-mw69ieut\\1794055251477\\scene-8-f868.png (at 28.9 s)\n\nScene 9 (payoff) – sceneIndex 8\n  Voiceover: One sentence in. A finished TikTok out.\n  Pictures: An orange dot runs through all five checked stations and shoots out of the play station into a big phone, which lights up playing the finished video.\n  Frames:\n  - C:\\Users\\gt123\\AppData\\Local\\Temp\\tikmaker-agent\\review\\run-mw69ieut\\1794055251477\\scene-9-f916.png (at 30.5 s)\n  - C:\\Users\\gt123\\AppData\\Local\\Temp\\tikmaker-agent\\review\\run-mw69ieut\\1794055251477\\scene-9-f941.png (at 31.4 s)\n\nAnswer with one entry per scene, in order."
+      },
+      "inputTokens": 39511,
+      "cachedInputTokens": 75921,
+      "outputTokens": 3323,
+      "thinkingTokens": 499,
+      "turns": 23,
+      "output": {
+        "scenes": [
+          {
+            "sceneIndex": 0,
+            "sees": "A big framed screen recording of the editor lights up orange, and 'TikTok.' lands under it: one sentence became a video.",
+            "verdict": "good",
+            "problems": [
+              "The hook depends entirely on the recording: it must show the typed sentence and the playing vertical video from the very first frame, or the opening is an empty box."
+            ]
+          },
+          {
+            "sceneIndex": 1,
+            "sees": "Five icon stations on one pipe, with an orange dot running along it into an empty phone that lights up.",
+            "verdict": "good",
+            "problems": []
+          },
+          {
+            "sceneIndex": 2,
+            "sees": "The same pipeline is now wrapped in one orange-bordered 'AI agent' card, so the agent runs every step.",
+            "verdict": "good",
+            "problems": []
+          },
+          {
+            "sceneIndex": 3,
+            "sees": "An orange line types into an input box, Start is pressed, and the first station lights up.",
+            "verdict": "good",
+            "problems": [
+              "The Start button stays grey when it is pressed. A short orange flash on the press would mark the moment better."
+            ]
+          },
+          {
+            "sceneIndex": 4,
+            "sees": "The hooks station glows orange above the recording of the agent writing three hooks and one being picked.",
+            "verdict": "good",
+            "problems": [
+              "Scenes 5, 6 and 8 share one layout (lit station on top, recording box, caption), so these cuts may read as one frame repeated. The recordings themselves will have to carry the change."
+            ]
+          },
+          {
+            "sceneIndex": 5,
+            "sees": "The script station glows orange above the recording of the script scrolling and Approve being clicked.",
+            "verdict": "good",
+            "problems": [
+              "It looks almost the same as scene 5. Only the lit station and the recording change."
+            ]
+          },
+          {
+            "sceneIndex": 6,
+            "sees": "Under the lit scenes station, a code card turns out four vertical frames, and a check stamps onto each one.",
+            "verdict": "good",
+            "problems": []
+          },
+          {
+            "sceneIndex": 7,
+            "sees": "The play station glows orange above the recording of the timeline filling, Render MP4 being clicked and the file appearing to download.",
+            "verdict": "good",
+            "problems": [
+              "It is the third scene with the same recording layout (after 5 and 6)."
+            ]
+          },
+          {
+            "sceneIndex": 8,
+            "sees": "All five stations are checked, and a big phone lit in orange plays the finished video: sentence in, TikTok out.",
+            "verdict": "good",
+            "problems": []
+          }
+        ]
+      }
     }
   ],
-  "statusAt": 1794054766929
+  "statusAt": 1794055314504,
+  "code": {
+    "scenes": [
+      {
+        "file": "project-1794047271868/scene-1.tsx",
+        "description": "A big framed screen recording of the TikMaker editor: one sentence is typed into the 'Video idea' box, then the finished vertical video plays, and the frame lights up orange on 'finished'.",
+        "stage": "top",
+        "sounds": [
+          {
+            "onWord": "typed",
+            "sound": "type"
+          }
+        ],
+        "version": 1
+      },
+      {
+        "file": "project-1794047271868/scene-2.tsx",
+        "description": "Five icon stations (idea, hooks, script, scenes, play) draw themselves along one pipe that bends down into an empty phone, and an orange dot runs the whole way into it.",
+        "stage": "top",
+        "sounds": [
+          {
+            "onWord": "pipeline,",
+            "sound": "whoosh"
+          }
+        ],
+        "version": 1
+      },
+      {
+        "file": "project-1794047271868/scene-3.tsx",
+        "description": "The pipeline glides into one big card headed 'AI agent', whose spark icon and border light up orange as the engine around every station.",
+        "stage": "top",
+        "sounds": [
+          {
+            "onWord": "TikMaker's",
+            "sound": "ping"
+          }
+        ],
+        "version": 1
+      },
+      {
+        "file": "project-1794047271868/scene-4.tsx",
+        "description": "The pipeline rises to the top; an orange line types itself into an input box, the big 'Start' button is pressed and the line flies up into the first station.",
+        "stage": "top",
+        "sounds": [
+          {
+            "onWord": "Start.",
+            "sound": "pop"
+          }
+        ],
+        "version": 1
+      },
+      {
+        "file": "project-1794047271868/scene-5.tsx",
+        "description": "The hooks station lights orange on the pipeline above the real agent panel recording, where three hooks appear and the cursor picks one.",
+        "stage": "top",
+        "sounds": [
+          {
+            "onWord": "Second,",
+            "sound": "tick"
+          }
+        ],
+        "version": 1
+      },
+      {
+        "file": "project-1794047271868/scene-6.tsx",
+        "description": "The script station lights orange above the real agent panel recording, where the script card scrolls scene by scene and 'Approve' is clicked.",
+        "stage": "top",
+        "sounds": [
+          {
+            "onWord": "Approve.",
+            "sound": "check"
+          }
+        ],
+        "version": 1
+      },
+      {
+        "file": "project-1794047271868/scene-7.tsx",
+        "description": "Under the lit scenes station a code window turns out four vertical frames one by one, then a check stamps onto each frame in turn.",
+        "stage": "top",
+        "sounds": [
+          {
+            "onWord": "checks",
+            "sound": "check"
+          }
+        ],
+        "version": 1
+      },
+      {
+        "file": "project-1794047271868/scene-8.tsx",
+        "description": "The play station lights orange above the real editor recording: the timeline fills, 'Render MP4' is clicked and the finished file appears to download.",
+        "stage": "top",
+        "sounds": [
+          {
+            "onWord": "ready",
+            "sound": "success"
+          }
+        ],
+        "version": 1
+      },
+      {
+        "file": "project-1794047271868/scene-9.tsx",
+        "description": "An orange dot runs through all five checked stations and shoots out of the play station into a big phone, which lights up playing the finished video.",
+        "stage": "top",
+        "sounds": [
+          {
+            "onWord": "finished",
+            "sound": "whoosh"
+          }
+        ],
+        "version": 1
+      }
+    ],
+    "keywords": [
+      "sentence",
+      "finished TikTok",
+      "pipeline",
+      "AI agent",
+      "Start",
+      "three hooks",
+      "Approve",
+      "code",
+      "checks",
+      "Render MP4",
+      "download",
+      "out"
+    ],
+    "wishes": [
+      "A TikMaker logo in the logo library: the 'AI agent' card had to use a drawn spark icon instead of the product's own mark",
+      "A shared phone-mockup component in the kit that plays a finished vertical video (it was copied by hand into shared.tsx)",
+      "A shared pipeline/station-row component in the kit with icon glyphs (idea, hooks, script, scenes, play) for step-by-step videos",
+      "A way to render several stills from one bundle: each still re-bundles and copies 229 MB of public/, so checking 9 scenes is slow",
+      "Station glyph icons as library assets (chat bubble, list, page, frames, play) instead of hand-drawn SVG"
+    ],
+    "problems": []
+  }
 }

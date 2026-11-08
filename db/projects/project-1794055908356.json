@@ -1,0 +1,1417 @@
+{
+  "id": "project-1794055908356",
+  "title": "2v-3bandymas",
+  "workspaceId": "dev",
+  "videoTemplateId": "build-it-fast",
+  "fps": 30,
+  "width": 1080,
+  "height": 1920,
+  "storyPlan": {
+    "premise": "**How to Build an AI Employee in 60 Seconds**\n\nAn educational video showing how anyone can create their own AI employee using AI agents and automation tools. The idea is to demonstrate how to turn a repetitive task into an autonomous workflow where an AI agent is given a specific role, responsibilities, and access to the tools it needs to complete its job.\n\nThe video will use a practical example of an AI employee that researches trending topics, generates content ideas, writes scripts, and organizes everything into a content calendar.\n\nThe goal is to inspire viewers to stop using AI only as a chatbot and start building their own AI-powered systems that can actually do work for them."
+  },
+  "scenes": [
+    {
+      "id": "scene-run-mw6eoazf-1",
+      "plan": {
+        "role": "hook",
+        "visualBrief": "An employee ID badge drops in and prints a robot photo and grey name bars while a thin orange 60s timeline fills underneath; when it is full the badge glows orange with a check. The time and money badges are gone."
+      },
+      "durationSeconds": 2.718,
+      "vo": "How to build an AI employee in 60 seconds.",
+      "background": "stage",
+      "content": {},
+      "code": {
+        "file": "project-1794055908356/scene-1.tsx"
+      },
+      "stage": "top",
+      "motion": {
+        "entrance": "none",
+        "transition": "cut"
+      },
+      "type": "code"
+    },
+    {
+      "id": "scene-run-mw6eoazf-2",
+      "plan": {
+        "role": "problem",
+        "visualBrief": "A chat question gets an AI answer, then its lines are copied by hand into a document while a pile of unfinished task cards grows and lights up orange."
+      },
+      "durationSeconds": 6.201,
+      "vo": "Most people use AI like a chatbot. You ask, it answers, and you still do all the work yourself.",
+      "background": "stage",
+      "content": {},
+      "code": {
+        "file": "project-1794055908356/scene-2.tsx"
+      },
+      "stage": "top",
+      "motion": {
+        "entrance": "none",
+        "transition": "cut"
+      },
+      "type": "code"
+    },
+    {
+      "id": "scene-run-mw6eoazf-3",
+      "plan": {
+        "role": "setup",
+        "visualBrief": "The chat bubble stretches into an employee ID badge, and three icon chips (role, responsibilities, tools) snap on below it, each lighting orange as it is named."
+      },
+      "durationSeconds": 6.154999999999999,
+      "vo": "An AI employee is different. It gets a role, clear responsibilities, and the tools it needs to finish the job on its own.",
+      "background": "stage",
+      "content": {},
+      "code": {
+        "file": "project-1794055908356/scene-3.tsx"
+      },
+      "stage": "top",
+      "motion": {
+        "entrance": "none",
+        "transition": "cut"
+      },
+      "type": "code"
+    },
+    {
+      "id": "scene-run-mw6eoazf-4",
+      "plan": {
+        "role": "demo",
+        "visualBrief": "The flipping planner is gone. A calendar card now scrolls upward in one smooth, eased glide, and every week holds the same grey 'plan content' task. It slows to a stop, the week in the middle turns orange, the other weeks dim, and an orange ring draws around that task."
+      },
+      "durationSeconds": 4.808,
+      "vo": "First, pick one repetitive task. Here it's planning content every single week.",
+      "background": "stage",
+      "content": {},
+      "code": {
+        "file": "project-1794055908356/scene-4.tsx"
+      },
+      "stage": "top",
+      "motion": {
+        "entrance": "none",
+        "transition": "cut"
+      },
+      "type": "code"
+    },
+    {
+      "id": "scene-run-mw6eoazf-5",
+      "plan": {
+        "role": "demo",
+        "visualBrief": "A Claude Code terminal opens, an orange prompt line types and flies down into the empty ID badge, which now reads 'Content Strategist'."
+      },
+      "durationSeconds": 5.087,
+      "vo": "Second, open Claude Code and give the agent its role: you are my content strategist.",
+      "background": "stage",
+      "content": {},
+      "code": {
+        "file": "project-1794055908356/scene-5.tsx"
+      },
+      "stage": "top",
+      "motion": {
+        "entrance": "none",
+        "transition": "cut"
+      },
+      "type": "code"
+    },
+    {
+      "id": "scene-run-mw6eoazf-6",
+      "plan": {
+        "role": "demo",
+        "visualBrief": "A job-description card with four duties (research, ideas, scripts, calendar): each row lights orange and gets a check as it is named."
+      },
+      "durationSeconds": 9.081,
+      "vo": "Third, write its responsibilities. Research trending topics. Generate content ideas. Write the scripts. And organize everything into a content calendar.",
+      "background": "stage",
+      "content": {},
+      "code": {
+        "file": "project-1794055908356/scene-6.tsx"
+      },
+      "stage": "top",
+      "motion": {
+        "entrance": "none",
+        "transition": "cut"
+      },
+      "type": "code"
+    },
+    {
+      "id": "scene-run-mw6eoazf-7",
+      "plan": {
+        "role": "demo",
+        "visualBrief": "A globe and a Google Sheets icon slide in from both sides and plug into the Claude Code terminal by cable, each lighting orange as it connects."
+      },
+      "durationSeconds": 5.598,
+      "vo": "Fourth, give it access to what it needs: the web to research, and your Google Sheet for the calendar.",
+      "background": "stage",
+      "content": {},
+      "code": {
+        "file": "project-1794055908356/scene-7.tsx"
+      },
+      "stage": "top",
+      "motion": {
+        "entrance": "none",
+        "transition": "cut"
+      },
+      "type": "code"
+    },
+    {
+      "id": "scene-run-mw6eoazf-8",
+      "plan": {
+        "role": "demo",
+        "visualBrief": "The Claude agent spins above three stations (trends, ideas, scripts), and an orange spark hops along them, lighting and filling each one in turn."
+      },
+      "durationSeconds": 5.7829999999999995,
+      "vo": "Now let it work. It finds what's trending, turns each topic into an idea, and writes a script for it.",
+      "background": "stage",
+      "content": {},
+      "code": {
+        "file": "project-1794055908356/scene-8.tsx"
+      },
+      "stage": "top",
+      "motion": {
+        "entrance": "none",
+        "transition": "cut"
+      },
+      "type": "code"
+    },
+    {
+      "id": "scene-run-mw6eoazf-9",
+      "plan": {
+        "role": "proof",
+        "visualBrief": "The Google Sheet calendar fills row by row, the row being written in orange, until a big orange check stamps it done."
+      },
+      "durationSeconds": 5.736999999999999,
+      "vo": "And here's the result: your content calendar in Google Sheets, filled in with ideas and scripts.",
+      "background": "stage",
+      "content": {},
+      "code": {
+        "file": "project-1794055908356/scene-9.tsx"
+      },
+      "stage": "top",
+      "motion": {
+        "entrance": "none",
+        "transition": "cut"
+      },
+      "type": "code"
+    },
+    {
+      "id": "scene-run-mw6eoazf-10",
+      "plan": {
+        "role": "payoff",
+        "visualBrief": "In front of the blurred, finished calendar the chat bubble is struck through in orange and falls away as the 'Content Strategist' badge slides in."
+      },
+      "durationSeconds": 4.39,
+      "vo": "That's not a chatbot anymore. That's an AI employee doing a real job for you.",
+      "background": "stage",
+      "content": {},
+      "code": {
+        "file": "project-1794055908356/scene-10.tsx"
+      },
+      "stage": "top",
+      "motion": {
+        "entrance": "none",
+        "transition": "cut"
+      },
+      "type": "code"
+    },
+    {
+      "id": "scene-run-mw6eoazf-11",
+      "plan": {
+        "role": "cta",
+        "visualBrief": "A comment box pops up and types 'more AI employees!' with an orange send button, while a dimmed Claude Code terminal waits behind it."
+      },
+      "durationSeconds": 3.5540000000000003,
+      "vo": "Drop a comment if you want more AI employees built with Claude Code.",
+      "background": "stage",
+      "content": {},
+      "code": {
+        "file": "project-1794055908356/scene-11.tsx"
+      },
+      "stage": "top",
+      "motion": {
+        "entrance": "none",
+        "transition": "cut"
+      },
+      "type": "code"
+    }
+  ],
+  "captions": {
+    "style": "kinetic",
+    "keywords": [
+      "AI employee",
+      "60",
+      "chatbot",
+      "work",
+      "role",
+      "tools",
+      "repetitive",
+      "content strategist",
+      "responsibilities",
+      "calendar",
+      "Google Sheet",
+      "result",
+      "employee",
+      "comment",
+      "Claude Code",
+      "every single week"
+    ]
+  },
+  "savedAt": 1794117153538,
+  "audioClips": [
+    {
+      "id": "sfx-run-mw6eoazf-2-1",
+      "sfxId": "d-msg-in",
+      "from": 119,
+      "durationInFrames": 6,
+      "lane": 1,
+      "volume": 0.55
+    },
+    {
+      "id": "sfx-run-mw6eoazf-2-2",
+      "sfxId": "d-break",
+      "from": 230,
+      "durationInFrames": 9,
+      "lane": 1,
+      "volume": 0.55
+    },
+    {
+      "id": "sfx-run-mw6eoazf-3-1",
+      "sfxId": "soft-whoosh",
+      "from": 297,
+      "durationInFrames": 17,
+      "lane": 1,
+      "volume": 0.55
+    },
+    {
+      "id": "sfx-run-mw6eoazf-5-1",
+      "sfxId": "type-word",
+      "from": 689,
+      "durationInFrames": 7,
+      "lane": 1,
+      "volume": 0.55
+    },
+    {
+      "id": "sfx-run-mw6eoazf-5-2",
+      "sfxId": "d-fix",
+      "from": 713,
+      "durationInFrames": 6,
+      "lane": 1,
+      "volume": 0.55
+    },
+    {
+      "id": "sfx-run-mw6eoazf-6-1",
+      "sfxId": "d-tick",
+      "from": 809,
+      "durationInFrames": 2,
+      "lane": 1,
+      "volume": 0.55
+    },
+    {
+      "id": "sfx-run-mw6eoazf-6-2",
+      "sfxId": "check",
+      "from": 933,
+      "durationInFrames": 7,
+      "lane": 1,
+      "volume": 0.55
+    },
+    {
+      "id": "sfx-run-mw6eoazf-7-1",
+      "sfxId": "d-fix",
+      "from": 1096,
+      "durationInFrames": 6,
+      "lane": 1,
+      "volume": 0.55
+    },
+    {
+      "id": "sfx-run-mw6eoazf-7-2",
+      "sfxId": "d-fix",
+      "from": 1135,
+      "durationInFrames": 6,
+      "lane": 1,
+      "volume": 0.55
+    },
+    {
+      "id": "sfx-run-mw6eoazf-8-1",
+      "sfxId": "d-ping",
+      "from": 1240,
+      "durationInFrames": 5,
+      "lane": 1,
+      "volume": 0.55
+    },
+    {
+      "id": "sfx-run-mw6eoazf-9-1",
+      "sfxId": "d-done",
+      "from": 1502,
+      "durationInFrames": 7,
+      "lane": 1,
+      "volume": 0.55
+    },
+    {
+      "id": "sfx-run-mw6eoazf-10-1",
+      "sfxId": "d-break",
+      "from": 1542,
+      "durationInFrames": 9,
+      "lane": 1,
+      "volume": 0.55
+    },
+    {
+      "id": "sfx-run-mw6eoazf-10-2",
+      "sfxId": "paper-slide",
+      "from": 1598,
+      "durationInFrames": 21,
+      "lane": 1,
+      "volume": 0.55
+    },
+    {
+      "id": "sfx-run-mw6eoazf-11-1",
+      "sfxId": "type-word",
+      "from": 1675,
+      "durationInFrames": 7,
+      "lane": 1,
+      "volume": 0.55
+    },
+    {
+      "id": "sfx-run-mw6eoazf-1-1",
+      "sfxId": "soft-whoosh",
+      "from": 16,
+      "durationInFrames": 17,
+      "lane": 1,
+      "volume": 0.55
+    },
+    {
+      "id": "sfx-run-mw6eoazf-1-2",
+      "sfxId": "d-done",
+      "from": 49,
+      "durationInFrames": 7,
+      "lane": 1,
+      "volume": 0.55
+    },
+    {
+      "id": "audio-run-mw6eoazf-scene-run-mw6eoazf-1",
+      "sfxId": "vo-run-mw6eoazf-scene-1-mw6eu671",
+      "from": 0,
+      "durationInFrames": 82,
+      "volume": 1,
+      "voiceText": "How to build an AI employee in 60 seconds.",
+      "words": [
+        {
+          "text": "How",
+          "start": 0,
+          "end": 0.151
+        },
+        {
+          "text": "to",
+          "start": 0.186,
+          "end": 0.244
+        },
+        {
+          "text": "build",
+          "start": 0.279,
+          "end": 0.441
+        },
+        {
+          "text": "an",
+          "start": 0.476,
+          "end": 0.534
+        },
+        {
+          "text": "AI",
+          "start": 0.592,
+          "end": 0.813
+        },
+        {
+          "text": "employee",
+          "start": 0.859,
+          "end": 1.196
+        },
+        {
+          "text": "in",
+          "start": 1.231,
+          "end": 1.3
+        },
+        {
+          "text": "60",
+          "start": 1.37,
+          "end": 1.66
+        },
+        {
+          "text": "seconds.",
+          "start": 1.707,
+          "end": 2.368
+        }
+      ]
+    },
+    {
+      "id": "audio-run-mw6eoazf-scene-run-mw6eoazf-2",
+      "sfxId": "vo-run-mw6eoazf-scene-2-mw6eu6lc",
+      "from": 82,
+      "durationInFrames": 186,
+      "volume": 1,
+      "voiceText": "Most people use AI like a chatbot. You ask, it answers, and you still do all the work yourself.",
+      "words": [
+        {
+          "text": "Most",
+          "start": 0,
+          "end": 0.232
+        },
+        {
+          "text": "people",
+          "start": 0.267,
+          "end": 0.511
+        },
+        {
+          "text": "use",
+          "start": 0.569,
+          "end": 0.72
+        },
+        {
+          "text": "AI",
+          "start": 0.755,
+          "end": 1.01
+        },
+        {
+          "text": "like",
+          "start": 1.068,
+          "end": 1.207
+        },
+        {
+          "text": "a",
+          "start": 1.242,
+          "end": 1.265
+        },
+        {
+          "text": "chatbot.",
+          "start": 1.3,
+          "end": 1.858
+        },
+        {
+          "text": "You",
+          "start": 2.241,
+          "end": 2.368
+        },
+        {
+          "text": "ask,",
+          "start": 2.45,
+          "end": 2.81
+        },
+        {
+          "text": "it",
+          "start": 2.961,
+          "end": 3.077
+        },
+        {
+          "text": "answers,",
+          "start": 3.111,
+          "end": 3.587
+        },
+        {
+          "text": "and",
+          "start": 3.773,
+          "end": 3.971
+        },
+        {
+          "text": "you",
+          "start": 4.029,
+          "end": 4.11
+        },
+        {
+          "text": "still",
+          "start": 4.156,
+          "end": 4.331
+        },
+        {
+          "text": "do",
+          "start": 4.377,
+          "end": 4.54
+        },
+        {
+          "text": "all",
+          "start": 4.644,
+          "end": 4.853
+        },
+        {
+          "text": "the",
+          "start": 4.888,
+          "end": 4.957
+        },
+        {
+          "text": "work",
+          "start": 4.992,
+          "end": 5.143
+        },
+        {
+          "text": "yourself.",
+          "start": 5.178,
+          "end": 5.851
+        }
+      ]
+    },
+    {
+      "id": "audio-run-mw6eoazf-scene-run-mw6eoazf-3",
+      "sfxId": "vo-run-mw6eoazf-scene-3-mw6eu714",
+      "from": 268,
+      "durationInFrames": 185,
+      "volume": 1,
+      "voiceText": "An AI employee is different. It gets a role, clear responsibilities, and the tools it needs to finish the job on its own.",
+      "words": [
+        {
+          "text": "An",
+          "start": 0,
+          "end": 0.139
+        },
+        {
+          "text": "AI",
+          "start": 0.209,
+          "end": 0.499
+        },
+        {
+          "text": "employee",
+          "start": 0.546,
+          "end": 0.882
+        },
+        {
+          "text": "is",
+          "start": 0.917,
+          "end": 0.998
+        },
+        {
+          "text": "different.",
+          "start": 1.033,
+          "end": 1.486
+        },
+        {
+          "text": "It",
+          "start": 1.591,
+          "end": 1.683
+        },
+        {
+          "text": "gets",
+          "start": 1.718,
+          "end": 1.858
+        },
+        {
+          "text": "a",
+          "start": 1.892,
+          "end": 1.916
+        },
+        {
+          "text": "role,",
+          "start": 1.962,
+          "end": 2.276
+        },
+        {
+          "text": "clear",
+          "start": 2.38,
+          "end": 2.566
+        },
+        {
+          "text": "responsibilities,",
+          "start": 2.601,
+          "end": 3.355
+        },
+        {
+          "text": "and",
+          "start": 3.483,
+          "end": 3.599
+        },
+        {
+          "text": "the",
+          "start": 3.634,
+          "end": 3.704
+        },
+        {
+          "text": "tools",
+          "start": 3.738,
+          "end": 3.936
+        },
+        {
+          "text": "it",
+          "start": 3.971,
+          "end": 4.029
+        },
+        {
+          "text": "needs",
+          "start": 4.063,
+          "end": 4.261
+        },
+        {
+          "text": "to",
+          "start": 4.296,
+          "end": 4.365
+        },
+        {
+          "text": "finish",
+          "start": 4.435,
+          "end": 4.656
+        },
+        {
+          "text": "the",
+          "start": 4.69,
+          "end": 4.76
+        },
+        {
+          "text": "job",
+          "start": 4.807,
+          "end": 5.016
+        },
+        {
+          "text": "on",
+          "start": 5.074,
+          "end": 5.143
+        },
+        {
+          "text": "its",
+          "start": 5.178,
+          "end": 5.283
+        },
+        {
+          "text": "own.",
+          "start": 5.317,
+          "end": 5.805
+        }
+      ]
+    },
+    {
+      "id": "audio-run-mw6eoazf-scene-run-mw6eoazf-4",
+      "sfxId": "vo-run-mw6eoazf-scene-4-mw6eu7dh",
+      "from": 453,
+      "durationInFrames": 144,
+      "volume": 1,
+      "voiceText": "First, pick one repetitive task. Here it's planning content every single week.",
+      "words": [
+        {
+          "text": "First,",
+          "start": 0,
+          "end": 0.441
+        },
+        {
+          "text": "pick",
+          "start": 0.592,
+          "end": 0.778
+        },
+        {
+          "text": "one",
+          "start": 0.882,
+          "end": 1.08
+        },
+        {
+          "text": "repetitive",
+          "start": 1.115,
+          "end": 1.533
+        },
+        {
+          "text": "task.",
+          "start": 1.556,
+          "end": 1.962
+        },
+        {
+          "text": "Here",
+          "start": 2.171,
+          "end": 2.357
+        },
+        {
+          "text": "it's",
+          "start": 2.392,
+          "end": 2.519
+        },
+        {
+          "text": "planning",
+          "start": 2.554,
+          "end": 2.81
+        },
+        {
+          "text": "content",
+          "start": 2.856,
+          "end": 3.251
+        },
+        {
+          "text": "every",
+          "start": 3.402,
+          "end": 3.646
+        },
+        {
+          "text": "single",
+          "start": 3.68,
+          "end": 3.913
+        },
+        {
+          "text": "week.",
+          "start": 3.947,
+          "end": 4.458
+        }
+      ]
+    },
+    {
+      "id": "audio-run-mw6eoazf-scene-run-mw6eoazf-5",
+      "sfxId": "vo-run-mw6eoazf-scene-5-mw6eu7qz",
+      "from": 597,
+      "durationInFrames": 153,
+      "volume": 1,
+      "voiceText": "Second, open Claude Code and give the agent its role: you are my content strategist.",
+      "words": [
+        {
+          "text": "Second,",
+          "start": 0,
+          "end": 0.499
+        },
+        {
+          "text": "open",
+          "start": 0.65,
+          "end": 0.894
+        },
+        {
+          "text": "Claude",
+          "start": 0.94,
+          "end": 1.149
+        },
+        {
+          "text": "Code",
+          "start": 1.184,
+          "end": 1.44
+        },
+        {
+          "text": "and",
+          "start": 1.474,
+          "end": 1.591
+        },
+        {
+          "text": "give",
+          "start": 1.66,
+          "end": 1.8
+        },
+        {
+          "text": "the",
+          "start": 1.834,
+          "end": 1.904
+        },
+        {
+          "text": "agent",
+          "start": 1.962,
+          "end": 2.229
+        },
+        {
+          "text": "its",
+          "start": 2.264,
+          "end": 2.368
+        },
+        {
+          "text": "role:",
+          "start": 2.415,
+          "end": 2.752
+        },
+        {
+          "text": "you",
+          "start": 3.135,
+          "end": 3.239
+        },
+        {
+          "text": "are",
+          "start": 3.286,
+          "end": 3.39
+        },
+        {
+          "text": "my",
+          "start": 3.425,
+          "end": 3.495
+        },
+        {
+          "text": "content",
+          "start": 3.564,
+          "end": 3.913
+        },
+        {
+          "text": "strategist.",
+          "start": 3.947,
+          "end": 4.737
+        }
+      ]
+    },
+    {
+      "id": "audio-run-mw6eoazf-scene-run-mw6eoazf-6",
+      "sfxId": "vo-run-mw6eoazf-scene-6-mw6eu8ae",
+      "from": 750,
+      "durationInFrames": 272,
+      "volume": 1,
+      "voiceText": "Third, write its responsibilities. Research trending topics. Generate content ideas. Write the scripts. And organize everything into a content calendar.",
+      "words": [
+        {
+          "text": "Third,",
+          "start": 0,
+          "end": 0.464
+        },
+        {
+          "text": "write",
+          "start": 0.673,
+          "end": 0.871
+        },
+        {
+          "text": "its",
+          "start": 0.894,
+          "end": 0.998
+        },
+        {
+          "text": "responsibilities.",
+          "start": 1.033,
+          "end": 1.834
+        },
+        {
+          "text": "Research",
+          "start": 2.043,
+          "end": 2.415
+        },
+        {
+          "text": "trending",
+          "start": 2.461,
+          "end": 2.752
+        },
+        {
+          "text": "topics.",
+          "start": 2.798,
+          "end": 3.309
+        },
+        {
+          "text": "Generate",
+          "start": 3.518,
+          "end": 3.878
+        },
+        {
+          "text": "content",
+          "start": 3.913,
+          "end": 4.249
+        },
+        {
+          "text": "ideas.",
+          "start": 4.284,
+          "end": 4.795
+        },
+        {
+          "text": "Write",
+          "start": 4.946,
+          "end": 5.143
+        },
+        {
+          "text": "the",
+          "start": 5.166,
+          "end": 5.236
+        },
+        {
+          "text": "scripts.",
+          "start": 5.271,
+          "end": 5.7
+        },
+        {
+          "text": "And",
+          "start": 5.886,
+          "end": 6.095
+        },
+        {
+          "text": "organize",
+          "start": 6.165,
+          "end": 6.571
+        },
+        {
+          "text": "everything",
+          "start": 6.676,
+          "end": 7.14
+        },
+        {
+          "text": "into",
+          "start": 7.21,
+          "end": 7.384
+        },
+        {
+          "text": "a",
+          "start": 7.454,
+          "end": 7.488
+        },
+        {
+          "text": "content",
+          "start": 7.546,
+          "end": 7.93
+        },
+        {
+          "text": "calendar.",
+          "start": 7.976,
+          "end": 8.731
+        }
+      ]
+    },
+    {
+      "id": "audio-run-mw6eoazf-scene-run-mw6eoazf-7",
+      "sfxId": "vo-run-mw6eoazf-scene-7-mw6eu8ol",
+      "from": 1022,
+      "durationInFrames": 168,
+      "volume": 1,
+      "voiceText": "Fourth, give it access to what it needs: the web to research, and your Google Sheet for the calendar.",
+      "words": [
+        {
+          "text": "Fourth,",
+          "start": 0,
+          "end": 0.441
+        },
+        {
+          "text": "give",
+          "start": 0.685,
+          "end": 0.836
+        },
+        {
+          "text": "it",
+          "start": 0.871,
+          "end": 0.94
+        },
+        {
+          "text": "access",
+          "start": 0.987,
+          "end": 1.382
+        },
+        {
+          "text": "to",
+          "start": 1.416,
+          "end": 1.486
+        },
+        {
+          "text": "what",
+          "start": 1.533,
+          "end": 1.66
+        },
+        {
+          "text": "it",
+          "start": 1.695,
+          "end": 1.753
+        },
+        {
+          "text": "needs:",
+          "start": 1.788,
+          "end": 2.206
+        },
+        {
+          "text": "the",
+          "start": 2.357,
+          "end": 2.461
+        },
+        {
+          "text": "web",
+          "start": 2.519,
+          "end": 2.705
+        },
+        {
+          "text": "to",
+          "start": 2.752,
+          "end": 2.821
+        },
+        {
+          "text": "research,",
+          "start": 2.891,
+          "end": 3.344
+        },
+        {
+          "text": "and",
+          "start": 3.495,
+          "end": 3.634
+        },
+        {
+          "text": "your",
+          "start": 3.68,
+          "end": 3.785
+        },
+        {
+          "text": "Google",
+          "start": 3.831,
+          "end": 4.087
+        },
+        {
+          "text": "Sheet",
+          "start": 4.11,
+          "end": 4.296
+        },
+        {
+          "text": "for",
+          "start": 4.331,
+          "end": 4.423
+        },
+        {
+          "text": "the",
+          "start": 4.458,
+          "end": 4.528
+        },
+        {
+          "text": "calendar.",
+          "start": 4.563,
+          "end": 5.248
+        }
+      ]
+    },
+    {
+      "id": "audio-run-mw6eoazf-scene-run-mw6eoazf-8",
+      "sfxId": "vo-run-mw6eoazf-scene-8-mw6eu93t",
+      "from": 1190,
+      "durationInFrames": 173,
+      "volume": 1,
+      "voiceText": "Now let it work. It finds what's trending, turns each topic into an idea, and writes a script for it.",
+      "words": [
+        {
+          "text": "Now",
+          "start": 0,
+          "end": 0.174
+        },
+        {
+          "text": "let",
+          "start": 0.232,
+          "end": 0.337
+        },
+        {
+          "text": "it",
+          "start": 0.372,
+          "end": 0.43
+        },
+        {
+          "text": "work.",
+          "start": 0.464,
+          "end": 0.789
+        },
+        {
+          "text": "It",
+          "start": 1.068,
+          "end": 1.184
+        },
+        {
+          "text": "finds",
+          "start": 1.231,
+          "end": 1.463
+        },
+        {
+          "text": "what's",
+          "start": 1.486,
+          "end": 1.683
+        },
+        {
+          "text": "trending,",
+          "start": 1.718,
+          "end": 2.159
+        },
+        {
+          "text": "turns",
+          "start": 2.206,
+          "end": 2.45
+        },
+        {
+          "text": "each",
+          "start": 2.554,
+          "end": 2.728
+        },
+        {
+          "text": "topic",
+          "start": 2.775,
+          "end": 3.1
+        },
+        {
+          "text": "into",
+          "start": 3.158,
+          "end": 3.332
+        },
+        {
+          "text": "an",
+          "start": 3.402,
+          "end": 3.46
+        },
+        {
+          "text": "idea,",
+          "start": 3.506,
+          "end": 4.005
+        },
+        {
+          "text": "and",
+          "start": 4.11,
+          "end": 4.249
+        },
+        {
+          "text": "writes",
+          "start": 4.284,
+          "end": 4.493
+        },
+        {
+          "text": "a",
+          "start": 4.528,
+          "end": 4.563
+        },
+        {
+          "text": "script",
+          "start": 4.598,
+          "end": 4.841
+        },
+        {
+          "text": "for",
+          "start": 4.876,
+          "end": 4.992
+        },
+        {
+          "text": "it.",
+          "start": 5.05,
+          "end": 5.433
+        }
+      ]
+    },
+    {
+      "id": "audio-run-mw6eoazf-scene-run-mw6eoazf-9",
+      "sfxId": "vo-run-mw6eoazf-scene-9-mw6eu9jl",
+      "from": 1363,
+      "durationInFrames": 172,
+      "volume": 1,
+      "voiceText": "And here's the result: your content calendar in Google Sheets, filled in with ideas and scripts.",
+      "words": [
+        {
+          "text": "And",
+          "start": 0,
+          "end": 0.174
+        },
+        {
+          "text": "here's",
+          "start": 0.232,
+          "end": 0.43
+        },
+        {
+          "text": "the",
+          "start": 0.464,
+          "end": 0.534
+        },
+        {
+          "text": "result:",
+          "start": 0.569,
+          "end": 0.998
+        },
+        {
+          "text": "your",
+          "start": 1.277,
+          "end": 1.416
+        },
+        {
+          "text": "content",
+          "start": 1.474,
+          "end": 1.8
+        },
+        {
+          "text": "calendar",
+          "start": 1.834,
+          "end": 2.229
+        },
+        {
+          "text": "in",
+          "start": 2.334,
+          "end": 2.45
+        },
+        {
+          "text": "Google",
+          "start": 2.531,
+          "end": 2.798
+        },
+        {
+          "text": "Sheets,",
+          "start": 2.821,
+          "end": 3.216
+        },
+        {
+          "text": "filled",
+          "start": 3.367,
+          "end": 3.599
+        },
+        {
+          "text": "in",
+          "start": 3.646,
+          "end": 3.715
+        },
+        {
+          "text": "with",
+          "start": 3.762,
+          "end": 3.889
+        },
+        {
+          "text": "ideas",
+          "start": 3.959,
+          "end": 4.423
+        },
+        {
+          "text": "and",
+          "start": 4.505,
+          "end": 4.644
+        },
+        {
+          "text": "scripts.",
+          "start": 4.702,
+          "end": 5.387
+        }
+      ]
+    },
+    {
+      "id": "audio-run-mw6eoazf-scene-run-mw6eoazf-10",
+      "sfxId": "vo-run-mw6eoazf-scene-10-mw6eu9yw",
+      "from": 1535,
+      "durationInFrames": 132,
+      "volume": 1,
+      "voiceText": "That's not a chatbot anymore. That's an AI employee doing a real job for you.",
+      "words": [
+        {
+          "text": "That's",
+          "start": 0,
+          "end": 0.267
+        },
+        {
+          "text": "not",
+          "start": 0.302,
+          "end": 0.406
+        },
+        {
+          "text": "a",
+          "start": 0.441,
+          "end": 0.464
+        },
+        {
+          "text": "chatbot",
+          "start": 0.499,
+          "end": 0.824
+        },
+        {
+          "text": "anymore.",
+          "start": 0.859,
+          "end": 1.277
+        },
+        {
+          "text": "That's",
+          "start": 1.428,
+          "end": 1.66
+        },
+        {
+          "text": "an",
+          "start": 1.695,
+          "end": 1.765
+        },
+        {
+          "text": "AI",
+          "start": 1.846,
+          "end": 2.136
+        },
+        {
+          "text": "employee",
+          "start": 2.183,
+          "end": 2.519
+        },
+        {
+          "text": "doing",
+          "start": 2.554,
+          "end": 2.74
+        },
+        {
+          "text": "a",
+          "start": 2.775,
+          "end": 2.798
+        },
+        {
+          "text": "real",
+          "start": 2.902,
+          "end": 3.088
+        },
+        {
+          "text": "job",
+          "start": 3.146,
+          "end": 3.344
+        },
+        {
+          "text": "for",
+          "start": 3.39,
+          "end": 3.495
+        },
+        {
+          "text": "you.",
+          "start": 3.541,
+          "end": 4.04
+        }
+      ]
+    },
+    {
+      "id": "audio-run-mw6eoazf-scene-run-mw6eoazf-11",
+      "sfxId": "vo-run-mw6eoazf-scene-11-mw6euaao",
+      "from": 1667,
+      "durationInFrames": 107,
+      "volume": 1,
+      "voiceText": "Drop a comment if you want more AI employees built with Claude Code.",
+      "words": [
+        {
+          "text": "Drop",
+          "start": 0,
+          "end": 0.221
+        },
+        {
+          "text": "a",
+          "start": 0.267,
+          "end": 0.29
+        },
+        {
+          "text": "comment",
+          "start": 0.325,
+          "end": 0.639
+        },
+        {
+          "text": "if",
+          "start": 0.673,
+          "end": 0.743
+        },
+        {
+          "text": "you",
+          "start": 0.778,
+          "end": 0.859
+        },
+        {
+          "text": "want",
+          "start": 0.906,
+          "end": 1.057
+        },
+        {
+          "text": "more",
+          "start": 1.103,
+          "end": 1.277
+        },
+        {
+          "text": "AI",
+          "start": 1.335,
+          "end": 1.602
+        },
+        {
+          "text": "employees",
+          "start": 1.637,
+          "end": 1.985
+        },
+        {
+          "text": "built",
+          "start": 2.032,
+          "end": 2.194
+        },
+        {
+          "text": "with",
+          "start": 2.229,
+          "end": 2.357
+        },
+        {
+          "text": "Claude",
+          "start": 2.392,
+          "end": 2.601
+        },
+        {
+          "text": "Code.",
+          "start": 2.635,
+          "end": 3.204
+        }
+      ]
+    },
+    {
+      "id": "sfx-run-mw6eoazf-4-1",
+      "sfxId": "soft-whoosh",
+      "from": 484,
+      "durationInFrames": 17,
+      "lane": 1,
+      "volume": 0.55
+    },
+    {
+      "id": "sfx-run-mw6eoazf-4-2",
+      "sfxId": "d-ping",
+      "from": 528,
+      "durationInFrames": 5,
+      "lane": 1,
+      "volume": 0.55
+    }
+  ]
+}

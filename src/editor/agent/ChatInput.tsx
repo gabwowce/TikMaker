@@ -20,15 +20,15 @@ export function ChatInput({ run }: { run: AgentRun }) {
     (attachment) => !dismissed.includes(attachment.label),
   );
 
-  // A message can be written at any time: while the agent works it waits and
-  // is taken up when the agent stops (one at a time). Only a stopped run
-  // takes none.
+  // A message can be written at any time: while the agent works it waits in
+  // a queue and is taken up when the agent stops, one at a time, oldest
+  // first. Only a stopped run takes none.
   const open = run.status !== "error" && run.status !== "cancelled";
-  const busy = !open || talking(run) || send.isPending;
+  const busy = !open || send.isPending;
   const hint = !open
     ? "This run has stopped – start a new one"
     : talking(run)
-      ? "The agent is on your last message…"
+      ? "Write more – it waits in line after your last message"
       : run.status === "awaiting_hook"
         ? "Want different hooks? Say how"
         : run.status === "awaiting_approval"

@@ -92,9 +92,9 @@ export const agentRouter = router({
         await asBadRequest(() => answerFromMessage(run, input.text));
       else await asBadRequest(() => step7Message(run, input));
     } finally {
-      // even when the message is refused because an earlier one still waits:
-      // after a server restart nothing is working on that one, and this
-      // wakes the agent up for it (continueRun never starts a second worker)
+      // even when the message is refused: after a server restart nothing is
+      // working on the ones already waiting, and this wakes the agent up for
+      // them (continueRun never starts a second worker)
       continueRun(await findRun(run.id));
     }
   }),

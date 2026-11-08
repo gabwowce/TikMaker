@@ -15,6 +15,7 @@ const groupByFileId: Record<string, SfxGroup> = {
   "d-tick": "ui",
   "d-select": "ui",
   check: "ui",
+  "check-2": "ui",
   "d-mark": "ui",
   "d-enter": "impact",
   "d-ping": "impact",
