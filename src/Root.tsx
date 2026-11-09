@@ -13,6 +13,7 @@ import { BrandVideo } from "./experiments/codeVideo/BrandVideo";
 import codeVideoProjectJson from "../db/projects/project-1793969945652.json";
 import { videoDefaults } from "./video/typography/tokens";
 import { SoundKitDemo, soundKitFrames } from "./video/SoundKitDemo";
+import { BulbCity, BULB_CITY_FRAMES } from "./showcase/bulbCity/BulbCity";
 const showcaseProject = parseProject(showcaseProjectJson);
 const fallbackProject = createEmptyProject("empty", "Empty Project");
 // The experiment's video: test 11 (3 Claude Code mistakes that burn tokens).
@@ -72,6 +73,15 @@ export function RemotionRoot() {
         width={videoDefaults.width}
         height={videoDefaults.height}
         defaultProps={{ project: codeVideoProject, variant: "onetake" }}
+      />
+      {/* Showcase clip: "one sentence → a 3D animation" (a video's resource) */}
+      <Composition
+        id="BulbCity"
+        component={BulbCity}
+        durationInFrames={BULB_CITY_FRAMES}
+        fps={videoDefaults.fps}
+        width={videoDefaults.width}
+        height={videoDefaults.height}
       />
       {/* Listening to the sound kit: npm run sfx:listen */}
       <Composition
