@@ -1,9 +1,15 @@
 {
   "id": "dev",
   "name": "TikMaker and AI coding",
-  "brief": "Mostly TikMaker itself: what it can do, how a video gets made with it, new features and how it is being built with AI (build in public). Around that, short concrete videos about other AI tools, vibe coding and Claude Code: one problem or one feature per video, shown on screen rather than told.",
+  "brief": "Mostly TikMaker itself: what it can do, how a video gets made with it, new features and how it is being built with AI (build in public). Around that, short videos about what people build and create with AI, Claude Code and vibe coding: real projects and new capabilities, one per video (or a few in a 'built with AI this week' round-up), shown on screen rather than told.",
   "audience": "Creators who want to make short videos faster with AI, and developers or beginners who build apps with AI and want to work faster without breaking things.",
   "tone": "Direct and practical; real screens, real results and numbers instead of hype. Honest about what does not work yet.",
+  "direction": "Inspiring and useful: 'look what you can build or create with AI – and you can start too'. Each video shows something real (a project someone built, a result, a new capability) that makes a scroller stop, teaches something new, and leaves the viewer with a first step to make their own. Value is what the viewer could not get by asking an AI one question: a real project, a real result, a first step.",
+  "offTopic": [
+    "Bug fixing and troubleshooting tutorials ('how to fix X')",
+    "Security incidents, leaks and privacy problems",
+    "General explainers anyone gets from one prompt ('what is MCP')"
+  ],
   "language": "en",
   "screens": [
     {

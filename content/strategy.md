@@ -3,6 +3,25 @@
 Tikslas: 100 → 1 000 sekėjų, išsiaiškinti, kas veikia, tada paleisti savo
 produktą auditorijai, kuri jau pasitiki.
 
+## Kryptis (2026-11-09)
+
+Įkvepiantis, naudingas turinys: **„žiūrėk, ką galima sukurti su AI – ir tu
+gali pradėti“**. Išmokyti kažko naujo, paskatinti pradėti kurti savo
+(vėliau – kurti turinį su TikMaker).
+
+Ne kanalo tema: bug'ų taisymas, saugumo incidentai, „kaip sutvarkyti X“
+tutorialai. TikTok'e scroll'inantis su tuo nesusiduria; kas ieško
+sprendimo, eina į YouTube.
+
+Vertės testas kiekvienai idėjai: ar video duoda kažką, ko žiūrovas negautų
+vienu promptu – tikrą projektą, tikrą rezultatą, pirmą žingsnį? Temos
+vertinamos pagal `docs/temos/A-saltiniai.md` (wow, „tu irgi gali“, gražu
+parodyti, vertė, šviežumas).
+
+Pasikartojantis formatas: **„Built with AI this week“** – 3 tikri projektai,
+kiekvienam: kas tai → kas sukūrė ir kodėl → pirmas žingsnis savo versijai.
+Autorius ir nuoroda – visada.
+
 ## Stulpai (pillars)
 
 | Dalis | Pillar | Kas tai | Kodėl |

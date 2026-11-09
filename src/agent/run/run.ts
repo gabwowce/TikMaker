@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { ideaFromUser } from "./1-idea";
-import { hookFromAi, hookInRun, templateInRun } from "./2-angle";
+import { hookFromAi, hookInRun, templateInRun, valueInRun } from "./2-angle";
 import { researchInRun, scriptInRun } from "./3-script";
 import { codeInRun } from "./4-code";
 import { voiceInRun } from "./5-voice";
@@ -28,6 +28,8 @@ export const agentRun = z.object({
   // 1 Idea
   input: ideaFromUser,
   // 2 Angle
+  // Is the idea worth a video on this channel – checked first (checkValue).
+  value: valueInRun.optional(),
   template: templateInRun.optional(),
   hooks: z.array(hookFromAi).optional(),
   // Which template the hooks were written for: after "Change" they no longer fit.

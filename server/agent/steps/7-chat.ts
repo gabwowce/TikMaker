@@ -193,6 +193,7 @@ export async function step7Hooks(job: Job, instruction: string): Promise<void> {
       job.knowledge.hookFormulas,
       undefined,
       { previous: job.run.hooks ?? [], instruction },
+      job.run.value,
     ),
   );
   await job.save({

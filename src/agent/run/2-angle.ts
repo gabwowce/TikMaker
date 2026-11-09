@@ -6,6 +6,38 @@ import type { RunStatus } from "./status";
 // (hook). For each: what the model sends (…FromAi), what the user sends
 // (…FromUser) and what is kept in the run's file (…InRun).
 
+// ── Value ────────────────────────────────────────────────────────────────
+
+// Before anything is written: is this idea worth a video on this channel
+// (workspace.direction / offTopic)? A weak or off-channel idea makes the
+// agent ask the creator for what would carry it – a real project, a result,
+// their own test – or offer a stronger angle, instead of writing an empty
+// video. What it found travels into the research, the hooks and the script.
+export const valueVerdict = z.enum(["strong", "weak", "off_channel"]);
+
+export const valueFromAi = z.object({
+  ...askingFromAi,
+  verdict: valueVerdict,
+  // What would make a scroller stop: the surprising, beautiful or
+  // impossible-looking thing the video shows. Empty when there is none.
+  wow: z.string().trim().max(200),
+  // What the viewer gets that one question to an AI would not give them: a
+  // real project, a real result, a first step. Empty when there is none.
+  takeaway: z.string().trim().max(200),
+  // What the viewer can do this week to start their own (optional: not every
+  // video ends in an action).
+  firstStep: z.string().trim().max(200).optional(),
+  // One or two sentences for the creator, in plain English.
+  reason: z.string().trim().min(1).max(300),
+  // A stronger take on the same topic, when the verdict is not "strong".
+  betterAngle: z.string().trim().max(200).optional(),
+});
+
+export const valueInRun = valueFromAi.omit({
+  questions: true,
+  assumptions: true,
+});
+
 // ── Template ─────────────────────────────────────────────────────────────
 
 // The model's pick: a template for the idea, how well it fits (1–5) and why.
@@ -89,6 +121,8 @@ export const hookInRun = z.object({
   pickedBy: z.enum(["agent", "user"]),
 });
 
+export type ValueFromAi = z.infer<typeof valueFromAi>;
+export type ValueInRun = z.infer<typeof valueInRun>;
 export type TemplateFromAi = z.infer<typeof templateFromAi>;
 export type TemplateInRun = z.infer<typeof templateInRun>;
 export type HookFromAi = z.infer<typeof hookFromAi>;

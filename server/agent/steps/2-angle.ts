@@ -3,15 +3,22 @@ import {
   TEMPLATE_CHANGEABLE,
   type ChooseHookFromUser,
 } from "../../../src/agent/run/2-angle.js";
+import type { ValueInRun } from "../../../src/agent/run/2-angle.js";
 import type { AgentRun } from "../../../src/agent/run/run.js";
 import { openJob, type Job } from "../job.js";
+import { checkValue } from "../prompts/checkValue.js";
 import { pickTemplate } from "../prompts/pickTemplate.js";
+import { agentSays } from "./7-chat.js";
 import { writeHooks } from "../prompts/writeHooks.js";
 import { askedBefore, askIfNeeded, withoutAsking } from "./ask.js";
 
-// 2 Angle, part one: which template the video follows – the one chosen in the
-// form, or else the model picks one.
+// 2 Angle, part one: is the idea worth a video, then which template the video
+// follows – the one chosen in the form, or else the model picks one.
 export async function step2Template(job: Job): Promise<void> {
+  if (!job.run.value) {
+    await step2Value(job);
+    if (job.run.status === "awaiting_answers") return;
+  }
   const chosen = job.run.input.videoTemplateId;
   if (chosen) {
     // Chosen in the form: no need to ask the model.
@@ -35,6 +42,37 @@ export async function step2Template(job: Job): Promise<void> {
   });
 }
 
+// The value check (prompts/checkValue.ts): judged against the channel's
+// direction before anything is written. A weak or off-channel idea asks the
+// creator for what would carry it; once answered (or kept as it is), the
+// verdict is saved (and said, when it is not strong), and the run goes on – the
+// creator decides, the agent only makes the gap visible.
+async function step2Value(job: Job): Promise<void> {
+  const value = await job.ai("checkValue", () =>
+    checkValue(
+      job.run.input,
+      job.workspace,
+      undefined,
+      askedBefore(job.run, "checkValue"),
+    ),
+  );
+  if (await askIfNeeded(job, "checkValue", value)) return;
+  const saved = withoutAsking(value);
+  await job.save({ value: saved });
+  // A strong idea goes on quietly; a weak one the creator kept is said, so
+  // the gap stays visible.
+  if (saved.verdict !== "strong") await agentSays(job, valueMessage(saved));
+}
+
+function valueMessage(value: ValueInRun): string {
+  const label =
+    value.verdict === "weak" ? "a weak idea" : "not what this channel makes";
+  return (
+    `Value check – ${label}: ${value.reason}` +
+    (value.betterAngle ? ` A stronger angle: ${value.betterAngle}` : "")
+  );
+}
+
 // 2 Angle, part two: the opening line. Written in the form – used as it is;
 // else the model proposes three for the template (FR-06) and the user picks.
 export async function step2Hooks(job: Job): Promise<void> {
@@ -51,6 +89,9 @@ export async function step2Hooks(job: Job): Promise<void> {
       job.workspace,
       template,
       job.knowledge.hookFormulas,
+      undefined,
+      undefined,
+      job.run.value,
     ),
   );
   await job.save({ hooks, hooksFor: template.id });

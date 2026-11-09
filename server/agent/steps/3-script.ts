@@ -28,6 +28,7 @@ export async function step3Script(job: Job): Promise<void> {
         undefined,
         job.run.research?.facts,
         askedBefore(job.run, "writeScript"),
+        job.run.value,
       ),
     );
   const check = (script: ScriptChange["previous"]) =>
@@ -40,7 +41,7 @@ export async function step3Script(job: Job): Promise<void> {
   if (!job.run.research && job.run.template?.needsFacts !== false) {
     try {
       const found = await job.ai("research", () =>
-        research(input, job.workspace),
+        research(input, job.workspace, undefined, job.run.value),
       );
       await job.save({
         research: { facts: found.text, sources: found.sources },

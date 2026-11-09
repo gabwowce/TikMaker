@@ -1,4 +1,5 @@
 import type { Workspace } from "../../../src/agent/knowledge.js";
+import type { ValueInRun } from "../../../src/agent/run/2-angle.js";
 
 // What the creator told the agent – remembered for the channel, and answered
 // in this run (job.ts puts both into workspace.facts). True: the model uses
@@ -9,6 +10,24 @@ export function creatorFacts(workspace: Workspace): string {
 
 Facts from the creator (true – use them, do not ask about them again):
 ${workspace.facts.map((fact) => `- ${fact}`).join("\n")}`;
+}
+
+// What the value check found (run.value): what makes the video worth
+// watching. The research looks for it, the hooks open on it and the script
+// must deliver it. Empty when the check has not run (older runs).
+export function videoValue(value: ValueInRun | undefined): string {
+  if (!value) return "";
+  const lines = [
+    value.wow && `- wow (what makes a scroller stop): ${value.wow}`,
+    value.takeaway &&
+      `- takeaway (what one prompt to an AI would not give): ${value.takeaway}`,
+    value.firstStep && `- first step for the viewer: ${value.firstStep}`,
+  ].filter(Boolean);
+  if (!lines.length) return "";
+  return `
+
+What makes this video worth watching – the video must deliver it:
+${lines.join("\n")}`;
 }
 
 // When a step may ask the creator instead of guessing (pickTemplate,

@@ -73,6 +73,7 @@ export async function askIfNeeded(
 }
 
 const stepName: Record<AskingStep, string> = {
+  checkValue: "the idea's value",
   pickTemplate: "template",
   writeScript: "script",
   pickBlocks: "pictures",

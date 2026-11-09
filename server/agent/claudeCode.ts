@@ -12,7 +12,7 @@ import { claudeModel } from "./models.js";
 // read the project and CLAUDE.md), with our system prompt and a JSON schema.
 // Every call is a new session with no memory: the prompt carries all context.
 //
-// CLAUDE_CODE_PATH   where claude.exe is (default: where the installer puts it)
+// CLAUDE_CODE_PATH   where the claude binary is (default: ~/.local/bin/claude, or claude.exe on Windows – where the installer puts it)
 // AGENT_CLAUDE_MODEL which model: sonnet | opus | haiku (default: sonnet);
 //                    a step can have its own (models.ts)
 
@@ -55,7 +55,12 @@ function childEnv(): NodeJS.ProcessEnv {
 
 const claudePath = () =>
   process.env.CLAUDE_CODE_PATH ??
-  path.join(os.homedir(), ".local", "bin", "claude.exe");
+  path.join(
+    os.homedir(),
+    ".local",
+    "bin",
+    process.platform === "win32" ? "claude.exe" : "claude",
+  );
 
 // Claude Code's answer (stdout) → checked data. Kept apart from running it,
 // so it can be tested without a real call.

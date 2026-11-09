@@ -34,6 +34,8 @@ const fakeModel = new MockLanguageModelV4({
     );
     const answer = prompt.includes("Example frames:")
       ? FAKE_REVIEW
+      : prompt.includes("Direction:")
+      ? fakeValue(prompt)
       : prompt.includes("Allowed now:")
       ? fakeRoute(prompt)
       : prompt.includes("Rewrite scene")
@@ -115,6 +117,29 @@ function fakeScript(prompt: string) {
               question: "How long does generating a video take?",
               why: "The script says how fast it is",
               options: ["~2 min", "~5 min"],
+            },
+          ],
+        }
+      : {}),
+  };
+}
+// The value check: every idea is worth a video, except one saying "WEAK
+// IDEA" – that one asks the creator first, until the prompt says it asked.
+function fakeValue(prompt: string) {
+  const weak = prompt.includes("WEAK IDEA");
+  const asks = weak && !prompt.includes("do not ask again");
+  return {
+    verdict: weak ? "weak" : "strong",
+    wow: weak ? "" : "A real result on screen",
+    takeaway: weak ? "" : "Something one prompt would not give",
+    reason: weak ? "Nothing real to show yet." : "A real result.",
+    ...(weak ? { betterAngle: "Show a real project" } : {}),
+    ...(asks
+      ? {
+          questions: [
+            {
+              question: "Do you have a real project to show for this?",
+              why: "It is what the viewer cannot get from one prompt",
             },
           ],
         }
@@ -318,6 +343,7 @@ describe("agent runs", () => {
       pickedBy: "agent",
     });
     expect(run.steps).toMatchObject([
+      { name: "checkValue" },
       {
         name: "pickTemplate",
         inputTokens: 100,
@@ -346,7 +372,10 @@ describe("agent runs", () => {
       pickedBy: "user",
     });
     // No call for the template: the only one is for the hooks.
-    expect(run.steps.map((step) => step.name)).toEqual(["writeHooks"]);
+    expect(run.steps.map((step) => step.name)).toEqual([
+      "checkValue",
+      "writeHooks",
+    ]);
   });
 
   it("uses the form's hook without asking the model for hooks", async () => {
@@ -363,6 +392,7 @@ describe("agent runs", () => {
     // Nothing to wait for: straight on to the script.
     expect(run.status).toBe("awaiting_approval");
     expect(run.steps.map((step) => step.name)).toEqual([
+      "checkValue",
       "pickTemplate",
       "research",
       "writeScript",
@@ -424,6 +454,7 @@ describe("agent runs", () => {
       (run) => run.hooksFor === "pain-to-fix" && run.status === "awaiting_hook",
     );
     expect(run.steps.map((step) => step.name)).toEqual([
+      "checkValue",
       "pickTemplate",
       "writeHooks",
       "writeHooks",
@@ -483,6 +514,7 @@ describe("agent runs", () => {
     const run = await until(id, (run) => run.status === "awaiting_approval");
     // First draft caught by the check (FR-09), the second one clean.
     expect(run.steps.map((step) => step.name)).toEqual([
+      "checkValue",
       "pickTemplate",
       "research",
       "writeScript",
@@ -742,6 +774,44 @@ describe("agent runs", () => {
     expect(JSON.stringify(last.prompt)).toContain(
       "How long does generating a video take? – ~2 min",
     );
+  });
+
+  it("checks the idea's value first and asks the creator about a weak one", async () => {
+    const { id } = await api.agent.start({
+      projectId: "p1",
+      input: { idea: "WEAK IDEA: 5 tips for prompts", workspaceId: "dev" },
+    });
+    const waiting = await until(id, (run) => run.status === "awaiting_answers");
+    // nothing is picked or written before the creator answers
+    expect(waiting.pausedFrom).toBe("picking_template");
+    expect(waiting.value).toBeUndefined();
+    expect(waiting.template).toBeUndefined();
+    const asked = waiting.messages!.find((m) => m.questions)!;
+    expect(asked.askedBy).toBe("checkValue");
+    await api.agent.answer({
+      runId: id,
+      messageId: asked.id,
+      answers: [{ id: asked.questions![0].id, answer: "Keep my idea" }],
+    });
+    const run = await until(id, (run) => run.status === "awaiting_hook");
+    // the creator decides: the run goes on, and the gap is said
+    expect(run.value?.verdict).toBe("weak");
+    expect(
+      run.messages!.some((m) => m.text.startsWith("Value check – a weak idea")),
+    ).toBe(true);
+    // the second check got the answer as a fact
+    const last = [...run.steps].reverse().find((s) => s.name === "checkValue")!;
+    expect(JSON.stringify(last.prompt)).toContain(
+      "Do you have a real project to show for this? – Keep my idea",
+    );
+  });
+
+  it("gives the hooks and the script what makes the video worth watching", async () => {
+    const { id } = await startFor("p1");
+    const run = await until(id, (run) => run.status === "awaiting_hook");
+    expect(run.value?.verdict).toBe("strong");
+    const hooks = run.steps.find((s) => s.name === "writeHooks")!;
+    expect(JSON.stringify(hooks.prompt)).toContain("A real result on screen");
   });
 
   it("pauses at the usage limit and goes on from there on Continue", async () => {

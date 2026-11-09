@@ -46,6 +46,11 @@ export const workspaceSchema = z
     brief: z.string(),
     audience: z.string(),
     tone: z.string(),
+    // What makes a video worth watching on this channel, and what the channel
+    // does not make: the value check (prompts/checkValue.ts) judges an idea
+    // by these before anything is written.
+    direction: z.string().optional(),
+    offTopic: z.array(z.string().min(1)).optional(),
     language: z.string().min(2),
     // The channel's own product as it really looks (for a channel about its
     // product): each screen and what is on it. Scenes that show the product

@@ -25,7 +25,12 @@ export const askingFromAi = {
 };
 
 // The steps that may ask (their names in the run's log).
-export const askingSteps = ["pickTemplate", "writeScript", "pickBlocks"] as const;
+export const askingSteps = [
+  "checkValue",
+  "pickTemplate",
+  "writeScript",
+  "pickBlocks",
+] as const;
 export type AskingStep = (typeof askingSteps)[number];
 export type QuestionFromAi = z.infer<typeof questionFromAi>;
 export type Asking = {
