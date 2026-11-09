@@ -1,0 +1,1561 @@
+{
+  "id": "run-mw8y5hcr",
+  "projectId": "project-1794209368959",
+  "createdAt": 1794209736987,
+  "status": "done",
+  "statusAt": 1794211227638,
+  "input": {
+    "idea": "A video showing that Claude Code can make motion design for you.\n3 Claude Code skills – each one turns your video into a completely\ndifferent motion design style (01, 02, 03, each with a short name).\nF\nOne fact before the end: a skill is just one markdown file that Claude\nreads before it draws every scene.\nCTA: comment \"SKILL\" and I'll send you the prompts.",
+    "workspaceId": "dev",
+    "targetSeconds": 40,
+    "motionOnly": false,
+    "withFace": false,
+    "generateVoice": true,
+    "visualStyle": "clear"
+  },
+  "template": {
+    "videoTemplateId": "tool-tips-keyword",
+    "score": 4,
+    "reason": "Your idea is a numbered set of 3 Claude Code skills (01, 02, 03), each with a short name and shown working as a motion design style. It ends with a comment keyword offer (\"SKILL\"), which is what this template is built for. The skill-file fact fits as the extra line before the CTA.",
+    "needsFacts": false,
+    "pickedBy": "agent"
+  },
+  "hooks": [
+    {
+      "text": "3 Claude Code skills that make you look like a motion designer overnight.",
+      "firstFrame": "A split screen: on the left a plain screen recording, on the right the same clip as an animated motion design with a numbered badge labeled 01",
+      "angle": "outcome",
+      "formulaId": "n-skills-make-you-look-like",
+      "score": 4
+    },
+    {
+      "text": "Same video, three skills, three completely different motion styles.",
+      "firstFrame": "One video frame splits into three tiles labeled 01, 02 and 03, each showing the same scene in a clearly different motion design style",
+      "angle": "demonstration",
+      "formulaId": null,
+      "score": 4
+    },
+    {
+      "text": "This motion design style is just one markdown file.",
+      "firstFrame": "A terminal shows Claude Code reading a single skill .md file, then a finished animated scene appears next to it",
+      "angle": "surprise",
+      "formulaId": null,
+      "score": 4
+    }
+  ],
+  "hooksFor": "tool-tips-keyword",
+  "hook": {
+    "text": "3 Claude Code skills that make you look like a motion designer overnight.",
+    "firstFrame": "A split screen: on the left a plain screen recording, on the right the same clip as an animated motion design with a numbered badge labeled 01",
+    "formulaId": "n-skills-make-you-look-like",
+    "pickedBy": "agent"
+  },
+  "script": {
+    "scenes": [
+      {
+        "role": "hook",
+        "voiceover": "3 Claude Code skills that make you look like a motion designer overnight.",
+        "onScreen": "3 Claude Code skills → motion designer overnight",
+        "visual": "Split screen from the first word: on the left a plain screen recording plays, and on the right the same clip runs as animated motion design while a numbered badge '01' pops into the corner",
+        "needsRecording": false
+      },
+      {
+        "role": "setup",
+        "voiceover": "Plain screen recordings look flat. Motion design fixes that.",
+        "onScreen": "Flat recording → motion design",
+        "visual": "A plain grey screen recording sits still as a scroll thumb flicks past it, then the same frame bursts into color and moving shapes",
+        "needsRecording": false
+      },
+      {
+        "role": "item",
+        "voiceover": "First is skill 01, Kinetic Type. Every key word you say slams onto the screen in big bold letters.",
+        "onScreen": "01 · Kinetic Type",
+        "visual": "Drawn style preview: badge '01' appears, then the clip's key words slam in one by one in huge bold type over the screen, scaling and snapping to the beat",
+        "needsRecording": false
+      },
+      {
+        "role": "item",
+        "voiceover": "Second, skill 02, Clean UI. Your screen floats in a device frame, the camera zooms into each click, and soft cards pop in to label what happens.",
+        "onScreen": "02 · Clean UI",
+        "visual": "Drawn style preview: badge '02' appears, the same clip shrinks into a floating device frame, the view zooms onto a click and rounded label cards slide in beside it",
+        "needsRecording": false
+      },
+      {
+        "role": "item",
+        "voiceover": "Third, skill 03, Sketch. Arrows, circles and doodles draw themselves on top, like someone explaining it on a whiteboard.",
+        "onScreen": "03 · Sketch",
+        "visual": "Drawn style preview: badge '03' appears, then hand-drawn arrows and circles draw themselves stroke by stroke over the same clip on a whiteboard-white background",
+        "needsRecording": false
+      },
+      {
+        "role": "bridge",
+        "voiceover": "And here's the secret: a skill is just one markdown file. Claude reads it before it draws every scene. Anyone can write one.",
+        "onScreen": "1 skill = 1 markdown file",
+        "visual": "A single file named SKILL.md opens to show a few lines of text, then an arrow carries it into Claude, which draws scene after scene in that style",
+        "needsRecording": false
+      },
+      {
+        "role": "cta",
+        "voiceover": "Comment SKILL and I'll send you the prompts. Make sure you follow TikMaker.",
+        "onScreen": "Comment \"SKILL\" → get the prompts",
+        "visual": "A comment box types out 'SKILL', a reply bubble with the three numbered prompts 01, 02 and 03 pops up below it, then a follow button pulses",
+        "needsRecording": false
+      }
+    ],
+    "skipped": [
+      {
+        "role": "bridge",
+        "reason": "The opening bridge isn't needed because the setup leads straight into 'First is skill 01'."
+      },
+      {
+        "role": "bridge",
+        "reason": "I left out the core bridge between tips so the three styles run back to back within about 40 s. The follow plug is in the CTA instead."
+      }
+    ],
+    "problems": [],
+    "approved": true
+  },
+  "messages": [
+    {
+      "id": "msg-mw8y5lwlqpto",
+      "at": 1794209742885,
+      "from": "agent",
+      "text": "What I assumed (template): The three skill names and their styles come from you; I haven't made them up. · You have screen recordings or renders of each skill's output to show on screen. · A skill is one markdown file Claude reads before drawing each scene, as you described."
+    },
+    {
+      "id": "msg-mw8y8hqq08bl",
+      "at": 1794209877458,
+      "from": "agent",
+      "text": "2 things I need to know before I go on:",
+      "questions": [
+        {
+          "id": "writeScript-1",
+          "question": "What are the short names of skills 01, 02 and 03?",
+          "why": "Each tip has to say its skill's name out loud and show it on screen. The idea doesn't give the names, so for now they are placeholders.",
+          "answer": "cia nera specialiu pavadinimu skillsams,turi pasidometi pats kas yra skillsai ir pats suprasi kad cia tsg aprasai, juos betkas betkur gali sukurti, arba galima nusipirkti is zmoniu ar panasiai"
+        },
+        {
+          "id": "writeScript-2",
+          "question": "Do you have the same clip rendered in all three styles to record?",
+          "why": "The three tip scenes show the before and after for real. Without those renders, they become drawn style previews.",
+          "options": [
+            "Yes, I have all three",
+            "No, draw style previews"
+          ],
+          "answer": "No, draw style previews"
+        }
+      ],
+      "askedBy": "writeScript"
+    },
+    {
+      "id": "msg-mw8ylhuhn7cs",
+      "at": 1794210484121,
+      "from": "agent",
+      "text": "What I assumed (script): Skills have no official names, so I gave them short descriptive style names: 01 Kinetic Type, 02 Clean UI, 03 Sketch – rename them to match your actual prompts. · Style previews are drawn animations of the same clip, not real renders, so no scene needs a screen recording. · The follow plug uses the channel name TikMaker."
+    },
+    {
+      "id": "msg-mw8z1fjmy1xe",
+      "at": 1794211227634,
+      "from": "agent",
+      "text": "Self-review, round 1: I looked at the frames – every scene reads well.\nNote, scene 1 (left as it is): The top window is so dim that the before/after takes a moment to read. One word on each window (e.g. 'before' / 'after') would make it faster, but it is not required.\nNote, scene 2 (left as it is): It looks almost the same as the hook (the same window going from flat to glowing in the same place), so the cut feels like nothing new happened. The swiping thumb from the plan does not show in either frame.\nNote, scene 4 (left as it is): The zoom onto the click is mild, so it can read as the same window again rather than a camera move. The layout (pill, window, caption) is the same as scenes 3 and 5.\nNote, scene 5 (left as it is): This is the third scene in a row with the same pill + window + caption layout. The white window helps, but the series feels repeated.\nNote, scene 6 (left as it is): In the second frame, the 'SKILL.md' label on the small file is only about a third the height of the caption letters, which is at the edge of readable. It would help to keep the file bigger when it moves to the corner.",
+      "review": {
+        "round": 1,
+        "scenes": [
+          {
+            "sceneIndex": 0,
+            "sees": "A flat grey app window above the same window glowing orange with an '01' badge: plain becomes animated.",
+            "verdict": "good",
+            "problems": [
+              "The top window is so dim that the before/after takes a moment to read. One word on each window (e.g. 'before' / 'after') would make it faster, but it is not required."
+            ]
+          },
+          {
+            "sceneIndex": 1,
+            "sees": "One dull grey window that turns orange and lively: motion design fixes flat recordings.",
+            "verdict": "good",
+            "problems": [
+              "It looks almost the same as the hook (the same window going from flat to glowing in the same place), so the cut feels like nothing new happened. The swiping thumb from the plan does not show in either frame."
+            ]
+          },
+          {
+            "sceneIndex": 2,
+            "sees": "'01 Kinetic Type' with SHIP IT FASTER slammed huge over a blurred window, FASTER in orange.",
+            "verdict": "good",
+            "problems": []
+          },
+          {
+            "sceneIndex": 3,
+            "sees": "'02 Clean UI': the screen sits in a monitor frame, and a cursor clicks the orange button while two label cards pop in.",
+            "verdict": "good",
+            "problems": [
+              "The zoom onto the click is mild, so it can read as the same window again rather than a camera move. The layout (pill, window, caption) is the same as scenes 3 and 5."
+            ]
+          },
+          {
+            "sceneIndex": 4,
+            "sees": "'03 Sketch': a white whiteboard window with an orange hand-drawn arrow and circle around its button, plus doodles.",
+            "verdict": "good",
+            "problems": [
+              "This is the third scene in a row with the same pill + window + caption layout. The white window helps, but the series feels repeated."
+            ]
+          },
+          {
+            "sceneIndex": 5,
+            "sees": "A SKILL.md file feeds into Claude, which draws three scene cards in the three styles.",
+            "verdict": "good",
+            "problems": [
+              "In the second frame, the 'SKILL.md' label on the small file is only about a third the height of the caption letters, which is at the edge of readable. It would help to keep the file bigger when it moves to the corner."
+            ]
+          },
+          {
+            "sceneIndex": 6,
+            "sees": "A comment box with SKILL in big orange, a reply card with prompts 01–03, and an orange Follow button.",
+            "verdict": "good",
+            "problems": []
+          }
+        ],
+        "next": "done"
+      }
+    }
+  ],
+  "steps": [
+    {
+      "name": "pickTemplate",
+      "startedAt": 1794209737009,
+      "ms": 5874,
+      "model": "claude-sonnet-5-5",
+      "attempts": 1,
+      "prompt": {
+        "system": "You are the producer of a short-video channel (TikTok, Reels, Shorts).\nYour job in this step: choose how the video will be told, by picking ONE template\nfrom the list you are given. You do not write the video yet.\n\nYou get the channel, the video idea and the templates.\nPick the template whose \"when to use\" fits the idea best; the length matters less.\nA template's \"needs\" are the facts its required scenes are built on. Pick one the idea\ncan fill with its OWN facts: a rise-to-success story needs a success to show, a how-to\nneeds steps, a list needs items. If the idea lacks what a template needs, that template\ndoes not fit, however close its topic is.\nNever invent a template: answer only with an id from the list.\nscore: 5 = made for this idea and the idea has every fact it needs, 3 = workable,\n1 = nothing in the list fits.\nreason: one or two sentences for the creator, in plain English, about this idea.\nneedsFacts: true when the script will need facts from outside the idea that should be\nchecked online first – prices, numbers, dates, news, how another company's tool works;\nfalse when the idea itself (or the channel's own product, which the channel knows) gives\neverything the video says.",
+        "user": "Channel: TikMaker and AI coding. Mostly TikMaker itself: what it can do, how a video gets made with it, new features and how it is being built with AI (build in public). Around that, short concrete videos about other AI tools, vibe coding and Claude Code: one problem or one feature per video, shown on screen rather than told.\nAudience: Creators who want to make short videos faster with AI, and developers or beginners who build apps with AI and want to work faster without breaking things.\n\nIdea: A video showing that Claude Code can make motion design for you.\n3 Claude Code skills – each one turns your video into a completely\ndifferent motion design style (01, 02, 03, each with a short name).\nF\nOne fact before the end: a skill is just one markdown file that Claude\nreads before it draws every scene.\nCTA: comment \"SKILL\" and I'll send you the prompts.\nWanted length: about 40 s\nFace on camera: no, a faceless video\n\nTemplates:\n- id: analogy-explainer\n  name: Explained with characters\n  what: A concept explained through a small invented world or everyday analogy\n  when to use: An idea that is an abstract concept (economics, health, finance) that becomes clear as a story.\n  needs: problem, step, concept-term, real-case, lesson\n  length: 26–63 s\n- id: app-list\n  name: Free apps list\n  what: A quick list of apps, one per scene, each shown on screen\n  when to use: An idea that recommends several apps or tools for one device or audience.\n  needs: app-count, device-or-audience, app-name, app-feature\n  length: 14–62 s\n- id: brand-origin\n  name: Rise of a brand\n  what: From a humble start, through hardship, to a big brand\n  when to use: An idea that is the history of a brand, product or founder that has already grown big: the idea gives the success to show (users, money, years). Not a creator telling why they built their own tool.\n  needs: year-or-result, brand, founder, start, hardship, time-jump, result-number\n  length: 43–80 s\n- id: build-it-fast\n  name: Build it fast\n  what: Show the finished thing, then every step that built it\n  when to use: An idea where the viewer can build something real in minutes with a tool.\n  needs: result, time, tool-name, step, screen-recording\n  length: 20–51 s\n- id: dark-true-story\n  name: Creepy true story\n  what: A dark or strange true story told step by step to a shocking ending\n  when to use: An idea that is a real crime, legend or eerie event.\n  needs: place-or-person, event, ending\n  length: 15–51 s\n- id: explained-in-time\n  name: Explained in 60 seconds\n  what: A complex topic explained in a promised short time, often to an unlikely audience\n  when to use: An idea that is a complex topic the viewer finds hard and wants explained quickly.\n  needs: nothing special\n  length: 35–54 s\n- id: how-to-steps\n  name: How-to steps\n  what: A how-to promise followed by numbered steps on screen\n  when to use: An idea that is a concrete task the viewer wants to do with a tool, in a few steps.\n  needs: task, tool-name\n  length: 32–43 s\n- id: myth-vs-reality\n  name: Myth vs reality\n  what: What people think, then how it really works, with the proof\n  when to use: An idea that corrects a common belief or reveals a hidden side of something familiar.\n  needs: belief, background, reality, step, twist\n  length: 26–59 s\n- id: new-tool-news\n  name: New tool news\n  what: A just-released free tool, its benefits, a quick demo and a comment-keyword offer\n  when to use: An idea that is news about a newly released or newly free tool.\n  needs: who-released, tool-name, benefit, keyword, resource\n  length: 30–107 s\n- id: pain-to-fix\n  name: Problem then fix\n  what: The broken or painful way first, then the tool that fixes it, shown working\n  when to use: An idea where a tool fixes a pain the audience recognises, including a creator telling why they built their own tool: the pain they had, then the tool that fixes it.\n  needs: pain, task, screen-recording\n  length: 30–40 s\n- id: plot-recap\n  name: Story recap\n  what: A plot, journey or character backstory retold event by event\n  when to use: An idea that recaps an episode, myth, game lore or a character's story.\n  needs: story-name, setting, ending\n  length: 48–181 s\n- id: product-promo\n  name: Product promo\n  what: A product's benefits shown one by one through its interface, ending on where to get it\n  when to use: An idea that promotes one product or service.\n  needs: product-name\n  length: 11–30 s\n- id: question-answered\n  name: Big question answered\n  what: A why or how question, answered step by step with diagrams\n  when to use: An idea that is a question the audience has wondered about.\n  needs: question\n  length: 43–71 s\n- id: ranked-countdown\n  name: Top N countdown\n  what: Ranked items counted down to number one\n  when to use: An idea that ranks a set of things by some measure.\n  needs: rank-count, ranked-thing, rank-number, item-name, item-detail\n  length: 25–60 s\n- id: rapid-facts\n  name: Rapid-fire facts\n  what: Many short facts in a row, one per scene, with the strongest kept for last\n  when to use: An idea that is a collection of short surprising facts around one theme.\n  needs: theme, fact\n  length: 40–56 s\n- id: single-fact\n  name: One surprising fact\n  what: One fact built up line by line to a short reveal\n  when to use: An idea that is a single surprising or eerie fact that fits in under 20 seconds.\n  needs: topic\n  length: 7–16 s\n- id: software-tutorial\n  name: Software how-to\n  what: A finished result first, then the steps to make it in the software\n  when to use: An idea that is a specific thing to make in a common program (PowerPoint, GitHub, a no-code tool).\n  needs: result, software\n  length: 14–53 s\n- id: tool-deep-dive\n  name: Tool explained\n  what: What a tool is, how it differs, and what it really does\n  when to use: An idea that explains one popular tool or model and how to think about it.\n  needs: tool-name, difference, main-point\n  length: 49–78 s\n- id: tool-spotlight\n  name: Tool spotlight\n  what: One website or tool shown working, often as a numbered series part\n  when to use: An idea that is a single useful website, repo or tool the viewer probably has not seen.\n  needs: tool-category, series-part, screen-recording\n  length: 10–56 s\n- id: tool-tips-keyword\n  name: Tool tips list\n  what: Numbered tips for one tool, each named and then shown working, ending with a comment-keyword offer\n  when to use: An idea that is a handful of concrete tips, skills or add-ons for one tool the audience already uses.\n  needs: tool-name, tip-count, tip-number, tip-name, keyword, resource\n  length: 47–88 s\n\nquestions (optional, at most 3): ask the creator only when the answer would change the\nvideo and neither the idea nor the facts say it – a real number or result, what the\nproduct really does, what a screen really shows. Each says why it matters and, when the\nanswer is one of a few, 2–4 short options. Otherwise decide yourself – never invent a\nfact – and write in assumptions (at most 3) what you assumed, so the creator sees it."
+      },
+      "inputTokens": 4593,
+      "cachedInputTokens": 0,
+      "outputTokens": 325,
+      "thinkingTokens": 0,
+      "turns": 2,
+      "output": {
+        "assumptions": [
+          "The three skill names and their styles come from you; I haven't made them up.",
+          "You have screen recordings or renders of each skill's output to show on screen.",
+          "A skill is one markdown file Claude reads before drawing each scene, as you described."
+        ],
+        "videoTemplateId": "tool-tips-keyword",
+        "score": 4,
+        "reason": "Your idea is a numbered set of 3 Claude Code skills (01, 02, 03), each with a short name and shown working as a motion design style. It ends with a comment keyword offer (\"SKILL\"), which is what this template is built for. The skill-file fact fits as the extra line before the CTA.",
+        "needsFacts": false
+      }
+    },
+    {
+      "name": "writeHooks",
+      "startedAt": 1794209742889,
+      "ms": 5489,
+      "model": "claude-opus-5-5",
+      "attempts": 1,
+      "prompt": {
+        "system": "You are an expert short-form video strategist and hook writer for TikTok, Reels and\nYouTube Shorts. Create THREE genuinely different hooks for the video idea.\n\nA hook is the first 1–2 seconds of the video. It combines the opening words (spoken and\nshown), the first visual frame, and the curiosity or emotion that makes someone keep\nwatching.\n\n## 1. What makes a strong hook\nUse one or more of these – not all of them in every hook:\n- CURIOSITY GAP: the viewer wants to find out something they don't know yet.\n- SPECIFICITY: concrete details instead of vague promises.\n- UNEXPECTEDNESS: a surprising angle, contrast or observation.\n- RELEVANCE: tied to something this audience cares about.\n- PAYOFF PROMISE: a valuable result, insight or discovery the viewer gets by watching.\n\nAvoid: openings like \"Today we're going to talk about…\"; obvious questions with\npredictable answers; empty clickbait that promises more than the video delivers; vague\nclaims like \"This will change everything\"; hooks that only announce the topic.\n\n## 2. Three different approaches\nThe three hooks take genuinely different creative angles – for example curiosity (how or\nwhy something works), outcome (a valuable result), surprise (an assumption challenged),\nproblem (the pain the viewer knows), demonstration (the thing shown working). Pick the\nthree strongest for this idea and name each one's angle; all three angles are different.\nNever three rewordings of one hook.\n\n## 3. Formulas\nThe formulas given are proven structures. Use one when it truly improves the hook and\nfill it only with what the idea supports (formulaId = its id); or write your own\n(formulaId = null). Never invent personal experiences, results, statistics, product\ncapabilities or comparisons the idea does not give. Create interest without misleading.\n\n## 4. Writing\nOne short line, at most 12 words, natural spoken English, understood at once, no hashtags,\nno emojis, no filler words, concrete rather than marketing language. It should sound like\na real person talking, not an ad or an AI headline.\n\n## 5. First frame – the visual hook\nfirstFrame: exactly what the viewer SEES in the first two seconds – ONE concrete\ncomposition: an action or an object, not a mood. The words create curiosity or give\ncontext; the picture proves, demonstrates or makes the idea more interesting.\nPrefer, in this order: the actual result; the product or tool performing an action; a\nbefore / after; the problem shown; a striking object or visual metaphor.\nBad: \"A futuristic AI animation\", \"An exciting digital scene\", \"Technology comes to life\".\nGood: \"A screen recording of an AI agent generating a complete video from one text\nprompt\", \"The finished vertical video appears next to the one-line idea that made it\".\nUse only what this video can really show – listed under \"This video can show\". Never\nassume footage, faces or stock images it does not have. Words on an empty background are\nthe weakest opening; avoid them when a meaningful picture is possible.\n\n## 6. Score\nScore each complete opening – words AND first frame together – from 1 to 5, judging\nclarity, curiosity, relevance to the audience and visual potential:\n1 weak, generic or unclear · 2 understandable but little reason to stay · 3 clear and\nrelevant, not memorable · 4 specific, interesting, visually strong · 5 exceptional: grabs\nat once and makes people need to see what happens. Be critical – 5 is rare; polish alone\nis not a reason for a high score.\n\n## 7. Before answering\nCheck: three different angles; each supported by the idea; each first frame concrete and\nshowable; the picture adds something the words don't; understood within two seconds; no\nmisleading clickbait.",
+        "user": "Channel: TikMaker and AI coding. Mostly TikMaker itself: what it can do, how a video gets made with it, new features and how it is being built with AI (build in public). Around that, short concrete videos about other AI tools, vibe coding and Claude Code: one problem or one feature per video, shown on screen rather than told.\nAudience: Creators who want to make short videos faster with AI, and developers or beginners who build apps with AI and want to work faster without breaking things.\n\nIdea: A video showing that Claude Code can make motion design for you.\n3 Claude Code skills – each one turns your video into a completely\ndifferent motion design style (01, 02, 03, each with a short name).\nF\nOne fact before the end: a skill is just one markdown file that Claude\nreads before it draws every scene.\nCTA: comment \"SKILL\" and I'll send you the prompts.\nTemplate: Tool tips list – Numbered tips for one tool, each named and then shown working, ending with a comment-keyword offer\n\nThis video can show:\n- the creator's own screen recordings (the product, an app, a website in use)\n- motion blocks: logos, code, terminal, screen, list, number, compare, badge, object, schema, phone, browser, progress, keys, transform, chat, picture\n- logos: bolt, chatgpt, claude, claude-ai-symbol, claude-svg, cloudflare, discord, elevenlabs, figma, gemini, github, gmail, google-chrome, grok, kilo-code, lovable, midjourney, netlify, reddit, remotion, remotion, stripe, supabase, vercel, vs-code, x\n- objects: broken-glass, broom, browser-window, bug, card-declined, clock, coin, credit-card, database, document, dollar-cupure, envelope, eye, frustration, fuel-gauge, idea, key, layer-stack, link, padlock, paper-documents, pen, pin, plane, pricetag, puzzle-joined, puzzle-piece, question, robot-helpers, screen-panel, shop, sync-arrows, target, tower-leaning, two-users, user-avatar, uturn, wallet\n\nFormulas:\n- id: n-skills-make-you-look-like\n  type: list\n  formula: [N] [tool] skills that make you look like a [desired role] overnight.\n  example: 3 Claude Code skills that make you look like a designer overnight.\n- id: big-number-tools\n  type: list\n  formula: [Big number] [adjective] [topic] tools\n  example: 120 MIND-BLOWING AI TOOLS\n- id: if-tool-keeps-n-tricks\n  type: list\n  formula: If your [tool] keeps [pain], here are [N] tricks to [benefit].\n  example: If your Claude Code keeps hitting usage limits, here are three tricks to make it run more efficiently.\n- id: powerful-things-you-should-know\n  type: list\n  formula: Powerful [category] you should know, part [N].\n  example: Powerful AI tools you should know, part 83.\n- id: top-n-secret-things\n  type: list\n  formula: Here are the top [N] secret [items] in [topic] that you probably didn't know about.\n  example: Here are the top three secret dialogues in Poppy Playtime that you probably didn't know about.\n- id: top-n-who\n  type: list\n  formula: These are the top [N] [subjects] who [notable thing].\n  example: These are the top 5 singers who are no longer with us but whose songs went viral on YouTube Shorts and TikTok in 2026. And the last singer on this list has a song with over 2.2 billion views on YouTube.\n- id: facts-that-mess-with\n  type: list\n  formula: Crazy facts that will mess with your perception of [topic].\n  example: Crazy facts that will mess with your perception of time.\n- id: everyone-uses-but\n  type: contrarian\n  formula: Everyone's using [trending tool] to [goal], but [pain].\n  example: Everyone's using Claude Code to build AI agents\n- id: ranking-top-n\n  type: list\n  formula: Ranking top [N] [topic]\n  example: Ranking Top 5 Bruh Moments 1. 2. ball vs balls 💀 3. 4. 5.\n- id: everyone-without-is-wasting\n  type: contrarian\n  formula: Everyone using [tool] without [feature] is just wasting their [resource].\n  example: Everyone using Claude without skills is just wasting their tokens.\n- id: facts-that-may-surprise\n  type: list\n  formula: Facts about [topic] that may surprise you.\n  example: Facts about the world that may surprise you.\n- id: top-n-best-category\n  type: list\n  formula: TOP [N] BEST [category] TOOL\n  example: TOP 5 BEST AI TOOL\n- id: n-free-apps-for-device\n  type: list\n  formula: [N] FREE APPS YOU NEED ON YOUR [device]\n  example: 2 FREE APPS YOU NEED ON YOUR IPAD\n- id: you-are-the-only\n  type: contrarian\n  formula: You are the only [statement that sounds impossible].\n  example: You are the only person alive.\n- id: things-every-audience-needs\n  type: list\n  formula: [Items] that every [audience] needs\n  example: Apps that every teenager needs\n- id: you-might-think\n  type: contrarian\n  formula: When you [everyday action], you might think [misconception]...\n  example: When you visit a website, you might think that your computer is connecting with\n- id: if-you-use-these-n-you-need\n  type: list\n  formula: If you use [tool], these are the [N] [add-ons] you need right now.\n  example: If you use Claude Code, these are the 5 MCP servers you need right now.\n- id: free-apps-shouldnt-be-this-good\n  type: list\n  formula: [N] free [category] apps that should not be this good.\n  example: 5 free iPhone apps that should not be this good.\n- id: facts-you-could-live-without\n  type: list\n  formula: [N] interesting facts you could have lived without knowing.\n  example: Three interesting facts you could have lived without knowing."
+      },
+      "inputTokens": 4982,
+      "cachedInputTokens": 0,
+      "outputTokens": 338,
+      "thinkingTokens": 0,
+      "turns": 2,
+      "output": [
+        {
+          "text": "3 Claude Code skills that make you look like a motion designer overnight.",
+          "firstFrame": "A split screen: on the left a plain screen recording, on the right the same clip as an animated motion design with a numbered badge labeled 01",
+          "angle": "outcome",
+          "formulaId": "n-skills-make-you-look-like",
+          "score": 4
+        },
+        {
+          "text": "Same video, three skills, three completely different motion styles.",
+          "firstFrame": "One video frame splits into three tiles labeled 01, 02 and 03, each showing the same scene in a clearly different motion design style",
+          "angle": "demonstration",
+          "formulaId": null,
+          "score": 4
+        },
+        {
+          "text": "This motion design style is just one markdown file.",
+          "firstFrame": "A terminal shows Claude Code reading a single skill .md file, then a finished animated scene appears next to it",
+          "angle": "surprise",
+          "formulaId": null,
+          "score": 4
+        }
+      ]
+    },
+    {
+      "name": "writeScript",
+      "startedAt": 1794209854996,
+      "ms": 22460,
+      "model": "claude-opus-5-5",
+      "attempts": 1,
+      "prompt": {
+        "system": "You write the script of a short vertical video (TikTok, Reels, Shorts).\n\nTell ONE connected story. The idea may be written as loose thoughts in any order: sort\nthem into the order the template's scenes tell (the problem before the fix, the cause\nbefore the result), and let every scene follow from the one before it – the voiceovers\nread in a row must make sense as one spoken text. A scene that promises something (\"what I learned\", \"here's why\") is\nfollowed by the scene that says it.\n\nThe template is a guide: a structure that has worked for videos like this – its scenes,\ntheir order and how they link. Follow it where it serves this idea; change the order,\nleave a scene out or add one when that tells this story better. A \"repeatable\" scene\nmay appear several times in a row (one per step or item). Put every template scene you\nleave out in \"skipped\" with a short reason.\nA scene's \"facts\" come from the idea and the facts found online only – never invent a\ntool, a number or a result.\nWhen the idea has no fact for a scene, leave it out if it is optional; if it is required,\nfill it with what the idea does say rather than with an invented claim.\nIts \"creative\" parts are yours to word.\n\nThe first scene is the hook: say the chosen hook as it is, and show its key words. Its\nvisual is the hook's first frame when one is given – a picture on screen from the very\nfirst word, never the words alone.\nThe template's links (\"→ next\") and the transition phrases are examples of how scenes\ncan follow each other; use them only where they read naturally. End the way that fits\nthis video best: the CTA formulas show endings that have worked – use one, or write\nyour own, or none if no ending asks for one.\nThe call to action never sends people to a link, a website, a download or a giveaway\nthe idea does not mention – then pick a CTA formula that needs none of those.\n\nOne scene = one thought, shown by one picture. When a part of the story has two\nthoughts (what a chatbot does, then what an agent does), it is two scenes, not one long\nvoiceover – a long scene forces two pictures into one frame and neither reads.\n\nFor every scene:\n- voiceover: what is said, natural spoken English. When a scene lists things (tools,\n  mistakes, steps), the voice names every one of them – the list on screen fills point by\n  point as each is named; a point that needs it gets a short sentence after its name\n- onScreen: the key words shown big, not the whole sentence\n- visual: what the viewer sees happening, concrete and with a verb – a terminal running a\n  command, a price counting down, the idea turning into a video – one picture for the\n  thought, understandable with the sound off; never \"something engaging\"\n- needsRecording: your call – true when the scene is shown best with the creator's own\n  screen recording rather than a picture the video editor draws. Then the voiceover says\n  what the recording shows while it shows it (the click, what appears). Keep recordings\n  for the moments where the real screen is the proof – about 3–4 in a video at most\n\nKeep within the limits. Each scene lasts about as long as its voiceover. Treat the wanted\nlength as a target, not a requirement to fill at any cost: use the repeatable scenes and\nthe optional scenes that genuinely help, but never add empty explanations, repeated\nstatements or invented steps just to reach it. If the idea cannot support the length,\nwrite the strongest shorter version.\n\nYour job is WHAT the viewer sees (visual), not how it is drawn: the next step picks the\nrecording, block or animation that shows it, knowing what the editor can really do – so\ndo not limit the visual to what you think the editor has.",
+        "user": "Channel: TikMaker and AI coding. Mostly TikMaker itself: what it can do, how a video gets made with it, new features and how it is being built with AI (build in public). Around that, short concrete videos about other AI tools, vibe coding and Claude Code: one problem or one feature per video, shown on screen rather than told.\nAudience: Creators who want to make short videos faster with AI, and developers or beginners who build apps with AI and want to work faster without breaking things.\n\nThe product's real screens – when a scene shows the product, or asks for a recording of\nit, describe only what these screens really show; never invent cards, buttons, previews\nor animations they do not have:\n- New video form: The AI agent panel on the right of the TikMaker editor, on an empty project: a 'Video idea' text box, length in seconds, a template picker ('Let the AI pick'), an optional own hook, checkboxes 'With face', 'Motion graphics only', 'Generate the voiceover', and a 'Start' button.\n- Agent at work: The same panel as a conversation: a progress bar with five steps (Idea, Angle, Script, Building, Result) ticking off, and a card appearing for each step – the chosen template, three hooks to pick from (each with what it shows), the script scene by scene with an 'Approve' button, 'Pictures picked', 'Motion planned' and 'Voiceover' (folded cards that open on click).\n- Editor with the built video: Once built: the scene strip along the bottom fills with the video's scenes, the timeline shows each scene's blocks, voice and captions as clips, the vertical preview in the middle plays the video with its kinetic captions.\n- Preview playing: The vertical 9:16 preview player in the middle of the editor playing the finished video with play / pause, time and fullscreen.\n- Render: The 'Render MP4' button top right: a progress bar, then the finished MP4 file to download.\n- Storyboard: The Storyboard tab: the script as a list of beats – each scene's voiceover and on-screen words – with the total length against the target.\n\nIdea: A video showing that Claude Code can make motion design for you.\n3 Claude Code skills – each one turns your video into a completely\ndifferent motion design style (01, 02, 03, each with a short name).\nF\nOne fact before the end: a skill is just one markdown file that Claude\nreads before it draws every scene.\nCTA: comment \"SKILL\" and I'll send you the prompts.\nWanted length: about 40 s\nFace on camera: no, a faceless video\n\nHook: 3 Claude Code skills that make you look like a motion designer overnight.\nFirst frame (what the hook shows): A split screen: on the left a plain screen recording, on the right the same clip as an animated motion design with a numbered badge labeled 01\n\nTemplate: Tool tips list – Numbered tips for one tool, each named and then shown working, ending with a comment-keyword offer\nScenes:\n- opening / hook (2.3–4 s): Names the tool, the number of tips and the result they give. [required] → next: sequence; facts: tool-name, tip-count; creative: desired-result\n- opening / setup (2.1–2.9 s): Shows the pain the tips solve so the list feels needed. [optional] → next: sequence; facts: pain\n- opening / bridge (3–21 s): Hands over from the pain to the first tip. [optional] [repeatable] → next: sequence; creative: bridge-line\n- core / item (6.9–12.4 s): Names one tip with its number. [required] [repeatable] → next: cause-effect; facts: tip-number, tip-name\n- core / bridge (3–21 s): Plugs the channel or the next part before moving on. [optional] [repeatable] → next: sequence; creative: bridge-line\n- close / bridge (3–21 s): Leads from the last tip to the offer. [optional] [repeatable] → next: bridge; creative: bridge-line\n- close / cta (4.7–9 s): Asks for a comment keyword in exchange for a resource, then a follow. [required] [repeatable] → next: none; facts: keyword, resource\n\nTransition phrases:\n- sequence: First, | Second, | Third, | First is | Second is | Third is\n- cause-effect: So | As a result | And since | In other words, | You see, | And look\n- bridge: So if you want | So just | To get the full | For a PDF | So want to try it for yourself? | Now you might be wondering...\n\nCTA formulas (types allowed: comment-keyword):\n- comment-keyword: Comment [KEYWORD] and I'll send you [the link / my ebook]. (e.g. \"Comment HUMAN and I'll send you my ebook\")\n- comment-keyword: Comment [KEYWORD] and I'll send you [resource]. Make sure you follow [channel]. (e.g. \"Comment HUMAN and I'll send you my ebook. Make sure you follow InsiderForce.\")\n- comment-keyword: Drop a comment if you want more [topic] with [tool]. (e.g. \"Drop a comment if you want more trading ideas with Claude.\")\n\nLimits, from the analysis of successful videos:\n- speak at most 3.4 words per second\n- a scene lasts at most 9 s, the hook at most 5 s\n- at most 15 words on screen in a scene\n\nquestions (optional, at most 3): ask the creator only when the answer would change the\nvideo and neither the idea nor the facts say it – a real number or result, what the\nproduct really does, what a screen really shows. Each says why it matters and, when the\nanswer is one of a few, 2–4 short options. Otherwise decide yourself – never invent a\nfact – and write in assumptions (at most 3) what you assumed, so the creator sees it."
+      },
+      "inputTokens": 4893,
+      "cachedInputTokens": 0,
+      "outputTokens": 1808,
+      "thinkingTokens": 551,
+      "turns": 2,
+      "output": {
+        "questions": [
+          {
+            "question": "What are the short names of skills 01, 02 and 03?",
+            "why": "Each tip has to say its skill's name out loud and show it on screen. The idea doesn't give the names, so for now they are placeholders."
+          },
+          {
+            "question": "Do you have the same clip rendered in all three styles to record?",
+            "why": "The three tip scenes show the before and after for real. Without those renders, they become drawn style previews.",
+            "options": [
+              "Yes, I have all three",
+              "No, draw style previews"
+            ]
+          }
+        ],
+        "assumptions": [
+          "The stray 'F' in the idea is a typo, so I ignored it.",
+          "All three skills turn the same source clip into their style, so one plain clip runs through the whole video.",
+          "The voiceover runs about 40 s at 3.4 words per second or less. The full script is about 95 words."
+        ],
+        "scenes": [
+          {
+            "role": "hook",
+            "voiceover": "3 Claude Code skills that make you look like a motion designer overnight.",
+            "onScreen": "3 Claude Code skills → motion designer overnight",
+            "visual": "Split screen from the first word: on the left a plain screen recording plays, on the right the same clip runs as an animated motion design, and a numbered badge '01' pops in at its corner",
+            "needsRecording": false
+          },
+          {
+            "role": "bridge",
+            "voiceover": "Each one takes the same video and turns it into a completely different style.",
+            "onScreen": "Same video. 3 different styles.",
+            "visual": "One plain clip in the centre splits into three copies side by side, each one recolouring and animating into its own look, labelled 01, 02, 03",
+            "needsRecording": false
+          },
+          {
+            "role": "item",
+            "voiceover": "First is skill zero one: [NAME 01]. Claude reads it, and your plain clip comes back in this style.",
+            "onScreen": "01 · [NAME 01]",
+            "visual": "Big badge '01' with the skill name slams in, then the plain screen recording plays and turns into the style-01 motion design version",
+            "needsRecording": true
+          },
+          {
+            "role": "item",
+            "voiceover": "Second is skill zero two: [NAME 02]. Same clip, a completely different look.",
+            "onScreen": "02 · [NAME 02]",
+            "visual": "Badge '02' with its name slides in, then the same plain clip plays and transforms into the style-02 motion design version",
+            "needsRecording": true
+          },
+          {
+            "role": "item",
+            "voiceover": "Third is skill zero three: [NAME 03]. Same video again, a third style.",
+            "onScreen": "03 · [NAME 03]",
+            "visual": "Badge '03' with its name drops in, then the same plain clip plays and transforms into the style-03 motion design version",
+            "needsRecording": true
+          },
+          {
+            "role": "bridge",
+            "voiceover": "And here's the thing: a skill is just one markdown file that Claude reads before it draws every scene.",
+            "onScreen": "1 skill = 1 markdown file",
+            "visual": "A single .md file icon opens to show lines of text, then an arrow carries it into Claude Code, and a stack of scene frames gets drawn one after another",
+            "needsRecording": false
+          },
+          {
+            "role": "cta",
+            "voiceover": "Comment SKILL and I'll send you the prompts.",
+            "onScreen": "Comment \"SKILL\" → get the prompts",
+            "visual": "A comment bubble types out the word SKILL and a reply bubble pops up with a file labelled 'prompts' attached",
+            "needsRecording": false
+          }
+        ],
+        "skipped": [
+          {
+            "role": "setup",
+            "reason": "The idea names no pain beyond the hook. The bridge scene leads straight into the list."
+          },
+          {
+            "role": "bridge",
+            "reason": "No channel plug between the tips. It would push the video past 40 s and break up the list."
+          }
+        ]
+      }
+    },
+    {
+      "name": "writeScript",
+      "startedAt": 1794210461722,
+      "ms": 22396,
+      "model": "claude-opus-5-5",
+      "attempts": 1,
+      "prompt": {
+        "system": "You write the script of a short vertical video (TikTok, Reels, Shorts).\n\nTell ONE connected story. The idea may be written as loose thoughts in any order: sort\nthem into the order the template's scenes tell (the problem before the fix, the cause\nbefore the result), and let every scene follow from the one before it – the voiceovers\nread in a row must make sense as one spoken text. A scene that promises something (\"what I learned\", \"here's why\") is\nfollowed by the scene that says it.\n\nThe template is a guide: a structure that has worked for videos like this – its scenes,\ntheir order and how they link. Follow it where it serves this idea; change the order,\nleave a scene out or add one when that tells this story better. A \"repeatable\" scene\nmay appear several times in a row (one per step or item). Put every template scene you\nleave out in \"skipped\" with a short reason.\nA scene's \"facts\" come from the idea and the facts found online only – never invent a\ntool, a number or a result.\nWhen the idea has no fact for a scene, leave it out if it is optional; if it is required,\nfill it with what the idea does say rather than with an invented claim.\nIts \"creative\" parts are yours to word.\n\nThe first scene is the hook: say the chosen hook as it is, and show its key words. Its\nvisual is the hook's first frame when one is given – a picture on screen from the very\nfirst word, never the words alone.\nThe template's links (\"→ next\") and the transition phrases are examples of how scenes\ncan follow each other; use them only where they read naturally. End the way that fits\nthis video best: the CTA formulas show endings that have worked – use one, or write\nyour own, or none if no ending asks for one.\nThe call to action never sends people to a link, a website, a download or a giveaway\nthe idea does not mention – then pick a CTA formula that needs none of those.\n\nOne scene = one thought, shown by one picture. When a part of the story has two\nthoughts (what a chatbot does, then what an agent does), it is two scenes, not one long\nvoiceover – a long scene forces two pictures into one frame and neither reads.\n\nFor every scene:\n- voiceover: what is said, natural spoken English. When a scene lists things (tools,\n  mistakes, steps), the voice names every one of them – the list on screen fills point by\n  point as each is named; a point that needs it gets a short sentence after its name\n- onScreen: the key words shown big, not the whole sentence\n- visual: what the viewer sees happening, concrete and with a verb – a terminal running a\n  command, a price counting down, the idea turning into a video – one picture for the\n  thought, understandable with the sound off; never \"something engaging\"\n- needsRecording: your call – true when the scene is shown best with the creator's own\n  screen recording rather than a picture the video editor draws. Then the voiceover says\n  what the recording shows while it shows it (the click, what appears). Keep recordings\n  for the moments where the real screen is the proof – about 3–4 in a video at most\n\nKeep within the limits. Each scene lasts about as long as its voiceover. Treat the wanted\nlength as a target, not a requirement to fill at any cost: use the repeatable scenes and\nthe optional scenes that genuinely help, but never add empty explanations, repeated\nstatements or invented steps just to reach it. If the idea cannot support the length,\nwrite the strongest shorter version.\n\nYour job is WHAT the viewer sees (visual), not how it is drawn: the next step picks the\nrecording, block or animation that shows it, knowing what the editor can really do – so\ndo not limit the visual to what you think the editor has.",
+        "user": "Channel: TikMaker and AI coding. Mostly TikMaker itself: what it can do, how a video gets made with it, new features and how it is being built with AI (build in public). Around that, short concrete videos about other AI tools, vibe coding and Claude Code: one problem or one feature per video, shown on screen rather than told.\nAudience: Creators who want to make short videos faster with AI, and developers or beginners who build apps with AI and want to work faster without breaking things.\n\nThe product's real screens – when a scene shows the product, or asks for a recording of\nit, describe only what these screens really show; never invent cards, buttons, previews\nor animations they do not have:\n- New video form: The AI agent panel on the right of the TikMaker editor, on an empty project: a 'Video idea' text box, length in seconds, a template picker ('Let the AI pick'), an optional own hook, checkboxes 'With face', 'Motion graphics only', 'Generate the voiceover', and a 'Start' button.\n- Agent at work: The same panel as a conversation: a progress bar with five steps (Idea, Angle, Script, Building, Result) ticking off, and a card appearing for each step – the chosen template, three hooks to pick from (each with what it shows), the script scene by scene with an 'Approve' button, 'Pictures picked', 'Motion planned' and 'Voiceover' (folded cards that open on click).\n- Editor with the built video: Once built: the scene strip along the bottom fills with the video's scenes, the timeline shows each scene's blocks, voice and captions as clips, the vertical preview in the middle plays the video with its kinetic captions.\n- Preview playing: The vertical 9:16 preview player in the middle of the editor playing the finished video with play / pause, time and fullscreen.\n- Render: The 'Render MP4' button top right: a progress bar, then the finished MP4 file to download.\n- Storyboard: The Storyboard tab: the script as a list of beats – each scene's voiceover and on-screen words – with the total length against the target.\n\nFacts from the creator (true – use them, do not ask about them again):\n- What are the short names of skills 01, 02 and 03? – cia nera specialiu pavadinimu skillsams,turi pasidometi pats kas yra skillsai ir pats suprasi kad cia tsg aprasai, juos betkas betkur gali sukurti, arba galima nusipirkti is zmoniu ar panasiai\n- Do you have the same clip rendered in all three styles to record? – No, draw style previews\n\nIdea: A video showing that Claude Code can make motion design for you.\n3 Claude Code skills – each one turns your video into a completely\ndifferent motion design style (01, 02, 03, each with a short name).\nF\nOne fact before the end: a skill is just one markdown file that Claude\nreads before it draws every scene.\nCTA: comment \"SKILL\" and I'll send you the prompts.\nWanted length: about 40 s\nFace on camera: no, a faceless video\n\nHook: 3 Claude Code skills that make you look like a motion designer overnight.\nFirst frame (what the hook shows): A split screen: on the left a plain screen recording, on the right the same clip as an animated motion design with a numbered badge labeled 01\n\nTemplate: Tool tips list – Numbered tips for one tool, each named and then shown working, ending with a comment-keyword offer\nScenes:\n- opening / hook (2.3–4 s): Names the tool, the number of tips and the result they give. [required] → next: sequence; facts: tool-name, tip-count; creative: desired-result\n- opening / setup (2.1–2.9 s): Shows the pain the tips solve so the list feels needed. [optional] → next: sequence; facts: pain\n- opening / bridge (3–21 s): Hands over from the pain to the first tip. [optional] [repeatable] → next: sequence; creative: bridge-line\n- core / item (6.9–12.4 s): Names one tip with its number. [required] [repeatable] → next: cause-effect; facts: tip-number, tip-name\n- core / bridge (3–21 s): Plugs the channel or the next part before moving on. [optional] [repeatable] → next: sequence; creative: bridge-line\n- close / bridge (3–21 s): Leads from the last tip to the offer. [optional] [repeatable] → next: bridge; creative: bridge-line\n- close / cta (4.7–9 s): Asks for a comment keyword in exchange for a resource, then a follow. [required] [repeatable] → next: none; facts: keyword, resource\n\nTransition phrases:\n- sequence: First, | Second, | Third, | First is | Second is | Third is\n- cause-effect: So | As a result | And since | In other words, | You see, | And look\n- bridge: So if you want | So just | To get the full | For a PDF | So want to try it for yourself? | Now you might be wondering...\n\nCTA formulas (types allowed: comment-keyword):\n- comment-keyword: Comment [KEYWORD] and I'll send you [the link / my ebook]. (e.g. \"Comment HUMAN and I'll send you my ebook\")\n- comment-keyword: Comment [KEYWORD] and I'll send you [resource]. Make sure you follow [channel]. (e.g. \"Comment HUMAN and I'll send you my ebook. Make sure you follow InsiderForce.\")\n- comment-keyword: Drop a comment if you want more [topic] with [tool]. (e.g. \"Drop a comment if you want more trading ideas with Claude.\")\n\nLimits, from the analysis of successful videos:\n- speak at most 3.4 words per second\n- a scene lasts at most 9 s, the hook at most 5 s\n- at most 15 words on screen in a scene\n\nYou already asked the creator in this run: do not ask again (questions: []). Decide, and\nwrite in assumptions what you assumed."
+      },
+      "inputTokens": 2718,
+      "cachedInputTokens": 2245,
+      "outputTokens": 2147,
+      "thinkingTokens": 897,
+      "turns": 2,
+      "output": {
+        "assumptions": [
+          "Skills have no official names, so I gave them short descriptive style names: 01 Kinetic Type, 02 Clean UI, 03 Sketch – rename them to match your actual prompts.",
+          "Style previews are drawn animations of the same clip, not real renders, so no scene needs a screen recording.",
+          "The follow plug uses the channel name TikMaker."
+        ],
+        "scenes": [
+          {
+            "role": "hook",
+            "voiceover": "3 Claude Code skills that make you look like a motion designer overnight.",
+            "onScreen": "3 Claude Code skills → motion designer overnight",
+            "visual": "Split screen from the first word: on the left a plain screen recording plays, on the right the same clip runs as animated motion design with a numbered badge '01' popping in the corner",
+            "needsRecording": false
+          },
+          {
+            "role": "setup",
+            "voiceover": "Plain screen recordings look flat. Motion design fixes that.",
+            "onScreen": "Flat recording → motion design",
+            "visual": "A plain grey screen recording sits still while a scroll thumb flicks past it, then the same frame bursts into color and moving shapes",
+            "needsRecording": false
+          },
+          {
+            "role": "item",
+            "voiceover": "First is skill 01, Kinetic Type. Every key word you say slams onto the screen in big bold letters, so the same clip suddenly feels like an ad.",
+            "onScreen": "01 · Kinetic Type",
+            "visual": "Drawn style preview: badge '01' appears, then the clip's key words slam in one by one in huge bold type over the screen, scaling and snapping to the beat",
+            "needsRecording": false
+          },
+          {
+            "role": "item",
+            "voiceover": "Second, skill 02, Clean UI. Your screen floats in a device frame, the camera zooms into each click, and soft cards pop in to label what happens.",
+            "onScreen": "02 · Clean UI",
+            "visual": "Drawn style preview: badge '02', the same clip shrinks into a floating device frame, the view zooms onto a click and rounded label cards slide in beside it",
+            "needsRecording": false
+          },
+          {
+            "role": "item",
+            "voiceover": "Third, skill 03, Sketch. Same clip, but now arrows, circles and doodles draw themselves on top, like someone explaining it on a whiteboard.",
+            "onScreen": "03 · Sketch",
+            "visual": "Drawn style preview: badge '03', hand-drawn arrows and circles draw themselves stroke by stroke over the same clip on a whiteboard-white background",
+            "needsRecording": false
+          },
+          {
+            "role": "bridge",
+            "voiceover": "And here's the secret: a skill is just one markdown file. Claude reads it before it draws every scene. Anyone can write one.",
+            "onScreen": "1 skill = 1 markdown file",
+            "visual": "A single file named SKILL.md opens with a few lines of text, then an arrow carries it into Claude, which draws scene after scene in that style",
+            "needsRecording": false
+          },
+          {
+            "role": "cta",
+            "voiceover": "Comment SKILL and I'll send you the prompts. Make sure you follow TikMaker.",
+            "onScreen": "Comment \"SKILL\" → get the prompts",
+            "visual": "A comment box types out 'SKILL' and a reply bubble with the three numbered prompts 01, 02, 03 pops up below it, then a follow button pulses",
+            "needsRecording": false
+          }
+        ],
+        "skipped": [
+          {
+            "role": "bridge",
+            "reason": "Opening bridge not needed – the setup leads straight into 'First is skill 01'."
+          },
+          {
+            "role": "bridge",
+            "reason": "Core bridge between tips left out to keep the three styles back to back within ~40 s; the follow plug sits in the CTA."
+          }
+        ]
+      }
+    },
+    {
+      "name": "writeScript",
+      "startedAt": 1794210484124,
+      "ms": 11530,
+      "model": "claude-opus-5-5",
+      "attempts": 1,
+      "prompt": {
+        "system": "You write the script of a short vertical video (TikTok, Reels, Shorts).\n\nTell ONE connected story. The idea may be written as loose thoughts in any order: sort\nthem into the order the template's scenes tell (the problem before the fix, the cause\nbefore the result), and let every scene follow from the one before it – the voiceovers\nread in a row must make sense as one spoken text. A scene that promises something (\"what I learned\", \"here's why\") is\nfollowed by the scene that says it.\n\nThe template is a guide: a structure that has worked for videos like this – its scenes,\ntheir order and how they link. Follow it where it serves this idea; change the order,\nleave a scene out or add one when that tells this story better. A \"repeatable\" scene\nmay appear several times in a row (one per step or item). Put every template scene you\nleave out in \"skipped\" with a short reason.\nA scene's \"facts\" come from the idea and the facts found online only – never invent a\ntool, a number or a result.\nWhen the idea has no fact for a scene, leave it out if it is optional; if it is required,\nfill it with what the idea does say rather than with an invented claim.\nIts \"creative\" parts are yours to word.\n\nThe first scene is the hook: say the chosen hook as it is, and show its key words. Its\nvisual is the hook's first frame when one is given – a picture on screen from the very\nfirst word, never the words alone.\nThe template's links (\"→ next\") and the transition phrases are examples of how scenes\ncan follow each other; use them only where they read naturally. End the way that fits\nthis video best: the CTA formulas show endings that have worked – use one, or write\nyour own, or none if no ending asks for one.\nThe call to action never sends people to a link, a website, a download or a giveaway\nthe idea does not mention – then pick a CTA formula that needs none of those.\n\nOne scene = one thought, shown by one picture. When a part of the story has two\nthoughts (what a chatbot does, then what an agent does), it is two scenes, not one long\nvoiceover – a long scene forces two pictures into one frame and neither reads.\n\nFor every scene:\n- voiceover: what is said, natural spoken English. When a scene lists things (tools,\n  mistakes, steps), the voice names every one of them – the list on screen fills point by\n  point as each is named; a point that needs it gets a short sentence after its name\n- onScreen: the key words shown big, not the whole sentence\n- visual: what the viewer sees happening, concrete and with a verb – a terminal running a\n  command, a price counting down, the idea turning into a video – one picture for the\n  thought, understandable with the sound off; never \"something engaging\"\n- needsRecording: your call – true when the scene is shown best with the creator's own\n  screen recording rather than a picture the video editor draws. Then the voiceover says\n  what the recording shows while it shows it (the click, what appears). Keep recordings\n  for the moments where the real screen is the proof – about 3–4 in a video at most\n\nKeep within the limits. Each scene lasts about as long as its voiceover. Treat the wanted\nlength as a target, not a requirement to fill at any cost: use the repeatable scenes and\nthe optional scenes that genuinely help, but never add empty explanations, repeated\nstatements or invented steps just to reach it. If the idea cannot support the length,\nwrite the strongest shorter version.\n\nYour job is WHAT the viewer sees (visual), not how it is drawn: the next step picks the\nrecording, block or animation that shows it, knowing what the editor can really do – so\ndo not limit the visual to what you think the editor has.",
+        "user": "Channel: TikMaker and AI coding. Mostly TikMaker itself: what it can do, how a video gets made with it, new features and how it is being built with AI (build in public). Around that, short concrete videos about other AI tools, vibe coding and Claude Code: one problem or one feature per video, shown on screen rather than told.\nAudience: Creators who want to make short videos faster with AI, and developers or beginners who build apps with AI and want to work faster without breaking things.\n\nThe product's real screens – when a scene shows the product, or asks for a recording of\nit, describe only what these screens really show; never invent cards, buttons, previews\nor animations they do not have:\n- New video form: The AI agent panel on the right of the TikMaker editor, on an empty project: a 'Video idea' text box, length in seconds, a template picker ('Let the AI pick'), an optional own hook, checkboxes 'With face', 'Motion graphics only', 'Generate the voiceover', and a 'Start' button.\n- Agent at work: The same panel as a conversation: a progress bar with five steps (Idea, Angle, Script, Building, Result) ticking off, and a card appearing for each step – the chosen template, three hooks to pick from (each with what it shows), the script scene by scene with an 'Approve' button, 'Pictures picked', 'Motion planned' and 'Voiceover' (folded cards that open on click).\n- Editor with the built video: Once built: the scene strip along the bottom fills with the video's scenes, the timeline shows each scene's blocks, voice and captions as clips, the vertical preview in the middle plays the video with its kinetic captions.\n- Preview playing: The vertical 9:16 preview player in the middle of the editor playing the finished video with play / pause, time and fullscreen.\n- Render: The 'Render MP4' button top right: a progress bar, then the finished MP4 file to download.\n- Storyboard: The Storyboard tab: the script as a list of beats – each scene's voiceover and on-screen words – with the total length against the target.\n\nFacts from the creator (true – use them, do not ask about them again):\n- What are the short names of skills 01, 02 and 03? – cia nera specialiu pavadinimu skillsams,turi pasidometi pats kas yra skillsai ir pats suprasi kad cia tsg aprasai, juos betkas betkur gali sukurti, arba galima nusipirkti is zmoniu ar panasiai\n- Do you have the same clip rendered in all three styles to record? – No, draw style previews\n\nIdea: A video showing that Claude Code can make motion design for you.\n3 Claude Code skills – each one turns your video into a completely\ndifferent motion design style (01, 02, 03, each with a short name).\nF\nOne fact before the end: a skill is just one markdown file that Claude\nreads before it draws every scene.\nCTA: comment \"SKILL\" and I'll send you the prompts.\nWanted length: about 40 s\nFace on camera: no, a faceless video\n\nHook: 3 Claude Code skills that make you look like a motion designer overnight.\nFirst frame (what the hook shows): A split screen: on the left a plain screen recording, on the right the same clip as an animated motion design with a numbered badge labeled 01\n\nTemplate: Tool tips list – Numbered tips for one tool, each named and then shown working, ending with a comment-keyword offer\nScenes:\n- opening / hook (2.3–4 s): Names the tool, the number of tips and the result they give. [required] → next: sequence; facts: tool-name, tip-count; creative: desired-result\n- opening / setup (2.1–2.9 s): Shows the pain the tips solve so the list feels needed. [optional] → next: sequence; facts: pain\n- opening / bridge (3–21 s): Hands over from the pain to the first tip. [optional] [repeatable] → next: sequence; creative: bridge-line\n- core / item (6.9–12.4 s): Names one tip with its number. [required] [repeatable] → next: cause-effect; facts: tip-number, tip-name\n- core / bridge (3–21 s): Plugs the channel or the next part before moving on. [optional] [repeatable] → next: sequence; creative: bridge-line\n- close / bridge (3–21 s): Leads from the last tip to the offer. [optional] [repeatable] → next: bridge; creative: bridge-line\n- close / cta (4.7–9 s): Asks for a comment keyword in exchange for a resource, then a follow. [required] [repeatable] → next: none; facts: keyword, resource\n\nTransition phrases:\n- sequence: First, | Second, | Third, | First is | Second is | Third is\n- cause-effect: So | As a result | And since | In other words, | You see, | And look\n- bridge: So if you want | So just | To get the full | For a PDF | So want to try it for yourself? | Now you might be wondering...\n\nCTA formulas (types allowed: comment-keyword):\n- comment-keyword: Comment [KEYWORD] and I'll send you [the link / my ebook]. (e.g. \"Comment HUMAN and I'll send you my ebook\")\n- comment-keyword: Comment [KEYWORD] and I'll send you [resource]. Make sure you follow [channel]. (e.g. \"Comment HUMAN and I'll send you my ebook. Make sure you follow InsiderForce.\")\n- comment-keyword: Drop a comment if you want more [topic] with [tool]. (e.g. \"Drop a comment if you want more trading ideas with Claude.\")\n\nLimits, from the analysis of successful videos:\n- speak at most 3.4 words per second\n- a scene lasts at most 9 s, the hook at most 5 s\n- at most 15 words on screen in a scene\n\nYour previous script:\n{\n  \"assumptions\": [\n    \"Skills have no official names, so I gave them short descriptive style names: 01 Kinetic Type, 02 Clean UI, 03 Sketch – rename them to match your actual prompts.\",\n    \"Style previews are drawn animations of the same clip, not real renders, so no scene needs a screen recording.\",\n    \"The follow plug uses the channel name TikMaker.\"\n  ],\n  \"scenes\": [\n    {\n      \"role\": \"hook\",\n      \"voiceover\": \"3 Claude Code skills that make you look like a motion designer overnight.\",\n      \"onScreen\": \"3 Claude Code skills → motion designer overnight\",\n      \"visual\": \"Split screen from the first word: on the left a plain screen recording plays, on the right the same clip runs as animated motion design with a numbered badge '01' popping in the corner\",\n      \"needsRecording\": false\n    },\n    {\n      \"role\": \"setup\",\n      \"voiceover\": \"Plain screen recordings look flat. Motion design fixes that.\",\n      \"onScreen\": \"Flat recording → motion design\",\n      \"visual\": \"A plain grey screen recording sits still while a scroll thumb flicks past it, then the same frame bursts into color and moving shapes\",\n      \"needsRecording\": false\n    },\n    {\n      \"role\": \"item\",\n      \"voiceover\": \"First is skill 01, Kinetic Type. Every key word you say slams onto the screen in big bold letters, so the same clip suddenly feels like an ad.\",\n      \"onScreen\": \"01 · Kinetic Type\",\n      \"visual\": \"Drawn style preview: badge '01' appears, then the clip's key words slam in one by one in huge bold type over the screen, scaling and snapping to the beat\",\n      \"needsRecording\": false\n    },\n    {\n      \"role\": \"item\",\n      \"voiceover\": \"Second, skill 02, Clean UI. Your screen floats in a device frame, the camera zooms into each click, and soft cards pop in to label what happens.\",\n      \"onScreen\": \"02 · Clean UI\",\n      \"visual\": \"Drawn style preview: badge '02', the same clip shrinks into a floating device frame, the view zooms onto a click and rounded label cards slide in beside it\",\n      \"needsRecording\": false\n    },\n    {\n      \"role\": \"item\",\n      \"voiceover\": \"Third, skill 03, Sketch. Same clip, but now arrows, circles and doodles draw themselves on top, like someone explaining it on a whiteboard.\",\n      \"onScreen\": \"03 · Sketch\",\n      \"visual\": \"Drawn style preview: badge '03', hand-drawn arrows and circles draw themselves stroke by stroke over the same clip on a whiteboard-white background\",\n      \"needsRecording\": false\n    },\n    {\n      \"role\": \"bridge\",\n      \"voiceover\": \"And here's the secret: a skill is just one markdown file. Claude reads it before it draws every scene. Anyone can write one.\",\n      \"onScreen\": \"1 skill = 1 markdown file\",\n      \"visual\": \"A single file named SKILL.md opens with a few lines of text, then an arrow carries it into Claude, which draws scene after scene in that style\",\n      \"needsRecording\": false\n    },\n    {\n      \"role\": \"cta\",\n      \"voiceover\": \"Comment SKILL and I'll send you the prompts. Make sure you follow TikMaker.\",\n      \"onScreen\": \"Comment \\\"SKILL\\\" → get the prompts\",\n      \"visual\": \"A comment box types out 'SKILL' and a reply bubble with the three numbered prompts 01, 02, 03 pops up below it, then a follow button pulses\",\n      \"needsRecording\": false\n    }\n  ],\n  \"skipped\": [\n    {\n      \"role\": \"bridge\",\n      \"reason\": \"Opening bridge not needed – the setup leads straight into 'First is skill 01'.\"\n    },\n    {\n      \"role\": \"bridge\",\n      \"reason\": \"Core bridge between tips left out to keep the three styles back to back within ~40 s; the follow plug sits in the CTA.\"\n    }\n  ]\n}\n\nWrite it again and change this:\n- Scene 3: its voiceover takes about 9.3 s, the limit is 9 s – it says more than one thought; split it into two scenes, one thought each (or say it shorter)\n\nYou already asked the creator in this run: do not ask again (questions: []). Decide, and\nwrite in assumptions what you assumed."
+      },
+      "inputTokens": 4134,
+      "cachedInputTokens": 2245,
+      "outputTokens": 1371,
+      "thinkingTokens": 132,
+      "turns": 2,
+      "output": {
+        "assumptions": [
+          "Skills have no official names, so I gave them short style names: 01 Kinetic Type, 02 Clean UI, 03 Sketch. Rename them to match your actual prompts.",
+          "The style previews are drawn animations of the same clip, not real renders, so no scene needs a screen recording.",
+          "The follow plug uses the channel name TikMaker."
+        ],
+        "scenes": [
+          {
+            "role": "hook",
+            "voiceover": "3 Claude Code skills that make you look like a motion designer overnight.",
+            "onScreen": "3 Claude Code skills → motion designer overnight",
+            "visual": "Split screen from the first word: on the left a plain screen recording plays, and on the right the same clip runs as animated motion design while a numbered badge '01' pops into the corner",
+            "needsRecording": false
+          },
+          {
+            "role": "setup",
+            "voiceover": "Plain screen recordings look flat. Motion design fixes that.",
+            "onScreen": "Flat recording → motion design",
+            "visual": "A plain grey screen recording sits still as a scroll thumb flicks past it, then the same frame bursts into color and moving shapes",
+            "needsRecording": false
+          },
+          {
+            "role": "item",
+            "voiceover": "First is skill 01, Kinetic Type. Every key word you say slams onto the screen in big bold letters.",
+            "onScreen": "01 · Kinetic Type",
+            "visual": "Drawn style preview: badge '01' appears, then the clip's key words slam in one by one in huge bold type over the screen, scaling and snapping to the beat",
+            "needsRecording": false
+          },
+          {
+            "role": "item",
+            "voiceover": "Second, skill 02, Clean UI. Your screen floats in a device frame, the camera zooms into each click, and soft cards pop in to label what happens.",
+            "onScreen": "02 · Clean UI",
+            "visual": "Drawn style preview: badge '02' appears, the same clip shrinks into a floating device frame, the view zooms onto a click and rounded label cards slide in beside it",
+            "needsRecording": false
+          },
+          {
+            "role": "item",
+            "voiceover": "Third, skill 03, Sketch. Arrows, circles and doodles draw themselves on top, like someone explaining it on a whiteboard.",
+            "onScreen": "03 · Sketch",
+            "visual": "Drawn style preview: badge '03' appears, then hand-drawn arrows and circles draw themselves stroke by stroke over the same clip on a whiteboard-white background",
+            "needsRecording": false
+          },
+          {
+            "role": "bridge",
+            "voiceover": "And here's the secret: a skill is just one markdown file. Claude reads it before it draws every scene. Anyone can write one.",
+            "onScreen": "1 skill = 1 markdown file",
+            "visual": "A single file named SKILL.md opens to show a few lines of text, then an arrow carries it into Claude, which draws scene after scene in that style",
+            "needsRecording": false
+          },
+          {
+            "role": "cta",
+            "voiceover": "Comment SKILL and I'll send you the prompts. Make sure you follow TikMaker.",
+            "onScreen": "Comment \"SKILL\" → get the prompts",
+            "visual": "A comment box types out 'SKILL', a reply bubble with the three numbered prompts 01, 02 and 03 pops up below it, then a follow button pulses",
+            "needsRecording": false
+          }
+        ],
+        "skipped": [
+          {
+            "role": "bridge",
+            "reason": "The opening bridge isn't needed because the setup leads straight into 'First is skill 01'."
+          },
+          {
+            "role": "bridge",
+            "reason": "I left out the core bridge between tips so the three styles run back to back within about 40 s. The follow plug is in the CTA instead."
+          }
+        ]
+      }
+    },
+    {
+      "name": "writeCode",
+      "startedAt": 1794210643779,
+      "ms": 526834,
+      "model": "claude-opus-5-5",
+      "attempts": 1,
+      "prompt": {
+        "system": "You are the motion designer of TikMaker: you write the pictures of a short\nvertical video (1080x1920, 30 fps) as Remotion code – one file per scene. The voice,\nthe captions and the backdrop are already in the video; you write the pictures.\n\nThis video's visual style is \"clear\": Few big flat shapes and icons, text as grey bars, one orange focus, calm dark space.\n\nBefore writing, read with the Read tool:\n1. .claude/skills/tikmaker-scene/SKILL.md – how a scene file is written: the picture\n   zone, the brand kit, the editable fields, sound, the technical limits.\n2. .claude/skills/tikmaker-explainer/SKILL.md – the LOOK of this style – and the example\n   frames and notes it points to (.claude/skills/tikmaker-explainer/references/). Also the\n   COMPOSITION sheet knowledge/shared/reference-frames/insiderforce.png – how a vertical\n   frame is laid out: one dominant thing, big, calm space. Follow the style exactly; do\n   not mix in another style.\n3. .claude/skills/remotion-best-practices/remotion-markup/REFERENCE.md – how to write\n   Remotion markup right (open the pages it points to that you need: timing,\n   sequencing, transitions, text-highlights). Ignore anything about starting Studio,\n   creating projects or installing packages.\n4. src/video/brand/kit.tsx, src/video/brand/fields.ts and src/video/code/types.ts.\n\nRules:\n- Write ONLY in the folder you are given (src/generated/<folder>/). Never touch other\n  files. Shared helpers for several scenes go in <folder>/shared.tsx.\n- Time everything by the `words` prop (wordFrame) and `durationInFrames`, never by the\n  frame numbers in the brief – they are only there for you to plan.\n- Check your work: run `npx tsc --noEmit -p .` until nothing in your folder fails.\n  Then render a frame or two of every scene you wrote with the command in the brief\n  and look at the PNG with Read, next to the style's example frames: does it look like\n  this style, can it be taken in at a glance (one focal thing, no small text to read),\n  is the main object big, does nothing overlap, is nothing under the captions band,\n  is everything inside the safe zone (x 130–900, y 250–1080 – nothing under the app's\n  top bar or its right-side buttons, not even a small badge)?\n  Fix it and look again.\n- Do not ask questions – nobody is there to answer. Decide.\n- At the end answer with JSON: for every scene you wrote its sceneIndex (from 0), one\n  sentence of what the viewer sees, its stage (\"top\" unless the scene is a\n  full-screen recording) and its transition; the voiceover words the captions should draw bold\n  (keywords, 1–2 per scene); and wishes – what the kit or the logo library lacked.\n- Real pictures: where the style uses a real logo, site or screen, get the real thing\n  with `npx tsx scripts/asset.ts` (folder = your folder name; it prints the path to use\n  with `asset(path)` from the brand kit inside an <Img>, or as a field's default):\n  - `screenshot <folder> <name> <url> [--full] [--dark] [--width=1280 --height=800]` –\n    a website: the tool's official page, its GitHub repo, its docs, a pricing page;\n  - `scroll <folder> <name> <url> [--seconds=6]` – a video of a page scrolling down;\n  - `logo <folder> <name> <brand> [--white]` – a brand logo as SVG (Simple Icons);\n  - `photo <folder> <name> \"<what>\"` – a real photo (Pexels) when one is needed;\n  - `tikmaker <folder> <name> <steps.json>` – TikMaker itself, clicking through its\n    editor (a video, plus sharp 2x PNGs where you ask). Write the steps file in your\n    folder: [{\"project\":\"<project id>\"}, {\"click\":\"Visuals\"},\n    {\"type\":\"my idea\",\"into\":\"Video idea\"}, {\"select\":\"Visual style\",\"option\":\"Depth\"},\n    {\"wait\":800}, {\"scroll\":400}, {\"still\":\"panel\",\"of\":\"AI agent\",\"mark\":[\"Start\"]}].\n    \"project\" opens a project by id (ids: db/projects/*.json); \"still\" saves\n    <name>-<still>.png (sharp, 2x) – the whole screen, or cropped to the card/panel\n    around the text in \"of\"; \"mark\" prints where those texts are in the still (fractions\n    of its width/height) – use them for a cursor or a glow, never guess a position.\n    Recording is READ-ONLY: Start, picking a hook, Approve, Render, saving – nothing\n    reaches the server, so click whatever the scene needs; nothing is started or paid\n    for. \"+ New\" gives an empty project with the new-video form.\n  - Never leave a RecordingSlot empty for a screen you can reach (TikMaker, a website):\n    record it yourself and make it the field's default (field.recording(\"…\", \"…\") and\n    pass params.<field> || \"/assets/agent/…\"). Leave one empty only for what you cannot\n    reach (another desktop app, the creator's face).\n  If a command fails (no network, no key), draw that part instead and say so in wishes.\n  Never draw a fake screenshot of a real website.\n- Transition: for every scene after the first, how it comes in from the one before\n  (transition). The video draws BOTH scenes during the change (~12 frames): the old\n  one goes out the way the new one comes in – so do not fade your own scene in at its\n  start, and keep its first frame already composed. Kinds: cut, push / slideLeft /\n  slideRight / slideUp / slideDown (the next item of a list), zoomThrough (diving into\n  a detail), fromDepth, flip, dissolve (a soft change of mood), flash (a burst of light\n  – into a light scene, a reveal). Follow the style skill on which to use.\n- Sound: for every scene, 0–2 sound effects on its key moments (sounds: the spoken\n  word the moment lands on, and the kind). Never play sound in the code – the video\n  puts these on the timeline from its library. Only moments the picture makes: the\n  main move, the payoff. At most ~3 per 10 seconds in the whole video; a calm scene\n  gets none. Kinds:\n  - whoosh: a big move: the main object flies in, swaps or morphs\n  - slide: a card or window slides in or aside\n  - pop: something small appears (an icon, a badge, a sticker)\n  - enter: a solid thing lands (a card, a big number)\n  - ping: attention on one thing (the focus lights up)\n  - tick: a small step (one of several items marks)\n  - count: a counter runs up\n  - success: it works: the payoff, a green check\n  - fix: a fix clicks in\n  - break: something breaks, fails, gets locked\n  - type: a command is typed (one short burst)\n  - message: a chat bubble arrives\n  - reveal: a build-up to a reveal (use once a video at most)\n  - check: a check mark",
+        "user": "Channel: TikMaker and AI coding\nWhat it is about: Mostly TikMaker itself: what it can do, how a video gets made with it, new features and how it is being built with AI (build in public). Around that, short concrete videos about other AI tools, vibe coding and Claude Code: one problem or one feature per video, shown on screen rather than told.\nAudience: Creators who want to make short videos faster with AI, and developers or beginners who build apps with AI and want to work faster without breaking things.\nTone: Direct and practical; real screens, real results and numbers instead of hype. Honest about what does not work yet.\nProduct screen \"New video form\": The AI agent panel on the right of the TikMaker editor, on an empty project: a 'Video idea' text box, length in seconds, a template picker ('Let the AI pick'), an optional own hook, checkboxes 'With face', 'Motion graphics only', 'Generate the voiceover', and a 'Start' button.\nProduct screen \"Agent at work\": The same panel as a conversation: a progress bar with five steps (Idea, Angle, Script, Building, Result) ticking off, and a card appearing for each step – the chosen template, three hooks to pick from (each with what it shows), the script scene by scene with an 'Approve' button, 'Pictures picked', 'Motion planned' and 'Voiceover' (folded cards that open on click).\nProduct screen \"Editor with the built video\": Once built: the scene strip along the bottom fills with the video's scenes, the timeline shows each scene's blocks, voice and captions as clips, the vertical preview in the middle plays the video with its kinetic captions.\nProduct screen \"Preview playing\": The vertical 9:16 preview player in the middle of the editor playing the finished video with play / pause, time and fullscreen.\nProduct screen \"Render\": The 'Render MP4' button top right: a progress bar, then the finished MP4 file to download.\nProduct screen \"Storyboard\": The Storyboard tab: the script as a list of beats – each scene's voiceover and on-screen words – with the total length against the target.\nFact: What are the short names of skills 01, 02 and 03? – cia nera specialiu pavadinimu skillsams,turi pasidometi pats kas yra skillsai ir pats suprasi kad cia tsg aprasai, juos betkas betkur gali sukurti, arba galima nusipirkti is zmoniu ar panasiai\nFact: Do you have the same clip rendered in all three styles to record? – No, draw style previews\n\nThe video: A video showing that Claude Code can make motion design for you.\n3 Claude Code skills – each one turns your video into a completely\ndifferent motion design style (01, 02, 03, each with a short name).\nF\nOne fact before the end: a skill is just one markdown file that Claude\nreads before it draws every scene.\nCTA: comment \"SKILL\" and I'll send you the prompts.\nFolder: src/generated/project-1794209368959/\n\nWrite every scene's file (1, 2, 3, 4, 5, 6, 7).\n\nThe channel's saved visuals (\"my visuals\") – reuse one (copy and adapt its code) where it fits, or when asked:\n- Endless session terminal: A Claude Code terminal full of a day's chat history: a one-line question is typed and the whole history lights up as sent with it, while banknotes burn below (code: knowledge/workspaces/dev/visuals/endless-session-terminal-mw67mlh6/scene.tsx, frame: knowledge/workspaces/dev/visuals/endless-session-terminal-mw67mlh6/frame.png)\n\nTikMaker screens you can open for a recording (\"project\" step):\n- a finished video in the editor (scene strip, timeline, preview) with the agent's cards: code-argo2 (\"2v-4 su argo (pataisytas)\"), code-clear (\"3 Claude Code commands most people never use: /compact to sh\"), code-try (\"Bandymas: vaizdai kodu (3 scenos)\"), code-depth (\"3 Claude Code commands most people never use: /compact to sh\")\n- the agent panel with a script waiting for Approve: project-1793602706834 (\"ScriptCard check 2\"), project-1793629134522 (\"test\")\n- the agent panel with three hooks to pick from: project-1793868537392 (\"6e agent test (Claude)\")\n\n## Scene 1 (hook) – WRITE src/generated/project-1794209368959/scene-1.tsx\n129 frames (4.3 s); global frames 0–128\nVoiceover: 3 Claude Code skills that make you look like a motion designer overnight.\nWords (word@frame from the scene's start): 3@0 Claude@23 Code@30 skills@37 that@48 make@53 you@59 look@62 like@68 a@72 motion@75 designer@84 overnight.@95\nOn screen (the script's words): 3 Claude Code skills → motion designer overnight\nThe script's idea for the picture: Split screen from the first word: on the left a plain screen recording plays, and on the right the same clip runs as animated motion design while a numbered badge '01' pops into the corner\nRender a frame: npx remotion still TikTokVideo out/agent/project-1794209368959/scene-1.png --props=out/agent/project-1794209368959/props.json --frame=90 --scale=0.5\n\n## Scene 2 (setup) – WRITE src/generated/project-1794209368959/scene-2.tsx\n126 frames (4.2 s); global frames 129–254\nVoiceover: Plain screen recordings look flat. Motion design fixes that.\nWords (word@frame from the scene's start): Plain@0 screen@9 recordings@17 look@31 flat.@37 Motion@61 design@71 fixes@85 that.@96\nOn screen (the script's words): Flat recording → motion design\nThe script's idea for the picture: A plain grey screen recording sits still as a scroll thumb flicks past it, then the same frame bursts into color and moving shapes\nRender a frame: npx remotion still TikTokVideo out/agent/project-1794209368959/scene-2.png --props=out/agent/project-1794209368959/props.json --frame=217 --scale=0.5\n\n## Scene 3 (item) – WRITE src/generated/project-1794209368959/scene-3.tsx\n193 frames (6.4 s); global frames 255–447\nVoiceover: First is skill 01, Kinetic Type. Every key word you say slams onto the screen in big bold letters.\nWords (word@frame from the scene's start): First@0 is@11 skill@16 01,@27 Kinetic@49 Type.@60 Every@74 key@83 word@88 you@94 say@98 slams@108 onto@123 the@129 screen@132 in@143 big@149 bold@157 letters.@164\nOn screen (the script's words): 01 · Kinetic Type\nThe script's idea for the picture: Drawn style preview: badge '01' appears, then the clip's key words slam in one by one in huge bold type over the screen, scaling and snapping to the beat\nRender a frame: npx remotion still TikTokVideo out/agent/project-1794209368959/scene-3.png --props=out/agent/project-1794209368959/props.json --frame=390 --scale=0.5\n\n## Scene 4 (item) – WRITE src/generated/project-1794209368959/scene-4.tsx\n313 frames (10.4 s); global frames 448–760\nVoiceover: Second, skill 02, Clean UI. Your screen floats in a device frame, the camera zooms into each click, and soft cards pop in to label what happens.\nWords (word@frame from the scene's start): Second,@0 skill@27 02,@39 Clean@61 UI.@76 Your@104 screen@111 floats@119 in@129 a@132 device@134 frame,@143 the@161 camera@165 zooms@176 into@185 each@191 click,@198 and@214 soft@220 cards@230 pop@241 in@251 to@255 label@259 what@269 happens.@275\nOn screen (the script's words): 02 · Clean UI\nThe script's idea for the picture: Drawn style preview: badge '02' appears, the same clip shrinks into a floating device frame, the view zooms onto a click and rounded label cards slide in beside it\nRender a frame: npx remotion still TikTokVideo out/agent/project-1794209368959/scene-4.png --props=out/agent/project-1794209368959/props.json --frame=667 --scale=0.5\n\n## Scene 5 (item) – WRITE src/generated/project-1794209368959/scene-5.tsx\n232 frames (7.7 s); global frames 761–992\nVoiceover: Third, skill 03, Sketch. Arrows, circles and doodles draw themselves on top, like someone explaining it on a whiteboard.\nWords (word@frame from the scene's start): Third,@0 skill@19 03,@33 Sketch.@56 Arrows,@82 circles@95 and@109 doodles@114 draw@126 themselves@131 on@145 top,@148 like@166 someone@171 explaining@180 it@193 on@196 a@200 whiteboard.@202\nOn screen (the script's words): 03 · Sketch\nThe script's idea for the picture: Drawn style preview: badge '03' appears, then hand-drawn arrows and circles draw themselves stroke by stroke over the same clip on a whiteboard-white background\nRender a frame: npx remotion still TikTokVideo out/agent/project-1794209368959/scene-5.png --props=out/agent/project-1794209368959/props.json --frame=923 --scale=0.5\n\n## Scene 6 (bridge) – WRITE src/generated/project-1794209368959/scene-6.tsx\n282 frames (9.4 s); global frames 993–1274\nVoiceover: And here's the secret: a skill is just one markdown file. Claude reads it before it draws every scene. Anyone can write one.\nWords (word@frame from the scene's start): And@0 here's@8 the@16 secret:@19 a@43 skill@47 is@61 just@75 one@90 markdown@103 file.@117 Claude@154 reads@164 it@171 before@175 it@183 draws@185 every@197 scene.@206 Anyone@228 can@238 write@242 one.@248\nOn screen (the script's words): 1 skill = 1 markdown file\nThe script's idea for the picture: A single file named SKILL.md opens to show a few lines of text, then an arrow carries it into Claude, which draws scene after scene in that style\nRender a frame: npx remotion still TikTokVideo out/agent/project-1794209368959/scene-6.png --props=out/agent/project-1794209368959/props.json --frame=1190 --scale=0.5\n\n## Scene 7 (cta) – WRITE src/generated/project-1794209368959/scene-7.tsx\n121 frames (4.0 s); global frames 1275–1395\nVoiceover: Comment SKILL and I'll send you the prompts. Make sure you follow TikMaker.\nWords (word@frame from the scene's start): Comment@0 SKILL@11 and@21 I'll@29 send@34 you@40 the@43 prompts.@46 Make@64 sure@70 you@75 follow@79 TikMaker.@88\nOn screen (the script's words): Comment \"SKILL\" → get the prompts\nThe script's idea for the picture: A comment box types out 'SKILL', a reply bubble with the three numbered prompts 01, 02 and 03 pops up below it, then a follow button pulses\nRender a frame: npx remotion still TikTokVideo out/agent/project-1794209368959/scene-7.png --props=out/agent/project-1794209368959/props.json --frame=1360 --scale=0.5"
+      },
+      "inputTokens": 124663,
+      "cachedInputTokens": 2796899,
+      "outputTokens": 44172,
+      "thinkingTokens": 13418,
+      "turns": 64,
+      "output": {
+        "scenes": [
+          {
+            "sceneIndex": 0,
+            "description": "The same clip twice: a flat grey screen recording on top, below it the same clip alive with orange moving shapes and a glow, as an orange '01' badge pops onto its corner.",
+            "stage": "top",
+            "sounds": [
+              {
+                "onWord": "skills",
+                "sound": "pop"
+              }
+            ],
+            "transition": "cut"
+          },
+          {
+            "sceneIndex": 1,
+            "description": "One flat grey screen recording gets flicked past by a swiping thumb, then the same frame bursts into orange colour and moving shapes.",
+            "stage": "top",
+            "sounds": [
+              {
+                "onWord": "Motion",
+                "sound": "whoosh"
+              }
+            ],
+            "transition": "push"
+          },
+          {
+            "sceneIndex": 2,
+            "description": "Pill '01 Kinetic Type'; the clip dims and blurs as SHIP, IT and an orange FASTER slam onto it one by one in huge bold type.",
+            "stage": "top",
+            "sounds": [
+              {
+                "onWord": "01,",
+                "sound": "pop"
+              },
+              {
+                "onWord": "slams",
+                "sound": "enter"
+              }
+            ],
+            "transition": "cut"
+          },
+          {
+            "sceneIndex": 3,
+            "description": "Pill '02 Clean UI'; the clip shrinks into a floating device frame, the view zooms onto its orange button as a cursor clicks it, and two soft label cards pop in.",
+            "stage": "top",
+            "sounds": [
+              {
+                "onWord": "zooms",
+                "sound": "whoosh"
+              },
+              {
+                "onWord": "pop",
+                "sound": "pop"
+              }
+            ],
+            "transition": "slideLeft"
+          },
+          {
+            "sceneIndex": 4,
+            "description": "Pill '03 Sketch'; the clip turns whiteboard white and a hand-drawn orange arrow and circle draw themselves onto its button, followed by ink doodles.",
+            "stage": "top",
+            "sounds": [
+              {
+                "onWord": "Sketch.",
+                "sound": "pop"
+              },
+              {
+                "onWord": "circles",
+                "sound": "tick"
+              }
+            ],
+            "transition": "slideLeft"
+          },
+          {
+            "sceneIndex": 5,
+            "description": "A big SKILL.md file opens to show grey lines, moves to the corner, an arrow carries it into Claude, which draws three scene cards in the three styles.",
+            "stage": "top",
+            "sounds": [
+              {
+                "onWord": "markdown",
+                "sound": "enter"
+              },
+              {
+                "onWord": "Claude",
+                "sound": "whoosh"
+              }
+            ],
+            "transition": "fromDepth"
+          },
+          {
+            "sceneIndex": 6,
+            "description": "A comment box types SKILL in orange, a reply card with prompts 01, 02, 03 pops up below, then an orange Follow button pulses.",
+            "stage": "top",
+            "sounds": [
+              {
+                "onWord": "SKILL",
+                "sound": "type"
+              },
+              {
+                "onWord": "send",
+                "sound": "message"
+              }
+            ],
+            "transition": "slideUp"
+          }
+        ],
+        "keywords": [
+          "motion designer",
+          "flat",
+          "Kinetic Type",
+          "slams",
+          "Clean UI",
+          "zooms",
+          "Sketch",
+          "whiteboard",
+          "markdown file",
+          "SKILL"
+        ],
+        "wishes": [
+          "A shared 'sample clip' / generic app-window component in the kit, so style previews don't each redraw one",
+          "A device-frame (laptop / phone bezel) component in the kit for Clean UI-style shots",
+          "A hand-drawn stroke helper (rough circle, arrow, squiggle) in the kit for sketch annotations",
+          "A short neutral demo recording of TikMaker (clean preview playing) that could serve as 'the plain clip' – the editor still captured from code-clear had an empty preview and was too busy to use",
+          "A comment-box / reply-bubble component for CTA scenes",
+          "Permission (or a cleanup command) to delete unused agent captures in public/assets/agent/<folder>/"
+        ]
+      }
+    },
+    {
+      "name": "reviewFrames",
+      "startedAt": 1794211189759,
+      "ms": 37870,
+      "model": "claude-opus-5-5",
+      "attempts": 1,
+      "prompt": {
+        "system": "You are the motion designer who checks a short vertical video (TikTok, Reels,\nShorts) before it is posted. You get frames of every scene, rendered exactly as the\nviewer will see them on a phone, with what is said in that scene.\n\nFirst read the example sheet(s) with the Read tool – that is the level to reach. Each\nsheet says what it is for: a STYLE sheet shows how things should be drawn (simple,\nflat, no text to read, one focus), a COMPOSITION sheet how the frame should be laid\nout (one dominant thing, big, calm space). Judge each frame against both, each for\nits own thing. Then read every frame of the video.\n\nFor every scene, look as a viewer scrolling with the sound off, and go through the\nrubric:\n- sees: in one sentence, what you take from the frame in one second\n- verdict \"fix\" only when a \"fix\" check of the rubric fails – the viewer would be lost,\n  the eye has nowhere to land, text cannot be read, something is covered. Then give\n  at most 3 problems as you see them and ONE change:\n  - pictures: the scene's picture (its code) is written again – say concretely what it\n    should show instead (one main picture of what, how big, what to drop)\n  - words: the voiceover says too much for one picture – say how to say it shorter or\n    simpler (its voice and pictures are then made again)\n  - motion: the picture is right but sits or moves badly (too small, too low, over the\n    caption, something on top of something else) – say where it should be and how big\n- A dashed \"● REC\" or \"▣ PHOTO\" slot is a place the creator fills with their own\n  recording or picture later: judge where it sits and what it asks for, not that it is\n  empty.\n- verdict \"good\" otherwise. A \"note\" check that fails goes into problems of a \"good\"\n  scene and is NOT changed – it is said to the creator. Do not invent problems.",
+        "user": "Rubric:\n- [fix] With the sound off, is it clear in one second what the scene is about? Fails when: The picture does not show what the voiceover says, or shows something the viewer cannot name.\n- [fix] Is there ONE element the eye lands on first? Fails when: Two or more things of the same size and weight compete (two diagrams, two equal cards), so the eye has nowhere to land.\n- [fix] Can the whole frame be taken in at a glance – in the second it is on screen? Fails when: It has more than ~6 things to look at, or drawn text the viewer would have to read (code lines, logs, lists of labels, small UI text). A REAL screen (a TikMaker recording or still, a website screenshot) is not a failure for having text, as long as it is cropped to the part that matters, big, and the rest is dimmed or blurred – then the fix is a tighter crop or a bigger zoom, never redrawing it as bars.\n- [fix] Can every word be read on a phone? Fails when: A label or line looks smaller than about a third of the spoken caption's letters in these frames – on the phone it is too small to read.\n- [fix] Is everything inside the safe zone (x 130–900, y 250–1080 of 1080x1920) and clear of the spoken caption? Fails when: A picture runs under the caption or off the frame, two elements overlap where they should not, or something sits where the app draws its own buttons: the top ~13% of the frame (TikTok's top bar) or the right ~17% (the like/comment/share column) – there it is covered on the phone.\n- [fix] Do the scene's pictures belong to one idea? Fails when: Two pictures in one frame tell different things, or a picture has nothing to do with the words said with it.\n- [note] Is there room around the main element? Fails when: The frame is crowded edge to edge, or one small thing floats in a big empty frame.\n- [note] Does the scene look different enough from the one before? Fails when: It repeats the previous scene's look, so the cut reads as nothing happening.\n- [note] Does it reach the level of the example frames (few big flat shapes and icons, text drawn as grey bars, one orange accent where to look, a lot of calm space)? Fails when: It looks like a slide or a diagram dump next to the examples.\n\nExample frames:\n- /var/folders/wz/rl71ltqd50507m44z1k0gx5h0000gn/T/tikmaker-agent/review/run-mw8y5hcr/1794211180404/example-icon-minimal.png\n  STYLE – how things are drawn (the creator's chosen YouTube explainer, 2026-11-07): flat shapes and icons, text as grey bars, one orange focus. Judge how simple and clear the drawing is against this.\n  Tiles: 1: two avatar circles in the middle, four flat icons around them (timer, palette, note, camera); two icons bright, two dimmed – nothing to read | 2: the same two avatars; the icons have flown into ONE card under them with an orange folder – the idea 'everything in one place' shown by grouping | 3: a pipeline: an orange mascot, the card with the icons, three empty cards joined by one thin line – text is grey bars, not words | 4: two app windows side by side: the left one alive (preview, timeline, one orange pause button), the right one blurred under a lock with ONE number '48,193 waiting' and one button | 5: one label 'huashu-motion' with a GitHub icon over four video cards drawn as simple grey shapes\n  What makes them work: Almost no words: text is drawn as grey rounded bars; the only real words are the one thing that matters (a name, a number, a button). Few big flat shapes and icons (2–6 per frame), a lot of empty dark space around them. ONE accent colour (orange) marks where to look; everything else is grey, dimmed or blurred. The story is told by what the shapes do – gathering into a card, lining up into a chain, one window locked – not by labels. No code, no logs, no file names, no small UI details anyone would try to read.\n- /var/folders/wz/rl71ltqd50507m44z1k0gx5h0000gn/T/tikmaker-agent/review/run-mw8y5hcr/1794211180404/example-insiderforce.png\n  COMPOSITION – how a vertical frame is laid out (InsiderForce, TikTok, 10 frames, docs/bd/kadrai/insiderforce/): one dominant thing, big words, calm space. Judge the layout of the frame against this.\n  Tiles: 1: three tool logos on a thin line at the top, ONE big pricing card in the middle – a single dominant thing | 2: two logos, a video frame, then the headline in three sizes with the key phrase in a black box | 3: price cards stacked in one repeated form; only the new price is in the accent colour | 4: a globe joined by one line to a big character – one object fills the frame, the caption below with the key word bigger and bold | 5: four logos in a diamond, dashed lines to one globe with a warning sign – a whole problem as one small, airy diagram | 6: a character top left, one dashed curve to a logo bottom right, the words between them | 7: a badge \"01\" on a line down to one screenshot card – the step and its result joined | 8: a big character with a gear and three short rows with icons – few rows, very big | 9: one character filling the frame, a two-line caption under it | 10: a small strip of photos at the top, three short rows with ✦, the closing phrase bold\n  What makes them work: One thing dominates every frame; everything else is clearly smaller or a thin line. Words are big: the caption is 2–3 lines with the key words bold or boxed – never small labels to read. A diagram has at most four nodes, lots of space between them, and one link drawn at a time. Lots of calm space; nothing touches the edges or the caption. The background colour is theirs (light) – judge the composition, not the colours.\n- /var/folders/wz/rl71ltqd50507m44z1k0gx5h0000gn/T/tikmaker-agent/review/run-mw8y5hcr/1794211180404/example-explain.png\n  Explainer frames from several creators, docs/bd/kadrai/geri/ (mechanism, setup, item, problem)\n  Tiles: 1: a level title on top, ONE vertical diagram in the middle: three boxes, input → model → output, thin dashed arrows | 2: the same title, the diagram replaced by two big rows with ✗ – what it cannot do | 3: a simple drawing (an island with gorillas) with two tiny labels where it changed – the idea as one picture | 4: one coloured ring of letters, the name big below – a whole concept as one shape | 5: spotlight: one node bright, everything else dark and blurred, the key words in bold yellow below | 6: a word on top, a drawing with ONE curved arrow showing what moves | 7: the step number, the feature as a big pill, the tool's window under it | 8: a counter in the corner, one animated map filling the frame, the caption at the bottom | 9: a huge STEP and number in opposite corners, framing the speaker | 10: a few words above one broken object (a cracked 'Tokens' plate) – the problem as one thing\n  What makes them work: A diagram has 3–4 boxes in ONE direction with lots of space – never two diagrams in one frame. When the explanation moves on, the picture is REPLACED (diagram → two ✗ rows) instead of squeezing a second one in. One shape carries the concept (a ring, an island, a broken plate); labels are few and big. Spotlight: to point at one part, everything else is dimmed.\n- /var/folders/wz/rl71ltqd50507m44z1k0gx5h0000gn/T/tikmaker-agent/review/run-mw8y5hcr/1794211180404/example-open-close.png\n  Hooks, reveals, proof and CTA frames from several creators, docs/bd/kadrai/geri/\n  Tiles: 1: the result on top, the claim in two big lines, the tools' logos in a zigzag below | 2: text only – lines in different sizes, the brand set as one of the lines in its colours | 3: two names stacked, one icon overlapping the other, the time promise below | 4: a short line over one tool card, decorations only in the corners | 5: three lines in three weights, the last in a black box | 6: the browser cropped bottom right, the address big and readable | 7: before/after as two equal cards stacked, a one-word label on each | 8: a phone on the left, ONE benefit word on the right | 9: one sentence in the middle, the key words in the accent colour | 10: the comment keyword the biggest thing, the gift (an e-book) as an object\n  What makes them work: The hook's first frame says the promise in 2–3 big lines with one word boxed or coloured. Two equal things are right only for a before/after – then they get one word each. A CTA makes the one keyword the biggest thing on screen. Text-only frames are fine when the type itself has hierarchy: sizes, weights, one box.\n- /var/folders/wz/rl71ltqd50507m44z1k0gx5h0000gn/T/tikmaker-agent/review/run-mw8y5hcr/1794211180404/example-pictures.png\n  InsiderForce frames that carry a real picture, docs/bd/kadrai/geri/picture-01..04\n  Tiles: 1: a metaphor as a cut-out picture – a robot hand holding a glowing globe fills the top half; the claim below in big type, the last word boxed | 2: a cut-out object (a blue folder labelled API's) with two hands reaching to it (Michelangelo) – the thing and the promise around it | 3: a cut-out photo of the real person, black and white, over an accent shape; the headline beside him | 4: four photo cards, tilted with shadows, in the corners around one number in a ring – real examples around the key fact\n  What makes them work: One or two real pictures make a video feel alive: a metaphor, the real thing, the real person, real examples. Pictures are cut out (no background) with a soft shadow, or set as tilted cards with a white border – never a flat rectangle pasted in. The picture is big – it is the frame's main element, the words go above or beside it. Black-and-white photos plus one accent colour keep a mixed set of pictures in one style.\n\nPrinciples for the pictures:\n- [must] One picture holds one whole thought – usually a sentence – and keeps changing inside it. Why: In good short videos one picture stays about 5 seconds while its parts appear, a number counts or arrows draw. A new picture on every other word flickers past before it is read, and together such pictures look like random clip art for single words.\n- [must] The picture shows what HAPPENS, so the scene is understood with the sound off. Why: Many people watch muted, and even with sound the eye leads. An action, a change or a relation (this turns into that, these three join, the price drops) explains; a row of nouns only decorates.\n- [must] Show the thing itself: the tool, the screen, the command, the number, the result. Why: A concrete picture proves and teaches; a metaphor only hints. A prop that just stands for a word (a clock for 'fast') says less than the real thing doing something.\n- [must] Pick the block whose shape IS the idea, so it is understood at a glance by someone who does not know the video. Why: A conversation drawn as chat bubbles, a cycle drawn as a loop, 'this becomes that' drawn as a transform are read instantly. A card with a vague label and a loosely fitting icon says nothing.\n- [must] The viewer sees at once what matters most in the frame. Why: When everything is the same size and weight the eye has nowhere to land. One dominant element – the number, the result, the key word – with the rest clearly secondary reads in a second.\n- [recommended] Leave space empty so the important element stands out. Why: A frame filled in every corner has no focus. Empty space around one big element makes it feel important and easy to read on a phone.\n- [must] Text appears when it is said, and the stressed words stand out. Why: Words on screen ahead of the voice spoil it; words after it lag. Highlighting the one word that carries the sentence guides the eye better than animating the whole phrase the same way.\n- [must] Vary how the pictures look across the video. Why: A video where every picture is a list or a schema reads as one slide repeated, and the viewer stops noticing that it changes.\n- [recommended] The layout changes where the story changes, and stays where it goes on. Why: The same layout scene after scene – picture on top, words below – reads as one frame repeated. A change of layout marks a new part, a contrast, a statement or a demo.\n- [must] The hook's picture is there from its first words and shows its first frame. Why: The first two seconds decide whether people stay; words on an empty frame are the weakest opening there is.\n- [must] A recording request is one continuous take a person can reproduce from the instructions – and a video asks for only a few of them. Why: The creator records what the instructions say. Two slots for one action make them record the same moment twice; asking for buttons or results that do not exist makes the recording impossible; six recordings for one short video is an afternoon of work for a few seconds each.\n\nScene 1 (hook) – sceneIndex 0\n  Voiceover: 3 Claude Code skills that make you look like a motion designer overnight.\n  Pictures: The same clip twice: a flat grey screen recording on top, below it the same clip alive with orange moving shapes and a glow, as an orange '01' badge pops onto its corner.\n  Frames:\n  - /var/folders/wz/rl71ltqd50507m44z1k0gx5h0000gn/T/tikmaker-agent/review/run-mw8y5hcr/1794211180404/scene-1-f58.png (at 1.9 s)\n  - /var/folders/wz/rl71ltqd50507m44z1k0gx5h0000gn/T/tikmaker-agent/review/run-mw8y5hcr/1794211180404/scene-1-f114.png (at 3.8 s)\n\nScene 2 (setup) – sceneIndex 1\n  Voiceover: Plain screen recordings look flat. Motion design fixes that.\n  Pictures: One flat grey screen recording gets flicked past by a swiping thumb, then the same frame bursts into orange colour and moving shapes.\n  Frames:\n  - /var/folders/wz/rl71ltqd50507m44z1k0gx5h0000gn/T/tikmaker-agent/review/run-mw8y5hcr/1794211180404/scene-2-f186.png (at 6.2 s)\n  - /var/folders/wz/rl71ltqd50507m44z1k0gx5h0000gn/T/tikmaker-agent/review/run-mw8y5hcr/1794211180404/scene-2-f240.png (at 8.0 s)\n\nScene 3 (item) – sceneIndex 2\n  Voiceover: First is skill 01, Kinetic Type. Every key word you say slams onto the screen in big bold letters.\n  Pictures: Pill '01 Kinetic Type'; the clip dims and blurs as SHIP, IT and an orange FASTER slam onto it one by one in huge bold type.\n  Frames:\n  - /var/folders/wz/rl71ltqd50507m44z1k0gx5h0000gn/T/tikmaker-agent/review/run-mw8y5hcr/1794211180404/scene-3-f342.png (at 11.4 s)\n  - /var/folders/wz/rl71ltqd50507m44z1k0gx5h0000gn/T/tikmaker-agent/review/run-mw8y5hcr/1794211180404/scene-3-f433.png (at 14.4 s)\n\nScene 4 (item) – sceneIndex 3\n  Voiceover: Second, skill 02, Clean UI. Your screen floats in a device frame, the camera zooms into each click, and soft cards pop in to label what happens.\n  Pictures: Pill '02 Clean UI'; the clip shrinks into a floating device frame, the view zooms onto its orange button as a cursor clicks it, and two soft label cards pop in.\n  Frames:\n  - /var/folders/wz/rl71ltqd50507m44z1k0gx5h0000gn/T/tikmaker-agent/review/run-mw8y5hcr/1794211180404/scene-4-f589.png (at 19.6 s)\n  - /var/folders/wz/rl71ltqd50507m44z1k0gx5h0000gn/T/tikmaker-agent/review/run-mw8y5hcr/1794211180404/scene-4-f746.png (at 24.9 s)\n\nScene 5 (item) – sceneIndex 4\n  Voiceover: Third, skill 03, Sketch. Arrows, circles and doodles draw themselves on top, like someone explaining it on a whiteboard.\n  Pictures: Pill '03 Sketch'; the clip turns whiteboard white and a hand-drawn orange arrow and circle draw themselves onto its button, followed by ink doodles.\n  Frames:\n  - /var/folders/wz/rl71ltqd50507m44z1k0gx5h0000gn/T/tikmaker-agent/review/run-mw8y5hcr/1794211180404/scene-5-f865.png (at 28.8 s)\n  - /var/folders/wz/rl71ltqd50507m44z1k0gx5h0000gn/T/tikmaker-agent/review/run-mw8y5hcr/1794211180404/scene-5-f978.png (at 32.6 s)\n\nScene 6 (bridge) – sceneIndex 5\n  Voiceover: And here's the secret: a skill is just one markdown file. Claude reads it before it draws every scene. Anyone can write one.\n  Pictures: A big SKILL.md file opens to show grey lines, moves to the corner, an arrow carries it into Claude, which draws three scene cards in the three styles.\n  Frames:\n  - /var/folders/wz/rl71ltqd50507m44z1k0gx5h0000gn/T/tikmaker-agent/review/run-mw8y5hcr/1794211180404/scene-6-f1120.png (at 37.3 s)\n  - /var/folders/wz/rl71ltqd50507m44z1k0gx5h0000gn/T/tikmaker-agent/review/run-mw8y5hcr/1794211180404/scene-6-f1260.png (at 42.0 s)\n\nScene 7 (cta) – sceneIndex 6\n  Voiceover: Comment SKILL and I'll send you the prompts. Make sure you follow TikMaker.\n  Pictures: A comment box types SKILL in orange, a reply card with prompts 01, 02, 03 pops up below, then an orange Follow button pulses.\n  Frames:\n  - /var/folders/wz/rl71ltqd50507m44z1k0gx5h0000gn/T/tikmaker-agent/review/run-mw8y5hcr/1794211180404/scene-7-f1329.png (at 44.3 s)\n  - /var/folders/wz/rl71ltqd50507m44z1k0gx5h0000gn/T/tikmaker-agent/review/run-mw8y5hcr/1794211180404/scene-7-f1381.png (at 46.0 s)\n\nAnswer with one entry per scene, in order."
+      },
+      "inputTokens": 42003,
+      "cachedInputTokens": 39444,
+      "outputTokens": 3530,
+      "thinkingTokens": 536,
+      "turns": 22,
+      "output": {
+        "scenes": [
+          {
+            "sceneIndex": 0,
+            "sees": "A flat grey app window above the same window glowing orange with an '01' badge: plain becomes animated.",
+            "verdict": "good",
+            "problems": [
+              "The top window is so dim that the before/after takes a moment to read. One word on each window (e.g. 'before' / 'after') would make it faster, but it is not required."
+            ]
+          },
+          {
+            "sceneIndex": 1,
+            "sees": "One dull grey window that turns orange and lively: motion design fixes flat recordings.",
+            "verdict": "good",
+            "problems": [
+              "It looks almost the same as the hook (the same window going from flat to glowing in the same place), so the cut feels like nothing new happened. The swiping thumb from the plan does not show in either frame."
+            ]
+          },
+          {
+            "sceneIndex": 2,
+            "sees": "'01 Kinetic Type' with SHIP IT FASTER slammed huge over a blurred window, FASTER in orange.",
+            "verdict": "good",
+            "problems": []
+          },
+          {
+            "sceneIndex": 3,
+            "sees": "'02 Clean UI': the screen sits in a monitor frame, and a cursor clicks the orange button while two label cards pop in.",
+            "verdict": "good",
+            "problems": [
+              "The zoom onto the click is mild, so it can read as the same window again rather than a camera move. The layout (pill, window, caption) is the same as scenes 3 and 5."
+            ]
+          },
+          {
+            "sceneIndex": 4,
+            "sees": "'03 Sketch': a white whiteboard window with an orange hand-drawn arrow and circle around its button, plus doodles.",
+            "verdict": "good",
+            "problems": [
+              "This is the third scene in a row with the same pill + window + caption layout. The white window helps, but the series feels repeated."
+            ]
+          },
+          {
+            "sceneIndex": 5,
+            "sees": "A SKILL.md file feeds into Claude, which draws three scene cards in the three styles.",
+            "verdict": "good",
+            "problems": [
+              "In the second frame, the 'SKILL.md' label on the small file is only about a third the height of the caption letters, which is at the edge of readable. It would help to keep the file bigger when it moves to the corner."
+            ]
+          },
+          {
+            "sceneIndex": 6,
+            "sees": "A comment box with SKILL in big orange, a reply card with prompts 01–03, and an orange Follow button.",
+            "verdict": "good",
+            "problems": []
+          }
+        ]
+      }
+    }
+  ],
+  "voice": {
+    "scenes": [
+      {
+        "sfxId": "vo-run-mw8y5hcr-scene-1-mw8yot7y",
+        "words": [
+          {
+            "text": "3",
+            "start": 0,
+            "end": 0.708
+          },
+          {
+            "text": "Claude",
+            "start": 0.766,
+            "end": 0.975
+          },
+          {
+            "text": "Code",
+            "start": 1.01,
+            "end": 1.219
+          },
+          {
+            "text": "skills",
+            "start": 1.242,
+            "end": 1.556
+          },
+          {
+            "text": "that",
+            "start": 1.602,
+            "end": 1.73
+          },
+          {
+            "text": "make",
+            "start": 1.776,
+            "end": 1.916
+          },
+          {
+            "text": "you",
+            "start": 1.95,
+            "end": 2.032
+          },
+          {
+            "text": "look",
+            "start": 2.078,
+            "end": 2.218
+          },
+          {
+            "text": "like",
+            "start": 2.252,
+            "end": 2.38
+          },
+          {
+            "text": "a",
+            "start": 2.415,
+            "end": 2.438
+          },
+          {
+            "text": "motion",
+            "start": 2.496,
+            "end": 2.74
+          },
+          {
+            "text": "designer",
+            "start": 2.786,
+            "end": 3.1
+          },
+          {
+            "text": "overnight.",
+            "start": 3.17,
+            "end": 3.947
+          }
+        ]
+      },
+      {
+        "sfxId": "vo-run-mw8y5hcr-scene-2-mw8yotrn",
+        "words": [
+          {
+            "text": "Plain",
+            "start": 0,
+            "end": 0.267
+          },
+          {
+            "text": "screen",
+            "start": 0.313,
+            "end": 0.522
+          },
+          {
+            "text": "recordings",
+            "start": 0.569,
+            "end": 0.987
+          },
+          {
+            "text": "look",
+            "start": 1.033,
+            "end": 1.173
+          },
+          {
+            "text": "flat.",
+            "start": 1.219,
+            "end": 1.602
+          },
+          {
+            "text": "Motion",
+            "start": 2.043,
+            "end": 2.334
+          },
+          {
+            "text": "design",
+            "start": 2.38,
+            "end": 2.74
+          },
+          {
+            "text": "fixes",
+            "start": 2.844,
+            "end": 3.181
+          },
+          {
+            "text": "that.",
+            "start": 3.216,
+            "end": 3.855
+          }
+        ]
+      },
+      {
+        "sfxId": "vo-run-mw8y5hcr-scene-3-mw8youdv",
+        "words": [
+          {
+            "text": "First",
+            "start": 0,
+            "end": 0.302
+          },
+          {
+            "text": "is",
+            "start": 0.36,
+            "end": 0.476
+          },
+          {
+            "text": "skill",
+            "start": 0.534,
+            "end": 0.848
+          },
+          {
+            "text": "01,",
+            "start": 0.894,
+            "end": 1.463
+          },
+          {
+            "text": "Kinetic",
+            "start": 1.649,
+            "end": 1.962
+          },
+          {
+            "text": "Type.",
+            "start": 2.009,
+            "end": 2.357
+          },
+          {
+            "text": "Every",
+            "start": 2.473,
+            "end": 2.717
+          },
+          {
+            "text": "key",
+            "start": 2.763,
+            "end": 2.902
+          },
+          {
+            "text": "word",
+            "start": 2.937,
+            "end": 3.088
+          },
+          {
+            "text": "you",
+            "start": 3.123,
+            "end": 3.204
+          },
+          {
+            "text": "say",
+            "start": 3.262,
+            "end": 3.471
+          },
+          {
+            "text": "slams",
+            "start": 3.599,
+            "end": 4.04
+          },
+          {
+            "text": "onto",
+            "start": 4.098,
+            "end": 4.249
+          },
+          {
+            "text": "the",
+            "start": 4.296,
+            "end": 4.365
+          },
+          {
+            "text": "screen",
+            "start": 4.4,
+            "end": 4.702
+          },
+          {
+            "text": "in",
+            "start": 4.772,
+            "end": 4.876
+          },
+          {
+            "text": "big",
+            "start": 4.981,
+            "end": 5.178
+          },
+          {
+            "text": "bold",
+            "start": 5.236,
+            "end": 5.433
+          },
+          {
+            "text": "letters.",
+            "start": 5.48,
+            "end": 6.084
+          }
+        ]
+      },
+      {
+        "sfxId": "vo-run-mw8y5hcr-scene-4-mw8yov5u",
+        "words": [
+          {
+            "text": "Second,",
+            "start": 0,
+            "end": 0.511
+          },
+          {
+            "text": "skill",
+            "start": 0.894,
+            "end": 1.254
+          },
+          {
+            "text": "02,",
+            "start": 1.289,
+            "end": 1.834
+          },
+          {
+            "text": "Clean",
+            "start": 2.043,
+            "end": 2.368
+          },
+          {
+            "text": "UI.",
+            "start": 2.519,
+            "end": 3.042
+          },
+          {
+            "text": "Your",
+            "start": 3.483,
+            "end": 3.646
+          },
+          {
+            "text": "screen",
+            "start": 3.692,
+            "end": 3.936
+          },
+          {
+            "text": "floats",
+            "start": 3.971,
+            "end": 4.238
+          },
+          {
+            "text": "in",
+            "start": 4.296,
+            "end": 4.365
+          },
+          {
+            "text": "a",
+            "start": 4.4,
+            "end": 4.423
+          },
+          {
+            "text": "device",
+            "start": 4.458,
+            "end": 4.748
+          },
+          {
+            "text": "frame,",
+            "start": 4.772,
+            "end": 5.166
+          },
+          {
+            "text": "the",
+            "start": 5.375,
+            "end": 5.48
+          },
+          {
+            "text": "camera",
+            "start": 5.515,
+            "end": 5.805
+          },
+          {
+            "text": "zooms",
+            "start": 5.875,
+            "end": 6.13
+          },
+          {
+            "text": "into",
+            "start": 6.165,
+            "end": 6.293
+          },
+          {
+            "text": "each",
+            "start": 6.362,
+            "end": 6.536
+          },
+          {
+            "text": "click,",
+            "start": 6.594,
+            "end": 6.931
+          },
+          {
+            "text": "and",
+            "start": 7.14,
+            "end": 7.268
+          },
+          {
+            "text": "soft",
+            "start": 7.338,
+            "end": 7.605
+          },
+          {
+            "text": "cards",
+            "start": 7.663,
+            "end": 7.964
+          },
+          {
+            "text": "pop",
+            "start": 8.046,
+            "end": 8.278
+          },
+          {
+            "text": "in",
+            "start": 8.359,
+            "end": 8.44
+          },
+          {
+            "text": "to",
+            "start": 8.499,
+            "end": 8.568
+          },
+          {
+            "text": "label",
+            "start": 8.649,
+            "end": 8.905
+          },
+          {
+            "text": "what",
+            "start": 8.963,
+            "end": 9.114
+          },
+          {
+            "text": "happens.",
+            "start": 9.16,
+            "end": 10.077
+          }
+        ]
+      },
+      {
+        "sfxId": "vo-run-mw8y5hcr-scene-5-mw8yovtm",
+        "words": [
+          {
+            "text": "Third,",
+            "start": 0,
+            "end": 0.43
+          },
+          {
+            "text": "skill",
+            "start": 0.639,
+            "end": 0.952
+          },
+          {
+            "text": "03,",
+            "start": 1.103,
+            "end": 1.683
+          },
+          {
+            "text": "Sketch.",
+            "start": 1.869,
+            "end": 2.357
+          },
+          {
+            "text": "Arrows,",
+            "start": 2.74,
+            "end": 3.123
+          },
+          {
+            "text": "circles",
+            "start": 3.158,
+            "end": 3.564
+          },
+          {
+            "text": "and",
+            "start": 3.634,
+            "end": 3.75
+          },
+          {
+            "text": "doodles",
+            "start": 3.808,
+            "end": 4.145
+          },
+          {
+            "text": "draw",
+            "start": 4.191,
+            "end": 4.331
+          },
+          {
+            "text": "themselves",
+            "start": 4.377,
+            "end": 4.772
+          },
+          {
+            "text": "on",
+            "start": 4.83,
+            "end": 4.899
+          },
+          {
+            "text": "top,",
+            "start": 4.946,
+            "end": 5.341
+          },
+          {
+            "text": "like",
+            "start": 5.526,
+            "end": 5.677
+          },
+          {
+            "text": "someone",
+            "start": 5.712,
+            "end": 5.968
+          },
+          {
+            "text": "explaining",
+            "start": 5.991,
+            "end": 6.374
+          },
+          {
+            "text": "it",
+            "start": 6.42,
+            "end": 6.49
+          },
+          {
+            "text": "on",
+            "start": 6.548,
+            "end": 6.641
+          },
+          {
+            "text": "a",
+            "start": 6.676,
+            "end": 6.699
+          },
+          {
+            "text": "whiteboard.",
+            "start": 6.745,
+            "end": 7.384
+          }
+        ]
+      },
+      {
+        "sfxId": "vo-run-mw8y5hcr-scene-6-mw8yowja",
+        "words": [
+          {
+            "text": "And",
+            "start": 0,
+            "end": 0.221
+          },
+          {
+            "text": "here's",
+            "start": 0.279,
+            "end": 0.488
+          },
+          {
+            "text": "the",
+            "start": 0.522,
+            "end": 0.592
+          },
+          {
+            "text": "secret:",
+            "start": 0.627,
+            "end": 1.057
+          },
+          {
+            "text": "a",
+            "start": 1.44,
+            "end": 1.498
+          },
+          {
+            "text": "skill",
+            "start": 1.567,
+            "end": 1.881
+          },
+          {
+            "text": "is",
+            "start": 2.032,
+            "end": 2.415
+          },
+          {
+            "text": "just",
+            "start": 2.496,
+            "end": 2.798
+          },
+          {
+            "text": "one",
+            "start": 3.007,
+            "end": 3.309
+          },
+          {
+            "text": "markdown",
+            "start": 3.437,
+            "end": 3.843
+          },
+          {
+            "text": "file.",
+            "start": 3.901,
+            "end": 4.319
+          },
+          {
+            "text": "Claude",
+            "start": 5.143,
+            "end": 5.433
+          },
+          {
+            "text": "reads",
+            "start": 5.468,
+            "end": 5.654
+          },
+          {
+            "text": "it",
+            "start": 5.7,
+            "end": 5.77
+          },
+          {
+            "text": "before",
+            "start": 5.817,
+            "end": 6.049
+          },
+          {
+            "text": "it",
+            "start": 6.084,
+            "end": 6.142
+          },
+          {
+            "text": "draws",
+            "start": 6.177,
+            "end": 6.455
+          },
+          {
+            "text": "every",
+            "start": 6.583,
+            "end": 6.827
+          },
+          {
+            "text": "scene.",
+            "start": 6.873,
+            "end": 7.268
+          },
+          {
+            "text": "Anyone",
+            "start": 7.605,
+            "end": 7.906
+          },
+          {
+            "text": "can",
+            "start": 7.941,
+            "end": 8.046
+          },
+          {
+            "text": "write",
+            "start": 8.069,
+            "end": 8.243
+          },
+          {
+            "text": "one.",
+            "start": 8.278,
+            "end": 9.056
+          }
+        ]
+      },
+      {
+        "sfxId": "vo-run-mw8y5hcr-scene-7-mw8yox0c",
+        "words": [
+          {
+            "text": "Comment",
+            "start": 0,
+            "end": 0.348
+          },
+          {
+            "text": "SKILL",
+            "start": 0.383,
+            "end": 0.627
+          },
+          {
+            "text": "and",
+            "start": 0.697,
+            "end": 0.859
+          },
+          {
+            "text": "I'll",
+            "start": 0.964,
+            "end": 1.115
+          },
+          {
+            "text": "send",
+            "start": 1.149,
+            "end": 1.289
+          },
+          {
+            "text": "you",
+            "start": 1.324,
+            "end": 1.393
+          },
+          {
+            "text": "the",
+            "start": 1.428,
+            "end": 1.498
+          },
+          {
+            "text": "prompts.",
+            "start": 1.521,
+            "end": 1.95
+          },
+          {
+            "text": "Make",
+            "start": 2.136,
+            "end": 2.31
+          },
+          {
+            "text": "sure",
+            "start": 2.334,
+            "end": 2.461
+          },
+          {
+            "text": "you",
+            "start": 2.496,
+            "end": 2.566
+          },
+          {
+            "text": "follow",
+            "start": 2.624,
+            "end": 2.856
+          },
+          {
+            "text": "TikMaker.",
+            "start": 2.937,
+            "end": 3.669
+          }
+        ]
+      }
+    ]
+  },
+  "code": {
+    "scenes": [
+      {
+        "file": "project-1794209368959/scene-1.tsx",
+        "description": "The same clip twice: a flat grey screen recording on top, below it the same clip alive with orange moving shapes and a glow, as an orange '01' badge pops onto its corner.",
+        "stage": "top",
+        "sounds": [
+          {
+            "onWord": "skills",
+            "sound": "pop"
+          }
+        ],
+        "transition": "cut",
+        "version": 1
+      },
+      {
+        "file": "project-1794209368959/scene-2.tsx",
+        "description": "One flat grey screen recording gets flicked past by a swiping thumb, then the same frame bursts into orange colour and moving shapes.",
+        "stage": "top",
+        "sounds": [
+          {
+            "onWord": "Motion",
+            "sound": "whoosh"
+          }
+        ],
+        "transition": "push",
+        "version": 1
+      },
+      {
+        "file": "project-1794209368959/scene-3.tsx",
+        "description": "Pill '01 Kinetic Type'; the clip dims and blurs as SHIP, IT and an orange FASTER slam onto it one by one in huge bold type.",
+        "stage": "top",
+        "sounds": [
+          {
+            "onWord": "01,",
+            "sound": "pop"
+          },
+          {
+            "onWord": "slams",
+            "sound": "enter"
+          }
+        ],
+        "transition": "cut",
+        "version": 1
+      },
+      {
+        "file": "project-1794209368959/scene-4.tsx",
+        "description": "Pill '02 Clean UI'; the clip shrinks into a floating device frame, the view zooms onto its orange button as a cursor clicks it, and two soft label cards pop in.",
+        "stage": "top",
+        "sounds": [
+          {
+            "onWord": "zooms",
+            "sound": "whoosh"
+          },
+          {
+            "onWord": "pop",
+            "sound": "pop"
+          }
+        ],
+        "transition": "slideLeft",
+        "version": 1
+      },
+      {
+        "file": "project-1794209368959/scene-5.tsx",
+        "description": "Pill '03 Sketch'; the clip turns whiteboard white and a hand-drawn orange arrow and circle draw themselves onto its button, followed by ink doodles.",
+        "stage": "top",
+        "sounds": [
+          {
+            "onWord": "Sketch.",
+            "sound": "pop"
+          },
+          {
+            "onWord": "circles",
+            "sound": "tick"
+          }
+        ],
+        "transition": "slideLeft",
+        "version": 1
+      },
+      {
+        "file": "project-1794209368959/scene-6.tsx",
+        "description": "A big SKILL.md file opens to show grey lines, moves to the corner, an arrow carries it into Claude, which draws three scene cards in the three styles.",
+        "stage": "top",
+        "sounds": [
+          {
+            "onWord": "markdown",
+            "sound": "enter"
+          },
+          {
+            "onWord": "Claude",
+            "sound": "whoosh"
+          }
+        ],
+        "transition": "fromDepth",
+        "version": 1
+      },
+      {
+        "file": "project-1794209368959/scene-7.tsx",
+        "description": "A comment box types SKILL in orange, a reply card with prompts 01, 02, 03 pops up below, then an orange Follow button pulses.",
+        "stage": "top",
+        "sounds": [
+          {
+            "onWord": "SKILL",
+            "sound": "type"
+          },
+          {
+            "onWord": "send",
+            "sound": "message"
+          }
+        ],
+        "transition": "slideUp",
+        "version": 1
+      }
+    ],
+    "keywords": [
+      "motion designer",
+      "flat",
+      "Kinetic Type",
+      "slams",
+      "Clean UI",
+      "zooms",
+      "Sketch",
+      "whiteboard",
+      "markdown file",
+      "SKILL"
+    ],
+    "wishes": [
+      "A shared 'sample clip' / generic app-window component in the kit, so style previews don't each redraw one",
+      "A device-frame (laptop / phone bezel) component in the kit for Clean UI-style shots",
+      "A hand-drawn stroke helper (rough circle, arrow, squiggle) in the kit for sketch annotations",
+      "A short neutral demo recording of TikMaker (clean preview playing) that could serve as 'the plain clip' – the editor still captured from code-clear had an empty preview and was too busy to use",
+      "A comment-box / reply-bubble component for CTA scenes",
+      "Permission (or a cleanup command) to delete unused agent captures in public/assets/agent/<folder>/"
+    ],
+    "problems": []
+  }
+}

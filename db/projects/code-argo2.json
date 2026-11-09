@@ -12,167 +12,167 @@
   "scenes": [
     {
       "id": "scene-run-argo2-1",
-      "type": "code",
       "plan": {
         "role": "hook",
         "visualBrief": "Split screen: a big, bright idea box gets one line typed into it, an orange arrow points right, and the finished vertical video lights up and plays."
       },
+      "durationSeconds": 2.951,
       "vo": "I typed one sentence. This whole video came out of it.",
       "notes": "🎥 Your own recording",
       "background": "stage",
       "content": {},
-      "stage": "top",
-      "motion": {
-        "transition": "cut",
-        "entrance": "none"
-      },
       "code": {
         "file": "code-argo2/scene-1.tsx"
       },
-      "durationSeconds": 2.951
+      "stage": "top",
+      "motion": {
+        "entrance": "none",
+        "transition": "cut"
+      },
+      "type": "code"
     },
     {
       "id": "scene-run-argo2-2",
-      "type": "code",
       "plan": {
         "role": "demo",
         "visualBrief": "One big Video idea box: 'How to undo the last git commit' types in big letters, then the cursor clicks the big orange Start button below."
       },
+      "durationSeconds": 5.087,
       "vo": "I'm building TikMaker, an AI video editor. You type one video idea and hit Start.",
       "notes": "🎥 Your own recording",
       "background": "stage",
       "content": {},
-      "stage": "top",
-      "motion": {
-        "transition": "zoomThrough",
-        "entrance": "none"
-      },
       "code": {
         "file": "code-argo2/scene-2.tsx"
       },
-      "durationSeconds": 5.087
+      "stage": "top",
+      "motion": {
+        "entrance": "none",
+        "transition": "zoomThrough"
+      },
+      "type": "code"
     },
     {
       "id": "scene-run-argo2-3",
-      "type": "code",
       "plan": {
         "role": "mechanism",
         "visualBrief": "The agent's five-step bar ticks Idea and Angle; a light scans three template cards and the middle one turns orange, grows and gets a check."
       },
+      "durationSeconds": 3.229,
       "vo": "First, the agent picks a template that fits the idea.",
       "background": "stage",
       "content": {},
-      "stage": "top",
-      "motion": {
-        "transition": "slideUp",
-        "entrance": "none"
-      },
       "code": {
         "file": "code-argo2/scene-3.tsx"
       },
-      "durationSeconds": 3.229
+      "stage": "top",
+      "motion": {
+        "entrance": "none",
+        "transition": "slideUp"
+      },
+      "type": "code"
     },
     {
       "id": "scene-run-argo2-4",
-      "type": "code",
       "plan": {
         "role": "mechanism",
         "visualBrief": "Under the agent's step bar three grey-bar hook cards land one by one; the cursor clicks the middle one, it turns orange, grows to the full safe width and shows 'Re-cloned the whole repo?' in big type while the other two dim."
       },
+      "durationSeconds": 3.1830000000000003,
       "vo": "Second, it writes three hooks, and you pick one.",
       "notes": "🎥 Your own recording",
       "background": "stage",
       "content": {},
-      "stage": "top",
-      "motion": {
-        "transition": "push",
-        "entrance": "none"
-      },
       "code": {
         "file": "code-argo2/scene-4.tsx"
       },
-      "durationSeconds": 3.1830000000000003
+      "stage": "top",
+      "motion": {
+        "entrance": "none",
+        "transition": "push"
+      },
+      "type": "code"
     },
     {
       "id": "scene-run-argo2-5",
-      "type": "code",
       "plan": {
         "role": "mechanism",
         "visualBrief": "A script card fills row by row, one numbered row per scene, then the cursor clicks the orange Approve button and step 3 ticks."
       },
+      "durationSeconds": 3.972,
       "vo": "Third, it writes the script scene by scene, and you approve it.",
       "background": "stage",
       "content": {},
-      "stage": "top",
-      "motion": {
-        "transition": "slideLeft",
-        "entrance": "none"
-      },
       "code": {
         "file": "code-argo2/scene-5.tsx"
       },
-      "durationSeconds": 3.972
+      "stage": "top",
+      "motion": {
+        "entrance": "none",
+        "transition": "slideLeft"
+      },
+      "type": "code"
     },
     {
       "id": "scene-run-argo2-6",
-      "type": "code",
       "plan": {
         "role": "escalation",
         "visualBrief": "The bar moves to Building; pictures, motion and voiceover cards land one by one, then an orange lens sweeps a strip of frames and checks each one."
       },
+      "durationSeconds": 7.13,
       "vo": "Then it builds every scene: pictures, motion, voiceover. And it checks its own frames.",
       "background": "stage",
       "content": {},
-      "stage": "top",
-      "motion": {
-        "transition": "slideLeft",
-        "entrance": "none"
-      },
       "code": {
         "file": "code-argo2/scene-6.tsx"
       },
-      "durationSeconds": 7.13
+      "stage": "top",
+      "motion": {
+        "entrance": "none",
+        "transition": "slideLeft"
+      },
+      "type": "code"
     },
     {
       "id": "scene-run-argo2-7",
-      "type": "code",
       "plan": {
         "role": "payoff",
         "visualBrief": "An editor window: the finished vertical video drops into the preview and plays, the scene strip fills and the timeline lanes fill under an orange playhead."
       },
+      "durationSeconds": 3.833,
       "vo": "The finished video lands right in the editor timeline.",
       "notes": "🎥 Your own recording",
       "background": "stage",
       "content": {},
-      "stage": "top",
-      "motion": {
-        "transition": "fromDepth",
-        "entrance": "none"
-      },
       "code": {
         "file": "code-argo2/scene-7.tsx"
       },
-      "durationSeconds": 3.833
+      "stage": "top",
+      "motion": {
+        "entrance": "none",
+        "transition": "fromDepth"
+      },
+      "type": "code"
     },
     {
       "id": "scene-run-argo2-8",
-      "type": "code",
       "plan": {
         "role": "payoff",
         "visualBrief": "The cursor clicks a big orange Render MP4 button that fills like a progress bar, an MP4 file lands below, and the button becomes the one typed line pointing down to the file."
       },
+      "durationSeconds": 2.858,
       "vo": "Ready to render. One sentence in, one video out.",
       "background": "stage",
       "content": {},
-      "stage": "top",
-      "motion": {
-        "transition": "dissolve",
-        "entrance": "none"
-      },
       "code": {
         "file": "code-argo2/scene-8.tsx"
       },
-      "durationSeconds": 2.858
+      "stage": "top",
+      "motion": {
+        "entrance": "none",
+        "transition": "dissolve"
+      },
+      "type": "code"
     }
   ],
   "captions": {
@@ -191,7 +191,7 @@
       "pick"
     ]
   },
-  "savedAt": 1794129132971,
+  "savedAt": 1794207775049,
   "audioClips": [
     {
       "id": "audio-run-argo2-scene-run-argo2-1",
@@ -722,85 +722,97 @@
       "id": "sfx-run-argo2-1-1",
       "sfxId": "type-word",
       "from": 3,
-      "volume": 0.35,
-      "lane": 1
+      "durationInFrames": 7,
+      "lane": 1,
+      "volume": 0.35
     },
     {
       "id": "sfx-run-argo2-1-2",
       "sfxId": "soft-whoosh",
       "from": 35,
-      "volume": 0.45,
-      "lane": 1
+      "durationInFrames": 17,
+      "lane": 1,
+      "volume": 0.45
     },
     {
       "id": "sfx-run-argo2-2-1",
       "sfxId": "type-word",
       "from": 169,
-      "volume": 0.35,
-      "lane": 1
+      "durationInFrames": 7,
+      "lane": 1,
+      "volume": 0.35
     },
     {
       "id": "sfx-run-argo2-2-2",
       "sfxId": "d-ping",
       "from": 211,
-      "volume": 0.4,
-      "lane": 1
+      "durationInFrames": 4,
+      "lane": 1,
+      "volume": 0.4
     },
     {
       "id": "sfx-run-argo2-3-1",
       "sfxId": "check",
       "from": 293,
-      "volume": 0.4,
-      "lane": 1
+      "durationInFrames": 7,
+      "lane": 1,
+      "volume": 0.4
     },
     {
       "id": "sfx-run-argo2-4-1",
       "sfxId": "paper-slide",
       "from": 366,
-      "volume": 0.4,
-      "lane": 1
+      "durationInFrames": 21,
+      "lane": 1,
+      "volume": 0.4
     },
     {
       "id": "sfx-run-argo2-4-2",
       "sfxId": "d-ping",
       "from": 396,
-      "volume": 0.4,
-      "lane": 1
+      "durationInFrames": 4,
+      "lane": 1,
+      "volume": 0.4
     },
     {
       "id": "sfx-run-argo2-5-1",
       "sfxId": "check",
       "from": 516,
-      "volume": 0.4,
-      "lane": 1
+      "durationInFrames": 7,
+      "lane": 1,
+      "volume": 0.4
     },
     {
       "id": "sfx-run-argo2-6-1",
       "sfxId": "d-pop",
       "from": 611,
-      "volume": 0.5,
-      "lane": 1
+      "durationInFrames": 5,
+      "lane": 1,
+      "volume": 0.5
     },
     {
       "id": "sfx-run-argo2-6-2",
       "sfxId": "d-tick",
       "from": 691,
-      "volume": 0.35,
-      "lane": 1
+      "durationInFrames": 2,
+      "lane": 1,
+      "volume": 0.35
     },
     {
       "id": "sfx-run-argo2-7-1",
       "sfxId": "soft-whoosh",
       "from": 796,
-      "volume": 0.45,
-      "lane": 1
+      "durationInFrames": 17,
+      "lane": 1,
+      "volume": 0.45
     },
     {
       "id": "sfx-run-argo2-8-1",
       "sfxId": "d-done",
       "from": 904,
-      "volume": 0.5,
-      "lane": 1
+      "durationInFrames": 7,
+      "lane": 1,
+      "volume": 0.5
     }
   ]
 }

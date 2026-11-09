@@ -1,0 +1,399 @@
+{
+  "id": "template-live-list",
+  "title": "Šablonas: gyvas sąrašas (live list)",
+  "collection": "Šablonai",
+  "fps": 30,
+  "width": 1080,
+  "height": 1920,
+  "storyPlan": {
+    "targetDuration": 45,
+    "premise": "The format that wins in this niche (research/findings.md): a promise banner that never leaves, a numbered list that fills in live, a countdown, word captions, and one unbroken take underneath. Character clip at the hook and the CTA only.",
+    "audience": "Developers using Claude Code"
+  },
+  "scenes": [
+    {
+      "id": "ll-hook",
+      "plan": {
+        "role": "hook",
+        "purpose": "Character states the promise; banner and list are already on screen.",
+        "visualBrief": "REPLACE the avatar prop with the generated talking-character clip (~4s)."
+      },
+      "durationSeconds": 4.5,
+      "vo": "Claude Code can wreck your project. These five hooks stop it.",
+      "notes": "CHARACTER SLOT 1 of 2. Replace the 'user-avatar' prop with the talking clip (right-click the layer -> replace asset keeps position, scale and timing).\n\nDuration is explicit: the persistent banner repeats on every scene, so automatic pacing charges its reading time again here and stretched this scene to 8s+.",
+      "background": {
+        "type": "custom",
+        "fill": {
+          "kind": "solid",
+          "color": "#313030"
+        },
+        "grid": "lines"
+      },
+      "content": {
+        "blocks": [
+          {
+            "id": "hook-banner-1",
+            "type": "text",
+            "text": "5 Claude Code hooks that stop it",
+            "x": 50,
+            "y": 5.5,
+            "size": 44,
+            "color": "#F2F0E9",
+            "font": "clash",
+            "animation": "none",
+            "lane": 0,
+            "delay": 0
+          },
+          {
+            "id": "hook-banner-2",
+            "type": "text",
+            "text": "breaking your app  ·  in 35 seconds",
+            "x": 50,
+            "y": 9,
+            "size": 38,
+            "color": "#D97757",
+            "font": "clash",
+            "animation": "none",
+            "lane": 1,
+            "delay": 0
+          },
+          {
+            "id": "hook-line",
+            "type": "text",
+            "text": "FIVE HOOKS.",
+            "x": 50,
+            "y": 84,
+            "size": 96,
+            "color": "#F2F0E9",
+            "font": "tanker",
+            "animation": "pop",
+            "splitBy": "letter",
+            "splitDuration": 18,
+            "lane": 2,
+            "delay": 8
+          }
+        ],
+        "visuals": [
+          {
+            "id": "hook-character",
+            "visual": {
+              "type": "prop",
+              "asset": "user-avatar"
+            },
+            "x": 50,
+            "y": 58,
+            "scale": 2.6,
+            "entrance": "none",
+            "exit": "none",
+            "delay": 0,
+            "kenBurns": "float",
+            "lane": 3
+          }
+        ]
+      },
+      "motion": {
+        "entrance": "none",
+        "transition": "cut",
+        "stagger": 4,
+        "sfx": "none"
+      },
+      "type": "hook-centered"
+    },
+    {
+      "id": "ll-body",
+      "plan": {
+        "role": "demo",
+        "purpose": "One unbroken take: the list fills in while the recording plays underneath.",
+        "visualBrief": "REPLACE the recording with one continuous screen capture covering all five hooks."
+      },
+      "durationSeconds": 35,
+      "vo": "One. Block rm dash r f before it ever runs. Two. Run your tests after every single edit. Three. Auto format the moment it saves a file. Four. Warn yourself before it touches dot e n v. Five. Log every command it runs, so you can see what it actually did.",
+      "notes": "NO CUTS IN THIS SCENE — that is the whole point of the format. One take underneath, the checklist fills item by item on top, captions match the spoken words.\n\nThe five checklist delays and the five caption delays are the same numbers on purpose; retime them together or the caption stops matching the row it belongs to.\n\nNO LIVE TIMER: `stat-counter` is a count-up animation with a hardcoded 50-frame window, not a clock — it reaches 0 in under two seconds and then sits there. The banner's 'in 35 seconds' carries the completion promise instead. A real timer needs an optional duration prop on StatCounter; ask before adding it.",
+      "background": {
+        "type": "custom",
+        "fill": {
+          "kind": "solid",
+          "color": "#313030"
+        },
+        "grid": "lines"
+      },
+      "content": {
+        "blocks": [
+          {
+            "id": "body-banner-1",
+            "type": "text",
+            "text": "5 Claude Code hooks that stop it",
+            "x": 50,
+            "y": 5.5,
+            "size": 44,
+            "color": "#F2F0E9",
+            "font": "clash",
+            "animation": "none",
+            "lane": 0,
+            "delay": 0
+          },
+          {
+            "id": "body-banner-2",
+            "type": "text",
+            "text": "breaking your app  ·  in 35 seconds",
+            "x": 50,
+            "y": 9,
+            "size": 38,
+            "color": "#D97757",
+            "font": "clash",
+            "animation": "none",
+            "lane": 1,
+            "delay": 0
+          },
+          {
+            "id": "body-cap-1",
+            "type": "text",
+            "text": "Block rm -rf",
+            "x": 50,
+            "y": 88,
+            "size": 74,
+            "color": "#F2F0E9",
+            "font": "tanker",
+            "animation": "pop",
+            "splitBy": "word",
+            "splitDuration": 12,
+            "lane": 2,
+            "delay": 30,
+            "exitAt": 215
+          },
+          {
+            "id": "body-cap-2",
+            "type": "text",
+            "text": "Test every edit",
+            "x": 50,
+            "y": 88,
+            "size": 74,
+            "color": "#F2F0E9",
+            "font": "tanker",
+            "animation": "pop",
+            "splitBy": "word",
+            "splitDuration": 12,
+            "lane": 2,
+            "delay": 225,
+            "exitAt": 410
+          },
+          {
+            "id": "body-cap-3",
+            "type": "text",
+            "text": "Auto-format on save",
+            "x": 50,
+            "y": 88,
+            "size": 74,
+            "color": "#F2F0E9",
+            "font": "tanker",
+            "animation": "pop",
+            "splitBy": "word",
+            "splitDuration": 12,
+            "lane": 2,
+            "delay": 420,
+            "exitAt": 605
+          },
+          {
+            "id": "body-cap-4",
+            "type": "text",
+            "text": "Guard your .env",
+            "x": 50,
+            "y": 88,
+            "size": 74,
+            "color": "#F2F0E9",
+            "font": "tanker",
+            "animation": "pop",
+            "splitBy": "word",
+            "splitDuration": 12,
+            "lane": 2,
+            "delay": 615,
+            "exitAt": 800
+          },
+          {
+            "id": "body-cap-5",
+            "type": "text",
+            "text": "Log every command",
+            "x": 50,
+            "y": 88,
+            "size": 74,
+            "color": "#F2F0E9",
+            "font": "tanker",
+            "animation": "pop",
+            "splitBy": "word",
+            "splitDuration": 12,
+            "lane": 2,
+            "delay": 810
+          }
+        ],
+        "visuals": [
+          {
+            "id": "body-recording",
+            "visual": {
+              "type": "recording",
+              "src": "/assets/custom/0901-1-mtilavn5.mp4",
+              "frame": "plain",
+              "playbackRate": 1,
+              "startFrom": 0,
+              "fit": "cover"
+            },
+            "x": 50,
+            "y": 62,
+            "scale": 1,
+            "entrance": "none",
+            "exit": "none",
+            "delay": 0,
+            "kenBurns": "zoomIn",
+            "lane": 3
+          },
+          {
+            "id": "body-list",
+            "visual": {
+              "type": "checklist",
+              "items": [
+                {
+                  "label": "Block rm -rf before it runs",
+                  "delay": 30,
+                  "lane": 5
+                },
+                {
+                  "label": "Run tests after every edit",
+                  "delay": 225,
+                  "lane": 6
+                },
+                {
+                  "label": "Auto-format when it saves",
+                  "delay": 420,
+                  "lane": 7
+                },
+                {
+                  "label": "Warn before it touches .env",
+                  "delay": 615,
+                  "lane": 8
+                },
+                {
+                  "label": "Log every command it runs",
+                  "delay": 810,
+                  "lane": 9
+                }
+              ],
+              "size": "body",
+              "sfx": "none"
+            },
+            "x": 50,
+            "y": 30,
+            "scale": 0.72,
+            "entrance": "none",
+            "exit": "none",
+            "delay": 0,
+            "lane": 4
+          }
+        ]
+      },
+      "motion": {
+        "entrance": "none",
+        "transition": "cut",
+        "stagger": 6,
+        "sfx": "none"
+      },
+      "type": "visual-explainer"
+    },
+    {
+      "id": "ll-cta",
+      "plan": {
+        "role": "cta",
+        "purpose": "Trade the full config for a comment; the keyword is the whole mechanic.",
+        "visualBrief": "REPLACE the avatar prop with the character clip saying the keyword line."
+      },
+      "durationSeconds": 4,
+      "vo": "Comment HOOKS and I'll send you all five.",
+      "notes": "CHARACTER SLOT 2 of 2. This clip barely changes between videos — only the keyword — so it is worth generating once and reusing.\n\nThe keyword CTA is the single highest-leverage element in the whole template: 5.5 comments per 1k plays against 0.9 without one (research/findings.md).\n\nDuration is explicit: the persistent banner repeats on every scene, so automatic pacing charges its reading time again here and stretched this scene to 8s+.",
+      "background": {
+        "type": "custom",
+        "fill": {
+          "kind": "solid",
+          "color": "#313030"
+        },
+        "grid": "lines"
+      },
+      "content": {
+        "richHeadline": [
+          {
+            "text": "WANT ALL FIVE?",
+            "size": "label",
+            "sizePx": 76,
+            "letterSpacing": 4,
+            "color": "#D97757",
+            "delay": 0,
+            "splitDuration": 18,
+            "lane": 0
+          },
+          {
+            "text": "COMMENT: HOOKS",
+            "size": "headline",
+            "sizePx": 100,
+            "pill": true,
+            "color": "#171717",
+            "delay": 16,
+            "splitBy": "letter",
+            "splitDuration": 24,
+            "lane": 1
+          }
+        ],
+        "blocks": [
+          {
+            "id": "cta-banner-1",
+            "type": "text",
+            "text": "5 Claude Code hooks that stop it",
+            "x": 50,
+            "y": 5.5,
+            "size": 44,
+            "color": "#F2F0E9",
+            "font": "clash",
+            "animation": "none",
+            "lane": 0,
+            "delay": 0
+          },
+          {
+            "id": "cta-banner-2",
+            "type": "text",
+            "text": "breaking your app  ·  in 35 seconds",
+            "x": 50,
+            "y": 9,
+            "size": 38,
+            "color": "#D97757",
+            "font": "clash",
+            "animation": "none",
+            "lane": 0,
+            "delay": 0
+          }
+        ],
+        "visuals": [
+          {
+            "id": "cta-character",
+            "visual": {
+              "type": "prop",
+              "asset": "user-avatar"
+            },
+            "x": 50,
+            "y": 58,
+            "scale": 2.6,
+            "entrance": "none",
+            "exit": "none",
+            "delay": 0,
+            "kenBurns": "float",
+            "lane": 3
+          }
+        ]
+      },
+      "motion": {
+        "entrance": "none",
+        "transition": "cut",
+        "stagger": 5,
+        "sfx": "none"
+      },
+      "type": "takeaway"
+    }
+  ],
+  "savedAt": 1788595382636,
+  "audioClips": []
+}

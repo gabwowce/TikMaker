@@ -1,0 +1,833 @@
+{
+  "id": "claude-chrome-testing-flow-v2-mte0dfdz",
+  "title": "Claude can now test your app like a real user",
+  "fps": 30,
+  "width": 1080,
+  "height": 1920,
+  "scenes": [
+    {
+      "id": "scene-01-hook",
+      "durationSeconds": 2,
+      "vo": "Claude can now test your app like a real user.",
+      "notes": "Strong opening frame. Show Claude Code and a web app open in Chrome. Make it obvious that Claude is interacting with the app in the browser.\n\nKeep it bold and clean. This is the promise.",
+      "background": {
+        "type": "custom",
+        "fill": {
+          "kind": "solid",
+          "color": "#313030"
+        },
+        "grid": "lines"
+      },
+      "content": {
+        "eyebrow": "",
+        "headline": "",
+        "highlights": [],
+        "items": [],
+        "richHeadline": [
+          {
+            "text": "Claude code",
+            "size": "hero",
+            "sizePx": 147,
+            "delay": 0,
+            "exitAt": 61,
+            "exit": "rollOut",
+            "exitDuration": 14,
+            "splitBy": "letter",
+            "splitDuration": 11,
+            "lane": 0
+          },
+          {
+            "text": "can now test your app",
+            "size": "title",
+            "delay": 12,
+            "exitAt": 61,
+            "exit": "rollOut",
+            "exitDuration": 14,
+            "splitBy": "word",
+            "splitDuration": 10,
+            "lane": 1
+          },
+          {
+            "text": "like a real user.",
+            "size": "headline",
+            "sizePx": 108,
+            "pill": true,
+            "color": "#171717",
+            "x": 50.163132137031,
+            "y": 52.01834862385321,
+            "delay": 22,
+            "exitAt": 61,
+            "exit": "rollOut",
+            "exitDuration": 14,
+            "splitBy": "word",
+            "splitDuration": 10,
+            "lane": 2
+          }
+        ],
+        "blocks": [],
+        "visuals": [
+          {
+            "id": "visual-mte0ktmf-corner-0",
+            "visual": {
+              "type": "tool-logo",
+              "tool": "claude-ai-symbol"
+            },
+            "x": 18.38235294117647,
+            "y": 14.00709219858156,
+            "scale": 2.5,
+            "entrance": "pop",
+            "exit": "spinOut",
+            "exitDuration": 14,
+            "exitDistance": 200,
+            "delay": 0,
+            "exitAt": 61,
+            "kenBurns": "rotateCW",
+            "kenBurnsSpeed": 0.3,
+            "lane": 0
+          },
+          {
+            "id": "visual-mte0ktmf-corner-1",
+            "visual": {
+              "type": "tool-logo",
+              "tool": "claude-ai-symbol"
+            },
+            "x": 79.09663865546219,
+            "y": 82.09219858156028,
+            "scale": 2.5,
+            "entrance": "pop",
+            "exit": "spinOut",
+            "exitDuration": 14,
+            "exitDistance": 280,
+            "delay": 0,
+            "exitAt": 61,
+            "kenBurns": "rotateCCW",
+            "kenBurnsSpeed": 0.3,
+            "lane": 1
+          }
+        ]
+      },
+      "motion": {
+        "entrance": "fade",
+        "exit": "slideLeft",
+        "transition": "cut",
+        "stagger": 6,
+        "sfx": "none",
+        "exitSfx": "none",
+        "exitSfxAt": 0
+      },
+      "type": "hook-centered"
+    },
+    {
+      "id": "scene-1gkt5f9",
+      "durationSeconds": 5.3,
+      "background": {
+        "type": "custom",
+        "fill": {
+          "kind": "solid",
+          "color": "#313030"
+        },
+        "grid": "lines"
+      },
+      "content": {
+        "headline": "New headline",
+        "items": [],
+        "richHeadline": [
+          {
+            "text": "Manually clicking through your app",
+            "size": "body",
+            "sizePx": 57,
+            "x": 50,
+            "y": 18.37837837837838,
+            "delay": 0,
+            "exitAt": 159,
+            "exit": "fade",
+            "splitBy": "word",
+            "splitDuration": 13,
+            "lane": 0
+          },
+          {
+            "text": "after every change:",
+            "size": "headline",
+            "pill": true,
+            "x": 50.24038461538461,
+            "y": 23.783783783783786,
+            "delay": 13,
+            "exitAt": 139,
+            "exit": "fade",
+            "splitBy": "word",
+            "splitDuration": 27,
+            "lane": 1
+          }
+        ],
+        "blocks": [],
+        "visuals": [
+          {
+            "id": "visual-mte153mc-checkpoint-0-mte4auna",
+            "visual": {
+              "type": "checkpoint",
+              "label": "takes time",
+              "state": "done",
+              "variant": "compact"
+            },
+            "x": 37.5,
+            "y": 30.945945945945947,
+            "exit": "fade",
+            "delay": 61,
+            "exitAt": 159,
+            "lane": 0
+          },
+          {
+            "id": "visual-mte153mc-checkpoint-1-mte4auna",
+            "visual": {
+              "type": "checkpoint",
+              "label": "you still miss bugs",
+              "state": "done",
+              "variant": "compact"
+            },
+            "x": 36.29807692307692,
+            "y": 36.62162162162162,
+            "exit": "fade",
+            "delay": 93,
+            "exitAt": 159,
+            "lane": 2
+          },
+          {
+            "id": "visual-mte153mc-checkpoint-2-mte4auna",
+            "visual": {
+              "type": "checkpoint",
+              "label": "it gets annoying fast.",
+              "state": "done",
+              "variant": "compact"
+            },
+            "x": 37.52783964365256,
+            "y": 42.29323308270676,
+            "exit": "fade",
+            "delay": 126,
+            "exitAt": 159,
+            "lane": 4
+          },
+          {
+            "id": "visual-mte5ujz7",
+            "visual": {
+              "type": "prop",
+              "asset": "clock"
+            },
+            "x": 51.203501094091905,
+            "y": 61.69950738916257,
+            "scale": 2.8,
+            "entrance": "rollIn",
+            "entranceDuration": 16,
+            "exit": "rollOut",
+            "exitDuration": 17,
+            "entranceDistance": 1300,
+            "exitDistance": 1280,
+            "delay": 61,
+            "exitAt": 95,
+            "lane": 1
+          },
+          {
+            "id": "visual-mtec98ik",
+            "visual": {
+              "type": "prop",
+              "asset": "bug"
+            },
+            "x": 50.89086859688196,
+            "y": 61.71679197994987,
+            "scale": 2.3,
+            "entrance": "rollIn",
+            "exit": "rollOut",
+            "delay": 93,
+            "exitAt": 127,
+            "lane": 3
+          },
+          {
+            "id": "visual-2ejpbti",
+            "visual": {
+              "type": "prop",
+              "asset": "frustration"
+            },
+            "x": 50.89086859688196,
+            "y": 61.71679197994987,
+            "scale": 2.5,
+            "entrance": "rollIn",
+            "exit": "rollOut",
+            "delay": 125,
+            "exitAt": 159,
+            "lane": 1
+          },
+          {
+            "id": "visual-v9if2vx",
+            "visual": {
+              "type": "tool-logo",
+              "tool": "claude"
+            },
+            "x": 50.89086859688196,
+            "y": 61.71679197994987,
+            "scale": 2.3,
+            "entrance": "rollIn",
+            "entranceDuration": 28,
+            "exit": "rollOut",
+            "exitDuration": 28,
+            "delay": 157,
+            "exitAt": 191,
+            "lane": 5
+          }
+        ]
+      },
+      "motion": {
+        "entrance": "fade",
+        "exit": "fade",
+        "transition": "cut",
+        "sfx": "none",
+        "exitSfx": "none",
+        "sfxAt": 33
+      },
+      "type": "hook-centered"
+    },
+    {
+      "id": "scene-03-reveal",
+      "vo": "Now Claude Code can connect directly to Chrome and do that testing for you.",
+      "notes": "Reveal: Claude Code wired into Chrome. One connection, nothing else on the frame.",
+      "background": {
+        "type": "custom",
+        "fill": {
+          "kind": "solid",
+          "color": "#313030"
+        },
+        "grid": "lines"
+      },
+      "content": {
+        "richHeadline": [
+          {
+            "text": "Now it plugs into",
+            "size": "title",
+            "delay": 0,
+            "splitBy": "word",
+            "splitDuration": 10,
+            "lane": 0
+          },
+          {
+            "text": "Chrome",
+            "size": "hero",
+            "sizePx": 150,
+            "pill": true,
+            "color": "#171717",
+            "delay": 12,
+            "splitBy": "letter",
+            "splitDuration": 12,
+            "lane": 1
+          }
+        ],
+        "richHeadlineY": 22,
+        "visuals": [
+          {
+            "id": "v-03-flow",
+            "visual": {
+              "type": "flow",
+              "nodes": [
+                {
+                  "label": "Claude Code",
+                  "visual": {
+                    "type": "tool-logo",
+                    "tool": "claude"
+                  }
+                },
+                {
+                  "label": "Chrome",
+                  "visual": {
+                    "type": "prop",
+                    "asset": "browser-window"
+                  }
+                }
+              ],
+              "direction": "horizontal",
+              "animated": true
+            },
+            "x": 50,
+            "y": 52,
+            "scale": 1.3,
+            "entrance": "scaleIn",
+            "entranceDuration": 18,
+            "delay": 18,
+            "lane": 0
+          }
+        ]
+      },
+      "layout": "visual-bottom",
+      "motion": {
+        "entrance": "none",
+        "exit": "fade",
+        "transition": "slideLeft",
+        "stagger": 6,
+        "sfx": "whoosh",
+        "exitSfx": "none"
+      },
+      "type": "hook-visual"
+    },
+    {
+      "id": "scene-04-solution",
+      "vo": "And that means Claude can actually use your app, not just write code for it.",
+      "notes": "Chapter card: the shift from writing code to using the running app.",
+      "background": {
+        "type": "custom",
+        "fill": {
+          "kind": "solid",
+          "color": "#313030"
+        },
+        "grid": "lines"
+      },
+      "content": {
+        "headline": "Not just writing code.\nIt uses your app.",
+        "highlights": [
+          "uses"
+        ],
+        "visuals": [
+          {
+            "id": "v-04-browser",
+            "visual": {
+              "type": "browser",
+              "url": "localhost:3000",
+              "title": "Your app",
+              "content": {
+                "type": "app-mockup",
+                "appTitle": "Your app",
+                "kind": "list",
+                "items": [
+                  "Sign up",
+                  "Dashboard",
+                  "Settings"
+                ]
+              }
+            },
+            "x": 50,
+            "y": 56,
+            "entrance": "scaleIn",
+            "delay": 14,
+            "kenBurns": "float",
+            "kenBurnsSpeed": 0.4,
+            "lane": 0
+          }
+        ]
+      },
+      "layout": "visual-bottom",
+      "motion": {
+        "entrance": "none",
+        "exit": "fade",
+        "transition": "slideLeft",
+        "stagger": 6,
+        "sfx": "none",
+        "exitSfx": "none"
+      },
+      "type": "visual-explainer"
+    },
+    {
+      "id": "scene-05-step",
+      "vo": "It can click buttons, move through pages, and fill out forms for you.",
+      "notes": "Three concrete actions, revealed one at a time.",
+      "background": {
+        "type": "custom",
+        "fill": {
+          "kind": "solid",
+          "color": "#313030"
+        },
+        "grid": "lines"
+      },
+      "content": {
+        "headline": "It drives your UI.",
+        "highlights": [
+          "drives"
+        ],
+        "visuals": [
+          {
+            "id": "v-05-list",
+            "visual": {
+              "type": "checklist",
+              "items": [
+                {
+                  "label": "Clicks buttons",
+                  "done": true
+                },
+                {
+                  "label": "Opens pages",
+                  "done": true
+                },
+                {
+                  "label": "Fills forms",
+                  "done": true
+                }
+              ],
+              "size": "bodyLarge",
+              "stagger": 20
+            },
+            "x": 50,
+            "y": 54,
+            "entrance": "slideUp",
+            "delay": 12,
+            "lane": 0
+          }
+        ]
+      },
+      "layout": "visual-bottom",
+      "motion": {
+        "entrance": "none",
+        "exit": "fade",
+        "transition": "slideLeft",
+        "stagger": 6,
+        "sfx": "none",
+        "exitSfx": "none"
+      },
+      "type": "visual-explainer"
+    },
+    {
+      "id": "scene-06-step",
+      "vo": "It can also check validation, inspect browser errors, and show you exactly what happened on screen.",
+      "notes": "The technical half: real console output, not a description of it.",
+      "background": {
+        "type": "custom",
+        "fill": {
+          "kind": "solid",
+          "color": "#313030"
+        },
+        "grid": "lines"
+      },
+      "content": {
+        "headline": "And it reads what broke.",
+        "highlights": [
+          "reads"
+        ],
+        "visuals": [
+          {
+            "id": "v-06-term",
+            "visual": {
+              "type": "terminal",
+              "title": "console",
+              "lines": [
+                {
+                  "text": "POST /api/signup",
+                  "kind": "prompt"
+                },
+                {
+                  "text": "! email: invalid format",
+                  "kind": "accent"
+                },
+                {
+                  "text": "Uncaught TypeError",
+                  "kind": "output"
+                },
+                {
+                  "text": "at submitForm (app.js:42)",
+                  "kind": "dim"
+                }
+              ],
+              "cursor": true
+            },
+            "x": 50,
+            "y": 55,
+            "entrance": "slideUp",
+            "delay": 14,
+            "lane": 0
+          }
+        ]
+      },
+      "layout": "visual-bottom",
+      "motion": {
+        "entrance": "none",
+        "exit": "fade",
+        "transition": "slideLeft",
+        "stagger": 6,
+        "sfx": "none",
+        "exitSfx": "none"
+      },
+      "type": "visual-explainer"
+    },
+    {
+      "id": "scene-07-step",
+      "vo": "To connect it, install the Claude Chrome extension, then start Claude Code with chrome enabled.",
+      "notes": "Setup in two beats: the extension, then the command. Fast, not a tutorial.",
+      "background": {
+        "type": "custom",
+        "fill": {
+          "kind": "solid",
+          "color": "#313030"
+        },
+        "grid": "lines"
+      },
+      "content": {
+        "headline": "Two steps to connect.",
+        "highlights": [
+          "Two"
+        ],
+        "visuals": [
+          {
+            "id": "v-07-ext",
+            "visual": {
+              "type": "prop",
+              "asset": "puzzle-piece"
+            },
+            "x": 50,
+            "y": 52,
+            "scale": 2.4,
+            "entrance": "rollIn",
+            "entranceDuration": 16,
+            "exit": "rollOut",
+            "exitDuration": 16,
+            "delay": 10,
+            "exitAt": 78,
+            "lane": 0
+          },
+          {
+            "id": "v-07-term",
+            "visual": {
+              "type": "terminal",
+              "lines": [
+                {
+                  "text": "$ claude --chrome",
+                  "kind": "prompt"
+                },
+                {
+                  "text": "Chrome connected",
+                  "kind": "accent"
+                }
+              ],
+              "cursor": true
+            },
+            "x": 50,
+            "y": 54,
+            "entrance": "slideUp",
+            "delay": 80,
+            "lane": 1
+          }
+        ]
+      },
+      "layout": "visual-bottom",
+      "motion": {
+        "entrance": "none",
+        "exit": "fade",
+        "transition": "slideUp",
+        "stagger": 6,
+        "sfx": "none",
+        "exitSfx": "none"
+      },
+      "type": "visual-explainer"
+    },
+    {
+      "id": "scene-08-demo",
+      "vo": "Then you just ask Claude to test the signup flow and say what breaks.",
+      "notes": "The 'I could try this' moment. The prompt must be readable.",
+      "background": {
+        "type": "custom",
+        "fill": {
+          "kind": "solid",
+          "color": "#313030"
+        },
+        "grid": "lines"
+      },
+      "content": {
+        "headline": "Then you just ask.",
+        "highlights": [
+          "ask"
+        ],
+        "visuals": [
+          {
+            "id": "v-08-cli",
+            "visual": {
+              "type": "claude-cli",
+              "input": "test the signup flow, what breaks?",
+              "mode": "chrome",
+              "modeActive": true
+            },
+            "x": 50,
+            "y": 54,
+            "entrance": "scaleIn",
+            "delay": 12,
+            "lane": 0
+          }
+        ]
+      },
+      "layout": "visual-bottom",
+      "motion": {
+        "entrance": "none",
+        "exit": "fade",
+        "transition": "slideLeft",
+        "stagger": 6,
+        "sfx": "none",
+        "exitSfx": "none"
+      },
+      "type": "screen-demo"
+    },
+    {
+      "id": "scene-09-proof",
+      "vo": "Now you watch Claude click through the app and inspect the result live.",
+      "notes": "Strongest proof frame: the app under test, with results landing on it.",
+      "background": {
+        "type": "custom",
+        "fill": {
+          "kind": "solid",
+          "color": "#313030"
+        },
+        "grid": "lines"
+      },
+      "content": {
+        "headline": "And you watch it work.",
+        "highlights": [
+          "watch"
+        ],
+        "visuals": [
+          {
+            "id": "v-09-browser",
+            "visual": {
+              "type": "browser",
+              "url": "localhost:3000/signup",
+              "title": "Signup",
+              "content": {
+                "type": "app-mockup",
+                "appTitle": "Sign up",
+                "kind": "list",
+                "items": [
+                  "Email",
+                  "Password",
+                  "Create account"
+                ]
+              }
+            },
+            "x": 50,
+            "y": 50,
+            "entrance": "scaleIn",
+            "delay": 10,
+            "kenBurns": "float",
+            "kenBurnsSpeed": 0.4,
+            "lane": 0
+          },
+          {
+            "id": "v-09-ok",
+            "visual": {
+              "type": "checkpoint",
+              "label": "form submitted",
+              "state": "done",
+              "variant": "compact"
+            },
+            "x": 50,
+            "y": 79,
+            "entrance": "slideUp",
+            "delay": 66,
+            "lane": 1
+          },
+          {
+            "id": "v-09-caught",
+            "visual": {
+              "type": "checkpoint",
+              "label": "validation caught",
+              "state": "warning",
+              "variant": "compact"
+            },
+            "x": 50,
+            "y": 86,
+            "entrance": "slideUp",
+            "delay": 96,
+            "lane": 2
+          }
+        ]
+      },
+      "layout": "visual-bottom",
+      "motion": {
+        "entrance": "none",
+        "exit": "fade",
+        "transition": "slideLeft",
+        "stagger": 6,
+        "sfx": "none",
+        "exitSfx": "none"
+      },
+      "type": "screen-demo"
+    },
+    {
+      "id": "scene-10-cta",
+      "vo": "Follow for more AI app building tips.",
+      "notes": "Clean close, bookends the opening frame with the same mark.",
+      "background": {
+        "type": "custom",
+        "fill": {
+          "kind": "solid",
+          "color": "#313030"
+        },
+        "grid": "lines"
+      },
+      "content": {
+        "richHeadline": [
+          {
+            "text": "Follow for more",
+            "size": "title",
+            "delay": 0,
+            "splitBy": "word",
+            "splitDuration": 10,
+            "lane": 0
+          },
+          {
+            "text": "AI app building tips",
+            "size": "headline",
+            "sizePx": 104,
+            "pill": true,
+            "color": "#171717",
+            "delay": 12,
+            "splitBy": "word",
+            "splitDuration": 12,
+            "lane": 1
+          }
+        ],
+        "richHeadlineY": 46,
+        "visuals": [
+          {
+            "id": "v-10-mark-a",
+            "visual": {
+              "type": "tool-logo",
+              "tool": "claude-ai-symbol"
+            },
+            "x": 34,
+            "y": 18,
+            "scale": 1.8,
+            "entrance": "pop",
+            "delay": 6,
+            "kenBurns": "rotateCW",
+            "kenBurnsSpeed": 0.3,
+            "lane": 0
+          },
+          {
+            "id": "v-10-mark-b",
+            "visual": {
+              "type": "tool-logo",
+              "tool": "claude-ai-symbol"
+            },
+            "x": 66,
+            "y": 82,
+            "scale": 1.8,
+            "entrance": "pop",
+            "delay": 6,
+            "kenBurns": "rotateCCW",
+            "kenBurnsSpeed": 0.3,
+            "lane": 1
+          }
+        ]
+      },
+      "layout": "text-only",
+      "motion": {
+        "entrance": "none",
+        "exit": "fade",
+        "transition": "slideUp",
+        "stagger": 6,
+        "sfx": "d-done",
+        "exitSfx": "none"
+      },
+      "type": "takeaway"
+    }
+  ],
+  "savedAt": 1788192212064,
+  "audioClips": [
+    {
+      "id": "audio-mtfmk42a-v4xm",
+      "sfxId": "soft-whoosh",
+      "from": 0,
+      "startFrom": 3,
+      "durationInFrames": 14,
+      "volume": 0.3
+    }
+  ]
+}

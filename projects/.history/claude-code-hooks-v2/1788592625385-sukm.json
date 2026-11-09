@@ -1,0 +1,772 @@
+{
+  "id": "claude-code-hooks-v2",
+  "title": "The file that stops Claude Code deleting your work",
+  "collection": "Claude Code + Chrome",
+  "fps": 30,
+  "width": 1080,
+  "height": 1920,
+  "storyPlan": {
+    "targetDuration": 40,
+    "premise": "Claude Code can run destructive commands. One hooks block in .claude/settings.json blocks them before they run, and a second one runs your tests after every edit. The video shows both configs verbatim and the terminal output each produces.",
+    "audience": "Developers already running Claude Code who have been burned by an agent action"
+  },
+  "scenes": [
+    {
+      "id": "v2-scene-1",
+      "plan": {
+        "role": "hook",
+        "purpose": "Open on the loss, not on the feature. Nothing here hints at a fix.",
+        "visualBrief": "The glass breaks as DELETE YOUR WORK lands."
+      },
+      "vo": "Claude Code can delete your work.",
+      "notes": "HOOK. Do not resolve the tension in this scene or the next one. The word DELETE must land on the glass break.",
+      "background": {
+        "type": "custom",
+        "fill": {
+          "kind": "solid",
+          "color": "#313030"
+        },
+        "grid": "lines"
+      },
+      "content": {
+        "richHeadline": [
+          {
+            "text": "CLAUDE CODE CAN",
+            "size": "headline",
+            "sizePx": 131,
+            "x": 50,
+            "y": 38,
+            "delay": 0,
+            "exitAt": 90,
+            "exit": "slideLeft",
+            "exitDuration": 12,
+            "splitDuration": 19,
+            "lane": 1
+          },
+          {
+            "text": "DELETE YOUR WORK.",
+            "size": "headline",
+            "sizePx": 118,
+            "pill": true,
+            "color": "#171717",
+            "x": 50,
+            "y": 44.9,
+            "delay": 20,
+            "exitAt": 90,
+            "exit": "slideLeft",
+            "exitDuration": 9,
+            "splitBy": "letter",
+            "splitDuration": 25,
+            "lane": 2
+          }
+        ],
+        "visuals": [
+          {
+            "id": "v2-s1-glass",
+            "visual": {
+              "type": "prop",
+              "asset": "broken-glass"
+            },
+            "x": 50,
+            "y": 51.1,
+            "scale": 4,
+            "entrance": "fade",
+            "entranceDuration": 14,
+            "exit": "fade",
+            "exitDuration": 28,
+            "delay": 39,
+            "exitAt": 90,
+            "lane": 0
+          },
+          {
+            "id": "v2-s1-logo-a",
+            "visual": {
+              "type": "tool-logo",
+              "tool": "claude-ai-symbol"
+            },
+            "x": 12,
+            "y": 5.8,
+            "scale": 2.5,
+            "entrance": "none",
+            "entranceDuration": 1,
+            "exit": "spinOut",
+            "exitDuration": 8,
+            "exitDistance": 200,
+            "delay": 0,
+            "exitAt": 90,
+            "kenBurns": "rotateCW",
+            "kenBurnsSpeed": 0.3,
+            "lane": 3
+          },
+          {
+            "id": "v2-s1-logo-b",
+            "visual": {
+              "type": "tool-logo",
+              "tool": "claude-ai-symbol"
+            },
+            "x": 85.2,
+            "y": 88,
+            "scale": 2.5,
+            "entrance": "none",
+            "entranceDuration": 1,
+            "exit": "spinOut",
+            "exitDuration": 8,
+            "exitDistance": 280,
+            "delay": 0,
+            "exitAt": 90,
+            "kenBurns": "rotateCCW",
+            "kenBurnsSpeed": 0.3,
+            "lane": 4
+          }
+        ]
+      },
+      "motion": {
+        "entrance": "fade",
+        "transition": "cut",
+        "sfx": "none"
+      },
+      "type": "hook-centered"
+    },
+    {
+      "id": "v2-scene-2",
+      "plan": {
+        "role": "problem",
+        "purpose": "Deepen the hook with the literal command instead of answering it.",
+        "visualBrief": "Terminal: the destructive command, then the count of files gone."
+      },
+      "vo": "It runs a cleanup command, forty two files are gone, and there is no undo.",
+      "notes": "This scene must NOT mention hooks. Its whole job is making the hook believable.",
+      "background": {
+        "type": "custom",
+        "fill": {
+          "kind": "solid",
+          "color": "#313030"
+        },
+        "grid": "lines"
+      },
+      "content": {
+        "richHeadline": [
+          {
+            "text": "WHAT ACTUALLY HAPPENS",
+            "size": "label",
+            "letterSpacing": 4,
+            "color": "#FF7024",
+            "lane": 0
+          }
+        ],
+        "visuals": [
+          {
+            "id": "v2-s2-term",
+            "visual": {
+              "type": "terminal",
+              "title": "zsh",
+              "lines": [
+                {
+                  "text": "> clean up the build files",
+                  "kind": "dim"
+                },
+                {
+                  "text": "$ rm -rf ./src/config",
+                  "kind": "prompt"
+                },
+                {
+                  "text": "removed 42 files",
+                  "kind": "accent"
+                },
+                {
+                  "text": "no prompt. no undo.",
+                  "kind": "output"
+                }
+              ],
+              "cursor": true
+            },
+            "x": 50,
+            "y": 56,
+            "entrance": "none",
+            "exit": "none",
+            "delay": 6,
+            "kenBurns": "zoomIn",
+            "lane": 1
+          }
+        ]
+      },
+      "motion": {
+        "entrance": "none",
+        "exit": "slideLeft",
+        "transition": "slideLeft",
+        "stagger": 6,
+        "sfx": "none"
+      },
+      "type": "visual-explainer"
+    },
+    {
+      "id": "v2-scene-3",
+      "plan": {
+        "role": "reveal",
+        "purpose": "Name the fix in one line and promise the payoff is coming.",
+        "visualBrief": "Padlock lands centre, no chrome, no explanation."
+      },
+      "vo": "One block of JSON in your project stops this. Here it is.",
+      "notes": "Turn. Short on purpose — the value is the next two scenes, not this one.",
+      "background": {
+        "type": "custom",
+        "fill": {
+          "kind": "solid",
+          "color": "#313030"
+        },
+        "grid": "lines"
+      },
+      "content": {
+        "richHeadline": [
+          {
+            "text": "ONE BLOCK OF JSON",
+            "size": "headline",
+            "sizePx": 108,
+            "x": 50,
+            "y": 26,
+            "delay": 0,
+            "exitAt": 127,
+            "exit": "slideUp",
+            "exitDuration": 10,
+            "splitBy": "word",
+            "splitDuration": 14,
+            "lane": 0
+          },
+          {
+            "text": "STOPS IT.",
+            "size": "headline",
+            "sizePx": 124,
+            "pill": true,
+            "color": "#171717",
+            "x": 50,
+            "y": 33,
+            "delay": 16,
+            "exitAt": 127,
+            "exit": "slideUp",
+            "exitDuration": 8,
+            "splitBy": "letter",
+            "splitDuration": 16,
+            "lane": 1
+          }
+        ],
+        "visuals": [
+          {
+            "id": "v2-s3-lock",
+            "visual": {
+              "type": "prop",
+              "asset": "padlock"
+            },
+            "x": 50,
+            "y": 64,
+            "scale": 2.6,
+            "entrance": "none",
+            "exit": "none",
+            "delay": 10,
+            "kenBurns": "float",
+            "lane": 2
+          }
+        ]
+      },
+      "motion": {
+        "entrance": "none",
+        "transition": "slideDown",
+        "stagger": 4,
+        "sfx": "none"
+      },
+      "type": "hook-centered"
+    },
+    {
+      "id": "v2-scene-4",
+      "plan": {
+        "role": "setup",
+        "purpose": "THE PAYOFF. The verbatim PreToolUse config, held long enough to pause and copy.",
+        "visualBrief": "Full-frame code-diff of .claude/settings.json. Nothing competes with it."
+      },
+      "durationSeconds": 6.4,
+      "vo": "Add a PreToolUse hook in dot claude settings dot json. Match Bash, run your own guard script.",
+      "notes": "HOLD THIS FRAME. This is the only scene that makes the video worth saving — do not shorten it and do not add a second visual next to the code.",
+      "background": {
+        "type": "custom",
+        "fill": {
+          "kind": "solid",
+          "color": "#313030"
+        },
+        "grid": "lines"
+      },
+      "content": {
+        "richHeadline": [
+          {
+            "text": "01 · BLOCK IT BEFORE IT RUNS",
+            "size": "label",
+            "letterSpacing": 4,
+            "color": "#FF7024",
+            "lane": 0
+          }
+        ],
+        "visuals": [
+          {
+            "id": "v2-s4-code",
+            "visual": {
+              "type": "code-diff",
+              "filename": ".claude/settings.json",
+              "lines": [
+                {
+                  "text": "\"hooks\": {",
+                  "kind": "context"
+                },
+                {
+                  "text": "  \"PreToolUse\": [{",
+                  "kind": "added"
+                },
+                {
+                  "text": "    \"matcher\": \"Bash\",",
+                  "kind": "added"
+                },
+                {
+                  "text": "    \"hooks\": [{",
+                  "kind": "added"
+                },
+                {
+                  "text": "      \"type\": \"command\",",
+                  "kind": "added"
+                },
+                {
+                  "text": "      \"command\": \"./guard.sh\"",
+                  "kind": "added"
+                },
+                {
+                  "text": "    }]",
+                  "kind": "added"
+                },
+                {
+                  "text": "  }]",
+                  "kind": "added"
+                }
+              ]
+            },
+            "x": 50,
+            "y": 56,
+            "entrance": "none",
+            "exit": "none",
+            "delay": 4,
+            "lane": 1
+          },
+          {
+            "id": "v2-s4-lock",
+            "visual": {
+              "type": "prop",
+              "asset": "padlock"
+            },
+            "x": 86,
+            "y": 15,
+            "scale": 0.55,
+            "entrance": "none",
+            "exit": "none",
+            "delay": 0,
+            "link": {
+              "groupId": "guard-icon"
+            },
+            "lane": 2
+          }
+        ]
+      },
+      "motion": {
+        "entrance": "none",
+        "transition": "slideRight",
+        "stagger": 6,
+        "sfx": "none"
+      },
+      "type": "visual-explainer"
+    },
+    {
+      "id": "v2-scene-5",
+      "plan": {
+        "role": "proof",
+        "purpose": "Show the config working, so the code is not taken on faith.",
+        "visualBrief": "Terminal: the same rm -rf, now refused. Padlock carries in from the config scene."
+      },
+      "vo": "Your script exits with code two, and Claude never gets to run the command.",
+      "notes": "Same command as scene 2, opposite outcome. That symmetry is the point — keep the rm -rf line identical.",
+      "background": {
+        "type": "custom",
+        "fill": {
+          "kind": "solid",
+          "color": "#313030"
+        },
+        "grid": "lines"
+      },
+      "content": {
+        "richHeadline": [
+          {
+            "text": "01 · THE RESULT",
+            "size": "label",
+            "letterSpacing": 4,
+            "color": "#FF7024"
+          }
+        ],
+        "visuals": [
+          {
+            "id": "v2-s5-term",
+            "visual": {
+              "type": "terminal",
+              "title": "zsh",
+              "lines": [
+                {
+                  "text": "$ rm -rf ./src/config",
+                  "kind": "prompt"
+                },
+                {
+                  "text": "guard.sh -> exit 2",
+                  "kind": "dim"
+                },
+                {
+                  "text": "BLOCKED by PreToolUse",
+                  "kind": "accent"
+                },
+                {
+                  "text": "the command never ran",
+                  "kind": "output"
+                }
+              ]
+            },
+            "x": 50,
+            "y": 56,
+            "entrance": "none",
+            "exit": "none",
+            "delay": 4,
+            "kenBurns": "zoomIn",
+            "lane": 0
+          },
+          {
+            "id": "v2-s5-lock",
+            "visual": {
+              "type": "prop",
+              "asset": "padlock"
+            },
+            "x": 14,
+            "y": 84,
+            "scale": 0.5,
+            "entrance": "none",
+            "exit": "none",
+            "delay": 0,
+            "link": {
+              "groupId": "guard-icon",
+              "glideLead": 6
+            },
+            "lane": 1
+          }
+        ]
+      },
+      "motion": {
+        "entrance": "none",
+        "transition": "cut",
+        "stagger": 6,
+        "sfx": "none"
+      },
+      "type": "visual-explainer"
+    },
+    {
+      "id": "v2-scene-6",
+      "plan": {
+        "role": "setup",
+        "purpose": "Second payoff: the same mechanism pointed at a different moment.",
+        "visualBrief": "Full-frame code-diff of the PostToolUse block."
+      },
+      "durationSeconds": 6,
+      "vo": "Swap it for PostToolUse, match Edit or Write, and your tests run after every change.",
+      "notes": "HOLD THIS FRAME too. Two configs is what makes this a reference clip rather than a tip.",
+      "background": {
+        "type": "custom",
+        "fill": {
+          "kind": "solid",
+          "color": "#313030"
+        },
+        "grid": "lines"
+      },
+      "content": {
+        "richHeadline": [
+          {
+            "text": "02 · TEST IT AFTER EVERY EDIT",
+            "size": "label",
+            "letterSpacing": 4,
+            "color": "#FF7024"
+          }
+        ],
+        "visuals": [
+          {
+            "id": "v2-s6-code",
+            "visual": {
+              "type": "code-diff",
+              "filename": ".claude/settings.json",
+              "lines": [
+                {
+                  "text": "  \"PostToolUse\": [{",
+                  "kind": "added"
+                },
+                {
+                  "text": "    \"matcher\": \"Edit|Write\",",
+                  "kind": "added"
+                },
+                {
+                  "text": "    \"hooks\": [{",
+                  "kind": "added"
+                },
+                {
+                  "text": "      \"type\": \"command\",",
+                  "kind": "added"
+                },
+                {
+                  "text": "      \"command\": \"npm test\"",
+                  "kind": "added"
+                },
+                {
+                  "text": "    }]",
+                  "kind": "added"
+                },
+                {
+                  "text": "  }]",
+                  "kind": "added"
+                }
+              ]
+            },
+            "x": 50,
+            "y": 56,
+            "entrance": "none",
+            "exit": "none",
+            "delay": 4,
+            "lane": 0
+          },
+          {
+            "id": "v2-s6-bug",
+            "visual": {
+              "type": "prop",
+              "asset": "bug"
+            },
+            "x": 14,
+            "y": 15,
+            "scale": 0.55,
+            "entrance": "none",
+            "exit": "none",
+            "delay": 0,
+            "link": {
+              "groupId": "test-icon"
+            },
+            "lane": 1
+          }
+        ]
+      },
+      "motion": {
+        "entrance": "none",
+        "transition": "slideUp",
+        "stagger": 6,
+        "sfx": "none"
+      },
+      "type": "visual-explainer"
+    },
+    {
+      "id": "v2-scene-7",
+      "plan": {
+        "role": "proof",
+        "purpose": "Close the second loop — the failure is caught by the agent, not by the developer.",
+        "visualBrief": "Terminal: auto-run test suite catches a failure."
+      },
+      "vo": "Claude sees the failing test in the same turn, and fixes it before you ever open the file.",
+      "notes": "Last line is the emotional payoff of the whole video — give it room.",
+      "background": {
+        "type": "custom",
+        "fill": {
+          "kind": "solid",
+          "color": "#313030"
+        },
+        "grid": "lines"
+      },
+      "content": {
+        "richHeadline": [
+          {
+            "text": "02 · THE RESULT",
+            "size": "label",
+            "letterSpacing": 4,
+            "color": "#FF7024"
+          }
+        ],
+        "visuals": [
+          {
+            "id": "v2-s7-term",
+            "visual": {
+              "type": "terminal",
+              "title": "zsh",
+              "lines": [
+                {
+                  "text": "claude edited auth.ts",
+                  "kind": "dim"
+                },
+                {
+                  "text": "$ npm test",
+                  "kind": "prompt"
+                },
+                {
+                  "text": "1 failing",
+                  "kind": "accent"
+                },
+                {
+                  "text": "claude fixes it, not you",
+                  "kind": "output"
+                }
+              ]
+            },
+            "x": 50,
+            "y": 56,
+            "entrance": "none",
+            "exit": "none",
+            "delay": 4,
+            "kenBurns": "zoomIn",
+            "lane": 0
+          },
+          {
+            "id": "v2-s7-bug",
+            "visual": {
+              "type": "prop",
+              "asset": "bug"
+            },
+            "x": 86,
+            "y": 84,
+            "scale": 0.5,
+            "entrance": "none",
+            "exit": "none",
+            "delay": 0,
+            "link": {
+              "groupId": "test-icon",
+              "glideLead": 6
+            },
+            "lane": 1
+          }
+        ]
+      },
+      "motion": {
+        "entrance": "none",
+        "transition": "cut",
+        "stagger": 6,
+        "sfx": "none"
+      },
+      "type": "visual-explainer"
+    },
+    {
+      "id": "v2-scene-8",
+      "plan": {
+        "role": "cta",
+        "purpose": "Trade something concrete for a comment, and open the next episode's loop.",
+        "visualBrief": "Clean Claude end card, one pill line carrying the keyword."
+      },
+      "vo": "Comment HOOKS and I'll send you my full settings file.",
+      "notes": "CTA must ask for ONE action with a keyword. Do not soften it back into follow for more tips.",
+      "background": {
+        "type": "custom",
+        "fill": {
+          "kind": "solid",
+          "color": "#313030"
+        },
+        "grid": "lines"
+      },
+      "content": {
+        "richHeadline": [
+          {
+            "text": "WANT MY FULL CONFIG?",
+            "size": "label",
+            "sizePx": 83,
+            "letterSpacing": 4,
+            "color": "#D97757",
+            "delay": 0,
+            "exitAt": 109,
+            "exit": "fade",
+            "exitDuration": 8,
+            "splitDuration": 22,
+            "lane": 0
+          },
+          {
+            "text": "COMMENT: HOOKS",
+            "size": "headline",
+            "sizePx": 104,
+            "pill": true,
+            "color": "#171717",
+            "delay": 21,
+            "exitAt": 109,
+            "exit": "fade",
+            "exitDuration": 1,
+            "splitBy": "letter",
+            "splitDuration": 26,
+            "lane": 1
+          }
+        ],
+        "visuals": [
+          {
+            "id": "v2-s8-logo-a",
+            "visual": {
+              "type": "tool-logo",
+              "tool": "claude-ai-symbol"
+            },
+            "x": 12,
+            "y": 5.8,
+            "scale": 2.5,
+            "entrance": "fade",
+            "exitDuration": 8,
+            "exitDistance": 200,
+            "delay": 0,
+            "exitAt": 109,
+            "kenBurns": "rotateCW",
+            "kenBurnsSpeed": 0.3,
+            "lane": 2
+          },
+          {
+            "id": "v2-s8-logo-b",
+            "visual": {
+              "type": "tool-logo",
+              "tool": "claude-ai-symbol"
+            },
+            "x": 85.2,
+            "y": 88,
+            "scale": 2.5,
+            "entrance": "fade",
+            "exitDuration": 8,
+            "exitDistance": 280,
+            "delay": 0,
+            "exitAt": 109,
+            "kenBurns": "rotateCCW",
+            "kenBurnsSpeed": 0.3,
+            "lane": 3
+          }
+        ]
+      },
+      "motion": {
+        "entrance": "none",
+        "transition": "slideLeft",
+        "stagger": 6,
+        "sfx": "none"
+      },
+      "type": "takeaway"
+    }
+  ],
+  "savedAt": 1788592624461,
+  "audioClips": [
+    {
+      "id": "audio-v2-glass",
+      "sfxId": "glass-break-mtmtphba",
+      "from": 36,
+      "durationInFrames": 39,
+      "volume": 1
+    },
+    {
+      "id": "audio-v2-riser",
+      "sfxId": "riser",
+      "from": 175,
+      "durationInFrames": 40,
+      "volume": 0.35
+    },
+    {
+      "id": "audio-v2-done",
+      "sfxId": "d-done",
+      "from": 470,
+      "durationInFrames": 20,
+      "volume": 0.8
+    }
+  ]
+}

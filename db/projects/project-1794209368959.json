@@ -1,0 +1,953 @@
+{
+  "id": "project-1794209368959",
+  "title": "video-1",
+  "workspaceId": "dev",
+  "videoTemplateId": "tool-tips-keyword",
+  "fps": 30,
+  "width": 1080,
+  "height": 1920,
+  "storyPlan": {
+    "premise": "A video showing that Claude Code can make motion design for you.\n3 Claude Code skills – each one turns your video into a completely\ndifferent motion design style (01, 02, 03, each with a short name).\nF\nOne fact before the end: a skill is just one markdown file that Claude\nreads before it draws every scene.\nCTA: comment \"SKILL\" and I'll send you the prompts."
+  },
+  "scenes": [
+    {
+      "id": "scene-run-mw8y5hcr-1",
+      "plan": {
+        "role": "hook",
+        "visualBrief": "The same clip twice: a flat grey screen recording on top, below it the same clip alive with orange moving shapes and a glow, as an orange '01' badge pops onto its corner."
+      },
+      "durationSeconds": 4.297,
+      "vo": "3 Claude Code skills that make you look like a motion designer overnight.",
+      "background": "stage",
+      "content": {},
+      "code": {
+        "file": "project-1794209368959/scene-1.tsx"
+      },
+      "stage": "top",
+      "motion": {
+        "entrance": "none",
+        "transition": "cut"
+      },
+      "type": "code"
+    },
+    {
+      "id": "scene-run-mw8y5hcr-2",
+      "plan": {
+        "role": "setup",
+        "visualBrief": "One flat grey screen recording gets flicked past by a swiping thumb, then the same frame bursts into orange colour and moving shapes."
+      },
+      "durationSeconds": 4.205,
+      "vo": "Plain screen recordings look flat. Motion design fixes that.",
+      "background": "stage",
+      "content": {},
+      "code": {
+        "file": "project-1794209368959/scene-2.tsx"
+      },
+      "stage": "top",
+      "motion": {
+        "entrance": "none",
+        "transition": "push"
+      },
+      "type": "code"
+    },
+    {
+      "id": "scene-run-mw8y5hcr-3",
+      "plan": {
+        "role": "item",
+        "visualBrief": "Pill '01 Kinetic Type'; the clip dims and blurs as SHIP, IT and an orange FASTER slam onto it one by one in huge bold type."
+      },
+      "durationSeconds": 6.433999999999999,
+      "vo": "First is skill 01, Kinetic Type. Every key word you say slams onto the screen in big bold letters.",
+      "background": "stage",
+      "content": {},
+      "code": {
+        "file": "project-1794209368959/scene-3.tsx"
+      },
+      "stage": "top",
+      "motion": {
+        "entrance": "none",
+        "transition": "cut"
+      },
+      "type": "code"
+    },
+    {
+      "id": "scene-run-mw8y5hcr-4",
+      "plan": {
+        "role": "item",
+        "visualBrief": "Pill '02 Clean UI'; the clip shrinks into a floating device frame, the view zooms onto its orange button as a cursor clicks it, and two soft label cards pop in."
+      },
+      "durationSeconds": 10.427,
+      "vo": "Second, skill 02, Clean UI. Your screen floats in a device frame, the camera zooms into each click, and soft cards pop in to label what happens.",
+      "background": "stage",
+      "content": {},
+      "code": {
+        "file": "project-1794209368959/scene-4.tsx"
+      },
+      "stage": "top",
+      "motion": {
+        "entrance": "none",
+        "transition": "slideLeft"
+      },
+      "type": "code"
+    },
+    {
+      "id": "scene-run-mw8y5hcr-5",
+      "plan": {
+        "role": "item",
+        "visualBrief": "Pill '03 Sketch'; the clip turns whiteboard white and a hand-drawn orange arrow and circle draw themselves onto its button, followed by ink doodles."
+      },
+      "durationSeconds": 7.734,
+      "vo": "Third, skill 03, Sketch. Arrows, circles and doodles draw themselves on top, like someone explaining it on a whiteboard.",
+      "background": "stage",
+      "content": {},
+      "code": {
+        "file": "project-1794209368959/scene-5.tsx"
+      },
+      "stage": "top",
+      "motion": {
+        "entrance": "none",
+        "transition": "slideLeft"
+      },
+      "type": "code"
+    },
+    {
+      "id": "scene-run-mw8y5hcr-6",
+      "plan": {
+        "role": "bridge",
+        "visualBrief": "A big SKILL.md file opens to show grey lines, moves to the corner, an arrow carries it into Claude, which draws three scene cards in the three styles."
+      },
+      "durationSeconds": 9.405999999999999,
+      "vo": "And here's the secret: a skill is just one markdown file. Claude reads it before it draws every scene. Anyone can write one.",
+      "background": "stage",
+      "content": {},
+      "code": {
+        "file": "project-1794209368959/scene-6.tsx"
+      },
+      "stage": "top",
+      "motion": {
+        "entrance": "none",
+        "transition": "fromDepth"
+      },
+      "type": "code"
+    },
+    {
+      "id": "scene-run-mw8y5hcr-7",
+      "plan": {
+        "role": "cta",
+        "visualBrief": "A comment box types SKILL in orange, a reply card with prompts 01, 02, 03 pops up below, then an orange Follow button pulses."
+      },
+      "durationSeconds": 4.019,
+      "vo": "Comment SKILL and I'll send you the prompts. Make sure you follow TikMaker.",
+      "background": "stage",
+      "content": {},
+      "code": {
+        "file": "project-1794209368959/scene-7.tsx"
+      },
+      "stage": "top",
+      "motion": {
+        "entrance": "none",
+        "transition": "slideUp"
+      },
+      "type": "code"
+    }
+  ],
+  "captions": {
+    "style": "kinetic",
+    "keywords": [
+      "motion designer",
+      "flat",
+      "Kinetic Type",
+      "slams",
+      "Clean UI",
+      "zooms",
+      "Sketch",
+      "whiteboard",
+      "markdown file",
+      "SKILL"
+    ]
+  },
+  "savedAt": 1794211228720,
+  "audioClips": [
+    {
+      "id": "audio-run-mw8y5hcr-scene-run-mw8y5hcr-1",
+      "sfxId": "vo-run-mw8y5hcr-scene-1-mw8yot7y",
+      "from": 0,
+      "durationInFrames": 129,
+      "volume": 1,
+      "voiceText": "3 Claude Code skills that make you look like a motion designer overnight.",
+      "words": [
+        {
+          "text": "3",
+          "start": 0,
+          "end": 0.708
+        },
+        {
+          "text": "Claude",
+          "start": 0.766,
+          "end": 0.975
+        },
+        {
+          "text": "Code",
+          "start": 1.01,
+          "end": 1.219
+        },
+        {
+          "text": "skills",
+          "start": 1.242,
+          "end": 1.556
+        },
+        {
+          "text": "that",
+          "start": 1.602,
+          "end": 1.73
+        },
+        {
+          "text": "make",
+          "start": 1.776,
+          "end": 1.916
+        },
+        {
+          "text": "you",
+          "start": 1.95,
+          "end": 2.032
+        },
+        {
+          "text": "look",
+          "start": 2.078,
+          "end": 2.218
+        },
+        {
+          "text": "like",
+          "start": 2.252,
+          "end": 2.38
+        },
+        {
+          "text": "a",
+          "start": 2.415,
+          "end": 2.438
+        },
+        {
+          "text": "motion",
+          "start": 2.496,
+          "end": 2.74
+        },
+        {
+          "text": "designer",
+          "start": 2.786,
+          "end": 3.1
+        },
+        {
+          "text": "overnight.",
+          "start": 3.17,
+          "end": 3.947
+        }
+      ]
+    },
+    {
+      "id": "audio-run-mw8y5hcr-scene-run-mw8y5hcr-2",
+      "sfxId": "vo-run-mw8y5hcr-scene-2-mw8yotrn",
+      "from": 129,
+      "durationInFrames": 126,
+      "volume": 1,
+      "voiceText": "Plain screen recordings look flat. Motion design fixes that.",
+      "words": [
+        {
+          "text": "Plain",
+          "start": 0,
+          "end": 0.267
+        },
+        {
+          "text": "screen",
+          "start": 0.313,
+          "end": 0.522
+        },
+        {
+          "text": "recordings",
+          "start": 0.569,
+          "end": 0.987
+        },
+        {
+          "text": "look",
+          "start": 1.033,
+          "end": 1.173
+        },
+        {
+          "text": "flat.",
+          "start": 1.219,
+          "end": 1.602
+        },
+        {
+          "text": "Motion",
+          "start": 2.043,
+          "end": 2.334
+        },
+        {
+          "text": "design",
+          "start": 2.38,
+          "end": 2.74
+        },
+        {
+          "text": "fixes",
+          "start": 2.844,
+          "end": 3.181
+        },
+        {
+          "text": "that.",
+          "start": 3.216,
+          "end": 3.855
+        }
+      ]
+    },
+    {
+      "id": "audio-run-mw8y5hcr-scene-run-mw8y5hcr-3",
+      "sfxId": "vo-run-mw8y5hcr-scene-3-mw8youdv",
+      "from": 255,
+      "durationInFrames": 193,
+      "volume": 1,
+      "voiceText": "First is skill 01, Kinetic Type. Every key word you say slams onto the screen in big bold letters.",
+      "words": [
+        {
+          "text": "First",
+          "start": 0,
+          "end": 0.302
+        },
+        {
+          "text": "is",
+          "start": 0.36,
+          "end": 0.476
+        },
+        {
+          "text": "skill",
+          "start": 0.534,
+          "end": 0.848
+        },
+        {
+          "text": "01,",
+          "start": 0.894,
+          "end": 1.463
+        },
+        {
+          "text": "Kinetic",
+          "start": 1.649,
+          "end": 1.962
+        },
+        {
+          "text": "Type.",
+          "start": 2.009,
+          "end": 2.357
+        },
+        {
+          "text": "Every",
+          "start": 2.473,
+          "end": 2.717
+        },
+        {
+          "text": "key",
+          "start": 2.763,
+          "end": 2.902
+        },
+        {
+          "text": "word",
+          "start": 2.937,
+          "end": 3.088
+        },
+        {
+          "text": "you",
+          "start": 3.123,
+          "end": 3.204
+        },
+        {
+          "text": "say",
+          "start": 3.262,
+          "end": 3.471
+        },
+        {
+          "text": "slams",
+          "start": 3.599,
+          "end": 4.04
+        },
+        {
+          "text": "onto",
+          "start": 4.098,
+          "end": 4.249
+        },
+        {
+          "text": "the",
+          "start": 4.296,
+          "end": 4.365
+        },
+        {
+          "text": "screen",
+          "start": 4.4,
+          "end": 4.702
+        },
+        {
+          "text": "in",
+          "start": 4.772,
+          "end": 4.876
+        },
+        {
+          "text": "big",
+          "start": 4.981,
+          "end": 5.178
+        },
+        {
+          "text": "bold",
+          "start": 5.236,
+          "end": 5.433
+        },
+        {
+          "text": "letters.",
+          "start": 5.48,
+          "end": 6.084
+        }
+      ]
+    },
+    {
+      "id": "audio-run-mw8y5hcr-scene-run-mw8y5hcr-4",
+      "sfxId": "vo-run-mw8y5hcr-scene-4-mw8yov5u",
+      "from": 448,
+      "durationInFrames": 313,
+      "volume": 1,
+      "voiceText": "Second, skill 02, Clean UI. Your screen floats in a device frame, the camera zooms into each click, and soft cards pop in to label what happens.",
+      "words": [
+        {
+          "text": "Second,",
+          "start": 0,
+          "end": 0.511
+        },
+        {
+          "text": "skill",
+          "start": 0.894,
+          "end": 1.254
+        },
+        {
+          "text": "02,",
+          "start": 1.289,
+          "end": 1.834
+        },
+        {
+          "text": "Clean",
+          "start": 2.043,
+          "end": 2.368
+        },
+        {
+          "text": "UI.",
+          "start": 2.519,
+          "end": 3.042
+        },
+        {
+          "text": "Your",
+          "start": 3.483,
+          "end": 3.646
+        },
+        {
+          "text": "screen",
+          "start": 3.692,
+          "end": 3.936
+        },
+        {
+          "text": "floats",
+          "start": 3.971,
+          "end": 4.238
+        },
+        {
+          "text": "in",
+          "start": 4.296,
+          "end": 4.365
+        },
+        {
+          "text": "a",
+          "start": 4.4,
+          "end": 4.423
+        },
+        {
+          "text": "device",
+          "start": 4.458,
+          "end": 4.748
+        },
+        {
+          "text": "frame,",
+          "start": 4.772,
+          "end": 5.166
+        },
+        {
+          "text": "the",
+          "start": 5.375,
+          "end": 5.48
+        },
+        {
+          "text": "camera",
+          "start": 5.515,
+          "end": 5.805
+        },
+        {
+          "text": "zooms",
+          "start": 5.875,
+          "end": 6.13
+        },
+        {
+          "text": "into",
+          "start": 6.165,
+          "end": 6.293
+        },
+        {
+          "text": "each",
+          "start": 6.362,
+          "end": 6.536
+        },
+        {
+          "text": "click,",
+          "start": 6.594,
+          "end": 6.931
+        },
+        {
+          "text": "and",
+          "start": 7.14,
+          "end": 7.268
+        },
+        {
+          "text": "soft",
+          "start": 7.338,
+          "end": 7.605
+        },
+        {
+          "text": "cards",
+          "start": 7.663,
+          "end": 7.964
+        },
+        {
+          "text": "pop",
+          "start": 8.046,
+          "end": 8.278
+        },
+        {
+          "text": "in",
+          "start": 8.359,
+          "end": 8.44
+        },
+        {
+          "text": "to",
+          "start": 8.499,
+          "end": 8.568
+        },
+        {
+          "text": "label",
+          "start": 8.649,
+          "end": 8.905
+        },
+        {
+          "text": "what",
+          "start": 8.963,
+          "end": 9.114
+        },
+        {
+          "text": "happens.",
+          "start": 9.16,
+          "end": 10.077
+        }
+      ]
+    },
+    {
+      "id": "audio-run-mw8y5hcr-scene-run-mw8y5hcr-5",
+      "sfxId": "vo-run-mw8y5hcr-scene-5-mw8yovtm",
+      "from": 761,
+      "durationInFrames": 232,
+      "volume": 1,
+      "voiceText": "Third, skill 03, Sketch. Arrows, circles and doodles draw themselves on top, like someone explaining it on a whiteboard.",
+      "words": [
+        {
+          "text": "Third,",
+          "start": 0,
+          "end": 0.43
+        },
+        {
+          "text": "skill",
+          "start": 0.639,
+          "end": 0.952
+        },
+        {
+          "text": "03,",
+          "start": 1.103,
+          "end": 1.683
+        },
+        {
+          "text": "Sketch.",
+          "start": 1.869,
+          "end": 2.357
+        },
+        {
+          "text": "Arrows,",
+          "start": 2.74,
+          "end": 3.123
+        },
+        {
+          "text": "circles",
+          "start": 3.158,
+          "end": 3.564
+        },
+        {
+          "text": "and",
+          "start": 3.634,
+          "end": 3.75
+        },
+        {
+          "text": "doodles",
+          "start": 3.808,
+          "end": 4.145
+        },
+        {
+          "text": "draw",
+          "start": 4.191,
+          "end": 4.331
+        },
+        {
+          "text": "themselves",
+          "start": 4.377,
+          "end": 4.772
+        },
+        {
+          "text": "on",
+          "start": 4.83,
+          "end": 4.899
+        },
+        {
+          "text": "top,",
+          "start": 4.946,
+          "end": 5.341
+        },
+        {
+          "text": "like",
+          "start": 5.526,
+          "end": 5.677
+        },
+        {
+          "text": "someone",
+          "start": 5.712,
+          "end": 5.968
+        },
+        {
+          "text": "explaining",
+          "start": 5.991,
+          "end": 6.374
+        },
+        {
+          "text": "it",
+          "start": 6.42,
+          "end": 6.49
+        },
+        {
+          "text": "on",
+          "start": 6.548,
+          "end": 6.641
+        },
+        {
+          "text": "a",
+          "start": 6.676,
+          "end": 6.699
+        },
+        {
+          "text": "whiteboard.",
+          "start": 6.745,
+          "end": 7.384
+        }
+      ]
+    },
+    {
+      "id": "audio-run-mw8y5hcr-scene-run-mw8y5hcr-6",
+      "sfxId": "vo-run-mw8y5hcr-scene-6-mw8yowja",
+      "from": 993,
+      "durationInFrames": 282,
+      "volume": 1,
+      "voiceText": "And here's the secret: a skill is just one markdown file. Claude reads it before it draws every scene. Anyone can write one.",
+      "words": [
+        {
+          "text": "And",
+          "start": 0,
+          "end": 0.221
+        },
+        {
+          "text": "here's",
+          "start": 0.279,
+          "end": 0.488
+        },
+        {
+          "text": "the",
+          "start": 0.522,
+          "end": 0.592
+        },
+        {
+          "text": "secret:",
+          "start": 0.627,
+          "end": 1.057
+        },
+        {
+          "text": "a",
+          "start": 1.44,
+          "end": 1.498
+        },
+        {
+          "text": "skill",
+          "start": 1.567,
+          "end": 1.881
+        },
+        {
+          "text": "is",
+          "start": 2.032,
+          "end": 2.415
+        },
+        {
+          "text": "just",
+          "start": 2.496,
+          "end": 2.798
+        },
+        {
+          "text": "one",
+          "start": 3.007,
+          "end": 3.309
+        },
+        {
+          "text": "markdown",
+          "start": 3.437,
+          "end": 3.843
+        },
+        {
+          "text": "file.",
+          "start": 3.901,
+          "end": 4.319
+        },
+        {
+          "text": "Claude",
+          "start": 5.143,
+          "end": 5.433
+        },
+        {
+          "text": "reads",
+          "start": 5.468,
+          "end": 5.654
+        },
+        {
+          "text": "it",
+          "start": 5.7,
+          "end": 5.77
+        },
+        {
+          "text": "before",
+          "start": 5.817,
+          "end": 6.049
+        },
+        {
+          "text": "it",
+          "start": 6.084,
+          "end": 6.142
+        },
+        {
+          "text": "draws",
+          "start": 6.177,
+          "end": 6.455
+        },
+        {
+          "text": "every",
+          "start": 6.583,
+          "end": 6.827
+        },
+        {
+          "text": "scene.",
+          "start": 6.873,
+          "end": 7.268
+        },
+        {
+          "text": "Anyone",
+          "start": 7.605,
+          "end": 7.906
+        },
+        {
+          "text": "can",
+          "start": 7.941,
+          "end": 8.046
+        },
+        {
+          "text": "write",
+          "start": 8.069,
+          "end": 8.243
+        },
+        {
+          "text": "one.",
+          "start": 8.278,
+          "end": 9.056
+        }
+      ]
+    },
+    {
+      "id": "audio-run-mw8y5hcr-scene-run-mw8y5hcr-7",
+      "sfxId": "vo-run-mw8y5hcr-scene-7-mw8yox0c",
+      "from": 1275,
+      "durationInFrames": 121,
+      "volume": 1,
+      "voiceText": "Comment SKILL and I'll send you the prompts. Make sure you follow TikMaker.",
+      "words": [
+        {
+          "text": "Comment",
+          "start": 0,
+          "end": 0.348
+        },
+        {
+          "text": "SKILL",
+          "start": 0.383,
+          "end": 0.627
+        },
+        {
+          "text": "and",
+          "start": 0.697,
+          "end": 0.859
+        },
+        {
+          "text": "I'll",
+          "start": 0.964,
+          "end": 1.115
+        },
+        {
+          "text": "send",
+          "start": 1.149,
+          "end": 1.289
+        },
+        {
+          "text": "you",
+          "start": 1.324,
+          "end": 1.393
+        },
+        {
+          "text": "the",
+          "start": 1.428,
+          "end": 1.498
+        },
+        {
+          "text": "prompts.",
+          "start": 1.521,
+          "end": 1.95
+        },
+        {
+          "text": "Make",
+          "start": 2.136,
+          "end": 2.31
+        },
+        {
+          "text": "sure",
+          "start": 2.334,
+          "end": 2.461
+        },
+        {
+          "text": "you",
+          "start": 2.496,
+          "end": 2.566
+        },
+        {
+          "text": "follow",
+          "start": 2.624,
+          "end": 2.856
+        },
+        {
+          "text": "TikMaker.",
+          "start": 2.937,
+          "end": 3.669
+        }
+      ]
+    },
+    {
+      "id": "sfx-run-mw8y5hcr-1-1",
+      "sfxId": "d-pop",
+      "from": 35,
+      "durationInFrames": 5,
+      "lane": 1,
+      "volume": 0.5
+    },
+    {
+      "id": "sfx-run-mw8y5hcr-2-1",
+      "sfxId": "soft-whoosh",
+      "from": 188,
+      "durationInFrames": 17,
+      "lane": 1,
+      "volume": 0.45
+    },
+    {
+      "id": "sfx-run-mw8y5hcr-3-1",
+      "sfxId": "d-pop",
+      "from": 280,
+      "durationInFrames": 5,
+      "lane": 1,
+      "volume": 0.5
+    },
+    {
+      "id": "sfx-run-mw8y5hcr-3-2",
+      "sfxId": "d-enter",
+      "from": 361,
+      "durationInFrames": 5,
+      "lane": 1,
+      "volume": 0.5
+    },
+    {
+      "id": "sfx-run-mw8y5hcr-4-1",
+      "sfxId": "soft-whoosh",
+      "from": 622,
+      "durationInFrames": 17,
+      "lane": 1,
+      "volume": 0.45
+    },
+    {
+      "id": "sfx-run-mw8y5hcr-4-2",
+      "sfxId": "d-pop",
+      "from": 687,
+      "durationInFrames": 5,
+      "lane": 1,
+      "volume": 0.5
+    },
+    {
+      "id": "sfx-run-mw8y5hcr-5-1",
+      "sfxId": "d-pop",
+      "from": 815,
+      "durationInFrames": 5,
+      "lane": 1,
+      "volume": 0.5
+    },
+    {
+      "id": "sfx-run-mw8y5hcr-5-2",
+      "sfxId": "d-tick",
+      "from": 854,
+      "durationInFrames": 2,
+      "lane": 1,
+      "volume": 0.35
+    },
+    {
+      "id": "sfx-run-mw8y5hcr-6-1",
+      "sfxId": "d-enter",
+      "from": 1094,
+      "durationInFrames": 5,
+      "lane": 1,
+      "volume": 0.5
+    },
+    {
+      "id": "sfx-run-mw8y5hcr-6-2",
+      "sfxId": "soft-whoosh",
+      "from": 1145,
+      "durationInFrames": 17,
+      "lane": 1,
+      "volume": 0.45
+    },
+    {
+      "id": "sfx-run-mw8y5hcr-7-1",
+      "sfxId": "type-word",
+      "from": 1284,
+      "durationInFrames": 7,
+      "lane": 1,
+      "volume": 0.35
+    },
+    {
+      "id": "sfx-run-mw8y5hcr-7-2",
+      "sfxId": "d-msg-in",
+      "from": 1307,
+      "durationInFrames": 6,
+      "lane": 1,
+      "volume": 0.45
+    }
+  ]
+}

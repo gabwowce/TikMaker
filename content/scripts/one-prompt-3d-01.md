@@ -27,6 +27,17 @@ važiuoja automobiliai → saulėlydis → naktis: langai užsidega bangomis,
 Įrašyti ekraną: kaip įvedi tą sakinį į Claude Code (tikras įrašas
 hook'ui / „kaip“ scenai).
 
+## Hook – kampas
+
+Ne „be Blender / After Effects“ (to dauguma nežino), o visiems suprantama:
+**3D anksčiau reikėjo mokytis – dabar užtenka paprašyti Claude Code.**
+Tiesa: viskas padaryta vien rašant (sakinys, pavyzdžiai, pataisos žodžiais),
+be jokio rankinio 3D darbo.
+
+Siūlomas: „Learning 3D took years. Now you just ask Claude Code.“
+VO pirma pusė – ant lemputės su įtrūkimais (klipo 0–2 s), antra – ant
+sprogimo ir kylančio miesto (2–4,5 s).
+
 ## Idėja agentui (įklijuoti į Start)
 
 Klipas jau importuotas į TikMaker: „Bulb → city 3D (Claude Code)“
