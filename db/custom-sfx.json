@@ -999,5 +999,12 @@
     "file": "vo-run-mw94nx1g-scene-3b-v2-mw97tor6.mp3",
     "src": "/assets/voice/vo-run-mw94nx1g-scene-3b-v2-mw97tor6.mp3",
     "group": "voice"
+  },
+  {
+    "id": "vo-run-mw94nx1g-scene-2-v2-mw9ao78q",
+    "label": "run-mw94nx1g scene 2 v2",
+    "file": "vo-run-mw94nx1g-scene-2-v2-mw9ao78q.mp3",
+    "src": "/assets/voice/vo-run-mw94nx1g-scene-2-v2-mw9ao78q.mp3",
+    "group": "voice"
   }
 ]

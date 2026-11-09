@@ -724,7 +724,7 @@
     }
   ],
   "captions": {
-    "enabled": true,
+    "enabled": false,
     "style": "kinetic"
   },
   "music": {
@@ -732,7 +732,7 @@
     "volume": 0.58,
     "duckVolume": 0.2
   },
-  "savedAt": 1793864686275,
+  "savedAt": 1794230880099,
   "audioClips": [
     {
       "id": "audio-mtimh5cl-pd7k",
@@ -741,15 +741,6 @@
       "durationInFrames": 49,
       "volume": 1,
       "voiceText": "Tired of testing apps manually?"
-    },
-    {
-      "id": "audio-mtirhd69-ku8h",
-      "sfxId": "vo-claude-code-can-now-test-your-app-like-a-mtimjun4",
-      "from": 49,
-      "durationInFrames": 85,
-      "lane": 1,
-      "volume": 1,
-      "voiceText": "Claude code can now test your app like a real user."
     },
     {
       "id": "audio-mtkbftk4-gzdr",

@@ -70,10 +70,11 @@ export default function Scene2({ words, durationInFrames, params }: CodeScenePro
   const heads = params.headline.split(" ").map((t, i) => ({ text: t, at: i === 0 ? one : sentence }));
 
   const ats = [
-    wordFrame(words, params.bulbOn, 57),
-    wordFrame(words, params.burstOn, 65),
-    wordFrame(words, params.cityOn, 119),
-    wordFrame(words, params.nightOn, 190),
+    // without these words in the voice, they light up as the sentence is typed
+    wordFrame(words, params.bulbOn, Math.round(durationInFrames * 0.18)),
+    wordFrame(words, params.burstOn, Math.round(durationInFrames * 0.32)),
+    wordFrame(words, params.cityOn, Math.round(durationInFrames * 0.48)),
+    wordFrame(words, params.nightOn, Math.round(durationInFrames * 0.62)),
   ];
   const active = ats.reduce((acc, at, i) => (frame >= at ? i : acc), -1);
   const icons = [BulbIcon, BurstIcon, CityIcon, MoonIcon];

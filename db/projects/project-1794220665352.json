@@ -35,17 +35,17 @@
       "id": "scene-run-mw94nx1g-2",
       "plan": {
         "role": "demo",
-        "visualBrief": "'ONE sentence' over a glass Claude Code window holding the creator's recording of the sentence being typed and sent (empty slot until it's recorded); under it bulb, burst, city and moon icons light up as each is said."
+        "visualBrief": "The real Claude Code recording, sped up: the one sentence typed and sent; four icons light up as it is typed."
       },
-      "durationSeconds": 7.084,
-      "vo": "First, one sentence: a glowing bulb cracks open, a tiny 3D city builds itself out of it, then day turns to night.",
+      "durationSeconds": 3,
+      "vo": "First, I typed one sentence into Claude Code.",
       "notes": "🎥 Your own recording",
       "background": "stage",
       "content": {},
       "code": {
         "file": "project-1794220665352/scene-2.tsx",
         "params": {
-          "typing": "/assets/custom/claude-code-typing-the-sentence-mw97awuj.mp4"
+          "typing": "/assets/custom/claude-code-typing-the-sentence-mw9aokwz.mp4"
         }
       },
       "stage": "top",
@@ -250,128 +250,58 @@
     },
     {
       "id": "audio-run-mw94nx1g-scene-run-mw94nx1g-2",
-      "sfxId": "vo-run-mw94nx1g-scene-2-mw94xebk",
+      "sfxId": "vo-run-mw94nx1g-scene-2-v2-mw9ao78q",
       "from": 119,
-      "durationInFrames": 213,
+      "durationInFrames": 90,
       "volume": 1,
-      "voiceText": "First, one sentence: a glowing bulb cracks open, a tiny 3D city builds itself out of it, then day turns to night.",
+      "voiceText": "First, I typed one sentence into Claude Code.",
       "words": [
         {
           "text": "First,",
           "start": 0,
-          "end": 0.372
+          "end": 0.406
+        },
+        {
+          "text": "I",
+          "start": 0.534,
+          "end": 0.58
+        },
+        {
+          "text": "typed",
+          "start": 0.65,
+          "end": 0.848
         },
         {
           "text": "one",
-          "start": 0.476,
-          "end": 0.639
+          "start": 0.917,
+          "end": 1.057
         },
         {
-          "text": "sentence:",
-          "start": 0.673,
-          "end": 1.149
+          "text": "sentence",
+          "start": 1.091,
+          "end": 1.44
         },
         {
-          "text": "a",
-          "start": 1.428,
-          "end": 1.474
+          "text": "into",
+          "start": 1.474,
+          "end": 1.614
         },
         {
-          "text": "glowing",
-          "start": 1.544,
-          "end": 1.846
+          "text": "Claude",
+          "start": 1.66,
+          "end": 1.869
         },
         {
-          "text": "bulb",
-          "start": 1.892,
-          "end": 2.101
-        },
-        {
-          "text": "cracks",
-          "start": 2.171,
-          "end": 2.473
-        },
-        {
-          "text": "open,",
-          "start": 2.531,
-          "end": 2.972
-        },
-        {
-          "text": "a",
-          "start": 3.123,
-          "end": 3.193
-        },
-        {
-          "text": "tiny",
-          "start": 3.251,
-          "end": 3.518
-        },
-        {
-          "text": "3D",
-          "start": 3.622,
-          "end": 3.866
-        },
-        {
-          "text": "city",
-          "start": 3.971,
-          "end": 4.191
-        },
-        {
-          "text": "builds",
-          "start": 4.272,
-          "end": 4.516
-        },
-        {
-          "text": "itself",
-          "start": 4.551,
-          "end": 4.783
-        },
-        {
-          "text": "out",
-          "start": 4.841,
-          "end": 4.969
-        },
-        {
-          "text": "of",
-          "start": 5.004,
-          "end": 5.062
-        },
-        {
-          "text": "it,",
-          "start": 5.108,
-          "end": 5.283
-        },
-        {
-          "text": "then",
-          "start": 5.468,
-          "end": 5.654
-        },
-        {
-          "text": "day",
-          "start": 5.735,
-          "end": 5.898
-        },
-        {
-          "text": "turns",
-          "start": 5.933,
-          "end": 6.165
-        },
-        {
-          "text": "to",
-          "start": 6.211,
-          "end": 6.281
-        },
-        {
-          "text": "night.",
-          "start": 6.339,
-          "end": 6.734
+          "text": "Code.",
+          "start": 1.904,
+          "end": 2.508
         }
       ]
     },
     {
       "id": "audio-run-mw94nx1g-scene-run-mw94nx1g-3",
       "sfxId": "vo-run-mw94nx1g-scene-3a-v2-mw97to7k",
-      "from": 332,
+      "from": 209,
       "durationInFrames": 137,
       "volume": 1,
       "voiceText": "I made a picture of the look for free in ChatGPT, and gave it to Claude Code.",
@@ -466,7 +396,7 @@
     {
       "id": "audio-run-mw94nx1g-scene-run-mw94nx1g-4",
       "sfxId": "vo-run-mw94nx1g-scene-4-mw94xfnn",
-      "from": 592,
+      "from": 469,
       "durationInFrames": 225,
       "volume": 1,
       "voiceText": "The result, twelve seconds: the bulb cracks, bursts into sparks, and a gold city rises out of the light.",
@@ -571,7 +501,7 @@
     {
       "id": "audio-run-mw94nx1g-scene-run-mw94nx1g-5",
       "sfxId": "vo-run-mw94nx1g-scene-5-mw94xg1q",
-      "from": 817,
+      "from": 694,
       "durationInFrames": 82,
       "volume": 1,
       "voiceText": "By day, cars drive past a fountain.",
@@ -616,7 +546,7 @@
     {
       "id": "audio-run-mw94nx1g-scene-run-mw94nx1g-6",
       "sfxId": "vo-run-mw94nx1g-scene-6-mw94xgg9",
-      "from": 899,
+      "from": 776,
       "durationInFrames": 77,
       "volume": 1,
       "voiceText": "Then night falls, and the windows light up.",
@@ -666,7 +596,7 @@
     {
       "id": "audio-run-mw94nx1g-scene-run-mw94nx1g-7",
       "sfxId": "vo-run-mw94nx1g-scene-7-v2-mw96ztws",
-      "from": 976,
+      "from": 853,
       "durationInFrames": 221,
       "volume": 1,
       "voiceText": "Your turn: install Claude Code, describe a 3D idea in one sentence, then use it in a video, a game, or a website.",
@@ -791,7 +721,7 @@
     {
       "id": "audio-run-mw94nx1g-scene-run-mw94nx1g-8",
       "sfxId": "vo-run-mw94nx1g-scene-8-mw94xhgp",
-      "from": 1197,
+      "from": 1074,
       "durationInFrames": 98,
       "volume": 1,
       "voiceText": "Comment 3D and I'll send you the exact prompt and setup.",
@@ -880,7 +810,7 @@
     {
       "id": "sfx-run-mw94nx1g-3-1",
       "sfxId": "soft-whoosh",
-      "from": 336,
+      "from": 213,
       "durationInFrames": 17,
       "lane": 1,
       "volume": 0.45
@@ -888,7 +818,7 @@
     {
       "id": "sfx-run-mw94nx1g-3-2",
       "sfxId": "d-break",
-      "from": 538,
+      "from": 415,
       "durationInFrames": 9,
       "lane": 1,
       "volume": 0.5
@@ -896,7 +826,7 @@
     {
       "id": "sfx-run-mw94nx1g-4-1",
       "sfxId": "soft-whoosh",
-      "from": 683,
+      "from": 560,
       "durationInFrames": 17,
       "lane": 1,
       "volume": 0.45
@@ -904,7 +834,7 @@
     {
       "id": "sfx-run-mw94nx1g-6-1",
       "sfxId": "d-ping",
-      "from": 939,
+      "from": 816,
       "durationInFrames": 4,
       "lane": 1,
       "volume": 0.4
@@ -912,7 +842,7 @@
     {
       "id": "sfx-run-mw94nx1g-7-1",
       "sfxId": "d-tick",
-      "from": 1016,
+      "from": 893,
       "durationInFrames": 2,
       "lane": 1,
       "volume": 0.35
@@ -920,7 +850,7 @@
     {
       "id": "sfx-run-mw94nx1g-7-2",
       "sfxId": "d-done",
-      "from": 1165,
+      "from": 1042,
       "durationInFrames": 7,
       "lane": 1,
       "volume": 0.5
@@ -928,7 +858,7 @@
     {
       "id": "sfx-run-mw94nx1g-8-1",
       "sfxId": "type-word",
-      "from": 1208,
+      "from": 1085,
       "durationInFrames": 7,
       "lane": 1,
       "volume": 0.35
@@ -936,7 +866,7 @@
     {
       "id": "sfx-run-mw94nx1g-8-2",
       "sfxId": "d-msg-in",
-      "from": 1232,
+      "from": 1109,
       "durationInFrames": 6,
       "lane": 1,
       "volume": 0.45
@@ -944,7 +874,7 @@
     {
       "id": "audio-run-mw94nx1g-scene-run-mw94nx1g-3b",
       "sfxId": "vo-run-mw94nx1g-scene-3b-v2-mw97tor6",
-      "from": 469,
+      "from": 346,
       "durationInFrames": 123,
       "volume": 1,
       "voiceText": "And it wrote the whole thing in code. No Blender, no After Effects.",
