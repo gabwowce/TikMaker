@@ -1,0 +1,20 @@
+{
+  "Committed too early": {
+    "x": 0.0657,
+    "y": 0.1645,
+    "width": 0.8687,
+    "height": 0.1061
+  },
+  "Saw a dev re-clone": {
+    "x": 0.0657,
+    "y": 0.392,
+    "width": 0.8687,
+    "height": 0.1061
+  },
+  "When you undo a commit": {
+    "x": 0.0657,
+    "y": 0.6194,
+    "width": 0.8687,
+    "height": 0.1061
+  }
+}
