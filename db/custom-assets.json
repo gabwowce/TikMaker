@@ -96,5 +96,12 @@
     "file": "mirelo-generation-1-variation-1-mix-video-mvt5kaoq.mp4",
     "src": "/assets/custom/mirelo-generation-1-variation-1-mix-video-mvt5kaoq.mp4",
     "kind": "video"
+  },
+  {
+    "id": "bulb-city-3d-claude-code-mw94l22h",
+    "label": "Bulb → city 3D (Claude Code)",
+    "file": "bulb-city-3d-claude-code-mw94l22h.mp4",
+    "src": "/assets/custom/bulb-city-3d-claude-code-mw94l22h.mp4",
+    "kind": "video"
   }
 ]

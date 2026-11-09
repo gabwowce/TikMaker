@@ -29,18 +29,24 @@ hook'ui / „kaip“ scenai).
 
 ## Idėja agentui (įklijuoti į Start)
 
+Klipas jau importuotas į TikMaker: „Bulb → city 3D (Claude Code)“
+(`/assets/custom/bulb-city-3d-claude-code-mw94l22h.mp4`). Agento paliktose
+recording vietose jį pasirenki Inspector'iuje.
+
 ```
-I gave Claude Code one sentence – "A glowing light bulb cracks open and a
-tiny 3D city builds itself out of it, block by block, then day turns to
-night" – and it made a 12-second 3D animation with Remotion and three.js,
-no Blender, no After Effects. I have the finished clip (a realistic bulb
-cracks, its light lands, a detailed diorama city builds itself, cars drive,
-sunset, windows light up at night) and a
-screen recording of typing the sentence into Claude Code.
-Open on the most satisfying moment of the clip. Show the sentence, then the
-clip as big as possible (leave recording slots for the clip and for my
-screen recording – do not redraw them).
-First step for the viewer: install Claude Code, ask it for a Remotion 3D
+I gave Claude Code one sentence and a reference storyboard – "A glowing
+light bulb cracks open and a tiny 3D city builds itself out of it, block by
+block, then day turns to night" – and it built a 12-second 3D animation
+in code (Remotion + three.js). No Blender, no After Effects.
+I have the finished clip (9:16). Its best moments: 0–2 s the bulb glows and
+glowing cracks run over the glass, 2–3 s it bursts into glass shards and
+sparks, 3–4.5 s a city rises out of the light glowing gold, 5–8 s the city by
+day with cars and a fountain, 9–12 s night, windows lighting up.
+Open on the most satisfying moment of the clip (the burst). Then the
+sentence, then the clip as big as possible. Leave recording slots for the
+clip (and say which seconds each scene uses) and for my screen recording of
+typing the sentence into Claude Code – do not redraw them.
+First step for the viewer: install Claude Code and ask it for a Remotion 3D
 animation of one sentence of your own.
 CTA: comment "3D" and I'll send you the exact prompt and setup.
 ```
