@@ -38,6 +38,9 @@ style shares.
   glow exactly there. Without a mark: a soft round glow (radial gradient,
   no hard edge) behind the area, or zoom/crop the screen to it – never a
   sharp border.
+- **A real screen is never redrawn.** If the self-review says a real screen
+  has too much to read, crop it tighter (`"of"` a smaller card or button) or
+  zoom into it, and dim the rest – do not replace it with a drawing.
 - **Stills for what is still, recordings for what moves.** A screen that
   just sits there is a `still` (a sharp 2x PNG) that your code animates
   (a slow push-in, a cursor you draw, a crop moving); a recording only when

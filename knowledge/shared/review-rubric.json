@@ -15,7 +15,7 @@
     "id": "glanceable",
     "level": "fix",
     "check": "Can the whole frame be taken in at a glance – in the second it is on screen?",
-    "fails": "It has more than ~6 things to look at, or text the viewer would have to read (code lines, logs, file names, lists of labels, small UI text): a TikTok viewer will not read it, so it is noise that hides where to look."
+    "fails": "It has more than ~6 things to look at, or drawn text the viewer would have to read (code lines, logs, lists of labels, small UI text). A REAL screen (a TikMaker recording or still, a website screenshot) is not a failure for having text, as long as it is cropped to the part that matters, big, and the rest is dimmed or blurred – then the fix is a tighter crop or a bigger zoom, never redrawing it as bars."
   },
   {
     "id": "readable",

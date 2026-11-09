@@ -310,3 +310,14 @@ negroja; renderio eigos įrašas (kad nepaleistų tikro renderio).
    per ElevenLabs Sound Effects sukuria nuosavą rinkinį (`sfx/tm-<rūšis>-1…3.mp3`,
    garsumas suvienodintas -18 LUFS); `npm run sfx:listen` → `out/sound-kit.mp4`
    (visos rūšys ir kandidatai iš eilės, kad išsirinktum).
+
+### 2v-4 su argo (code-argo2): įrašė, bet perpiešė
+
+Agentas pats įrašė formą, hookų kortelę ir redaktorių (tik skaitymui – niekas
+nepaleista), bet savipatikra tikrus ekranus įvertino „per daug teksto“, ir
+Clear stiliuje jie buvo perpiešti pilkais brūkšniais
+(`docs/eksperimentai/argo2-perpiesta.jpg`). Pataisyta: tikras ekranas
+niekada neperpiešiamas – apkerpamas iki vienos dalies, padidinamas, kita
+pritemdoma (Clear skilas, `tikmaker-scene`, rubrikos `glanceable`).
+Dar trūksta: redaktoriaus peržiūra įraše tuščia (kodo scena negroja),
+laiko juosta įraše uždengta Inspector'iaus.

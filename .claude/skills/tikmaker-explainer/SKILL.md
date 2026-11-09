@@ -52,7 +52,14 @@ thing, big, a lot of calm space, the words big – is
    (1–3 words, or the one number), the biggest text in the frame, e.g. the
    command being shown. Pattern pills ("01", "FIX") only when the video counts
    steps, small, always in the same place.
-6. **Draw tools as icons, not as screenshots.** A terminal is a dark window
+6. **Real screens: cropped, big, the rest dimmed – never redrawn.** When
+   the video is about a real product (TikMaker itself, a website), show the
+   real screen (a `tikmaker` still or recording, a `screenshot`): crop it to
+   the ONE part that matters (`"of"` – the card, the button, the form field)
+   and enlarge it so that part fills the card; dim or blur everything around
+   it; put the focus on it (a cursor, a soft glow at its `mark`). Its text is
+   real and allowed – do not turn a real screen into grey bars. For a tool
+   you only mention, draw it as an icon: a terminal is a dark window
    with a title bar, a few grey bars and ONE bright command line; an editor
    is a window with bars and one highlighted bar; an app is a window with the
    one control that matters. Logos (`<Logo>`) are fine as big icons.
