@@ -67,7 +67,10 @@ ką galima sukurti su AI, ir tu gali pradėti“. NE bug'ų taisymas, saugumo
 incidentai ar „kaip sutvarkyti X“ – scroll'inantis žiūrovas su tuo
 nesusiduria, o kas ieško sprendimo, eina į YouTube.
 
-Balas (0–100), kiekviena dalis su paaiškinimu:
+> **Pakeista 2026-11-10:** šis balas pervertino „wow“ ir nevertino paklausos
+> bei perkramtymo. Dabar galioja [v2-kriterijai.md](v2-kriterijai.md).
+
+Balas (0–100), kiekviena dalis su paaiškinimu (v1, nebenaudojamas):
 
 | Dalis | Svoris | Klausimas |
 | --- | --- | --- |

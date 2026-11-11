@@ -1,0 +1,30 @@
+{
+  "about": "What the topic scanner (npm run topics:scan) looks at for this channel. youtubeQueries = what this channel's audience types into a search box; the scanner takes the videos uploaded this week, sorted by views, and compares each with its channel's usual views. creator = what the creator has, so a topic is only picked when it can be made.",
+  "creator": "Makes faceless videos in TikMaker (their own AI video editor) with screen recordings and an AI voice. Has a Mac, Claude Code (subscription), ChatGPT and Gemini (free), ElevenLabs. Can try a tool, run a test or a comparison and show the result. No studio, no paid tools beyond these.",
+  "youtubeQueries": [
+    "ai tools",
+    "free ai tools",
+    "new ai",
+    "chatgpt",
+    "chatgpt tips",
+    "gemini ai",
+    "claude ai",
+    "ai video",
+    "ai video editing",
+    "make videos with ai",
+    "ai for content creators",
+    "faceless channel ai",
+    "claude code",
+    "vibe coding",
+    "build an app with ai",
+    "ai agent"
+  ],
+  "trendsGeo": ["US", "GB"],
+  "hnQueries": ["AI", "Claude", "ChatGPT", "OpenAI", "Gemini", "LLM", "agent"],
+  "newsFeeds": [
+    { "name": "The Verge AI", "url": "https://www.theverge.com/rss/ai-artificial-intelligence/index.xml" },
+    { "name": "TechCrunch AI", "url": "https://techcrunch.com/category/artificial-intelligence/feed/" },
+    { "name": "OpenAI", "url": "https://openai.com/news/rss.xml" },
+    { "name": "Google AI", "url": "https://blog.google/technology/ai/rss/" }
+  ]
+}

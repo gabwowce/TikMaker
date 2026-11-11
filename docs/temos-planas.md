@@ -167,8 +167,14 @@ Statom tik po A–D. Preliminariai:
    dokumentas `docs/temos/`.
 2. **E** – vertės patikra agente ✅ (2026-11-09).
 3. **D** – pilotas rankomis ✅ dalinai (2026-11-09, be Reddit ir TikTok) – `docs/temos/D-pilotas.md`.
-4. **F** – skiltis Temos.
-5. **G** – matavimas, nuolat.
+   Pamoka: iš jo kilę video-3 ir video-4 atmesti – temos be paklausos ir be
+   naudos žiūrovui.
+4. **v2 skeneris** ✅ (2026-11-10) – `npm run topics:scan`: paklausa iš
+   YouTube (×N nuo kanalo įprasto), Google tendencijų ir naujienų, vartai
+   (nauda žiūrovui, ne perkramtyta) ir naujas balas – `docs/temos/v2-kriterijai.md`.
+   Ta pati taisyklė – agento vertės patikroje.
+5. **F** – skiltis Temos (skaito `db/topics/`).
+6. **G** – matavimas, nuolat.
 
 ## Atviri klausimai
 

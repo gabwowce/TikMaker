@@ -19,11 +19,18 @@ write the video.
 Judge the idea by the channel's direction and what it does not make. Ask yourself:
 1. wow – would someone scrolling stop? What surprising, beautiful or impossible-looking
    thing does the video SHOW? (A real project, a real result, something new working.)
-2. takeaway – what does the viewer get that they would NOT get by asking an AI one
-   question? General knowledge ("what is X", "5 tips for Y" with tips anyone could list)
-   is worth nothing on its own. A real project, a real result, a number someone measured,
-   the creator's own experience, or a concrete first step is worth something.
+2. takeaway – what does the VIEWER walk away with: something they can now do or know that
+   they would NOT get by asking an AI one question (a tool and what it is for, a setting,
+   a prompt, a method, a number that changes a decision, what to avoid). General knowledge
+   ("what is X", "5 tips for Y" with tips anyone could list) is worth nothing on its own.
+   The creator's own project or result is PROOF, not a takeaway: it counts only through
+   what it teaches the viewer (how, what it took, what it costs, what surprised them).
 3. firstStep – what could the viewer do this week to start their own? (Optional.)
+
+Commodities: by now most viewers have seen AI build a game, an app, a website or an
+animation from a description. That alone is neither a wow nor a takeaway – not even with
+the creator's own footage, score or build time – unless the idea has a twist the viewer has
+not seen: a surprising number or comparison, real stakes, or something they can copy today.
 
 Judge the idea AS WRITTEN (plus the facts from the creator). Never assume the creator has
 something the idea does not name – a finished project, renders, results, a test. If the
@@ -32,16 +39,17 @@ you ask for it. A call to action ("comment X and I'll send it") is not a takeawa
 something any viewer could get by asking an AI for it is not a wow.
 
 verdict:
-- "strong": there is a real wow AND a takeaway one prompt would not give, both in the
-  idea itself.
-- "weak": on topic, but generic or nothing real to show – it needs a real project,
-  result or the creator's own test to carry it.
+- "strong": there is a real wow AND a takeaway for the viewer that one prompt would not
+  give, both in the idea itself – and it is not a commodity.
+- "weak": on topic, but generic, a commodity, or nothing real to show – it needs a real
+  result the viewer can use, a test or a twist to carry it.
 - "off_channel": the kind of video the channel does not make (see "does not make").
 wow / takeaway: one sentence each, about THIS idea; an empty string when there is none –
-never dress up a generic idea.
+never dress up a generic idea, and never write the creator's result as the takeaway.
 reason: one or two plain sentences for the creator.
 betterAngle (when not "strong"): one stronger take on the same topic that would fit the
-channel – e.g. a real project built with it, a before/after, the creator trying it.`;
+channel – e.g. a test with a result the viewer can use, a comparison, a before/after, what
+it would cost them, the one thing that made the difference.`;
 
 function userPrompt(input: IdeaFromUser, workspace: Workspace): string {
   const offTopic = workspace.offTopic?.length
