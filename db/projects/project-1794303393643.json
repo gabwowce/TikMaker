@@ -1,0 +1,807 @@
+{
+  "id": "project-1794303393643",
+  "title": "video-4",
+  "workspaceId": "dev",
+  "videoTemplateId": "build-it-fast",
+  "fps": 30,
+  "width": 1080,
+  "height": 1920,
+  "storyPlan": {
+    "premise": "Part 2 of \"Learning 3D took years. Now you just ask Claude Code\".\nLast time Claude Code built a little 3D city from one sentence and a picture.\nThis time I asked it to turn that city into a real game anyone can play on\ntheir phone: fly a paper plane through the streets at night, collect all 22\nlights, shoot through rings for speed, fireworks at the finish. Under an hour\nof chatting with Claude Code, from my first ask to a playable link online.\nI wrote no code.\n\nMy 20-second recording of the game being played (9:16):\n/assets/custom/city-flight-game-played-claude-code-mw9l7aio.mp4\nMake it the default of every recording field – never redraw the game.\nMoments: 0–4 s down the street, first ring; 4–7 s through a glowing ring,\nstreak climbing; 7–11 s more rings, speed boost; 11–14 s spiral around the\nglass tower; 14.2 s \"All 22 lights!\", time 14.2 s; 14–20 s fireworks.\n\nOpen on the gameplay (4–7 s), no words on a blank screen. Gameplay full\nscreen, edge to edge: no card, no fake video player, no dark gradient. Keep\ntext off the score and timer at the top of the recording.\nBuild step – draw it, no recording: Claude Code's prompt bar with \"Turn this\n3D city into a game I can play on my phone – a paper plane, lights to\ncollect, rings for speed, fireworks at the finish\", then colorful code.\nShort; don't read the prompt out loud.\nThe point for everyone: 3D isn't only for videos – it can become a game you\nsend to a friend, and you just describe it.\nFirst step for the viewer: open Claude Code and describe a tiny game in a few\nsentences – what you fly, what you collect, how you win.\nCTA: \"Comment PLAY and I'll send you the link – beat 14.2 seconds.\""
+  },
+  "scenes": [
+    {
+      "id": "scene-run-mwahy1eh-1",
+      "plan": {
+        "role": "hook",
+        "visualBrief": "Edge-to-edge gameplay: the paper plane heads for a glowing ring over the night street; the HUD and a smaller streak sit under the top bar, and a big glass '3D game = months' card turns into 'just ask Claude Code'."
+      },
+      "durationSeconds": 5.18,
+      "vo": "Making a 3D game took months. Now you just ask Claude Code.",
+      "notes": "🎥 Your own recording",
+      "background": "stage",
+      "content": {},
+      "code": {
+        "file": "project-1794303393643/scene-1.tsx"
+      },
+      "stage": "full",
+      "motion": {
+        "entrance": "none",
+        "transition": "cut"
+      },
+      "type": "code"
+    },
+    {
+      "id": "scene-run-mwahy1eh-2",
+      "plan": {
+        "role": "demo",
+        "visualBrief": "A big glass Claude Code window types the game prompt, sends it and streams colourful code, while a centred headline '3D city → phone game' grows outward from the middle above it."
+      },
+      "durationSeconds": 4.669,
+      "vo": "I asked it to turn my 3D city from last time into a phone game. I wrote no code.",
+      "background": "stage",
+      "content": {},
+      "code": {
+        "file": "project-1794303393643/scene-2.tsx"
+      },
+      "stage": "top",
+      "motion": {
+        "entrance": "none",
+        "transition": "fromDepth"
+      },
+      "type": "code"
+    },
+    {
+      "id": "scene-run-mwahy1eh-3",
+      "plan": {
+        "role": "demo",
+        "visualBrief": "Full-screen gameplay: the plane threads rings into a speed boost while three glass pills – paper plane, 22 lights, rings = speed – pop in under the HUD."
+      },
+      "durationSeconds": 3.369,
+      "vo": "Fly a paper plane, grab 22 lights, hit rings for speed.",
+      "notes": "🎥 Your own recording",
+      "background": "stage",
+      "content": {},
+      "code": {
+        "file": "project-1794303393643/scene-3.tsx"
+      },
+      "stage": "full",
+      "motion": {
+        "entrance": "none",
+        "transition": "zoomThrough"
+      },
+      "type": "code"
+    },
+    {
+      "id": "scene-run-mwahy1eh-4",
+      "plan": {
+        "role": "proof",
+        "visualBrief": "Full-screen gameplay: 'All 22 lights!' lands at 14.2 s as fireworks burst over the city, and two big pills, 'under 1 hour' and 'playable link', pop in on the night sky."
+      },
+      "durationSeconds": 5.18,
+      "vo": "All 22 in 14.2 seconds, then fireworks. Under an hour to a playable link.",
+      "notes": "🎥 Your own recording",
+      "background": "stage",
+      "content": {},
+      "code": {
+        "file": "project-1794303393643/scene-4.tsx"
+      },
+      "stage": "full",
+      "motion": {
+        "entrance": "none",
+        "transition": "push"
+      },
+      "type": "code"
+    },
+    {
+      "id": "scene-run-mwahy1eh-5",
+      "plan": {
+        "role": "payoff",
+        "visualBrief": "Light scene: a big white chat card centred on screen – a link bubble with the game's fireworks frame slides in and a friend's touch taps Play, with the captions on a dark rounded plate below."
+      },
+      "durationSeconds": 3.044,
+      "vo": "Not just a video. A game you send a friend.",
+      "background": "stage",
+      "content": {},
+      "code": {
+        "file": "project-1794303393643/scene-5.tsx"
+      },
+      "stage": "top",
+      "motion": {
+        "entrance": "none",
+        "transition": "flash"
+      },
+      "type": "code"
+    },
+    {
+      "id": "scene-run-mwahy1eh-6",
+      "plan": {
+        "role": "example",
+        "visualBrief": "A Claude Code window with an empty prompt bar ticks off three rows – what you fly, what you collect, how you win – each popping a small glowing game icon: a paper plane, a light, a trophy."
+      },
+      "durationSeconds": 4.112,
+      "vo": "Open Claude Code and describe what you fly, what you collect, how you win.",
+      "background": "stage",
+      "content": {},
+      "code": {
+        "file": "project-1794303393643/scene-6.tsx"
+      },
+      "stage": "top",
+      "motion": {
+        "entrance": "none",
+        "transition": "dissolve"
+      },
+      "type": "code"
+    },
+    {
+      "id": "scene-run-mwahy1eh-7",
+      "plan": {
+        "role": "cta",
+        "visualBrief": "The fireworks finish freezes, dimmed and softly blurred; a big glass 'Comment PLAY' card springs into the centre with a 'beat 14.2 s' pill under it."
+      },
+      "durationSeconds": 5.273,
+      "vo": "Comment PLAY and I'll send you the link. Beat 14.2 seconds.",
+      "notes": "🎥 Your own recording",
+      "background": "stage",
+      "content": {},
+      "code": {
+        "file": "project-1794303393643/scene-7.tsx"
+      },
+      "stage": "full",
+      "motion": {
+        "entrance": "none",
+        "transition": "fromDepth"
+      },
+      "type": "code"
+    }
+  ],
+  "captions": {
+    "style": "kinetic",
+    "keywords": [
+      "Claude Code",
+      "3D game",
+      "phone game",
+      "no code",
+      "22 lights",
+      "speed",
+      "14.2",
+      "playable link",
+      "friend",
+      "describe",
+      "PLAY",
+      "send a friend"
+    ]
+  },
+  "savedAt": 1794305366074,
+  "audioClips": [
+    {
+      "id": "audio-run-mwahy1eh-scene-run-mwahy1eh-1",
+      "sfxId": "vo-run-mwahy1eh-scene-1-mwai41mr",
+      "from": 0,
+      "durationInFrames": 155,
+      "volume": 1,
+      "voiceText": "Making a 3D game took months. Now you just ask Claude Code.",
+      "words": [
+        {
+          "text": "Making",
+          "start": 0,
+          "end": 0.29
+        },
+        {
+          "text": "a",
+          "start": 0.337,
+          "end": 0.36
+        },
+        {
+          "text": "3D",
+          "start": 0.464,
+          "end": 0.697
+        },
+        {
+          "text": "game",
+          "start": 0.801,
+          "end": 1.033
+        },
+        {
+          "text": "took",
+          "start": 1.068,
+          "end": 1.219
+        },
+        {
+          "text": "months.",
+          "start": 1.277,
+          "end": 1.707
+        },
+        {
+          "text": "Now",
+          "start": 3.019,
+          "end": 3.251
+        },
+        {
+          "text": "you",
+          "start": 3.402,
+          "end": 3.506
+        },
+        {
+          "text": "just",
+          "start": 3.564,
+          "end": 3.704
+        },
+        {
+          "text": "ask",
+          "start": 3.738,
+          "end": 3.878
+        },
+        {
+          "text": "Claude",
+          "start": 3.913,
+          "end": 4.122
+        },
+        {
+          "text": "Code.",
+          "start": 4.156,
+          "end": 4.83
+        }
+      ]
+    },
+    {
+      "id": "audio-run-mwahy1eh-scene-run-mwahy1eh-2",
+      "sfxId": "vo-run-mwahy1eh-scene-2-mwai427a",
+      "from": 155,
+      "durationInFrames": 140,
+      "volume": 1,
+      "voiceText": "I asked it to turn my 3D city from last time into a phone game. I wrote no code.",
+      "words": [
+        {
+          "text": "I",
+          "start": 0,
+          "end": 0.058
+        },
+        {
+          "text": "asked",
+          "start": 0.139,
+          "end": 0.302
+        },
+        {
+          "text": "it",
+          "start": 0.337,
+          "end": 0.406
+        },
+        {
+          "text": "to",
+          "start": 0.441,
+          "end": 0.488
+        },
+        {
+          "text": "turn",
+          "start": 0.522,
+          "end": 0.673
+        },
+        {
+          "text": "my",
+          "start": 0.72,
+          "end": 0.801
+        },
+        {
+          "text": "3D",
+          "start": 0.906,
+          "end": 1.115
+        },
+        {
+          "text": "city",
+          "start": 1.219,
+          "end": 1.451
+        },
+        {
+          "text": "from",
+          "start": 1.521,
+          "end": 1.66
+        },
+        {
+          "text": "last",
+          "start": 1.718,
+          "end": 1.916
+        },
+        {
+          "text": "time",
+          "start": 1.95,
+          "end": 2.171
+        },
+        {
+          "text": "into",
+          "start": 2.218,
+          "end": 2.368
+        },
+        {
+          "text": "a",
+          "start": 2.438,
+          "end": 2.473
+        },
+        {
+          "text": "phone",
+          "start": 2.508,
+          "end": 2.694
+        },
+        {
+          "text": "game.",
+          "start": 2.717,
+          "end": 3.053
+        },
+        {
+          "text": "I",
+          "start": 3.332,
+          "end": 3.367
+        },
+        {
+          "text": "wrote",
+          "start": 3.425,
+          "end": 3.587
+        },
+        {
+          "text": "no",
+          "start": 3.622,
+          "end": 3.704
+        },
+        {
+          "text": "code.",
+          "start": 3.762,
+          "end": 4.319
+        }
+      ]
+    },
+    {
+      "id": "audio-run-mwahy1eh-scene-run-mwahy1eh-3",
+      "sfxId": "vo-run-mwahy1eh-scene-3-mwai42q1",
+      "from": 295,
+      "durationInFrames": 101,
+      "volume": 1,
+      "voiceText": "Fly a paper plane, grab 22 lights, hit rings for speed.",
+      "words": [
+        {
+          "text": "Fly",
+          "start": 0,
+          "end": 0.197
+        },
+        {
+          "text": "a",
+          "start": 0.244,
+          "end": 0.267
+        },
+        {
+          "text": "paper",
+          "start": 0.302,
+          "end": 0.499
+        },
+        {
+          "text": "plane,",
+          "start": 0.534,
+          "end": 0.824
+        },
+        {
+          "text": "grab",
+          "start": 0.906,
+          "end": 1.091
+        },
+        {
+          "text": "22",
+          "start": 1.149,
+          "end": 1.486
+        },
+        {
+          "text": "lights,",
+          "start": 1.544,
+          "end": 1.823
+        },
+        {
+          "text": "hit",
+          "start": 1.881,
+          "end": 2.02
+        },
+        {
+          "text": "rings",
+          "start": 2.067,
+          "end": 2.229
+        },
+        {
+          "text": "for",
+          "start": 2.264,
+          "end": 2.368
+        },
+        {
+          "text": "speed.",
+          "start": 2.403,
+          "end": 3.019
+        }
+      ]
+    },
+    {
+      "id": "audio-run-mwahy1eh-scene-run-mwahy1eh-4",
+      "sfxId": "vo-run-mwahy1eh-scene-4-mwai438h",
+      "from": 396,
+      "durationInFrames": 155,
+      "volume": 1,
+      "voiceText": "All 22 in 14.2 seconds, then fireworks. Under an hour to a playable link.",
+      "words": [
+        {
+          "text": "All",
+          "start": 0,
+          "end": 0.209
+        },
+        {
+          "text": "22",
+          "start": 0.267,
+          "end": 0.627
+        },
+        {
+          "text": "in",
+          "start": 0.685,
+          "end": 0.755
+        },
+        {
+          "text": "14.2",
+          "start": 0.801,
+          "end": 1.486
+        },
+        {
+          "text": "seconds,",
+          "start": 1.556,
+          "end": 2.009
+        },
+        {
+          "text": "then",
+          "start": 2.113,
+          "end": 2.276
+        },
+        {
+          "text": "fireworks.",
+          "start": 2.334,
+          "end": 2.926
+        },
+        {
+          "text": "Under",
+          "start": 3.077,
+          "end": 3.297
+        },
+        {
+          "text": "an",
+          "start": 3.332,
+          "end": 3.39
+        },
+        {
+          "text": "hour",
+          "start": 3.437,
+          "end": 3.669
+        },
+        {
+          "text": "to",
+          "start": 3.738,
+          "end": 3.808
+        },
+        {
+          "text": "a",
+          "start": 3.878,
+          "end": 3.913
+        },
+        {
+          "text": "playable",
+          "start": 3.947,
+          "end": 4.261
+        },
+        {
+          "text": "link.",
+          "start": 4.296,
+          "end": 4.83
+        }
+      ]
+    },
+    {
+      "id": "audio-run-mwahy1eh-scene-run-mwahy1eh-5",
+      "sfxId": "vo-run-mwahy1eh-scene-5-mwai43pb",
+      "from": 551,
+      "durationInFrames": 91,
+      "volume": 1,
+      "voiceText": "Not just a video. A game you send a friend.",
+      "words": [
+        {
+          "text": "Not",
+          "start": 0,
+          "end": 0.174
+        },
+        {
+          "text": "just",
+          "start": 0.209,
+          "end": 0.348
+        },
+        {
+          "text": "a",
+          "start": 0.383,
+          "end": 0.406
+        },
+        {
+          "text": "video.",
+          "start": 0.441,
+          "end": 0.906
+        },
+        {
+          "text": "A",
+          "start": 1.149,
+          "end": 1.219
+        },
+        {
+          "text": "game",
+          "start": 1.289,
+          "end": 1.509
+        },
+        {
+          "text": "you",
+          "start": 1.544,
+          "end": 1.614
+        },
+        {
+          "text": "send",
+          "start": 1.66,
+          "end": 1.8
+        },
+        {
+          "text": "a",
+          "start": 1.834,
+          "end": 1.858
+        },
+        {
+          "text": "friend.",
+          "start": 1.892,
+          "end": 2.694
+        }
+      ]
+    },
+    {
+      "id": "audio-run-mwahy1eh-scene-run-mwahy1eh-6",
+      "sfxId": "vo-run-mwahy1eh-scene-6-mwai446e",
+      "from": 642,
+      "durationInFrames": 123,
+      "volume": 1,
+      "voiceText": "Open Claude Code and describe what you fly, what you collect, how you win.",
+      "words": [
+        {
+          "text": "Open",
+          "start": 0,
+          "end": 0.279
+        },
+        {
+          "text": "Claude",
+          "start": 0.325,
+          "end": 0.534
+        },
+        {
+          "text": "Code",
+          "start": 0.569,
+          "end": 0.813
+        },
+        {
+          "text": "and",
+          "start": 0.848,
+          "end": 0.952
+        },
+        {
+          "text": "describe",
+          "start": 0.987,
+          "end": 1.335
+        },
+        {
+          "text": "what",
+          "start": 1.358,
+          "end": 1.463
+        },
+        {
+          "text": "you",
+          "start": 1.498,
+          "end": 1.567
+        },
+        {
+          "text": "fly,",
+          "start": 1.614,
+          "end": 2.032
+        },
+        {
+          "text": "what",
+          "start": 2.183,
+          "end": 2.322
+        },
+        {
+          "text": "you",
+          "start": 2.357,
+          "end": 2.426
+        },
+        {
+          "text": "collect,",
+          "start": 2.473,
+          "end": 2.937
+        },
+        {
+          "text": "how",
+          "start": 3.007,
+          "end": 3.123
+        },
+        {
+          "text": "you",
+          "start": 3.17,
+          "end": 3.251
+        },
+        {
+          "text": "win.",
+          "start": 3.286,
+          "end": 3.762
+        }
+      ]
+    },
+    {
+      "id": "audio-run-mwahy1eh-scene-run-mwahy1eh-7",
+      "sfxId": "vo-run-mwahy1eh-scene-7-mwai44nj",
+      "from": 765,
+      "durationInFrames": 158,
+      "volume": 1,
+      "voiceText": "Comment PLAY and I'll send you the link. Beat 14.2 seconds.",
+      "words": [
+        {
+          "text": "Comment",
+          "start": 0,
+          "end": 0.36
+        },
+        {
+          "text": "PLAY",
+          "start": 0.395,
+          "end": 0.708
+        },
+        {
+          "text": "and",
+          "start": 0.813,
+          "end": 0.964
+        },
+        {
+          "text": "I'll",
+          "start": 1.01,
+          "end": 1.126
+        },
+        {
+          "text": "send",
+          "start": 1.173,
+          "end": 1.324
+        },
+        {
+          "text": "you",
+          "start": 1.358,
+          "end": 1.428
+        },
+        {
+          "text": "the",
+          "start": 1.463,
+          "end": 1.533
+        },
+        {
+          "text": "link.",
+          "start": 1.567,
+          "end": 1.916
+        },
+        {
+          "text": "Beat",
+          "start": 3.228,
+          "end": 3.437
+        },
+        {
+          "text": "14.2",
+          "start": 3.471,
+          "end": 4.18
+        },
+        {
+          "text": "seconds.",
+          "start": 4.249,
+          "end": 4.923
+        }
+      ]
+    },
+    {
+      "id": "sfx-run-mwahy1eh-1-1",
+      "sfxId": "soft-whoosh",
+      "from": 110,
+      "durationInFrames": 17,
+      "lane": 1,
+      "volume": 0.45
+    },
+    {
+      "id": "sfx-run-mwahy1eh-2-1",
+      "sfxId": "type-word",
+      "from": 157,
+      "durationInFrames": 7,
+      "lane": 1,
+      "volume": 0.35
+    },
+    {
+      "id": "sfx-run-mwahy1eh-2-2",
+      "sfxId": "soft-whoosh",
+      "from": 228,
+      "durationInFrames": 17,
+      "lane": 1,
+      "volume": 0.45
+    },
+    {
+      "id": "sfx-run-mwahy1eh-3-1",
+      "sfxId": "d-pop",
+      "from": 309,
+      "durationInFrames": 5,
+      "lane": 1,
+      "volume": 0.5
+    },
+    {
+      "id": "sfx-run-mwahy1eh-3-2",
+      "sfxId": "d-pop",
+      "from": 355,
+      "durationInFrames": 5,
+      "lane": 1,
+      "volume": 0.5
+    },
+    {
+      "id": "sfx-run-mwahy1eh-4-1",
+      "sfxId": "d-done",
+      "from": 418,
+      "durationInFrames": 7,
+      "lane": 1,
+      "volume": 0.5
+    },
+    {
+      "id": "sfx-run-mwahy1eh-4-2",
+      "sfxId": "d-pop",
+      "from": 512,
+      "durationInFrames": 5,
+      "lane": 1,
+      "volume": 0.5
+    },
+    {
+      "id": "sfx-run-mwahy1eh-5-1",
+      "sfxId": "d-msg-in",
+      "from": 588,
+      "durationInFrames": 6,
+      "lane": 1,
+      "volume": 0.45
+    },
+    {
+      "id": "sfx-run-mwahy1eh-5-2",
+      "sfxId": "d-ping",
+      "from": 606,
+      "durationInFrames": 5,
+      "lane": 1,
+      "volume": 0.4
+    },
+    {
+      "id": "sfx-run-mwahy1eh-6-1",
+      "sfxId": "d-tick",
+      "from": 688,
+      "durationInFrames": 2,
+      "lane": 1,
+      "volume": 0.35
+    },
+    {
+      "id": "sfx-run-mwahy1eh-6-2",
+      "sfxId": "check",
+      "from": 739,
+      "durationInFrames": 7,
+      "lane": 1,
+      "volume": 0.4
+    },
+    {
+      "id": "sfx-run-mwahy1eh-7-1",
+      "sfxId": "d-enter",
+      "from": 775,
+      "durationInFrames": 5,
+      "lane": 1,
+      "volume": 0.5
+    },
+    {
+      "id": "sfx-run-mwahy1eh-7-2",
+      "sfxId": "d-ping",
+      "from": 860,
+      "durationInFrames": 5,
+      "lane": 1,
+      "volume": 0.4
+    }
+  ]
+}

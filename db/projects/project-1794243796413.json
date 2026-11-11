@@ -1,0 +1,1214 @@
+{
+  "id": "project-1794243796413",
+  "title": "video-3",
+  "workspaceId": "dev",
+  "videoTemplateId": "app-list",
+  "fps": 30,
+  "width": 1080,
+  "height": 1920,
+  "storyPlan": {
+    "premise": "\"Built with AI this week #1\" – three real projects people built with AI,\neach a few seconds, then a first step for the viewer. For everyone, not just\ndevelopers: say what each thing IS and why it's surprising, no jargon.\n\nHook: \"A dad rewrote his TV's software with AI. And that's not even the\ncraziest one this week.\"\n\n1. A dad's smart TV got an update he didn't want – so over a few weekends he\n   rewrote its software with four AI models. The AI wrote all the code, he\n   made the decisions. Now his daughter controls the TV with her voice.\n   By anubhavmalhotra – github.com/anubhavmalhotra/r2d2-tv (112 points on\n   Hacker News).\n2. A man owned the domain catcopter.com for 13 years. With Claude Opus he\n   finally built the game: a multiplayer browser game where you fly a cat\n   against pterodactyls, chickens and angry penguins.\n   By pawelwentpawel – catcopter.com.\n3. Someone got a working Nintendo running inside an AI model – Claude Opus\n   built it with just two prompts.\n   By dbreunig – github.com/dbreunig/nesformer (298 points on Hacker News).\n\nShow the REAL things, never draw them: fetch screenshots of each GitHub page,\ncatcopter.com and each Hacker News post (the points are the proof), scroll\nthe READMEs. Leave a recording slot for my 5–10 s of playing catcopter.\nPut the creator's name and link on screen in every project scene.\n\nFirst step for the viewer: think of the one thing that annoys you most –\nan app, a device, a game you wish existed – and ask Claude Code to build it.\nCTA: comment what you'd build, and follow for next week's three."
+  },
+  "scenes": [
+    {
+      "id": "scene-run-mw9ii7c1-1",
+      "plan": {
+        "role": "hook",
+        "visualBrief": "catcopter.com in a big tilted glass browser card (the game), '13 years' above it flips to 'AI built it', with pawelwentpawel pinned below."
+      },
+      "durationSeconds": 4.436999999999999,
+      "vo": "He sat on catcopter.com for 13 years. AI finally built it.",
+      "notes": "🎥 Your own recording",
+      "background": "stage",
+      "content": {},
+      "code": {
+        "file": "project-1794243796413/scene-1.tsx"
+      },
+      "stage": "top",
+      "motion": {
+        "entrance": "none",
+        "transition": "cut"
+      },
+      "type": "code"
+    },
+    {
+      "id": "scene-run-mw9ii7c1-2",
+      "plan": {
+        "role": "item",
+        "visualBrief": "The catcopter card keeps playing; 'Built with AI this week #1' turns into 'Catcopter' with a Claude Opus sticker, and a pterodactyl, chicken and penguin pop in next to the creator's name."
+      },
+      "durationSeconds": 10.52,
+      "vo": "First of three AI builds this week. With Claude Opus, Pawel made a multiplayer browser game where you fly a cat against pterodactyls, chickens and angry penguins.",
+      "notes": "🎥 Your own recording",
+      "background": "stage",
+      "content": {},
+      "code": {
+        "file": "project-1794243796413/scene-2.tsx"
+      },
+      "stage": "top",
+      "motion": {
+        "entrance": "none",
+        "transition": "dissolve"
+      },
+      "type": "code"
+    },
+    {
+      "id": "scene-run-mw9ii7c1-3",
+      "plan": {
+        "role": "item",
+        "visualBrief": "The real r2d2-tv GitHub page scrolls down into its README in a blue-glowing browser card, while 'A dad's TV got an unwanted update' turns into 'He rewrote it with 4 AI models'."
+      },
+      "durationSeconds": 8.105,
+      "vo": "Second, a dad's smart TV got an update he didn't want. So over a few weekends, he rewrote its software with four AI models.",
+      "background": "stage",
+      "content": {},
+      "code": {
+        "file": "project-1794243796413/scene-3.tsx"
+      },
+      "stage": "top",
+      "motion": {
+        "entrance": "none",
+        "transition": "slideLeft"
+      },
+      "type": "code"
+    },
+    {
+      "id": "scene-run-mw9ii7c1-4",
+      "plan": {
+        "role": "proof",
+        "visualBrief": "Light scene: the real Hacker News post's 'my daughter… through speech' line glows, then the camera flies to '112 points' and rings it as a huge 112 counts up."
+      },
+      "durationSeconds": 8.013,
+      "vo": "The AI wrote all the code, he made the decisions. Now his daughter controls the TV with her voice. 112 points on Hacker News.",
+      "background": "stage",
+      "content": {},
+      "code": {
+        "file": "project-1794243796413/scene-4.tsx"
+      },
+      "stage": "top",
+      "motion": {
+        "entrance": "none",
+        "transition": "flash"
+      },
+      "type": "code"
+    },
+    {
+      "id": "scene-run-mw9ii7c1-5",
+      "plan": {
+        "role": "item",
+        "visualBrief": "The real nesformer GitHub page scrolls into its README in a purple-glowing card as 'The craziest' becomes 'A Nintendo inside an AI model'."
+      },
+      "durationSeconds": 5.087,
+      "vo": "Third, and the craziest: someone got a working Nintendo running inside an AI model.",
+      "background": "stage",
+      "content": {},
+      "code": {
+        "file": "project-1794243796413/scene-5.tsx"
+      },
+      "stage": "top",
+      "motion": {
+        "entrance": "none",
+        "transition": "slideLeft"
+      },
+      "type": "code"
+    },
+    {
+      "id": "scene-run-mw9ii7c1-6",
+      "plan": {
+        "role": "proof",
+        "visualBrief": "On the real nesformer HN post the 'only two prompts' comment glows under '2 prompts', then the camera flies to '298 points' and rings it as 298 counts up."
+      },
+      "durationSeconds": 6.109,
+      "vo": "Claude Opus built it with just two prompts. 298 points on Hacker News.",
+      "background": "stage",
+      "content": {},
+      "code": {
+        "file": "project-1794243796413/scene-6.tsx"
+      },
+      "stage": "top",
+      "motion": {
+        "entrance": "none",
+        "transition": "zoomThrough"
+      },
+      "type": "code"
+    },
+    {
+      "id": "scene-run-mw9ii7c1-7",
+      "plan": {
+        "role": "payoff",
+        "visualBrief": "Light scene: 'Your turn – what annoys you?' and three empty slots fill in as named – an app, a device, a game – each getting an orange annoyed mark."
+      },
+      "durationSeconds": 7.223,
+      "vo": "Your turn. Think of the one thing that annoys you most: an app, a device, or a game you wish existed.",
+      "background": "stage",
+      "content": {},
+      "code": {
+        "file": "project-1794243796413/scene-7.tsx"
+      },
+      "stage": "top",
+      "motion": {
+        "entrance": "none",
+        "transition": "flash"
+      },
+      "type": "code"
+    },
+    {
+      "id": "scene-run-mw9ii7c1-8",
+      "plan": {
+        "role": "payoff",
+        "visualBrief": "A glass Claude Code terminal types 'build me the game I wish existed' letter by letter, then a purple 'v1 · this weekend' pill pops below."
+      },
+      "durationSeconds": 3.601,
+      "vo": "Then ask Claude Code to build a first version this weekend.",
+      "background": "stage",
+      "content": {},
+      "code": {
+        "file": "project-1794243796413/scene-8.tsx"
+      },
+      "stage": "top",
+      "motion": {
+        "entrance": "none",
+        "transition": "slideUp"
+      },
+      "type": "code"
+    },
+    {
+      "id": "scene-run-mw9ii7c1-9",
+      "plan": {
+        "role": "cta",
+        "visualBrief": "The three projects' real pages shrink into a row of cards, a white 'What would you build? 👇' comment bubble pops up and a '#2 next week: 3 more' tag slides in."
+      },
+      "durationSeconds": 3.1830000000000003,
+      "vo": "Comment what you'd build, and follow for next week's three.",
+      "background": "stage",
+      "content": {},
+      "code": {
+        "file": "project-1794243796413/scene-9.tsx"
+      },
+      "stage": "top",
+      "motion": {
+        "entrance": "none",
+        "transition": "push"
+      },
+      "type": "code"
+    }
+  ],
+  "captions": {
+    "style": "kinetic",
+    "keywords": [
+      "catcopter.com",
+      "13 years",
+      "Claude Opus",
+      "multiplayer",
+      "smart TV",
+      "four AI models",
+      "daughter",
+      "112 points",
+      "Nintendo",
+      "AI model",
+      "two prompts",
+      "298 points",
+      "annoys",
+      "Claude Code",
+      "weekend",
+      "Comment",
+      "follow"
+    ]
+  },
+  "savedAt": 1794245306493,
+  "audioClips": [
+    {
+      "id": "audio-run-mw9ii7c1-scene-run-mw9ii7c1-1",
+      "sfxId": "vo-run-mw9ii7c1-scene-1-mw9itcaz",
+      "from": 0,
+      "durationInFrames": 133,
+      "volume": 1,
+      "voiceText": "He sat on catcopter.com for 13 years. AI finally built it.",
+      "words": [
+        {
+          "text": "He",
+          "start": 0,
+          "end": 0.116
+        },
+        {
+          "text": "sat",
+          "start": 0.163,
+          "end": 0.337
+        },
+        {
+          "text": "on",
+          "start": 0.383,
+          "end": 0.453
+        },
+        {
+          "text": "catcopter.com",
+          "start": 0.511,
+          "end": 1.474
+        },
+        {
+          "text": "for",
+          "start": 1.533,
+          "end": 1.637
+        },
+        {
+          "text": "13",
+          "start": 1.707,
+          "end": 2.032
+        },
+        {
+          "text": "years.",
+          "start": 2.078,
+          "end": 2.461
+        },
+        {
+          "text": "AI",
+          "start": 2.844,
+          "end": 3.1
+        },
+        {
+          "text": "finally",
+          "start": 3.216,
+          "end": 3.506
+        },
+        {
+          "text": "built",
+          "start": 3.541,
+          "end": 3.727
+        },
+        {
+          "text": "it.",
+          "start": 3.773,
+          "end": 4.087
+        }
+      ]
+    },
+    {
+      "id": "audio-run-mw9ii7c1-scene-run-mw9ii7c1-2",
+      "sfxId": "vo-run-mw9ii7c1-scene-2-mw9itd2g",
+      "from": 133,
+      "durationInFrames": 316,
+      "volume": 1,
+      "voiceText": "First of three AI builds this week. With Claude Opus, Pawel made a multiplayer browser game where you fly a cat against pterodactyls, chickens and angry penguins.",
+      "words": [
+        {
+          "text": "First",
+          "start": 0,
+          "end": 0.255
+        },
+        {
+          "text": "of",
+          "start": 0.29,
+          "end": 0.348
+        },
+        {
+          "text": "three",
+          "start": 0.395,
+          "end": 0.604
+        },
+        {
+          "text": "AI",
+          "start": 0.65,
+          "end": 0.859
+        },
+        {
+          "text": "builds",
+          "start": 0.94,
+          "end": 1.161
+        },
+        {
+          "text": "this",
+          "start": 1.196,
+          "end": 1.324
+        },
+        {
+          "text": "week.",
+          "start": 1.37,
+          "end": 1.73
+        },
+        {
+          "text": "With",
+          "start": 2.856,
+          "end": 3.03
+        },
+        {
+          "text": "Claude",
+          "start": 3.077,
+          "end": 3.32
+        },
+        {
+          "text": "Opus,",
+          "start": 3.355,
+          "end": 3.82
+        },
+        {
+          "text": "Pawel",
+          "start": 3.924,
+          "end": 4.272
+        },
+        {
+          "text": "made",
+          "start": 4.319,
+          "end": 4.47
+        },
+        {
+          "text": "a",
+          "start": 4.493,
+          "end": 4.516
+        },
+        {
+          "text": "multiplayer",
+          "start": 4.574,
+          "end": 5.039
+        },
+        {
+          "text": "browser",
+          "start": 5.074,
+          "end": 5.341
+        },
+        {
+          "text": "game",
+          "start": 5.375,
+          "end": 5.677
+        },
+        {
+          "text": "where",
+          "start": 5.805,
+          "end": 5.979
+        },
+        {
+          "text": "you",
+          "start": 6.014,
+          "end": 6.084
+        },
+        {
+          "text": "fly",
+          "start": 6.13,
+          "end": 6.304
+        },
+        {
+          "text": "a",
+          "start": 6.351,
+          "end": 6.374
+        },
+        {
+          "text": "cat",
+          "start": 6.42,
+          "end": 6.618
+        },
+        {
+          "text": "against",
+          "start": 6.664,
+          "end": 6.943
+        },
+        {
+          "text": "pterodactyls,",
+          "start": 7.001,
+          "end": 7.802
+        },
+        {
+          "text": "chickens",
+          "start": 7.953,
+          "end": 8.348
+        },
+        {
+          "text": "and",
+          "start": 8.382,
+          "end": 8.522
+        },
+        {
+          "text": "angry",
+          "start": 8.626,
+          "end": 8.916
+        },
+        {
+          "text": "penguins.",
+          "start": 8.963,
+          "end": 10.17
+        }
+      ]
+    },
+    {
+      "id": "audio-run-mw9ii7c1-scene-run-mw9ii7c1-3",
+      "sfxId": "vo-run-mw9ii7c1-scene-3-mw9itdr0",
+      "from": 449,
+      "durationInFrames": 243,
+      "volume": 1,
+      "voiceText": "Second, a dad's smart TV got an update he didn't want. So over a few weekends, he rewrote its software with four AI models.",
+      "words": [
+        {
+          "text": "Second,",
+          "start": 0,
+          "end": 0.546
+        },
+        {
+          "text": "a",
+          "start": 0.731,
+          "end": 0.789
+        },
+        {
+          "text": "dad's",
+          "start": 0.859,
+          "end": 1.103
+        },
+        {
+          "text": "smart",
+          "start": 1.126,
+          "end": 1.358
+        },
+        {
+          "text": "TV",
+          "start": 1.393,
+          "end": 1.602
+        },
+        {
+          "text": "got",
+          "start": 1.788,
+          "end": 1.962
+        },
+        {
+          "text": "an",
+          "start": 1.997,
+          "end": 2.055
+        },
+        {
+          "text": "update",
+          "start": 2.113,
+          "end": 2.473
+        },
+        {
+          "text": "he",
+          "start": 2.519,
+          "end": 2.624
+        },
+        {
+          "text": "didn't",
+          "start": 2.67,
+          "end": 2.879
+        },
+        {
+          "text": "want.",
+          "start": 2.914,
+          "end": 3.309
+        },
+        {
+          "text": "So",
+          "start": 3.553,
+          "end": 3.68
+        },
+        {
+          "text": "over",
+          "start": 3.75,
+          "end": 3.947
+        },
+        {
+          "text": "a",
+          "start": 3.994,
+          "end": 4.017
+        },
+        {
+          "text": "few",
+          "start": 4.075,
+          "end": 4.214
+        },
+        {
+          "text": "weekends,",
+          "start": 4.249,
+          "end": 4.783
+        },
+        {
+          "text": "he",
+          "start": 4.992,
+          "end": 5.074
+        },
+        {
+          "text": "rewrote",
+          "start": 5.178,
+          "end": 5.503
+        },
+        {
+          "text": "its",
+          "start": 5.526,
+          "end": 5.619
+        },
+        {
+          "text": "software",
+          "start": 5.642,
+          "end": 6.049
+        },
+        {
+          "text": "with",
+          "start": 6.084,
+          "end": 6.211
+        },
+        {
+          "text": "four",
+          "start": 6.281,
+          "end": 6.548
+        },
+        {
+          "text": "AI",
+          "start": 6.653,
+          "end": 6.943
+        },
+        {
+          "text": "models.",
+          "start": 7.001,
+          "end": 7.755
+        }
+      ]
+    },
+    {
+      "id": "audio-run-mw9ii7c1-scene-run-mw9ii7c1-4",
+      "sfxId": "vo-run-mw9ii7c1-scene-4-mw9itemc",
+      "from": 692,
+      "durationInFrames": 240,
+      "volume": 1,
+      "voiceText": "The AI wrote all the code, he made the decisions. Now his daughter controls the TV with her voice. 112 points on Hacker News.",
+      "words": [
+        {
+          "text": "The",
+          "start": 0,
+          "end": 0.116
+        },
+        {
+          "text": "AI",
+          "start": 0.174,
+          "end": 0.383
+        },
+        {
+          "text": "wrote",
+          "start": 0.43,
+          "end": 0.604
+        },
+        {
+          "text": "all",
+          "start": 0.639,
+          "end": 0.813
+        },
+        {
+          "text": "the",
+          "start": 0.848,
+          "end": 0.917
+        },
+        {
+          "text": "code,",
+          "start": 0.952,
+          "end": 1.324
+        },
+        {
+          "text": "he",
+          "start": 1.474,
+          "end": 1.556
+        },
+        {
+          "text": "made",
+          "start": 1.614,
+          "end": 1.765
+        },
+        {
+          "text": "the",
+          "start": 1.788,
+          "end": 1.858
+        },
+        {
+          "text": "decisions.",
+          "start": 1.892,
+          "end": 2.438
+        },
+        {
+          "text": "Now",
+          "start": 2.682,
+          "end": 2.879
+        },
+        {
+          "text": "his",
+          "start": 2.961,
+          "end": 3.065
+        },
+        {
+          "text": "daughter",
+          "start": 3.1,
+          "end": 3.367
+        },
+        {
+          "text": "controls",
+          "start": 3.425,
+          "end": 3.75
+        },
+        {
+          "text": "the",
+          "start": 3.785,
+          "end": 3.855
+        },
+        {
+          "text": "TV",
+          "start": 3.889,
+          "end": 4.122
+        },
+        {
+          "text": "with",
+          "start": 4.307,
+          "end": 4.447
+        },
+        {
+          "text": "her",
+          "start": 4.493,
+          "end": 4.598
+        },
+        {
+          "text": "voice.",
+          "start": 4.656,
+          "end": 5.05
+        },
+        {
+          "text": "112",
+          "start": 5.433,
+          "end": 6.188
+        },
+        {
+          "text": "points",
+          "start": 6.258,
+          "end": 6.502
+        },
+        {
+          "text": "on",
+          "start": 6.571,
+          "end": 6.711
+        },
+        {
+          "text": "Hacker",
+          "start": 6.769,
+          "end": 6.989
+        },
+        {
+          "text": "News.",
+          "start": 7.036,
+          "end": 7.663
+        }
+      ]
+    },
+    {
+      "id": "audio-run-mw9ii7c1-scene-run-mw9ii7c1-5",
+      "sfxId": "vo-run-mw9ii7c1-scene-5-mw9itf6d",
+      "from": 932,
+      "durationInFrames": 153,
+      "volume": 1,
+      "voiceText": "Third, and the craziest: someone got a working Nintendo running inside an AI model.",
+      "words": [
+        {
+          "text": "Third,",
+          "start": 0,
+          "end": 0.383
+        },
+        {
+          "text": "and",
+          "start": 0.418,
+          "end": 0.569
+        },
+        {
+          "text": "the",
+          "start": 0.604,
+          "end": 0.673
+        },
+        {
+          "text": "craziest:",
+          "start": 0.697,
+          "end": 1.3
+        },
+        {
+          "text": "someone",
+          "start": 1.544,
+          "end": 1.823
+        },
+        {
+          "text": "got",
+          "start": 1.846,
+          "end": 1.974
+        },
+        {
+          "text": "a",
+          "start": 2.009,
+          "end": 2.032
+        },
+        {
+          "text": "working",
+          "start": 2.067,
+          "end": 2.322
+        },
+        {
+          "text": "Nintendo",
+          "start": 2.357,
+          "end": 2.763
+        },
+        {
+          "text": "running",
+          "start": 2.868,
+          "end": 3.1
+        },
+        {
+          "text": "inside",
+          "start": 3.135,
+          "end": 3.448
+        },
+        {
+          "text": "an",
+          "start": 3.483,
+          "end": 3.541
+        },
+        {
+          "text": "AI",
+          "start": 3.611,
+          "end": 3.901
+        },
+        {
+          "text": "model.",
+          "start": 3.947,
+          "end": 4.737
+        }
+      ]
+    },
+    {
+      "id": "audio-run-mw9ii7c1-scene-run-mw9ii7c1-6",
+      "sfxId": "vo-run-mw9ii7c1-scene-6-mw9itfoh",
+      "from": 1085,
+      "durationInFrames": 183,
+      "volume": 1,
+      "voiceText": "Claude Opus built it with just two prompts. 298 points on Hacker News.",
+      "words": [
+        {
+          "text": "Claude",
+          "start": 0,
+          "end": 0.255
+        },
+        {
+          "text": "Opus",
+          "start": 0.29,
+          "end": 0.569
+        },
+        {
+          "text": "built",
+          "start": 0.627,
+          "end": 0.813
+        },
+        {
+          "text": "it",
+          "start": 0.859,
+          "end": 0.929
+        },
+        {
+          "text": "with",
+          "start": 0.964,
+          "end": 1.091
+        },
+        {
+          "text": "just",
+          "start": 1.138,
+          "end": 1.312
+        },
+        {
+          "text": "two",
+          "start": 1.347,
+          "end": 1.463
+        },
+        {
+          "text": "prompts.",
+          "start": 1.509,
+          "end": 1.962
+        },
+        {
+          "text": "298",
+          "start": 2.403,
+          "end": 3.181
+        },
+        {
+          "text": "points",
+          "start": 3.239,
+          "end": 3.495
+        },
+        {
+          "text": "on",
+          "start": 3.564,
+          "end": 3.704
+        },
+        {
+          "text": "Hacker",
+          "start": 3.762,
+          "end": 3.982
+        },
+        {
+          "text": "News.",
+          "start": 4.029,
+          "end": 5.759
+        }
+      ]
+    },
+    {
+      "id": "audio-run-mw9ii7c1-scene-run-mw9ii7c1-7",
+      "sfxId": "vo-run-mw9ii7c1-scene-7-mw9itgaw",
+      "from": 1268,
+      "durationInFrames": 217,
+      "volume": 1,
+      "voiceText": "Your turn. Think of the one thing that annoys you most: an app, a device, or a game you wish existed.",
+      "words": [
+        {
+          "text": "Your",
+          "start": 0,
+          "end": 0.209
+        },
+        {
+          "text": "turn.",
+          "start": 0.267,
+          "end": 0.65
+        },
+        {
+          "text": "Think",
+          "start": 0.987,
+          "end": 1.173
+        },
+        {
+          "text": "of",
+          "start": 1.207,
+          "end": 1.265
+        },
+        {
+          "text": "the",
+          "start": 1.3,
+          "end": 1.37
+        },
+        {
+          "text": "one",
+          "start": 1.44,
+          "end": 1.579
+        },
+        {
+          "text": "thing",
+          "start": 1.614,
+          "end": 1.811
+        },
+        {
+          "text": "that",
+          "start": 1.858,
+          "end": 1.985
+        },
+        {
+          "text": "annoys",
+          "start": 2.02,
+          "end": 2.299
+        },
+        {
+          "text": "you",
+          "start": 2.334,
+          "end": 2.415
+        },
+        {
+          "text": "most:",
+          "start": 2.473,
+          "end": 2.902
+        },
+        {
+          "text": "an",
+          "start": 3.111,
+          "end": 3.274
+        },
+        {
+          "text": "app,",
+          "start": 3.344,
+          "end": 3.692
+        },
+        {
+          "text": "a",
+          "start": 3.82,
+          "end": 3.889
+        },
+        {
+          "text": "device,",
+          "start": 3.947,
+          "end": 4.377
+        },
+        {
+          "text": "or",
+          "start": 4.412,
+          "end": 4.563
+        },
+        {
+          "text": "a",
+          "start": 4.609,
+          "end": 4.632
+        },
+        {
+          "text": "game",
+          "start": 4.679,
+          "end": 5.016
+        },
+        {
+          "text": "you",
+          "start": 5.224,
+          "end": 5.329
+        },
+        {
+          "text": "wish",
+          "start": 5.364,
+          "end": 5.492
+        },
+        {
+          "text": "existed.",
+          "start": 5.526,
+          "end": 6.873
+        }
+      ]
+    },
+    {
+      "id": "audio-run-mw9ii7c1-scene-run-mw9ii7c1-8",
+      "sfxId": "vo-run-mw9ii7c1-scene-8-mw9itgtv",
+      "from": 1485,
+      "durationInFrames": 108,
+      "volume": 1,
+      "voiceText": "Then ask Claude Code to build a first version this weekend.",
+      "words": [
+        {
+          "text": "Then",
+          "start": 0,
+          "end": 0.267
+        },
+        {
+          "text": "ask",
+          "start": 0.418,
+          "end": 0.697
+        },
+        {
+          "text": "Claude",
+          "start": 0.731,
+          "end": 0.94
+        },
+        {
+          "text": "Code",
+          "start": 0.975,
+          "end": 1.219
+        },
+        {
+          "text": "to",
+          "start": 1.254,
+          "end": 1.324
+        },
+        {
+          "text": "build",
+          "start": 1.382,
+          "end": 1.579
+        },
+        {
+          "text": "a",
+          "start": 1.649,
+          "end": 1.683
+        },
+        {
+          "text": "first",
+          "start": 1.8,
+          "end": 2.055
+        },
+        {
+          "text": "version",
+          "start": 2.101,
+          "end": 2.357
+        },
+        {
+          "text": "this",
+          "start": 2.392,
+          "end": 2.519
+        },
+        {
+          "text": "weekend.",
+          "start": 2.566,
+          "end": 3.251
+        }
+      ]
+    },
+    {
+      "id": "audio-run-mw9ii7c1-scene-run-mw9ii7c1-9",
+      "sfxId": "vo-run-mw9ii7c1-scene-9-mw9ith82",
+      "from": 1593,
+      "durationInFrames": 95,
+      "volume": 1,
+      "voiceText": "Comment what you'd build, and follow for next week's three.",
+      "words": [
+        {
+          "text": "Comment",
+          "start": 0,
+          "end": 0.406
+        },
+        {
+          "text": "what",
+          "start": 0.43,
+          "end": 0.546
+        },
+        {
+          "text": "you'd",
+          "start": 0.58,
+          "end": 0.731
+        },
+        {
+          "text": "build,",
+          "start": 0.766,
+          "end": 1.091
+        },
+        {
+          "text": "and",
+          "start": 1.196,
+          "end": 1.335
+        },
+        {
+          "text": "follow",
+          "start": 1.405,
+          "end": 1.66
+        },
+        {
+          "text": "for",
+          "start": 1.718,
+          "end": 1.823
+        },
+        {
+          "text": "next",
+          "start": 1.881,
+          "end": 2.055
+        },
+        {
+          "text": "week's",
+          "start": 2.09,
+          "end": 2.287
+        },
+        {
+          "text": "three.",
+          "start": 2.322,
+          "end": 2.833
+        }
+      ]
+    },
+    {
+      "id": "sfx-run-mw9ii7c1-1-1",
+      "sfxId": "soft-whoosh",
+      "from": 83,
+      "durationInFrames": 17,
+      "lane": 1,
+      "volume": 0.45
+    },
+    {
+      "id": "sfx-run-mw9ii7c1-2-1",
+      "sfxId": "d-pop",
+      "from": 223,
+      "durationInFrames": 5,
+      "lane": 1,
+      "volume": 0.5
+    },
+    {
+      "id": "sfx-run-mw9ii7c1-2-2",
+      "sfxId": "d-pop",
+      "from": 341,
+      "durationInFrames": 5,
+      "lane": 1,
+      "volume": 0.5
+    },
+    {
+      "id": "sfx-run-mw9ii7c1-3-1",
+      "sfxId": "soft-whoosh",
+      "from": 602,
+      "durationInFrames": 17,
+      "lane": 1,
+      "volume": 0.45
+    },
+    {
+      "id": "sfx-run-mw9ii7c1-3-2",
+      "sfxId": "d-pop",
+      "from": 635,
+      "durationInFrames": 5,
+      "lane": 1,
+      "volume": 0.5
+    },
+    {
+      "id": "sfx-run-mw9ii7c1-4-1",
+      "sfxId": "d-count-short",
+      "from": 853,
+      "durationInFrames": 39,
+      "lane": 1,
+      "volume": 0.4
+    },
+    {
+      "id": "sfx-run-mw9ii7c1-4-2",
+      "sfxId": "check",
+      "from": 878,
+      "durationInFrames": 7,
+      "lane": 1,
+      "volume": 0.4
+    },
+    {
+      "id": "sfx-run-mw9ii7c1-5-1",
+      "sfxId": "soft-whoosh",
+      "from": 1001,
+      "durationInFrames": 17,
+      "lane": 1,
+      "volume": 0.45
+    },
+    {
+      "id": "sfx-run-mw9ii7c1-6-1",
+      "sfxId": "d-pop",
+      "from": 1123,
+      "durationInFrames": 5,
+      "lane": 1,
+      "volume": 0.5
+    },
+    {
+      "id": "sfx-run-mw9ii7c1-6-2",
+      "sfxId": "d-count-short",
+      "from": 1155,
+      "durationInFrames": 39,
+      "lane": 1,
+      "volume": 0.4
+    },
+    {
+      "id": "sfx-run-mw9ii7c1-7-1",
+      "sfxId": "d-tick",
+      "from": 1366,
+      "durationInFrames": 2,
+      "lane": 1,
+      "volume": 0.35
+    },
+    {
+      "id": "sfx-run-mw9ii7c1-7-2",
+      "sfxId": "d-tick",
+      "from": 1406,
+      "durationInFrames": 2,
+      "lane": 1,
+      "volume": 0.35
+    },
+    {
+      "id": "sfx-run-mw9ii7c1-8-1",
+      "sfxId": "type-word",
+      "from": 1496,
+      "durationInFrames": 7,
+      "lane": 1,
+      "volume": 0.35
+    },
+    {
+      "id": "sfx-run-mw9ii7c1-8-2",
+      "sfxId": "d-pop",
+      "from": 1560,
+      "durationInFrames": 5,
+      "lane": 1,
+      "volume": 0.5
+    },
+    {
+      "id": "sfx-run-mw9ii7c1-9-1",
+      "sfxId": "d-msg-in",
+      "from": 1593,
+      "durationInFrames": 6,
+      "lane": 1,
+      "volume": 0.45
+    },
+    {
+      "id": "sfx-run-mw9ii7c1-9-2",
+      "sfxId": "paper-slide",
+      "from": 1633,
+      "durationInFrames": 21,
+      "lane": 1,
+      "volume": 0.4
+    }
+  ]
+}
