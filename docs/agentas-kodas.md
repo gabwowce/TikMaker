@@ -474,3 +474,25 @@ Visas kodas su paaiškinimais – `docs/scenos-taisymas-kodas.md`.
 | `server/agent/__tests__/writeHooks.test.ts`, `writeScript.test.ts` | kabliukai su pirmu kadru, kabliukas scenarijaus prompte |
 
 Paleisti visus: `npx vitest run` (dabar 38 failai praeina).
+
+---
+
+## Scenarijaus logikos patikra (2026-11-13)
+
+**Kodėl:** tikrame paleidime (`run-mwd8sqqv`) scenarijus praėjo visas taisykles,
+bet buvo nerišlus: kabliukas žadėjo vieną darbą, video vardijo tris, scena
+„People person?“ atsirado iš niekur, pabaigoje – nauji skaičiai. `checkScript`
+skaičiuoja sekundes ir žodžius, savipatikra žiūri kadrus – prasmės netikrino niekas.
+
+**Kaip veikia:** parašius scenarijų, `checkStory` (`server/agent/prompts/checkStory.ts`)
+jį perskaito kaip žiūrovas, girdintis pirmą kartą, ir grąžina (`storyFromAi`,
+`src/agent/run/3-script.ts`): apie ką video vienu sakiniu (`summary`), ką žada
+pirma scena ir ar video tai duoda (`promise`, `kept`), kur nutrūksta siūlas
+(`breaks`: scena + kas negerai). `storyProblems` tai paverčia tokiomis pat
+problemomis kaip `checkScript`, todėl `steps/3-script.ts` jas kartu siunčia į tą
+vienintelį automatinį perrašymą; kas lieka – matosi scenarijaus kortelėje, o
+kortelės viršuje – „A viewer would say: …“. Nepavykęs patikros kvietimas (ne limitas)
+scenarijaus nesustabdo – lieka žurnale.
+
+Testai: `server/agent/__tests__/checkStory.test.ts`, `server/__tests__/agent.test.ts`
+(„sends the story check's breaks to the one rewrite…“).

@@ -36,6 +36,29 @@ export const scriptFromAi = z.object({
   ),
 });
 
+// The script read back the way a viewer hears it (the story check): what the
+// video is about, what its first scene promises, and where the thread breaks.
+// The rules in checkScript count seconds and words; this is the only check
+// that reads the script for sense.
+export const storyFromAi = z.object({
+  // What a viewer would say the video is about after hearing it once.
+  summary: z.string().trim().min(1).max(200),
+  // What the first scene makes the viewer expect, and whether the rest of the
+  // video gives exactly that.
+  promise: z.string().trim().min(1).max(200),
+  kept: z.boolean(),
+  // Where a viewer loses the thread: the scene (counted from 1, as the viewer
+  // counts) and what is wrong there. Empty when the story holds.
+  breaks: z
+    .array(
+      z.object({
+        scene: z.number().int().min(1),
+        problem: z.string().trim().min(1).max(300),
+      }),
+    )
+    .max(6),
+});
+
 // ── From the user (FR-10) ────────────────────────────────────────────────
 
 // "Approve": the script is right, build the video.
@@ -63,6 +86,8 @@ export const scriptProblem = z.object({
 // left after the one automatic fix.
 export const scriptInRun = scriptFromAi.extend({
   problems: z.array(scriptProblem),
+  // The story check of the script as saved (after the one automatic fix).
+  story: storyFromAi.optional(),
   approved: z.boolean().optional(),
   comment: z.string().optional(),
 });
@@ -70,4 +95,5 @@ export const scriptInRun = scriptFromAi.extend({
 export type SceneFromAi = z.infer<typeof sceneFromAi>;
 export type ScriptFromAi = z.infer<typeof scriptFromAi>;
 export type ScriptProblem = z.infer<typeof scriptProblem>;
+export type StoryFromAi = z.infer<typeof storyFromAi>;
 export type ScriptInRun = z.infer<typeof scriptInRun>;

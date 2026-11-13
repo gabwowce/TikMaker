@@ -32,7 +32,9 @@ const fakeModel = new MockLanguageModelV4({
     const [first, second] = [...prompt.matchAll(/- id: ([\w-]+)/g)].map(
       (match) => match[1],
     );
-    const answer = prompt.includes("Example frames:")
+    const answer = prompt.includes("The script, scene by scene:")
+      ? fakeStory(prompt)
+      : prompt.includes("Example frames:")
       ? FAKE_REVIEW
       : prompt.includes("Direction:")
       ? fakeValue(prompt)
@@ -121,6 +123,19 @@ function fakeScript(prompt: string) {
           ],
         }
       : {}),
+  };
+}
+// The story check: every script hangs together, except for an idea saying
+// "LOST THREAD" – its third scene comes from nowhere, even after the rewrite.
+function fakeStory(prompt: string) {
+  const lost = prompt.includes("LOST THREAD");
+  return {
+    summary: "How to undo a commit without losing work",
+    promise: "A way to undo a commit",
+    kept: true,
+    breaks: lost
+      ? [{ scene: 3, problem: "It starts a new topic nobody set up." }]
+      : [],
   };
 }
 // The value check: every idea is worth a video, except one saying "WEAK
@@ -396,6 +411,7 @@ describe("agent runs", () => {
       "pickTemplate",
       "research",
       "writeScript",
+      "checkStory",
     ]);
   });
 
@@ -499,7 +515,12 @@ describe("agent runs", () => {
     const run = await until(id, (run) => run.status === "awaiting_approval");
     expect(run.script?.scenes[0].role).toBe("hook");
     expect(run.script?.problems).toEqual([]);
-    expect(run.steps[run.steps.length - 1].name).toBe("writeScript");
+    // written, then read back by the story check
+    expect(run.steps.slice(-2).map((step) => step.name)).toEqual([
+      "writeScript",
+      "checkStory",
+    ]);
+    expect(run.script?.story?.summary).toBeTruthy();
   });
 
   it("has the model fix the script once when the check finds problems", async () => {
@@ -518,10 +539,38 @@ describe("agent runs", () => {
       "pickTemplate",
       "research",
       "writeScript",
+      "checkStory",
       "writeScript",
+      "checkStory",
     ]);
     expect(run.script?.problems).toEqual([]);
   });
+  it("sends the story check's breaks to the one rewrite and shows what is left", async () => {
+    const { id } = await api.agent.start({
+      projectId: "p1",
+      input: {
+        idea: "LOST THREAD: a script whose third scene comes from nowhere",
+        workspaceId: "dev",
+        hook: "Undo it in 3 seconds",
+      },
+    });
+    const run = await until(id, (run) => run.status === "awaiting_approval");
+    const names = run.steps.map((step) => step.name);
+    expect(names.slice(-4)).toEqual([
+      "writeScript",
+      "checkStory",
+      "writeScript",
+      "checkStory",
+    ]);
+    // the rewrite was told where the thread breaks
+    const rewrite = run.steps.filter((step) => step.name === "writeScript")[1];
+    expect(JSON.stringify(rewrite.prompt)).toContain("Scene 3: It starts a new topic nobody set up.");
+    // still broken after the one fix: the user sees it on the script card
+    expect(run.script?.problems).toEqual([
+      { sceneIndex: 2, message: "Scene 3: It starts a new topic nobody set up." },
+    ]);
+  });
+
   it("writes every scene's picture as code once the script is approved", async () => {
     const { id } = await waitingForApproval();
     await api.agent.approveScript({ runId: id });
@@ -981,7 +1030,10 @@ describe("agent runs", () => {
         run.status === "awaiting_approval" &&
         run.messages?.[0]?.status === "done",
     );
-    expect(run.steps[run.steps.length - 1].name).toBe("writeScript");
+    expect(run.steps.slice(-2).map((step) => step.name)).toEqual([
+      "writeScript",
+      "checkStory",
+    ]);
     expect(run.steps.length).toBeGreaterThan(waiting.steps.length);
     expect(run.script?.comment).toBeUndefined();
     expect(run.messages![0].targets).toEqual([

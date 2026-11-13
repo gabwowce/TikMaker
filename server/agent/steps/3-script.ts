@@ -1,16 +1,23 @@
 import { checkScript } from "../../../src/agent/rules/checkScript.js";
-import type { ScriptInRun } from "../../../src/agent/run/3-script.js";
+import type {
+  ScriptInRun,
+  StoryFromAi,
+} from "../../../src/agent/run/3-script.js";
 import type { AgentRun } from "../../../src/agent/run/run.js";
 import { openJob, type Job } from "../job.js";
+import { isLimitError } from "../limits.js";
+import { checkStory, storyProblems } from "../prompts/checkStory.js";
 import { research } from "../prompts/research.js";
 import { writeScript, type ScriptChange } from "../prompts/writeScript.js";
 import { findTemplate } from "./2-angle.js";
 import { askedBefore, askIfNeeded, withoutAsking } from "./ask.js";
 
 // 3 Script: the model writes the script for the template and the hook; the
-// code checks it and, if anything is wrong, the model fixes it once.
-// What is still wrong after that stays in script.problems for the user to see.
-// Written again with the user's comment when they leave one.
+// code checks it (seconds, words) and the story check reads it back as a
+// viewer would (does it hang together, is it clear); if anything is wrong,
+// the model fixes it once. What is still wrong after that stays in
+// script.problems for the user to see. Written again with the user's comment
+// when they leave one.
 export async function step3Script(job: Job): Promise<void> {
   const { input, template: chosen, hook, script: previous } = job.run;
   if (!chosen || !hook)
@@ -33,6 +40,20 @@ export async function step3Script(job: Job): Promise<void> {
     );
   const check = (script: ScriptChange["previous"]) =>
     checkScript(script, input.targetSeconds, job.knowledge.designRules);
+  // The story check. A call that fails (other than the usage limit, which
+  // pauses the run) is in the run's log; the script goes on without it.
+  const read = async (
+    script: ScriptChange["previous"],
+  ): Promise<StoryFromAi | undefined> => {
+    try {
+      return await job.ai("checkStory", () =>
+        checkStory(input, hook, script.scenes),
+      );
+    } catch (error) {
+      if (isLimitError(error)) throw error;
+      return undefined;
+    }
+  };
 
   // Looked up once per run; a rewrite after a comment reuses the facts. A
   // search that fails (no search quota on the key, the network) is logged and
@@ -58,15 +79,17 @@ export async function step3Script(job: Job): Promise<void> {
   );
   // the agent asked the creator instead of guessing: nothing saved yet
   if (await askIfNeeded(job, "writeScript", script)) return;
-  let problems = check(script);
+  let story = await read(script);
+  let problems = [...check(script), ...storyProblems(story)];
   if (problems.length) {
     script = await write({
       previous: script,
       change: problems.map((problem) => problem.message),
     });
-    problems = check(script);
+    story = await read(script);
+    problems = [...check(script), ...storyProblems(story)];
   }
-  await job.save({ script: { ...withoutAsking(script), problems } });
+  await job.save({ script: { ...withoutAsking(script), problems, story } });
 }
 
 // "Approve" on screen 3: agent.ts then goes on to building the video.
