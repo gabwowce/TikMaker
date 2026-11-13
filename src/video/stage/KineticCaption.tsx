@@ -21,7 +21,12 @@ export type CaptionPhrase = {
   words: CaptionWord[];
   top?: number;
   scale?: number;
+  // "dark" over a scene with a light background (scene.captionInk)
+  ink?: "light" | "dark";
 };
+
+// Dark ink for a light scene: key words near-black, the others mid-grey.
+const DARK_INK = { strong: "#1b1d22", soft: "#6b7280" };
 
 const EXIT_FRAMES = 5;
 const GLIDE_FRAMES = 10;
@@ -37,7 +42,15 @@ function mix(
   return from + ((b ?? fallback) - from) * t;
 }
 
-export function KineticCaption({ phrases }: { phrases: CaptionPhrase[] }) {
+// `outline` (captions.outline): a dark edge around the letters, so the
+// words read over a light scene too – otherwise light words vanish on it.
+export function KineticCaption({
+  phrases,
+  outline = false,
+}: {
+  phrases: CaptionPhrase[];
+  outline?: boolean;
+}) {
   const c = usePack();
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
@@ -97,7 +110,7 @@ export function KineticCaption({ phrases }: { phrases: CaptionPhrase[] }) {
                 />
               ) : (
                 group.words.map((word, w) => (
-                  <Word key={`${g}-${w}`} word={word} frame={frame} fps={fps} />
+                  <Word key={`${g}-${w}`} word={word} frame={frame} fps={fps} outline={outline} dark={phrase.ink === "dark"} />
                 ))
               ),
             )}
@@ -113,11 +126,15 @@ function Word({
   frame,
   fps,
   onBox,
+  outline,
+  dark,
 }: {
   word: CaptionWord;
   frame: number;
   fps: number;
   onBox?: boolean;
+  outline?: boolean;
+  dark?: boolean;
 }) {
   const c = usePack();
   const p = pop(frame, word.at, fps);
@@ -128,7 +145,19 @@ function Word({
       style={{
         display: "inline-block",
         fontFamily: word.strong ? c.fontStrong : c.fontRegular,
-        color: onBox ? c.bg : word.strong ? c.text : c.textSoft,
+        color: onBox
+          ? c.bg
+          : dark
+            ? word.strong
+              ? DARK_INK.strong
+              : DARK_INK.soft
+            : word.strong
+              ? c.text
+              : c.textSoft,
+        // the edge is drawn under the fill, so the letters keep their shape
+        ...(outline && !onBox && !dark
+          ? { WebkitTextStroke: "0.07em #0b0b0d", paintOrder: "stroke fill" }
+          : {}),
         opacity: Math.min(1, p * 2),
         transform: `translateY(${y}px) scale(${scale})`,
         transformOrigin: "50% 80%",

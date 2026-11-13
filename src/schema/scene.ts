@@ -238,6 +238,10 @@ const baseSceneFields = {
   // A motion scene's stage type: where its picture and captions go
   // (src/video/stage/stageTypes.ts). Unset – "top".
   stage: z.enum(stageTypeIds).optional(),
+  // The kinetic captions' ink over this scene: "dark" for a scene that draws
+  // a light background, where the usual light words would vanish. Unset –
+  // light ink.
+  captionInk: z.enum(["light", "dark"]).optional(),
   visual: visualConfigSchema.optional(),
   visualPosition: z
     .object({

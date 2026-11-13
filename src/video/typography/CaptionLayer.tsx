@@ -29,20 +29,21 @@ export function CaptionLayer({ project }: { project: VideoProject }) {
     // Each phrase goes where the stage type of the scene it starts in puts
     // the captions.
     const scenes = computeSceneTimings(project);
-    const place = (frame: number) => {
-      const scene = scenes.find(
-        (s) => frame >= s.from && frame < s.from + s.durationInFrames,
-      )?.scene;
-      return STAGE_LAYOUTS[scene?.stage ?? "top"].caption;
-    };
+    const sceneAt = (frame: number) =>
+      scenes.find((s) => frame >= s.from && frame < s.from + s.durationInFrames)
+        ?.scene;
+    const place = (frame: number) =>
+      STAGE_LAYOUTS[sceneAt(frame)?.stage ?? "top"].caption;
     return (
       <AbsoluteFill
         className="pointer-events-none"
         style={{ zIndex: CAPTIONS_Z_INDEX }}
       >
         <KineticCaption
+          outline={style.outline}
           phrases={timeline.map((chunk) => ({
             ...place(chunk.from),
+            ink: sceneAt(chunk.from)?.captionInk,
             words: chunk.words.map((word) => ({
               text: word.text,
               at: word.from,
