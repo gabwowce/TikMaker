@@ -44,6 +44,14 @@ export function ScriptCard({ run }: { run: AgentRun }) {
       <span className="text-xs text-editor-muted">
         The script – read it, then approve or say what to change
       </span>
+      {/* The story check (prompts/checkStory.ts): what a viewer would take
+          away from it – a quick way to see whether it says what you meant. */}
+      {script.story ? (
+        <span className="text-xs text-editor-text">
+          <span className="text-editor-muted">A viewer would say: </span>“
+          {script.story.summary}”
+        </span>
+      ) : null}
       {script.scenes.map((scene, index) => (
         <SceneRow key={index} index={index} scene={scene} />
       ))}
