@@ -10,6 +10,7 @@ import {
   type CodeInRun,
 } from "../../../src/agent/run/5-pictures.js";
 import type { AgentRun } from "../../../src/agent/run/run.js";
+import { videoIdea } from "../../../src/agent/run/2-angle.js";
 import { createEmptyProject, type VideoProject } from "../../../src/schema/project.js";
 import {
   computeSceneTimings,
@@ -129,7 +130,7 @@ async function codeJob(
     };
   });
   return {
-    input: run.input,
+    input: { ...run.input, idea: videoIdea(run) },
     workspace: job.workspace,
     folder,
     scenes,

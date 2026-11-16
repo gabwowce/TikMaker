@@ -12,7 +12,9 @@ import { askedBefore, askIfNeeded, withoutAsking } from "../tools/ask.js";
 // What is still wrong after that stays in script.problems for the user to see.
 // Written again with the user's comment when they leave one.
 export async function step3Script(job: Job): Promise<void> {
-  const { input, template: chosen, hook, script: previous } = job.run;
+  const { template: chosen, hook, script: previous } = job.run;
+  // the form, with the idea the value check wrote (job.ts)
+  const input = job.input;
   if (!chosen || !hook)
     throw new Error("The script needs a template and a hook first");
   const template = findTemplate(job, chosen.videoTemplateId);
@@ -28,7 +30,6 @@ export async function step3Script(job: Job): Promise<void> {
         undefined,
         job.run.research?.facts,
         askedBefore(job.run, "writeScript"),
-        job.run.value,
       ),
     );
   const check = (script: ScriptChange["previous"]) =>
@@ -41,7 +42,7 @@ export async function step3Script(job: Job): Promise<void> {
   if (!job.run.research && job.run.template?.needsFacts !== false) {
     try {
       const found = await job.ai("research", () =>
-        research(input, job.workspace, undefined, job.run.value),
+        research(input, job.workspace),
       );
       await job.save({
         research: { facts: found.text, sources: found.sources },

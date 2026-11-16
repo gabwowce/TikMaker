@@ -26,7 +26,7 @@ Taisyklės, kurias tikrina kodas be DI, yra vienoje vietoje:
 | # | Failas | Ką daro | DI skambučiai | Būsenos |
 |---|---|---|---|---|
 | 1 | `1-idea.ts` | Forma, mygtukas Start | – | `created` |
-| 2 | `2-angle.ts` | Ar idėja verta → šablonas → kabliukai. **LAUKIA**, kol kūrėjas išsirinks | `checkValue`, `pickTemplate`, `writeHooks` | `picking_template`, `writing_hooks`, `awaiting_hook` |
+| 2 | `2-angle.ts` | Idėjos patikra (įvertina ir **perrašo idėją**, kaip video ją papasakos) → šablonas → kabliukai. **LAUKIA**, kol kūrėjas išsirinks | `checkValue`, `pickTemplate`, `writeHooks` | `picking_template`, `writing_hooks`, `awaiting_hook` |
 | 3 | `3-script.ts` | Faktai → scenarijus → taisyklių patikra → vienas pataisymas. **LAUKIA** patvirtinimo | `research`, `writeScript` | `writing_script`, `awaiting_approval` |
 | 4 | `4-voice.ts` | Įgarsinimas (ElevenLabs, be DI), kad vaizdai prisitaikytų prie tikrų žodžių | – | `generating_voice` |
 | 5 | `5-pictures.ts` | Claude Code kiekvieną sceną parašo kodu, kodas patikrina, ar kompiliuojasi | `writeCode` | `laying_out` |
@@ -34,8 +34,13 @@ Taisyklės, kurias tikrina kodas be DI, yra vienoje vietoje:
 | 7 | `7-chat.ts` | Kūrėjo žinutės: eilė → ką keičia → padaro arba pasiūlo | `routeMessage` + pagal tai, ką reikia keisti | `answering` |
 
 Tvarkos, kurios galima tikėtis:
-- **Klausimų** kūrėjui gali kilti tik 2 ir 3 žingsniuose (`tools/ask.ts`).
-  Po scenarijaus patvirtinimo agentas nebeklausinėja.
+- **Klausimų** kūrėjui gali kilti tik dviejose vietose (`tools/ask.ts`):
+  idėjos patikroje (pagrindinė vieta, visko apie idėją klausiama čia) ir
+  rašant scenarijų. Šablonas ir kabliukai neklausia. Po scenarijaus
+  patvirtinimo agentas nebeklausinėja.
+- **Idėja.** Kūrėjo įvesta idėja (`run.input.idea`) niekada nekeičiama.
+  Patikra parašo patobulintą (`run.value.idea`), ir visi tolesni žingsniai
+  dirba su ja (`job.input`). Seni video, kurie jos neturi, naudoja kūrėjo idėją.
 - **Žinutę** galima rašyti bet kada. Ji laukia eilėje, kol agentas sustos
   ties `awaiting_hook`, `awaiting_approval` arba `done`.
 - Panelė rodo 5 ekranus: Idea, Angle, Script, Building, Result. 4 ir 5

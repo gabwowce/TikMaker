@@ -8,11 +8,9 @@ import type { Knowledge } from "../knowledge.js";
 import {
   creatorFacts,
   productScreens,
-  videoValue,
   whenToAsk,
 } from "./productScreens.js";
 import { callStructured, type StructuredResult } from "../ai/llm.js";
-import type { ValueInRun } from "../../../src/agent/run/2-angle.js";
 
 // Step 3: the script — the video as scenes, in words (FR-08). The model gets
 // the template's scenes in order and fills them in for the idea, with what
@@ -114,7 +112,6 @@ function userPrompt(
   knowledge: ScriptKnowledge,
   revise?: ScriptChange,
   facts?: string,
-  value?: ValueInRun,
 ): string {
   const scenes = template.acts
     .flatMap((act) =>
@@ -162,7 +159,7 @@ function userPrompt(
   const prompt = `Channel: ${workspace.name}. ${workspace.brief}
 Audience: ${workspace.audience}${productScreens(workspace)}${creatorFacts(workspace)}
 
-Idea: ${input.idea}${videoValue(value)}
+Idea: ${input.idea}
 ${
   facts
     ? `
@@ -215,8 +212,6 @@ export async function writeScript(
   facts?: string,
   // it asked the creator already in this run: decide, do not ask again
   asked = false,
-  // what makes the video worth watching (run.value): the script delivers it
-  value?: ValueInRun,
 ): Promise<StructuredResult<ScriptFromAi>> {
   // Any scene role (the template is a guide, not a cage); the first scene is
   // the hook the user chose.
@@ -237,7 +232,6 @@ export async function writeScript(
         knowledge,
         revise,
         facts,
-        value,
       ) + whenToAsk(asked),
     },
     model,

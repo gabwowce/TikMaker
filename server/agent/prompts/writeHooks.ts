@@ -1,5 +1,4 @@
-import { creatorFacts, videoValue } from "./productScreens.js";
-import type { ValueInRun } from "../../../src/agent/run/2-angle.js";
+import { creatorFacts } from "./productScreens.js";
 import { z } from "zod";
 import type {
   HookFormula,
@@ -91,7 +90,6 @@ function userPrompt(
   workspace: Workspace,
   template: VideoTemplate,
   formulas: HookFormula[],
-  value?: ValueInRun,
 ): string {
   const list = formulas
     .map(
@@ -103,7 +101,7 @@ function userPrompt(
   return `Channel: ${workspace.name}. ${workspace.brief}
 Audience: ${workspace.audience}${creatorFacts(workspace)}
 
-Idea: ${input.idea}${videoValue(value)}
+Idea: ${input.idea}
 Template: ${template.name} – ${template.oneLine}
 
 This video can show:
@@ -140,8 +138,6 @@ export async function writeHooks(
   // the conversation: the hooks written before and what the user wants
   // instead – three new ones are written with it
   change?: { previous: HookFromAi[]; instruction: string },
-  // what makes the video worth watching (run.value): the hooks open on it
-  value?: ValueInRun,
 ): Promise<StructuredResult<HookFromAi[]>> {
   // Only the formulas this template's hooks can be (its hookTypes).
   const usable = formulas.filter((f) => template.hookTypes.includes(f.type));
@@ -175,7 +171,7 @@ export async function writeHooks(
     {
       system: SYSTEM,
       user:
-        userPrompt(input, workspace, template, usable, value) +
+        userPrompt(input, workspace, template, usable) +
         (change
           ? `
 

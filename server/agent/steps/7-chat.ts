@@ -193,13 +193,12 @@ export async function step7Hooks(job: Job, instruction: string): Promise<void> {
   const template = findTemplate(job, chosen.videoTemplateId);
   const hooks = await job.ai("writeHooks", () =>
     writeHooks(
-      job.run.input,
+      job.input,
       job.workspace,
       template,
       job.knowledge.hookFormulas,
       undefined,
       { previous: job.run.hooks ?? [], instruction },
-      job.run.value,
     ),
   );
   await job.save({
@@ -266,7 +265,7 @@ async function step7Words(
   const script = job.run.script;
   if (!script) throw new Error("There is no script");
   const words = await job.ai("rewriteScene", () =>
-    rewriteScene(job.run.input, job.workspace, script.scenes, n, instruction),
+    rewriteScene(job.input, job.workspace, script.scenes, n, instruction),
   );
   await job.save({
     script: {

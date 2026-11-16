@@ -10,11 +10,12 @@ import { creatorFacts } from "./productScreens.js";
 // Step 2, first: is the idea worth a video on this channel? Judged against
 // the channel's own direction (workspace.direction, offTopic) before a
 // template, a hook or a word of the script exists – an empty idea written up
-// beautifully is still an empty video.
+// beautifully is still an empty video. The answer also holds the idea written
+// again as the video will tell it: every later step works from that text.
 
 const SYSTEM = `You are the editor of a short-video channel (TikTok, Reels, Shorts). Before anything
-is written, you decide whether a video idea is worth making for THIS channel. You do not
-write the video.
+is written, you decide whether a video idea is worth making for THIS channel, and you
+write the idea down the way the video will tell it. You do not write the video itself.
 
 Judge the idea by the channel's direction and what it does not make. Ask yourself:
 1. wow – would someone scrolling stop? What surprising, beautiful or impossible-looking
@@ -38,18 +39,23 @@ wow or the takeaway would depend on such a thing, it is missing: the verdict is 
 you ask for it. A call to action ("comment X and I'll send it") is not a takeaway. Showing
 something any viewer could get by asking an AI for it is not a wow.
 
-verdict:
+verdict (for the creator):
 - "strong": there is a real wow AND a takeaway for the viewer that one prompt would not
   give, both in the idea itself – and it is not a commodity.
 - "weak": on topic, but generic, a commodity, or nothing real to show – it needs a real
   result the viewer can use, a test or a twist to carry it.
 - "off_channel": the kind of video the channel does not make (see "does not make").
-wow / takeaway: one sentence each, about THIS idea; an empty string when there is none –
-never dress up a generic idea, and never write the creator's result as the takeaway.
 reason: one or two plain sentences for the creator.
-betterAngle (when not "strong"): one stronger take on the same topic that would fit the
-channel – e.g. a test with a result the viewer can use, a comparison, a before/after, what
-it would cost them, the one thing that made the difference.`;
+
+idea: the idea written again, the way the video will tell it – every later step (the
+template, the hooks, the research, the script) works from this text alone, not from the
+creator's words. Keep the topic and everything the creator wrote that is real; make
+clear the wow (what the video SHOWS that makes a scroller stop) and the takeaway (what
+the viewer walks away with), when there are any; work in the facts from the creator.
+Never invent a project, a result, a number or a tool the creator did not give. When the
+verdict is "strong", change as little as possible. When it is not, sharpen it only with
+what is real – and when the creator chose a stronger angle, write that angle.
+A few plain sentences, at most 2000 characters.`;
 
 function userPrompt(input: IdeaFromUser, workspace: Workspace): string {
   const offTopic = workspace.offTopic?.length
@@ -64,22 +70,34 @@ Direction: ${workspace.direction ?? "(not set – judge by the brief and audienc
 Idea: ${input.idea}`;
 }
 
-// The questions differ from the other steps: here asking is how a weak idea
-// gets what it is missing, so a weak or off-channel verdict always asks.
+// The first and main place the agent asks (the script is the only other):
+// a weak or off-channel verdict always asks for what would carry the idea,
+// and any idea may ask for a fact only the creator knows – the template and
+// the hooks never ask.
 function whenToAskValue(asked: boolean): string {
   if (asked)
     return `
 
 You already asked the creator in this run: do not ask again (questions: []). Judge the
-idea with their answers (the facts from the creator above); where they chose to keep it
-as it is, keep it, and write in assumptions what you assumed.`;
+idea with their answers (the facts from the creator above) and write them into idea;
+where they chose to keep it as it is, keep it, and write in assumptions what you
+assumed.`;
   return `
 
-questions: when the verdict is "strong", none. When it is "weak" or "off_channel", ask the
-creator at most 2 short questions that would make it strong – e.g. "Do you have a real
-project, result or your own test to show for this?" (why: it is what the viewer cannot
-get from one prompt), and whether to take the betterAngle instead (options: the
-betterAngle in a few words, "Keep my idea"). Each says why it matters.`;
+questions (at most 3) – this is the one time the creator is asked about the idea; the
+template and the hooks never ask, so ask now:
+- When the verdict is "weak" or "off_channel": up to 2 short questions that would make it
+  strong – e.g. "Do you have a real project, result or your own test to show for this?"
+  (why: it is what the viewer cannot get from one prompt), and whether to take a stronger
+  angle instead – one stronger take on the same topic that fits the channel, e.g. a test
+  with a result the viewer can use, a comparison, a before/after, what it would cost them
+  (options: that angle in a few words, "Keep my idea").
+- Any verdict: a fact the video needs that only the creator knows and the idea does not
+  say – which tool they really use, what the result really looks like on screen, a real
+  number. Only when the answer would change the video; otherwise decide, never invent a
+  fact, and write in assumptions (at most 3) what you assumed.
+Each question says why it matters and, when the answer is one of a few, 2–4 options.
+A "strong" idea that says everything the video needs: no questions.`;
 }
 
 export async function checkValue(

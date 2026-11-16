@@ -12,9 +12,8 @@ import { resumeStatus } from "../limits.js";
 import { agentSays } from "../steps/7-chat.js";
 
 // TOOL: the agent asks (docs/pokalbis-planas.md, 3.2). Not a step of its own:
-// the model calls that decide what the video says (askingSteps – the value
-// check and the template in 2 Angle, the script in 3 Script) may answer with
-// questions instead of guessing a fact. Then:
+// two model calls (askingSteps) may answer with questions instead of guessing
+// a fact – the value check in 2 Angle and the script in 3 Script. Then:
 //
 // 1. askIfNeeded: the questions become the agent's message, the run waits in
 //    "awaiting_answers" (pausedFrom – the step asking) and the step's answer
@@ -75,7 +74,6 @@ export async function askIfNeeded(
 
 const stepName: Record<AskingStep, string> = {
   checkValue: "the idea's value",
-  pickTemplate: "template",
   writeScript: "script",
 };
 
