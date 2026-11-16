@@ -4,7 +4,7 @@ import { fileURLToPath } from "node:url";
 import { describe, expect, it } from "vitest";
 import { ideaFromUser } from "../../../src/agent/run/1-idea.js";
 import { loadKnowledge } from "../knowledge.js";
-import { StructuredCallError } from "../llm.js";
+import { StructuredCallError } from "../ai/llm.js";
 import { writeHooks } from "../prompts/writeHooks.js";
 
 // The real knowledge base: the step must work with the formulas we ship.

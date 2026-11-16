@@ -1,10 +1,10 @@
 import fs from "node:fs";
 import path from "node:path";
 import { z } from "zod";
-import type { VideoProject } from "../../src/schema/project.js";
-import { computeSceneTimings } from "../../src/utils/duration.js";
-import { KNOWLEDGE_DIR, ROOT } from "../config.js";
-import type { SavedVisualBrief } from "./prompts/writeCode.js";
+import type { VideoProject } from "../../../src/schema/project.js";
+import { computeSceneTimings } from "../../../src/utils/duration.js";
+import { KNOWLEDGE_DIR, ROOT } from "../../config.js";
+import type { SavedVisualBrief } from "../prompts/writeCode.js";
 
 // "Mano vizualai" (docs/tikmaker-kryptis.md, "Pakartotinis naudojimas"): a
 // code scene the creator liked, saved for the channel – its code, a frame of

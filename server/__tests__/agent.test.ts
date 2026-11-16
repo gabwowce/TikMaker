@@ -251,7 +251,7 @@ vi.mock("@ai-sdk/google", () => ({
 }));
 
 // No Remotion in tests: the review gets two tiny "frames" written to disk.
-vi.mock("../agent/stills.js", () => ({
+vi.mock("../agent/tools/stills.js", () => ({
   renderStills: async (_project: unknown, folder: string) => {
     fs.mkdirSync(folder, { recursive: true });
     return [0, 1].map((sceneIndex) => {

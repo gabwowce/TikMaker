@@ -5,7 +5,7 @@ import { openJob, type Job } from "../job.js";
 import { research } from "../prompts/research.js";
 import { writeScript, type ScriptChange } from "../prompts/writeScript.js";
 import { findTemplate } from "./2-angle.js";
-import { askedBefore, askIfNeeded, withoutAsking } from "./ask.js";
+import { askedBefore, askIfNeeded, withoutAsking } from "../tools/ask.js";
 
 // 3 Script: the model writes the script for the template and the hook; the
 // code checks it and, if anything is wrong, the model fixes it once.

@@ -13,8 +13,14 @@ import { rewriteScene } from "../prompts/rewriteScene.js";
 import { routeMessage } from "../prompts/routeMessage.js";
 import { writeHooks } from "../prompts/writeHooks.js";
 import { findTemplate } from "./2-angle.js";
-import { rewriteCodeScenes } from "../codeScenes.js";
-import { voiceAround } from "./5-voice.js";
+import { renderStills } from "../tools/stills.js";
+import {
+  reviewProject,
+  type RenderFrames,
+  type ReviewResult,
+} from "../tools/review.js";
+import { voiceAround } from "./4-voice.js";
+import { rewriteCodeScenes, savedProject } from "./5-pictures.js";
 
 // 7 The conversation (docs/pokalbis-planas.md, docs/pokalbis-kodas.md).
 //
@@ -291,6 +297,20 @@ async function step7Words(
     [n],
     `The words of this scene were just rewritten – fit the picture to the new words. ${instruction}`,
   );
+}
+
+// review: the "Review frames" button or a message asking for it – the video
+// as the editor saved it (the creator may have changed it by hand). Only
+// looks: the fixes are proposed by agent.ts and done on "Do it".
+export async function step7Review(
+  job: Job,
+  render: RenderFrames = renderStills,
+): Promise<ReviewResult> {
+  // The project as the editor saved it (AutoSave): what the creator sees.
+  const project = await savedProject(job);
+  if (!project)
+    throw new Error("The project is not saved yet – open it in the editor");
+  return reviewProject(job, project, render);
 }
 
 // ── Messages ───────────────────────────────────────────────────────────────

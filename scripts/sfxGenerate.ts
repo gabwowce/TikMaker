@@ -1,7 +1,7 @@
 // The channel's own sound kit, made with ElevenLabs Sound Effects (yours to
 // use on a paid plan – no stock licence that forbids putting the sounds in
 // TikMaker for other people). For every kind of moment the agent marks
-// (src/agent/run/4-code.ts → soundKind) it makes 3 variants, evens out their
+// (src/agent/run/5-pictures.ts → soundKind) it makes 3 variants, evens out their
 // loudness, and saves them as sfx/tm-<kind>-<n>.mp3 – the Sound tab and the
 // "SoundKit" composition (npm run sfx:listen) play them. Pick the best one per
 // kind in knowledge/shared/sound-kit.json.

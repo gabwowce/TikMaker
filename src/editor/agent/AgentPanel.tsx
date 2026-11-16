@@ -89,7 +89,7 @@ function AgentPanelBody() {
   // the editor while the agent looks at its frames.
   const built =
     run !== undefined &&
-    !["laying_out", "checking", "generating_voice"].includes(run.status);
+    !["generating_voice", "laying_out"].includes(run.status);
   // The agent's scenes are still words only: not code scenes yet.
   const awaitsCode = useProjectStore(
     (s) =>

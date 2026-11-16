@@ -123,7 +123,7 @@ ir scenarijus pirmos scenos `visual` aprašo tą kadrą. Blokų žingsnis jį ma
 
 ## 4. Blokai
 
-### 4.1 Forma – `src/agent/run/4-blocks.ts`
+### 4.1 Forma – `src/video/stage/blocks.ts`
 
 ```ts
 export const blockKind = z.enum([
@@ -237,7 +237,7 @@ export function blockLook(block) {
 Klaidos žinutėje DI gauna savo vaizdų seką („1: logos + terminal; 2: …“) ir stage seką –
 taip mato, kas kartojasi.
 
-### 4.4 Žingsnis – `server/agent/steps/4-building.ts`
+### 4.4 Žingsnis – `server/agent/steps/5-pictures.ts`
 
 ```ts
 let blocks = await pick();
@@ -430,7 +430,7 @@ patį `StageBlock` kaip agento video, todėl ką matai kataloge – tą gaus vid
 
 ## 8. Balsas ir subtitrai
 
-**`server/agent/steps/5-voice.ts`** – kiekvienos scenos balsas per ElevenLabs; grįžta ir
+**`server/agent/steps/4-voice.ts`** – kiekvienos scenos balsas per ElevenLabs; grįžta ir
 kiekvieno žodžio laikas. Išsaugoma po kiekvienos scenos.
 
 **`src/agent/agentVoice.ts`** – scena tampa tokio ilgio, kiek trunka jos balsas (+0,35 s),

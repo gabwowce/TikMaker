@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { transitionPresetSchema } from "../../schema/capabilities";
 
-// 4 Building – the pictures as code (docs/tikmaker-kryptis.md, "Kaip veiks").
+// 5 Pictures – the pictures as code (docs/tikmaker-kryptis.md, "Kaip veiks").
 // Claude Code writes every scene's picture as a Remotion component
 // (src/generated/<project>/scene-N.tsx) by the skills, checks that it compiles
 // and renders, and answers what it made. The editor turns the scenes into

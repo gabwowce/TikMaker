@@ -6,13 +6,9 @@ import { isLimitError, resumeStatus } from "./limits.js";
 import { allRuns, getRun, saveRun } from "./runs.js";
 import { step2Hooks, step2Template } from "./steps/2-angle.js";
 import { step3Script } from "./steps/3-script.js";
-import { step4Building } from "./steps/4-building.js";
-import { step5Voice } from "./steps/5-voice.js";
-import {
-  step6SelfReview,
-  step7Review,
-  type ReviewResult,
-} from "./steps/7-review.js";
+import { step4Voice } from "./steps/4-voice.js";
+import { step5Pictures } from "./steps/5-pictures.js";
+import { step6SelfReview } from "./steps/6-self-review.js";
 import {
   agentProposes,
   agentSays,
@@ -21,21 +17,31 @@ import {
   nextWork,
   step7Change,
   step7Hooks,
+  step7Review,
   step7Route,
   step7ToScript,
   TALK_STATUSES,
 } from "./steps/7-chat.js";
+import type { ReviewResult } from "./tools/review.js";
 
-// The whole agent on one page (screens: docs/d-planas.md).
-
-//   1 Idea      the user fills the form and presses Start
-//   2 Angle     template → hooks → WAIT: the user picks one
-//   3 Script    script → check → WAIT: the user approves
-//   4 Building  voice → the pictures as code (Claude Code with the skills)
-//   5 Result    self-review of the frames → done
-//   7 Talking   the user writes at any time; where the agent waits it takes
-//               the message up, changes what it is about and answers
-//               (docs/pokalbis-planas.md, docs/pokalbis-kodas.md)
+// The whole agent on one page (screens: docs/d-planas.md). The steps, in the
+// order they run (server/agent/steps/, one file each):
+//
+//   1 Idea         the user fills the form and presses Start
+//   2 Angle        value check → template → hooks → WAIT: the user picks one
+//   3 Script       facts → script → rules check (src/agent/rules) →
+//                  WAIT: the user approves
+//   4 Voice        the voiceover (ElevenLabs), so the pictures are timed to
+//                  the real words
+//   5 Pictures     every scene's picture as code (Claude Code with the skills)
+//   6 Self-review  the agent looks at its own frames and fixes them → done
+//   7 Chat         the user writes at any time; where the agent waits it takes
+//                  the message up, changes what it is about and answers
+//                  (docs/pokalbis-planas.md, docs/pokalbis-kodas.md)
+//
+// Not steps – tools several steps use (server/agent/tools/): asking the
+// creator (ask.ts), looking at the frames (review.ts), rendering stills,
+// code versions. The model itself is reached only through server/agent/ai/.
 
 // One worker per run: a run already being worked on is not started a second
 // time (a message sent while the agent works would otherwise start another
@@ -124,12 +130,12 @@ async function runAgent(run: AgentRun): Promise<void> {
           (job.run.script?.scenes.length ?? 0);
         if (job.run.input.generateVoice && !voiced) {
           await job.save({ status: "generating_voice" });
-          await step5Voice(job);
+          await step4Voice(job);
         }
         // Built already (a run continued after a pause): not built again.
         if (!job.run.code) {
           await job.save({ status: "laying_out" });
-          await step4Building(job);
+          await step5Pictures(job);
           if (asking(job)) return;
         }
         // The agent looks at its own frames and fixes them (FR-15, FR-16).
@@ -210,7 +216,7 @@ async function toScript(job: Job): Promise<void> {
   await job.save({ status: "awaiting_approval" });
 }
 
-// A step stopped to ask the creator (steps/ask.ts): the run waits for the
+// A step stopped to ask the creator (tools/ask.ts): the run waits for the
 // answers instead of going on.
 const asking = (job: Job) => job.run.status === "awaiting_answers";
 

@@ -99,7 +99,7 @@ kompiliuojant, o failai ir DI atsakymai ateina vykdymo metu.)
 (Dabartinį API pasitikrinti https://ai-sdk.dev/docs — versijos keičiasi.)
 
 **Parašyti:**
-- [x] `server/agent/llm.ts`: `callStructured(schema, { system, user })` → `{ data, usage, ms, attempts }`; AI SDK v7 `generateText` + `Output.object` (ne pasenęs `generateObject`); neatitinkantis schemos atsakymas – iki 3 bandymų
+- [x] `server/agent/ai/llm.ts`: `callStructured(schema, { system, user })` → `{ data, usage, ms, attempts }`; AI SDK v7 `generateText` + `Output.object` (ne pasenęs `generateObject`); neatitinkantis schemos atsakymas – iki 3 bandymų
 - [x] `scripts/try-llm.ts`: pabandyti su mažyte schema (pvz. `{ title: string, scenes: string[] }`)
 - [x] Modelis ir mąstymas iš `.env.local` (`AGENT_MODEL`, `AGENT_THINKING`). Matavimas: Flash be mąstymo nemokamame plane 110–145 s, Flash-Lite su `minimal` 4–8 s ir ~6 kartus mažiau išvesties tokenų, todėl numatytasis – `gemini-flash-lite-latest`
 
@@ -244,7 +244,7 @@ ciklas sustoja ir kodėl būtinas limitas?
 
 **Parašyti:**
 - [ ] `npm install @remotion/renderer@4.0.290`
-- [ ] `server/agent/stills.ts` (FR-15)
+- [ ] `server/agent/tools/stills.ts` (FR-15)
 - [ ] `server/agent/steps/critique.ts`; pastabos jungiamos į taisymo ciklą
 
 **Patikra:** `out/agent-runs/<id>/` atsiranda PNG; sąmoningai perkrautam

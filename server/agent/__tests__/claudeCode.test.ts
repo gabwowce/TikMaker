@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { z } from "zod";
-import { readAnswer, WrongShapeError } from "../claudeCode.js";
+import { readAnswer, WrongShapeError } from "../ai/claudeCode.js";
 
 // Reading Claude Code's answer – without a real call: stdout as
 // `claude -p --output-format json` returns it (shortened).

@@ -4,7 +4,7 @@ import {
   valueFromAi,
   type ValueFromAi,
 } from "../../../src/agent/run/2-angle.js";
-import { callStructured, type StructuredResult } from "../llm.js";
+import { callStructured, type StructuredResult } from "../ai/llm.js";
 import { creatorFacts } from "./productScreens.js";
 
 // Step 2, first: is the idea worth a video on this channel? Judged against

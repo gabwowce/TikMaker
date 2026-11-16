@@ -9,16 +9,17 @@ import type { AgentRun } from "../../../src/agent/run/run.js";
 import { KNOWLEDGE_DIR } from "../../config.js";
 import { openJob, type Job } from "../job.js";
 import { resumeStatus } from "../limits.js";
-import { agentSays } from "./7-chat.js";
+import { agentSays } from "../steps/7-chat.js";
 
-// 3 The agent asks (docs/pokalbis-planas.md, 3.2). A step that decides what
-// the video says – the template, the script, the blocks – may answer with
+// TOOL: the agent asks (docs/pokalbis-planas.md, 3.2). Not a step of its own:
+// the model calls that decide what the video says (askingSteps – the value
+// check and the template in 2 Angle, the script in 3 Script) may answer with
 // questions instead of guessing a fact. Then:
 //
 // 1. askIfNeeded: the questions become the agent's message, the run waits in
 //    "awaiting_answers" (pausedFrom – the step asking) and the step's answer
 //    is NOT saved: it is made again with the answers.
-// 2. step3Answer (the questions card): the answers go into the message, the
+// 2. answerQuestions (the questions card): the answers go into the message, the
 //    ones marked "remember" into the channel's knowledge, and the run goes
 //    back to where the step starts (resumeStatus) – the step runs again.
 // 3. job.ts gives every later prompt the answers as facts from the creator.
@@ -76,7 +77,6 @@ const stepName: Record<AskingStep, string> = {
   checkValue: "the idea's value",
   pickTemplate: "template",
   writeScript: "script",
-  pickBlocks: "pictures",
 };
 
 // The fields the steps' schemas carry for asking, taken off before the
@@ -90,7 +90,7 @@ export function withoutAsking<T extends Asking>(
 
 // The questions card: the answers saved, "remember" ones written into the
 // channel's knowledge, and the run goes on from where the asking step starts.
-export async function step3Answer(
+export async function answerQuestions(
   run: AgentRun,
   input: AnswerFromUser,
 ): Promise<void> {
@@ -137,7 +137,7 @@ export async function answerFromMessage(
     .reverse()
     .find((message) => message.questions?.some((q) => !q.answer && !q.skipped));
   if (!asked?.questions) throw new Error("There are no open questions");
-  await step3Answer(run, {
+  await answerQuestions(run, {
     runId: run.id,
     messageId: asked.id,
     answers: asked.questions.map((q) => ({ id: q.id, answer: text })),

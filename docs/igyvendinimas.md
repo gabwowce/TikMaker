@@ -93,7 +93,7 @@ Ko **neimam**: Creatomate/Shotstack (mokama išorinė atvaizdavimo API — pakei
 - Po to: `scripts/checkProject.ts` perrašyti, kad kviestų `runRules()` (viena patikros vieta).
 
 **FR-15 Kadrų nuotraukos + vertinimas**
-- Nauja: `server/agent/stills.ts` — `bundle()` vieną kartą run'ui (kešuoti), kiekvienai scenai `renderStill({ frame: from + entranceEnd })` → PNG `out/agent-runs/<runId>/scene-N.png`.
+- Nauja: `server/agent/tools/stills.ts` — `bundle()` vieną kartą run'ui (kešuoti), kiekvienai scenai `renderStill({ frame: from + entranceEnd })` → PNG `out/agent-runs/<runId>/scene-N.png`.
 - TikMaker: tas pats composition id ir props mechanizmas kaip `server/renderJobs.ts` / `scripts/render-project.ts`.
 - Nauja: `steps/critique.ts` — vaizdai base64 + `brief.md` + 4–6 `design/*.png` pavyzdžiai + rubrika → `zodOutputFormat({ critiques: [...] })`.
 
@@ -115,7 +115,7 @@ Ko **neimam**: Creatomate/Shotstack (mokama išorinė atvaizdavimo API — pakei
 - Nauja: `AgentProgressPanel.tsx`; TanStack Query `refetchInterval: 1000` ant `agent.get` (kaip `RenderButton.tsx` poll'ina `renders.get`).
 
 **FR-21 Žurnalas**
-- Nauja: `server/agent/llm.ts` apvalkalas registruoja kiekvieną kvietimą (`usage.input_tokens`, `cache_read_input_tokens`, `output_tokens`, trukmė); `db/agent-runs/<id>.json` per `collectionRouter("agent-runs", agentRunSchema)`.
+- Nauja: `server/agent/ai/llm.ts` apvalkalas registruoja kiekvieną kvietimą (`usage.input_tokens`, `cache_read_input_tokens`, `output_tokens`, trukmė); `db/agent-runs/<id>.json` per `collectionRouter("agent-runs", agentRunSchema)`.
 
 ## 3. NFR: kaip užtikrinam
 

@@ -276,7 +276,7 @@ taisymo ciklo ir kabliukų žingsnio.
 
 **1 sav.**
 - [ ] `@anthropic-ai/sdk`, `ANTHROPIC_API_KEY` į `.env.local`
-- [ ] `server/agent/llm.ts`: kvietimas → Zod validacija → vienas
+- [ ] `server/agent/ai/llm.ts`: kvietimas → Zod validacija → vienas
       pakartojimas su klaidos tekstu; prompt caching; tokenų, kainos ir
       laiko žurnalas
 - [ ] `src/schema/knowledge.ts`: Zod schemos temai, šablonui, kabliukui,
@@ -310,7 +310,7 @@ taisymo ciklo ir kabliukų žingsnio.
       `replaceVisual`, `removeVisual`, `splitScene`, `done`)
 
 **6 sav.**
-- [ ] `@remotion/renderer` (`4.0.290`), `server/agent/stills.ts`
+- [ ] `@remotion/renderer` (`4.0.290`), `server/agent/tools/stills.ts`
 - [ ] `steps/critique.ts`: kadrai + rubrika iš `refs.json` + 4–6 pavyzdiniai
       paveikslėliai
 - [ ] UI 4–5

@@ -12,7 +12,9 @@ import { ScriptCard } from "./ScriptCard";
 import { TemplateCard } from "./TemplateCard";
 import { WorkingLine } from "./WorkingLine";
 // The run's road as the user sees it: the plan's five steps, and which
-// statuses mean "this step is happening now". Idea is done once Start is
+// statuses mean "this step is happening now". The panel shows 5 screens; the
+// agent's 7 steps (server/agent/steps/) fit into them: 4 Voice and 5 Pictures
+// are "Building", 6 Self-review is "Result", 7 Chat happens on any screen. Idea is done once Start is
 // pressed; waiting for the user (awaiting_*) belongs to the step whose answer
 // is being waited for.
 const STEPS: { label: string; statuses: RunStatus[] }[] = [
@@ -22,7 +24,7 @@ const STEPS: { label: string; statuses: RunStatus[] }[] = [
     statuses: ["created", "picking_template", "writing_hooks", "awaiting_hook"],
   },
   { label: "Script", statuses: ["writing_script", "awaiting_approval"] },
-  { label: "Building", statuses: ["generating_voice", "laying_out", "checking"] },
+  { label: "Building", statuses: ["generating_voice", "laying_out"] },
   { label: "Result", statuses: ["reviewing"] },
 ];
 // Which step the run is on. Shared with the collapsed rail's dots, so both

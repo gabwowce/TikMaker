@@ -3,14 +3,14 @@ import type {
   ReferenceSheet,
   ReviewCheck,
 } from "../../../src/agent/knowledge.js";
-import type { CodeInRun } from "../../../src/agent/run/4-code.js";
+import type { CodeInRun } from "../../../src/agent/run/5-pictures.js";
 import type { SceneFromAi } from "../../../src/agent/run/3-script.js";
 import {
   reviewFromAi,
   type ReviewFromAi,
 } from "../../../src/agent/run/7-chat.js";
-import type { Still } from "../stills.js";
-import { callWithImages, type StructuredResult } from "../llm.js";
+import type { Still } from "../tools/stills.js";
+import { callWithImages, type StructuredResult } from "../ai/llm.js";
 
 // 7 Review: the agent looks at its own video. Every other step writes JSON
 // and never sees what the code draws from it, so "one dominant element" or

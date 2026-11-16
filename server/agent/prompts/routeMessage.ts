@@ -1,4 +1,4 @@
-import type { CodeInRun } from "../../../src/agent/run/4-code.js";
+import type { CodeInRun } from "../../../src/agent/run/5-pictures.js";
 import type { SceneFromAi } from "../../../src/agent/run/3-script.js";
 import {
   routeFromAi,
@@ -6,7 +6,7 @@ import {
   type ChatTargetKind,
   type RouteFromAi,
 } from "../../../src/agent/run/7-chat.js";
-import { callStructured, type StructuredResult } from "../llm.js";
+import { callStructured, type StructuredResult } from "../ai/llm.js";
 
 // 7 The conversation: what a user's message changes. A small call on Sonnet
 // (docs/pokalbis-planas.md, decision 2): it reads the message, what was

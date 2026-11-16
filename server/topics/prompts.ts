@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { callStructured, type StructuredResult } from "../agent/llm.js";
+import { callStructured, type StructuredResult } from "../agent/ai/llm.js";
 import type { Signal } from "./collect.js";
 
 // The topic scanner's judgement, in two passes (docs/temos/v2-kriterijai.md):

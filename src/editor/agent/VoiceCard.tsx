@@ -1,7 +1,7 @@
 import type { AgentRun } from "../../agent/run/run";
 import { WorkingLine } from "./WorkingLine";
 
-// 5 Result in the conversation: the voiceover, scene by scene while it is
+// 4 Voice in the conversation: the voiceover, scene by scene while it is
 // being made (the voice step saves after every scene), then how many scenes
 // got one. Only when the form asked for a voiceover.
 export function VoiceCard({ run }: { run: AgentRun }) {

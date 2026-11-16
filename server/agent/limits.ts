@@ -19,9 +19,8 @@ export function resumeStatus(pausedFrom: RunStatus | undefined): RunStatus {
   switch (pausedFrom) {
     case "writing_script":
       return "awaiting_hook"; // the hook is picked: the script is written next
-    case "laying_out":
-    case "checking":
     case "generating_voice":
+    case "laying_out":
     case "reviewing":
       return "awaiting_approval"; // the script is approved: the build goes on
     case "answering":

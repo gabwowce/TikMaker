@@ -1,6 +1,6 @@
 import fs from "node:fs";
 import path from "node:path";
-import { DB_DIR, ROOT } from "../config.js";
+import { DB_DIR, ROOT } from "../../config.js";
 
 // The earlier versions of a code scene (docs/tikmaker-kryptis.md,
 // "Redagavimas" 3): before the agent writes a scene again, the code there now

@@ -4,7 +4,7 @@ import path from "node:path";
 import { describe, expect, it } from "vitest";
 import type { SceneFromAi } from "../../../src/agent/run/3-script.js";
 import { createEmptyProject } from "../../../src/schema/project.js";
-import { framesToReview } from "../frames.js";
+import { framesToReview } from "../tools/frames.js";
 import { writeCodePrompt, type CodeJob } from "../prompts/writeCode.js";
 
 const scene = (voiceover: string): SceneFromAi => ({
@@ -114,7 +114,7 @@ describe("checkScenes", () => {
     const root = fs.mkdtempSync(path.join(os.tmpdir(), "tikmaker-code-"));
     process.env.TIKMAKER_ROOT = root;
     process.env.TIKMAKER_TSC = "off";
-    const { checkScenes } = await import("../codeScenes.js");
+    const { checkScenes } = await import("../steps/5-pictures.js");
     const dir = path.join(root, "src", "generated", "p1");
     fs.mkdirSync(dir, { recursive: true });
     fs.writeFileSync(path.join(dir, "scene-1.tsx"), "export const x = 1;");

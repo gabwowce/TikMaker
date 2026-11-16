@@ -11,7 +11,7 @@ import {
   videoValue,
   whenToAsk,
 } from "./productScreens.js";
-import { callStructured, type StructuredResult } from "../llm.js";
+import { callStructured, type StructuredResult } from "../ai/llm.js";
 import type { ValueInRun } from "../../../src/agent/run/2-angle.js";
 
 // Step 3: the script — the video as scenes, in words (FR-08). The model gets

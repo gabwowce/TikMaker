@@ -462,7 +462,7 @@ tipai (statement → top → bottom → split → top → bottom → full → to
 
 | # | Dalis | Failas | Būklė |
 | --- | --- | --- | --- |
-| 1 | Schema: ką modelis atsiunčia (blokai su turiniu, kertiniai žodžiai, norų sąrašas) | `src/agent/run/4-blocks.ts` | ✓ įrašyta |
+| 1 | Schema: ką modelis atsiunčia (blokai su turiniu, kertiniai žodžiai, norų sąrašas) | `src/video/stage/blocks.ts` | ✓ įrašyta |
 | 2 | Patikra kodu: žodžiai yra įgarsinime ir eina iš eilės, bloko privalomi laukai, bibliotekos id, tempas (pirmas blokas per 1 s, naujas – ne rečiau kaip kas 3 s), kertiniai žodžiai | `src/agent/rules/checkBlocks.ts` + `__tests__/checkBlocks.test.ts` | ✓ įrašyta |
 | 3–4 | Katalogas modeliui (blokai su „kam tinka“, bibliotekos id; „Motion only“ – be ekrano kortelės) ir promptas; taisymas – su ankstesniu atsakymu ir problemomis | `server/agent/prompts/pickBlocks.ts` + `server/agent/__tests__/pickBlocks.test.ts` | duota, rašo naudotoja. Išbandyta su Gemini 2026-11-05: 9 scenos per ~6 s; po vieno taisymo liko 3 tempo pažeidimai (3,1–3,8 s) |
 
@@ -490,7 +490,7 @@ tipai (statement → top → bottom → split → top → bottom → full → to
   **Būklė 2026-11-05:** Claude Code 2.1.318 įdiegtas (`C:\Users\gt123\.local\bin\claude.exe`,
   PATH vartotojui pridėtas), prisijungta su Claude Pro. Išbandyta: `callStructured` per
   Claude Code (sonnet) grąžina atsakymą pagal schemą iš pirmo karto, ir blokų schemą
-  (`blocksFromAi`); 7–9 s kvietimui. Kodas: A `server/agent/claudeCode.ts` + testas
+  (`blocksFromAi`); 7–9 s kvietimui. Kodas: A `server/agent/ai/claudeCode.ts` + testas
   (✓ įrašė naudotoja), B `llm.ts` perjungimas `AGENT_PROVIDER=claude-code` (✓ įrašyta,
   `.env.local` – įjungta). Faktų paieška (`callWithSearch`, žingsnis 3a) – irgi per tą
   patį jungiklį: Claude Code su WebSearch/WebFetch įrankiais, atsakymas pagal schemą
@@ -502,7 +502,7 @@ tipai (statement → top → bottom → split → top → bottom → full → to
 **Gemini apribojimas (2026-11-05):** schemoje negalima riboti scenų skaičiaus
 (`.length`, `.min/.max` išoriniame masyve) – Gemini atmeta užklausą („invalid argument“).
 Scenų skaičių tikrina `checkBlocks`.
-| 5 | Agento žingsnis: „Motion graphics only“ → blokai vietoj maketų; `run.blocks` (patikra + vienas taisymas) | `server/agent/steps/4-building.ts`, `run.ts`, testas `server/__tests__/agent.test.ts` | ✓ įrašyta 2026-11-05 (230 testų) |
+| 5 | Agento žingsnis: „Motion graphics only“ → blokai vietoj maketų; `run.blocks` (patikra + vienas taisymas) | `server/agent/steps/5-pictures.ts`, `run.ts`, testas `server/__tests__/agent.test.ts` | ✓ įrašyta 2026-11-05 (230 testų) |
 | 6 | Video iš blokų: blokai ant žodžių, apačioje kinetinis tekstas iš įgarsinimo, stiliaus paketas (pirma Studijoje, paskui redaktoriuje) | `src/video/stage/` | ✓ (6a–6e) |
 | 6e | Skydelio kortelė „Pictures picked“ (scena → stage → blokai ant žodžių, norų sąrašas, problemos); „stage“ fonas (šviesus centras, slenkantis tinklelis; ženklai vėliau išimti, tinklelis – iš stiliaus) – agento motion scenoms; pilna eiga redaktoriuje su Claude | `src/editor/agent/BlocksCard.tsx`, `src/video/stage/Backdrop.tsx`, fonas `stage`, `projectFromBlocks.ts` | ✓ 2026-11-05. Bandymas (opus): „git reset --soft“, 30 s → 8 scenos (top ×4, split ×3, full ×1), 0 problemų, ~29,6 s video. Norai: Git logotipas, šiukšliadėžė, commit grafas, skydas. **Be balso subtitrų nėra** – jie daromi iš ElevenLabs žodžių laikų |
 | 7 | Testas: agento video 3 skirtingomis temomis | – | vyksta (žr. „Būklė“ viršuje) |
@@ -533,7 +533,7 @@ Eilė: A → C → B.
 | B2 | Patikra kodu: scenų ir blokų skaičius sutampa; blokas neatsiranda „be efekto“ (būtų matomas prieš savo žodį); įėjimas + išėjimas telpa į bloko laiką; judėjimas – ant pasakyto žodžio, rėmo ribose, neužlipa ant kitos vietos vaizdo; perkelti galima tik paskutinį scenos bloką, į sceną su paveikslėliu, ir tada perėjimas – „cut“ | `src/agent/rules/checkMotion.ts` + testai | ✓ |
 | B3 | Žinių bazė: `motion-principles.json` schema ir užkrovimas | `src/agent/knowledge.ts`, `server/agent/knowledge.ts` | ✓ |
 | B4 | Promptas: laiko juosta (scenos, tipai, blokai su turiniu, kada ir kur), judesių sąrašas, principai; taisymas su ankstesniu atsakymu | `server/agent/prompts/pickMotion.ts` + testai | ✓ |
-| B5 | Agento žingsnis po blokų: pickMotion → checkMotion → vienas taisymas → `run.motion` | `server/agent/steps/4-building.ts`, `run.ts` | ✓ |
+| B5 | Agento žingsnis po blokų: pickMotion → checkMotion → vienas taisymas → `run.motion` | `server/agent/steps/5-pictures.ts`, `run.ts` | ✓ |
 | B6 | Video: judesys pritaikomas sluoksniams (įėjimai, išėjimai, keyframe'ai, perkėlimas, perėjimai) | `src/agent/projectFromBlocks.ts` + testai | ✓ |
 | B7 | Skydelio kortelė „Motion“: idėja, kiekvienos scenos perėjimas ir blokų judesiai, problemos | `src/editor/agent/MotionCard.tsx` | ✓ |
 
@@ -553,9 +553,9 @@ Pastabos po B:
 
 - `src/video/stage/` – išdėstymas, kinetinis tekstas, blokai.
 - `src/agent/stylePack.ts`, `knowledge/shared/style-presets/` – stiliaus paketai.
-- Agentas: `src/agent/run/4-blocks.ts`, `4-motion.ts`, `5-voice.ts` (ką modelis atsiunčia);
+- Agentas: `src/video/stage/blocks.ts`, `4-motion.ts`, `5-voice.ts` (ką modelis atsiunčia);
   `src/agent/rules/checkBlocks.ts`, `checkMotion.ts` (patikra kodu);
-  `server/agent/prompts/pickBlocks.ts`, `pickMotion.ts`; `server/agent/steps/4-building.ts`,
+  `server/agent/prompts/pickBlocks.ts`, `pickMotion.ts`; `server/agent/steps/5-pictures.ts`,
   `5-voice.ts`; `src/agent/projectFromBlocks.ts`, `agentVoice.ts` (video redaktoriuje).
 - Žinios: `knowledge/shared/motion-principles.json`.
 - `docs/motion-stilius.md` – judesio ir tempo vertės; `docs/bd/kadrai/insiderforce/` – pavyzdžiai.

@@ -1,4 +1,4 @@
-import type { BlockFromAi } from "../../agent/run/4-blocks";
+import type { BlockFromAi } from "../../video/stage/blocks";
 
 // Every block the agent picks from, with sample content – one place for the
 // "StageCatalog" composition (all of them in a row, in the Studio) and the

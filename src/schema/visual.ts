@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { screenAspectSchema, talkingHeadPlacementSchema } from "./capabilities";
 import type { ScreenAspect } from "../video/visuals/devices/screenFrameSize";
-import { blockFromAi, type BlockFromAi } from "../agent/run/4-blocks";
+import { blockFromAi, type BlockFromAi } from "../video/stage/blocks";
 export type TalkingHeadPlacement = z.infer<typeof talkingHeadPlacementSchema>;
 export const logoIdSchema = z.string();
 export const propIdSchema = z.string();
@@ -341,7 +341,7 @@ export const visualConfigSchema: z.ZodType<VisualConfig> = z.discriminatedUnion(
       component: z.string().min(1),
     }),
     // One block of a motion scene (src/video/stage/), as the agent picked it
-    // (src/agent/run/4-blocks.ts); drawn the size of the stage's top zone.
+    // (src/video/stage/blocks.ts); drawn the size of the stage's top zone.
     z.object({
       type: z.literal("stage-block"),
       block: blockFromAi,

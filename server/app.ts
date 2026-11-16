@@ -1,7 +1,7 @@
 import { createExpressMiddleware } from "@trpc/server/adapters/express";
 import express from "express";
 import fs from "node:fs";
-import { visualFramePath } from "./agent/visuals.js";
+import { visualFramePath } from "./agent/tools/visuals.js";
 import { getRenderJob } from "./renderJobs.js";
 import { appRouter } from "./trpc/router.js";
 

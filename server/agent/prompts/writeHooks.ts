@@ -12,12 +12,12 @@ import {
   hookFromAi,
   type HookFromAi,
 } from "../../../src/agent/run/2-angle.js";
-import { blockKind } from "../../../src/agent/run/4-blocks.js";
+import { blockKind } from "../../../src/video/stage/blocks.js";
 import {
   generatedLogos,
   generatedProps,
 } from "../../../src/registries/assets.generated.js";
-import { callStructured, type StructuredResult } from "../llm.js";
+import { callStructured, type StructuredResult } from "../ai/llm.js";
 
 // Step 2b: three opening lines for the idea (FR-06). The model sees only the
 // formulas whose type the template allows, with one example each — enough to

@@ -2,7 +2,7 @@ import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 import { videoProjectSchema } from "../../src/schema/project.js";
 import { parseProject } from "../../src/utils/normalizeProject.js";
-import { deleteVisual, listVisuals, saveVisual } from "../agent/visuals.js";
+import { deleteVisual, listVisuals, saveVisual } from "../agent/tools/visuals.js";
 import { procedure, router } from "./init.js";
 
 // "Mano vizualai": the channel's saved code scenes (server/agent/visuals.ts).
@@ -26,7 +26,7 @@ export const visualsRouter = router({
     )
     .mutation(async ({ input }) => {
       // Remotion is loaded only when a frame is made
-      const { renderFrame } = await import("../agent/stills.js");
+      const { renderFrame } = await import("../agent/tools/stills.js");
       try {
         return await saveVisual(
           { ...input, project: parseProject(input.project) },

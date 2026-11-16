@@ -4,9 +4,9 @@ import type { AgentRun } from "./run/run";
 
 // After "Approve": the script becomes the open project's scenes, so it shows
 // in Storyboard and can be edited by hand. Only words for now – what each
-// scene is for, what is said, written and shown; 4 Building adds the layout.
+// scene is for, what is said, written and shown; 5 Pictures adds the pictures.
 
-// Which TikMaker scene draws the role until 4 Building picks a layout.
+// Which TikMaker scene draws the role until 5 Pictures writes its code.
 function sceneTypeFor(role: ScenePlanRole): SceneType {
   if (role === "hook") return "hook-centered";
   if (role === "cta") return "takeaway";

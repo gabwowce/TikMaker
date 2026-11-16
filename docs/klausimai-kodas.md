@@ -28,7 +28,7 @@ export const askingFromAi = {
   Pridedama prie visų promptų, kurie rašo ar rodo video (šablono, hook,
   scenarijaus, blokų, scenos perrašymo).
 
-**`server/agent/steps/ask.ts`** (naujas):
+**`server/agent/tools/ask.ts`** (naujas):
 
 ```ts
 if (await askIfNeeded(job, "writeScript", script)) return;   // žingsnyje

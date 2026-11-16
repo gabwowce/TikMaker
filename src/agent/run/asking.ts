@@ -24,13 +24,11 @@ export const askingFromAi = {
   assumptions: z.array(z.string().trim().min(5).max(200)).max(3).optional(),
 };
 
-// The steps that may ask (their names in the run's log).
-export const askingSteps = [
-  "checkValue",
-  "pickTemplate",
-  "writeScript",
-  "pickBlocks",
-] as const;
+// The model calls that may ask (their names in the run's log): the ones that
+// decide what the video says. 2 Angle – checkValue, pickTemplate; 3 Script –
+// writeScript. No other call asks, so a question can come only before the
+// script is approved; after that the agent works without stopping to ask.
+export const askingSteps = ["checkValue", "pickTemplate", "writeScript"] as const;
 export type AskingStep = (typeof askingSteps)[number];
 export type QuestionFromAi = z.infer<typeof questionFromAi>;
 export type Asking = {

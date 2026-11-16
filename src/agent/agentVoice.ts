@@ -1,9 +1,9 @@
 import type { VideoProject } from "../schema/project";
-import type { SceneVoice } from "./run/5-voice";
+import type { SceneVoice } from "./run/4-voice";
 import { computeSceneTimings } from "../utils/duration";
 import type { AgentRun } from "./run/run";
 
-// 5 Result in the editor: the agent's voiceover (run.voice, one clip per
+// 4 Voice in the editor: the agent's voiceover (run.voice, one clip per
 // scene) goes into the project. Each scene is as long as its voice says it
 // is, and each clip sits under its scene with its word timings – which is
 // what the captions are drawn from (CaptionLayer).

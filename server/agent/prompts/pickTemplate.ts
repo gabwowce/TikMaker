@@ -6,7 +6,7 @@ import {
   type TemplateFromAi,
 } from "../../../src/agent/run/2-angle.js";
 import type { VideoTemplate, Workspace } from "../../../src/agent/knowledge.js";
-import { callStructured, type StructuredResult } from "../llm.js";
+import { callStructured, type StructuredResult } from "../ai/llm.js";
 
 // Step 2a: which video template fits the idea (FR-04). The model sees only a
 // short card per template — not its acts and scenes — which is all it needs

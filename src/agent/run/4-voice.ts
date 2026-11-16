@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { captionWordSchema } from "../../schema/project";
 
-// 5 Result: one voiceover per scene, made by the code (ElevenLabs), not by the
+// 4 Voice: one voiceover per scene, made by the code (ElevenLabs), not by the
 // AI. `words` – when each word is spoken, in seconds from the clip's start;
 // the editor puts each clip under its scene and the blocks onto these words.
 export const sceneVoice = z.object({

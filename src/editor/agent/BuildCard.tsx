@@ -2,7 +2,7 @@ import type { AgentRun } from "../../agent/run/run";
 import { FoldCard } from "./FoldCard";
 import { WorkingLine } from "./WorkingLine";
 
-// 4 Building in the conversation: one line while Claude Code writes the
+// 5 Pictures in the conversation: one line while Claude Code writes the
 // pictures as code (it takes minutes), then what every scene shows – folded –
 // with what the checks still found and what the kit lacked.
 export function BuildCard({ run }: { run: AgentRun }) {

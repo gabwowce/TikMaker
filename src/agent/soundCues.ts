@@ -3,7 +3,7 @@ import type { VideoProject } from "../schema/project";
 import { computeSceneTimings, projectDurationInFrames } from "../utils/duration";
 import { sceneWords } from "../utils/sceneWords";
 import { spokenWords } from "../utils/voWords";
-import type { SoundKind } from "./run/4-code";
+import type { SoundKind } from "./run/5-pictures";
 import type { AgentRun } from "./run/run";
 
 // Sound effects of the agent's code scenes (docs/tikmaker-kryptis.md): the

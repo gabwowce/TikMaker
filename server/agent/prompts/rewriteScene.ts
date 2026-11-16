@@ -2,7 +2,7 @@ import { z } from "zod";
 import type { Workspace } from "../../../src/agent/knowledge.js";
 import type { IdeaFromUser } from "../../../src/agent/run/1-idea.js";
 import type { SceneFromAi } from "../../../src/agent/run/3-script.js";
-import { callStructured, type StructuredResult } from "../llm.js";
+import { callStructured, type StructuredResult } from "../ai/llm.js";
 import { creatorFacts, productScreens } from "./productScreens.js";
 
 // 7 The conversation, target "words": one scene's voiceover written again

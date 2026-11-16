@@ -2,12 +2,12 @@ import type { AgentRun } from "../../src/agent/run/run.js";
 import type { Workspace } from "../../src/agent/knowledge.js";
 import { KNOWLEDGE_DIR } from "../config.js";
 import { loadKnowledge, type Knowledge } from "./knowledge.js";
-import { inStep } from "./models.js";
+import { inStep } from "./ai/models.js";
 import {
   StructuredCallError,
   type CallLog,
   type StructuredResult,
-} from "./llm.js";
+} from "./ai/llm.js";
 import { updateRun } from "./runs.js";
 
 // What every step (steps/*.ts) works with: the run, the knowledge base and the

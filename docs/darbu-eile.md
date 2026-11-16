@@ -56,7 +56,7 @@ Išsamiau: `docs/mano-planas.md` 1 žingsnis (schemos), `docs/bd/sprendimai.md` 
 ## D. Agentas
 
 **`docs/d-planas.md`** – kiekvienas žingsnis su serverio ir sąsajos dalimi:
-- [x] D2. Pirmas DI kvietimas (`server/agent/llm.ts`)
+- [x] D2. Pirmas DI kvietimas (`server/agent/ai/llm.ts`)
 - [ ] D3. Paleidimas fone + AI skydelio karkasas (serveris padarytas, liko skydelis)
 - [ ] D4. Šablono parinkimas · D5. Kabliukai · D6. Scenarijus
 - [ ] D7. Išdėstymas ir kompiliatorius · D8. Taisyklės ir taisymo ciklas

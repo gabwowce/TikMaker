@@ -1,7 +1,7 @@
 import { config as loadEnv } from "dotenv";
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import path from "node:path";
-import { inStep } from "../server/agent/models";
+import { inStep } from "../server/agent/ai/models";
 import {
   channelUsualViews,
   hackerNews,

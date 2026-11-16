@@ -164,7 +164,7 @@ export function runClaudeCode(
   return spawnClaude(args, cwd, prompt.user);
 }
 
-// Claude Code as a coding agent (the pictures as code, steps/4-building.ts):
+// Claude Code as a coding agent (the pictures as code, steps/5-pictures.ts):
 // in the project's own folder, with its usual system prompt plus ours, its
 // skills (.claude/skills) and the tools it may use – `allow` are permission
 // rules (e.g. "Edit(src/generated/p1/**)", "Bash(npx tsc:*)"); anything else

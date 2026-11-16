@@ -1,5 +1,5 @@
-import type { VideoProject } from "../../src/schema/project.js";
-import { computeSceneTimings } from "../../src/utils/duration.js";
+import type { VideoProject } from "../../../src/schema/project.js";
+import { computeSceneTimings } from "../../../src/utils/duration.js";
 
 // Which frames the review looks at (stills.ts renders them). Kept apart from
 // the rendering, which pulls in Remotion's bundler, so it can be tested alone.

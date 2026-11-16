@@ -6,7 +6,7 @@ import {
   callWithSearch,
   type SearchAnswer,
   type StructuredResult,
-} from "../llm.js";
+} from "../ai/llm.js";
 
 // Step 3a: before the script, the agent looks the topic up on the web, so the
 // video can explain more than the idea itself says. The facts go into the

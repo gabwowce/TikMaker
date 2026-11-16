@@ -4,7 +4,7 @@ import { scenePlanRoleSchema } from "../../schema/scene";
 
 // 3 Script — the video as scenes, in words only: what each scene is for, what
 // is said, what is written on screen and what is shown. Where things go on
-// screen comes later (4 Building).
+// screen comes later (5 Pictures).
 
 // ── From the model ───────────────────────────────────────────────────────
 

@@ -10,7 +10,7 @@ import { checkValue } from "../prompts/checkValue.js";
 import { pickTemplate } from "../prompts/pickTemplate.js";
 import { agentSays } from "./7-chat.js";
 import { writeHooks } from "../prompts/writeHooks.js";
-import { askedBefore, askIfNeeded, withoutAsking } from "./ask.js";
+import { askedBefore, askIfNeeded, withoutAsking } from "../tools/ask.js";
 
 // 2 Angle, part one: is the idea worth a video, then which template the video
 // follows – the one chosen in the form, or else the model picks one.

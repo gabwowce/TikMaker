@@ -162,7 +162,7 @@ Attached (selected in the editor):
 Message: Make this scene's words simpler and shorter
 ```
 
-**Kaip jis išsiunčiamas.** `callStructured(routeFromAi, {system, user}, undefined, { model: "sonnet" })` (`server/agent/llm.ts`). Kadangi `AGENT_PROVIDER=claude-code`, kviečiama `callClaudeCode` (`server/agent/claudeCode.ts`). Ji paleidžia Claude Code be lango:
+**Kaip jis išsiunčiamas.** `callStructured(routeFromAi, {system, user}, undefined, { model: "sonnet" })` (`server/agent/ai/llm.ts`). Kadangi `AGENT_PROVIDER=claude-code`, kviečiama `callClaudeCode` (`server/agent/ai/claudeCode.ts`). Ji paleidžia Claude Code be lango:
 
 ```
 claude -p --output-format json

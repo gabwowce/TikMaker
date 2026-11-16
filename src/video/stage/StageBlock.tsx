@@ -1,6 +1,6 @@
 import { useContext, type ReactNode } from "react";
 import { VisualStartContext } from "../visuals/visualStart";
-import type { BlockFromAi } from "../../agent/run/4-blocks";
+import type { BlockFromAi } from "../../video/stage/blocks";
 import {
   BigNumber,
   Compare,
@@ -36,7 +36,7 @@ import {
 } from "./StageVisuals";
 import { stage } from "./tokens";
 
-// One block drawn from its data (src/agent/run/4-blocks.ts) – the one place
+// One block drawn from its data (src/video/stage/blocks.ts) – the one place
 // that turns the agent's block into a component. `at` is the frame its word
 // is said on; the parts inside it (coins, list points, nodes) follow STEP
 // frames apart – or each on its own spoken word when `partAts` gives them.

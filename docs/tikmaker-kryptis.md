@@ -135,7 +135,7 @@ Kiekvienas žingsnis patikrinamas atskirai (testai + naršyklė).
    rodo formą; nuotraukų/įrašų vietos pildomos per esamą `AssetSelect`
    (Import…) vietoj `brand/media.ts`. Brand kit perkeliamas iš eksperimento į
    `src/video/brand/`.
-3. **Agento žingsnis: vaizdai kodu.** `server/agent/steps/4-building.ts`
+3. **Agento žingsnis: vaizdai kodu.** `server/agent/steps/5-pictures.ts`
    vietoj `pickBlocks`/`pickMotion` paleidžia Claude Code (`claude -p` su
    Write/Read/Edit ir `tsc` + `remotion still`) su skilais
    (`remotion-best-practices`, `tikmaker-explainer` + brand kit taisyklės,
@@ -169,9 +169,9 @@ lieka „vaizdai kodu pagal skilus“. Reikalavimus apie išdėstymo parinkimą
 |---|---|---|
 | 1 Kodo scena | scenos tipas `code`: `scene.code = { file, params }`, kodas `src/generated/<projektas>/scene-N.tsx`; Player (Vite) ir renderis (webpack) krauna tuo pačiu dinaminiu importu; scena gauna savo žodžius iš balso (`sceneWords`); sugedęs kodas rodo klaidą tik toje scenoje. 4 bandymas perkeltas į projektą `code-video-brand` | `src/video/code/`, `src/video/SceneRenderer.tsx`, `src/generated/code-video-brand/` |
 | 2 Laukai | `export const schema = z.object({...})` su `field.text/number/word/photo/recording/...` → forma Inspector'iuje; nuotraukų ir įrašų vietos per `AssetSelect` (Import…); brand kit `src/video/brand/` | `src/video/brand/fields.ts`, `src/editor/inspector/CodeSceneFields.tsx` |
-| 3 Agentas | 4 žingsnis = Claude Code (`claude -p`, opus) projekto aplanke su skilais `.claude/skills/remotion-best-practices` + `.claude/skills/tikmaker-explainer`; rašyti leidžiama tik `src/generated/<projektas>/`; pats paleidžia `tsc` ir `remotion still`, žiūri kadrus; serveris dar kartą tikrina `tsc`, vieną kartą grąžina klaidas, nepavykus – paprasta scena su klaida. Balsas dabar daromas prieš vaizdus. Blokų kelias (`pickBlocks`, `pickMotion`, `projectFromBlocks`, `checkBlocks/Motion`) išmestas | `server/agent/codeScenes.ts`, `server/agent/prompts/writeCode.ts` |
-| 4 Taisymas žinute | `pictures`/`motion`/`words` perrašo tos scenos failą (peržiūra – visas taisytinas scenas vienu paleidimu); senas kodas `db/code-versions/`, Undo Inspector'iuje | `server/agent/codeVersions.ts`, `agent.undoScene` |
-| 5 Mano vizualai | „☆ Save as my visual“ → `knowledge/workspaces/<id>/visuals/<id>/` (kodas, shared, kadras, aprašas, laukai); Visuals › My visuals su „Use in scene N“; agentas sąrašą gauna rašydamas vaizdus | `server/agent/visuals.ts`, `src/editor/library/VisualLibrary.tsx` |
+| 3 Agentas | 4 žingsnis = Claude Code (`claude -p`, opus) projekto aplanke su skilais `.claude/skills/remotion-best-practices` + `.claude/skills/tikmaker-explainer`; rašyti leidžiama tik `src/generated/<projektas>/`; pats paleidžia `tsc` ir `remotion still`, žiūri kadrus; serveris dar kartą tikrina `tsc`, vieną kartą grąžina klaidas, nepavykus – paprasta scena su klaida. Balsas dabar daromas prieš vaizdus. Blokų kelias (`pickBlocks`, `pickMotion`, `projectFromBlocks`, `checkBlocks/Motion`) išmestas | `server/agent/steps/5-pictures.ts`, `server/agent/prompts/writeCode.ts` |
+| 4 Taisymas žinute | `pictures`/`motion`/`words` perrašo tos scenos failą (peržiūra – visas taisytinas scenas vienu paleidimu); senas kodas `db/code-versions/`, Undo Inspector'iuje | `server/agent/tools/codeVersions.ts`, `agent.undoScene` |
+| 5 Mano vizualai | „☆ Save as my visual“ → `knowledge/workspaces/<id>/visuals/<id>/` (kodas, shared, kadras, aprašas, laukai); Visuals › My visuals su „Use in scene N“; agentas sąrašą gauna rašydamas vaizdus | `server/agent/tools/visuals.ts`, `src/editor/library/VisualLibrary.tsx` |
 
 ### 6 žingsnis: pilnas bandymas
 

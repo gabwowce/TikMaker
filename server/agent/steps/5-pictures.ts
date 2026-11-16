@@ -1,34 +1,47 @@
 import { spawn } from "node:child_process";
 import fs from "node:fs";
 import path from "node:path";
-import { projectFromCode } from "../../src/agent/projectFromCode.js";
-import { projectFromScript } from "../../src/agent/projectFromScript.js";
+import { projectFromCode } from "../../../src/agent/projectFromCode.js";
+import { projectFromScript } from "../../../src/agent/projectFromScript.js";
 import {
   codeFile,
   codeFolder,
   type CodeFromAi,
   type CodeInRun,
-} from "../../src/agent/run/4-code.js";
-import type { AgentRun } from "../../src/agent/run/run.js";
-import { createEmptyProject, type VideoProject } from "../../src/schema/project.js";
+} from "../../../src/agent/run/5-pictures.js";
+import type { AgentRun } from "../../../src/agent/run/run.js";
+import { createEmptyProject, type VideoProject } from "../../../src/schema/project.js";
 import {
   computeSceneTimings,
   projectDurationInFrames,
-} from "../../src/utils/duration.js";
-import { parseProject } from "../../src/utils/normalizeProject.js";
-import { sceneWords } from "../../src/utils/sceneWords.js";
-import { ROOT } from "../config.js";
-import { readJson, slugify } from "../db.js";
-import { restoreVersion, saveVersion } from "./codeVersions.js";
-import type { Job } from "./job.js";
-import { writeCode, type CodeBriefScene, type CodeJob } from "./prompts/writeCode.js";
-import { savedVisualsBrief } from "./visuals.js";
+} from "../../../src/utils/duration.js";
+import { parseProject } from "../../../src/utils/normalizeProject.js";
+import { sceneWords } from "../../../src/utils/sceneWords.js";
+import { ROOT } from "../../config.js";
+import { readJson, slugify } from "../../db.js";
+import { restoreVersion, saveVersion } from "../tools/codeVersions.js";
+import type { Job } from "../job.js";
+import { writeCode, type CodeBriefScene, type CodeJob } from "../prompts/writeCode.js";
+import { savedVisualsBrief } from "../tools/visuals.js";
 
-// The pictures as code (docs/tikmaker-kryptis.md): Claude Code writes the
-// scenes' files (prompts/writeCode.ts); the code here checks them – every
-// file there, a component exported, `tsc` clean in the folder – gives the
-// errors back once, and a scene that still fails gets a plain fallback (its
-// on-screen words) with the error kept, so the video always renders.
+// 5 Pictures (docs/tikmaker-kryptis.md): every scene's picture is written as
+// code by Claude Code with the skills – the official Remotion skill, the
+// TikMaker style skill and the channel's brand kit (prompts/writeCode.ts).
+// The code here checks them – every file there, a component exported, `tsc`
+// clean in the folder – gives the errors back once, and a scene that still
+// fails gets a plain fallback (its on-screen words) with the error kept, so
+// the video always renders; its error stays in code.problems.
+// The editor builds the project from the run (projectFromCode) – the agent
+// never writes the project itself.
+//
+// Also used later: 6 Self-review and 7 Chat write scenes again with
+// rewriteCodeScenes; the "Undo" button goes back a version (undoCodeScene).
+
+export async function step5Pictures(job: Job): Promise<void> {
+  if (!job.run.script?.approved)
+    throw new Error("The video is built only after the script is approved");
+  await writeCodeScenes(job);
+}
 
 export const generatedDir = () => path.join(ROOT, "src", "generated");
 
@@ -129,7 +142,7 @@ async function codeJob(
   };
 }
 
-// 4 Building: every scene written. Returns the run's code.
+// 5 Pictures: every scene written. Returns the run's code.
 export async function writeCodeScenes(job: Job): Promise<CodeInRun> {
   const count = job.run.script?.scenes.length ?? 0;
   const all = [...Array(count).keys()];

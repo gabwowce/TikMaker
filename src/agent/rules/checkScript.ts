@@ -6,10 +6,19 @@ import {
   voDurationSeconds,
 } from "../../utils/pacing";
 
-// FR-09: the script checked by code, no AI — every scene the template needs
-// is there, the video is not much longer than asked for, and no scene puts
-// too many words on screen. A problem found here is sent back to the model
+// THE RULES (FR-09): the one place the agent's work is checked by code, no
+// AI. Run in 3 Script (server/agent/steps/3-script.ts), right after the
+// model writes the script: a problem found here is sent back to the model
 // once; what is still wrong after that is shown to the user.
+//
+// The limits live in knowledge/shared/design-rules.json (`check` names the
+// measure), so a number is changed there, not in the code:
+//   sceneSeconds          a scene's voiceover is not longer than this
+//   hookSeconds           the same for the first scene, the hook
+//   onScreenWordsPerScene the words on screen in a scene
+//   voiceWordsPerSecond   not checked here (a script has no voice yet) – the
+//                         script prompt asks the model to keep to it
+// And, without a rule: the whole video at most 15 % over the wanted length.
 
 // How far past the wanted length the script may run.
 export const MAX_OVER_TARGET = 0.15;

@@ -8,7 +8,7 @@ const root = fs.mkdtempSync(path.join(os.tmpdir(), "tikmaker-visuals-"));
 process.env.TIKMAKER_ROOT = root;
 process.env.TIKMAKER_KNOWLEDGE = path.join(root, "knowledge");
 const { listVisuals, saveVisual, savedVisualsBrief, deleteVisual } = await import(
-  "../visuals.js"
+  "../tools/visuals.js"
 );
 afterAll(() => fs.rmSync(root, { recursive: true, force: true }));
 

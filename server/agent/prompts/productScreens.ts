@@ -30,8 +30,8 @@ What makes this video worth watching – the video must deliver it:
 ${lines.join("\n")}`;
 }
 
-// When a step may ask the creator instead of guessing (pickTemplate,
-// writeScript, pickBlocks). `asked`: it asked already in this run – then it
+// When a step may ask the creator instead of guessing (the calls in
+// askingSteps, src/agent/run/asking.ts). `asked`: it asked already in this run – then it
 // decides by itself.
 export function whenToAsk(asked: boolean): string {
   if (asked)

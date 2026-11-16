@@ -1,5 +1,5 @@
 import { AbsoluteFill, Sequence } from "remotion";
-import type { BlockFromAi } from "../../agent/run/4-blocks";
+import type { BlockFromAi } from "../../video/stage/blocks";
 import type { StylePack } from "../../agent/stylePack";
 import { ensureFontsLoaded } from "../typography/fonts";
 import { KineticCaption, phrasesFrom } from "./KineticCaption";

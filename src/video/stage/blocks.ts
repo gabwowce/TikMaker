@@ -1,12 +1,10 @@
 import { z } from "zod";
-import { stageTypeIds } from "../../video/stage/stageTypes";
-import { askingFromAi } from "./asking";
 
-// 4 Building (motion) – blocks (docs/motion-planas.md, stage C). The model
-// turns the approved script into pictures: for every scene 1–4 blocks that
-// replace one another in the top zone, and the key words for the spoken text
-// at the bottom. Where a block stands, how big it is and how it moves is up to
-// the code – the model only picks the block and writes what goes into it.
+// The stage's blocks: a logo chain, a code card, a list, a diagram… – one
+// picture of a stage scene (StageBlock.tsx draws it). Saved projects and the
+// visual library still hold them. They come from the earlier way of building
+// pictures, where the model picked blocks; the agent now writes every scene as
+// code (server/agent/steps/5-pictures.ts), so no agent step makes them.
 
 // The blocks – the same as StageCatalog (src/video/stage/).
 export const blockKind = z.enum([
@@ -103,68 +101,6 @@ export const blockFromAi = z.object({
     .optional(),
 });
 
-// How many parts a block is built of – each appears on its own word
-// (partWords). Blocks drawn whole have none.
-export function blockParts(block: BlockFromAi): number {
-  switch (block.kind) {
-    case "list":
-    case "phone":
-    case "browser":
-    case "keys":
-    case "chat":
-      return block.items?.length ?? 0;
-    case "logos":
-      return block.ids?.length ?? 0;
-    case "schema":
-    case "transform":
-      return block.nodes?.length ?? 0;
-    default:
-      return 0;
-  }
-}
-
-export const sceneBlocksFromAi = z.object({
-  // What the viewer sees happening in the scene, in one sentence with a verb
-  // – understandable with the sound off ("the idea drops into TikMaker and a
-  // phone with the finished video slides out"). Written first; the blocks
-  // show it. Unset only in runs made before it existed.
-  happens: z.string().trim().min(10).max(200).optional(),
-  // Where the scene's picture and captions go (src/video/stage/stageTypes.ts).
-  // The agent picks it; checkBlocks asks for it. Unset (older runs) – "top".
-  stage: z.enum(stageTypeIds).optional(),
-  // None only in a "statement" – a scene of words with no picture. Usually one
-  // main picture for the thought; a new one when the thought changes.
-  blocks: z.array(blockFromAi).max(4),
-  // Words of the voiceover shown bold and bright in the text at the bottom.
-  keywords: z.array(z.string().trim().min(1)).max(4),
-});
-
-export const blocksFromAi = z.object({
-  ...askingFromAi,
-  scenes: z.array(sceneBlocksFromAi).min(1),
-  // What the model wanted but the library lacks (e.g. "Notion logo") – a wish list.
-  wishes: z.array(z.string().trim().min(3)).max(10),
-});
-
-// One problem the code found: which scene, if any, and what is wrong.
-export const blocksProblem = z.object({
-  sceneIndex: z.number().int().min(0).optional(),
-  message: z.string().min(1),
-  // A note on taste (pace, variety, rhythm) rather than something broken:
-  // shown to the user, not sent back to the model – the model knows the
-  // principle behind it and may have had a reason (docs/motion-planas.md).
-  advice: z.boolean().optional(),
-});
-
-// In the run's file: what the model sent, and the problems it did not fix.
-export const blocksInRun = blocksFromAi.extend({
-  problems: z.array(blocksProblem),
-});
-
 export type BlockKind = z.infer<typeof blockKind>;
 export type BlockFromAi = z.infer<typeof blockFromAi>;
 export type BlockShape = z.infer<typeof blockShape>;
-export type SceneBlocksFromAi = z.infer<typeof sceneBlocksFromAi>;
-export type BlocksFromAi = z.infer<typeof blocksFromAi>;
-export type BlocksProblem = z.infer<typeof blocksProblem>;
-export type BlocksInRun = z.infer<typeof blocksInRun>;

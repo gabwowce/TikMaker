@@ -12,7 +12,7 @@ import {
   sendMessageFromUser,
 } from "../../src/agent/run/7-chat.js";
 import { continueRun, resumeRun } from "../agent/agent.js";
-import { undoCodeScene } from "../agent/codeScenes.js";
+import { undoCodeScene } from "../agent/steps/5-pictures.js";
 import { openJob } from "../agent/job.js";
 import { loadKnowledge } from "../agent/knowledge.js";
 import { getRun, listRuns } from "../agent/runs.js";
@@ -23,7 +23,7 @@ import {
 } from "../agent/steps/2-angle.js";
 import { step3Approve } from "../agent/steps/3-script.js";
 import { step7Decide, step7Message } from "../agent/steps/7-chat.js";
-import { answerFromMessage, step3Answer } from "../agent/steps/ask.js";
+import { answerFromMessage, answerQuestions } from "../agent/tools/ask.js";
 import { KNOWLEDGE_DIR } from "../config.js";
 import { procedure, router } from "./init.js";
 
@@ -103,7 +103,7 @@ export const agentRouter = router({
   // step runs again with them.
   answer: procedure.input(answerFromUser).mutation(async ({ input }) => {
     const run = await findRun(input.runId);
-    await asBadRequest(() => step3Answer(run, input));
+    await asBadRequest(() => answerQuestions(run, input));
     continueRun(await findRun(run.id));
   }),
   // "Continue" on a run paused at the model's usage limit.

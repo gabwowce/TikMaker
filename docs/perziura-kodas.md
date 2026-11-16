@@ -92,7 +92,7 @@ Mygtukas „Review frames“ (arba žinutė „pažiūrėk, kaip atrodo“)
 
 ### Failai
 
-**`server/agent/frames.ts`** – kurie kadrai:
+**`server/agent/tools/frames.ts`** – kurie kadrai:
 
 ```ts
 const leaves = Math.min(last, (entry.exitAt ?? durationInFrames) - END_MARGIN);
@@ -103,7 +103,7 @@ Kiekvienas blokas fotografuojamas prieš pat jam išeinant, kai jau visos dalys
 viduje. Bandžiau ir iš karto po įėjimo, bet tada kilpoje matėsi tik „Goal“.
 Iš scenos imami daugiausia 2 kadrai: pirmo ir paskutinio bloko.
 
-**`server/agent/stills.ts`** – Remotion: `bundle()` vieną kartą per peržiūrą,
+**`server/agent/tools/stills.ts`** – Remotion: `bundle()` vieną kartą per peržiūrą,
 tada `renderStill()` kiekvienam kadrui, `scale: 0.5`. Kompozicija ta pati kaip
 MP4, todėl modelis vertina būtent tai, kas bus įkelta. 10 testo 8 kadrai
 truko ~17 s.
@@ -121,12 +121,12 @@ ar įskaitomas tekstas, ar vaizdai dera tarpusavyje ir ar niekas neuždengia
 subtitrų. Ar galima aiškiai pasakyta: „good“, jei scena veikia, ir neieškoti
 skonio smulkmenų. Gauna tuos pačius `picture-principles.json`.
 
-**`server/agent/llm.ts`** – `callWithImages`. Su Claude Code kvietimui
+**`server/agent/ai/llm.ts`** – `callWithImages`. Su Claude Code kvietimui
 leidžiamas `Read` įrankis, o kadrai dedami į jo darbo aplanką
 (`agentFolder()`, `claudeCode.ts`), nes tik ten jis skaito laisvai. Su Gemini
 PNG pridedami prie žinutės.
 
-**`server/agent/steps/7-review.ts`** – `step7Review` ir `reviewResult`:
+**`server/agent/steps/6-self-review.ts`** – `step7Review` ir `reviewResult`:
 peržiūra paverčiama tekstu („Scene 2: …“, „Good as they are: …“) ir
 pasiūlymais.
 
@@ -164,7 +164,7 @@ if (selfReview()) {                       // AGENT_SELF_REVIEW=off išjungia
 await job.save({ status: "done" });
 ```
 
-**`server/agent/steps/7-review.ts`**:
+**`server/agent/steps/6-self-review.ts`**:
 
 ```ts
 export async function builtProject(job) {
@@ -283,7 +283,7 @@ Mūsų blokai buvo vien diagramos. InsiderForce kadrus gyvus daro **tikras
 vaizdas**: metafora (robotinė ranka su Žeme), tikras daiktas, tikras žmogus,
 pavyzdžių nuotraukos. Tokius vaizdus kol kas įkeli tu, kaip įrašus.
 
-**`src/agent/run/4-blocks.ts`** – nauja bloko rūšis ir du laukai:
+**`src/video/stage/blocks.ts`** – nauja bloko rūšis ir du laukai:
 
 ```ts
 "picture", // a real picture the creator adds: text, find, look

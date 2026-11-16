@@ -1,7 +1,7 @@
 import type { Workspace } from "../../../src/agent/knowledge.js";
 import type { IdeaFromUser } from "../../../src/agent/run/1-idea.js";
 import type { SceneFromAi } from "../../../src/agent/run/3-script.js";
-import { codeFromAi, type CodeFromAi } from "../../../src/agent/run/4-code.js";
+import { codeFromAi, type CodeFromAi } from "../../../src/agent/run/5-pictures.js";
 import { SOUND_USES } from "../../../src/agent/soundCues.js";
 import {
   VISUAL_STYLES,
@@ -9,16 +9,16 @@ import {
   type VisualStyleId,
 } from "../../../src/agent/visualStyles.js";
 import type { SceneWord } from "../../../src/video/code/types.js";
-import { callClaudeCodeAgent, WrongShapeError } from "../claudeCode.js";
-import { claudeModel } from "../models.js";
+import { callClaudeCodeAgent, WrongShapeError } from "../ai/claudeCode.js";
+import { claudeModel } from "../ai/models.js";
 import {
   StructuredCallError,
   type CallLog,
   type StructuredResult,
   type TokenCount,
-} from "../llm.js";
+} from "../ai/llm.js";
 
-// 4 Building: the pictures as code (docs/tikmaker-kryptis.md). Claude Code,
+// 5 Pictures: the pictures as code (docs/tikmaker-kryptis.md). Claude Code,
 // in the project's folder, writes every scene's picture as a Remotion
 // component by three layers of skills – the official Remotion skill (how to
 // write it right), the TikMaker explainer skill (our genre) and the channel's
@@ -61,7 +61,7 @@ export type CodeJob = {
   // the props file `remotion still` renders the video from
   propsFile: string;
   visuals: SavedVisualBrief[];
-  // TikMaker screens to open for a recording (codeScenes.ts tikmakerScreens)
+  // TikMaker screens to open for a recording (steps/5-pictures.ts tikmakerScreens)
   screens?: string[];
   // the look of the pictures (src/agent/visualStyles.ts); unset – "clear"
   style?: VisualStyleId;

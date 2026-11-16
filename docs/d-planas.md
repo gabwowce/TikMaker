@@ -17,7 +17,7 @@ klausimai, čia – eiga, failai ir būsena.
 - Vienas žingsnis = vienas ar keli commitai. Commitai autorės vardu (`gabwowce`),
   **be jokių Claude žymių** (žr. `CLAUDE.md`). Pushinti tik paprašius.
 - Pažymėti `[x]` šiame faile, kai žingsnio dalis baigta ir patikrinta.
-- DI kvietimai – tik per `callStructured` (`server/agent/llm.ts`). Testuojama su
+- DI kvietimai – tik per `callStructured` (`server/agent/ai/llm.ts`). Testuojama su
   **nemokamu Gemini** (`gemini-flash-lite-latest`, `AGENT_THINKING=minimal`):
   Flash modeliai nemokamame plane atsako per 110–145 s, Flash-Lite – per 4–8 s.
   Nemokamame plane Google gali naudoti užklausas – nesiųsti konfidencialių duomenų.
@@ -149,7 +149,7 @@ Approve → scenos su maketais Scenes režime):
 - [x] 1 schema `src/agent/run/4-building.ts` (`layoutFromAi`, `run.layout`)
 - [x] 2 `src/agent/compileProject.ts` (`compileScene`, `compileProject`) + testai
 - [x] 3 `server/agent/prompts/pickLayouts.ts` (`layoutChoices`, patikra FR-11) + testai
-- [x] 4 `server/agent/steps/4-building.ts`; `agent.ts`: Approve → `laying_out` → `done`
+- [x] 4 `server/agent/steps/5-pictures.ts`; `agent.ts`: Approve → `laying_out` → `done`
 - [x] 5 `agent.layoutKnowledge`, `useLayoutKnowledge`, store `applyAgentLayout`, `AgentPanel`
   (pritaiko vieną kartą); `content.textOnTop` (`SceneFrame` zIndex) – užrašas ant įrašo
 - [ ] atviras klausimas: CTA maketas be teksto (`cta-01`) – be įgarsinimo scena tuščia;
@@ -181,7 +181,7 @@ duodamas dalimis, patikrintas, su paaiškinimu; autorė dažnai prašo „įraš
 | 20 šablonų, ~80 kabliukų, 20 CTA, 55 pavadinimų formulės, perėjimų frazės | `knowledge/shared/` (generuojama: `knowledge/draft/proposal.json` → `npm run knowledge:draft`) |
 | 61 išdėstymo pavyzdys su tiksliomis dėžutėmis (x, y, w, h), fonu, teksto stiliumi | `knowledge/shared/layout-examples/`, kadrai `docs/bd/kadrai/geri/` |
 | 6 dizaino taisyklės + jų patikra kodu | `knowledge/shared/design-rules.json`, `src/agent/rules/` (`runRules`) |
-| DI kvietimas pagal Zod schemą (AI SDK v7) | `server/agent/llm.ts` (`callStructured`), `scripts/try-llm.ts` |
+| DI kvietimas pagal Zod schemą (AI SDK v7) | `server/agent/ai/llm.ts` (`callStructured`), `scripts/try-llm.ts` |
 | Projekte nuorodos į žinių bazę | `VideoProject.workspaceId`, `videoTemplateId`; `Scene.layoutExampleId` |
 
 Ko dar nėra: `knowledge/workspaces/` (kanalo aprašo ir stiliaus) – pirmą sukurti D4
@@ -592,7 +592,7 @@ gale viena `cta` scena, kitos nepakitusios.
 
 ## D9. Kadrų vertinimas (nebūtinas, jei trūksta laiko)
 
-- [ ] S: `server/agent/stills.ts` (`@remotion/renderer` `renderStill`), `steps/critique.ts`
+- [ ] S: `server/agent/tools/stills.ts` (`@remotion/renderer` `renderStill`), `steps/critique.ts`
 - [ ] U: kadrų miniatiūros ataskaitoje su DI pastabomis
 
 ## D10. Įgarsinimas, ataskaita, rezultatas („5 Result“)
@@ -600,7 +600,7 @@ gale viena `cta` scena, kitos nepakitusios.
 - [x] S: ElevenLabs logika iškelta į `server/voice.ts` (`generateVoice`); ją kviečia
   **kodas** (ne DI) su scenų `vo` tekstais, tik kai įjungta „Generuoti įgarsinimą“,
   būsena `generating_voice`, po sudėto projekto (FR-19 – brangu, todėl pabaigoje).
-  Žingsnis `server/agent/steps/5-voice.ts`, run laukas `voice` (`5-voice.ts`).
+  Žingsnis `server/agent/steps/4-voice.ts`, run laukas `voice` (`5-voice.ts`).
   Redaktorius (`src/agent/agentVoice.ts`): klipai po scenomis su žodžių laikais
   (iš jų – subtitrai), scenos ilgis pagal balsą; motion video blokai – ant tikrų
   žodžių laikų. Skydelyje – `VoiceCard` (2026-11-05)

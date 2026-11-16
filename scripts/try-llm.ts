@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { callStructured } from "../server/agent/llm";
+import { callStructured } from "../server/agent/ai/llm";
 
 // Usage: npx tsx --env-file=.env.local scripts/try-llm.ts
 //
