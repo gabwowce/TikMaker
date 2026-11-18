@@ -15,10 +15,18 @@ import {
 // What it looks for is what makes the video worth watching (run.value), not
 // what the topic is: a definition is exactly what the viewer could get by
 // asking an AI one question.
+// The search is the model's own choice: most of the videos are on general
+// topics it already knows, and a search there only costs time and tokens.
+// Without one it must not make up numbers or dates.
 const SYSTEM = `You research the facts for a short vertical video (TikTok, Reels, Shorts).
-Search the web for the idea's topic and answer with 4 to 6 short facts that make the video
-REAL, not general: who built or made what and how, real results and numbers, what is new
-(with its date), and a concrete first step a viewer could take to start their own.
+Answer with 4 to 6 short facts that make the video REAL, not general: who built or made
+what and how, real results and numbers, what is new (with its date), and a concrete first
+step a viewer could take to start their own.
+Search the web only when the idea needs current or specific facts: news, recent releases,
+prices, numbers, dates, named people or projects, or anything that may have changed after
+your training. If the topic is general and you know it well, answer without searching.
+If you did not search, write only facts you are sure of – no numbers, dates or results from
+memory unless they are long settled and well known.
 Skip definitions and general explanations ("X is a tool that…") – the viewer could get
 those by asking an AI one question.
 One fact per line, starting with "- ", plain English, each one true and checkable, with
