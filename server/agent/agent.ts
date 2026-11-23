@@ -41,14 +41,7 @@ export async function start(projectId: string, input: IdeaFromUser): Promise<Age
 
 export async function answer(run: AgentRun, answer: UserAnswer): Promise<void> {
   const job = await openJob(run);
-  try {
-    await saveAnswer(job, answer);
-  } catch (refused) {
-    // after a server restart nothing works on the messages already waiting:
-    // any message wakes the agent up for them
-    if (answer.kind === "message") goOn(run.id);
-    throw refused;
-  }
+  await saveAnswer(job, answer);
   goOn(run.id);
 }
 
@@ -63,16 +56,12 @@ export async function undoScene(run: AgentRun, sceneIndex: number): Promise<void
 const working = new Set<string>();
 
 function goOn(runId: string): void {
-  if (working.has(runId)) return; // already working: it reads the JSON again when it finishes
+  if (working.has(runId)) return;
   working.add(runId);
 
   const work = async () => {
-    let run = await getRun(runId);
-    while (run) {
-      await next(await openJob(run));
-      run = await getRun(runId);
-      if (!run || !hasWorkWaiting(run)) break;
-    }
+    const run = await getRun(runId);
+    if (run) await next(await openJob(run));
   };
 
   work()
@@ -105,9 +94,9 @@ async function next(job: Job): Promise<void> {
     case "reviewing":
       return scriptToVideo(job);
 
-    case "answering":
-      await job.save({ status: "done" });
-      return talk(job);
+    case "answering": // cut off while on a message: back where it waited, then the message again
+      await job.save({ status: job.run.code ? "done" : job.run.script ? "awaiting_approval" : "awaiting_hook" });
+      return next(job);
 
     case "done":
       return talk(job);
@@ -158,15 +147,22 @@ async function talk(job: Job): Promise<void> {
   const work = nextWork(job.run);
   if (!work) return;
 
-  if (work.from === "user") {
-    const routed = await chat.route(job, work);
-    if (!routed) return; // it asked back, or proposed and waits for "Do it"
-    return makeChanges(job, work, routed.targets, routed.reply);
+  const waitedIn = job.run.status;
+  await job.save({ status: "answering" });
+  try {
+    if (work.from === "user") {
+      const routed = await chat.route(job, work, waitedIn);
+      if (routed) await makeChanges(job, work, routed.targets, routed.reply);
+    } else {
+      // a proposal the user accepted with "Do it"
+      await updateMessage(job, work.id, { status: "working" });
+      await makeChanges(job, work, work.proposal?.targets ?? [], work.text);
+    }
+  } catch (error) {
+    await failWork(job, work.id, error);
+    await job.save({ status: waitedIn });
   }
-
-  // a proposal the user accepted with "Do it"
-  await updateMessage(job, work.id, { status: "working" });
-  return makeChanges(job, work, work.proposal?.targets ?? [], work.text);
+  if (job.run.status === "answering") await job.save({ status: waitedIn });
 }
 
 async function makeChanges(
@@ -175,35 +171,28 @@ async function makeChanges(
   targets: ChatTarget[],
   reply: string,
 ): Promise<void> {
-  const waitedIn = job.run.status;
   const notes: string[] = [];
   let found: review.ReviewResult | undefined;
-  try {
-    const hook = targets.find((t) => t.kind === "hook");
-    if (hook) {
-      await job.save({ status: "writing_hooks" });
-      await chat.rewriteHooks(job, hook.instruction ?? work.text);
-      await job.save({ status: "awaiting_hook" });
-    } else {
-      if (waitedIn === "done") await job.save({ status: "answering" });
-      for (const target of targets) {
-        if (target.kind === "script") {
-          await chat.commentScript(job, target.instruction ?? work.text);
-          await hookToScript(job);
-        } else if (target.kind === "review") {
-          found = await review.reviewOnRequest(job);
-        } else {
-          notes.push(...(await chat.change(job, target)));
-        }
+
+  const hook = targets.find((t) => t.kind === "hook");
+  if (hook) {
+    await job.save({ status: "writing_hooks" });
+    await chat.rewriteHooks(job, hook.instruction ?? work.text);
+    await job.save({ status: "awaiting_hook" });
+  } else {
+    for (const target of targets) {
+      if (target.kind === "script") {
+        await chat.commentScript(job, target.instruction ?? work.text);
+        await hookToScript(job);
+      } else if (target.kind === "review") {
+        found = await review.reviewOnRequest(job);
+      } else {
+        notes.push(...(await chat.change(job, target)));
       }
-      if (waitedIn === "done") await job.save({ status: "done" });
     }
-    await finishWork(job, work.id, targets, reply, notes);
-    if (found) await reportReview(job, found);
-  } catch (error) {
-    await job.save({ status: waitedIn });
-    await failWork(job, work.id, error);
   }
+  await finishWork(job, work.id, targets, reply, notes);
+  if (found) await reportReview(job, found);
 }
 
 async function reportReview(job: Job, found: review.ReviewResult): Promise<void> {
@@ -222,6 +211,3 @@ const allScenesVoiced = (run: AgentRun) =>
   (run.voice?.scenes.length ?? 0) >= (run.script?.scenes.length ?? 0);
 
 const selfReviewOn = () => process.env.AGENT_SELF_REVIEW !== "off";
-
-const hasWorkWaiting = (run: AgentRun) =>
-  nextWork(run) !== undefined && chat.TALK_STATUSES.includes(run.status);

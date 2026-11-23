@@ -10,33 +10,6 @@ export async function saveRun(run: AgentRun): Promise<void> {
   await writeOne(FOLDER, run.id, run);
 }
 
-// One change at a time per run: read the file as it is now, change it, write
-// it – with no other change to the same run in between. Two writers (the
-// agent working, and the user's message arriving meanwhile) otherwise both
-// read the old file and the later write drops the earlier one's change.
-const queues = new Map<string, Promise<unknown>>();
-export function updateRun(
-  id: string,
-  change: (latest: AgentRun | undefined) => AgentRun,
-): Promise<AgentRun> {
-  const previous = queues.get(id) ?? Promise.resolve();
-  const next = previous
-    .catch(() => undefined)
-    .then(async () => {
-      const run = change(await getRun(id));
-      await saveRun(run);
-      return run;
-    });
-  queues.set(id, next);
-  // forget the queue once it is empty again
-  void next
-    .catch(() => undefined)
-    .finally(() => {
-      if (queues.get(id) === next) queues.delete(id);
-    });
-  return next;
-}
-
 // undefined = no such run, or a file that no longer matches the schema.
 export async function getRun(id: string): Promise<AgentRun | undefined> {
   const data = await readJson(`${FOLDER}/${slugify(id)}.json`, undefined);

@@ -8,11 +8,10 @@ import {
   type CallLog,
   type StructuredResult,
 } from "./llm.js";
-import { updateRun } from "./runs.js";
+import { saveRun } from "./runs.js";
 
-// What every step (steps/*.ts) works with: the run, the knowledge base and the
-// user's channel, plus two helpers that keep the run's file up to date, so the
-// panel (asking agent.get) sees each change as it happens.
+// What every step works with: the run, the knowledge base, the channel, and
+// two helpers – save (into the run's file) and ai (a model call, logged).
 export type Job = {
   run: AgentRun;
   knowledge: Knowledge;
@@ -42,27 +41,9 @@ export async function openJob(run: AgentRun): Promise<Job> {
     },
 
     async save(changes) {
-      // The conversation is written from two places: the agent working here,
-      // and the endpoints taking the user's message or answer while it works
-      // (agent.message, agent.decide). Writing only the copy held here would
-      // drop what they added meanwhile, so the messages on disk are merged
-      // in first.
-      job.run = await updateRun(job.run.id, (onDisk) => {
-        const messages = mergeMessages(
-          changes.messages ?? job.run.messages,
-          onDisk?.messages,
-        );
-        // A new status starts its clock (the panel shows how long it takes).
-        const moved =
-          changes.status !== undefined &&
-          changes.status !== (onDisk?.status ?? job.run.status);
-        return {
-          ...job.run,
-          ...changes,
-          ...(messages ? { messages } : {}),
-          ...(moved ? { statusAt: Date.now() } : {}),
-        };
-      });
+      const moved = changes.status !== undefined && changes.status !== job.run.status;
+      job.run = { ...job.run, ...changes, ...(moved ? { statusAt: Date.now() } : {}) };
+      await saveRun(job.run);
     },
 
     async ai(name, call) {
@@ -114,26 +95,4 @@ export function answeredFacts(run: AgentRun): string[] {
       q.answer ? [`${q.question} – ${q.answer}`] : [],
     ),
   );
-}
-
-// The messages this job holds, with what was written to disk meanwhile: a
-// message only on disk (the user's, sent while the agent worked) is kept, in
-// time order; for a message in both, this job's copy wins – except a
-// proposal answered on disk (the buttons) that this copy has not seen yet.
-export function mergeMessages(
-  mine: AgentRun["messages"],
-  disk: AgentRun["messages"],
-): AgentRun["messages"] {
-  if (!disk?.length) return mine;
-  if (!mine?.length) return disk;
-  const byId = new Map(disk.map((message) => [message.id, message]));
-  const merged = mine.map((message) => {
-    const there = byId.get(message.id);
-    if (there?.proposal?.decision && !message.proposal?.decision)
-      return { ...message, proposal: there.proposal, status: there.status };
-    return message;
-  });
-  const known = new Set(mine.map((message) => message.id));
-  const added = disk.filter((message) => !known.has(message.id));
-  return [...merged, ...added].sort((a, b) => a.at - b.at);
 }

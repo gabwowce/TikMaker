@@ -1,7 +1,8 @@
 import { z } from "zod";
+import type { RunStatus } from "./status";
 
 // 7 The conversation (docs/pokalbis-planas.md, docs/pokalbis-kodas.md): the
-// user can write to the agent at any time, like in Claude Code. The agent
+// user writes to the agent while it waits (MESSAGE_STATUSES). The agent
 // works out what a message changes (its targets) – from what was selected in
 // the editor and from the words – does it, and answers. A change that reaches
 // several parts of the video is proposed first; only the "Do it" button on the
@@ -113,6 +114,15 @@ export const chatMessage = z.object({
   status: workStatus.optional(),
   error: z.string().optional(),
 });
+
+// When the user may write: only while the agent waits. While it works the
+// message box is locked (the editor) and a message is refused (the server).
+export const MESSAGE_STATUSES: RunStatus[] = [
+  "awaiting_hook",
+  "awaiting_approval",
+  "awaiting_answers",
+  "done",
+];
 
 // What the editor sends: a message…
 export const sendMessageFromUser = z.object({

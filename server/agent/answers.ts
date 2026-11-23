@@ -1,8 +1,9 @@
 import type { ChooseHookFromUser } from "../../src/agent/run/2-angle.js";
-import type {
-  AnswerFromUser,
-  DecideFromUser,
-  SendMessageFromUser,
+import {
+  MESSAGE_STATUSES,
+  type AnswerFromUser,
+  type DecideFromUser,
+  type SendMessageFromUser,
 } from "../../src/agent/run/7-chat.js";
 import type { RunStatus } from "../../src/agent/run/status.js";
 import type { Job } from "./job.js";
@@ -21,20 +22,21 @@ export type UserAnswer =
   | { kind: "message"; input: SendMessageFromUser }
   | { kind: "decision"; input: DecideFromUser };
 
-const ACCEPTED_IN: Record<UserAnswer["kind"], RunStatus[] | "any time"> = {
+// Each button works only while the agent waits for it; while the agent
+// works, the panel's buttons and its message box are locked.
+const ACCEPTED_IN: Record<UserAnswer["kind"], RunStatus[]> = {
   template: ["awaiting_hook"],
   hook: ["awaiting_hook"],
   approve: ["awaiting_approval"],
   answers: ["awaiting_answers"],
   continue: ["paused"],
-  message: "any time",
-  decision: "any time",
+  message: MESSAGE_STATUSES,
+  decision: ["awaiting_hook", "awaiting_approval", "done"],
 };
 
 export async function saveAnswer(job: Job, answer: UserAnswer): Promise<void> {
   const { status } = job.run;
-  const accepted = ACCEPTED_IN[answer.kind];
-  if (status === "error" || status === "cancelled" || (accepted !== "any time" && !accepted.includes(status)))
+  if (!ACCEPTED_IN[answer.kind].includes(status))
     throw new Error(`Not now: the run is "${status}"`);
 
   switch (answer.kind) {

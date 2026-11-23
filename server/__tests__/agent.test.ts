@@ -914,46 +914,23 @@ describe("agent runs", () => {
     );
   });
 
-  it("takes up a message sent while the agent works, once it stops", async () => {
+  it("refuses a message while the agent works – the box is locked then", async () => {
     const { id } = await api.agent.start({
       projectId: "p-busy",
       input: { idea, workspaceId: "dev", hook: "My own opening line" },
     });
-    // sent at once – the agent is still picking the template
-    await api.agent.message({ runId: id, text: "Make it shorter" });
+    // sent at once – the agent is still at work
+    await expect(
+      api.agent.message({ runId: id, text: "Make it shorter" }),
+    ).rejects.toThrow(/Not now/);
+    // once it waits, the same message is taken
+    const waiting = await until(id, (run) => run.status === "awaiting_approval");
+    await api.agent.message({ runId: waiting.id, text: "Make it shorter" });
     const run = await until(
       id,
-      (run) =>
-        run.status === "awaiting_approval" &&
-        run.messages?.[0]?.status === "done",
+      (run) => run.status === "awaiting_approval" && run.messages?.[0]?.status === "done",
     );
-    // the script was written, then written again with the message
-    expect(
-      run.steps.filter((step) => step.name === "writeScript").length,
-    ).toBeGreaterThanOrEqual(2);
-  });
-
-  it("queues several messages sent while the agent works, oldest first", async () => {
-    const { id } = await api.agent.start({
-      projectId: "p-queue",
-      input: { idea, workspaceId: "dev", hook: "My own opening line" },
-    });
-    // both sent at once – the second one is not refused, it waits in line
-    await api.agent.message({ runId: id, text: "Make it shorter" });
-    await api.agent.message({ runId: id, text: "Make it funnier" });
-    const run = await until(
-      id,
-      (run) =>
-        run.status === "awaiting_approval" &&
-        (run.messages ?? []).filter(
-          (message) => message.from === "user" && message.status === "done",
-        ).length === 2,
-    );
-    const asked = run.messages!.filter((message) => message.from === "user");
-    expect(asked.map((message) => message.text)).toEqual([
-      "Make it shorter",
-      "Make it funnier",
-    ]);
+    expect(run.steps.filter((step) => step.name === "writeScript").length).toBeGreaterThanOrEqual(2);
   });
 
   it("skips the web search when the video needs no outside facts", async () => {

@@ -44,12 +44,13 @@ export const TALK_STATUSES = Object.keys(ALLOWED) as RunStatus[];
 export async function route(
   job: Job,
   message: ChatMessage,
+  waitedIn: RunStatus, // where the agent waited when the message came
 ): Promise<{ targets: ChatTarget[]; reply: string } | undefined> {
-  const allowed = ALLOWED[job.run.status] ?? [];
+  const allowed = ALLOWED[waitedIn] ?? [];
   const scenes = job.run.script?.scenes ?? [];
   const routed = await job.ai("routeMessage", () =>
     routeMessage(message, {
-      status: job.run.status,
+      status: waitedIn,
       allowed,
       hook: job.run.hook?.text,
       scenes,

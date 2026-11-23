@@ -1,8 +1,8 @@
 import { ActionIcon, Button, Textarea } from "@mantine/core";
 import { useMemo, useState } from "react";
-import type { ChatAttachment } from "../../agent/run/7-chat";
+import { MESSAGE_STATUSES, type ChatAttachment } from "../../agent/run/7-chat";
 import type { AgentRun } from "../../agent/run/run";
-import { talking, useSendMessage } from "../../api/agent";
+import { useSendMessage } from "../../api/agent";
 import { useProjectStore } from "../state/projectStore";
 import { parseSelection } from "../timeline/selectionId";
 
@@ -20,28 +20,23 @@ export function ChatInput({ run }: { run: AgentRun }) {
     (attachment) => !dismissed.includes(attachment.label),
   );
 
-  // A message can be written at any time: while the agent works it waits in
-  // a queue and is taken up when the agent stops, one at a time, oldest
-  // first. Only a stopped run takes none.
-  const open = run.status !== "error" && run.status !== "cancelled";
+  // Only while the agent waits; while it works the box is locked.
+  const open = MESSAGE_STATUSES.includes(run.status);
   const busy = !open || send.isPending;
-  const hint = !open
-    ? "This run has stopped – start a new one"
-    : talking(run)
-      ? "Write more – it waits in line after your last message"
-      : run.status === "awaiting_hook"
-        ? "Want different hooks? Say how"
-        : run.status === "awaiting_approval"
-          ? "What to change in the script, or the hook?"
-          : run.status === "done"
-            ? "What to change? Select a scene or a layer to point at it"
-            : run.status === "awaiting_answers"
-              ? "Answer the agent's questions above – or type your answer here"
-              : run.status === "paused"
-              ? "Paused at the usage limit – write now, it takes it up after Continue"
-              : run.status === "reviewing"
-              ? "The agent is checking its frames – write now, it takes it up after"
-              : "Write now – the agent takes it up when it stops";
+  const hint =
+    run.status === "error" || run.status === "cancelled"
+      ? "This run has stopped – start a new one"
+      : run.status === "paused"
+        ? "Paused – press Continue first"
+        : !open
+          ? "The agent is working – you can write when it stops"
+          : run.status === "awaiting_hook"
+            ? "Want different hooks? Say how"
+            : run.status === "awaiting_approval"
+              ? "What to change in the script, or the hook?"
+              : run.status === "awaiting_answers"
+                ? "Answer the agent's questions above – or type your answer here"
+                : "What to change? Select a scene or a layer to point at it";
 
   return (
     <div className="flex flex-col gap-2 border-0 border-t border-solid border-editor-border p-3">
