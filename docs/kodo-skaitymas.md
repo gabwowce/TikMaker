@@ -211,6 +211,9 @@ Pildome skaitydami. *Ką noriu pakeisti* → *failas:vieta*.
 - [ ] Laisvojo agento `Read` leidimas neribotas (gali perskaityti `.env.local`): apriboti iki `src/`, `.claude/`, `knowledge/`, `out/`
 - [ ] Schemų failai `src/agent/run/` dar sunumeruoti (`1-idea.ts`, `7-chat.ts`): pervadinti kaip `steps/` (angle, script, code, voice, chat)
 - [ ] `src/agent/` yra bendras kodas (jį naudoja ir serveris, ir redaktorius), bet guli `src/`, todėl atrodo kaip frontend'as: perkelti į `shared/` arba bent parašyti tai `run.ts` viršuje
+- [ ] Būsenos `cancelled` niekas nenustato (nėra „Stop“ mygtuko): arba padaryti Stop, arba ištrinti būseną
+- [ ] `error` po to, kai video jau turi scenų: tęsti negalima, lieka tik naujas projektas. Gal leisti „Continue“ ir iš error?
+- [ ] Kodo versijos niekada netrinamos; po Undo ir naujo perrašymo atšaukta versija perrašoma. `saveVersion` turi nenaudojamą `_projectId`
 - [ ] Kodo scenų problemos atpažįstamos pagal tekstą (`"Scene N:"`): naudoti `{sceneIndex, message}`
 
 # Mano užrašai
