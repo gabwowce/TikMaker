@@ -72,35 +72,28 @@ function goOn(runId: string): void {
 
 async function next(job: Job): Promise<void> {
   const { status, hook, hooksFor, template, script } = job.run;
-  switch (status) {
-    case "created":
-    case "picking_template":
-    case "writing_hooks":
-      return ideaToHooks(job);
 
-    case "awaiting_hook":
-      if (hook) return hookToScript(job);
-      if (hooksFor !== template?.videoTemplateId) return ideaToHooks(job);
-      return talk(job);
+  // the normal way
+  if (status === "created") return ideaToHooks(job);
+  if (status === "awaiting_hook" && hook) return hookToScript(job);
+  if (status === "awaiting_hook" && hooksFor !== template?.videoTemplateId) return ideaToHooks(job);
+  if (status === "awaiting_approval" && script?.approved) return scriptToVideo(job);
 
-    case "writing_script":
-      return hookToScript(job);
+  // a message where the agent waits
+  if (status === "awaiting_hook") return talk(job);
+  if (status === "awaiting_approval") return talk(job);
+  if (status === "done") return talk(job);
 
-    case "awaiting_approval":
-      if (script?.approved) return scriptToVideo(job);
-      return talk(job);
-
-    case "generating_voice":
-    case "laying_out":
-    case "reviewing":
-      return scriptToVideo(job);
-
-    case "answering": // cut off while on a message: back where it waited, then the message again
-      await job.save({ status: job.run.code ? "done" : job.run.script ? "awaiting_approval" : "awaiting_hook" });
-      return next(job);
-
-    case "done":
-      return talk(job);
+  // "Continue" after the work was cut off: the same work again
+  if (status === "picking_template") return ideaToHooks(job);
+  if (status === "writing_hooks") return ideaToHooks(job);
+  if (status === "writing_script") return hookToScript(job);
+  if (status === "generating_voice") return scriptToVideo(job);
+  if (status === "laying_out") return scriptToVideo(job);
+  if (status === "reviewing") return scriptToVideo(job);
+  if (status === "answering") {
+    await job.save({ status: job.run.code ? "done" : job.run.script ? "awaiting_approval" : "awaiting_hook" });
+    return next(job);
   }
 }
 
