@@ -28,7 +28,7 @@ Forma (idėja) ──► run'o JSON ──► agentas: vertė → šablonas → 
 
 | # | Modulis | ~Eil. | Būsena |
 |---|---|---|---|
-| 1 | Kas yra run'o JSON'e | 410 | ⬜ |
+| 1 | Kas yra run'o JSON'e | 410 | 🟨 |
 | 2 | Žemėlapis: `agent.ts` | 270 | ⬜ |
 | 3 | Išsaugojimas ir du rašytojai | 220 | ⬜ |
 | 4 | Kalbėjimas su modeliu | 450 | ⬜ |
@@ -43,7 +43,7 @@ Forma (idėja) ──► run'o JSON ──► agentas: vertė → šablonas → 
 
 ---
 
-## 1. Kas yra run'o JSON'e ⬜
+## 1. Kas yra run'o JSON'e 🟨
 Pradedam nuo tikro failo `db/agent-runs/<id>.json`: ką saugome ir kodėl.
 
 | Failas | Eil. | Būsena |
@@ -209,7 +209,8 @@ Pildome skaitydami. *Ką noriu pakeisti* → *failas:vieta*.
 
 - [ ] Prompt funkcijos – ilgi argumentų sąrašai su `undefined`: vienas objektas, testų modelis per `setTestModel()`
 - [ ] Laisvojo agento `Read` leidimas neribotas (gali perskaityti `.env.local`): apriboti iki `src/`, `.claude/`, `knowledge/`, `out/`
-- [ ] Schemų failai `src/agent/run/` dar sunumeruoti (`1-idea.ts`, `7-chat.ts`): pervadinti kaip `steps/`
+- [ ] Schemų failai `src/agent/run/` dar sunumeruoti (`1-idea.ts`, `7-chat.ts`): pervadinti kaip `steps/` (angle, script, code, voice, chat)
+- [ ] `src/agent/` yra bendras kodas (jį naudoja ir serveris, ir redaktorius), bet guli `src/`, todėl atrodo kaip frontend'as: perkelti į `shared/` arba bent parašyti tai `run.ts` viršuje
 - [ ] Kodo scenų problemos atpažįstamos pagal tekstą (`"Scene N:"`): naudoti `{sceneIndex, message}`
 
 # Mano užrašai
