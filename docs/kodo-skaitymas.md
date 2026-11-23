@@ -87,10 +87,12 @@ npm run learn:agent -- "mano idėja"     # out/mini-run.json – JSON'as šalia
 - [ ] Radau tas pačias vietas tikrame `agent.ts` (lentelė pokalbyje)
 | Failas | Eil. | Būsena |
 |---|---|---|
-| `server/agent/agent.ts` | 270 | ⬜ |
+| `server/agent/agent.ts` – eiga: `next` → `makeHooks` / `makeScript` / `makeVideo` / `talk` | ~200 | ⬜ |
+| `server/agent/answers.ts` – ką įrašo kiekvienas mygtukas | ~140 | ⬜ |
+| `server/agent/worker.ts` – darbas fone, vienas darbuotojas, pauzės | ~70 | ⬜ |
 | `server/trpc/agent.ts` – mygtukai → `agent.ts` | 92 | ⬜ |
 
-- [ ] Kokios keturios `agent.ts` dalys ir ką daro kiekviena?
+- [ ] Ką daro `next` ir kodėl jis kviečia tik keturias funkcijas?
 - [ ] Kas vyksta paspaudus Approve – nuo mygtuko iki `done`?
 - [ ] Kaip agentas tęsia po pauzės?
 - [ ] Kodėl vienam run'ui – vienas workeris (`working`, `again`)?

@@ -1,6 +1,6 @@
 import { config as loadEnv } from "dotenv";
 import path from "node:path";
-import { pauseInterruptedRuns } from "./agent/agent.js";
+import { pauseInterruptedRuns } from "./agent/worker.js";
 import { createApp } from "./app.js";
 import { ROOT } from "./config.js";
 

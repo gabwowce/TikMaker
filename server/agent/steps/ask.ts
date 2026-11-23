@@ -13,7 +13,7 @@ import { agentAsks, agentSays } from "../messages.js";
 // 1. askIfNeeded: the questions become the agent's message, the run waits in
 //    "awaiting_answers" (pausedFrom – the step asking) and the step's answer
 //    is NOT saved: it is made again with the answers.
-// 2. The questions card (agent.ts userAnswers, "answers"): the answers go
+// 2. The questions card (answers.ts): the answers go
 //    into the message, the ones marked "remember" into the channel's
 //    knowledge (remember, below), and the run goes back to the status the
 //    step asked in (pausedFrom) – agent.ts runs that stage again.

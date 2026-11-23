@@ -842,7 +842,7 @@ describe("agent runs", () => {
   });
 
   it("puts a change cut off by a restart back in line, and Continue does it", async () => {
-    const { pauseInterruptedRuns } = await import("../agent/agent.js");
+    const { pauseInterruptedRuns } = await import("../agent/worker.js");
     const { getRun, saveRun } = await import("../agent/runs.js");
     const built = await builtVideo();
     // the server stopped while the agent was on an accepted proposal: the run

@@ -18,12 +18,12 @@ import { voiceAround } from "./voice.js";
 // 7 The conversation (docs/pokalbis-planas.md, docs/pokalbis-kodas.md).
 //
 // 1. The user's message is saved at once, whatever the agent is doing
-//    (agent.ts userAnswers, "message") – it waits in the run until the agent stops at a point
+//    (answers.ts) – it waits in the run until the agent stops at a point
 //    where it can be taken up (TALK_STATUSES). Several can wait: they form
 //    a queue and are taken up one by one, oldest first (messages.ts nextWork).
 // 2. agent.ts takes it up: routeMessage (Sonnet) decides what it changes
 //    (route). Not clear → the agent asks back. Several parts → the agent
-//    proposes and waits for the "Do it" button (agent.ts, "decision").
+//    proposes and waits for the "Do it" button (answers.ts).
 // 3. agent.ts does the work target by target with the functions below and
 //    the agent answers with what it did (messages.ts finishWork / failWork).
 
