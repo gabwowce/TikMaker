@@ -88,19 +88,19 @@ export async function start(
 // Screen 2: another template instead of the agent's pick ("Change").
 export async function changeTemplate(run: AgentRun, videoTemplateId: string) {
   await angle.saveTemplate(run, videoTemplateId);
-  await goOn(run);
+  await handToAgent(run);
 }
 
 // Screen 2: one of the three hooks, or the user's own line.
 export async function chooseHook(run: AgentRun, choice: ChooseHookFromUser) {
   await angle.saveHook(run, choice);
-  await goOn(run);
+  await handToAgent(run);
 }
 
 // Screen 3: "Approve" – on to building the video.
 export async function approveScript(run: AgentRun) {
   await script.saveApproval(run);
-  await goOn(run);
+  await handToAgent(run);
 }
 
 // A message, at any time. While the agent waits for answers it is the answer;
@@ -114,20 +114,20 @@ export async function sendMessage(run: AgentRun, input: SendMessageFromUser) {
     // even when the message is refused: after a server restart nothing is
     // working on the ones already waiting, and this wakes the agent up for
     // them (continueRun never starts a second worker)
-    await goOn(run);
+    await handToAgent(run);
   }
 }
 
 // The questions card: the step that asked runs again with the answers.
 export async function answerQuestions(run: AgentRun, input: AnswerFromUser) {
   await ask.saveAnswers(run, input);
-  await goOn(run);
+  await handToAgent(run);
 }
 
 // "Do it" / "No" on the agent's proposal.
 export async function decide(run: AgentRun, input: DecideFromUser) {
   await chat.saveDecision(run, input);
-  await goOn(run);
+  await handToAgent(run);
 }
 
 // "Continue" on a paused run: back to the status it was paused in, and
@@ -140,7 +140,7 @@ export async function resumeRun(run: AgentRun): Promise<void> {
     pausedFrom: undefined,
     error: undefined,
   });
-  await goOn(run);
+  await handToAgent(run);
 }
 
 // Undo on a code scene: its code goes back one version. Not while the agent
@@ -152,7 +152,7 @@ export async function undoScene(run: AgentRun, sceneIndex: number) {
 }
 
 // The run as saved just now, to the agent.
-async function goOn(run: AgentRun) {
+async function handToAgent(run: AgentRun) {
   continueRun((await getRun(run.id)) ?? run);
 }
 
@@ -171,9 +171,9 @@ async function runAgent(run: AgentRun): Promise<void> {
     case "writing_hooks": //    or writing the hooks
       await job.save({ status: "picking_template" });
       if (!job.run.value) await angle.judgeValue(job); // may ask
-      if (asking(job)) return;
+      if (stoppedToAsk(job)) return; // it asked the creator: wait for answers
       await angle.chooseTemplate(job); //                  may ask
-      if (asking(job)) return;
+      if (stoppedToAsk(job)) return; // it asked the creator: wait for answers
       await job.save({ status: "writing_hooks" });
       await angle.offerHooks(job);
       // a hook written in the form: nothing to wait for
@@ -200,7 +200,9 @@ async function runAgent(run: AgentRun): Promise<void> {
       if (!job.run.script?.approved) return takeUpWork(job);
       // "Approve": the voice first, so the pictures are timed to the real
       // words; then the pictures as code; then the agent checks its frames
-      if (job.run.input.generateVoice && !voiced(job.run)) {
+      const voiced =
+        (job.run.voice?.scenes.length ?? 0) >= (job.run.script?.scenes.length ?? 0);
+      if (job.run.input.generateVoice && !voiced) {
         await job.save({ status: "generating_voice" });
         await voice.voiceScenes(job);
       }
@@ -208,7 +210,8 @@ async function runAgent(run: AgentRun): Promise<void> {
         await job.save({ status: "laying_out" });
         await writeCodeScenes(job);
       }
-      if (selfReview()) {
+      // AGENT_SELF_REVIEW=off – a quick try of the rest, with no rendering
+      if (process.env.AGENT_SELF_REVIEW !== "off") {
         await job.save({ status: "reviewing" });
         await review.selfReview(job); // looks → fixes → looks, ≤3 rounds
       }
@@ -226,25 +229,18 @@ async function runAgent(run: AgentRun): Promise<void> {
   }
 }
 
+// A step asked the creator (steps/ask.ts) and set "awaiting_answers". A
+// function, not an inline check: TypeScript would think the status cannot
+// have changed since the case above – but the step just changed it.
+const stoppedToAsk = (job: Job) => job.run.status === "awaiting_answers";
+
 // 3 Script: written and checked by code, then the agent waits for Approve.
 async function toScript(job: Job): Promise<void> {
   await job.save({ status: "writing_script" });
   await script.writeAndCheck(job); // may ask
-  if (asking(job)) return;
+  if (stoppedToAsk(job)) return; // it asked the creator: wait for answers
   await job.save({ status: "awaiting_approval" }); // WAIT: the user approves
 }
-
-// A step stopped to ask the creator (steps/ask.ts): the run waits for the
-// answers instead of going on.
-const asking = (job: Job) => job.run.status === "awaiting_answers";
-
-// Every scene of the script has its voiceover already.
-const voiced = (run: AgentRun) =>
-  (run.voice?.scenes.length ?? 0) >= (run.script?.scenes.length ?? 0);
-
-// The self-review at the end of the build: on unless AGENT_SELF_REVIEW=off
-// (a quick try of the rest, with no rendering).
-const selfReview = () => process.env.AGENT_SELF_REVIEW !== "off";
 
 // ── 3. A message ───────────────────────────────────────────────────────────
 // The next message (routed first) or an accepted proposal, at a point where
