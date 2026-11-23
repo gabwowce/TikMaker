@@ -74,6 +74,17 @@ Pažymėti, kuriuo momentu atsiranda `value`, `template`, `hooks`, `hook`, `scri
 `voice`, `code`, ir kurie `steps[]` įrašai kuriam laukui priklauso.
 
 ## 2. Žemėlapis: visa eiga 🟨
+
+**Pradėti nuo mini agento:** `scripts/learn/miniAgent.ts` (~100 eil.) yra ta pati
+eiga be apsaugų ir su netikru AI, su tais pačiais pavadinimais.
+```bash
+npm run learn:agent -- "mano idėja"     # out/mini-run.json – JSON'as šalia
+```
+- [ ] Paleidau, pasirinkau hooką, paspaudžiau Approve, stebėjau `out/mini-run.json`
+- [ ] Perskaičiau `miniAgent.ts` nuo apačios (`main`) į viršų
+- [ ] Pratimas A: pridėjau naują žingsnį „vertė“ prieš hookus (`value`)
+- [ ] Pratimas B: po Approve pridėjau „savikontrolę“ (`status: "reviewing"`)
+- [ ] Radau tas pačias vietas tikrame `agent.ts` (lentelė pokalbyje)
 | Failas | Eil. | Būsena |
 |---|---|---|
 | `server/agent/agent.ts` | 270 | ⬜ |

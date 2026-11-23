@@ -26,7 +26,8 @@
     "game:record": "tsx scripts/recordGame.ts",
     "game:deploy": "bash scripts/deployGame.sh",
     "topics:scan": "tsx scripts/findTopics.ts",
-    "watch:run": "tsx scripts/watchRun.ts"
+    "watch:run": "tsx scripts/watchRun.ts",
+    "learn:agent": "tsx scripts/learn/miniAgent.ts"
   },
   "dependencies": {
     "@ai-sdk/google": "^4.0.107",
