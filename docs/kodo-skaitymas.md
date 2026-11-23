@@ -87,7 +87,7 @@ npm run learn:agent -- "mano idėja"     # out/mini-run.json – JSON'as šalia
 - [ ] Radau tas pačias vietas tikrame `agent.ts` (lentelė pokalbyje)
 | Failas | Eil. | Būsena |
 |---|---|---|
-| `server/agent/agent.ts` – eiga: `next` → `makeHooks` / `makeScript` / `makeVideo` / `talk` | ~200 | ⬜ |
+| `server/agent/agent.ts` – eiga: `next` → `ideaToHooks` / `hookToScript` / `scriptToVideo` / `talk` | ~200 | ⬜ |
 | `server/agent/answers.ts` – ką įrašo kiekvienas mygtukas | ~140 | ⬜ |
 | `server/agent/worker.ts` – darbas fone, vienas darbuotojas, pauzės | ~70 | ⬜ |
 | `server/trpc/agent.ts` – mygtukai → `agent.ts` | 92 | ⬜ |

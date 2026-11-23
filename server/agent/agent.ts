@@ -77,24 +77,24 @@ async function next(job: Job): Promise<void> {
     case "created":
     case "picking_template":
     case "writing_hooks":
-      return makeHooks(job);
+      return ideaToHooks(job);
 
     case "awaiting_hook":
-      if (hook) return makeScript(job);
-      if (hooksFor !== template?.videoTemplateId) return makeHooks(job);
+      if (hook) return hookToScript(job);
+      if (hooksFor !== template?.videoTemplateId) return ideaToHooks(job);
       return talk(job);
 
     case "writing_script":
-      return makeScript(job);
+      return hookToScript(job);
 
     case "awaiting_approval":
-      if (script?.approved) return makeVideo(job);
+      if (script?.approved) return scriptToVideo(job);
       return talk(job);
 
     case "generating_voice":
     case "laying_out":
     case "reviewing":
-      return makeVideo(job);
+      return scriptToVideo(job);
 
     case "answering":
       await job.save({ status: "done" });
@@ -105,7 +105,7 @@ async function next(job: Job): Promise<void> {
   }
 }
 
-async function makeHooks(job: Job): Promise<void> {
+async function ideaToHooks(job: Job): Promise<void> {
   await job.save({ status: "picking_template" });
   if (!job.run.value) await angle.judgeValue(job);
   if (askedCreator(job)) return;
@@ -114,12 +114,12 @@ async function makeHooks(job: Job): Promise<void> {
 
   await job.save({ status: "writing_hooks" });
   await angle.offerHooks(job);
-  if (job.run.hook) return makeScript(job);
+  if (job.run.hook) return hookToScript(job);
 
   await job.save({ status: "awaiting_hook" });
 }
 
-async function makeScript(job: Job): Promise<void> {
+async function hookToScript(job: Job): Promise<void> {
   await job.save({ status: "writing_script" });
   await script.writeAndCheck(job);
   if (askedCreator(job)) return;
@@ -127,7 +127,7 @@ async function makeScript(job: Job): Promise<void> {
   await job.save({ status: "awaiting_approval" });
 }
 
-async function makeVideo(job: Job): Promise<void> {
+async function scriptToVideo(job: Job): Promise<void> {
   if (job.run.input.generateVoice && !allScenesVoiced(job.run)) {
     await job.save({ status: "generating_voice" });
     await voice.voiceScenes(job);
@@ -180,7 +180,7 @@ async function makeChanges(
       for (const target of targets) {
         if (target.kind === "script") {
           await chat.commentScript(job, target.instruction ?? work.text);
-          await makeScript(job);
+          await hookToScript(job);
         } else if (target.kind === "review") {
           found = await review.reviewOnRequest(job);
         } else {
