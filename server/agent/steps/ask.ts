@@ -8,7 +8,6 @@ import type {
 import type { AgentRun } from "../../../src/agent/run/run.js";
 import { KNOWLEDGE_DIR } from "../../config.js";
 import { openJob, type Job } from "../job.js";
-import { resumeStatus } from "../limits.js";
 import { agentSays } from "./7-chat.js";
 
 // 3 The agent asks (docs/pokalbis-planas.md, 3.2). A step that decides what
@@ -20,7 +19,8 @@ import { agentSays } from "./7-chat.js";
 //    is NOT saved: it is made again with the answers.
 // 2. step3Answer (the questions card): the answers go into the message, the
 //    ones marked "remember" into the channel's knowledge, and the run goes
-//    back to where the step starts (resumeStatus) – the step runs again.
+//    back to the status the step asked in (pausedFrom) – agent.ts runs that
+//    stage again.
 // 3. job.ts gives every later prompt the answers as facts from the creator.
 //
 // A step asks once per run: asked again, it decides and says what it assumed.
@@ -122,7 +122,7 @@ export async function step3Answer(
     messages: (job.run.messages ?? []).map((message) =>
       message.id === asked.id ? { ...message, questions } : message,
     ),
-    status: resumeStatus(run.pausedFrom),
+    status: run.pausedFrom ?? "created",
     pausedFrom: undefined,
   });
 }

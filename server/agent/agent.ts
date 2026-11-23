@@ -2,7 +2,7 @@ import type { ChatMessage } from "../../src/agent/run/7-chat.js";
 import type { AgentRun } from "../../src/agent/run/run.js";
 import { RESTING_STATUSES } from "../../src/agent/run/status.js";
 import { Job, openJob } from "./job.js";
-import { isLimitError, resumeStatus } from "./limits.js";
+import { isLimitError } from "./limits.js";
 import { allRuns, getRun, saveRun } from "./runs.js";
 import { step2Hooks, step2Template } from "./steps/2-angle.js";
 import { step3Script } from "./steps/3-script.js";
@@ -89,10 +89,19 @@ async function work(first: AgentRun): Promise<void> {
 
 // Which step comes next depends on where the run stopped. Statuses change
 // only here; a step does its work and saves what it made.
+//
+// The one place that says where every status goes on from. A waiting status
+// (awaiting_*) is where the user answered; a working status (writing_script,
+// laying_out…) is where a run was cut off – a usage limit, a restart, or the
+// agent's questions answered – and it goes on with the stage it belongs to.
+// That is safe because the steps skip what the run already has (the voice,
+// the code, the research): only the missing work is done again.
 async function runAgent(run: AgentRun): Promise<void> {
   const job = await openJob(run);
   switch (run.status) {
     case "created": // Start was pressed
+    case "picking_template": // cut off while picking the template
+    case "writing_hooks": //    or writing the hooks
       await job.save({ status: "picking_template" });
       await step2Template(job);
       if (asking(job)) return;
@@ -104,6 +113,7 @@ async function runAgent(run: AgentRun): Promise<void> {
       return;
 
     case "awaiting_hook": // the user answered on screen 2
+    case "writing_script": // cut off while writing the script (the hook is picked)
       if (job.run.hook) return toScript(job);
       if (job.run.hooksFor !== job.run.template?.videoTemplateId) {
         // "Change": the hooks were for another template – write new ones.
@@ -115,6 +125,10 @@ async function runAgent(run: AgentRun): Promise<void> {
       return takeUpWork(job);
 
     case "awaiting_approval": // the user answered on screen 3
+    case "generating_voice": // cut off while building (the script is approved):
+    case "laying_out": //       what is built already is skipped below
+    case "checking":
+    case "reviewing":
       // "Approve": on to building the video. The voiceover first (when the
       // form asked for it, and not again when every scene has one), so the
       // pictures are timed to the real words; then the pictures as code.
@@ -143,6 +157,9 @@ async function runAgent(run: AgentRun): Promise<void> {
       return takeUpWork(job);
 
     case "done": // the video is built; the user may still write
+    case "answering": // cut off while on a message after the build
+      // back to done first: the message's work starts from done and ends there
+      if (job.run.status === "answering") await job.save({ status: "done" });
       return takeUpWork(job);
 
     case "awaiting_answers": // the agent asked; the questions card answers
@@ -150,13 +167,13 @@ async function runAgent(run: AgentRun): Promise<void> {
   }
 }
 
-// "Continue" on a paused run: back to the nearest point the agent can start
-// from, then on as usual.
+// "Continue" on a paused run: back to the status it was paused in, and
+// runAgent goes on from there.
 export async function resumeRun(run: AgentRun): Promise<void> {
   if (run.status !== "paused") throw new Error("The run is not paused");
   await saveRun({
     ...run,
-    status: resumeStatus(run.pausedFrom),
+    status: run.pausedFrom ?? "created",
     pausedFrom: undefined,
     error: undefined,
   });
@@ -190,7 +207,7 @@ export async function pauseInterruptedRuns(): Promise<void> {
         : {
             status: "paused",
             // a message cut off on a built video: Continue goes back to done
-            // and takes it up from there (resumeStatus)
+            // and takes it up from there (runAgent, "answering")
             pausedFrom: working ? run.status : "answering",
             error: "The server restarted while the agent was working.",
           }),
