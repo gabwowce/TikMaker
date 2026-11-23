@@ -150,11 +150,11 @@ function useSelectedAttachments(run: AgentRun): ChatAttachment[] {
       const layerId = objectId.slice("visual-".length);
       const layer = scene?.content.visuals?.find((v) => v.id === layerId);
       if (layer) {
-        const kind =
-          layer.visual.type === "stage-block"
-            ? layer.visual.block.kind
-            : layer.visual.type;
-        out.push({ sceneIndex, objectId: layerId, label: `Layer: ${kind}` });
+        out.push({
+          sceneIndex,
+          objectId: layerId,
+          label: `Layer: ${layer.visual.type}`,
+        });
       }
     }
     return out;

@@ -1,9 +1,8 @@
 import { stage } from "./tokens";
 
 // The stage types (docs/motion-planas.md, "Captionai ir stage"): where the
-// picture and the captions go in a frame. Every block is drawn for the top
-// zone (stage.visualTop..visualBottom, full width); a type places that zone –
-// moves its centre and scales it – so a block never needs to know the type.
+// picture and the captions go in a frame. A code scene's stage ("top", or
+// "full" for a full-screen recording) tells the captions where to sit.
 // A leaf module (no React): the scene schema reads the ids.
 
 export const stageTypeIds = [
@@ -78,7 +77,7 @@ export const STAGE_LAYOUTS: Record<StageType, StageLayout> = {
     visuals: [],
     caption: { top: 640, scale: 1.4 },
   },
-  // the block's box is the whole frame here (stage-block `full`), centred
+  // the picture is the whole frame here (a full-screen recording), centred
   full: {
     visuals: [{ y: 960, scale: 1 }],
     caption: { top: 1400, scale: 0.9 },

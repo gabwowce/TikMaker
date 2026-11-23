@@ -1,8 +1,6 @@
 import { Button, TextInput, UnstyledButton } from "@mantine/core";
 import { Fragment, useState, type ReactNode } from "react";
 import { useLatestRun, useSendMessage } from "../../api/agent";
-import { catalogBlocks } from "../../video/stage/catalogBlocks";
-import { stage } from "../../video/stage/tokens";
 import { propList } from "../../registries/propRegistry";
 import { logoCategories, logoList } from "../../registries/logoRegistry";
 import {
@@ -38,8 +36,8 @@ const STACK_POSITIONS = 4;
 
 // The Visuals tab (docs/perziura-kodas.md, part 10): what is used most comes
 // first. A search over everything; "ask the agent" for the selected scene of
-// the agent's video; the channel's saved visuals (code scenes); blocks to put
-// on top of a scene as layers; your imports, logos and props; the older
+// the agent's video; the channel's saved visuals (code scenes); your
+// imports, logos and props; the older
 // presets folded under "More".
 
 // "List · *grid*" → "List · grid"
@@ -192,9 +190,6 @@ export function VisualLibrary() {
   const { assets: customAssets } = useCustomAssets();
   const [target, setTarget] = useState<Target>("layer");
   const [query, setQuery] = useState("");
-  const blocks = catalogBlocks.filter((entry) =>
-    matches(query, plainName(entry.name), entry.block.kind),
-  );
   const imports = customAssets.filter((asset) => matches(query, asset.label));
   const props = propList.filter((prop) => matches(query, prop.name, prop.id));
   const presets = visualTemplateRegistry.filter((preset) =>
@@ -206,22 +201,6 @@ export function VisualLibrary() {
   const layersFull = false;
   const showTargets = isComparison;
   const effectiveTarget: Target = isComparison ? target : "layer";
-  // A block goes where the agent's blocks go: centred on the stage's top zone.
-  function assignBlock(block: (typeof catalogBlocks)[number]["block"]) {
-    if (!selectedSceneId || !scene) return;
-    const existing = scene.content.visuals ?? [];
-    updateSceneVisuals(selectedSceneId, [
-      ...existing,
-      {
-        id: `visual-${Date.now().toString(36)}`,
-        visual: { type: "stage-block", block: { onWord: "", ...block } },
-        x: 50,
-        y: (stage.visualCenterY / 1920) * 100,
-        scale: 1,
-      },
-    ]);
-  }
-
   function assign(visual: VisualConfig) {
     if (!selectedSceneId || !scene) return;
     if (effectiveTarget === "column") {
@@ -249,38 +228,12 @@ export function VisualLibrary() {
 
       <TextInput
         size="xs"
-        placeholder="Search blocks, logos, props…"
+        placeholder="Search logos, props…"
         value={query}
         onChange={(event) => setQuery(event.currentTarget.value)}
       />
       <AskAgent sceneId={selectedSceneId} />
       <MyVisuals sceneId={selectedSceneId} query={query} />
-
-      {blocks.length ? (
-        <>
-          <SectionTitle>Blocks · layers on top</SectionTitle>
-          <div className="grid grid-cols-2 gap-1.5">
-            {blocks.map((entry) => (
-              <UnstyledButton
-                key={entry.name}
-                className="grid min-w-0 justify-items-center gap-1 rounded-md border border-solid border-editor-border bg-editor-panel-raised p-1.5 text-center text-[10px]"
-                aria-label={plainName(entry.name)}
-                onClick={() => assignBlock(entry.block)}
-              >
-                <VisualThumb
-                  visual={{
-                    type: "stage-block",
-                    block: { onWord: "", ...entry.block },
-                    settled: true,
-                  }}
-                  height={96}
-                />
-                {plainName(entry.name)}
-              </UnstyledButton>
-            ))}
-          </div>
-        </>
-      ) : null}
 
       {showTargets ? <SectionTitle>Target</SectionTitle> : null}
       {showTargets ? (

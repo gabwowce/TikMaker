@@ -10,7 +10,6 @@ export const runStatus = z.enum([
   "writing_script", //    3 Script: the model writes the script
   "awaiting_approval", // 3 Script: WAIT – the user approves or asks for changes
   "laying_out", //        4 Building: scenes and visuals are placed
-  "checking", //          4 Building: design rules are checked and fixed
   "generating_voice", //  5 Result: the voiceover is made (if asked)
   "reviewing", //         5 Result: the agent looks at its frames and fixes them
   "done", //              finished: the project has its scenes

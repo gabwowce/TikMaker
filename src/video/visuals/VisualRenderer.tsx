@@ -28,7 +28,6 @@ import { Stack } from "./diagrams/Stack";
 import { Transform } from "./diagrams/Transform";
 import { ScreenRecording } from "./media/ScreenRecording";
 import { customScenes } from "../custom/registry";
-import { StageBlockVisual } from "../stage/StageBlock";
 type FrameContentProps = {
   visual: VisualConfig;
 };
@@ -136,16 +135,6 @@ export function VisualRenderer({ visual }: VisualRendererProps) {
           size={visual.size}
           stagger={visual.stagger}
           sfx={visual.sfx}
-        />
-      );
-    case "stage-block":
-      return (
-        <StageBlockVisual
-          block={visual.block}
-          settled={visual.settled}
-          full={visual.full}
-          src={visual.src}
-          partAts={visual.partAts}
         />
       );
     case "custom-scene": {

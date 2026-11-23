@@ -29,7 +29,6 @@ export const askingSteps = [
   "checkValue",
   "pickTemplate",
   "writeScript",
-  "pickBlocks",
 ] as const;
 export type AskingStep = (typeof askingSteps)[number];
 export type QuestionFromAi = z.infer<typeof questionFromAi>;

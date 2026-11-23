@@ -11,7 +11,7 @@ import { openJob, type Job } from "../job.js";
 import { agentSays } from "./7-chat.js";
 
 // 3 The agent asks (docs/pokalbis-planas.md, 3.2). A step that decides what
-// the video says – the template, the script, the blocks – may answer with
+// the video says – the template, the script – may answer with
 // questions instead of guessing a fact. Then:
 //
 // 1. askIfNeeded: the questions become the agent's message, the run waits in
@@ -76,7 +76,6 @@ const stepName: Record<AskingStep, string> = {
   checkValue: "the idea's value",
   pickTemplate: "template",
   writeScript: "script",
-  pickBlocks: "pictures",
 };
 
 // The fields the steps' schemas carry for asking, taken off before the

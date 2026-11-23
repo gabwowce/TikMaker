@@ -12,7 +12,6 @@ import {
   hookFromAi,
   type HookFromAi,
 } from "../../../src/agent/run/2-angle.js";
-import { blockKind } from "../../../src/agent/run/4-blocks.js";
 import {
   generatedLogos,
   generatedProps,
@@ -114,18 +113,15 @@ ${list}`;
 }
 
 // What a first frame can be made of in this video: the creator's own screen
-// recordings (unless "motion graphics only"), the motion blocks the editor
-// draws, and the library's logos and objects – by name, so the model does not
+// recordings (unless "motion graphics only"), motion graphics drawn as code,
+// and the library's logos and objects – by name, so the model does not
 // promise a picture nobody can make.
 function canShow(input: IdeaFromUser): string {
-  const kinds = blockKind.options.filter(
-    (kind) => !(input.motionOnly && kind === "screen"),
-  );
   return [
     input.motionOnly
       ? "- no screen recordings (motion graphics only)"
       : "- the creator's own screen recordings (the product, an app, a website in use)",
-    `- motion blocks: ${kinds.join(", ")}`,
+    "- motion graphics drawn as code (shapes, icons, diagrams, numbers, words)",
     `- logos: ${generatedLogos.map((asset) => asset.id).join(", ")}`,
     `- objects: ${generatedProps.map((asset) => asset.id).join(", ")}`,
   ].join("\n");

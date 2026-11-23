@@ -7,7 +7,6 @@ import { AsyncLocalStorage } from "node:async_hooks";
 const STEP_MODELS: Record<string, string> = {
   pickTemplate: "sonnet",
   research: "sonnet",
-  pickMotion: "sonnet",
   routeMessage: "sonnet",
   // the pictures as code: the creative heart of the video
   writeCode: "opus",
@@ -22,7 +21,7 @@ export function inStep<T>(name: string, call: () => Promise<T>): Promise<T> {
 }
 
 // The model for the step being run. Order: the step's own line in .env.local
-// (AGENT_MODEL_PICKMOTION=opus), then the table above, then AGENT_CLAUDE_MODEL.
+// (AGENT_MODEL_WRITESCRIPT=opus), then the table above, then AGENT_CLAUDE_MODEL.
 export function claudeModel(): string {
   const step = currentStep.getStore();
   if (step) {

@@ -1,8 +1,7 @@
-import type { FreeScene } from "../../../experiments/codeVideo/FreeVideo";
 import { z } from "zod";
 import { field } from "../../../video/brand/kit";
 import type { CodeSceneProps } from "../../../video/code/types";
-import { FieldsContext } from "./anim";
+import { FieldsContext, type FreeScene } from "./anim";
 import { BrandVideoBody } from "./Video";
 import { STATES } from "./states";
 

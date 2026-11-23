@@ -1,7 +1,6 @@
 import { useMemo } from "react";
 import { AbsoluteFill, interpolate, useCurrentFrame } from "remotion";
-import type { FreeVideoProps } from "../../../experiments/codeVideo/FreeVideo";
-import { EASE, headlineParts, makeTimeline, popScale, TimelineContext, useFields, useTimeline, type Timeline } from "./anim";
+import { EASE, headlineParts, makeTimeline, popScale, TimelineContext, useFields, useTimeline, type Timeline, type FreeVideoProps } from "./anim";
 import { BOXES, STATES, type Box } from "./states";
 import { CARD_BORDER, CARD_SHADOW, Headline, Pill, type Part } from "./ui";
 

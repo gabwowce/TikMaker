@@ -22,7 +22,7 @@ const STEPS: { label: string; statuses: RunStatus[] }[] = [
     statuses: ["created", "picking_template", "writing_hooks", "awaiting_hook"],
   },
   { label: "Script", statuses: ["writing_script", "awaiting_approval"] },
-  { label: "Building", statuses: ["generating_voice", "laying_out", "checking"] },
+  { label: "Building", statuses: ["generating_voice", "laying_out"] },
   { label: "Result", statuses: ["reviewing"] },
 ];
 // Which step the run is on. Shared with the collapsed rail's dots, so both

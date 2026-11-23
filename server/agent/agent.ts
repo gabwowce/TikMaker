@@ -127,7 +127,6 @@ async function runAgent(run: AgentRun): Promise<void> {
     case "awaiting_approval": // the user answered on screen 3
     case "generating_voice": // cut off while building (the script is approved):
     case "laying_out": //       what is built already is skipped below
-    case "checking":
     case "reviewing":
       // "Approve": on to building the video. The voiceover first (when the
       // form asked for it, and not again when every scene has one), so the

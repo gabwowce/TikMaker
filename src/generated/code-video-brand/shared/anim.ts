@@ -1,6 +1,16 @@
 import { createContext, useContext } from "react";
 import { Easing, interpolate } from "remotion";
-import type { FreeScene } from "../../../experiments/codeVideo/FreeVideo";
+
+// One scene of the whole-video component (test 4 drew the video as one piece).
+export type FreeScene = {
+  index: number;
+  from: number; // global frame the scene starts on
+  durationInFrames: number;
+  voiceover: string;
+  // every spoken word, in GLOBAL frames
+  words: { text: string; frame: number; endFrame: number }[];
+};
+export type FreeVideoProps = { scenes: FreeScene[]; durationInFrames: number };
 
 // Motion vocabulary of the brand kit: decelerating entrances, bouncy only for
 // stickers and small icons, fast accelerating exits.

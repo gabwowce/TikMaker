@@ -1,9 +1,10 @@
 import type { CSSProperties } from "react";
 import { Img, Sequence } from "remotion";
+import { getLogo } from "../../registries/logoRegistry";
+import { getProp } from "../../registries/propRegistry";
 import { assetUrl } from "../../utils/assetUrl";
 import { spokenWords } from "../../utils/voWords";
 import type { SceneWord } from "../code/types";
-import { LibraryIcon } from "../stage/StageBlocks";
 import { usePack } from "../stage/pack";
 import { ScreenRecording } from "../visuals/media/ScreenRecording";
 
@@ -146,8 +147,19 @@ export function RecordingSlot({
 export const asset = (publicPath: string) => assetUrl(publicPath);
 
 // A tool's logo from the library (ids in src/registries/assets.generated.ts).
+// An id with no picture shows its first two letters.
 export function Logo({ id, size }: { id: string; size: number }) {
-  return <LibraryIcon id={id} size={size} />;
+  const c = useBrand();
+  const src = getLogo(id)?.src ?? getProp(id)?.src;
+  if (src)
+    return (
+      <Img src={src} style={{ width: size, height: size, objectFit: "contain" }} />
+    );
+  return (
+    <div style={{ fontFamily: c.fontStrong, fontSize: size * 0.6, color: c.text, lineHeight: 1 }}>
+      {id.slice(0, 2).toUpperCase()}
+    </div>
+  );
 }
 
 function Placeholder({
