@@ -10,6 +10,21 @@
 import fs from "node:fs";
 import readline from "node:readline/promises";
 
+// ── EIGA: kieno eilė kiekvienoje būsenoje ──────────────────────────────────
+// Eilę nustato status run'o JSON'e. Ta pati lentelė – tikro agent.ts viršuje.
+//
+//   status              eilė      kas vyksta                 tada
+//   created             AGENTO    3 hookai                   awaiting_hook
+//   awaiting_hook       KŪRĖJOS   pasirenka hooką            writing_script
+//   writing_script      AGENTO    scenarijus                 awaiting_approval
+//   awaiting_approval   KŪRĖJOS   „Approve“                  generating_voice
+//   generating_voice    AGENTO    balsas                     laying_out
+//   laying_out          AGENTO    vaizdai kodu               done
+//   done                –         video baigtas
+//
+// Taisyklė: AGENTO būsenoje dirba runAgent, KŪRĖJOS būsenoje runAgent jau
+// sustojo (return), ir laukiama, kol kūrėja paspaus mygtuką → userAnswers.
+
 // ── RUN'AS: vienas JSON failas su viskuo apie šį video ─────────────────────
 type Run = {
   status: string; //                  kur dabar esame
@@ -44,6 +59,7 @@ async function ai<T>(run: Run, name: string, answer: T): Promise<T> {
 // Kiekvienas case padaro savo darbą ir SUSTOJA (return) ten, kur reikia
 // kūrėjos. Kitą kartą runAgent iškviečiamas, kai kūrėja ką nors paspaudžia.
 async function runAgent(run: Run) {
+  console.log(`   ⚙️  runAgent: AGENTO eilė (status = ${run.status})`);
   switch (run.status) {
     case "created": {
       // ką tik paspaustas Start → parašyti 3 hookus
@@ -89,6 +105,7 @@ async function userAnswers(
   run: Run,
   answer: { kind: "hook"; index: number } | { kind: "approve" },
 ) {
+  console.log(`   👆 userAnswers: kūrėja atsakė (${answer.kind})`);
   switch (answer.kind) {
     case "hook":
       save(run, { hook: run.hooks![answer.index] });
@@ -117,14 +134,15 @@ async function main() {
   const run = await start(idea);
 
   while (run.status !== "done") {
+    console.log(`\n⏸  runAgent sustojo – KŪRĖJOS eilė (status = ${run.status})`);
     if (run.status === "awaiting_hook") {
-      console.log("\n🖥  EKRANAS: pasirink hooką");
+      console.log("🖥  EKRANAS: pasirink hooką");
       run.hooks!.forEach((h, i) => console.log(`   ${i + 1}. ${h}`));
       const n = Number(await ask("   Tavo pasirinkimas (1–3): ")) || 1;
       console.log(`\n▶ PASPAUSTAS hookas ${n}`);
       await userAnswers(run, { kind: "hook", index: n - 1 });
     } else if (run.status === "awaiting_approval") {
-      console.log(`\n🖥  EKRANAS: scenarijus\n   „${run.script!.text}“`);
+      console.log(`🖥  EKRANAS: scenarijus\n   „${run.script!.text}“`);
       await ask("   Spausk Enter = Approve ");
       console.log("\n▶ PASPAUSTAS Approve");
       await userAnswers(run, { kind: "approve" });

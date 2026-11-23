@@ -7,7 +7,10 @@ import type {
   SendMessageFromUser,
 } from "../../src/agent/run/7-chat.js";
 import type { AgentRun } from "../../src/agent/run/run.js";
-import { RESTING_STATUSES } from "../../src/agent/run/status.js";
+import {
+  RESTING_STATUSES,
+  type RunStatus,
+} from "../../src/agent/run/status.js";
 import { newId } from "../ids.js";
 import { undoCodeScene, writeCodeScenes } from "./codeScenes.js";
 import { openJob, type Job } from "./job.js";
@@ -65,6 +68,43 @@ import * as voice from "./steps/voice.js";
 //   a message's changes         steps/chat.ts validTargets (allowed now, scene)
 // ════════════════════════════════════════════════════════════════════════════
 
+// ── THE FLOW: whose turn it is in each status ──────────────────────────────
+//
+// The status in the run's JSON decides who goes next. In a USER status the
+// agent has stopped and waits: only the buttons listed below are accepted
+// (USER_TURN). In an AGENT status the agent is working (runAgent) and the
+// user only watches – or writes a message, which waits for its turn.
+//
+//   status              turn    what happens                         then
+//   ──────────────────  ──────  ───────────────────────────────────  ─────────────────
+//   created             AGENT   is the idea worth it → template →    awaiting_hook
+//                               three hooks
+//   awaiting_hook       USER    picks a hook (or "Change" template)  writing_script
+//   writing_script      AGENT   the script, checked by code          awaiting_approval
+//   awaiting_approval   USER    "Approve"                            generating_voice
+//   generating_voice    AGENT   the voiceover                        laying_out
+//   laying_out          AGENT   the pictures as code                 reviewing
+//   reviewing           AGENT   looks at its own frames, fixes them  done
+//   done                USER    the video is built; may write        –
+//
+//   at any step:
+//   awaiting_answers    USER    answers the agent's questions        back where it asked
+//   paused              USER    "Continue" (after a usage limit)     back where it stopped
+//   error               –       stopped; the reason is on the panel  –
+//
+// A message ("message") and "Do it" / "No" ("decision") are accepted at any
+// time: they wait in the conversation until the agent stops in a USER status
+// and takes them up (part 3).
+
+// The buttons accepted in each USER status. Anything else is refused.
+const USER_TURN: Partial<Record<RunStatus, UserAnswer["kind"][]>> = {
+  awaiting_hook: ["hook", "template"],
+  awaiting_approval: ["approve"],
+  awaiting_answers: ["answers", "message"],
+  paused: ["continue"],
+};
+const ANY_TIME: UserAnswer["kind"][] = ["message", "decision"];
+
 // ── 1. What the user does ──────────────────────────────────────────────────
 // Every button in the agent's panel ends up here (server/trpc/agent.ts only
 // finds the run). Start makes a new run; every other answer is written into
@@ -109,12 +149,15 @@ export async function userAnswers(
   const job = await openJob(run);
   let refused: unknown;
   try {
+    // Is it the user's turn for this button? (THE FLOW, above)
+    const allowed = ANY_TIME.includes(answer.kind) || USER_TURN[run.status]?.includes(answer.kind);
+    if (!allowed || run.status === "error" || run.status === "cancelled")
+      throw new Error(`Not now: the run is "${run.status}"`);
+
     switch (answer.kind) {
       case "template": {
         // → runAgent "awaiting_hook": the hooks are for the old template, so
         //   it writes new ones
-        if (run.status !== "awaiting_hook")
-          throw new Error(`The template can't be changed now (${run.status})`);
         angle.findTemplate(job, answer.videoTemplateId); // only one we know
         await job.save({
           template: { videoTemplateId: answer.videoTemplateId, pickedBy: "user" },
@@ -124,8 +167,6 @@ export async function userAnswers(
 
       case "hook": {
         // → runAgent "awaiting_hook": there is a hook now, so the script
-        if (run.status !== "awaiting_hook")
-          throw new Error(`A hook can't be chosen now (${run.status})`);
         const { choice } = answer;
         if ("text" in choice) {
           // the user's own line
@@ -148,16 +189,13 @@ export async function userAnswers(
 
       case "approve": {
         // → runAgent "awaiting_approval": approved, so voice, pictures, review
-        if (run.status !== "awaiting_approval" || !run.script)
-          throw new Error(`The script can't be approved now (${run.status})`);
+        if (!run.script) throw new Error("There is no script to approve");
         await job.save({ script: { ...run.script, approved: true } });
         break;
       }
 
       case "message": {
         const { text, attachments } = answer.input;
-        if (run.status === "error" || run.status === "cancelled")
-          throw new Error(`The run has stopped (${run.status}) – start a new one`);
         if (run.status === "awaiting_answers") {
           // the agent asked: a typed message answers every open question
           const asked = [...(run.messages ?? [])]
@@ -196,7 +234,6 @@ export async function userAnswers(
 
       case "continue": {
         // → runAgent goes on from the status it was paused in
-        if (run.status !== "paused") throw new Error("The run is not paused");
         await job.save({
           status: run.pausedFrom ?? "created",
           pausedFrom: undefined,
@@ -223,8 +260,6 @@ async function saveAnswers(
   messageId: string,
   given: AnswerFromUser["answers"],
 ): Promise<void> {
-  if (job.run.status !== "awaiting_answers")
-    throw new Error(`The agent is not waiting for answers (${job.run.status})`);
   const asked = job.run.messages?.find((m) => m.id === messageId && m.questions);
   if (!asked?.questions) throw new Error("There are no such questions");
   const byId = new Map(given.map((a) => [a.id, a]));
