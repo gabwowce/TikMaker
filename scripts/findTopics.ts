@@ -1,7 +1,6 @@
 import { config as loadEnv } from "dotenv";
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import path from "node:path";
-import { inStep } from "../server/agent/models";
 import {
   channelUsualViews,
   hackerNews,
@@ -314,7 +313,7 @@ if (process.argv.includes("--rejudge")) {
   log(`  signals: ${JSON.stringify(counts)}`);
 
   log("2/4 Claude: candidates…");
-  const first = await inStep("findTopics", () => findCandidates(channel, signals, today));
+  const first = await findCandidates(channel, signals, today);
   candidates = first.data.candidates;
   log(`  ${candidates.length} candidates (${Math.round(first.ms / 1000)} s)`);
 }
@@ -332,7 +331,7 @@ for (const candidate of candidates) {
 }
 
 log("4/4 Claude: judging…");
-const second = await inStep("findTopics", () => judgeCandidates(channel, candidates, signals, existing, today));
+const second = await judgeCandidates(channel, candidates, signals, existing, today);
 const byId = new Map(signals.map((s) => [s.id, s]));
 const topics: Topic[] = second.data.topics
   .filter((j) => candidates[j.index])

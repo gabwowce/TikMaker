@@ -2,7 +2,6 @@ import type { AgentRun } from "../../src/agent/run/run.js";
 import type { Workspace } from "../../src/agent/knowledge.js";
 import { KNOWLEDGE_DIR } from "../config.js";
 import { loadKnowledge, type Knowledge } from "./knowledge.js";
-import { inStep } from "./models.js";
 import {
   StructuredCallError,
   type CallLog,
@@ -18,9 +17,9 @@ export type Job = {
   workspace: Workspace;
   // Writes these fields into the run's file straight away.
   save(changes: Partial<AgentRun>): Promise<void>;
-  // One question to the model, logged in steps[] with its time and tokens
-  // (FR-21), a failed one too. Returns the answer.
-  ai<T>(name: string, call: () => Promise<StructuredResult<T>>): Promise<T>;
+  // Waits for an AI call, writes it into steps[] (a failed one too) and
+  // returns just the answer: job.ai("checkValue", checkValue(...)).
+  ai<T>(name: string, asking: Promise<StructuredResult<T>>): Promise<T>;
 };
 
 export async function openJob(run: AgentRun): Promise<Job> {
@@ -46,45 +45,41 @@ export async function openJob(run: AgentRun): Promise<Job> {
       await saveRun(job.run);
     },
 
-    async ai(name, call) {
-      const startedAt = Date.now();
+    async ai(name, asking) {
       try {
-        const result = await inStep(name, call);
-        const step = {
-          ...logged(name, startedAt, result),
-          output: result.data,
-        };
-        await job.save({ steps: [...job.run.steps, step] });
-        return result.data;
+        const answer = await asking;
+        await job.save({ steps: [...job.run.steps, logEntry(name, answer, { output: answer.data })] });
+        return answer.data;
       } catch (error) {
         const message = error instanceof Error ? error.message : String(error);
-        // A call that gave up still says what it sent and what it cost.
-        const step =
-          error instanceof StructuredCallError
-            ? { ...logged(name, startedAt, error.log), error: message }
-            : { name, startedAt, ms: Date.now() - startedAt, error: message };
-        await job.save({ steps: [...job.run.steps, step] });
+        const log = error instanceof StructuredCallError ? error.log : undefined;
+        await job.save({ steps: [...job.run.steps, logEntry(name, log, { error: message })] });
         throw error;
       }
     },
   };
   return job;
 }
-// One call as the run's log keeps it: the same fields whether it answered or
-// gave up (FR-21).
-function logged(name: string, startedAt: number, log: CallLog) {
+// One AI call as steps[] keeps it: what was sent, which model, how many
+// tries, how long, what it cost – and the answer or the error.
+function logEntry(name: string, log: CallLog | undefined, result: { output?: unknown; error?: string }) {
   return {
     name,
-    startedAt,
-    ms: log.ms,
-    model: log.model,
-    attempts: log.attempts,
-    prompt: log.prompt,
-    inputTokens: log.usage.inputTokens,
-    cachedInputTokens: log.usage.cachedInputTokens,
-    outputTokens: log.usage.outputTokens,
-    thinkingTokens: log.usage.thinkingTokens,
-    ...(log.usage.turns ? { turns: log.usage.turns } : {}),
+    startedAt: Date.now() - (log?.ms ?? 0),
+    ...(log
+      ? {
+          ms: log.ms,
+          model: log.model,
+          attempts: log.attempts,
+          prompt: log.prompt,
+          inputTokens: log.usage.inputTokens,
+          cachedInputTokens: log.usage.cachedInputTokens,
+          outputTokens: log.usage.outputTokens,
+          thinkingTokens: log.usage.thinkingTokens,
+          ...(log.usage.turns ? { turns: log.usage.turns } : {}),
+        }
+      : {}),
+    ...result,
   };
 }
 

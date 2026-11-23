@@ -4,6 +4,7 @@ import { mkdirSync } from "node:fs";
 import os from "node:os";
 import path from "node:path";
 import type { z } from "zod";
+import type { Prompt } from "./llm.js";
 import { claudeModel } from "./models.js";
 
 // A model call through Claude Code on the user's own subscription
@@ -94,7 +95,7 @@ export function readAnswer<T>(
   const usage = result.usage ?? {};
   const answer = {
     model:
-      Object.keys(result.modelUsage ?? {})[0] ?? `claude-code:${claudeModel()}`,
+      Object.keys(result.modelUsage ?? {})[0] ?? "claude-code",
     usage: {
       inputTokens:
         (usage.input_tokens ?? 0) + (usage.cache_creation_input_tokens ?? 0),
@@ -139,7 +140,7 @@ export function agentFolder(): string {
 }
 
 export function runClaudeCode(
-  prompt: { system: string; user: string },
+  prompt: Prompt,
   jsonSchema: unknown,
   tools: string[] = [],
 ): Promise<string> {
@@ -156,7 +157,7 @@ export function runClaudeCode(
     tools.join(","),
     ...(tools.length ? ["--allowedTools", tools.join(",")] : []),
     "--model",
-    claudeModel(),
+    claudeModel(prompt.step),
     "--system-prompt",
     prompt.system,
     "--no-session-persistence",
@@ -178,7 +179,7 @@ export type AgentOptions = {
 };
 export async function callClaudeCodeAgent<T>(
   schema: z.ZodType<T>,
-  prompt: { system: string; user: string },
+  prompt: Prompt,
   options: AgentOptions,
 ): Promise<ClaudeCodeAnswer<T>> {
   const args = [
@@ -192,7 +193,7 @@ export async function callClaudeCodeAgent<T>(
     "--allowedTools",
     ...options.allow,
     "--model",
-    claudeModel(),
+    claudeModel(prompt.step),
     "--append-system-prompt",
     prompt.system,
     "--no-session-persistence",
@@ -247,7 +248,7 @@ function spawnClaude(
 // A prompt → an answer checked against the Zod schema.
 export async function callClaudeCode<T>(
   schema: z.ZodType<T>,
-  prompt: { system: string; user: string },
+  prompt: Prompt,
   tools: string[] = [],
 ): Promise<ClaudeCodeAnswer<T>> {
   const stdout = await runClaudeCode(

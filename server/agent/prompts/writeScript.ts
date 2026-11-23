@@ -228,6 +228,7 @@ export async function writeScript(
   const result = await callStructured(
     schema,
     {
+      step: "writeScript",
       system: SYSTEM,
       user: userPrompt(
         input,

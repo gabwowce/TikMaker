@@ -92,6 +92,7 @@ export async function checkValue(
   return callStructured(
     valueFromAi,
     {
+      step: "checkValue",
       system: SYSTEM,
       user: userPrompt(input, workspace) + whenToAskValue(asked),
     },

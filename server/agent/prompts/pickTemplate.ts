@@ -86,6 +86,7 @@ export async function pickTemplate(
   return callStructured(
     schema,
     {
+      step: "pickTemplate",
       system: SYSTEM,
       user: userPrompt(input, workspace, templates) + whenToAsk(asked),
     },

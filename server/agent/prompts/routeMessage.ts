@@ -83,5 +83,5 @@ Attached (selected in the editor):
 ${attached}
 
 Message: ${message.text}`;
-  return callStructured(routeFromAi, { system: SYSTEM, user }, model);
+  return callStructured(routeFromAi, { step: "routeMessage", system: SYSTEM, user }, model);
 }

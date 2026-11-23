@@ -169,6 +169,7 @@ export async function writeHooks(
   const result = await callStructured(
     schema,
     {
+      step: "writeHooks",
       system: SYSTEM,
       user:
         userPrompt(input, workspace, template, usable, value) +

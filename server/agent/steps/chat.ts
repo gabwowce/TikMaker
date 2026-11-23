@@ -48,7 +48,7 @@ export async function route(
 ): Promise<{ targets: ChatTarget[]; reply: string } | undefined> {
   const allowed = ALLOWED[waitedIn] ?? [];
   const scenes = job.run.script?.scenes ?? [];
-  const routed = await job.ai("routeMessage", () =>
+  const routed = await job.ai("routeMessage",
     routeMessage(message, {
       status: waitedIn,
       allowed,
@@ -61,15 +61,13 @@ export async function route(
 
   if (!targets.length) {
     // not clear, or not possible now: the agent's reply asks or explains
-    await closeWork(job, message.id, { status: "done" }, routed.reply);
+    await closeWork(job, message.id, { status: "done" }, routed.reply, {}, waitedIn);
     return undefined;
   }
   // decision 3: a change that reaches several parts is proposed first – the
   // code holds to that even when the router did not ask for it
   if (routed.confirm || reachesFar(job.run, targets)) {
-    await closeWork(job, message.id, { status: "done" }, routed.reply, {
-      proposal: { targets },
-    });
+    await closeWork(job, message.id, { status: "done" }, routed.reply, { proposal: { targets } }, waitedIn);
     return undefined;
   }
   await updateMessage(job, message.id, { targets, status: "working" });
@@ -129,7 +127,7 @@ export async function rewriteHooks(job: Job, instruction: string): Promise<void>
   const chosen = job.run.template;
   if (!chosen) throw new Error("There is no template yet");
   const template = findTemplate(job, chosen.videoTemplateId);
-  const hooks = await job.ai("writeHooks", () =>
+  const hooks = await job.ai("writeHooks",
     writeHooks(
       job.run.input,
       job.workspace,
@@ -203,7 +201,7 @@ async function rewriteWords(
 ): Promise<string[]> {
   const script = job.run.script;
   if (!script) throw new Error("There is no script");
-  const words = await job.ai("rewriteScene", () =>
+  const words = await job.ai("rewriteScene",
     rewriteScene(job.run.input, job.workspace, script.scenes, n, instruction),
   );
   await job.save({

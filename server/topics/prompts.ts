@@ -128,7 +128,7 @@ ${bySource("hn", "Hacker News this week:")}
 ${bySource("news", "AI news, last 7 days:")}
 
 Give at most 15 candidates, the strongest first.`;
-  return callStructured(candidatesFromAi, { system: CANDIDATES_SYSTEM, user });
+  return callStructured(candidatesFromAi, { step: "findTopics", system: CANDIDATES_SYSTEM, user });
 }
 
 // ── Pass 2: judge ────────────────────────────────────────────────────────
@@ -236,5 +236,5 @@ Candidates:
 ${blocks.join("\n\n")}
 
 Judge every candidate (index = the # number).`;
-  return callStructured(judgedFromAi, { system: JUDGE_SYSTEM, user });
+  return callStructured(judgedFromAi, { step: "findTopics", system: JUDGE_SYSTEM, user });
 }

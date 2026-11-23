@@ -1,6 +1,7 @@
 import type { IdeaFromUser } from "../../src/agent/run/1-idea.js";
 import type { ChatMessage, ChatTarget } from "../../src/agent/run/7-chat.js";
 import type { AgentRun } from "../../src/agent/run/run.js";
+import type { RunStatus } from "../../src/agent/run/status.js";
 import { newId } from "../ids.js";
 import { saveAnswer, type UserAnswer } from "./answers.js";
 import { undoCodeScene, writeCodeScenes } from "./codeScenes.js";
@@ -147,29 +148,31 @@ async function talk(job: Job): Promise<void> {
   const work = nextWork(job.run);
   if (!work) return;
 
+  // while the agent is on the message, the panel's buttons and box are locked
   const waitedIn = job.run.status;
   await job.save({ status: "answering" });
   try {
     if (work.from === "user") {
       const routed = await chat.route(job, work, waitedIn);
-      if (routed) await makeChanges(job, work, routed.targets, routed.reply);
+      if (routed) await makeChanges(job, work, routed.targets, routed.reply, waitedIn);
     } else {
       // a proposal the user accepted with "Do it"
       await updateMessage(job, work.id, { status: "working" });
-      await makeChanges(job, work, work.proposal?.targets ?? [], work.text);
+      await makeChanges(job, work, work.proposal?.targets ?? [], work.text, waitedIn);
     }
   } catch (error) {
-    await failWork(job, work.id, error);
-    await job.save({ status: waitedIn });
+    await failWork(job, work.id, error, waitedIn);
   }
-  if (job.run.status === "answering") await job.save({ status: waitedIn });
 }
 
+// Each change by the step that makes it. The answer goes in last, with the
+// status the agent waits in next – so a button in the answer can be pressed.
 async function makeChanges(
   job: Job,
   work: ChatMessage,
   targets: ChatTarget[],
   reply: string,
+  waitedIn: RunStatus,
 ): Promise<void> {
   const notes: string[] = [];
   let found: review.ReviewResult | undefined;
@@ -191,7 +194,8 @@ async function makeChanges(
       }
     }
   }
-  await finishWork(job, work.id, targets, reply, notes);
+  const waitsIn = job.run.status === "answering" ? waitedIn : job.run.status;
+  await finishWork(job, work.id, targets, reply, notes, waitsIn);
   if (found) await reportReview(job, found);
 }
 

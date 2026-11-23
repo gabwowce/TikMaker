@@ -134,7 +134,7 @@ export async function writeCodeScenes(job: Job): Promise<CodeInRun> {
   const count = job.run.script?.scenes.length ?? 0;
   const all = [...Array(count).keys()];
   const brief = await codeJob(job, all);
-  const answer = await job.ai("writeCode", () => writeCode(brief, ROOT));
+  const answer = await job.ai("writeCode", writeCode(brief, ROOT));
   return checkAndFix(job, brief, answer, undefined);
 }
 
@@ -153,7 +153,7 @@ export async function rewriteCodeScenes(
     saveVersion(job.run.projectId, scene.file, scene.version);
   }
   const brief = await codeJob(job, scenes, instruction);
-  const answer = await job.ai("writeCode", () => writeCode(brief, ROOT));
+  const answer = await job.ai("writeCode", writeCode(brief, ROOT));
   const next = await checkAndFix(job, brief, answer, code);
   return next.problems.filter((problem) =>
     scenes.some((n) => problem.startsWith(`Scene ${n + 1}:`)),
@@ -172,7 +172,7 @@ async function checkAndFix(
   let errors = await checkScenes(brief);
   if (errors.size) {
     const fix = { ...brief, errors: [...errors.values()].flat() };
-    const fixed = await job.ai("writeCode", () => writeCode(fix, ROOT));
+    const fixed = await job.ai("writeCode", writeCode(fix, ROOT));
     answers = merge(answers, fixed);
     errors = await checkScenes(brief);
   }

@@ -107,7 +107,7 @@ ${list}
 Answer with one entry per scene, in order.`;
   return callWithImages(
     reviewFromAi,
-    { system: SYSTEM, user },
+    { step: "reviewFrames", system: SYSTEM, user },
     [...guide.references.map((r) => r.file), ...stills.map((s) => s.file)],
     model,
   );

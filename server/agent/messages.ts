@@ -4,6 +4,7 @@ import type {
   AgentQuestion,
 } from "../../src/agent/run/7-chat.js";
 import type { AgentRun } from "../../src/agent/run/run.js";
+import type { RunStatus } from "../../src/agent/run/status.js";
 import { newId } from "../ids.js";
 import type { Job } from "./job.js";
 
@@ -113,8 +114,9 @@ export async function finishWork(
   targets: ChatTarget[],
   reply: string,
   notes: string[],
+  status?: RunStatus,
 ): Promise<void> {
-  await closeWork(job, id, { status: "done", targets }, ["✓ " + reply, ...notes].join(" "));
+  await closeWork(job, id, { status: "done", targets }, ["✓ " + reply, ...notes].join(" "), {}, status);
 }
 
 // It failed: the message is marked, the run is not – the user can write again.
@@ -122,9 +124,10 @@ export async function failWork(
   job: Job,
   id: string,
   error: unknown,
+  status?: RunStatus,
 ): Promise<void> {
   const text = error instanceof Error ? error.message : String(error);
-  await closeWork(job, id, { status: "error", error: text }, `That didn't work: ${text}`);
+  await closeWork(job, id, { status: "error", error: text }, `That didn't work: ${text}`, {}, status);
 }
 
 // The work's message changed and the agent's answer (with a proposal, when
@@ -135,8 +138,10 @@ export async function closeWork(
   changes: Partial<ChatMessage>,
   answer: string,
   extra: Partial<ChatMessage> = {},
+  status?: RunStatus, // where the agent waits again – in the same write as the answer
 ): Promise<void> {
   await job.save({
+    ...(status ? { status } : {}),
     messages: [
       ...(job.run.messages ?? []).map((m) =>
         m.id === id ? { ...m, ...changes } : m,

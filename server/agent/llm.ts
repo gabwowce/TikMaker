@@ -55,9 +55,13 @@ function geminiOptions() {
 
 // ── What every call returns and logs ───────────────────────────────────────
 
+// What the model is told. `step` – which agent step asks (checkValue,
+// writeScript…): it picks the model (models.ts) and names the call.
+export type Prompt = { step?: string; system: string; user: string };
+
 export type CallLog = {
   model: string;
-  prompt: { system: string; user: string };
+  prompt: Prompt;
   attempts: number;
   usage: TokenCount;
   ms: number;
@@ -114,7 +118,7 @@ type Attempt<T> = { data: T; usage: TokenCount; model: string };
 // again, up to `tries` attempts in all; anything else gives up at once
 // (network errors are already retried inside the SDK / Claude Code).
 async function withRetries<T>(
-  prompt: { system: string; user: string },
+  prompt: Prompt,
   model: string,
   tries: number,
   attempt: () => Promise<Attempt<T>>,
@@ -149,7 +153,7 @@ async function withRetries<T>(
 
 export async function callStructured<T>(
   schema: z.ZodType<T>,
-  prompt: { system: string; user: string },
+  prompt: Prompt,
   given?: LanguageModel, // the tests' fake model – always wins
   images: string[] = [], // PNG files the model looks at with the text
 ): Promise<StructuredResult<T>> {
@@ -199,10 +203,10 @@ export async function callStructured<T>(
 // (WebSearch for research, Read for the review's frames).
 function claude<T>(
   schema: z.ZodType<T>,
-  prompt: { system: string; user: string },
+  prompt: Prompt,
   tools: string[] = [],
 ): Promise<StructuredResult<T>> {
-  return withRetries(prompt, `claude-code:${claudeModel()}`, 3, () =>
+  return withRetries(prompt, `claude-code:${claudeModel(prompt.step)}`, 3, () =>
     callClaudeCode(schema, prompt, tools),
   );
 }
@@ -212,7 +216,7 @@ function claude<T>(
 // gets the PNGs attached to the message.
 export async function callWithImages<T>(
   schema: z.ZodType<T>,
-  prompt: { system: string; user: string },
+  prompt: Prompt,
   images: string[],
   given?: LanguageModel,
 ): Promise<StructuredResult<T>> {
@@ -233,7 +237,7 @@ const searchAnswer = z.object({
 });
 
 export async function callWithSearch(
-  prompt: { system: string; user: string },
+  prompt: Prompt,
   given?: LanguageModel,
 ): Promise<StructuredResult<SearchAnswer>> {
   // Claude Code searches with its own WebSearch tool and, unlike Gemini, can
@@ -242,8 +246,8 @@ export async function callWithSearch(
     return claude(
       searchAnswer,
       {
+        ...prompt,
         system: `${prompt.system}\n\nPut your answer in "text" and every page you used in "sources".`,
-        user: prompt.user,
       },
       ["WebSearch", "WebFetch"],
     );
@@ -279,10 +283,10 @@ export async function callWithSearch(
 // written by then, so the second try only answers.
 export function callAgent<T>(
   schema: z.ZodType<T>,
-  prompt: { system: string; user: string },
+  prompt: Prompt,
   options: AgentOptions,
 ): Promise<StructuredResult<T>> {
-  return withRetries(prompt, `claude-code:${claudeModel()}`, 2, () =>
+  return withRetries(prompt, `claude-code:${claudeModel(prompt.step)}`, 2, () =>
     callClaudeCodeAgent(schema, prompt, options),
   );
 }

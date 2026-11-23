@@ -33,6 +33,7 @@ export async function research(
 ): Promise<StructuredResult<SearchAnswer>> {
   return callWithSearch(
     {
+      step: "research",
       system: SYSTEM,
       user: `Audience: ${workspace.audience}\n\nIdea: ${input.idea}${videoValue(value)}`,
     },

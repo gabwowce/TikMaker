@@ -9,7 +9,7 @@ import {
   type VisualStyleId,
 } from "../../../src/agent/visualStyles.js";
 import type { SceneWord } from "../../../src/video/code/types.js";
-import { callAgent, type StructuredResult } from "../llm.js";
+import { callAgent, type Prompt, type StructuredResult } from "../llm.js";
 
 // 4 Building: the pictures as code (docs/tikmaker-kryptis.md). Claude Code,
 // in the project's folder, writes every scene's picture as a Remotion
@@ -140,7 +140,7 @@ ${Object.entries(SOUND_USES)
   .map(([kind, use]) => `  - ${kind}: ${use}`)
   .join("\n")}`;
 
-export function writeCodePrompt(job: CodeJob): { system: string; user: string } {
+export function writeCodePrompt(job: CodeJob): Prompt {
   const channel = [
     `Channel: ${job.workspace.name}`,
     `What it is about: ${job.workspace.brief}`,
@@ -185,6 +185,7 @@ Keep what was not asked to change. Keep the file name, keep the schema's field n
     ? `\n\nThe last try did not compile – fix these first:\n${job.errors.join("\n")}`
     : "";
   return {
+    step: "writeCode",
     system: system(VISUAL_STYLES[job.style ?? "clear"]),
     user: `${channel}
 

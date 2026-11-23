@@ -44,5 +44,5 @@ The video's scenes (→ the one to rewrite):
 ${list}
 
 Rewrite scene ${sceneIndex + 1}: ${instruction}`;
-  return callStructured(sceneWordsFromAi, { system: SYSTEM, user }, model);
+  return callStructured(sceneWordsFromAi, { step: "rewriteScene", system: SYSTEM, user }, model);
 }
