@@ -18,6 +18,8 @@ import {
   failWork,
   finishWork,
   nextWork,
+  updateMessage,
+  userWrites,
 } from "./messages.js";
 import { allRuns, getRun, saveRun } from "./runs.js";
 import * as angle from "./steps/angle.js";
@@ -36,8 +38,8 @@ import * as voice from "./steps/voice.js";
 // a log of every model call. The editor's panel reads that file every few
 // seconds (agent.get), so whatever is saved there the user sees.
 //
-//   1. WHAT THE USER DOES   the panel's buttons → server/trpc/agent.ts → here:
-//                           save the answer, hand the run to the agent
+//   1. WHAT THE USER DOES   start, userAnswers: every button of the panel –
+//                           what it writes into the run, then to the agent
 //   2. THE WORKFLOW         runAgent: from the status, the next step
 //   3. A MESSAGE            takeUpWork: the router decides what it changes,
 //                           then the step for each change does it
@@ -64,10 +66,13 @@ import * as voice from "./steps/voice.js";
 // ════════════════════════════════════════════════════════════════════════════
 
 // ── 1. What the user does ──────────────────────────────────────────────────
-// Each one saves the user's answer in the run and hands the run back to the
-// agent (continueRun), which works in the background.
+// Every button in the agent's panel ends up here (server/trpc/agent.ts only
+// finds the run). Start makes a new run; every other answer is written into
+// the run's JSON right here, and then the run goes to the agent (part 4,
+// continueRun), which works in the background while the panel keeps reading
+// the file.
 
-// Start: the form → a new run in "created".
+// Start: the form → a new run file in "created". runAgent takes it from there.
 export async function start(
   projectId: string,
   input: IdeaFromUser,
@@ -85,75 +90,169 @@ export async function start(
   return run;
 }
 
-// Screen 2: another template instead of the agent's pick ("Change").
-export async function changeTemplate(run: AgentRun, videoTemplateId: string) {
-  await angle.saveTemplate(run, videoTemplateId);
-  await handToAgent(run);
-}
+// Every other answer the user can give.
+export type UserAnswer =
+  | { kind: "template"; videoTemplateId: string } // screen 2: "Change"
+  | { kind: "hook"; choice: ChooseHookFromUser } //   screen 2: a hook picked
+  | { kind: "approve" } //                             screen 3: "Approve"
+  | { kind: "message"; input: SendMessageFromUser } // a message, any time
+  | { kind: "answers"; input: AnswerFromUser } //     the questions card
+  | { kind: "decision"; input: DecideFromUser } //    "Do it" / "No"
+  | { kind: "continue" }; //                          "Continue" on a paused run
 
-// Screen 2: one of the three hooks, or the user's own line.
-export async function chooseHook(run: AgentRun, choice: ChooseHookFromUser) {
-  await angle.saveHook(run, choice);
-  await handToAgent(run);
-}
-
-// Screen 3: "Approve" – on to building the video.
-export async function approveScript(run: AgentRun) {
-  await script.saveApproval(run);
-  await handToAgent(run);
-}
-
-// A message, at any time. While the agent waits for answers it is the answer;
-// otherwise it waits in the run until the agent can take it up (part 3).
-export async function sendMessage(run: AgentRun, input: SendMessageFromUser) {
+// The answer → into the run's JSON → the run to the agent. A refused answer
+// (wrong moment, no such hook) throws, and the panel shows why.
+export async function userAnswers(
+  run: AgentRun,
+  answer: UserAnswer,
+): Promise<void> {
+  const job = await openJob(run);
+  let refused: unknown;
   try {
-    if (run.status === "awaiting_answers")
-      await ask.answerFromMessage(run, input.text);
-    else await chat.saveMessage(run, input);
-  } finally {
-    // even when the message is refused: after a server restart nothing is
-    // working on the ones already waiting, and this wakes the agent up for
-    // them (continueRun never starts a second worker)
-    await handToAgent(run);
+    switch (answer.kind) {
+      case "template": {
+        // → runAgent "awaiting_hook": the hooks are for the old template, so
+        //   it writes new ones
+        if (run.status !== "awaiting_hook")
+          throw new Error(`The template can't be changed now (${run.status})`);
+        angle.findTemplate(job, answer.videoTemplateId); // only one we know
+        await job.save({
+          template: { videoTemplateId: answer.videoTemplateId, pickedBy: "user" },
+        });
+        break;
+      }
+
+      case "hook": {
+        // → runAgent "awaiting_hook": there is a hook now, so the script
+        if (run.status !== "awaiting_hook")
+          throw new Error(`A hook can't be chosen now (${run.status})`);
+        const { choice } = answer;
+        if ("text" in choice) {
+          // the user's own line
+          await job.save({ hook: { text: choice.text, pickedBy: "user" } });
+          break;
+        }
+        const picked = run.hooks?.[choice.hookIndex];
+        if (!picked)
+          throw new Error(`There is no hook number ${choice.hookIndex + 1}`);
+        await job.save({
+          hook: {
+            text: picked.text,
+            formulaId: picked.formulaId,
+            firstFrame: picked.firstFrame,
+            pickedBy: "agent",
+          },
+        });
+        break;
+      }
+
+      case "approve": {
+        // → runAgent "awaiting_approval": approved, so voice, pictures, review
+        if (run.status !== "awaiting_approval" || !run.script)
+          throw new Error(`The script can't be approved now (${run.status})`);
+        await job.save({ script: { ...run.script, approved: true } });
+        break;
+      }
+
+      case "message": {
+        const { text, attachments } = answer.input;
+        if (run.status === "error" || run.status === "cancelled")
+          throw new Error(`The run has stopped (${run.status}) – start a new one`);
+        if (run.status === "awaiting_answers") {
+          // the agent asked: a typed message answers every open question
+          const asked = [...(run.messages ?? [])]
+            .reverse()
+            .find((m) => m.questions?.some((q) => !q.answer && !q.skipped));
+          if (!asked?.questions) throw new Error("There are no open questions");
+          await saveAnswers(job, asked.id, asked.questions.map((q) => ({ id: q.id, answer: text })));
+          break;
+        }
+        // → it waits in the run ("waiting") until the agent stops where it
+        //   can take it up: takeUpWork, part 3
+        await userWrites(job, text, attachments?.length ? { attachments } : {});
+        break;
+      }
+
+      case "answers": {
+        // → runAgent goes back to the step that asked; it asks no more
+        await saveAnswers(job, answer.input.messageId, answer.input.answers);
+        break;
+      }
+
+      case "decision": {
+        // "Do it" → the proposal is work waiting for the agent (part 3)
+        const { messageId, accept } = answer.input;
+        const asked = run.messages?.find((m) => m.id === messageId && m.proposal);
+        if (!asked?.proposal) throw new Error("There is no such proposal");
+        if (asked.proposal.decision)
+          throw new Error("This proposal has been answered already");
+        await updateMessage(job, messageId, {
+          proposal: { ...asked.proposal, decision: accept ? "yes" : "no" },
+          ...(accept ? { status: "waiting" as const } : {}),
+        });
+        if (!accept) await agentSays(job, "OK, I left it as it is.");
+        break;
+      }
+
+      case "continue": {
+        // → runAgent goes on from the status it was paused in
+        if (run.status !== "paused") throw new Error("The run is not paused");
+        await job.save({
+          status: run.pausedFrom ?? "created",
+          pausedFrom: undefined,
+          error: undefined,
+        });
+        break;
+      }
+    }
+  } catch (error) {
+    refused = error;
   }
+  // A refused message still wakes the agent up: after a server restart
+  // nothing is working on the messages already waiting.
+  if (!refused || answer.kind === "message") continueRun(job.run);
+  if (refused) throw refused;
 }
 
-// The questions card: the step that asked runs again with the answers.
-export async function answerQuestions(run: AgentRun, input: AnswerFromUser) {
-  await ask.saveAnswers(run, input);
-  await handToAgent(run);
-}
-
-// "Do it" / "No" on the agent's proposal.
-export async function decide(run: AgentRun, input: DecideFromUser) {
-  await chat.saveDecision(run, input);
-  await handToAgent(run);
-}
-
-// "Continue" on a paused run: back to the status it was paused in, and
-// runAgent goes on from there.
-export async function resumeRun(run: AgentRun): Promise<void> {
-  if (run.status !== "paused") throw new Error("The run is not paused");
-  await saveRun({
-    ...run,
-    status: run.pausedFrom ?? "created",
-    pausedFrom: undefined,
-    error: undefined,
+// The questions card's answers: into the agent's message that asked, the ones
+// marked "remember" into the channel's knowledge (every later video gets
+// them), and the run goes back to the status the step asked in – runAgent
+// runs that step again, now with the answers in its prompt (job.ts).
+async function saveAnswers(
+  job: Job,
+  messageId: string,
+  given: AnswerFromUser["answers"],
+): Promise<void> {
+  if (job.run.status !== "awaiting_answers")
+    throw new Error(`The agent is not waiting for answers (${job.run.status})`);
+  const asked = job.run.messages?.find((m) => m.id === messageId && m.questions);
+  if (!asked?.questions) throw new Error("There are no such questions");
+  const byId = new Map(given.map((a) => [a.id, a]));
+  const questions = asked.questions.map((question) => {
+    const a = byId.get(question.id);
+    const text = a?.answer?.trim();
+    if (!a || !text || a.skipped) return { ...question, skipped: true };
+    return { ...question, answer: text, ...(a.remember ? { remember: true } : {}) };
   });
-  await handToAgent(run);
+  await ask.remember(
+    job.run.input.workspaceId,
+    questions.flatMap((q) => (q.remember ? [`${q.question} – ${q.answer}`] : [])),
+  );
+  await job.save({
+    messages: (job.run.messages ?? []).map((m) =>
+      m.id === asked.id ? { ...m, questions } : m,
+    ),
+    status: job.run.pausedFrom ?? "created",
+    pausedFrom: undefined,
+  });
 }
 
 // Undo on a code scene: its code goes back one version. Not while the agent
-// works on the video.
+// works on the video, and nothing for the agent to do after.
 export async function undoScene(run: AgentRun, sceneIndex: number) {
   if (!["done", "error", "paused"].includes(run.status))
     throw new Error("The agent is working on the video – undo when it stops");
   await undoCodeScene(await openJob(run), sceneIndex);
-}
-
-// The run as saved just now, to the agent.
-async function handToAgent(run: AgentRun) {
-  continueRun((await getRun(run.id)) ?? run);
 }
 
 // ── 2. The workflow ────────────────────────────────────────────────────────
@@ -311,53 +410,48 @@ async function doTargets(
 }
 
 // ── 4. The worker ──────────────────────────────────────────────────────────
-// One worker per run: a run already being worked on is not started a second
-// time (a message sent while the agent works would otherwise start another
-// worker on the same run). The worker sees `again` and looks once more when
-// it finishes – which is how a message waiting from earlier is taken up.
+// The agent works in the background: the user's request returns at once and
+// the panel keeps reading the run's file. One worker per run – if a message
+// arrives while the agent works, no second worker starts on the same file;
+// `again` tells the one working to look once more when it finishes.
 const working = new Set<string>();
 const again = new Set<string>();
 
-// Called after every answer of the user (part 1). Works in the background;
-// the panel keeps asking agent.get. A usage limit pauses the run ("Continue"
-// goes on later); anything else stops it in "error" with the reason.
 export function continueRun(run: AgentRun): void {
   if (working.has(run.id)) {
     again.add(run.id);
     return;
   }
   working.add(run.id);
-  void work(run)
-    .catch(async (error: unknown) => {
-      const message = error instanceof Error ? error.message : String(error);
-      // The file is newer than `run` (steps logged since), so build on it.
+  void (async () => {
+    try {
+      // runAgent does one stretch of work and stops where the agent waits for
+      // the user. Again while something is left: a message that came in
+      // meanwhile, or a proposal accepted meanwhile.
+      let latest: AgentRun | undefined = run;
+      while (latest) {
+        again.delete(run.id);
+        await runAgent(latest);
+        latest = await getRun(run.id);
+        const waitingWork =
+          latest !== undefined &&
+          nextWork(latest) !== undefined &&
+          chat.TALK_STATUSES.includes(latest.status);
+        if (!waitingWork && !again.has(run.id)) break;
+      }
+    } catch (error) {
+      // the file is newer than `run` (steps logged since), so build on it
       const latest = (await getRun(run.id)) ?? run;
+      const message = error instanceof Error ? error.message : String(error);
       if (isLimitError(error))
-        await saveRun({
-          ...latest,
-          status: "paused",
-          pausedFrom: latest.status,
-          error: message,
-        });
+        // a usage limit: nothing is wrong – "Continue" goes on later
+        await saveRun({ ...latest, status: "paused", pausedFrom: latest.status, error: message });
+      // anything else stops the run, with the reason on the panel
       else await saveRun({ ...latest, status: "error", error: message });
-    })
-    .finally(() => working.delete(run.id));
-}
-
-// Runs the agent until it waits for the user with nothing left to take up.
-async function work(first: AgentRun): Promise<void> {
-  let run = first;
-  for (;;) {
-    again.delete(run.id);
-    await runAgent(run);
-    const latest = await getRun(run.id);
-    if (!latest) return;
-    const pending =
-      nextWork(latest) !== undefined &&
-      chat.TALK_STATUSES.includes(latest.status);
-    if (!pending && !again.has(run.id)) return;
-    run = latest;
-  }
+    } finally {
+      working.delete(run.id);
+    }
+  })();
 }
 
 // At server start: a run left in a working status had its worker in the

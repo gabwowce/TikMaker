@@ -1,7 +1,6 @@
 import { checkScript } from "../../../src/agent/rules/checkScript.js";
 import type { ScriptInRun } from "../../../src/agent/run/3-script.js";
-import type { AgentRun } from "../../../src/agent/run/run.js";
-import { openJob, type Job } from "../job.js";
+import type { Job } from "../job.js";
 import { research } from "../prompts/research.js";
 import { writeScript, type ScriptChange } from "../prompts/writeScript.js";
 import { findTemplate } from "./angle.js";
@@ -67,21 +66,6 @@ export async function writeAndCheck(job: Job): Promise<void> {
     problems = check(script);
   }
   await job.save({ script: { ...withoutAsking(script), problems } });
-}
-
-// "Approve" on screen 3: agent.ts then goes on to building the video.
-export async function saveApproval(run: AgentRun): Promise<void> {
-  const script = scriptAwaitingAnswer(run);
-  const job = await openJob(run);
-  await job.save({ script: { ...script, approved: true } });
-}
-
-// A comment on screen 3: agent.ts then has the script written again with it.
-// The user answers only while the agent waits for them.
-function scriptAwaitingAnswer(run: AgentRun): ScriptInRun {
-  if (run.status !== "awaiting_approval" || !run.script)
-    throw new Error(`The script can't be answered now (${run.status})`);
-  return run.script;
 }
 
 // The script as the model wrote it, without what the run added to it.

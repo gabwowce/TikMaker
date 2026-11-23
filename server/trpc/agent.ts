@@ -49,7 +49,7 @@ export const agentRouter = router({
     .input(changeTemplateFromUser)
     .mutation(async ({ input }) => {
       const run = await findRun(input.runId);
-      await asBadRequest(() => agent.changeTemplate(run, input.videoTemplateId));
+      await asBadRequest(() => agent.userAnswers(run, { kind: "template", videoTemplateId: input.videoTemplateId }));
     }),
 
   // Screen 2: the user picks one of the three hooks, or writes their own
@@ -58,7 +58,7 @@ export const agentRouter = router({
     .input(chooseHookFromUser)
     .mutation(async ({ input }) => {
       const run = await findRun(input.runId);
-      await asBadRequest(() => agent.chooseHook(run, input));
+      await asBadRequest(() => agent.userAnswers(run, { kind: "hook", choice: input }));
     }),
 
   // Screen 3: "Approve" – the agent goes on to building the video.
@@ -66,27 +66,28 @@ export const agentRouter = router({
     .input(approveScriptFromUser)
     .mutation(async ({ input }) => {
       const run = await findRun(input.runId);
-      await asBadRequest(() => agent.approveScript(run));
+      await asBadRequest(() => agent.userAnswers(run, { kind: "approve" }));
     }),
 
   // The conversation: a message at any time. It waits until the agent stops
   // where it can take it up, then the agent works on it and answers.
   message: procedure.input(sendMessageFromUser).mutation(async ({ input }) => {
     const run = await findRun(input.runId);
-    await asBadRequest(() => agent.sendMessage(run, input));
+    await asBadRequest(() => agent.userAnswers(run, { kind: "message", input }));
   }),
 
   // The answers to the agent's questions (the questions card): the asking
   // step runs again with them.
   answer: procedure.input(answerFromUser).mutation(async ({ input }) => {
     const run = await findRun(input.runId);
-    await asBadRequest(() => agent.answerQuestions(run, input));
+    await asBadRequest(() => agent.userAnswers(run, { kind: "answers", input }));
   }),
   // "Continue" on a run paused at the model's usage limit.
   resume: procedure
     .input(z.object({ runId: z.string().min(1) }))
     .mutation(async ({ input }) => {
-      await agent.resumeRun(await findRun(input.runId));
+      const run = await findRun(input.runId);
+      await asBadRequest(() => agent.userAnswers(run, { kind: "continue" }));
     }),
   // Undo on a code scene: its code goes back to the version before the
   // agent's last change (server/agent/codeVersions.ts). Returns the run.
@@ -100,7 +101,7 @@ export const agentRouter = router({
   // The answer to the agent's proposal – the "Do it" / "No" buttons.
   decide: procedure.input(decideFromUser).mutation(async ({ input }) => {
     const run = await findRun(input.runId);
-    await asBadRequest(() => agent.decide(run, input));
+    await asBadRequest(() => agent.userAnswers(run, { kind: "decision", input }));
   }),
 });
 

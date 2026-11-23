@@ -2,19 +2,12 @@ import type {
   ChatMessage,
   ChatTarget,
   ChatTargetKind,
-  DecideFromUser,
-  SendMessageFromUser,
 } from "../../../src/agent/run/7-chat.js";
 import type { AgentRun } from "../../../src/agent/run/run.js";
 import type { RunStatus } from "../../../src/agent/run/status.js";
 import { generateVoice } from "../../voice.js";
-import { openJob, type Job } from "../job.js";
-import {
-  agentSays,
-  closeWork,
-  updateMessage,
-  userWrites,
-} from "../messages.js";
+import type { Job } from "../job.js";
+import { closeWork, updateMessage } from "../messages.js";
 import { rewriteScene } from "../prompts/rewriteScene.js";
 import { routeMessage } from "../prompts/routeMessage.js";
 import { writeHooks } from "../prompts/writeHooks.js";
@@ -25,12 +18,12 @@ import { voiceAround } from "./voice.js";
 // 7 The conversation (docs/pokalbis-planas.md, docs/pokalbis-kodas.md).
 //
 // 1. The user's message is saved at once, whatever the agent is doing
-//    (saveMessage) – it waits in the run until the agent stops at a point
+//    (agent.ts userAnswers, "message") – it waits in the run until the agent stops at a point
 //    where it can be taken up (TALK_STATUSES). Several can wait: they form
 //    a queue and are taken up one by one, oldest first (messages.ts nextWork).
 // 2. agent.ts takes it up: routeMessage (Sonnet) decides what it changes
 //    (route). Not clear → the agent asks back. Several parts → the agent
-//    proposes and waits for the "Do it" button (saveDecision).
+//    proposes and waits for the "Do it" button (agent.ts, "decision").
 // 3. agent.ts does the work target by target with the functions below and
 //    the agent answers with what it did (messages.ts finishWork / failWork).
 
@@ -42,45 +35,6 @@ const ALLOWED: Partial<Record<RunStatus, ChatTargetKind[]>> = {
 };
 // Where a waiting message is taken up.
 export const TALK_STATUSES = Object.keys(ALLOWED) as RunStatus[];
-
-// ── 1. The message ─────────────────────────────────────────────────────────
-
-export async function saveMessage(
-  run: AgentRun,
-  input: SendMessageFromUser,
-): Promise<void> {
-  if (run.status === "error" || run.status === "cancelled")
-    throw new Error(`The run has stopped (${run.status}) – start a new one`);
-  const job = await openJob(run);
-  await userWrites(
-    job,
-    input.text,
-    input.attachments?.length ? { attachments: input.attachments } : {},
-  );
-}
-
-// The user's answer to a proposal – the buttons, never a message.
-export async function saveDecision(
-  run: AgentRun,
-  input: DecideFromUser,
-): Promise<void> {
-  const proposal = run.messages?.find(
-    (message) => message.id === input.messageId && message.proposal,
-  );
-  if (!proposal?.proposal) throw new Error("There is no such proposal");
-  if (proposal.proposal.decision)
-    throw new Error("This proposal has been answered already");
-  const job = await openJob(run);
-  await updateMessage(job, proposal.id, {
-    proposal: {
-      ...proposal.proposal,
-      decision: input.accept ? "yes" : "no",
-    },
-    // accepted → it is work waiting for the agent, like a message
-    ...(input.accept ? { status: "waiting" as const } : {}),
-  });
-  if (!input.accept) await agentSays(job, "OK, I left it as it is.");
-}
 
 // ── 2. What it changes ─────────────────────────────────────────────────────
 
