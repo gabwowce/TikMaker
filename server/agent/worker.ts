@@ -3,36 +3,9 @@ import { RESTING_STATUSES } from "../../src/agent/run/status.js";
 import { isLimitError } from "./limits.js";
 import { allRuns, getRun, saveRun } from "./runs.js";
 
-// Runs the agent's work in the background, one worker per run. Called again
-// while it works, it does not start a second worker on the same file – it
-// runs the work once more when the first one ends.
-
-const busy = new Set<string>();
-const again = new Set<string>();
-
-export function inBackground(runId: string, work: () => Promise<void>): void {
-  if (busy.has(runId)) {
-    again.add(runId);
-    return;
-  }
-  busy.add(runId);
-  void (async () => {
-    try {
-      do {
-        again.delete(runId);
-        await work();
-      } while (again.has(runId));
-    } catch (error) {
-      await stopRun(runId, error);
-    } finally {
-      busy.delete(runId);
-    }
-  })();
-}
-
 // A usage limit pauses the run ("Continue" goes on later); any other error
 // stops it, with the reason on the panel.
-async function stopRun(runId: string, error: unknown): Promise<void> {
+export async function stopRun(runId: string, error: unknown): Promise<void> {
   const run = await getRun(runId);
   if (!run) return;
   const message = error instanceof Error ? error.message : String(error);

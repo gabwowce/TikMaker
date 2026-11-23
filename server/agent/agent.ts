@@ -19,7 +19,7 @@ import * as chat from "./steps/chat.js";
 import * as review from "./steps/review.js";
 import * as script from "./steps/script.js";
 import * as voice from "./steps/voice.js";
-import { inBackground } from "./worker.js";
+import { stopRun } from "./worker.js";
 
 export type { UserAnswer };
 
@@ -60,15 +60,24 @@ export async function undoScene(run: AgentRun, sceneIndex: number): Promise<void
 
 // ── The agent ──────────────────────────────────────────────────────────────
 
+const working = new Set<string>();
+
 function goOn(runId: string): void {
-  inBackground(runId, async () => {
+  if (working.has(runId)) return; // already working: it reads the JSON again when it finishes
+  working.add(runId);
+
+  const work = async () => {
     let run = await getRun(runId);
     while (run) {
       await next(await openJob(run));
       run = await getRun(runId);
       if (!run || !hasWorkWaiting(run)) break;
     }
-  });
+  };
+
+  work()
+    .catch((error) => stopRun(runId, error))
+    .finally(() => working.delete(runId));
 }
 
 async function next(job: Job): Promise<void> {
