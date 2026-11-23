@@ -6,7 +6,8 @@ import {
   transcodeForScrubbing,
 } from "../../scripts/transcodeRecording.js";
 import { readJson, writeJson } from "../db.js";
-import { newId, removePublicFile, savePublicFile } from "../uploads.js";
+import { newId } from "../ids.js";
+import { removePublicFile, savePublicFile } from "../uploads.js";
 import { procedure, router } from "./init.js";
 
 const MANIFEST = "custom-assets.json";

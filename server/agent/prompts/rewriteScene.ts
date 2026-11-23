@@ -9,7 +9,7 @@ import { creatorFacts, productScreens } from "./productScreens.js";
 // with the creator's instruction, after the video is built. Only that scene –
 // the scenes around it are given so the new words still lead on from the one
 // before and into the one after. Its voice and its pictures are then made
-// again on the new words (steps/7-chat.ts).
+// again on the new words (steps/chat.ts).
 
 export const sceneWordsFromAi = z.object({
   voiceover: z.string().trim().min(3).max(400),

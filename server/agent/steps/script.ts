@@ -4,14 +4,14 @@ import type { AgentRun } from "../../../src/agent/run/run.js";
 import { openJob, type Job } from "../job.js";
 import { research } from "../prompts/research.js";
 import { writeScript, type ScriptChange } from "../prompts/writeScript.js";
-import { findTemplate } from "./2-angle.js";
+import { findTemplate } from "./angle.js";
 import { askedBefore, askIfNeeded, withoutAsking } from "./ask.js";
 
 // 3 Script: the model writes the script for the template and the hook; the
 // code checks it and, if anything is wrong, the model fixes it once.
 // What is still wrong after that stays in script.problems for the user to see.
 // Written again with the user's comment when they leave one.
-export async function step3Script(job: Job): Promise<void> {
+export async function writeAndCheck(job: Job): Promise<void> {
   const { input, template: chosen, hook, script: previous } = job.run;
   if (!chosen || !hook)
     throw new Error("The script needs a template and a hook first");
@@ -70,7 +70,7 @@ export async function step3Script(job: Job): Promise<void> {
 }
 
 // "Approve" on screen 3: agent.ts then goes on to building the video.
-export async function step3Approve(run: AgentRun): Promise<void> {
+export async function saveApproval(run: AgentRun): Promise<void> {
   const script = scriptAwaitingAnswer(run);
   const job = await openJob(run);
   await job.save({ script: { ...script, approved: true } });

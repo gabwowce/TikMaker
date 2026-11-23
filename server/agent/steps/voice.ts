@@ -5,7 +5,7 @@ import type { Job } from "../job.js";
 // 5 Result: every scene's voiceover from ElevenLabs. Code, not AI – the text
 // is the approved script's. Saved after each scene, so the panel can show the
 // progress and a failure keeps the scenes already voiced.
-export async function step5Voice(job: Job): Promise<void> {
+export async function voiceScenes(job: Job): Promise<void> {
   const scenes = job.run.script?.scenes ?? [];
   const voiced: VoiceInRun["scenes"] = [];
   for (const [index, scene] of scenes.entries()) {

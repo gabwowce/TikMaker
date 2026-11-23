@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import { createEmptyProject } from "../../../src/schema/project.js";
 import { parseProject } from "../../../src/utils/normalizeProject.js";
 import { framesToReview } from "../frames.js";
-import { reviewResult } from "../steps/7-review.js";
+import { reviewResult } from "../steps/review.js";
 
 // A project of two 3-second scenes (vo set so the length comes from it): the
 // first with two layers, the second with none.

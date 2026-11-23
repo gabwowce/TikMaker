@@ -1,32 +1,26 @@
 import fs from "node:fs/promises";
 import path from "node:path";
 import type { Asking, AskingStep } from "../../../src/agent/run/asking.js";
-import type {
-  AnswerFromUser,
-  ChatMessage,
-} from "../../../src/agent/run/7-chat.js";
+import type { AnswerFromUser } from "../../../src/agent/run/7-chat.js";
 import type { AgentRun } from "../../../src/agent/run/run.js";
 import { KNOWLEDGE_DIR } from "../../config.js";
 import { openJob, type Job } from "../job.js";
-import { agentSays } from "./7-chat.js";
+import { agentAsks, agentSays } from "../messages.js";
 
-// 3 The agent asks (docs/pokalbis-planas.md, 3.2). A step that decides what
+// The agent asks (docs/pokalbis-planas.md, 3.2). A step that decides what
 // the video says – the template, the script – may answer with
 // questions instead of guessing a fact. Then:
 //
 // 1. askIfNeeded: the questions become the agent's message, the run waits in
 //    "awaiting_answers" (pausedFrom – the step asking) and the step's answer
 //    is NOT saved: it is made again with the answers.
-// 2. step3Answer (the questions card): the answers go into the message, the
+// 2. saveAnswers (the questions card): the answers go into the message, the
 //    ones marked "remember" into the channel's knowledge, and the run goes
 //    back to the status the step asked in (pausedFrom) – agent.ts runs that
 //    stage again.
 // 3. job.ts gives every later prompt the answers as facts from the creator.
 //
 // A step asks once per run: asked again, it decides and says what it assumed.
-
-const newId = (prefix: string) =>
-  `${prefix}-${Date.now().toString(36)}${Math.random().toString(36).slice(2, 6)}`;
 
 // Did this step ask already in this run?
 export function askedBefore(run: AgentRun, step: AskingStep): boolean {
@@ -43,25 +37,7 @@ export async function askIfNeeded(
 ): Promise<boolean> {
   const questions = answer.questions ?? [];
   if (questions.length && !askedBefore(job.run, step)) {
-    const message: ChatMessage = {
-      id: newId("msg"),
-      at: Date.now(),
-      from: "agent",
-      text:
-        questions.length === 1
-          ? "One thing I need to know before I go on:"
-          : `${questions.length} things I need to know before I go on:`,
-      questions: questions.map((question, i) => ({
-        ...question,
-        id: `${step}-${i + 1}`,
-      })),
-      askedBy: step,
-    };
-    await job.save({
-      messages: [...(job.run.messages ?? []), message],
-      status: "awaiting_answers",
-      pausedFrom: job.run.status,
-    });
+    await agentAsks(job, step, questions);
     return true;
   }
   if (answer.assumptions?.length)
@@ -89,7 +65,7 @@ export function withoutAsking<T extends Asking>(
 
 // The questions card: the answers saved, "remember" ones written into the
 // channel's knowledge, and the run goes on from where the asking step starts.
-export async function step3Answer(
+export async function saveAnswers(
   run: AgentRun,
   input: AnswerFromUser,
 ): Promise<void> {
@@ -136,7 +112,7 @@ export async function answerFromMessage(
     .reverse()
     .find((message) => message.questions?.some((q) => !q.answer && !q.skipped));
   if (!asked?.questions) throw new Error("There are no open questions");
-  await step3Answer(run, {
+  await saveAnswers(run, {
     runId: run.id,
     messageId: asked.id,
     answers: asked.questions.map((q) => ({ id: q.id, answer: text })),

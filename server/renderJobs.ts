@@ -3,7 +3,7 @@ import fs from "node:fs";
 import path from "node:path";
 import type { VideoProject } from "../src/schema/project.js";
 import { OUT_DIR, ROOT } from "./config.js";
-import { newId } from "./uploads.js";
+import { newId } from "./ids.js";
 
 // A render takes minutes — far longer than one request should stay open. So
 // starting one only launches `remotion render` in the background and hands

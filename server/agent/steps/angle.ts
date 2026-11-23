@@ -8,17 +8,17 @@ import type { AgentRun } from "../../../src/agent/run/run.js";
 import { openJob, type Job } from "../job.js";
 import { checkValue } from "../prompts/checkValue.js";
 import { pickTemplate } from "../prompts/pickTemplate.js";
-import { agentSays } from "./7-chat.js";
+import { agentSays } from "../messages.js";
 import { writeHooks } from "../prompts/writeHooks.js";
 import { askedBefore, askIfNeeded, withoutAsking } from "./ask.js";
 
-// 2 Angle, part one: is the idea worth a video, then which template the video
-// follows – the one chosen in the form, or else the model picks one.
-export async function step2Template(job: Job): Promise<void> {
-  if (!job.run.value) {
-    await step2Value(job);
-    if (job.run.status === "awaiting_answers") return;
-  }
+// 2 Angle: is the idea worth a video, which template it follows, and three
+// opening lines for the user to pick from. Plus the user's two answers on
+// that screen (another template, a hook picked).
+
+// Which template the video follows – the one chosen in the form, or else the
+// model picks one (it may ask the creator instead of guessing).
+export async function chooseTemplate(job: Job): Promise<void> {
   const chosen = job.run.input.videoTemplateId;
   if (chosen) {
     // Chosen in the form: no need to ask the model.
@@ -47,7 +47,7 @@ export async function step2Template(job: Job): Promise<void> {
 // creator for what would carry it; once answered (or kept as it is), the
 // verdict is saved (and said, when it is not strong), and the run goes on – the
 // creator decides, the agent only makes the gap visible.
-async function step2Value(job: Job): Promise<void> {
+export async function judgeValue(job: Job): Promise<void> {
   const value = await job.ai("checkValue", () =>
     checkValue(
       job.run.input,
@@ -73,9 +73,9 @@ function valueMessage(value: ValueInRun): string {
   );
 }
 
-// 2 Angle, part two: the opening line. Written in the form – used as it is;
-// else the model proposes three for the template (FR-06) and the user picks.
-export async function step2Hooks(job: Job): Promise<void> {
+// The opening line. Written in the form – used as it is; else the model
+// proposes three for the template (FR-06) and the user picks.
+export async function offerHooks(job: Job): Promise<void> {
   const own = job.run.input.hook;
   if (own) {
     await job.save({ hook: { text: own, pickedBy: "user" } });
@@ -99,7 +99,7 @@ export async function step2Hooks(job: Job): Promise<void> {
 
 // The user's answer on screen 2: go on with another template instead of the
 // agent's pick ("Change"). agent.ts then writes hooks for it.
-export async function step2ChangeTemplate(
+export async function saveTemplate(
   run: AgentRun,
   videoTemplateId: string,
 ): Promise<void> {
@@ -112,7 +112,7 @@ export async function step2ChangeTemplate(
 
 // The user's other answer on screen 2: one of the three hooks, or their own
 // text (FR-07). agent.ts then goes on to the script.
-export async function step2ChooseHook(
+export async function saveHook(
   run: AgentRun,
   choice: ChooseHookFromUser,
 ): Promise<void> {

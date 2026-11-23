@@ -18,16 +18,17 @@ import type { Job } from "../job.js";
 import { reviewFrames } from "../prompts/reviewFrames.js";
 import { renderStills, type Still } from "../stills.js";
 import { isLimitError } from "../limits.js";
-import { agentSays, step7Change } from "./7-chat.js";
+import { agentSays } from "../messages.js";
+import { change } from "./chat.js";
 
 // The review of the frames (docs/perziura-kodas.md): the agent renders frames
 // of the video, looks at them (FR-15) and decides what to change.
 //
-// - step6SelfReview: at the end of the build, before "done" – the agent
+// - selfReview: at the end of the build, before "done" – the agent
 //   fixes what it found by itself and looks again, until every scene reads
 //   well, the rounds run out or a round finds no fewer scenes to fix (FR-16).
 //   No button: the creator's decisions stay the three of NFR-11.
-// - step7Review: the "Review frames" button / a message later on – the video
+// - reviewOnRequest: the "Review frames" button / a message later on – the video
 //   as the editor saved it (the creator may have changed it by hand), and the
 //   fixes only proposed, done on "Do it".
 
@@ -124,7 +125,7 @@ function styleImages(style: VisualStyle, folder: string) {
     });
 }
 
-export async function step7Review(
+export async function reviewOnRequest(
   job: Job,
   render: RenderFrames = renderStills,
 ): Promise<ReviewResult> {
@@ -139,7 +140,7 @@ export async function step7Review(
 // conversation, so the creator sees what the agent changed and why. Anything
 // failing here (no Claude Code, a render error) ends the review, not the run:
 // the video is built either way.
-export async function step6SelfReview(
+export async function selfReview(
   job: Job,
   render: RenderFrames = renderStills,
 ): Promise<void> {
@@ -194,7 +195,7 @@ export async function step6SelfReview(
               ),
           ]
         : []),
-      ...words.map((target) => () => step7Change(job, target)),
+      ...words.map((target) => () => change(job, target)),
     ];
     for (const fix of fixes) {
       try {

@@ -3,7 +3,8 @@ import path from "node:path";
 import { z } from "zod";
 import type { SfxGroup } from "../../src/registries/sfxRegistry.js";
 import { readJson, writeJson } from "../db.js";
-import { newId, removePublicFile, savePublicFile } from "../uploads.js";
+import { newId } from "../ids.js";
+import { removePublicFile, savePublicFile } from "../uploads.js";
 import { procedure, router } from "./init.js";
 
 // custom-sfx.json holds uploaded sound effects AND generated voiceovers

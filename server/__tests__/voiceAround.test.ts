@@ -7,7 +7,7 @@ const root = fs.mkdtempSync(path.join(os.tmpdir(), "tikmaker-voice-"));
 process.env.TIKMAKER_ROOT = root;
 process.env.ELEVENLABS_API_KEY = "test-key";
 const { generateVoice } = await import("../voice.js");
-const { voiceAround } = await import("../agent/steps/5-voice.js");
+const { voiceAround } = await import("../agent/steps/voice.js");
 afterAll(() => fs.rmSync(root, { recursive: true, force: true }));
 
 describe("the voice runs on from scene to scene", () => {

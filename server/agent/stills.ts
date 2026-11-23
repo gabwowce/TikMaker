@@ -10,7 +10,7 @@ import { framesToReview, type Still } from "./frames.js";
 export type { Still } from "./frames.js";
 
 // The frames the agent looks at when it reviews its own video
-// (steps/7-review.ts): a picture of each scene as the viewer will see it –
+// (steps/review.ts): a picture of each scene as the viewer will see it –
 // rendered by Remotion from the same composition as the MP4, so what the
 // model judges is exactly what gets posted.
 

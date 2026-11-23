@@ -11,31 +11,21 @@ import {
   decideFromUser,
   sendMessageFromUser,
 } from "../../src/agent/run/7-chat.js";
-import { continueRun, resumeRun } from "../agent/agent.js";
-import { undoCodeScene } from "../agent/codeScenes.js";
-import { openJob } from "../agent/job.js";
+import * as agent from "../agent/agent.js";
 import { loadKnowledge } from "../agent/knowledge.js";
 import { getRun, listRuns } from "../agent/runs.js";
-import { step1Idea } from "../agent/steps/1-idea.js";
-import {
-  step2ChangeTemplate,
-  step2ChooseHook,
-} from "../agent/steps/2-angle.js";
-import { step3Approve } from "../agent/steps/3-script.js";
-import { step7Decide, step7Message } from "../agent/steps/7-chat.js";
-import { answerFromMessage, step3Answer } from "../agent/steps/ask.js";
 import { KNOWLEDGE_DIR } from "../config.js";
 import { procedure, router } from "./init.js";
 
 // The agent as the editor sees it: start a run, then keep asking how it is
 // going. The same start → poll pattern as renders.ts; the run itself lives in
-// db/agent-runs/<id>.json (server/agent/runs.ts). Every answer the user gives
-// is saved by its step and then hands the run back to the agent (continueRun).
+// db/agent-runs/<id>.json (server/agent/runs.ts). Every button is one of the
+// user's actions in server/agent/agent.ts (part 1) – this file only finds the
+// run and turns a refusal into a bad request.
 export const agentRouter = router({
   start: procedure.input(startFromUser).mutation(async ({ input }) => {
-    const run = await step1Idea(input.projectId, input.input);
-    continueRun(run); // the agent works in the background; the panel polls get
-    return { id: run.id };
+    const run = await agent.start(input.projectId, input.input);
+    return { id: run.id }; // the agent works in the background; the panel polls get
   }),
 
   get: procedure.input(z.string()).query(({ input: id }) => findRun(id)),
@@ -59,8 +49,7 @@ export const agentRouter = router({
     .input(changeTemplateFromUser)
     .mutation(async ({ input }) => {
       const run = await findRun(input.runId);
-      await asBadRequest(() => step2ChangeTemplate(run, input.videoTemplateId));
-      continueRun(await findRun(run.id));
+      await asBadRequest(() => agent.changeTemplate(run, input.videoTemplateId));
     }),
 
   // Screen 2: the user picks one of the three hooks, or writes their own
@@ -69,8 +58,7 @@ export const agentRouter = router({
     .input(chooseHookFromUser)
     .mutation(async ({ input }) => {
       const run = await findRun(input.runId);
-      await asBadRequest(() => step2ChooseHook(run, input));
-      continueRun(await findRun(run.id));
+      await asBadRequest(() => agent.chooseHook(run, input));
     }),
 
   // Screen 3: "Approve" – the agent goes on to building the video.
@@ -78,39 +66,27 @@ export const agentRouter = router({
     .input(approveScriptFromUser)
     .mutation(async ({ input }) => {
       const run = await findRun(input.runId);
-      await asBadRequest(() => step3Approve(run));
-      continueRun(await findRun(run.id));
+      await asBadRequest(() => agent.approveScript(run));
     }),
 
   // The conversation: a message at any time. It waits until the agent stops
   // where it can take it up, then the agent works on it and answers.
   message: procedure.input(sendMessageFromUser).mutation(async ({ input }) => {
     const run = await findRun(input.runId);
-    try {
-      // while the agent waits for answers, a typed message is the answer
-      if (run.status === "awaiting_answers")
-        await asBadRequest(() => answerFromMessage(run, input.text));
-      else await asBadRequest(() => step7Message(run, input));
-    } finally {
-      // even when the message is refused: after a server restart nothing is
-      // working on the ones already waiting, and this wakes the agent up for
-      // them (continueRun never starts a second worker)
-      continueRun(await findRun(run.id));
-    }
+    await asBadRequest(() => agent.sendMessage(run, input));
   }),
 
   // The answers to the agent's questions (the questions card): the asking
   // step runs again with them.
   answer: procedure.input(answerFromUser).mutation(async ({ input }) => {
     const run = await findRun(input.runId);
-    await asBadRequest(() => step3Answer(run, input));
-    continueRun(await findRun(run.id));
+    await asBadRequest(() => agent.answerQuestions(run, input));
   }),
   // "Continue" on a run paused at the model's usage limit.
   resume: procedure
     .input(z.object({ runId: z.string().min(1) }))
     .mutation(async ({ input }) => {
-      await resumeRun(await findRun(input.runId));
+      await agent.resumeRun(await findRun(input.runId));
     }),
   // Undo on a code scene: its code goes back to the version before the
   // agent's last change (server/agent/codeVersions.ts). Returns the run.
@@ -118,20 +94,13 @@ export const agentRouter = router({
     .input(z.object({ runId: z.string().min(1), sceneIndex: z.number().int().min(0) }))
     .mutation(async ({ input }) => {
       const run = await findRun(input.runId);
-      if (!["done", "error", "paused"].includes(run.status))
-        throw new TRPCError({
-          code: "BAD_REQUEST",
-          message: "The agent is working on the video – undo when it stops",
-        });
-      const job = await openJob(run);
-      await asBadRequest(() => undoCodeScene(job, input.sceneIndex));
+      await asBadRequest(() => agent.undoScene(run, input.sceneIndex));
       return findRun(run.id);
     }),
   // The answer to the agent's proposal – the "Do it" / "No" buttons.
   decide: procedure.input(decideFromUser).mutation(async ({ input }) => {
     const run = await findRun(input.runId);
-    await asBadRequest(() => step7Decide(run, input));
-    continueRun(await findRun(run.id));
+    await asBadRequest(() => agent.decide(run, input));
   }),
 });
 
