@@ -28,8 +28,8 @@ Forma (idėja) ──► run'o JSON ──► agentas: vertė → šablonas → 
 
 | # | Modulis | ~Eil. | Būsena |
 |---|---|---|---|
-| 1 | Kas yra run'o JSON'e | 410 | 🟨 |
-| 2 | Žemėlapis: `agent.ts` | 270 | ⬜ |
+| 1 | Kas yra run'o JSON'e | 410 | ✅ (liko praktika) |
+| 2 | Žemėlapis: `agent.ts` | 270 | 🟨 |
 | 3 | Išsaugojimas ir du rašytojai | 220 | ⬜ |
 | 4 | Kalbėjimas su modeliu | 450 | ⬜ |
 | 5 | Idėja, šablonas, hookai, klausimai | 330 + promptai | ⬜ |
@@ -43,27 +43,37 @@ Forma (idėja) ──► run'o JSON ──► agentas: vertė → šablonas → 
 
 ---
 
-## 1. Kas yra run'o JSON'e 🟨
+## 1. Kas yra run'o JSON'e ✅ (liko praktika)
 Pradedam nuo tikro failo `db/agent-runs/<id>.json`: ką saugome ir kodėl.
 
 | Failas | Eil. | Būsena |
 |---|---|---|
-| `src/agent/run/run.ts` – viso run'o schema | 31 | ⬜ |
-| `src/agent/run/status.ts` – visos būsenos | 28 | ⬜ |
-| `src/agent/run/1-idea.ts` – forma | 18 | ⬜ |
-| `src/agent/run/2-angle.ts` – vertė, šablonas, hookai | 70 | ⬜ |
-| `src/agent/run/3-script.ts` – scenarijus | 40 | ⬜ |
-| `src/agent/run/4-code.ts` – vaizdai kodu | 72 | ⬜ |
-| `src/agent/run/5-voice.ts` – balsas | 9 | ⬜ |
-| `src/agent/run/7-chat.ts` – pokalbis, žinutės, tikslai | 108 | ⬜ |
-| `src/agent/run/asking.ts`, `log.ts` – klausimai, modelio iškvietimų žurnalas | 38 | ⬜ |
+| `src/agent/run/run.ts` – viso run'o schema | 31 | ✅ |
+| `src/agent/run/status.ts` – visos būsenos | 28 | ✅ |
+| `src/agent/run/1-idea.ts` – forma | 18 | ✅ |
+| `src/agent/run/2-angle.ts` – vertė, šablonas, hookai | 70 | ✅ |
+| `src/agent/run/3-script.ts` – scenarijus | 40 | ✅ |
+| `src/agent/run/4-code.ts` – vaizdai kodu | 72 | ✅ |
+| `src/agent/run/5-voice.ts` – balsas | 9 | ✅ |
+| `src/agent/run/7-chat.ts` – pokalbis, žinutės, tikslai | 108 | ✅ |
+| `src/agent/run/asking.ts`, `log.ts` – klausimai, modelio iškvietimų žurnalas | 38 | ✅ |
 
 Po šito turiu mokėti atsakyti:
-- [ ] Kas yra run'as ir kur jis saugomas?
-- [ ] Kuo skiriasi `...FromAi` ir `...InRun` schemos?
-- [ ] Ką reiškia `pausedFrom`?
+- [x] Kas yra run'as ir kur jis saugomas?
+- [x] Kuo skiriasi `...FromAi` ir `...InRun` schemos?
+- [x] Ką reiškia `pausedFrom`?
+- [x] Kuo skiriasi būsena (`script`, `code`…, perrašoma) ir žurnalas (`steps[]`, `messages[]`, tik pildomas)?
+- [x] Kur guli atsakymai į agento klausimus? (`messages[]` + kito iškvietimo prompte)
 
-## 2. Žemėlapis: visa eiga ⬜
+**Praktika (liko):** paleisti naują idėją ir stebėti, kaip pildosi JSON'as:
+```bash
+npm run dev          # viename terminale
+npm run watch:run    # kitame terminale; tada redaktoriuje Start
+```
+Pažymėti, kuriuo momentu atsiranda `value`, `template`, `hooks`, `hook`, `script`,
+`voice`, `code`, ir kurie `steps[]` įrašai kuriam laukui priklauso.
+
+## 2. Žemėlapis: visa eiga 🟨
 | Failas | Eil. | Būsena |
 |---|---|---|
 | `server/agent/agent.ts` | 270 | ⬜ |
