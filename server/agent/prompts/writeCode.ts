@@ -9,14 +9,7 @@ import {
   type VisualStyleId,
 } from "../../../src/agent/visualStyles.js";
 import type { SceneWord } from "../../../src/video/code/types.js";
-import { callClaudeCodeAgent, WrongShapeError } from "../claudeCode.js";
-import { claudeModel } from "../models.js";
-import {
-  StructuredCallError,
-  type CallLog,
-  type StructuredResult,
-  type TokenCount,
-} from "../llm.js";
+import { callAgent, type StructuredResult } from "../llm.js";
 
 // 4 Building: the pictures as code (docs/tikmaker-kryptis.md). Claude Code,
 // in the project's folder, writes every scene's picture as a Remotion
@@ -204,30 +197,15 @@ ${scenes}`,
   };
 }
 
-// One run of Claude Code; a JSON answer in the wrong shape is asked for once
-// more (the files are written by then – the second try only answers).
-export async function writeCode(
+// One run of Claude Code as a coding agent (llm.ts callAgent). What it may do
+// is all here: read anything, edit only this video's folder, and run three
+// commands – the compiler, a frame render and the real-pictures script.
+// Anything else is refused: with no window there is nobody to press "allow".
+export function writeCode(
   job: CodeJob,
   cwd: string,
 ): Promise<StructuredResult<CodeFromAi>> {
-  const prompt = writeCodePrompt(job);
-  const started = Date.now();
-  const usage: TokenCount = {
-    inputTokens: 0,
-    cachedInputTokens: 0,
-    outputTokens: 0,
-    thinkingTokens: 0,
-    turns: 0,
-  };
-  let model = `claude-code:${claudeModel()}`;
-  const log = (attempts: number): CallLog => ({
-    model,
-    prompt,
-    attempts,
-    usage,
-    ms: Date.now() - started,
-  });
-  const options = {
+  return callAgent(codeFromAi, writeCodePrompt(job), {
     cwd,
     tools: ["Read", "Write", "Edit", "Glob", "Grep", "Bash"],
     allow: [
@@ -241,28 +219,5 @@ export async function writeCode(
       "Bash(npx tsx scripts/asset.ts:*)",
     ],
     timeoutMs: (job.write.length > 1 ? 45 : 20) * 60_000,
-  };
-  for (let attempt = 1; ; attempt++) {
-    try {
-      const answer = await callClaudeCodeAgent(codeFromAi, prompt, options);
-      model = answer.model;
-      add(usage, answer.usage);
-      return { ...log(attempt), data: answer.data };
-    } catch (error) {
-      if (error instanceof WrongShapeError) {
-        add(usage, error.usage);
-        if (attempt < 2) continue;
-      }
-      const message = error instanceof Error ? error.message : String(error);
-      throw new StructuredCallError(message, log(attempt));
-    }
-  }
-}
-
-function add(total: TokenCount, more: TokenCount) {
-  total.inputTokens += more.inputTokens;
-  total.cachedInputTokens += more.cachedInputTokens;
-  total.outputTokens += more.outputTokens;
-  total.thinkingTokens += more.thinkingTokens;
-  total.turns = (total.turns ?? 0) + (more.turns ?? 0);
+  });
 }

@@ -170,10 +170,16 @@ export function runClaudeCode(
 // rules (e.g. "Edit(src/generated/p1/**)", "Bash(npx tsc:*)"); anything else
 // is refused, as nobody is there to press "allow". Ends with a JSON answer
 // checked against the schema.
+export type AgentOptions = {
+  cwd: string; // the folder it works in
+  tools: string[]; // the tools that exist for it
+  allow: string[]; // permission rules: what it may do without asking
+  timeoutMs?: number; // stopped after this long
+};
 export async function callClaudeCodeAgent<T>(
   schema: z.ZodType<T>,
   prompt: { system: string; user: string },
-  options: { cwd: string; tools: string[]; allow: string[]; timeoutMs?: number },
+  options: AgentOptions,
 ): Promise<ClaudeCodeAnswer<T>> {
   const args = [
     "-p",
