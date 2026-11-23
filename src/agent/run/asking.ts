@@ -1,8 +1,8 @@
 import { z } from "zod";
 
 // The agent asks when it does not know (docs/pokalbis-planas.md, 3.2). The
-// steps that decide what the video says – the template, the script, the
-// blocks – may answer with questions instead of guessing a fact, and with the
+// steps that decide what the video says – the idea's value, the template,
+// the script – may answer with questions instead of guessing a fact, and with the
 // assumptions they made where they did not ask. A leaf module (no other run
 // file), so every step's schema can take these fields.
 
