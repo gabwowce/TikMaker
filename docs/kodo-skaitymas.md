@@ -29,17 +29,17 @@ Forma (idėja) ──► run'o JSON ──► agentas: vertė → šablonas → 
 | # | Modulis | ~Eil. | Būsena |
 |---|---|---|---|
 | 1 | Kas yra run'o JSON'e | 410 | ✅ (liko praktika) |
-| 2 | Žemėlapis: `agent.ts` | 270 | 🟨 |
-| 3 | Išsaugojimas ir du rašytojai | 220 | ⬜ |
-| 4 | Kalbėjimas su modeliu | 450 | ⬜ |
-| 5 | Idėja, šablonas, hookai, klausimai | 330 + promptai | ⬜ |
-| 6 | Scenarijus ir jo patikra | 230 + promptai | ⬜ |
-| 7 | Balsas | 110 | ⬜ |
-| 8 | Vaizdai kodu (laisvasis agentas) | 450 + promptas + skilai | ⬜ |
-| 9 | Savikontrolė: agentas žiūri į kadrus | 320 + promptas | ⬜ |
+| 2 | Žemėlapis: `agent.ts` | 270 | ✅ |
+| 3 | Išsaugojimas (`job`, `save`, `ai`) | 220 | ✅ |
+| 4 | Kalbėjimas su modeliu | 450 | 🟨 (liko `llm.ts`, `claudeCode.ts` vidus) |
+| 5 | Idėja, šablonas, hookai, klausimai | 330 + promptai | ✅ |
+| 6 | Scenarijus ir jo patikra | 230 + promptai | ✅ |
+| 7 | Balsas | 110 | 🟨 (liko `server/voice.ts`) |
+| 8 | Vaizdai kodu (laisvasis agentas) | 450 + promptas + skilai | 🟨 (liko skilai, scenos failas) |
+| 9 | Savikontrolė: agentas žiūri į kadrus | 320 + promptas | ✅ |
 | 10 | Pokalbis ir router'is | 320 + promptai | ⬜ |
 | 11 | Žinių bazė | 400 | ⬜ |
-| 12 | Iš run'o į video: projektas, piešimas, renderis | 900 | ⬜ |
+| 12 | Iš run'o į video: projektas, piešimas, renderis | 900 | 🟨 (liko MP4 renderis) |
 
 ---
 
