@@ -24,12 +24,12 @@ export const askingFromAi = {
   assumptions: z.array(z.string().trim().min(5).max(200)).max(3).optional(),
 };
 
-// The steps that may ask (their names in the run's log).
-export const askingSteps = [
-  "checkValue",
-  "pickTemplate",
-  "writeScript",
-] as const;
+// The model calls that may ask (their names in the run's log): 2 Angle – the
+// value check, first and mainly (everything about the idea is asked there);
+// 3 Script – writeScript, for a fact only writing the script shows is
+// missing. The template and the hooks never ask, and after the script is
+// approved the agent works without stopping to ask.
+export const askingSteps = ["checkValue", "writeScript"] as const;
 export type AskingStep = (typeof askingSteps)[number];
 export type QuestionFromAi = z.infer<typeof questionFromAi>;
 export type Asking = {

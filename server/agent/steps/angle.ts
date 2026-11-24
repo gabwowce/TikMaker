@@ -1,5 +1,5 @@
 import type { VideoTemplate } from "../../../src/agent/knowledge.js";
-import type { ValueInRun } from "../../../src/agent/run/2-angle.js";
+import type { ValueFromAi } from "../../../src/agent/run/2-angle.js";
 import type { Job } from "../job.js";
 import { checkValue } from "../prompts/checkValue.js";
 import { pickTemplate } from "../prompts/pickTemplate.js";
@@ -7,12 +7,13 @@ import { agentSays } from "../messages.js";
 import { writeHooks } from "../prompts/writeHooks.js";
 import { askedBefore, askIfNeeded, withoutAsking } from "./ask.js";
 
-// 2 Angle: is the idea worth a video, which template it follows, and three
-// opening lines for the user to pick from. (The user's answers on that
+// 2 Angle: is the idea worth a video (and the idea written as the video will
+// tell it), which template it follows, and three opening lines for the user
+// to pick from. Only the value check may stop to ask the creator. (The user's answers on that
 // screen – another template, a hook picked – are saved in agent.ts.)
 
 // Which template the video follows – the one chosen in the form, or else the
-// model picks one (it may ask the creator instead of guessing).
+// model picks one. It never asks: the questions belong to the value check.
 export async function chooseTemplate(job: Job): Promise<void> {
   const chosen = job.run.input.videoTemplateId;
   if (chosen) {
@@ -22,26 +23,17 @@ export async function chooseTemplate(job: Job): Promise<void> {
     return;
   }
   const template = await job.ai(
-    pickTemplate(
-      job.run.input,
-      job.workspace,
-      job.knowledge.videoTemplates,
-      undefined,
-      askedBefore(job.run, "pickTemplate"),
-    ),
+    pickTemplate(job.input, job.workspace, job.knowledge.videoTemplates),
   );
-  // the agent asked the creator instead of guessing: nothing saved yet
-  await askIfNeeded(job, "pickTemplate", template);
-  await job.save({
-    template: { ...withoutAsking(template), pickedBy: "agent" },
-  });
+  await job.save({ template: { ...template, pickedBy: "agent" } });
 }
 
 // The value check (prompts/checkValue.ts): judged against the channel's
-// direction before anything is written. A weak or off-channel idea asks the
-// creator for what would carry it; once answered (or kept as it is), the
-// verdict is saved (and said, when it is not strong), and the run goes on – the
-// creator decides, the agent only makes the gap visible.
+// direction before anything is written, from the creator's own words
+// (run.input). A weak or off-channel idea asks the creator for what would
+// carry it; any idea may ask for a fact only the creator knows. Once
+// answered (or kept as it is), the verdict and the checked idea are saved,
+// and the agent says which idea it goes on with.
 export async function judgeValue(job: Job): Promise<void> {
   const value = await job.ai(
     checkValue(
@@ -54,18 +46,16 @@ export async function judgeValue(job: Job): Promise<void> {
   await askIfNeeded(job, "checkValue", value);
   const saved = withoutAsking(value);
   await job.save({ value: saved });
-  // A strong idea goes on quietly; a weak one the creator kept is said, so
-  // the gap stays visible.
-  if (saved.verdict !== "strong") await agentSays(job, valueMessage(saved));
+  await agentSays(job, valueMessage(saved));
 }
 
-function valueMessage(value: ValueInRun): string {
-  const label =
-    value.verdict === "weak" ? "a weak idea" : "not what this channel makes";
-  return (
-    `Value check – ${label}: ${value.reason}` +
-    (value.betterAngle ? ` A stronger angle: ${value.betterAngle}` : "")
-  );
+function valueMessage(value: Omit<ValueFromAi, "questions" | "assumptions">): string {
+  // a weak idea the creator kept is said, so the gap stays visible
+  const verdict =
+    value.verdict === "strong"
+      ? ""
+      : `Value check – ${value.verdict === "weak" ? "a weak idea" : "not what this channel makes"}: ${value.reason}\n`;
+  return `${verdict}The idea I'm making the video from: ${value.idea}`;
 }
 
 // The opening line. Written in the form – used as it is; else the model
@@ -80,13 +70,10 @@ export async function offerHooks(job: Job): Promise<void> {
   const template = findTemplate(job, job.run.template.videoTemplateId);
   const hooks = await job.ai(
     writeHooks(
-      job.run.input,
+      job.input,
       job.workspace,
       template,
       job.knowledge.hookFormulas,
-      undefined,
-      undefined,
-      job.run.value,
     ),
   );
   await job.save({ hooks, hooksFor: template.id });

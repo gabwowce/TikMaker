@@ -140,15 +140,17 @@ function fakeStory(prompt: string) {
 }
 // The value check: every idea is worth a video, except one saying "WEAK
 // IDEA" – that one asks the creator first, until the prompt says it asked.
+// The idea comes back with "CHECKED:" in front, so a test can see which
+// steps work from the checked idea.
 function fakeValue(prompt: string) {
   const weak = prompt.includes("WEAK IDEA");
   const asks = weak && !prompt.includes("do not ask again");
+  // the prompt is JSON text here: its line breaks are written "\\n"
+  const idea = prompt.match(/\\nIdea: (.*?)(?:\\n|")/)?.[1] ?? "";
   return {
     verdict: weak ? "weak" : "strong",
-    wow: weak ? "" : "A real result on screen",
-    takeaway: weak ? "" : "Something one prompt would not give",
     reason: weak ? "Nothing real to show yet." : "A real result.",
-    ...(weak ? { betterAngle: "Show a real project" } : {}),
+    idea: `CHECKED: ${idea}`,
     ...(asks
       ? {
           questions: [
@@ -600,6 +602,13 @@ describe("agent runs", () => {
   }
   const lastMessage = (run: AgentRun) =>
     run.messages![run.messages!.length - 1];
+  // The messages added since `before` (the agent says things on its own
+  // before the conversation starts – which idea it goes on with, the review).
+  const since = (run: AgentRun, before: AgentRun) =>
+    (run.messages ?? []).slice(before.messages?.length ?? 0);
+  // The user's message `text`: their own words, wherever it sits.
+  const userMessage = (run: AgentRun, text: string) =>
+    run.messages?.find((m) => m.from === "user" && m.text === text);
 
   it("changes the pictures of the scene a message is attached to", async () => {
     const built = await builtVideo();
@@ -610,7 +619,7 @@ describe("agent runs", () => {
     });
     const run = await until(
       built.id,
-      (run) => run.status === "done" && run.messages?.length === 2,
+      (run) => run.status === "done" && since(run, built).length === 2,
     );
     // that scene's code is written again; the others are as they were
     expect(run.code?.scenes[1]).toMatchObject({
@@ -623,7 +632,7 @@ describe("agent runs", () => {
       fs.existsSync(path.join(root, "db", "code-versions", "p1", "scene-2.v1.tsx")),
     ).toBe(true);
     expect(run.steps.map((step) => step.name)).toContain("routeMessage");
-    const [mine, reply] = run.messages!;
+    const [mine, reply] = since(run, built);
     expect(mine).toMatchObject({ from: "user", status: "done" });
     // the router left the scene out; the code took the attached one
     expect(mine.targets).toEqual([
@@ -648,7 +657,7 @@ describe("agent runs", () => {
     });
     const changed = await until(
       built.id,
-      (run) => run.status === "done" && run.messages?.length === 2,
+      (run) => run.status === "done" && since(run, built).length === 2,
     );
     expect(changed.code?.scenes[1].history).toEqual([
       {
@@ -657,7 +666,7 @@ describe("agent runs", () => {
         changedBy: "one thing turning into another",
       },
     ]);
-    expect(changed.messages![1].text).toContain("Undo");
+    expect(since(changed, built)[1].text).toContain("Undo");
     const rewritten = fs.readFileSync(file, "utf-8");
     expect(rewritten).not.toBe(first);
     const run = await api.agent.undoScene({ runId: built.id, sceneIndex: 1 });
@@ -680,9 +689,9 @@ describe("agent runs", () => {
   it("asks back when the message is not clear", async () => {
     const built = await builtVideo();
     await api.agent.message({ runId: built.id, text: "Make it more fun" });
-    const run = await until(built.id, (run) => run.messages?.length === 2);
+    const run = await until(built.id, (run) => since(run, built).length === 2);
     expect(lastMessage(run).text).toBe("Which scene do you mean?");
-    expect(run.messages![0].status).toBe("done");
+    expect(since(run, built)[0].status).toBe("done");
   });
 
   it("rewrites one scene's words and its pictures on them", async () => {
@@ -690,7 +699,7 @@ describe("agent runs", () => {
     await api.agent.message({ runId: built.id, text: "Say scene 1 simpler" });
     const run = await until(
       built.id,
-      (run) => run.status === "done" && run.messages?.length === 2,
+      (run) => run.status === "done" && since(run, built).length === 2,
     );
     expect(run.script?.scenes[0].voiceover).toBe("A simpler short line.");
     expect(run.script?.scenes[1]).toEqual(built.script?.scenes[1]);
@@ -747,14 +756,17 @@ describe("agent runs", () => {
       expect(names.slice(names.indexOf("reviewFrames"))).toContain(
         "writeCode",
       );
-      const said = run.messages!.map((message) => message.text);
+      const rounds = run.messages!.filter((message) => message.review);
+      const said = rounds.map((message) => message.text);
       expect(said[0]).toMatch(/^Self-review, round 1: .*Fixing scene\(s\) 2/s);
       expect(said[said.length - 1]).toMatch(/round 2: .*did not make it better/s);
+      // the last thing said is the last round
+      expect(lastMessage(run)).toBe(rounds[rounds.length - 1]);
       // nothing waits for a button: the creator's decisions stay three
       expect(run.messages!.some((message) => message.proposal)).toBe(false);
       // every round carries its list for the panel
-      expect(run.messages![0].review).toMatchObject({ round: 1, next: "fixing" });
-      expect(run.messages![run.messages!.length - 1].review?.next).toBe("stopped");
+      expect(rounds[0].review).toMatchObject({ round: 1, next: "fixing" });
+      expect(rounds[rounds.length - 1].review?.next).toBe("stopped");
     } finally {
       process.env.AGENT_SELF_REVIEW = "off";
     }
@@ -855,12 +867,27 @@ describe("agent runs", () => {
     );
   });
 
-  it("gives the hooks and the script what makes the video worth watching", async () => {
+  it("works from the checked idea after the value check, and says it", async () => {
     const { id } = await startFor("p1");
     const run = await until(id, (run) => run.status === "awaiting_hook");
     expect(run.value?.verdict).toBe("strong");
-    const hooks = run.steps.find((s) => s.name === "writeHooks")!;
-    expect(JSON.stringify(hooks.prompt)).toContain("A real result on screen");
+    expect(run.value?.idea).toBe(`CHECKED: ${idea}`);
+    // the creator's own words stay as they were
+    expect(run.input.idea).toBe(idea);
+    // the template and the hooks get the checked idea
+    for (const name of ["pickTemplate", "writeHooks"]) {
+      const step = run.steps.find((s) => s.name === name)!;
+      expect(step.prompt?.user).toContain(`Idea: CHECKED: ${idea}`);
+    }
+    // the check itself judges the creator's own words
+    const check = run.steps.find((s) => s.name === "checkValue")!;
+    expect(check.prompt?.user).toContain(`Idea: ${idea}`);
+    expect(check.prompt?.user).not.toContain("CHECKED:");
+    expect(
+      run.messages!.some((m) =>
+        m.text.includes(`The idea I'm making the video from: CHECKED: ${idea}`),
+      ),
+    ).toBe(true);
   });
 
   it("pauses at the usage limit and goes on from there on Continue", async () => {
@@ -956,7 +983,7 @@ describe("agent runs", () => {
     await api.agent.message({ runId: id, text: "Different hooks please" });
     const run = await until(
       id,
-      (run) => run.status === "awaiting_hook" && run.messages?.length === 2,
+      (run) => run.status === "awaiting_hook" && since(run, waiting).length === 2,
     );
     expect(run.steps.filter((step) => step.name === "writeHooks")).toHaveLength(
       waiting.steps.filter((step) => step.name === "writeHooks").length + 1,
@@ -977,7 +1004,9 @@ describe("agent runs", () => {
     await api.agent.message({ runId: waiting.id, text: "Make it shorter" });
     const run = await until(
       id,
-      (run) => run.status === "awaiting_approval" && run.messages?.[0]?.status === "done",
+      (run) =>
+        run.status === "awaiting_approval" &&
+        userMessage(run, "Make it shorter")?.status === "done",
     );
     expect(run.steps.filter((step) => step.name === "writeScript").length).toBeGreaterThanOrEqual(2);
   });
@@ -1005,7 +1034,7 @@ describe("agent runs", () => {
       waiting.id,
       (run) =>
         run.status === "awaiting_approval" &&
-        run.messages?.[0]?.status === "done",
+        userMessage(run, "Make it shorter")?.status === "done",
     );
     expect(run.steps.slice(-2).map((step) => step.name)).toEqual([
       "writeScript",
@@ -1013,10 +1042,12 @@ describe("agent runs", () => {
     ]);
     expect(run.steps.length).toBeGreaterThan(waiting.steps.length);
     expect(run.script?.comment).toBeUndefined();
-    expect(run.messages![0].targets).toEqual([
+    const [mine, reply] = since(run, waiting);
+    expect(mine).toBe(userMessage(run, "Make it shorter"));
+    expect(mine.targets).toEqual([
       { kind: "script", instruction: "Make it shorter" },
     ]);
-    expect(run.messages![1]).toMatchObject({ from: "agent" });
+    expect(reply).toMatchObject({ from: "agent" });
   });
 
   it("refuses an approval before there is a script", async () => {

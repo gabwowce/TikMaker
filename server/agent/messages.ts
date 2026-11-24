@@ -9,9 +9,9 @@ import { newId } from "../ids.js";
 import type { Job } from "./job.js";
 
 // The conversation in run.messages: everything that writes a message is
-// here. The user's messages wait in the run ("waiting") until the agent
-// stops where it can take them up (agent.ts → takeUpWork); the agent's own
-// messages are what it says, asks and proposes.
+// here. A user's message is accepted only while the agent waits
+// (MESSAGE_STATUSES) and is taken up at once (agent.ts → talk); the agent's
+// own messages are what it says, asks and proposes.
 
 const message = (
   from: ChatMessage["from"],
@@ -21,7 +21,7 @@ const message = (
 
 // ── The user ───────────────────────────────────────────────────────────────
 
-// A message from the user: saved at once, whatever the agent is doing.
+// A message from the user: saved as "waiting", taken up by agent.ts → talk.
 export async function userWrites(
   job: Job,
   text: string,

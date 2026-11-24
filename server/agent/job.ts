@@ -1,3 +1,5 @@
+import type { IdeaFromUser } from "../../src/agent/run/1-idea.js";
+import { videoIdea } from "../../src/agent/run/2-angle.js";
 import type { AgentRun } from "../../src/agent/run/run.js";
 import type { Workspace } from "../../src/agent/knowledge.js";
 import { KNOWLEDGE_DIR } from "../config.js";
@@ -15,6 +17,10 @@ export type Job = {
   run: AgentRun;
   knowledge: Knowledge;
   workspace: Workspace;
+  // The form, with the idea the value check wrote (videoIdea) in place of the
+  // creator's own – what every step after the check sends the model. The
+  // creator's own words stay in run.input.
+  input: IdeaFromUser;
   // Writes these fields into the run's file straight away.
   save(changes: Partial<AgentRun>): Promise<void>;
   // Waits for an AI call, writes it into steps[] (a failed one too) and
@@ -38,6 +44,10 @@ export async function openJob(run: AgentRun): Promise<Job> {
     get workspace() {
       const facts = [...(workspace.facts ?? []), ...answeredFacts(job.run)];
       return facts.length ? { ...workspace, facts } : workspace;
+    },
+
+    get input() {
+      return { ...job.run.input, idea: videoIdea(job.run) };
     },
 
     async save(changes) {

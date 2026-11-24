@@ -5,7 +5,7 @@ import { describe, expect, it } from "vitest";
 import { ideaFromUser } from "../../../src/agent/run/1-idea.js";
 import { loadKnowledge } from "../knowledge.js";
 import { checkValue } from "../prompts/checkValue.js";
-import { videoValue } from "../prompts/productScreens.js";
+import { videoIdea } from "../../../src/agent/run/2-angle.js";
 
 // The real knowledge base: the check must judge by the channel we ship.
 const root = path.join(
@@ -37,10 +37,8 @@ describe("checkValue with a fake model", () => {
   it("judges by the channel's direction and what it does not make", async () => {
     const answer = {
       verdict: "off_channel",
-      wow: "",
-      takeaway: "",
       reason: "A security incident – the channel does not make these.",
-      betterAngle: "A real project built with Claude Code this week",
+      idea: "Claude Code leaked passwords in 1,122 GitHub files",
       questions: [
         {
           question: "Take the stronger angle instead?",
@@ -57,30 +55,30 @@ describe("checkValue with a fake model", () => {
     expect(result.data).toEqual(answer);
     expect(result.prompt.user).toContain(workspace.direction!);
     expect(result.prompt.user).toContain("Security incidents");
-    expect(result.prompt.user).toContain("whether to take the betterAngle instead");
+    expect(result.prompt.user).toContain("whether to take a stronger");
+    // the one time the creator is asked about the idea
+    expect(result.prompt.user).toContain("the one time the creator is asked about the idea");
   });
 
   it("does not ask again once the creator answered", async () => {
     const result = await checkValue(
       input("A singing coach someone built with Claude Code"),
       workspace,
-      fakeModel({ verdict: "strong", wow: "A bad singer built his own coach", takeaway: "The real app and how it started", reason: "Real project." }),
+      fakeModel({ verdict: "strong", reason: "Real project.", idea: "A bad singer built his own singing coach with Claude Code" }),
       true,
     );
     expect(result.prompt.user).toContain("do not ask again");
   });
 });
 
-describe("videoValue", () => {
-  it("is empty without a check, and lists only what was found", () => {
-    expect(videoValue(undefined)).toBe("");
-    const text = videoValue({
-      verdict: "strong",
-      wow: "A whole city in voxels",
-      takeaway: "",
-      reason: "Real project.",
-    });
-    expect(text).toContain("wow (what makes a scroller stop): A whole city in voxels");
-    expect(text).not.toContain("takeaway");
+describe("videoIdea", () => {
+  it("is the checked idea, or the creator's own when there is none", () => {
+    const input = { idea: "The creator's words" };
+    expect(videoIdea({ input })).toBe("The creator's words");
+    // an older run: a check without the idea written again
+    expect(videoIdea({ input, value: {} })).toBe("The creator's words");
+    expect(videoIdea({ input, value: { idea: "The checked idea" } })).toBe(
+      "The checked idea",
+    );
   });
 });

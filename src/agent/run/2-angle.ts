@@ -11,38 +11,43 @@ import type { RunStatus } from "./status";
 // Before anything is written: is this idea worth a video on this channel
 // (workspace.direction / offTopic)? A weak or off-channel idea makes the
 // agent ask the creator for what would carry it – a real project, a result,
-// their own test – or offer a stronger angle, instead of writing an empty
-// video. What it found travels into the research, the hooks and the script.
+// their own test – instead of writing an empty video. The check also writes
+// the idea again as the video will tell it (`idea`): that text, not the
+// creator's form, is what every later step works from (videoIdea).
 export const valueVerdict = z.enum(["strong", "weak", "off_channel"]);
 
 export const valueFromAi = z.object({
   ...askingFromAi,
   verdict: valueVerdict,
-  // What would make a scroller stop: the surprising, beautiful or
-  // impossible-looking thing the video shows. Empty when there is none.
-  wow: z.string().trim().max(200),
-  // What the viewer gets that one question to an AI would not give them: a
-  // real project, a real result, a first step. Empty when there is none.
-  takeaway: z.string().trim().max(200),
-  // What the viewer can do this week to start their own (optional: not every
-  // video ends in an action).
-  firstStep: z.string().trim().max(200).optional(),
   // One or two sentences for the creator, in plain English.
   reason: z.string().trim().min(1).max(300),
-  // A stronger take on the same topic, when the verdict is not "strong".
-  betterAngle: z.string().trim().max(200).optional(),
+  // The idea as the video will tell it: the creator's idea, sharpened – what
+  // makes a scroller stop, what the viewer walks away with, the creator's
+  // answers worked in. Same topic; nothing made up.
+  idea: z.string().trim().min(20).max(2000),
 });
 
-export const valueInRun = valueFromAi.omit({
-  questions: true,
-  assumptions: true,
-});
+// In the run's file. `idea` is unset in runs made before the check wrote it
+// (they had wow / takeaway instead, now ignored): videoIdea then falls back
+// to the creator's own idea.
+export const valueInRun = valueFromAi
+  .omit({ questions: true, assumptions: true })
+  .extend({ idea: valueFromAi.shape.idea.optional() });
+
+// The idea every step after the value check works from: the checked one, or
+// the creator's own when there is none (older runs, a check not run yet).
+export function videoIdea(run: {
+  input: { idea: string };
+  value?: { idea?: string };
+}): string {
+  return run.value?.idea ?? run.input.idea;
+}
 
 // ── Template ─────────────────────────────────────────────────────────────
 
 // The model's pick: a template for the idea, how well it fits (1–5) and why.
+// It never asks the creator: the questions belong to the value check before it.
 export const templateFromAi = z.object({
-  ...askingFromAi,
   videoTemplateId: z.string().min(1),
   score: z.number().int().min(1).max(5),
   reason: z.string().min(1),

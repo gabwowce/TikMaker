@@ -17,10 +17,10 @@ import { voiceAround } from "./voice.js";
 
 // 7 The conversation (docs/pokalbis-planas.md, docs/pokalbis-kodas.md).
 //
-// 1. The user's message is saved at once, whatever the agent is doing
-//    (answers.ts) – it waits in the run until the agent stops at a point
-//    where it can be taken up (TALK_STATUSES). Several can wait: they form
-//    a queue and are taken up one by one, oldest first (messages.ts nextWork).
+// 1. The user's message is accepted only while the agent waits
+//    (MESSAGE_STATUSES, answers.ts); while it works the message box is
+//    locked and the server refuses it. So there is no queue: the message is
+//    taken up straight away (agent.ts → talk, messages.ts nextWork).
 // 2. agent.ts takes it up: routeMessage (Sonnet) decides what it changes
 //    (route). Not clear → the agent asks back. Several parts → the agent
 //    proposes and waits for the "Do it" button (answers.ts).
@@ -146,13 +146,12 @@ export async function rewriteHooks(
   const template = findTemplate(job, chosen.videoTemplateId);
   const hooks = await job.ai(
     writeHooks(
-      job.run.input,
+      job.input,
       job.workspace,
       template,
       job.knowledge.hookFormulas,
       undefined,
       { previous: job.run.hooks ?? [], instruction },
-      job.run.value,
     ),
   );
   await job.save({
@@ -222,7 +221,7 @@ async function rewriteWords(
   const script = job.run.script;
   if (!script) throw new Error("There is no script");
   const words = await job.ai(
-    rewriteScene(job.run.input, job.workspace, script.scenes, n, instruction),
+    rewriteScene(job.input, job.workspace, script.scenes, n, instruction),
   );
   await job.save({
     script: {

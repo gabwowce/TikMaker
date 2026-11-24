@@ -2,7 +2,7 @@ import { z } from "zod";
 
 // Where a run is, step by step. awaiting_* = the agent waits for the user;
 // the others say what the agent is working on (the panel shows it). Which
-// step comes next from each status: server/agent/agent.ts, runAgent. Set
+// step comes next from each status: server/agent/agent.ts, next. Set
 // there, plus "awaiting_answers" when a step asks (server/agent/messages.ts)
 // and the way back from it (server/agent/steps/ask.ts).
 export const runStatus = z.enum([
