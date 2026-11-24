@@ -89,8 +89,7 @@ async function reviewProject(
     }),
     ...styleImages(style, folder),
   ];
-  const review = await job.ai("reviewFrames",
-    reviewFrames(script.scenes, code, stills, {
+  const review = await job.ai(reviewFrames(script.scenes, code, stills, {
       rubric: job.knowledge.reviewRubric,
       references,
       principles: job.knowledge.picturePrinciples,

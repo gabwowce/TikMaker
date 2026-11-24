@@ -16,8 +16,7 @@ export async function writeAndCheck(job: Job): Promise<void> {
     throw new Error("The script needs a template and a hook first");
   const template = findTemplate(job, chosen.videoTemplateId);
   const write = (revise?: ScriptChange) =>
-    job.ai("writeScript",
-      writeScript(
+    job.ai(writeScript(
         input,
         job.workspace,
         template,
@@ -39,8 +38,7 @@ export async function writeAndCheck(job: Job): Promise<void> {
   // Only when the template step said the video needs outside facts.
   if (!job.run.research && job.run.template?.needsFacts !== false) {
     try {
-      const found = await job.ai("research",
-        research(input, job.workspace, undefined, job.run.value),
+      const found = await job.ai(research(input, job.workspace, undefined, job.run.value),
       );
       await job.save({
         research: { facts: found.text, sources: found.sources },

@@ -48,8 +48,7 @@ export async function route(
 ): Promise<{ targets: ChatTarget[]; reply: string } | undefined> {
   const allowed = ALLOWED[waitedIn] ?? [];
   const scenes = job.run.script?.scenes ?? [];
-  const routed = await job.ai("routeMessage",
-    routeMessage(message, {
+  const routed = await job.ai(routeMessage(message, {
       status: waitedIn,
       allowed,
       hook: job.run.hook?.text,
@@ -127,8 +126,7 @@ export async function rewriteHooks(job: Job, instruction: string): Promise<void>
   const chosen = job.run.template;
   if (!chosen) throw new Error("There is no template yet");
   const template = findTemplate(job, chosen.videoTemplateId);
-  const hooks = await job.ai("writeHooks",
-    writeHooks(
+  const hooks = await job.ai(writeHooks(
       job.run.input,
       job.workspace,
       template,
@@ -201,8 +199,7 @@ async function rewriteWords(
 ): Promise<string[]> {
   const script = job.run.script;
   if (!script) throw new Error("There is no script");
-  const words = await job.ai("rewriteScene",
-    rewriteScene(job.run.input, job.workspace, script.scenes, n, instruction),
+  const words = await job.ai(rewriteScene(job.run.input, job.workspace, script.scenes, n, instruction),
   );
   await job.save({
     script: {

@@ -18,8 +18,9 @@ export type Job = {
   // Writes these fields into the run's file straight away.
   save(changes: Partial<AgentRun>): Promise<void>;
   // Waits for an AI call, writes it into steps[] (a failed one too) and
-  // returns just the answer: job.ai("checkValue", checkValue(...)).
-  ai<T>(name: string, asking: Promise<StructuredResult<T>>): Promise<T>;
+  // returns just the answer: job.ai(checkValue(...)). The entry is named
+  // by the prompt's step.
+  ai<T>(asking: Promise<StructuredResult<T>>): Promise<T>;
 };
 
 export async function openJob(run: AgentRun): Promise<Job> {
@@ -45,14 +46,16 @@ export async function openJob(run: AgentRun): Promise<Job> {
       await saveRun(job.run);
     },
 
-    async ai(name, asking) {
+    async ai(asking) {
       try {
         const answer = await asking;
+        const name = answer.prompt.step ?? "ai";
         await job.save({ steps: [...job.run.steps, logEntry(name, answer, { output: answer.data })] });
         return answer.data;
       } catch (error) {
         const message = error instanceof Error ? error.message : String(error);
         const log = error instanceof StructuredCallError ? error.log : undefined;
+        const name = log?.prompt.step ?? "ai";
         await job.save({ steps: [...job.run.steps, logEntry(name, log, { error: message })] });
         throw error;
       }

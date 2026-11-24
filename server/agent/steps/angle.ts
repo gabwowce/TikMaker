@@ -21,8 +21,7 @@ export async function chooseTemplate(job: Job): Promise<void> {
     await job.save({ template: { videoTemplateId: chosen, pickedBy: "user" } });
     return;
   }
-  const template = await job.ai("pickTemplate",
-    pickTemplate(
+  const template = await job.ai(pickTemplate(
       job.run.input,
       job.workspace,
       job.knowledge.videoTemplates,
@@ -43,8 +42,7 @@ export async function chooseTemplate(job: Job): Promise<void> {
 // verdict is saved (and said, when it is not strong), and the run goes on – the
 // creator decides, the agent only makes the gap visible.
 export async function judgeValue(job: Job): Promise<void> {
-  const value = await job.ai("checkValue",
-    checkValue(
+  const value = await job.ai(checkValue(
       job.run.input,
       job.workspace,
       undefined,
@@ -78,8 +76,7 @@ export async function offerHooks(job: Job): Promise<void> {
   }
   if (!job.run.template) throw new Error("Hooks need a template first");
   const template = findTemplate(job, job.run.template.videoTemplateId);
-  const hooks = await job.ai("writeHooks",
-    writeHooks(
+  const hooks = await job.ai(writeHooks(
       job.run.input,
       job.workspace,
       template,

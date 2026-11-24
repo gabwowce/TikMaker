@@ -221,7 +221,7 @@ vi.mock("../agent/prompts/writeCode.js", async (original) => ({
     }
     return {
       model: "fake",
-      prompt: { system: "", user: job.instruction ?? "" },
+      prompt: { step: "writeCode", system: "", user: job.instruction ?? "" },
       attempts: 1,
       ms: 1,
       usage: { inputTokens: 1, cachedInputTokens: 0, outputTokens: 1, thinkingTokens: 0 },
