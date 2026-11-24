@@ -48,7 +48,8 @@ export async function route(
 ): Promise<{ targets: ChatTarget[]; reply: string } | undefined> {
   const allowed = ALLOWED[waitedIn] ?? [];
   const scenes = job.run.script?.scenes ?? [];
-  const routed = await job.ai(routeMessage(message, {
+  const routed = await job.ai(
+    routeMessage(message, {
       status: waitedIn,
       allowed,
       hook: job.run.hook?.text,
@@ -60,13 +61,27 @@ export async function route(
 
   if (!targets.length) {
     // not clear, or not possible now: the agent's reply asks or explains
-    await closeWork(job, message.id, { status: "done" }, routed.reply, {}, waitedIn);
+    await closeWork(
+      job,
+      message.id,
+      { status: "done" },
+      routed.reply,
+      {},
+      waitedIn,
+    );
     return undefined;
   }
   // decision 3: a change that reaches several parts is proposed first – the
   // code holds to that even when the router did not ask for it
   if (routed.confirm || reachesFar(job.run, targets)) {
-    await closeWork(job, message.id, { status: "done" }, routed.reply, { proposal: { targets } }, waitedIn);
+    await closeWork(
+      job,
+      message.id,
+      { status: "done" },
+      routed.reply,
+      { proposal: { targets } },
+      waitedIn,
+    );
     return undefined;
   }
   await updateMessage(job, message.id, { targets, status: "working" });
@@ -122,11 +137,15 @@ function reachesFar(run: AgentRun, targets: ChatTarget[]): boolean {
 
 // hook: three new hooks with the instruction; the hook and the script picked
 // so far are dropped – the user picks again, and the script follows.
-export async function rewriteHooks(job: Job, instruction: string): Promise<void> {
+export async function rewriteHooks(
+  job: Job,
+  instruction: string,
+): Promise<void> {
   const chosen = job.run.template;
   if (!chosen) throw new Error("There is no template yet");
   const template = findTemplate(job, chosen.videoTemplateId);
-  const hooks = await job.ai(writeHooks(
+  const hooks = await job.ai(
+    writeHooks(
       job.run.input,
       job.workspace,
       template,
@@ -160,13 +179,12 @@ export async function commentScript(
 // both write the scene's code again with the instruction – the earlier code
 // is kept as a version (Undo); "motion" for the whole video writes every
 // scene again.
-export async function change(
-  job: Job,
-  target: ChatTarget,
-): Promise<string[]> {
+export async function change(job: Job, target: ChatTarget): Promise<string[]> {
   const notes = await changeCode(job, target);
   // the earlier code is kept: the creator can go back
-  return target.kind === "pictures" || target.kind === "motion" || target.kind === "words"
+  return target.kind === "pictures" ||
+    target.kind === "motion" ||
+    target.kind === "words"
     ? [...notes, "(Undo in the Inspector brings the earlier version back.)"]
     : notes;
 }
@@ -183,7 +201,11 @@ async function changeCode(job: Job, target: ChatTarget): Promise<string[]> {
   }
   if (target.kind === "motion")
     return n === undefined
-      ? rewriteCodeScenes(job, [...Array(count).keys()], `How it moves: ${instruction}`)
+      ? rewriteCodeScenes(
+          job,
+          [...Array(count).keys()],
+          `How it moves: ${instruction}`,
+        )
       : rewriteCodeScenes(job, [n], `How it moves: ${instruction}`);
   if (target.kind === "words" && n !== undefined)
     return rewriteWords(job, n, instruction);
@@ -199,7 +221,8 @@ async function rewriteWords(
 ): Promise<string[]> {
   const script = job.run.script;
   if (!script) throw new Error("There is no script");
-  const words = await job.ai(rewriteScene(job.run.input, job.workspace, script.scenes, n, instruction),
+  const words = await job.ai(
+    rewriteScene(job.run.input, job.workspace, script.scenes, n, instruction),
   );
   await job.save({
     script: {

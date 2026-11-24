@@ -10,7 +10,10 @@ import {
   type CodeInRun,
 } from "../../src/agent/run/4-code.js";
 import type { AgentRun } from "../../src/agent/run/run.js";
-import { createEmptyProject, type VideoProject } from "../../src/schema/project.js";
+import {
+  createEmptyProject,
+  type VideoProject,
+} from "../../src/schema/project.js";
 import {
   computeSceneTimings,
   projectDurationInFrames,
@@ -21,7 +24,11 @@ import { ROOT } from "../config.js";
 import { readJson, slugify } from "../db.js";
 import { restoreVersion, saveVersion } from "./codeVersions.js";
 import type { Job } from "./job.js";
-import { writeCode, type CodeBriefScene, type CodeJob } from "./prompts/writeCode.js";
+import {
+  writeCode,
+  type CodeBriefScene,
+  type CodeJob,
+} from "./prompts/writeCode.js";
 import { savedVisualsBrief } from "./visuals.js";
 
 // The pictures as code (docs/tikmaker-kryptis.md): Claude Code writes the
@@ -45,7 +52,9 @@ export async function builtProject(
   return projectFromCode(projectFromScript(base, run), run);
 }
 
-export async function savedProject(job: Job): Promise<VideoProject | undefined> {
+export async function savedProject(
+  job: Job,
+): Promise<VideoProject | undefined> {
   const saved = await readJson(
     `projects/${slugify(job.run.projectId)}.json`,
     null,
@@ -99,7 +108,9 @@ async function codeJob(
   const total = projectDurationInFrames(project);
   const timings = computeSceneTimings(project);
   const scenes: CodeBriefScene[] = script.scenes.map((scene, n) => {
-    const timing = timings.find((t) => t.scene.id === `scene-${run.id}-${n + 1}`);
+    const timing = timings.find(
+      (t) => t.scene.id === `scene-${run.id}-${n + 1}`,
+    );
     const from = timing?.from ?? 0;
     const durationInFrames = timing?.durationInFrames ?? 90;
     const file = run.code!.scenes[n].file;
@@ -109,7 +120,11 @@ async function codeJob(
       file,
       from,
       durationInFrames,
-      words: sceneWords(project, { from, durationInFrames, vo: scene.voiceover }, total),
+      words: sceneWords(
+        project,
+        { from, durationInFrames, vo: scene.voiceover },
+        total,
+      ),
       ...(instruction && write.includes(n) && fs.existsSync(onDisk)
         ? { current: fs.readFileSync(onDisk, "utf-8") }
         : {}),
@@ -183,7 +198,9 @@ async function checkAndFix(
       path.join(generatedDir(), scene.file),
       fallbackScene(scene.scene.onScreen, list.join("\n")),
     );
-    problems.push(`Scene ${n + 1}: the code did not compile – a plain scene stands in. ${list[0] ?? ""}`);
+    problems.push(
+      `Scene ${n + 1}: the code did not compile – a plain scene stands in. ${list[0] ?? ""}`,
+    );
   }
   const code: CodeInRun = {
     scenes: brief.scenes.map(({ file }, n) => {
@@ -204,8 +221,12 @@ async function checkAndFix(
         file,
         description: said?.description ?? was?.description ?? "",
         ...(history ? { history } : {}),
-        ...(said?.stage ?? was?.stage ? { stage: said?.stage ?? was?.stage } : {}),
-        ...((said?.sounds ?? was?.sounds) ? { sounds: said?.sounds ?? was?.sounds } : {}),
+        ...((said?.stage ?? was?.stage)
+          ? { stage: said?.stage ?? was?.stage }
+          : {}),
+        ...((said?.sounds ?? was?.sounds)
+          ? { sounds: said?.sounds ?? was?.sounds }
+          : {}),
         ...((said?.transition ?? was?.transition)
           ? { transition: said?.transition ?? was?.transition }
           : {}),
@@ -228,7 +249,9 @@ async function checkAndFix(
 
 const merge = (a: CodeFromAi, b: CodeFromAi): CodeFromAi => ({
   scenes: [
-    ...a.scenes.filter((s) => !b.scenes.some((t) => t.sceneIndex === s.sceneIndex)),
+    ...a.scenes.filter(
+      (s) => !b.scenes.some((t) => t.sceneIndex === s.sceneIndex),
+    ),
     ...b.scenes,
   ],
   keywords: [...new Set([...a.keywords, ...b.keywords])],
@@ -238,7 +261,9 @@ const merge = (a: CodeFromAi, b: CodeFromAi): CodeFromAi => ({
 // What is wrong with the scenes being written, by scene: no file, no
 // component, or compile errors in the folder (errors in a shared file count
 // for every scene written now).
-export async function checkScenes(brief: CodeJob): Promise<Map<number, string[]>> {
+export async function checkScenes(
+  brief: CodeJob,
+): Promise<Map<number, string[]>> {
   const found = new Map<number, string[]>();
   const add = (n: number, error: string) =>
     found.set(n, [...(found.get(n) ?? []), error]);
@@ -315,7 +340,9 @@ export async function undoCodeScene(job: Job, n: number): Promise<void> {
   const code = job.run.code;
   const scene = code?.scenes[n];
   if (!code || !scene) throw new Error(`There is no scene ${n + 1}`);
-  const back = (scene.history ?? []).filter((h) => h.version < scene.version).pop();
+  const back = (scene.history ?? [])
+    .filter((h) => h.version < scene.version)
+    .pop();
   if (!back) throw new Error(`Scene ${n + 1} has no earlier version`);
   saveVersion(job.run.projectId, scene.file, scene.version);
   restoreVersion(scene.file, back.version);
@@ -329,7 +356,9 @@ export async function undoCodeScene(job: Job, n: number): Promise<void> {
               ...rest,
               version: back.version,
               description: back.description,
-              history: (scene.history ?? []).filter((h) => h.version < back.version),
+              history: (scene.history ?? []).filter(
+                (h) => h.version < back.version,
+              ),
             }
           : s,
       ),
@@ -349,24 +378,39 @@ const SCREEN_OF: Partial<Record<string, string>> = {
 export function tikmakerScreens(): string[] {
   const dir = path.join(ROOT, "db", "agent-runs");
   if (!fs.existsSync(dir)) return [];
-  const newest = new Map<string, { status: string; at: number; title: string }>();
+  const newest = new Map<
+    string,
+    { status: string; at: number; title: string }
+  >();
   for (const name of fs.readdirSync(dir)) {
     if (!name.endsWith(".json")) continue;
     try {
       const run = JSON.parse(fs.readFileSync(path.join(dir, name), "utf-8"));
-      const project = path.join(ROOT, "db", "projects", `${run.projectId}.json`);
+      const project = path.join(
+        ROOT,
+        "db",
+        "projects",
+        `${run.projectId}.json`,
+      );
       if (!SCREEN_OF[run.status] || !fs.existsSync(project)) continue;
       const seen = newest.get(run.projectId);
       if (seen && seen.at > run.createdAt) continue;
       const title = JSON.parse(fs.readFileSync(project, "utf-8")).title ?? "";
-      newest.set(run.projectId, { status: run.status, at: run.createdAt, title });
+      newest.set(run.projectId, {
+        status: run.status,
+        at: run.createdAt,
+        title,
+      });
     } catch {
       // a file being written – skipped
     }
   }
   const byStatus = new Map<string, string[]>();
   for (const [id, { status, title }] of newest)
-    byStatus.set(status, [...(byStatus.get(status) ?? []), `${id} ("${title}")`]);
+    byStatus.set(status, [
+      ...(byStatus.get(status) ?? []),
+      `${id} ("${title}")`,
+    ]);
   return [...byStatus].map(
     ([status, ids]) => `${SCREEN_OF[status]}: ${ids.slice(0, 4).join(", ")}`,
   );

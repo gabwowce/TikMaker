@@ -13,7 +13,11 @@ import {
 } from "../../../src/agent/visualStyles.js";
 import { KNOWLEDGE_DIR, ROOT } from "../../config.js";
 import { agentFolder } from "../claudeCode.js";
-import { builtProject, rewriteCodeScenes, savedProject } from "../codeScenes.js";
+import {
+  builtProject,
+  rewriteCodeScenes,
+  savedProject,
+} from "../codeScenes.js";
 import type { Job } from "../job.js";
 import { reviewFrames } from "../prompts/reviewFrames.js";
 import { renderStills, type Still } from "../stills.js";
@@ -77,7 +81,8 @@ async function reviewProject(
   // style's), and the style's own example frames
   const style = VISUAL_STYLES[job.run.input.visualStyle ?? "clear"];
   const sheets = job.knowledge.referenceSheets.filter(
-    (sheet) => !STYLE_SHEETS.includes(sheet.id) || sheet.id === style.reviewSheet,
+    (sheet) =>
+      !STYLE_SHEETS.includes(sheet.id) || sheet.id === style.reviewSheet,
   );
   const references = [
     ...sheets.flatMap((sheet) => {
@@ -89,7 +94,8 @@ async function reviewProject(
     }),
     ...styleImages(style, folder),
   ];
-  const review = await job.ai(reviewFrames(script.scenes, code, stills, {
+  const review = await job.ai(
+    reviewFrames(script.scenes, code, stills, {
       rubric: job.knowledge.reviewRubric,
       references,
       principles: job.knowledge.picturePrinciples,
@@ -189,7 +195,10 @@ export async function selfReview(
                 job,
                 [...new Set(code.map((t) => t.sceneIndex ?? 0))],
                 code
-                  .map((t) => `Scene ${(t.sceneIndex ?? 0) + 1}: ${t.instruction ?? ""}`)
+                  .map(
+                    (t) =>
+                      `Scene ${(t.sceneIndex ?? 0) + 1}: ${t.instruction ?? ""}`,
+                  )
                   .join("\n"),
               ),
           ]
@@ -243,7 +252,9 @@ export function reviewResult(
       (scene) =>
         `Scene ${scene.sceneIndex + 1}: ${scene.problems.join("; ") || scene.sees}`,
     ),
-    ...(good.length && fix.length ? [`Good as they are: ${good.join(", ")}.`] : []),
+    ...(good.length && fix.length
+      ? [`Good as they are: ${good.join(", ")}.`]
+      : []),
     ...scenes
       .filter((scene) => scene.verdict === "good" && scene.problems.length)
       .map(
