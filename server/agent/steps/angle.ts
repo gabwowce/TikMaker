@@ -31,7 +31,7 @@ export async function chooseTemplate(job: Job): Promise<void> {
     ),
   );
   // the agent asked the creator instead of guessing: nothing saved yet
-  if (await askIfNeeded(job, "pickTemplate", template)) return;
+  await askIfNeeded(job, "pickTemplate", template);
   await job.save({
     template: { ...withoutAsking(template), pickedBy: "agent" },
   });
@@ -51,7 +51,7 @@ export async function judgeValue(job: Job): Promise<void> {
       askedBefore(job.run, "checkValue"),
     ),
   );
-  if (await askIfNeeded(job, "checkValue", value)) return;
+  await askIfNeeded(job, "checkValue", value);
   const saved = withoutAsking(value);
   await job.save({ value: saved });
   // A strong idea goes on quietly; a weak one the creator kept is said, so

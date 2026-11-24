@@ -16,6 +16,7 @@ import {
 } from "./messages.js";
 import { getRun, saveRun } from "./runs.js";
 import * as angle from "./steps/angle.js";
+import { AskedCreator } from "./steps/ask.js";
 import * as chat from "./steps/chat.js";
 import * as review from "./steps/review.js";
 import * as script from "./steps/script.js";
@@ -66,7 +67,10 @@ function goOn(runId: string): void {
   };
 
   work()
-    .catch((error) => stopRun(runId, error))
+    .catch((error) => {
+      if (error instanceof AskedCreator) return; // it waits for the creator's answers
+      return stopRun(runId, error);
+    })
     .finally(() => working.delete(runId));
 }
 
@@ -100,9 +104,7 @@ async function next(job: Job): Promise<void> {
 async function ideaToHooks(job: Job): Promise<void> {
   await job.save({ status: "picking_template" });
   if (!job.run.value) await angle.judgeValue(job);
-  if (askedCreator(job)) return;
   if (!job.run.template) await angle.chooseTemplate(job);
-  if (askedCreator(job)) return;
 
   await job.save({ status: "writing_hooks" });
   await angle.offerHooks(job);
@@ -114,7 +116,6 @@ async function ideaToHooks(job: Job): Promise<void> {
 async function hookToScript(job: Job): Promise<void> {
   await job.save({ status: "writing_script" });
   await script.writeAndCheck(job);
-  if (askedCreator(job)) return;
 
   await job.save({ status: "awaiting_approval" });
 }
@@ -154,6 +155,12 @@ async function talk(job: Job): Promise<void> {
       await makeChanges(job, work, work.proposal?.targets ?? [], work.text, waitedIn);
     }
   } catch (error) {
+    if (error instanceof AskedCreator) {
+      // the change asked the creator (a script rewritten): the message is
+      // taken up, the run waits for the answers
+      await updateMessage(job, work.id, { status: "done" });
+      throw error;
+    }
     await failWork(job, work.id, error, waitedIn);
   }
 }
@@ -200,9 +207,6 @@ async function reportReview(job: Job, found: review.ReviewResult): Promise<void>
 }
 
 // ── Small checks ───────────────────────────────────────────────────────────
-
-// a function, so TypeScript reads the status again after the step changed it
-const askedCreator = (job: Job) => job.run.status === "awaiting_answers";
 
 const allScenesVoiced = (run: AgentRun) =>
   (run.voice?.scenes.length ?? 0) >= (run.script?.scenes.length ?? 0);

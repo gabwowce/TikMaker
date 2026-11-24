@@ -753,7 +753,7 @@ describe("agent runs", () => {
       },
     });
     const waiting = await until(id, (run) => run.status === "awaiting_answers");
-    expect(waiting.pausedFrom).toBe("writing_script");
+    expect(waiting.askedIn).toBe("writing_script");
     // the script it wrote while asking is not kept
     expect(waiting.script).toBeUndefined();
     const asked = waiting.messages!.find((m) => m.questions)!;
@@ -783,7 +783,7 @@ describe("agent runs", () => {
     });
     const waiting = await until(id, (run) => run.status === "awaiting_answers");
     // nothing is picked or written before the creator answers
-    expect(waiting.pausedFrom).toBe("picking_template");
+    expect(waiting.askedIn).toBe("picking_template");
     expect(waiting.value).toBeUndefined();
     expect(waiting.template).toBeUndefined();
     const asked = waiting.messages!.find((m) => m.questions)!;

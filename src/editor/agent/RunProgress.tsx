@@ -31,7 +31,7 @@ export function runRoad(run: AgentRun) {
   // paused: on the step it was paused in
   const status =
     run.status === "paused" || run.status === "awaiting_answers"
-      ? (run.pausedFrom ?? run.status)
+      ? (run.askedIn ?? run.pausedFrom ?? run.status)
       : run.status;
   const found = STEPS.findIndex((step) => step.statuses.includes(status));
   // done = every step finished. error/cancelled are not on the road: the bar

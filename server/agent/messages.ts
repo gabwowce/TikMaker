@@ -69,7 +69,7 @@ export async function agentProposes(
 }
 
 // The agent asks the creator (steps/ask.ts): the questions card. The run
-// waits in "awaiting_answers"; pausedFrom – the status the step asked in.
+// waits in "awaiting_answers"; askedIn – the status the step asked in.
 export async function agentAsks(
   job: Job,
   askedBy: ChatMessage["askedBy"],
@@ -88,7 +88,7 @@ export async function agentAsks(
       }),
     ],
     status: "awaiting_answers",
-    pausedFrom: job.run.status,
+    askedIn: job.run.status,
   });
 }
 

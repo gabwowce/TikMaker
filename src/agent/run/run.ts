@@ -24,6 +24,9 @@ export const agentRun = z.object({
   error: z.string().optional(),
   // "paused" / "awaiting_answers": where the run was when it stopped.
   pausedFrom: runStatus.optional(),
+  // "awaiting_answers": the status the step asked in; the answers take the
+  // run back there (older runs kept it in pausedFrom).
+  askedIn: runStatus.optional(),
 
   // 1 Idea
   input: ideaFromUser,

@@ -26,25 +26,32 @@ export function askedBefore(run: AgentRun, step: AskingStep): boolean {
   return (run.messages ?? []).some((message) => message.askedBy === step);
 }
 
-// After a step's answer: true when the agent stopped to ask (the caller then
-// saves nothing and returns); false – go on. Assumptions made instead of
-// asking are said in the conversation, so the creator sees what was guessed.
+// Thrown when a step asked the creator: the agent's work stops right there
+// (agent.ts goOn catches it) and the run waits in "awaiting_answers".
+export class AskedCreator extends Error {
+  constructor() {
+    super("The agent asked the creator and waits for the answers");
+  }
+}
+
+// After a step's answer: questions → the questions card, and the work stops
+// (AskedCreator). Assumptions made instead of asking are said in the
+// conversation, so the creator sees what was guessed.
 export async function askIfNeeded(
   job: Job,
   step: AskingStep,
   answer: Asking,
-): Promise<boolean> {
+): Promise<void> {
   const questions = answer.questions ?? [];
   if (questions.length && !askedBefore(job.run, step)) {
     await agentAsks(job, step, questions);
-    return true;
+    throw new AskedCreator();
   }
   if (answer.assumptions?.length)
     await agentSays(
       job,
       `What I assumed (${stepName[step]}): ${answer.assumptions.join(" · ")}`,
     );
-  return false;
 }
 
 const stepName: Record<AskingStep, string> = {

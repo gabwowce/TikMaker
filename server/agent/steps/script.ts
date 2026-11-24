@@ -56,7 +56,7 @@ export async function writeAndCheck(job: Job): Promise<void> {
       : undefined,
   );
   // the agent asked the creator instead of guessing: nothing saved yet
-  if (await askIfNeeded(job, "writeScript", script)) return;
+  await askIfNeeded(job, "writeScript", script);
   let problems = check(script);
   if (problems.length) {
     script = await write({

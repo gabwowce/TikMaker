@@ -112,7 +112,8 @@ async function saveQuestionAnswers(
   );
   await job.save({
     messages: (job.run.messages ?? []).map((m) => (m.id === asked.id ? { ...m, questions } : m)),
-    status: job.run.pausedFrom ?? "created",
+    status: job.run.askedIn ?? job.run.pausedFrom ?? "created",
+    askedIn: undefined,
     pausedFrom: undefined,
   });
 }
