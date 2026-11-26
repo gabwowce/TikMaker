@@ -5,8 +5,7 @@ import {
   ctaFormulaSchema,
   designRuleSchema,
   hookFormulaSchema,
-  motionPrincipleSchema,
-  soundRuleSchema,
+  picturePrincipleSchema,
   reviewCheckSchema,
   referenceSheetSchema,
   type ReviewCheck,
@@ -19,8 +18,7 @@ import {
   type CtaFormula,
   type DesignRule,
   type HookFormula,
-  type MotionPrinciple,
-  type SoundRule,
+  type PicturePrinciple,
   type TitleFormula,
   type TransitionPhrase,
   type VideoTemplate,
@@ -39,8 +37,6 @@ import {
 //   shared/title-formulas.json
 //   shared/transition-phrases.json
 //   shared/design-rules.json
-//   shared/sound-rules.json
-//   shared/motion-principles.json
 //   shared/picture-principles.json
 //   shared/review-rubric.json
 //   shared/reference-frames.json       + the sheets in shared/reference-frames/
@@ -61,10 +57,8 @@ export type Knowledge = {
   titleFormulas: TitleFormula[];
   transitionPhrases: TransitionPhrase[];
   designRules: DesignRule[];
-  soundRules: SoundRule[];
-  motionPrinciples: MotionPrinciple[];
-  // The same kind of knowledge for picking the pictures (the blocks step).
-  picturePrinciples: MotionPrinciple[];
+  // What makes a picture work – knowledge for the review, not rules.
+  picturePrinciples: PicturePrinciple[];
   // The review of the frames: what it checks, and good frames to compare with.
   reviewRubric: ReviewCheck[];
   referenceSheets: ReferenceSheet[];
@@ -196,14 +190,9 @@ export async function loadKnowledge(
       transitionPhraseSchema,
     ),
     designRules: await readList("shared/design-rules.json", designRuleSchema),
-    soundRules: await readList("shared/sound-rules.json", soundRuleSchema),
-    motionPrinciples: await readList(
-      "shared/motion-principles.json",
-      motionPrincipleSchema,
-    ),
     picturePrinciples: await readList(
       "shared/picture-principles.json",
-      motionPrincipleSchema,
+      picturePrincipleSchema,
     ),
     reviewRubric: await readList("shared/review-rubric.json", reviewCheckSchema),
     referenceSheets: await readList(
@@ -221,7 +210,6 @@ export async function loadKnowledge(
     ["shared/cta-formulas.json", knowledge.ctaFormulas],
     ["shared/title-formulas.json", knowledge.titleFormulas],
     ["shared/design-rules.json", knowledge.designRules],
-    ["shared/motion-principles.json", knowledge.motionPrinciples],
     ["shared/picture-principles.json", knowledge.picturePrinciples],
     ["shared/review-rubric.json", knowledge.reviewRubric],
     ["shared/reference-frames.json", knowledge.referenceSheets],

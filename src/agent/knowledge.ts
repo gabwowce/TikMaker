@@ -172,25 +172,11 @@ export const designRuleSchema = z
   })
   .strict();
 
-// Used by code (the sound planner), never by the AI. `sound` is an sfx id.
-export const soundRuleSchema = z
-  .object({
-    event: vocabulary("syncedTo"),
-    sound: z.string().min(1),
-    maxPerScene: z.number().int().min(0),
-  })
-  .strict();
-
-// How things should move (docs/motion-planas.md, C): a principle, why it
-// works, what it means in TikMaker's own presets, and where it comes from. The
-// motion step gives these to the model as knowledge, not as rules – the code
-// checks only what follows from how the frame works (checkMotion).
-// A principle of motion or of pictures (shared/motion-principles.json,
-// shared/picture-principles.json): knowledge for the model, not a rule the
-// code enforces. `principle` and `why` are the general idea; `inTikMaker` how
-// it applies here, with TikMaker's own starting values. `priority`: how much
-// weight the model should give it.
-export const motionPrincipleSchema = z
+// A principle of pictures (shared/picture-principles.json): knowledge for the
+// review, not a rule the code enforces. `principle` and `why` are the general
+// idea; `inTikMaker` how it applies here. `priority`: how much weight the
+// model should give it.
+export const picturePrincipleSchema = z
   .object({
     id: z.string().min(1),
     priority: z.enum(["must", "recommended", "optional"]),
@@ -239,5 +225,4 @@ export type CtaFormula = z.infer<typeof ctaFormulaSchema>;
 export type TitleFormula = z.infer<typeof titleFormulaSchema>;
 export type TransitionPhrase = z.infer<typeof transitionPhraseSchema>;
 export type DesignRule = z.infer<typeof designRuleSchema>;
-export type SoundRule = z.infer<typeof soundRuleSchema>;
-export type MotionPrinciple = z.infer<typeof motionPrincipleSchema>;
+export type PicturePrinciple = z.infer<typeof picturePrincipleSchema>;

@@ -1,25 +1,8 @@
 import { describe, expect, it } from "vitest";
-import { checkScript, sceneSeconds } from "../checkScript";
-import type { DesignRule, VideoTemplate } from "../../knowledge";
-import type { SceneFromAi } from "../../run/3-script";
+import { checkScript, sceneSeconds } from "../steps/script.js";
+import type { DesignRule } from "../../../src/agent/knowledge.js";
+import type { SceneFromAi } from "../../../src/agent/run/3-script.js";
 
-// A small template: a hook and a payoff are needed, items are optional.
-const template = {
-  acts: [
-    {
-      act: "opening",
-      scenes: [{ role: "hook", optional: false, purpose: "Grabs attention." }],
-    },
-    {
-      act: "core",
-      scenes: [{ role: "item", optional: true, purpose: "One step." }],
-    },
-    {
-      act: "close",
-      scenes: [{ role: "payoff", optional: false, purpose: "The result." }],
-    },
-  ],
-} as unknown as VideoTemplate;
 const rules: DesignRule[] = [
   {
     id: "on-screen-words",

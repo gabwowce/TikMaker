@@ -40,7 +40,6 @@ describe("loadKnowledge", () => {
     expect(knowledge.hookFormulas[0].type).toBe("pain-shown");
     expect(knowledge.workspaces[0].style.accent).toBe("#FF7024");
     expect(knowledge.designRules).toHaveLength(1);
-    expect(knowledge.soundRules).toHaveLength(1);
   });
 
   it("treats a missing folder as empty knowledge, not an error", async () => {
@@ -82,14 +81,14 @@ describe("loadKnowledge", () => {
 
   it("rejects a word that is not in the analysis vocabulary", async () => {
     const dir = await knowledgeDir({
-      "shared/sound-rules.json": [
-        { event: "explosion", sound: "d-pop", maxPerScene: 1 },
+      "shared/cta-formulas.json": [
+        { id: "dm", type: "explosion", formula: "DM me ___", examples: ["DM me"] },
       ],
     });
     const { errors } = await loadKnowledge(dir);
     expect(errors[0]).toMatchObject({
-      file: "shared/sound-rules.json",
-      path: "[0].event",
+      file: "shared/cta-formulas.json",
+      path: "[0].type",
     });
   });
 
@@ -124,14 +123,12 @@ describe("loadKnowledge", () => {
   it("reports broken JSON without hiding the other files", async () => {
     const dir = await knowledgeDir({
       "shared/cta-formulas.json": "[{ not json",
-      "shared/sound-rules.json": [
-        { event: "transition", sound: "soft-whoosh", maxPerScene: 1 },
-      ],
+      "shared/design-rules.json": [{ id: "a", check: "x", level: "warning" }],
     });
     const { knowledge, errors } = await loadKnowledge(dir);
     expect(errors).toHaveLength(1);
     expect(errors[0].file).toBe("shared/cta-formulas.json");
-    expect(knowledge.soundRules).toHaveLength(1);
+    expect(knowledge.designRules).toHaveLength(1);
   });
 
   it("reports two objects with the same id", async () => {

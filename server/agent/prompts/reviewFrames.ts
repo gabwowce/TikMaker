@@ -1,5 +1,5 @@
 import type {
-  MotionPrinciple,
+  PicturePrinciple,
   ReferenceSheet,
   ReviewCheck,
 } from "../../../src/agent/knowledge.js";
@@ -55,7 +55,7 @@ export type ReviewGuide = {
   rubric: ReviewCheck[];
   // the sheets, with where their image is on disk now (for the Read tool)
   references: { sheet: ReferenceSheet; file: string }[];
-  principles: MotionPrinciple[];
+  principles: PicturePrinciple[];
 };
 
 export async function reviewFrames(

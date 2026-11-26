@@ -136,7 +136,7 @@ npm run learn:agent -- "mano idėja"     # out/mini-run.json – JSON'as šalia
 | Failas | Eil. | Būsena |
 |---|---|---|
 | `server/agent/steps/script.ts` | 73 | ⬜ |
-| `src/agent/rules/checkScript.ts` | 56 | ⬜ |
+| `server/agent/steps/script.ts` apačioje – `checkScript` | 56 | ⬜ |
 | `src/utils/pacing.ts` – kalbėjimo greitis, scenos trukmė | 103 | ⬜ |
 | `prompts/writeScript.ts`, `research.ts` | ~250 | ⬜ |
 
@@ -224,7 +224,7 @@ Pildome skaitydami. *Ką noriu pakeisti* → *failas:vieta*.
 | pridėti naują agento žingsnį | `server/agent/agent.ts` runAgent + `steps/` |
 | pakeisti, ką modelis gauna žingsnyje | `server/agent/prompts/<žingsnis>.ts` |
 | pakeisti, kuris modelis daro žingsnį | `server/agent/models.ts` STEP_MODELS |
-| pridėti scenarijaus taisyklę | `src/agent/rules/checkScript.ts` |
+| pridėti scenarijaus taisyklę | `knowledge/shared/design-rules.json` (skaičius) + `server/agent/steps/script.ts` `checkScript` (patikra) |
 | leisti laisvajam agentui naują komandą | `server/agent/prompts/writeCode.ts` writeCode `allow` |
 | | |
 
@@ -237,7 +237,7 @@ Pildome skaitydami. *Ką noriu pakeisti* → *failas:vieta*.
 - [ ] Būsenos `cancelled` niekas nenustato (nėra „Stop“ mygtuko): arba padaryti Stop, arba ištrinti būseną
 - [ ] `error` po to, kai video jau turi scenų: tęsti negalima, lieka tik naujas projektas. Gal leisti „Continue“ ir iš error?
 - [ ] Kodo versijos niekada netrinamos; po Undo ir naujo perrašymo atšaukta versija perrašoma. `saveVersion` turi nenaudojamą `_projectId`
-- [ ] `design-rules.json`: `voiceWordsPerSecond`, `sfxPer10s`, `secondsWithoutChange` kode nebetikrinamos (`sfxPer10s` writeCode prompte įrašyta ranka). Arba tikrinti (`checkScript` / `checkAndFix`), arba ištrinti iš JSON
+- [x] `design-rules.json`: `sfxPer10s`, `secondsWithoutChange` ištrinti (niekas netikrino); `voiceWordsPerSecond` lieka – jį gauna scenarijaus promptas. Ištrinti ir nenaudojami `soundRules`, `motionPrinciples`. Buvo: `voiceWordsPerSecond`, `sfxPer10s`, `secondsWithoutChange` kode nebetikrinamos (`sfxPer10s` writeCode prompte įrašyta ranka). Arba tikrinti (`checkScript` / `checkAndFix`), arba ištrinti iš JSON
 - [ ] Kodo scenų problemos atpažįstamos pagal tekstą (`"Scene N:"`): naudoti `{sceneIndex, message}`
 
 # Mano užrašai
