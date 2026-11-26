@@ -237,6 +237,7 @@ Pildome skaitydami. *Ką noriu pakeisti* → *failas:vieta*.
 - [ ] Būsenos `cancelled` niekas nenustato (nėra „Stop“ mygtuko): arba padaryti Stop, arba ištrinti būseną
 - [ ] `error` po to, kai video jau turi scenų: tęsti negalima, lieka tik naujas projektas. Gal leisti „Continue“ ir iš error?
 - [ ] Kodo versijos niekada netrinamos; po Undo ir naujo perrašymo atšaukta versija perrašoma. `saveVersion` turi nenaudojamą `_projectId`
+- [ ] `design-rules.json`: `voiceWordsPerSecond`, `sfxPer10s`, `secondsWithoutChange` kode nebetikrinamos (`sfxPer10s` writeCode prompte įrašyta ranka). Arba tikrinti (`checkScript` / `checkAndFix`), arba ištrinti iš JSON
 - [ ] Kodo scenų problemos atpažįstamos pagal tekstą (`"Scene N:"`): naudoti `{sceneIndex, message}`
 
 # Mano užrašai
